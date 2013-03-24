@@ -1,3 +1,5 @@
-assets/
+html/assets/
 protected/runtime/
-themes/classic/views/
+solr-4.2.0/
+vendor/
+composer.lock

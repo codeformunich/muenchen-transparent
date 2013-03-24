@@ -1,0 +1,30 @@
+{
+	"name": "catoth/ris",
+	"description": "Ratsinformationssystem",
+	"type": "library",
+	"license": "AGPL-3.0",
+	"keywords": [
+		"gruen",
+		"antrag"
+	],
+	"minimum-stability": "dev",
+	"homepage": "http://ris3.hoessl.eu/",
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "yiisoft/yii",
+				"version": "1.1.13",
+				"dist": {
+					"url": "http://yii.googlecode.com/files/yii-1.1.13.e9e4a0.zip",
+					"type": "zip"
+				}
+			}
+		}
+	],
+	"require": {
+		"php": ">=5.3.3",
+		"yiisoft/yii": "1.1.13",
+		"solarium/solarium": "3.1.0"
+	}
+}
