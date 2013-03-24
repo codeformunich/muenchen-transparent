@@ -14,12 +14,6 @@ Yii::import('application.modules.registration.models.*');
 class YumRegistrationController extends YumController {
 	public $defaultAction = 'registration';
 
-	// override this with a custom text or function that retrieves a custom text
-	public $textActivationSubject =  
-		'Please activate your account for {username}';
-	public $textActivationBody =  
-		'Hello, {username}. Please activate your account with this url: {activation_url}';
-
 	// Only allow the registration if the user is not already logged in and
 	// the function is activated in the Module Configuration
 	public function beforeAction($action) {
@@ -89,7 +83,6 @@ class YumRegistrationController extends YumController {
 			if(!$form->hasErrors() && !$profile->hasErrors()) {
 				$user = new YumUser;
 				$user->register($form->username, $form->password, $profile);
-				$user->profile = $profile;
 
 				$this->sendRegistrationEmail($user);
 				Yum::setFlash('Thank you for your registration. Please check your email.');
@@ -112,18 +105,20 @@ class YumRegistrationController extends YumController {
 
 		$activation_url = $user->getActivationUrl();
 
-		$body = strtr($this->textActivationBody, array(
+		$body = strtr(
+				'Hello, {username}. Please activate your account with this url: {activation_url}', array(
 					'{username}' => $user->username,
 					'{activation_url}' => $activation_url));
 
-		$mail = array(
-				'from' => Yum::module('registration')->registrationEmail,
-				'to' => $user->profile->email,
-				'subject' => strtr($this->textActivationSubject, array(
-						'{username}' => $user->username)),
-				'body' => $body,
-				);
-		$sent = YumMailer::send($mail);
+			$mail = array(
+					'from' => Yum::module('registration')->registrationEmail,
+					'to' => $user->profile->email,
+					'subject' => strtr(
+						'Please activate your account for {username}', array(
+							'{username}' => $user->username)),
+					'body' => $body,
+					);
+			$sent = YumMailer::send($mail);
 
 		return $sent;
 	}

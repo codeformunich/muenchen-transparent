@@ -177,7 +177,8 @@ class YumUser extends YumActiveRecord
 					));
 	}
 
-	public function beforeValidate() {
+	public function beforeValidate()
+	{
 		if ($this->isNewRecord) {
 			if(!$this->salt)
 				$this->salt = YumEncrypt::generateSalt();
@@ -187,17 +188,17 @@ class YumUser extends YumActiveRecord
 		return true;
 	}
 
-	public function setPassword($password, $salt = null) {
-		if ($password) {
+	public function setPassword($password, $salt = null)
+	{
+		if ($password != '') {
+			$this->password = YumEncrypt::encrypt($password, $salt);
 			$this->lastpasswordchange = time();
-			$this->password = $password;
 			$this->password_changed = true;
 			$this->salt = $salt;
-			if ($this->validate()) {
-				$this->password = YumEncrypt::encrypt($password, $salt);
-				$this->save(false, array('password'));
-			}
-			return $this;
+			if (!$this->isNewRecord)
+				return $this->save();
+			else
+				return $this;
 		}
 	}
 
@@ -239,27 +240,20 @@ class YumUser extends YumActiveRecord
 
 	public function rules()
 	{
-		$usernameRequirements = Yum::module()->usernameRequirements;
 		$passwordRequirements = Yum::module()->passwordRequirements;
+		$usernameRequirements = Yum::module()->usernameRequirements;
 
 		$passwordrule = array_merge(array('password', 'YumPasswordValidator'), $passwordRequirements);
 
 		$rules[] = $passwordrule;
 
-		if($usernameRequirements) {
-			$rules[] = array('username', 'length',
-					'max' => $usernameRequirements['maxLen'],
-					'min' => $usernameRequirements['minLen'],
-					'message' => Yum::t(
-						'Username length needs to be between {minLen} and {maxlen} characters', array(
-							'{minLen}' => $usernameRequirements['minLen'],
-							'{maxLen}' => $usernameRequirements['maxLen'])));
-			$rules[] = array(
-					'username',
-					'match',
-					'pattern' => $usernameRequirements['match'],
-					'message' => Yum::t($usernameRequirements['dontMatchMessage']));
-		}
+		$rules[] = array('username', 'length',
+				'max' => $usernameRequirements['maxLen'],
+				'min' => $usernameRequirements['minLen'],
+				'message' => Yum::t(
+					'Username length needs to be between {minLen} and {maxlen} characters', array(
+						'{minLen}' => $usernameRequirements['minLen'],
+						'{maxLen}' => $usernameRequirements['maxLen'])));
 
 		$rules[] = array('username',
 				'unique',
@@ -719,7 +713,6 @@ class YumUser extends YumActiveRecord
 	 */
 	public static function getUsersByRole($roleTitle)
 	{
-		Yii::import('application.modules.role.models.*');
 		$role = YumRole::model()->findByAttributes(array('title' => $roleTitle));
 		return $role ? $role->users : null;
 	}

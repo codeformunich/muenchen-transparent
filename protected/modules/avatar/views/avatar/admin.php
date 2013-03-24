@@ -1,4 +1,4 @@
-<? $this->title = Yum::t('Avatar administration');
+<?php $this->title = Yum::t('Avatar administration');
 
 $this->breadcrumbs = array(
 	Yum::t('Users') => array('admin'),
@@ -10,4 +10,4 @@ $this->widget('zii.widgets.CListView', array(
 	'itemView' => '_view',
 )); ?>
 
-
+<div style="clear:both;"></div>

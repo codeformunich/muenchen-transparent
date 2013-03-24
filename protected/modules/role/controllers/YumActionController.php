@@ -24,7 +24,7 @@ class YumActionController extends YumController {
 			),
 			array('allow', 
 				'actions'=>array('admin','delete'),
-				'expression' => 'Yii::app()->user->isAdmin()',
+				'users'=>array('admin'),
 			),
 			array('deny',  
 				'users'=>array('*'),

@@ -1,10 +1,10 @@
 
-<h2> <? echo Yum::t('Registration'); ?> </h2>
+<h2> <?php echo Yum::t('Registration'); ?> </h2>
 
-<? $this->breadcrumbs = array(Yum::t('Registration')); ?>
+<?php $this->breadcrumbs = array(Yum::t('Registration')); ?>
 
 <div class="form">
-<? $activeform = $this->beginWidget('CActiveForm', array(
+<?php $activeform = $this->beginWidget('CActiveForm', array(
 			'id'=>'registration-form',
 			'enableAjaxValidation'=>true,
 			'enableClientValidation'=>true,
@@ -12,8 +12,8 @@
 			));
 ?>
 
-<? echo Yum::requiredFieldNote(); ?>
-<? echo CHtml::errorSummary(array($form, $profile)); ?>
+<?php echo Yum::requiredFieldNote(); ?>
+<?php echo CHtml::errorSummary(array($form, $profile)); ?>
 
 <div class="row"> <?
 echo $activeform->labelEx($form,'username');
@@ -36,32 +36,32 @@ echo $activeform->textField($profile,'lastname');
 ?> </div>  
 
 <div class="row">
-<? echo $activeform->labelEx($form,'password'); ?>
-<? echo $activeform->passwordField($form,'password'); ?>
+<?php echo $activeform->labelEx($form,'password'); ?>
+<?php echo $activeform->passwordField($form,'password'); ?>
 </div>
 
 <div class="row">
-<? echo $activeform->labelEx($form,'verifyPassword'); ?>
-<? echo $activeform->passwordField($form,'verifyPassword'); ?>
+<?php echo $activeform->labelEx($form,'verifyPassword'); ?>
+<?php echo $activeform->passwordField($form,'verifyPassword'); ?>
 </div>
 
-<? if(extension_loaded('gd') 
+<?php if(extension_loaded('gd') 
 			&& Yum::module('registration')->enableCaptcha): ?>
 	<div class="row">
-		<? echo CHtml::activeLabelEx($form,'verifyCode'); ?>
+		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>
 		<div>
-		<? $this->widget('CCaptcha'); ?>
-		<? echo CHtml::activeTextField($form,'verifyCode'); ?>
+		<?php $this->widget('CCaptcha'); ?>
+		<?php echo CHtml::activeTextField($form,'verifyCode'); ?>
 		</div>
 		<p class="hint">
-		<? echo Yum::t('Please enter the letters as they are shown in the image above.'); ?>
-		<br/><? echo Yum::t('Letters are not case-sensitive.'); ?></p>
+		<?php echo Yum::t('Please enter the letters as they are shown in the image above.'); ?>
+		<br/><?php echo Yum::t('Letters are not case-sensitive.'); ?></p>
 	</div>
-	<? endif; ?>
+	<?php endif; ?>
 	
 	<div class="row submit">
-		<? echo CHtml::submitButton(Yum::t('Registration')); ?>
+		<?php echo CHtml::submitButton(Yum::t('Registration')); ?>
 	</div>
 
-<? $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 </div><!-- form -->

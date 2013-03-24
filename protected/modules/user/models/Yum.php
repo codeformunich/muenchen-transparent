@@ -112,8 +112,7 @@ class Yum
 
 		if($messages===false) {
 			if(Yum::module()->avoidSql) {
-				$translations = YumTranslation::model()->findAll(
-						'category = :category and language = :language', array(
+				$translations = YumTranslation::model()->findAll('category = :category and language = :language', array(
 							'category' =>  $category,
 							'language' =>  $language,
 							));
