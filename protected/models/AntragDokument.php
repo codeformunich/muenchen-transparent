@@ -34,13 +34,13 @@ class AntragDokument extends CActiveRecord
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
 	public static $TYP_BA_TERMIN = "ba_termin";
 	public static $TYPEN_ALLE = array(
-		"stadtrat_antrag"  => "Stadtratsantrag",
-		"stadtrat_vorlage" => "Stadtratsvorlage",
-		"stadtrat_termin"  => "Stadtrat: Termin",
+		"stadtrat_antrag"    => "Stadtratsantrag",
+		"stadtrat_vorlage"   => "Stadtratsvorlage",
+		"stadtrat_termin"    => "Stadtrat: Termin",
 		"stadtrat_beschluss" => "Stadtratsbeschluss",
-		"ba_antrag"        => "BA: Antrag",
-		"ba_initiative"    => "BA: Initiative",
-		"ba_termin"        => "BA: Termin",
+		"ba_antrag"          => "BA: Antrag",
+		"ba_initiative"      => "BA: Initiative",
+		"ba_termin"          => "BA: Termin",
 	);
 
 	/**
@@ -73,7 +73,7 @@ class AntragDokument extends CActiveRecord
 			array('id, antrag_id, termin_id, ergebnis_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
-			array('name', 'length', 'max' => 100),
+			array('name', 'length', 'max' => 200),
 			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -89,10 +89,10 @@ class AntragDokument extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antrag' => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-			'termin' => array(self::BELONGS_TO, 'Termin', 'termin_id'),
+			'antrag'   => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'termin'   => array(self::BELONGS_TO, 'Termin', 'termin_id'),
 			'ergebnis' => array(self::BELONGS_TO, 'AntragErgebnis', 'ergebnis_id'),
-			'orte'   => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
+			'orte'     => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
 		);
 	}
 
@@ -144,6 +144,21 @@ class AntragDokument extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
 		));
+	}
+
+
+
+	/**
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function neueste($limit)
+	{
+		$this->getDbCriteria()->mergeWith(array(
+			'order' => 'datum DESC',
+			'limit' => $limit,
+		));
+		return $this;
 	}
 
 
@@ -335,23 +350,20 @@ class AntragDokument extends CActiveRecord
 	}
 
 
-
-
 	/**
 	 * @param Solarium\QueryType\Update\Query\Query $update
 	 */
 	private function solrIndex_beschluss_do($update)
 	{
-		$max_datum = "";
-		$doc       = $update->createDocument();
+		$doc = $update->createDocument();
 
-		$doc->id                 = "Ergebnis:" . $this->id;
-		$doc->text               = RISSolrHelper::string_cleanup($this->ergebnis->top_betreff . " " . $this->ergebnis->beschluss_text . " " . $this->ergebnis->entscheidung . " " . $this->text_pdf);
-		$doc->text_ocr           = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
-		$doc->dokument_name      = RISSolrHelper::string_cleanup($this->name);
-		$doc->dokument_url       = $this->url;
+		$doc->id            = "Ergebnis:" . $this->id;
+		$doc->text          = RISSolrHelper::string_cleanup($this->ergebnis->top_betreff . " " . $this->ergebnis->beschluss_text . " " . $this->ergebnis->entscheidung . " " . $this->text_pdf);
+		$doc->text_ocr      = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
+		$doc->dokument_name = RISSolrHelper::string_cleanup($this->name);
+		$doc->dokument_url  = $this->url;
 
-		$datum = (is_object($this->datum) ? date("Y-m-d H:i:s") : $this->datum);
+		$datum           = (is_object($this->datum) ? date("Y-m-d H:i:s") : $this->datum);
 		$doc->sort_datum = RISSolrHelper::mysql2solrDate($datum);
 		$update->addDocuments(array($doc));
 	}
@@ -366,8 +378,7 @@ class AntragDokument extends CActiveRecord
 		$update = $solr->createUpdate();
 
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
-		elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
-		else $this->solrIndex_antrag_do($update);
+		elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) $this->solrIndex_beschluss_do($update); else $this->solrIndex_antrag_do($update);
 
 
 		$update->addCommit();

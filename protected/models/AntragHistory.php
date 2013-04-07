@@ -56,7 +56,7 @@ class AntragHistory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, typ, datum_letzte_aenderung, antrags_nr, wahlperiode, betreff, status', 'required'),
+			array('id, typ, datum_letzte_aenderung', 'required'),
 			array('id, ba_nr', 'numerical', 'integerOnly'=>true),
 			array('typ', 'length', 'max'=>16),
 			array('antrags_nr', 'length', 'max'=>20),

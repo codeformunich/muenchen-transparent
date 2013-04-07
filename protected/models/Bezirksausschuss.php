@@ -6,6 +6,9 @@
  * The followings are the available columns in table 'bezirksausschuesse':
  * @property integer $ba_nr
  * @property string $name
+ * @property string $website
+ * @property integer $osm_init_zoom
+ * @property string $osm_shape
  *
  * The followings are the available model relations:
  * @property Antrag[] $antraege
@@ -44,7 +47,7 @@ class Bezirksausschuss extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('ba_nr', 'required'),
-			array('ba_nr', 'numerical', 'integerOnly' => true),
+			array('ba_nr, osm_init_zoom', 'numerical', 'integerOnly' => true),
 			array('name', 'length', 'max' => 100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -77,6 +80,9 @@ class Bezirksausschuss extends CActiveRecord
 		return array(
 			'ba_nr' => 'Ba Nr',
 			'name'  => 'Name',
+			'website' => 'Website',
+			'osm_init_zoom' => 'OSM Zoom',
+			'osm_shape' => 'OSM Shape',
 		);
 	}
 
@@ -100,7 +106,24 @@ class Bezirksausschuss extends CActiveRecord
 	}
 
 
-	public $NAMEN = array(
+
+	public function toGeoJSONArray() {
+		return array(
+			"type" => "Feature",
+			"id" => $this->ba_nr,
+			"properties" => array(
+				"name" => $this->name,
+				"website" => $this->website
+			),
+			"geometry" => array(
+				"type" => "Polygon",
+				"coordinates" => array(json_decode($this->osm_shape))
+			)
+		);
+	}
+
+
+	public static $NAMEN = array(
 		1  => "Altstadt-Lehel",
 		2  => "Ludwigsvorstadt-Isarvorstadt",
 		3  => "Maxvorstadt",
@@ -129,7 +152,7 @@ class Bezirksausschuss extends CActiveRecord
 	);
 
 
-	public $HOMEPAGES = array(
+	public static  $HOMEPAGES = array(
 		1  => "http://www.muenchen.info/ba/01/",
 		2  => "http://www.muenchen.info/ba/02/",
 		3  => "http://www.muenchen.info/ba/03/",
@@ -158,7 +181,7 @@ class Bezirksausschuss extends CActiveRecord
 	);
 
 
-	public $OSM_ZOOM = array(
+	public static  $OSM_ZOOM = array(
 		1  => "13",
 		2  => "14",
 		3  => "14",
@@ -186,7 +209,7 @@ class Bezirksausschuss extends CActiveRecord
 		25 => "14",
 	);
 
-	public $KONTUREN = array(
+	public static $KONTUREN = array(
 		1  => array(
 			array(11.5847149, 48.1501424),
 			array(11.5850423, 48.1484481),

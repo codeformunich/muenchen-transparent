@@ -17,7 +17,7 @@
  * @property Bezirksausschuss $ba
  * @property Termin[] $termine
  */
-class Gremium extends CActiveRecord
+class Gremium extends CActiveRecord implements IRISItem
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -252,4 +252,25 @@ class Gremium extends CActiveRecord
 		}
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getLink()
+	{
+		return Yii::app()->createUrl("gremium/anzeigen",array("id" => $this->id));
+	}
+
+
+	/** @return string */
+	public function getTypName()
+	{
+		if ($this->ba_nr > 0) return "BA-Gremium";
+		else return "Stadtratsgremium";
+	}
+
+	/** @return string */
+	public function getName()
+	{
+		return $this->name;
+	}
 }

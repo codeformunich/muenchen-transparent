@@ -104,9 +104,9 @@ class StadtraetInnenParser extends RISParser {
 				$str_fraktion->save();
 				$aenderungen = "Neue Fraktionszugehörigkeit: " . $str_fraktion->fraktion->name . "\n";
 			} else {
-				if ($bisherige->wahlperiode != $matches["wahlperiode"][$i]) $aenderungen .= "Neue Wahlperiode: " . $bisherige->wahlperiode . " => " . $matches["wahlperiode"][$i];
-				if ($bisherige->funktion != $matches["funktion"][$i]) $aenderungen .= "Neue Funktion in der Fraktion: " . $bisherige->funktion . " => " . $matches["funktion"][$i];
-				if ($bisherige->mitgliedschaft != $matches["mitgliedschaft"][$i]) $aenderungen .= "Mitgliedschaft in der Fraktion: " . $bisherige->mitgliedschaft . " => " . $matches["mitgliedschaft"][$i];
+				if ($bisherige->wahlperiode != $matches["wahlperiode"][$i]) $aenderungen .= "Neue Wahlperiode: " . $bisherige->wahlperiode . " => " . $matches["wahlperiode"][$i] . "\n";
+				if ($bisherige->funktion != $matches["funktion"][$i]) $aenderungen .= "Neue Funktion in der Fraktion: " . $bisherige->funktion . " => " . $matches["funktion"][$i] . "\n";
+				if ($bisherige->mitgliedschaft != $matches["mitgliedschaft"][$i]) $aenderungen .= "Mitgliedschaft in der Fraktion: " . $bisherige->mitgliedschaft . " => " . $matches["mitgliedschaft"][$i] . "\n";
 				$bisherige->setAttributes($str_fraktion->getAttributes());
 				$bisherige->save();
 			}

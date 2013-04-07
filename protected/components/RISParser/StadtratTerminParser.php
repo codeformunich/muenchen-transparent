@@ -259,7 +259,7 @@ class StadtratTerminParser extends RISParser
 
 	public function parseUpdate()
 	{
-		for ($i = 300; $i >= 0; $i -= 10) {
+		for ($i = 270; $i >= 0; $i -= 10) {
 			$this->parseSeite($i, false);
 		}
 	}

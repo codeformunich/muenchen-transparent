@@ -74,20 +74,29 @@ class RISPDF2Text
 		$text = "";
 		for ($i = 0; $i < $anz_seiten; $i++) {
 			exec(PATH_CONVERT . " -density 300x300 \"${filename}[$i]\" -colorspace Gray $depth " . TMP_PATH . "ocr-tmp.tif", $result);
-			exec(PATH_TESSERACT . " " . TMP_PATH . "ocr-tmp.tif " . TMP_PATH . "ocr-tmp.tif -l deu", $result);
-			$text .= "########## SEITE " . ($i + 1) . " ##########\n";
-			$text .= file_get_contents(TMP_PATH . "ocr-tmp.tif.txt");
-			unlink(TMP_PATH . "ocr-tmp.tif");
-			unlink(TMP_PATH . "ocr-tmp.tif.txt");
+			if (file_exists(TMP_PATH . "ocr-tmp.tif")) {
+				exec(PATH_TESSERACT . " " . TMP_PATH . "ocr-tmp.tif " . TMP_PATH . "ocr-tmp.tif -l deu", $result);
+				$text .= "########## SEITE " . ($i + 1) . " ##########\n";
+				if (file_exists(TMP_PATH . "ocr-tmp.tif.txt")) {
+					$text .= file_get_contents(TMP_PATH . "ocr-tmp.tif.txt");
+					unlink(TMP_PATH . "ocr-tmp.tif.txt");
+				}
+				unlink(TMP_PATH . "ocr-tmp.tif");
+			}
 		}
 		return $text;
 	}
 
 	public static function document_text_pdf($pdf)
 	{
-		exec(PATH_PDFTOTEXT . " -enc UTF-8 $pdf " . TMP_PATH . "pdf.txt");
-		$text = file_get_contents(TMP_PATH . "pdf.txt");
-		unlink(TMP_PATH . "pdf.txt");
+		exec(PATH_PDFTOTEXT . " -enc UTF-8 $pdf " . TMP_PATH . "pdf.txt", $ret);
+		if (file_exists(TMP_PATH . "pdf.txt")) {
+			$text = file_get_contents(TMP_PATH . "pdf.txt");
+			unlink(TMP_PATH . "pdf.txt");
+		} else {
+			if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "PDFParse Error", $pdf . "\n" . print_r($ret, true));
+			$text = "";
+		}
 		return $text;
 	}
 

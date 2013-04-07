@@ -40,7 +40,6 @@ class RISAenderung extends CActiveRecord
 		"ba_gremium" => "BA-Gremium",
 		"ba_mitglied" => "BA-Mitglied",
 		"rathausumschau" => "Rathausumschau",
-
 	);
 
 	/**
@@ -126,5 +125,49 @@ class RISAenderung extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	/**
+	 * @return IRISItem|null
+	 */
+	public function getRISItem() {
+		switch ($this->typ) {
+			case RISAenderung::$TYP_STADTRAT_VORLAGE:
+			case RISAenderung::$TYP_STADTRAT_ANTRAG:
+			case RISAenderung::$TYP_BA_ANTRAG:
+			case RISAenderung::$TYP_BA_INITIATIVE:
+				return Antrag::model()->findByPk($this->ris_id);
+			break;
+			case RISAenderung::$TYP_BA_GREMIUM:
+			case RISAenderung::$TYP_STADTRAT_GREMIUM:
+				return Gremium::model()->findByPk($this->ris_id);
+				break;
+			case RISAenderung::$TYP_STADTRAT_TERMIN:
+			case RISAenderung::$TYP_BA_TERMIN:
+				return Termin::model()->findByPk($this->ris_id);
+				break;
+			case RISAenderung::$TYP_BA_MITGLIED:
+			case RISAenderung::$TYP_STADTRAETIN:
+				return StadtraetIn::model()->findByPk($this->ris_id);
+				break;
+			case RISAenderung::$TYP_RATHAUSUMSCHAU:
+				return null; // @TODO
+				break;
+			default:
+				return null;
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function toFeedData() {
+		$item = $this->getRISItem();
+		return array(
+			"title" => ($item ? $item->getTypName() . ": " . $item->getName() : "?"),
+			"link" => ($item ? $item->getLink() : "-"),
+			"content" => nl2br(CHtml::encode($this->aenderungen)),
+			"dateCreated" => RISTools::date_iso2timestamp($this->datum),
+		);
 	}
 }

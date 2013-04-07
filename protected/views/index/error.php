@@ -1,6 +1,10 @@
 <?php
-/* @var $this SiteController */
-/* @var $error array */
+/**
+ * @var $this IndexController
+ * @var $error array
+ * @var string $code
+ * @var string $message
+ */
 
 $this->pageTitle=Yii::app()->name . ' - Error';
 $this->breadcrumbs=array(

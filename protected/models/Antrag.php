@@ -35,7 +35,7 @@
  * @property Antrag[] $antrag2vorlagen
  * @property Antrag[] $vorlage2antraege
  */
-class Antrag extends CActiveRecord
+class Antrag extends CActiveRecord implements IRISItem
 {
 
 	public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
@@ -209,6 +209,28 @@ class Antrag extends CActiveRecord
 		));
 	}
 
+
+	/**
+	 * @param int $stunden
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function neueste_stadtratsantragsdokumente($stunden, $limit = 0)
+	{
+		$params = array(
+			'condition' => 'ba_nr IS NULL AND datum_letzte_aenderung > NOW() - INTERVAL ' . IntVal($stunden) . ' HOUR',
+			'order' => 'datum DESC',
+			'with' => array(
+				'dokumente' => array(
+					'condition' => 'datum > NOW() - INTERVAL ' . IntVal($stunden) . ' HOUR',
+				),
+		));
+		if ($limit > 0) $params['limit'] = $limit;
+		$this->getDbCriteria()->mergeWith($params);
+		return $this;
+	}
+
+
 	/**
 	 * @throws CDbException|Exception
 	 */
@@ -266,5 +288,26 @@ class Antrag extends CActiveRecord
 				throw new Exception("Fehler");
 			}
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLink()
+	{
+		return Yii::app()->createUrl("antrag/anzeigen",array("id" => $this->id));
+	}
+
+	/** @return string */
+	public function getTypName()
+	{
+		$str = explode("|", Antrag::$TYPEN_ALLE[$this->typ][0]);
+		return $str[0];
+	}
+
+	/** @return string */
+	public function getName()
+	{
+		return $this->betreff;
 	}
 }

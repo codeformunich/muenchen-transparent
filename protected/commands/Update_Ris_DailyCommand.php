@@ -3,10 +3,11 @@
 class Update_Ris_DailyCommand extends CConsoleCommand {
 	public function run($args) {
 
-		$parser = new StadtratTerminParser();
-		$parser->parseAlle();
+		$parser = new StadtratsvorlageParser();
+		$parser->parseUpdate();
 
-		return;
+		$parser = new StadtratsantragParser();
+		$parser->parseUpdate();
 
 		$parser = new StadtraetInnenParser();
 		//$parser->setParseAlleAntraege(true);
@@ -22,12 +23,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand {
 		$parser->parseUpdate();
 
 		$parser = new BAAntragParser();
-		$parser->parseUpdate();
-
-		$parser = new StadtratsvorlageParser();
-		$parser->parseUpdate();
-
-		$parser = new StadtratsantragParser();
 		$parser->parseUpdate();
 
 	}

@@ -25,7 +25,7 @@
  * @property AntragOrt[] $antraegeOrte
  * @property Gremium $gremium
  */
-class Termin extends CActiveRecord
+class Termin extends CActiveRecord implements IRISItem
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -53,7 +53,7 @@ class Termin extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, datum_letzte_aenderung, sitzungsort, wahlperiode, status', 'required'),
+			array('id, datum_letzte_aenderung, wahlperiode, status', 'required'),
 			array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly'=>true),
 			array('referat, referent, vorsitz', 'length', 'max'=>200),
 			array('wahlperiode', 'length', 'max'=>20),
@@ -158,4 +158,25 @@ class Termin extends CActiveRecord
 
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getLink()
+	{
+		return Yii::app()->createUrl("termin/anzeigen",array("id" => $this->id));
+	}
+
+
+	/** @return string */
+	public function getTypName()
+	{
+		if ($this->ba_nr > 0) return "BA-Termin";
+		else return "Stadtratstermin";
+	}
+
+	/** @return string */
+	public function getName()
+	{
+		return $this->gremium->name . " (" . $this->termin . ")";
+	}
 }

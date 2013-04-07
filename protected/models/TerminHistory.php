@@ -47,7 +47,7 @@ class TerminHistory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, datum_letzte_aenderung, wahlperiode, status', 'required'),
+			array('id, datum_letzte_aenderung', 'required'),
 			array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly'=>true),
 			array('referat, referent, vorsitz', 'length', 'max'=>200),
 			array('wahlperiode', 'length', 'max'=>20),

@@ -15,7 +15,7 @@
  * @property Person[] $personen
  * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
  */
-class StadtraetIn extends CActiveRecord
+class StadtraetIn extends CActiveRecord implements IRISItem
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -104,6 +104,24 @@ class StadtraetIn extends CActiveRecord
 		));
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getLink()
+	{
+		return Yii::app()->createUrl("stadtraetIn/anzeigen",array("id" => $this->id));
+	}
 
 
+	/** @return string */
+	public function getTypName()
+	{
+		return "Stadtratsmitglied";
+	}
+
+	/** @return string */
+	public function getName()
+	{
+		return $this->name;
+	}
 }

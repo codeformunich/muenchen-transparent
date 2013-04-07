@@ -1,6 +1,6 @@
 <?php
 
-class SiteController extends Controller
+class IndexController extends Controller
 {
 	/**
 	 * Declares class-based actions.
@@ -19,6 +19,19 @@ class SiteController extends Controller
 				'class'=>'CViewAction',
 			),
 		);
+	}
+
+	public function actionFeed() {
+		/** @var array|RISAenderung[] $aenderungen */
+		$aenderungen = RISAenderung::model()->findAll(array("order" => "id DESC", "limit" => 100));
+		$data = array();
+		foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
+
+		$this->render("feed", array(
+			"feed_title" => "OpenRIS Änderungen",
+			"feed_description" => "OpenRIS Änderungen",
+			"data" => $data,
+		));
 	}
 
 	/**

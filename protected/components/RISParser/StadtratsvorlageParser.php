@@ -95,12 +95,13 @@ class StadtratsvorlageParser extends RISParser {
 			if ($aenderungen != "") $changed = true;
 		}
 
-		echo "Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
+		if ($changed) echo "Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
 
 		if ($changed) {
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
 				$alter_eintrag->setAttributes($daten->getAttributes());
+				if ($alter_eintrag->wahlperiode == "") $alter_eintrag->wahlperiode = "?";
 				if (!$alter_eintrag->save()) {
 					echo "Vorlage 1\n";
 					var_dump($alter_eintrag->getErrors());
@@ -126,6 +127,13 @@ class StadtratsvorlageParser extends RISParser {
 		foreach ($antrag_links as $link) {
 			/** @var Antrag $antrag  */
 			$antrag = Antrag::model()->findByPk(IntVal($link));
+			if (!$antrag) {
+				$parser = new StadtratsantragParser();
+				$parser->parse($link);
+
+				$antrag = Antrag::model()->findByPk(IntVal($link));
+			}
+			if (!$antrag) if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Stadtratsvorlage - Zugordnungs Error", $vorlage_id . " - " . $link);
 			$daten->addAntrag($antrag);
 			$aenderungen .= "Neuer Antrag zugeordnet: http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=$link\n";
 		}
