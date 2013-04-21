@@ -67,21 +67,25 @@ class RISPDF2Text
 	{
 		$anz_seiten = static::document_anzahl_seiten($filename);
 
+		/*
 		$x = explode(".", $filename);
 		if (mb_strtolower($x[count($x) - 1]) == "tif") $depth = "";
 		else $depth = "-depth 8";
+		*/
+		$depth = "-depth 8";
 
 		$text = "";
 		for ($i = 0; $i < $anz_seiten; $i++) {
-			exec(PATH_CONVERT . " -density 300x300 \"${filename}[$i]\" -colorspace Gray $depth " . TMP_PATH . "ocr-tmp.tif", $result);
-			if (file_exists(TMP_PATH . "ocr-tmp.tif")) {
-				exec(PATH_TESSERACT . " " . TMP_PATH . "ocr-tmp.tif " . TMP_PATH . "ocr-tmp.tif -l deu", $result);
+			$tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
+			exec(PATH_CONVERT . " -density 300x300 \"${filename}[$i]\" -colorspace Gray $depth $tif_tmp_file", $result);
+			if (file_exists($tif_tmp_file)) {
+				exec(PATH_TESSERACT . " $tif_tmp_file $tif_tmp_file -l deu -psm 1", $result);
 				$text .= "########## SEITE " . ($i + 1) . " ##########\n";
-				if (file_exists(TMP_PATH . "ocr-tmp.tif.txt")) {
-					$text .= file_get_contents(TMP_PATH . "ocr-tmp.tif.txt");
-					unlink(TMP_PATH . "ocr-tmp.tif.txt");
-				}
-				unlink(TMP_PATH . "ocr-tmp.tif");
+				if (file_exists($tif_tmp_file . ".txt")) {
+					$text .= file_get_contents($tif_tmp_file . ".txt");
+					unlink($tif_tmp_file . ".txt");
+				};
+				unlink($tif_tmp_file);
 			}
 		}
 		return $text;
@@ -89,10 +93,11 @@ class RISPDF2Text
 
 	public static function document_text_pdf($pdf)
 	{
-		exec(PATH_PDFTOTEXT . " -enc UTF-8 $pdf " . TMP_PATH . "pdf.txt", $ret);
-		if (file_exists(TMP_PATH . "pdf.txt")) {
-			$text = file_get_contents(TMP_PATH . "pdf.txt");
-			unlink(TMP_PATH . "pdf.txt");
+		$tmp_file_name = TMP_PATH . "pdf.txt." . rand(0, 10000000);
+		exec(PATH_PDFTOTEXT . " -enc UTF-8 $pdf $tmp_file_name", $ret);
+		if (file_exists($tmp_file_name)) {
+			$text = file_get_contents($tmp_file_name);
+			unlink($tmp_file_name);
 		} else {
 			if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "PDFParse Error", $pdf . "\n" . print_r($ret, true));
 			$text = "";

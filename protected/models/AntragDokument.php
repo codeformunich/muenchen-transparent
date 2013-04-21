@@ -147,7 +147,6 @@ class AntragDokument extends CActiveRecord
 	}
 
 
-
 	/**
 	 * @param int $limit
 	 * @return $this
@@ -163,10 +162,10 @@ class AntragDokument extends CActiveRecord
 
 
 	/**
-	 * @param string $url
 	 */
-	public function download_and_parse($url)
+	public function download_and_parse()
 	{
+		$url      = "http://www.ris-muenchen.de" . $this->url;
 		$x        = explode("/", $url);
 		$filename = $x[count($x) - 1];
 		if (preg_match("/[^a-zA-Z0-9_\.-]/", $filename)) die("Ungültige Zeichen im Dateinamen");
@@ -184,6 +183,9 @@ class AntragDokument extends CActiveRecord
 		$this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public function geo_extract()
 	{
 		$text              = $this->text_ocr_corrected . $this->text_pdf;
@@ -228,6 +230,18 @@ class AntragDokument extends CActiveRecord
 
 
 	/**
+	 *
+	 */
+	public function reDownloadIndex()
+	{
+		$this->download_and_parse();
+		$this->save();
+		$this->geo_extract();
+		$this->solrIndex();
+	}
+
+
+	/**
 	 * @param string $typ
 	 * @param Antrag|Termin|AntragErgebnis $antrag_termin_ergebnis
 	 * @param array $dok
@@ -255,7 +269,7 @@ class AntragDokument extends CActiveRecord
 		if (defined("NO_TEXT")) {
 			throw new Exception("Noch nicht implementiert");
 		} else {
-			$dokument->download_and_parse("http://www.ris-muenchen.de" . $dok["url"]);
+			$dokument->download_and_parse();
 		}
 
 		if (!$dokument->save()) {
@@ -267,6 +281,64 @@ class AntragDokument extends CActiveRecord
 		$dokument->solrIndex();
 
 		return "Neue Datei: " . $dokument_id . " / " . $dok["name"] . "\n";
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getOriginalLink()
+	{
+		return "http://www.ris-muenchen.de" . $this->url;
+	}
+
+
+	/**
+	 * @param string $text
+	 * @return \Solarium\QueryType\Select\Result\Result
+	 */
+	public static function volltextsuche($text)
+	{
+		$solr   = RISSolrHelper::getSolrClient("ris");
+		$select = $solr->createSelect();
+		$helper = $select->getHelper();
+
+		$select->setQuery("text:" . $helper->escapePhrase($text) . " OR text_ocr:" . $helper->escapePhrase($text));
+		$select->setRows(100);
+		$select->addSort('sort_datum', $select::SORT_DESC);
+
+		$hl = $select->getHighlighting();
+		$hl->setFields('text, text_ocr, antrag_betreff');
+		$hl->setSimplePrefix('<b>');
+		$hl->setSimplePostfix('</b>');
+
+		$facetSet = $select->getFacetSet();
+		$facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
+
+		return $solr->select($select);
+	}
+
+
+	/**
+	 * @param int $limit
+	 * @return array|AntragDokument[]
+	 */
+	public function solrMoreLikeThis($limit = 10) {
+		$solr   = RISSolrHelper::getSolrClient("ris");
+		$select = $solr->createSelect();
+		$select->setQuery("id:\"Document:" . $this->id . "\"");
+		$select->getMoreLikeThis()->setFields("text")->setMinimumDocumentFrequency(1)->setMinimumTermFrequency(1) /* ->setCount(10) */;
+		$ergebnisse = $solr->select($select);
+		$mlt = $ergebnisse->getMoreLikeThis();
+		$ret = array();
+		foreach ($ergebnisse as $document) {
+			$mltResult = $mlt->getResult($document->id);
+			if ($mltResult) foreach ($mltResult as $mltDoc) {
+				$mod = AntragDokument::model()->findByPk(str_replace("Document:", "", $mltDoc->id));
+				if ($mod) $ret[] = $mod;
+			}
+		}
+		return $ret;
 	}
 
 

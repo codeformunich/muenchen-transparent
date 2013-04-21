@@ -164,7 +164,7 @@ class StadtratTerminParser extends RISParser
 			$ergebnis->top_nr                 = $nth_1_top . "-" . $matches["top"][$i];
 			$ergebnis->antrag_id              = $vorlage_id;
 			if ($ergebnis->entscheidung != $entscheidung) {
-				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung;
+				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
 				$ergebnis->entscheidung = $entscheidung;
 			}
 			$ergebnis->top_betreff  = $betreff;
@@ -176,7 +176,7 @@ class StadtratTerminParser extends RISParser
 				preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
 				$beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
 				if ($ergebnis->beschluss_text != $beschluss) {
-					$aenderungen .= "Beschluss: " . $ergebnis->beschluss_text . " => " . $beschluss;
+					$aenderungen .= "Beschluss: " . $ergebnis->beschluss_text . " => " . $beschluss . "\n";
 					$ergebnis->beschluss_text = $beschluss;
 				}
 			}

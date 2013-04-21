@@ -26,8 +26,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<?php foreach ($data as $dat) { ?>
 				<item>
 					<title><?php echo CHtml::encode($dat["title"]); ?></title>
-					<link><?php echo CHtml::encode($dat["link"]); ?></link>
-					<guid><?php echo CHtml::encode($dat["link"]); ?></guid>
+					<link><?php echo CHtml::encode(yii::app()->getBaseUrl(true) . $dat["link"]); ?></link>
+					<guid><?php echo CHtml::encode(yii::app()->getBaseUrl(true) . $dat["aenderung_guid"]); ?></guid>
 					<description><![CDATA[<?php
 						echo $dat["content"];
 						?>]]></description>

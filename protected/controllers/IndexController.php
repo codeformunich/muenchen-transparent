@@ -1,6 +1,6 @@
 <?php
 
-class IndexController extends Controller
+class IndexController extends RISBaseController
 {
 	/**
 	 * Declares class-based actions.
@@ -32,6 +32,35 @@ class IndexController extends Controller
 			"feed_description" => "OpenRIS Änderungen",
 			"data" => $data,
 		));
+	}
+
+	public function actionSuche() {
+
+		$suchbegriff = $_POST["suchbegriff"];
+		$ergebnisse = AntragDokument::volltextsuche($suchbegriff);
+
+		$this->render("suchergebnisse", array(
+			"suchbegriff" => $suchbegriff,
+			"ergebnisse" => $ergebnisse
+		));
+	}
+
+	public function actionDokument($id) {
+		/** @var AntragDokument $dokument */
+		$dokument = AntragDokument::model()->findByPk($id);
+		$morelikethis = $dokument->solrMoreLikeThis();
+		$this->render("dokument_intern", array(
+			"dokument" => $dokument,
+			"morelikethis" => $morelikethis,
+		));
+	}
+
+	public function actionStadtrat() {
+		echo "Stadtrat";
+	}
+
+	public function actionBa($ba_nr) {
+		echo "BA $ba_nr";
 	}
 
 	/**
