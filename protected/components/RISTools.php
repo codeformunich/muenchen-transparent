@@ -6,7 +6,10 @@ class RISTools {
 	const STD_PROXY = "http://127.0.0.1:8118/";
 
 
-
+	/**
+	 * @param string $text
+	 * @return string
+	 */
 	public static function toutf8($text)
 	{
 		if (!function_exists('mb_detect_encoding')) {
@@ -18,6 +21,13 @@ class RISTools {
 		}
 	}
 
+	/**
+	 * @param string $url_to_read
+	 * @param string $username
+	 * @param string $password
+	 * @param int $timeout
+	 * @return string
+	 */
 	public static function load_file($url_to_read, $username = "", $password = "", $timeout = 30)
 	{
 		$i = 0;
@@ -49,6 +59,13 @@ class RISTools {
 		return $text;
 	}
 
+	/**
+	 * @param string $url_to_read
+	 * @param string $filename
+	 * @param string $username
+	 * @param string $password
+	 * @param int $timeout
+	 */
 	public static function download_file($url_to_read, $filename, $username = "", $password = "", $timeout = 30)
 	{
 		$ch = curl_init();
@@ -76,8 +93,10 @@ class RISTools {
 	}
 
 
-
-
+	/**
+	 * @param string $input
+	 * @return int
+	 */
 	public static function date_iso2timestamp($input)
 	{
 		$x    = explode(" ", $input);
@@ -90,6 +109,10 @@ class RISTools {
 	}
 
 
+	/**
+	 * @param string $text
+	 * @return string
+	 */
 	public static function rssent($text)
 	{
 		$search  = array("<br>", "&", "\"", "<", ">", "'", "–");
@@ -97,7 +120,22 @@ class RISTools {
 		return str_replace($search, $replace, $text);
 	}
 
+	/**
+	 * @param string $titel
+	 * @return string
+	 */
+	public static function korrigiereTitelZeichen($titel) {
+		$titel = preg_replace("/ \?(\\w[^\\?]*\\w)\?/siu", " „\\1“", $titel);
+		$titel = preg_replace("/ \?$/siu", "?", $titel);
+		$titel = str_replace(" ?", " —", $titel);
+		return $titel;
+	}
 
+
+	/**
+	 * @param string $str
+	 * @return array
+	 */
 	public static function normalize_antragvon($str) {
 		$a = explode(",", $str);
 		$b = array();
@@ -155,6 +193,11 @@ class RISTools {
 	}
 
 
+	/**
+	 * @param string $typ
+	 * @param int $ba_nr
+	 * @return string
+	 */
 	public static function ris_get_original_name($typ, $ba_nr)
 	{
 		switch ($typ) {
@@ -180,6 +223,13 @@ class RISTools {
 		return "Unbekannt";
 	}
 
+	/**
+	 * @param string $typ
+	 * @param int $ba_nr
+	 * @param int $id
+	 * @param string $mode
+	 * @return string
+	 */
 	public static function ris_get_original_url($typ, $ba_nr, $id, $mode = "")
 	{
 		switch ($typ) {

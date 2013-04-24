@@ -1,9 +1,6 @@
 <?php
 
 /**
- * This is the model class for table "stadtraete".
- *
- * The followings are the available columns in table 'stadtraete':
  * @property integer $id
  * @property string $gewaehlt_am
  * @property string $bio
@@ -62,9 +59,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antraege' => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetInnen_id, antraege_id)'),
+			'antraege' => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antraege_id)'),
 			'personen' => array(self::HAS_MANY, 'Person', 'ris_stadtraetIn'),
-			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetInnen_id'),
+			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'),
 		);
 	}
 

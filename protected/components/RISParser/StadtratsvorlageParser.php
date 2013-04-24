@@ -52,7 +52,7 @@ class StadtratsvorlageParser extends RISParser {
 			case "Bearbeitungsfrist:": $daten->bearbeitungsfrist = $this->date_de2mysql($matches[5][$i]); break;
 			case "Fristverl&auml;ngerung:": $daten->fristverlaengerung = $this->date_de2mysql($matches[5][$i]); break;
 			case "Gestellt von:": $daten->gestellt_von = $matches[5][$i]; break;
-			case "Initiatoren:": if ($matches[5][$i] != "&nbsp;") $daten->initiatoren = $matches[5][$i]; break;
+			case "Initiatoren:": if ($matches[5][$i] != "&nbsp;") $daten->initiatorInnen = $matches[5][$i]; break;
 			case "Stadtbezirk/e:": $daten->ba_nr = IntVal($matches[5][$i]); break;
 			case "Referent/in:": $daten->referent = $matches[5][$i]; break;
 		}
@@ -86,7 +86,7 @@ class StadtratsvorlageParser extends RISParser {
 			if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
 			if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
 			if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
-			if (isset($daten->initiatoren) && $alter_eintrag->initiatoren != $daten->initiatoren) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatoren . " => " . $daten->initiatoren . "\n";
+			if (isset($daten->initiatorInnen) && $alter_eintrag->initiatorInnen != $daten->initiatorInnen) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatorInnen . " => " . $daten->initiatorInnen . "\n";
 			if ($alter_eintrag->gestellt_von != $daten->gestellt_von) $aenderungen .= "Gestellt von: " . $alter_eintrag->gestellt_von . " => " . $daten->gestellt_von . "\n";
 			if ($alter_eintrag->antrags_nr != $daten->antrags_nr) $aenderungen .= "Vorlagen-Nr: " . $alter_eintrag->antrags_nr . " => " . $daten->antrags_nr . "\n";
 			if ($alter_eintrag->ba_nr != $daten->ba_nr) $aenderungen .= "BA: " . $alter_eintrag->ba_nr . " => " . $daten->ba_nr . "\n";

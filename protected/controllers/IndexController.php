@@ -2,24 +2,6 @@
 
 class IndexController extends RISBaseController
 {
-	/**
-	 * Declares class-based actions.
-	 */
-	public function actions()
-	{
-		return array(
-			// captcha action renders the CAPTCHA image displayed on the contact page
-			'captcha'=>array(
-				'class'=>'CCaptchaAction',
-				'backColor'=>0xFFFFFF,
-			),
-			// page action renders "static" pages stored under 'protected/views/site/pages'
-			// They can be accessed via: index.php?r=site/page&view=FileName
-			'page'=>array(
-				'class'=>'CViewAction',
-			),
-		);
-	}
 
 	public function actionFeed() {
 		/** @var array|RISAenderung[] $aenderungen */
@@ -85,6 +67,8 @@ class IndexController extends RISBaseController
 				echo $error['message'];
 			else
 				$this->render('error', $error);
+		} else {
+			$this->render('error', array("code" => 400, "message" => "Ein Fehler ist aufgetreten"));
 		}
 	}
 

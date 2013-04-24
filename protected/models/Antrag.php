@@ -22,7 +22,7 @@
  * @property string $status
  * @property string $bearbeitung
  * @property string $fristverlaengerung
- * @property string $initiatoren
+ * @property string $initiatorInnen
  * @property string $initiative_to_aufgenommen
  *
  * The followings are the available model relations:
@@ -31,7 +31,7 @@
  * @property AntragErgebnis[] $ergebnisse
  * @property AntragOrt[] $orte
  * @property AntragPerson[] $antraegePersonen
- * @property StadtraetIn[] $stadtraete
+ * @property StadtraetIn[] $stadtraetInnen
  * @property Antrag[] $antrag2vorlagen
  * @property Antrag[] $vorlage2antraege
  */
@@ -87,11 +87,11 @@ class Antrag extends CActiveRecord implements IRISItem
 			array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
 			array('bearbeitung', 'length', 'max' => 100),
 			array('gestellt_am, bearbeitungsfrist, registriert_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -110,7 +110,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			//'antraege_links_out' => array(self::HAS_MANY, 'AntraegeLinks', 'antrag2'),
 			'orte'             => array(self::HAS_MANY, 'AntragOrt', 'antrag_id'),
 			'antraegePersonen' => array(self::HAS_MANY, 'AntragPerson', 'antrag_id'),
-			'stadtraetInnen'   => array(self::MANY_MANY, 'StadtraetIn', 'antraege_stadtraete(antraege_id, stadtraete_id)'),
+			'stadtraetInnen'   => array(self::MANY_MANY, 'StadtraetIn', 'antraege_stadtraetInnen(antrag_id, stadtraetIn_id)'),
 			'vorlage2antraege' => array(self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag1, antrag2)'),
 			'antrag2vorlagen'  => array(self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag2, antrag1)'),
 		);
@@ -167,7 +167,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'status'                    => 'Status',
 			'bearbeitung'               => 'Bearbeitung',
 			'fristverlaengerung'        => 'Fristverlaengerung',
-			'initiatoren'               => 'Initiatoren',
+			'initiatorInnen'               => 'InitiatorInnen',
 			'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
 		);
 	}
@@ -201,7 +201,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		$criteria->compare('status', $this->status, true);
 		$criteria->compare('bearbeitung', $this->bearbeitung, true);
 		$criteria->compare('fristverlaengerung', $this->fristverlaengerung, true);
-		$criteria->compare('initiatoren', $this->initiatoren, true);
+		$criteria->compare('initiatorInnen', $this->initiatorInnen, true);
 		$criteria->compare('initiative_to_aufgenommen', $this->initiative_to_aufgenommen, true);
 
 		return new CActiveDataProvider($this, array(
@@ -275,7 +275,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			}
 		}
 
-		$initiatorInnen = RISTools::normalize_antragvon($this->initiatoren);
+		$initiatorInnen = RISTools::normalize_antragvon($this->initiatorInnen);
 		foreach ($initiatorInnen as $x) if (!in_array($x["name_normalized"], $indexed)) {
 			$indexed[]     = $x["name_normalized"];
 			$person        = Person::getOrCreate($x["name"], $x["name_normalized"]);
@@ -295,7 +295,24 @@ class Antrag extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("antrag/anzeigen",array("id" => $this->id));
+		return Yii::app()->createUrl("antraege/anzeigen",array("id" => $this->id));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSourceLink() {
+		switch ($this->typ) {
+			case Antrag::$TYP_BA_ANTRAG:
+				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
+			case Antrag::$TYP_BA_INITIATIVE:
+				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen_details.jsp?Id=" . $this->id;
+			case Antrag::$TYP_STADTRAT_ANTRAG:
+				return "http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $this->id;
+			case Antrag::$TYP_STADTRAT_VORLAGE:
+				return "http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_detail.jsp?risid=" . $this->id;
+		}
+		return "";
 	}
 
 	/** @return string */
@@ -308,6 +325,6 @@ class Antrag extends CActiveRecord implements IRISItem
 	/** @return string */
 	public function getName()
 	{
-		return $this->betreff;
+		return RISTools::korrigiereTitelZeichen($this->betreff);
 	}
 }

@@ -72,7 +72,7 @@ class Person extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'antraegePersonen' => array(self::HAS_MANY, 'AntragPerson', 'person_id'),
-			'stadtraetin' => array(self::BELONGS_TO, 'StadtraetIn', 'ris_stadtrat'),
+			'stadtraetIn' => array(self::BELONGS_TO, 'StadtraetIn', 'ris_stadtraetIn'),
 		);
 	}
 
@@ -132,5 +132,14 @@ class Person extends CActiveRecord
 			}
 		}
 		return $pers;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function ratePartei() {
+		if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return null;
+		if (!isset($this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion)) return null;
+		return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->name;
 	}
 }

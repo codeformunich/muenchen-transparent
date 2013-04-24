@@ -128,6 +128,15 @@ ul.antragsliste > li {
 	padding: 1px;
 	display: block;
 }
+ul.antragsliste > li > .add_meta {
+	float: right;
+	font-size: 11px;
+	color: gray;
+	margin-top: 3px;
+}
+ul.antragsliste > li > .add_meta .partei {
+	border-bottom: dotted 1px gray;
+}
 ul.antragsliste > li > .antraglink {
 	padding: 1px;
 	font-weight: bold;

@@ -1,9 +1,6 @@
 <?php
 
 /**
- * This is the model class for table "stadtraete_fraktionen".
- *
- * The followings are the available columns in table 'stadtraete_fraktionen':
  * @property integer $stadtraetIn_id
  * @property integer $fraktion_id
  * @property string $wahlperiode
@@ -21,7 +18,7 @@ class StadtraetInFraktion extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return StadtraetInFraktion the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -43,12 +40,12 @@ class StadtraetInFraktion extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('stadtraetIn_id, fraktion_id, wahlperiode, mitgliedschaft', 'required'),
-			array('stadtraetIn_id, fraktion_id', 'numerical', 'integerOnly'=>true),
-			array('wahlperiode', 'length', 'max'=>30),
+			array('stadtraetIn_id, fraktion_id', 'numerical', 'integerOnly' => true),
+			array('wahlperiode', 'length', 'max' => 30),
 			array('funktion', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('stadtraetIn_id, fraktion_id, wahlperiode, mitgliedschaft, funktion', 'safe', 'on'=>'search'),
+			array('stadtraetIn_id, fraktion_id, wahlperiode, mitgliedschaft, funktion', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -60,7 +57,7 @@ class StadtraetInFraktion extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'fraktion' => array(self::BELONGS_TO, 'Fraktion', 'fraktion_id'),
+			'fraktion'    => array(self::BELONGS_TO, 'Fraktion', 'fraktion_id'),
 			'stadtraetIn' => array(self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'),
 		);
 	}
@@ -72,10 +69,10 @@ class StadtraetInFraktion extends CActiveRecord
 	{
 		return array(
 			'stadtraetIn_id' => 'StadträtIn',
-			'fraktion_id' => 'Fraktion',
-			'wahlperiode' => 'Wahlperiode',
+			'fraktion_id'    => 'Fraktion',
+			'wahlperiode'    => 'Wahlperiode',
 			'mitgliedschaft' => 'Mitgliedschaft',
-			'funktion' => 'Funktion',
+			'funktion'       => 'Funktion',
 		);
 	}
 
@@ -88,16 +85,16 @@ class StadtraetInFraktion extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('stadtraetIn_id',$this->stadtraetIn_id);
-		$criteria->compare('fraktion_id',$this->fraktion_id);
-		$criteria->compare('wahlperiode',$this->wahlperiode,true);
-		$criteria->compare('mitgliedschaft',$this->mitgliedschaft,true);
-		$criteria->compare('funktion',$this->funktion,true);
+		$criteria->compare('stadtraetIn_id', $this->stadtraetIn_id);
+		$criteria->compare('fraktion_id', $this->fraktion_id);
+		$criteria->compare('wahlperiode', $this->wahlperiode, true);
+		$criteria->compare('mitgliedschaft', $this->mitgliedschaft, true);
+		$criteria->compare('funktion', $this->funktion, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 }

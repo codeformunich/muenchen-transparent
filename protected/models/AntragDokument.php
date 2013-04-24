@@ -415,7 +415,7 @@ class AntragDokument extends CActiveRecord
 
 		$doc->antrag_erstellt     = $antrag_erstellt;
 		$doc->aenderungs_datum    = $aenderungs_datum;
-		$doc->antrag_gestellt_von = RISSolrHelper::string_cleanup($this->antrag->gestellt_von . " " . $this->antrag->initiatoren);
+		$doc->antrag_gestellt_von = RISSolrHelper::string_cleanup($this->antrag->gestellt_von . " " . $this->antrag->initiatorInnen);
 
 		if ($max_datum != "") $doc->sort_datum = RISSolrHelper::mysql2solrDate($max_datum);
 		$update->addDocuments(array($doc));
@@ -428,6 +428,11 @@ class AntragDokument extends CActiveRecord
 	private function solrIndex_beschluss_do($update)
 	{
 		$doc = $update->createDocument();
+
+		if (is_null($this->ergebnis)) {
+			if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "AntragDokument:solrIndex_beschluss_do Error", print_r($this, true));
+			return;
+		}
 
 		$doc->id            = "Ergebnis:" . $this->id;
 		$doc->text          = RISSolrHelper::string_cleanup($this->ergebnis->top_betreff . " " . $this->ergebnis->beschluss_text . " " . $this->ergebnis->entscheidung . " " . $this->text_pdf);

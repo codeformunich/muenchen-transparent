@@ -70,6 +70,12 @@
 						?>
 					</ul>
 				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><?=CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen"))?></li>
+					</ul>
+				</li>
 			</ul>
 			<form class="navbar-form pull-right rounded" method="POST" action="<?=CHtml::encode($this->createUrl("index/suche"))?>">
 				<input type="text" name="suchbegriff" placeholder="Volltextsuche"><button type="submit" class="btn"><span class="glyphicon glyphicon-search"></span></button>

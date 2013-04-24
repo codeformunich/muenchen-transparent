@@ -16,7 +16,7 @@
  * @property Gremium[] $gremien
  * @property GremiumHistory[] $gremienHistories
  * @property RISAenderung[] $RISAenderungen
- * @property StadtraetIn[] $stadtraete
+ * @property StadtraetIn[] $stadtraetInnen
  */
 class Bezirksausschuss extends CActiveRecord
 {
@@ -68,7 +68,7 @@ class Bezirksausschuss extends CActiveRecord
 			'gremien'           => array(self::HAS_MANY, 'Gremium', 'ba_nr'),
 			'gremienHistories'  => array(self::HAS_MANY, 'GremiumHistory', 'ba_nr'),
 			'RISAenderungen'    => array(self::HAS_MANY, 'RisAenderung', 'ba_nr'),
-			'stadtraete'        => array(self::HAS_MANY, 'StadtraetIn', 'ba_nr'),
+			'stadtraetInnen'    => array(self::HAS_MANY, 'StadtraetIn', 'ba_nr'),
 		);
 	}
 
@@ -78,11 +78,11 @@ class Bezirksausschuss extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'ba_nr' => 'Ba Nr',
-			'name'  => 'Name',
-			'website' => 'Website',
+			'ba_nr'         => 'Ba Nr',
+			'name'          => 'Name',
+			'website'       => 'Website',
 			'osm_init_zoom' => 'OSM Zoom',
-			'osm_shape' => 'OSM Shape',
+			'osm_shape'     => 'OSM Shape',
 		);
 	}
 
@@ -106,17 +106,17 @@ class Bezirksausschuss extends CActiveRecord
 	}
 
 
-
-	public function toGeoJSONArray() {
+	public function toGeoJSONArray()
+	{
 		return array(
-			"type" => "Feature",
-			"id" => $this->ba_nr,
+			"type"       => "Feature",
+			"id"         => $this->ba_nr,
 			"properties" => array(
-				"name" => $this->name,
+				"name"    => $this->name,
 				"website" => $this->website
 			),
-			"geometry" => array(
-				"type" => "Polygon",
+			"geometry"   => array(
+				"type"        => "Polygon",
 				"coordinates" => array(json_decode($this->osm_shape))
 			)
 		);
@@ -152,7 +152,7 @@ class Bezirksausschuss extends CActiveRecord
 	);
 
 
-	public static  $HOMEPAGES = array(
+	public static $HOMEPAGES = array(
 		1  => "http://www.muenchen.info/ba/01/",
 		2  => "http://www.muenchen.info/ba/02/",
 		3  => "http://www.muenchen.info/ba/03/",
@@ -181,7 +181,7 @@ class Bezirksausschuss extends CActiveRecord
 	);
 
 
-	public static  $OSM_ZOOM = array(
+	public static $OSM_ZOOM = array(
 		1  => "13",
 		2  => "14",
 		3  => "14",

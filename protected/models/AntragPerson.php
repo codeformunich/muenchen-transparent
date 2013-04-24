@@ -7,6 +7,9 @@
  * @property integer $antrag_id
  * @property integer $person_id
  * @property string $typ
+ *
+ * @property Person $person
+ * @property Antrag $antrag
  */
 class AntragPerson extends CActiveRecord
 {
@@ -59,9 +62,9 @@ class AntragPerson extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
+			'person'               => array(self::BELONGS_TO, 'Person', 'person_id'),
+			'antrag'               => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
 		);
 	}
 
@@ -71,8 +74,10 @@ class AntragPerson extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'antrag_id' => 'Antrag',
-			'person_id' => 'Person',
+			'antrag_id' => 'Antrag (ID)',
+			'person_id' => 'Person (ID)',
+			'antrag' => 'Antrag',
+			'person' => 'Person',
 			'typ' => 'Typ',
 		);
 	}

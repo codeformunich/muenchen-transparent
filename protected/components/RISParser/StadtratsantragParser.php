@@ -51,7 +51,7 @@ class StadtratsantragParser extends RISParser {
 			case "Bearbeitungsfrist:": $daten->bearbeitungsfrist = $this->date_de2mysql($matches[3][$i]); break;
 			case "Fristverl&auml;ngerung:": $daten->fristverlaengerung = $this->date_de2mysql($matches[3][$i]); break;
 			case "Gestellt von:": $daten->gestellt_von = $matches[3][$i]; break;
-			case "Initiatoren:": if ($matches[3][$i] != "&nbsp;") $daten->initiatoren = $matches[3][$i]; break;
+			case "Initiatoren:": if ($matches[3][$i] != "&nbsp;") $daten->initiatorInnen = $matches[3][$i]; break;
 		}
 
 		preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
@@ -78,7 +78,7 @@ class StadtratsantragParser extends RISParser {
 			if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
 			if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
 			if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
-			if (isset($daten->initiatoren) && $alter_eintrag->initiatoren != $daten->initiatoren) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatoren . " => " . $daten->initiatoren . "\n";
+			if (isset($daten->initiatorInnen) && $alter_eintrag->initiatorInnen != $daten->initiatorInnen) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatorInnen . " => " . $daten->initiatorInnen . "\n";
 			if ($alter_eintrag->gestellt_von != $daten->gestellt_von) $aenderungen .= "Gestellt von: " . $alter_eintrag->gestellt_von . " => " . $daten->gestellt_von . "\n";
 			if ($alter_eintrag->antrags_nr != $daten->antrags_nr) $aenderungen .= "Antrags-Nr: " . $alter_eintrag->antrags_nr . " => " . $daten->antrags_nr . "\n";
 			if ($aenderungen != "") $changed = true;

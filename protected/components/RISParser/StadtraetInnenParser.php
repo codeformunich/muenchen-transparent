@@ -2,7 +2,7 @@
 
 class StadtraetInnenParser extends RISParser {
 
-	private $bearbeitete_stadtraete = array();
+	private $bearbeitete_stadtraetInnen = array();
 	private $antraege_alle = false;
 
 	/**
@@ -147,9 +147,9 @@ class StadtraetInnenParser extends RISParser {
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_mitglieder_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
-		for ($i = count($matches[1])-1; $i >= 0; $i--) if (!in_array($matches[1][$i], $this->bearbeitete_stadtraete)) {
+		for ($i = count($matches[1])-1; $i >= 0; $i--) if (!in_array($matches[1][$i], $this->bearbeitete_stadtraetInnen)) {
 			$this->parse($matches[1][$i]);
-			$this->bearbeitete_stadtraete[] = $matches[1][$i];
+			$this->bearbeitete_stadtraetInnen[] = $matches[1][$i];
 		}
 		return $matches[1];
 	}
@@ -157,7 +157,7 @@ class StadtraetInnenParser extends RISParser {
 
 	public function parseAlle() {
 		$anz = 300;
-		$this->bearbeitete_stadtraete = array();
+		$this->bearbeitete_stadtraetInnen = array();
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);
