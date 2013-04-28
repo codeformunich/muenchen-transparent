@@ -296,30 +296,14 @@ class AntragDokument extends CActiveRecord
 		return "http://www.ris-muenchen.de" . $this->url;
 	}
 
-
 	/**
-	 * @param string $text
-	 * @return \Solarium\QueryType\Select\Result\Result
+	 * @param string $id
+	 * @return CActiveRecord
 	 */
-	public static function volltextsuche($text)
-	{
-		$solr   = RISSolrHelper::getSolrClient("ris");
-		$select = $solr->createSelect();
-		$helper = $select->getHelper();
-
-		$select->setQuery("text:" . $helper->escapePhrase($text) . " OR text_ocr:" . $helper->escapePhrase($text));
-		$select->setRows(100);
-		$select->addSort('sort_datum', $select::SORT_DESC);
-
-		$hl = $select->getHighlighting();
-		$hl->setFields('text, text_ocr, antrag_betreff');
-		$hl->setSimplePrefix('<b>');
-		$hl->setSimplePostfix('</b>');
-
-		$facetSet = $select->getFacetSet();
-		$facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
-
-		return $solr->select($select);
+	public static function getDocumentBySolrId($id) {
+		$x = explode(":", $id);
+		$model = AntragDokument::model()->findByPk($x[1]);
+		return $model;
 	}
 
 

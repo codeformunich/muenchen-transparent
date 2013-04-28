@@ -582,7 +582,7 @@ CREATE  TABLE IF NOT EXISTS `ris2`.`benutzerInnen` (
   `email` VARCHAR(45) NULL ,
   `email_bestaetigt` TINYINT NULL DEFAULT 0 ,
   `datum_angelegt` DATETIME NULL ,
-  `pwd_enc` VARCHAR(45) NULL ,
+  `pwd_enc` VARCHAR(100) NULL ,
   `einstellungen` BLOB NULL ,
   `datum_letzte_benachrichtigung` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) )

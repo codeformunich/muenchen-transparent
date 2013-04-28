@@ -14,6 +14,28 @@
 class BenutzerIn extends CActiveRecord
 {
 
+	/** @var null|BenutzerInnenEinstellungen */
+	private $einstellungen_object = null;
+
+
+	/**
+	 * @return BenutzerInnenEinstellungen
+	 */
+	public function getEinstellungen()
+	{
+		if (!is_object($this->einstellungen_object)) $this->einstellungen_object = new BenutzerInnenEinstellungen($this->einstellungen);
+		return $this->einstellungen_object;
+	}
+
+	/**
+	 * @param BenutzerInnenEinstellungen $einstellungen
+	 */
+	public function setEinstellungen($einstellungen)
+	{
+		$this->einstellungen_object = $einstellungen;
+		$this->einstellungen        = $einstellungen->toJSON();
+	}
+
 	/**
 	 * @param string $className active record class name.
 	 * @return BenutzerIn the static model class
@@ -38,12 +60,13 @@ class BenutzerIn extends CActiveRecord
 	public function rules()
 	{
 		$rules = array(
-			array('email, angelegt_datum, pwd_enc', 'required'),
+			array('email, datum_angelegt, pwd_enc', 'required'),
 			array('id, email_bestaetigt', 'numerical', 'integerOnly' => true),
 			array('datum_letzte_benachrichtigung', 'default', 'setOnEmpty' => true, 'value' => null),
 		);
 		return $rules;
 	}
+
 	/**
 	 * @return array
 	 */
@@ -67,14 +90,15 @@ class BenutzerIn extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id'                                 => Yii::t('app', 'ID'),
-			'email'                              => Yii::t('app', 'E-Mail'),
-			'email_bestaetigt'                   => Yii::t('app', 'E-Mail-Adresse bestätigt'),
-			'pwd_enc'                            => Yii::t('app', 'Passwort-Hash'),
-			'datum_angelegt'                     => Yii::t('app', 'Angelegt Datum'),
-			'datum_letzte_benachrichtigung'      => Yii::t('app', 'Datum der letzten Benachrichtigung'),
-			'einstellungen'      => null,
-			'abonnierte_antraege'                        => null,
+			'id'                            => Yii::t('app', 'ID'),
+			'email'                         => Yii::t('app', 'E-Mail'),
+			'email_bestaetigt'              => Yii::t('app', 'E-Mail-Adresse bestätigt'),
+			'pwd_enc'                       => Yii::t('app', 'Passwort-Hash'),
+			'datum_angelegt'                => Yii::t('app', 'Angelegt Datum'),
+			'datum_letzte_benachrichtigung' => Yii::t('app', 'Datum der letzten Benachrichtigung'),
+			'einstellungen'                 => null,
+			'abonnierte_antraege'           => null,
+
 		);
 	}
 
@@ -106,11 +130,12 @@ class BenutzerIn extends CActiveRecord
 	/**
 	 * @return string
 	 */
-	public static function createPassword() {
-		$chars =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		$max = strlen($chars) - 1;
-		$pw = "";
-		for ($i=0; $i < 8; $i++) $pw .= $chars[rand(0, $max)];
+	public static function createPassword()
+	{
+		$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		$max   = strlen($chars) - 1;
+		$pw    = "";
+		for ($i = 0; $i < 8; $i++) $pw .= $chars[rand(0, $max)];
 		return $pw;
 	}
 
@@ -118,8 +143,9 @@ class BenutzerIn extends CActiveRecord
 	 * @param string $date
 	 * @return string
 	 */
-	public function createEmailBestaetigungsCode($date = "") {
-		if ($date == "") $date=date("Ymd");
+	public function createEmailBestaetigungsCode($date = "")
+	{
+		if ($date == "") $date = date("Ymd");
 		$code = $this->id . "-" . substr(md5($this->id . $date . SEED_KEY), 0, 8);
 		return $code;
 	}
@@ -128,10 +154,11 @@ class BenutzerIn extends CActiveRecord
 	 * @param string $code
 	 * @return bool
 	 */
-	public function checkEmailBestaetigungsCode($code) {
+	public function checkEmailBestaetigungsCode($code)
+	{
 		if ($code == $this->createEmailBestaetigungsCode()) return true;
-		if ($code == $this->createEmailBestaetigungsCode(date("Ymd", time() - 24*3600))) return true;
-		if ($code == $this->createEmailBestaetigungsCode(date("Ymd", time() - 2*24*3600))) return true;
+		if ($code == $this->createEmailBestaetigungsCode(date("Ymd", time() - 24 * 3600))) return true;
+		if ($code == $this->createEmailBestaetigungsCode(date("Ymd", time() - 2 * 24 * 3600))) return true;
 		return false;
 	}
 
@@ -144,7 +171,6 @@ class BenutzerIn extends CActiveRecord
 		$code = $this->id . "-" . substr(md5($this->id . "abmelden" . SEED_KEY), 0, 8);
 		return $code;
 	}
-
 
 
 	/**

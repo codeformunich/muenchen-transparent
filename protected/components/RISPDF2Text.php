@@ -64,7 +64,15 @@ class RISPDF2Text
 		$result = array();
 		exec(PATH_PDFINFO . " $filename", $result);
 		preg_match("/Pages:\\s*([0-9]+)/siu", implode("", $result), $matches);
-		return (isset($matches[1]) ? IntVal($matches[1]) : 0);
+
+		if (isset($matches[1])) return IntVal($matches[1]);;
+
+		$result = array();
+		exec(PATH_IDENTIFY . " $filename", $result);
+		$anzahl = 0;
+		foreach ($result as $res) if (strpos($res, "DirectClass")) $anzahl++;
+
+		return $anzahl;
 	}
 
 	/**

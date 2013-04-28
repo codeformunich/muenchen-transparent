@@ -6,7 +6,7 @@ class Recalc_DocumentsCommand extends CConsoleCommand {
 		define("VERYFAST", true);
 
 		$sql = Yii::app()->db->createCommand();
-		$sql->select("id")->from("antraege_dokumente")->where("id < 1238052")->order("id");
+		$sql->select("id")->from("antraege_dokumente")->where("id < 1245865 AND (seiten_anzahl = 0 OR seiten_anzahl = 9)")->order("id");
 		$data = $sql->queryColumn(array("id"));
 
 		$anz = count($data);
