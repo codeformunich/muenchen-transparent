@@ -13,7 +13,7 @@ class AdminController extends RISBaseController
 			if ($person) {
 				if (isset($_REQUEST["fraktion"])) {
 					$person->typ = Person::$TYP_FRAKTION;
-					$person->ris_stadtraetIn = 0;
+					$person->ris_stadtraetIn = null;
 				}
 				else {
 					$person->typ = Person::$TYP_PERSON;
@@ -35,6 +35,11 @@ class AdminController extends RISBaseController
 			"personen" => $personen,
 			"stadtraetInnen" => $stadtraetInnen,
 		));
+	}
+
+
+	public function actionIndex() {
+		$this->render("index");
 	}
 
 }

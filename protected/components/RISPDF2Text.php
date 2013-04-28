@@ -55,27 +55,28 @@ class RISPDF2Text
 		"/(niv)(?!eau)/u"              => "rw",
 	);
 
-
+	/**
+	 * @param string $filename
+	 * @return int
+	 */
 	public static function document_anzahl_seiten($filename)
 	{
 		$result = array();
-		exec(PATH_IDENTIFY . " $filename", $result);
-		return count($result);
+		exec(PATH_PDFINFO . " $filename", $result);
+		preg_match("/Pages:\\s*([0-9]+)/siu", implode("", $result), $matches);
+		return (isset($matches[1]) ? IntVal($matches[1]) : 0);
 	}
 
-	public static function document_text_ocr($filename)
+	/**
+	 * @param string $filename
+	 * @param int $seiten_anzahl
+	 * @return string
+	 */
+	public static function document_text_ocr($filename, $seiten_anzahl)
 	{
-		$anz_seiten = static::document_anzahl_seiten($filename);
-
-		/*
-		$x = explode(".", $filename);
-		if (mb_strtolower($x[count($x) - 1]) == "tif") $depth = "";
-		else $depth = "-depth 8";
-		*/
 		$depth = "-depth 8";
-
 		$text = "";
-		for ($i = 0; $i < $anz_seiten; $i++) {
+		for ($i = 0; $i < $seiten_anzahl; $i++) {
 			$tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
 			exec(PATH_CONVERT . " -density 300x300 \"${filename}[$i]\" -colorspace Gray $depth $tif_tmp_file", $result);
 			if (file_exists($tif_tmp_file)) {

@@ -34,6 +34,7 @@
  * @property StadtraetIn[] $stadtraetInnen
  * @property Antrag[] $antrag2vorlagen
  * @property Antrag[] $vorlage2antraege
+ * @property AntragAbo[] $abos
  */
 class Antrag extends CActiveRecord implements IRISItem
 {
@@ -113,6 +114,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'stadtraetInnen'   => array(self::MANY_MANY, 'StadtraetIn', 'antraege_stadtraetInnen(antrag_id, stadtraetIn_id)'),
 			'vorlage2antraege' => array(self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag1, antrag2)'),
 			'antrag2vorlagen'  => array(self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag2, antrag1)'),
+			'abos'             => array(self::MANY_MANY, 'AntragAbo', 'antraege_abos(antrag_id, benutzerIn_id)'),
 		);
 	}
 

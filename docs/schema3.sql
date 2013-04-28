@@ -1,6 +1,6 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 CREATE SCHEMA IF NOT EXISTS `ris2` DEFAULT CHARACTER SET utf8 ;
 USE `ris2` ;
@@ -11,6 +11,9 @@ USE `ris2` ;
 CREATE  TABLE IF NOT EXISTS `ris2`.`bezirksausschuesse` (
   `ba_nr` SMALLINT(6) NOT NULL ,
   `name` VARCHAR(100) NULL DEFAULT NULL ,
+  `website` VARCHAR(200) NULL ,
+  `osm_init_zoom` TINYINT NULL ,
+  `osm_shape` BLOB NULL ,
   PRIMARY KEY (`ba_nr`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -22,7 +25,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE  TABLE IF NOT EXISTS `ris2`.`antraege` (
   `id` INT(11) NOT NULL ,
   `typ` ENUM('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative','stadtrat_vorlage_geheim') NOT NULL ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL COMMENT '0=Stadtrat' ,
   `gestellt_am` DATE NULL DEFAULT NULL ,
   `gestellt_von` TEXT NOT NULL ,
@@ -38,12 +41,13 @@ CREATE  TABLE IF NOT EXISTS `ris2`.`antraege` (
   `status` VARCHAR(50) NOT NULL ,
   `bearbeitung` VARCHAR(100) NOT NULL ,
   `fristverlaengerung` DATE NULL DEFAULT NULL ,
-  `initiatoren` TEXT NOT NULL ,
+  `initiatorInnen` TEXT NOT NULL ,
   `initiative_to_aufgenommen` DATE NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `registriert_am` (`registriert_am` ASC) ,
   INDEX `datum_letzte_aenderung` (`datum_letzte_aenderung` ASC) ,
   INDEX `fk_antraege_bezirksausschuesse1_idx` (`ba_nr` ASC) ,
+  INDEX `ba_datum` (`ba_nr` ASC, `datum_letzte_aenderung` ASC) ,
   CONSTRAINT `fk_antraege_bezirksausschuesse1`
     FOREIGN KEY (`ba_nr` )
     REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr` )
@@ -58,7 +62,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ris2`.`gremien` (
   `id` INT(11) NOT NULL ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL ,
   `name` VARCHAR(100) NOT NULL ,
   `kuerzel` VARCHAR(20) NOT NULL ,
@@ -80,11 +84,11 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ris2`.`termine` (
   `id` INT(11) NOT NULL ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `termin_reihe` INT(11) NOT NULL DEFAULT '0' ,
   `gremium_id` INT(11) NULL DEFAULT NULL ,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL ,
-  `termin` TIMESTAMP NULL DEFAULT NULL ,
+  `termin`  NULL DEFAULT NULL ,
   `termin_prev_id` INT(11) NULL DEFAULT NULL ,
   `termin_next_id` INT(11) NULL DEFAULT NULL ,
   `sitzungsort` TEXT NOT NULL ,
@@ -111,7 +115,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_ergebnisse` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `antrag_id` INT(11) NULL DEFAULT NULL ,
   `gremium_name` VARCHAR(100) NOT NULL ,
   `gremium_id` INT(11) NULL ,
@@ -156,12 +160,13 @@ CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_dokumente` (
   `termin_id` INT(11) NULL DEFAULT NULL ,
   `ergebnis_id` INT NULL DEFAULT NULL ,
   `url` VARCHAR(500) NOT NULL ,
-  `name` VARCHAR(100) NOT NULL ,
-  `datum` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `name` VARCHAR(200) NOT NULL ,
+  `datum`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `text_ocr_raw` MEDIUMTEXT NULL DEFAULT NULL ,
   `text_ocr_corrected` MEDIUMTEXT NULL DEFAULT NULL ,
   `text_ocr_garbage_seiten` TEXT NULL DEFAULT NULL ,
   `text_pdf` MEDIUMTEXT NULL DEFAULT NULL ,
+  `seiten_anzahl` MEDIUMINT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `antrag_id` (`antrag_id` ASC) ,
   INDEX `typ` (`typ` ASC) ,
@@ -192,7 +197,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_history` (
   `id` MEDIUMINT(9) NOT NULL ,
   `typ` ENUM('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative') NOT NULL ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL COMMENT '0=Stadtrat' ,
   `gestellt_am` DATE NULL DEFAULT NULL ,
   `gestellt_von` TEXT NOT NULL ,
@@ -229,7 +234,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_vorlagen` (
   `antrag1` INT(11) NOT NULL ,
   `antrag2` INT(11) NOT NULL ,
-  `datum` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum`  NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`antrag1`, `antrag2`) ,
   INDEX `fk_antraege_links_antraege1_idx` (`antrag1` ASC) ,
   INDEX `fk_antraege_links_antraege2_idx` (`antrag2` ASC) ,
@@ -258,7 +263,7 @@ CREATE  TABLE IF NOT EXISTS `ris2`.`orte_geo` (
   `source` ENUM('auto','manual') NOT NULL ,
   `to_hide` TINYINT(4) NOT NULL ,
   `to_hide_kommentar` VARCHAR(200) NOT NULL ,
-  `datum` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `ort` (`ort` ASC) )
 ENGINE = InnoDB
@@ -277,7 +282,7 @@ CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_orte` (
   `ort_name` VARCHAR(100) NOT NULL ,
   `ort_id` SMALLINT(5) UNSIGNED NOT NULL ,
   `source` ENUM('text_parse','manual') NOT NULL ,
-  `datum` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `dokument` (`dokument_id` ASC, `ort_id` ASC) ,
   INDEX `antrag` (`antrag_id` ASC) ,
@@ -392,7 +397,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ris2`.`gremien_history` (
   `id` INT(11) NOT NULL ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL ,
   `name` VARCHAR(100) NOT NULL ,
   `kuerzel` VARCHAR(20) NOT NULL ,
@@ -417,7 +422,7 @@ CREATE  TABLE IF NOT EXISTS `ris2`.`ris_aenderungen` (
   `ris_id` INT(11) NOT NULL ,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL ,
   `typ` ENUM('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative','ba_termin','stadtrat_termin','rathausumschau', 'stadtraetIn', 'ba_mitglied', 'stadtrat_gremium', 'ba_gremium', 'stadtrat_ergebnis') NOT NULL ,
-  `datum` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `aenderungen` TEXT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `datum` (`datum` ASC) ,
@@ -481,11 +486,11 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ris2`.`termine_history` (
   `id` INT(11) NOT NULL ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `termin_reihe` INT(11) NOT NULL DEFAULT '0' ,
   `gremium_id` INT(11) NOT NULL ,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL ,
-  `termin` TIMESTAMP NULL DEFAULT NULL ,
+  `termin`  NULL DEFAULT NULL ,
   `termin_prev_id` INT(11) NULL DEFAULT NULL ,
   `termin_next_id` INT(11) NULL DEFAULT NULL ,
   `sitzungsort` TEXT NOT NULL ,
@@ -535,7 +540,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_ergebnisse_history` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `datum_letzte_aenderung`  NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `antrag_id` INT(11) NOT NULL ,
   `gremium_name` VARCHAR(100) NOT NULL ,
   `gremium_id` INT(11) NULL ,
@@ -568,7 +573,46 @@ CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_ergebnisse_history` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-USE `ris2` ;
+
+-- -----------------------------------------------------
+-- Table `ris2`.`benutzerInnen`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `ris2`.`benutzerInnen` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `email` VARCHAR(45) NULL ,
+  `email_bestaetigt` TINYINT NULL DEFAULT 0 ,
+  `datum_angelegt` DATETIME NULL ,
+  `pwd_enc` VARCHAR(45) NULL ,
+  `einstellungen` BLOB NULL ,
+  `datum_letzte_benachrichtigung` DATETIME NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+
+-- -----------------------------------------------------
+-- Table `ris2`.`antraege_abos`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `ris2`.`antraege_abos` (
+  `antrag_id` INT(11) NOT NULL ,
+  `benutzerIn_id` INT NOT NULL ,
+  PRIMARY KEY (`antrag_id`, `benutzerIn_id`) ,
+  INDEX `fk_antraege_has_benutzerInnen_benutzerInnen1` (`benutzerIn_id` ASC) ,
+  INDEX `fk_antraege_has_benutzerInnen_antraege1` (`antrag_id` ASC) ,
+  CONSTRAINT `fk_antraege_has_benutzerInnen_antraege1`
+    FOREIGN KEY (`antrag_id` )
+    REFERENCES `ris2`.`antraege` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_antraege_has_benutzerInnen_benutzerInnen1`
+    FOREIGN KEY (`benutzerIn_id` )
+    REFERENCES `ris2`.`benutzerInnen` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

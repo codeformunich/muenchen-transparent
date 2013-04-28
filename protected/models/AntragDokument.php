@@ -16,6 +16,7 @@
  * @property string $text_ocr_corrected
  * @property string $text_ocr_garbage_seiten
  * @property string $text_pdf
+ * @property integer $seiten_anzahl
  *
  * The followings are the available model relations:
  * @property Antrag $antrag
@@ -70,7 +71,7 @@ class AntragDokument extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, url, name, datum', 'required'),
-			array('id, antrag_id, termin_id, ergebnis_id', 'numerical', 'integerOnly' => true),
+			array('id, antrag_id, termin_id, ergebnis_id, seiten_anzahl', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 200),
@@ -114,6 +115,7 @@ class AntragDokument extends CActiveRecord
 			'text_ocr_corrected'      => 'Text Ocr Corrected',
 			'text_ocr_garbage_seiten' => 'Text Ocr Garbage Seiten',
 			'text_pdf'                => 'Text Pdf',
+			'seiten_anzahl'           => 'Seitenanzahl',
 		);
 	}
 
@@ -176,10 +178,12 @@ class AntragDokument extends CActiveRecord
 
 		$y      = explode(".", $filename);
 		$endung = mb_strtolower($y[count($y) - 1]);
+		$this->seiten_anzahl = RISPDF2Text::document_anzahl_seiten($absolute_filename);
+
 		if ($endung == "pdf") $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
 		else $this->text_pdf = "";
 
-		$this->text_ocr_raw       = RISPDF2Text::document_text_ocr($absolute_filename);
+		$this->text_ocr_raw       = RISPDF2Text::document_text_ocr($absolute_filename, $this->seiten_anzahl);
 		$this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
 	}
 

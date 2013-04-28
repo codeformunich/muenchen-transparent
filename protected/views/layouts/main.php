@@ -9,7 +9,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="Tobias Hößl">
 
-	<link href="/js/bootstrap/_gh_pages/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="/js/bootstrap/bootstrap/css/bootstrap.css" rel="stylesheet">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
@@ -19,12 +19,13 @@
 	<script src="/js/bootstrap/_gh_pages/assets/js/respond/respond.min.js"></script>
 	<![endif]-->
 
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/js/bootstrap/_gh_pages/assets/ico/apple-touch-icon-144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/js/bootstrap/_gh_pages/assets/ico/apple-touch-icon-114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/js/bootstrap/_gh_pages/assets/ico/apple-touch-icon-72-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" href="/js/bootstrap/_gh_pages/assets/ico/apple-touch-icon-57-precomposed.png">
-	<link rel="shortcut icon" href="/js/bootstrap/_gh_pages/assets/ico/favicon.png">
-
+	<!--
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-57-precomposed.png">
+	<link rel="shortcut icon" href="/js/bootstrap/bootstrap//ico/favicon.png">
+	-->
 
 	<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.css" />
 
@@ -39,7 +40,7 @@
 
 	<link rel="stylesheet" href="/styles.css" />
 
-	<script src="/js/bootstrap/_gh_pages/assets/js/jquery.js"></script>
+	<script src="/js/jquery-1.9.1.min.js"></script>
 	<script src="/js/modernizr.js"></script>
 
 </head>
@@ -102,23 +103,7 @@
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-alert.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-modal.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-dropdown.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-scrollspy.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-tab.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-tooltip.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-popover.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-button.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-collapse.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-carousel.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-typeahead.js"></script>
-<script src="/js/bootstrap/_gh_pages/assets/js/bootstrap-affix.js"></script>
-
-<script src="/js/bootstrap/_gh_pages/assets/js/holder/holder.js"></script>
-
-<script src="/js/bootstrap/_gh_pages/assets/js/application.js"></script>
-
+<script src="/js/bootstrap/bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>
