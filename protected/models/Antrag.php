@@ -46,11 +46,11 @@ class Antrag extends CActiveRecord implements IRISItem
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
 
 	public static $TYPEN_ALLE = array(
-		"stadtrat_antrag"         => array("Stadtratsantrag|Stadtratsanträge"),
-		"stadtrat_vorlage"        => array("Stadtratsvorlage|Stadtratsvorlagen"),
-		"ba_antrag"               => array("BA-Antrag|BA-Anträge"),
-		"ba_initiative"           => array("BA-Initiative|BA-Initiativen"),
-		"stadtrat_vorlage_geheim" => array("Geheime Stadtratsvorlage|Geheime Stadtratsvorlagen"),
+		"stadtrat_antrag"         => "Stadtratsantrag|Stadtratsanträge",
+		"stadtrat_vorlage"        => "Stadtratsvorlage|Stadtratsvorlagen",
+		"ba_antrag"               => "BA-Antrag|BA-Anträge",
+		"ba_initiative"           => "BA-Initiative|BA-Initiativen",
+		"stadtrat_vorlage_geheim" => "Geheime Stadtratsvorlage|Geheime Stadtratsvorlagen",
 	);
 
 	/**
@@ -320,7 +320,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	/** @return string */
 	public function getTypName()
 	{
-		$str = explode("|", Antrag::$TYPEN_ALLE[$this->typ][0]);
+		$str = explode("|", Antrag::$TYPEN_ALLE[$this->typ]);
 		return $str[0];
 	}
 

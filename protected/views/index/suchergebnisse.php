@@ -24,7 +24,13 @@ $antrag_typ = array();
 $facet = $ergebnisse->getFacetSet()->getFacet('antrag_typ');
 foreach ($facet as $value => $count) if ($count > 0) {
 	$str = "<li><a href='" . CHtml::encode($krits->cloneKrits()->addAntragTypKrit($value)->getUrl()) . "'>";
-	$str .= $value . ' (' . $count . ')';
+	if (isset(Antrag::$TYPEN_ALLE[$value])) {
+		$x = explode("|", Antrag::$TYPEN_ALLE[$value]);
+		$str .= $x[1] . ' (' . $count . ')';
+	}
+	elseif ($value == "stadtrat_termin") $str .= 'Stadtrats-Termin (' . $count . ')';
+	elseif ($value == "ba_termin") $str .= 'BA-Termin (' . $count . ')';
+	else $str .= $value . " (" . $count . ")";
 	$str .= "</a></li>";
 	$antrag_typ[] = $str;
 }
@@ -48,7 +54,7 @@ if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 		<h2>Ergebnisse einschränken</h2>
 		<ul>
 			<?
-			foreach ($facet_groups as $name => $facets) {
+			foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
 				echo "<li><h3>" . CHtml::encode($name) . "</h3><ul>";
 				echo implode("", $facets);
 				echo "</ul></li>";
@@ -68,7 +74,11 @@ if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 	"ich"              => $ich,
 	"msg_err"          => $msg_err,
 	"msg_ok"           => $msg_ok,
-)); ?>
+));
+
+
+if ($krits->getKritsCount() > 0) {
+?>
 
 
 <br style="clear: both;">
@@ -81,14 +91,15 @@ if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 	$highlighting = $ergebnisse->getHighlighting();
 	foreach ($dokumente as $dokument) {
 		$model = AntragDokument::getDocumentBySolrId($dokument->id);
-		echo "<li>" . CHtml::link($model->name, $this->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id)))) . "<blockquote>";
+		echo "<li>" . CHtml::link($model->name, $this->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id))));
 		$highlightedDoc = $highlighting->getResult($dokument->id);
-		if ($highlightedDoc) {
+		if ($highlightedDoc && count($highlightedDoc) > 0) {
+			echo "<blockquote>";
 			foreach ($highlightedDoc as $field => $highlight) {
 				echo implode(' (...) ', $highlight) . '<br/>';
 			}
+			echo "</blockquote>";
 		}
-		echo "</blockquote>";
 
 		/*
 		$mltResult = $mlt->getResult($dokument->id);
@@ -110,3 +121,4 @@ if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 		echo "</li>";
 	} ?>
 </ul>
+<? }

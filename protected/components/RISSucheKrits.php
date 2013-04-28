@@ -23,6 +23,13 @@ class RISSucheKrits {
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getKritsCount() {
+		return count($this->krits);
+	}
+
+	/**
 	 *
 	 */
 	public function getUrl() {
