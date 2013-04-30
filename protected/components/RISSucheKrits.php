@@ -88,6 +88,15 @@ class RISSucheKrits {
 		}
 	}
 
+	/**
+	 * @return RISSucheKrits
+	 */
+	public function getBenachrichtigungKrits() {
+		$krits = array();
+		foreach ($this->krits as $krit) if (!in_array($krit["typ"], array("antrag_wahlperiode"))) $krits[] = $krit;
+		return new RISSucheKrits($krits);
+	}
+
 
 	/**
 	 * @return string

@@ -172,6 +172,26 @@ class BenutzerIn extends CActiveRecord
 		return $code;
 	}
 
+	/**
+	 * @param RISSucheKrits $krits
+	 */
+	public function addBenachrichtigung($krits) {
+		$einstellungen = $this->getEinstellungen();
+		$einstellungen->benachrichtigungen[] = $krits->krits;
+		$this->setEinstellungen($einstellungen);
+		$this->save();
+	}
+
+	/**
+	 * @return RISSucheKrits[]
+	 */
+	public function getBenachrichtigungen() {
+		$arr = array();
+		$einstellungen = $this->getEinstellungen();
+		foreach ($einstellungen->benachrichtigungen as $krit) $arr[] = new RISSucheKrits($krit);
+		return $arr;
+	}
+
 
 	/**
 	 * @param string $a

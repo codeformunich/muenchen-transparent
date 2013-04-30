@@ -59,7 +59,7 @@
 		</a>
 		<a class="navbar-brand" href="<?=CHtml::encode($this->createUrl("index/index"))?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
 		<div class="nav-collapse collapse">
-			<ul class="nav">
+			<ul class="nav navbar-nav">
 				<li class="active"><?=CHtml::link("Stadtrat", $this->createUrl("index/stadtrat"))?></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <b class="caret"></b></a>

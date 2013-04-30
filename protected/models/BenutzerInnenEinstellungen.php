@@ -1,17 +1,9 @@
 <?php
 
-class BenutzerInnenEinstellungenOrtBenachrichtigung {
-	/** @var float */
-	public $lon, $lat, $radius;
-}
-
 class BenutzerInnenEinstellungen {
 
-	/** @var string[] */
-	public $benachrichtigungen_suchbegriffe = array();
-
-	/** @var BenutzerInnenEinstellungenOrtBenachrichtigung[] */
-	public $benachrichtigungen_orte = array();
+	/** @var array */
+	public $benachrichtigungen = array();
 
 	/**
 	 * @param string|null $data

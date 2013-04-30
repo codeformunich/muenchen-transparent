@@ -32,10 +32,13 @@ class IndexController extends RISBaseController
 		}
 	}
 
-
-	public function actionSuche($code = "")
+	/**
+	 * @param RISSucheKrits $curr_krits
+	 * @param string $code
+	 * @return array
+	 */
+	protected function sucheBenachrichtigungenAnmelden($curr_krits, $code)
 	{
-
 		$user = Yii::app()->getUser();
 
 		$correct_person = null;
@@ -54,6 +57,7 @@ class IndexController extends RISBaseController
 				Yii::app()->user->login($identity);
 			}
 		} elseif (AntiXSS::isTokenSet("anmelden")) {
+
 			$benutzerIn = BenutzerIn::model()->findAll(array(
 				"condition" => "email='" . addslashes($_REQUEST["email"]) . "' AND pwd_enc != ''"
 			));
@@ -63,6 +67,7 @@ class IndexController extends RISBaseController
 				if ($p->email_bestaetigt) {
 					if ($p->validate_password($_REQUEST["password"])) {
 						$correct_person = $p;
+						$correct_person->addBenachrichtigung($curr_krits);
 
 						$identity = new RISUserIdentity($p);
 						Yii::app()->user->login($identity);
@@ -73,6 +78,7 @@ class IndexController extends RISBaseController
 					if ($p->checkEmailBestaetigungsCode($_REQUEST["bestaetigungscode"])) {
 						$p->email_bestaetigt = 1;
 						if ($p->save()) {
+							$p->addBenachrichtigung($curr_krits);
 							$msg_ok   = "Die E-Mail-Adresse wurde freigeschaltet. Ab jetzt wirst du entsprechend deinen Einstellungen benachrichtigt.";
 							$identity = new RISUserIdentity($p);
 							Yii::app()->user->login($identity);
@@ -101,6 +107,8 @@ class IndexController extends RISBaseController
 						. "Liebe Grüße,\n\tDas OpenRIS-Team.");
 					$correct_person = $benutzerIn;
 
+					$correct_person->addBenachrichtigung($curr_krits);
+
 					$identity = new RISUserIdentity($benutzerIn);
 					Yii::app()->user->login($identity);
 				} else {
@@ -108,40 +116,8 @@ class IndexController extends RISBaseController
 					$errs    = $benutzerIn->getErrors();
 					foreach ($errs as $err) foreach ($err as $e) $msg_err .= $e;
 				}
-
 			}
 		}
-
-
-		$solr   = RISSolrHelper::getSolrClient("ris");
-		$select = $solr->createSelect();
-
-		if (isset($_POST["suchbegriff"])) {
-			$suchbegriff = $_POST["suchbegriff"];
-			$krits       = new RISSucheKrits();
-			$krits->addVolltextsucheKrit($suchbegriff);
-		} else {
-			$krits       = RISSucheKrits::createFromUrl();
-			$suchbegriff = $krits->getTitle();
-		}
-
-		$krits->addKritsToSolr($select);
-
-
-		$select->setRows(100);
-		$select->addSort('sort_datum', $select::SORT_DESC);
-
-		/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
-		$hl = $select->getHighlighting();
-		$hl->setFields('text, text_ocr, antrag_betreff');
-		$hl->setSimplePrefix('<b>');
-		$hl->setSimplePostfix('</b>');
-
-		$facetSet = $select->getFacetSet();
-		$facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
-		$facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
-
-		$ergebnisse = $solr->select($select);
 
 		if ($correct_person) {
 			// Do something
@@ -168,19 +144,59 @@ class IndexController extends RISBaseController
 			}
 		}
 
-
-		$this->render("suchergebnisse", array(
-			"krits"            => $krits,
-			"suchbegriff"      => $suchbegriff,
-			"ergebnisse"       => $ergebnisse,
-
+		return array(
 			"eingeloggt"       => $eingeloggt,
 			"email_angegeben"  => $email_angegeben,
 			"email_bestaetigt" => $email_bestaetigt,
 			"ich"              => $ich,
 			"msg_err"          => $msg_err,
 			"msg_ok"           => $msg_ok,
-		));
+		);
+	}
+
+
+	public function actionSuche($code = "")
+	{
+		if (isset($_POST["suchbegriff"])) {
+			$suchbegriff = $_POST["suchbegriff"];
+			$krits       = new RISSucheKrits();
+			$krits->addVolltextsucheKrit($suchbegriff);
+		} else {
+			$krits       = RISSucheKrits::createFromUrl();
+			$suchbegriff = $krits->getTitle();
+		}
+
+
+		$benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
+
+
+		$solr   = RISSolrHelper::getSolrClient("ris");
+		$select = $solr->createSelect();
+
+		$krits->addKritsToSolr($select);
+
+
+		$select->setRows(100);
+		$select->addSort('sort_datum', $select::SORT_DESC);
+
+		/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+		$hl = $select->getHighlighting();
+		$hl->setFields('text, text_ocr, antrag_betreff');
+		$hl->setSimplePrefix('<b>');
+		$hl->setSimplePostfix('</b>');
+
+		$facetSet = $select->getFacetSet();
+		$facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
+		$facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
+
+		$ergebnisse = $solr->select($select);
+
+
+		$this->render("suchergebnisse", array_merge(array(
+			"krits"       => $krits,
+			"suchbegriff" => $suchbegriff,
+			"ergebnisse"  => $ergebnisse,
+		), $benachrichtigungen_optionen));
 	}
 
 	public function actionDokument($id)

@@ -46,7 +46,7 @@ foreach ($antraege as $ant) {
 
 
 <div class="row">
-	<div class="col-span-5">
+	<div class="col col-lg-5">
 		<h3>Stadtratsanträge</h3>
 		<ul class="antragsliste">
 		<?
@@ -92,7 +92,7 @@ foreach ($antraege as $ant) {
 		?>
 		</ul>
 	</div>
-	<div class="col-span-4">
+	<div class="col col-lg-4">
 		<h3>Kommende Termine</h3>
 		<ul>
 			<li>13.04.2013: ......</li>
@@ -113,7 +113,7 @@ foreach ($antraege as $ant) {
 			<li>13.04.2013: ......</li>
 		</ul>
 	</div>
-	<div class="col-span-3">
+	<div class="col col-lg-3">
 		<h3>Benachrichtigungen</h3>
 		<p>
 			<a href="<?=CHtml::encode($this->createUrl("index/feed"))?>" class="startseite_benachrichtigung_link" title="RSS-Feed">R</a>

@@ -74,14 +74,14 @@ if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 	"ich"              => $ich,
 	"msg_err"          => $msg_err,
 	"msg_ok"           => $msg_ok,
+	"current_url"      => $krits->getUrl()
 ));
+
+echo '<br style="clear: both;">';
 
 
 if ($krits->getKritsCount() > 0) {
 ?>
-
-
-<br style="clear: both;">
 <h2>Suchergebnisse</h2>
 <ul>
 	<?

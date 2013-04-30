@@ -82,7 +82,7 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 			<th>Verbundene Stadtratsvorlagen:</th>
 			<td><ul>
 					<? foreach ($antrag->antrag2vorlagen as $vorlage) {
-						echo "<li>" . CHtml::link($vorlage->betreff, $this->createUrl("antraege/anzeigen", array("id" => $vorlage->id))) . "</li>";
+						echo "<li>" . CHtml::link($vorlage->getName(), $this->createUrl("antraege/anzeigen", array("id" => $vorlage->id))) . "</li>";
 					} ?>
 				</ul></td>
 		</tr>
@@ -92,7 +92,7 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 			<th>Verbundene Stadtratsanträge:</th>
 			<td><ul>
 					<? foreach ($antrag->vorlage2antraege as $antrag2) {
-						echo "<li>" . CHtml::link($antrag2->betreff, $this->createUrl("antraege/anzeigen", array("id" => $antrag2->id))) . "</li>";
+						echo "<li>" . CHtml::link($antrag2->getName(), $this->createUrl("antraege/anzeigen", array("id" => $antrag2->id))) . "</li>";
 					} ?>
 				</ul></td>
 		</tr>
