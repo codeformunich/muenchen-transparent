@@ -183,6 +183,18 @@ class BenutzerIn extends CActiveRecord
 	}
 
 	/**
+	 * @param RISSucheKrits $krits
+	 */
+	public function delBenachrichtigung($krits) {
+		$suchkrits = $krits->getBenachrichtigungKrits();
+		$einstellungen = $this->getEinstellungen();
+		$neue = array();
+		foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits != $ben) $neue[] = $ben;
+		$einstellungen->benachrichtigungen = $neue;
+		$this->save();
+	}
+
+	/**
 	 * @return RISSucheKrits[]
 	 */
 	public function getBenachrichtigungen() {
@@ -190,6 +202,17 @@ class BenutzerIn extends CActiveRecord
 		$einstellungen = $this->getEinstellungen();
 		foreach ($einstellungen->benachrichtigungen as $krit) $arr[] = new RISSucheKrits($krit);
 		return $arr;
+	}
+
+	/**
+	 * @param RISSucheKrits $krits
+	 * @return bool
+	 */
+	public function wirdBenachrichtigt($krits) {
+		$suchkrits = $krits->getBenachrichtigungKrits();
+		$einstellungen = $this->getEinstellungen();
+		foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits == $ben) return true;
+		return false;
 	}
 
 

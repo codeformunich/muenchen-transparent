@@ -102,7 +102,15 @@ class RISSucheKrits {
 	 * @return string
 	 */
 	public function getTitle() {
-		return "Erweiterte Suche";
+		if (count($this->krits) == 1) switch ($this->krits[0]["typ"]) {
+			case "betreff":
+				return "Dokumente mit \"" . $this->krits[0]["suchbegriff"] . "\" im Betreff";
+			case "antrag_typ":
+				return "Dokumente des Typs \"" . $this->krits[0]["suchbegriff"] . "\"";
+			case "volltext":
+				return "Dokumente, die den Suchausdruck \"" . $this->krits[0]["suchbegriff"] . "\" enthalten";
+		}
+		return json_encode($this->krits);
 	}
 
 

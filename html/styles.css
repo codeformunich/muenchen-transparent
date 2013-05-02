@@ -182,6 +182,13 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 	color: white;
 }
 
+
+.button_hover_change button { width: 100%; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box; }
+.button_hover_change .btn-hover { display: none; }
+.button_hover_change:hover .btn-hover { display: inherit; }
+.button_hover_change:hover .btn-nohover { display: none; }
+
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
 	/* Remove padding from wrapping element since we kick in the grid classes here */

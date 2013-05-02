@@ -10,7 +10,7 @@ class BenutzerInnenEinstellungen {
 	 */
 	public function __construct($data) {
 		if ($data == "") return;
-		$data = (array)json_decode($data);
+		$data = (array)json_decode($data, true);
 
 		if (!is_array($data)) return;
 		foreach ($data as $key => $val) $this->$key = $val;

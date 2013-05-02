@@ -9,15 +9,34 @@
  * @var bool $email_bestaetigt
  * @var bool $email_angegeben
  * @var bool $eingeloggt
+ * @var bool $wird_benachrichtigt
  * @var BenutzerIn $ich
  */
 
 $this->pageTitle = Yii::app()->name;
 
 ?>
-<h1>Suche nach: &quot;<?= CHtml::encode($suchbegriff) ?>&quot;</h1>
+	<h1>Suche nach: &quot;<?= CHtml::encode($suchbegriff) ?>&quot;</h1>
 
 <?
+
+
+if ($msg_ok != "") {
+	?>
+	<div class="alert alert-success">
+		<?php echo $msg_ok; ?>
+	</div>
+<?
+}
+if ($msg_err != "") {
+	?>
+	<div class="alert alert-error">
+		<?php echo $msg_err; ?>
+	</div>
+<?
+}
+
+
 $facet_groups = array();
 
 $antrag_typ = array();
@@ -27,10 +46,7 @@ foreach ($facet as $value => $count) if ($count > 0) {
 	if (isset(Antrag::$TYPEN_ALLE[$value])) {
 		$x = explode("|", Antrag::$TYPEN_ALLE[$value]);
 		$str .= $x[1] . ' (' . $count . ')';
-	}
-	elseif ($value == "stadtrat_termin") $str .= 'Stadtrats-Termin (' . $count . ')';
-	elseif ($value == "ba_termin") $str .= 'BA-Termin (' . $count . ')';
-	else $str .= $value . " (" . $count . ")";
+	} elseif ($value == "stadtrat_termin") $str .= 'Stadtrats-Termin (' . $count . ')'; elseif ($value == "ba_termin") $str .= 'BA-Termin (' . $count . ')'; else $str .= $value . " (" . $count . ")";
 	$str .= "</a></li>";
 	$antrag_typ[] = $str;
 }
@@ -47,78 +63,77 @@ foreach ($facet as $value => $count) if ($count > 0) {
 if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 
 ?>
-<div style="float: left; margin: 20px; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
-	<?
-	if (count($facet_groups) > 0) {
+	<div style="float: left; margin: 20px; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
+		<?
+		if (count($facet_groups) > 0) {
+			?>
+			<h2>Ergebnisse einschränken</h2>
+			<ul>
+				<?
+				foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
+					echo "<li><h3>" . CHtml::encode($name) . "</h3><ul>";
+					echo implode("", $facets);
+					echo "</ul></li>";
+				}
+				?></ul>
+			<br>
+		<?
+		}
 		?>
-		<h2>Ergebnisse einschränken</h2>
-		<ul>
-			<?
-			foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
-				echo "<li><h3>" . CHtml::encode($name) . "</h3><ul>";
-				echo implode("", $facets);
-				echo "</ul></li>";
-			}
-			?></ul>
-		<br>
-	<?
-	}
-	?>
-</div>
+	</div>
 
 
 <? $this->renderPartial("suchergebnisse_benachrichtigungen", array(
-	"eingeloggt"       => $eingeloggt,
-	"email_angegeben"  => $email_angegeben,
-	"email_bestaetigt" => $email_bestaetigt,
-	"ich"              => $ich,
-	"msg_err"          => $msg_err,
-	"msg_ok"           => $msg_ok,
-	"current_url"      => $krits->getUrl()
+	"eingeloggt"          => $eingeloggt,
+	"email_angegeben"     => $email_angegeben,
+	"email_bestaetigt"    => $email_bestaetigt,
+	"wird_benachrichtigt" => $wird_benachrichtigt,
+	"ich"                 => $ich,
+	"current_url"         => $krits->getUrl()
 ));
 
 echo '<br style="clear: both;">';
 
 
 if ($krits->getKritsCount() > 0) {
-?>
-<h2>Suchergebnisse</h2>
-<ul>
-	<?
-	$dokumente = $ergebnisse->getDocuments();
-	//$mlt = $ergebnisse->getMoreLikeThis();
-	//$ergebnisse->getMoreLikeThis();
-	$highlighting = $ergebnisse->getHighlighting();
-	foreach ($dokumente as $dokument) {
-		$model = AntragDokument::getDocumentBySolrId($dokument->id);
-		echo "<li>" . CHtml::link($model->name, $this->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id))));
-		$highlightedDoc = $highlighting->getResult($dokument->id);
-		if ($highlightedDoc && count($highlightedDoc) > 0) {
-			echo "<blockquote>";
-			foreach ($highlightedDoc as $field => $highlight) {
-				echo implode(' (...) ', $highlight) . '<br/>';
+	?>
+	<h2>Suchergebnisse</h2>
+	<ul>
+		<?
+		$dokumente = $ergebnisse->getDocuments();
+		//$mlt = $ergebnisse->getMoreLikeThis();
+		//$ergebnisse->getMoreLikeThis();
+		$highlighting = $ergebnisse->getHighlighting();
+		foreach ($dokumente as $dokument) {
+			$model = AntragDokument::getDocumentBySolrId($dokument->id);
+			echo "<li>" . CHtml::link($model->name, $this->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id))));
+			$highlightedDoc = $highlighting->getResult($dokument->id);
+			if ($highlightedDoc && count($highlightedDoc) > 0) {
+				echo "<blockquote>";
+				foreach ($highlightedDoc as $field => $highlight) {
+					echo implode(' (...) ', $highlight) . '<br/>';
+				}
+				echo "</blockquote>";
 			}
-			echo "</blockquote>";
-		}
 
-		/*
-		$mltResult = $mlt->getResult($dokument->id);
-		if($mltResult){
-			echo 'Max score: '.$mltResult->getMaximumScore().'<br/>';
-			echo 'NumFound: '.$mltResult->getNumFound().'<br/>';
-			echo 'Num. fetched: '.count($mltResult).'<ul>';
-			foreach($mltResult AS $mltDoc) {
-				echo '<li>MLT result doc: ';
-				$dokument = AntragDokument::model()->findByPk(str_replace("Document:", "", $mltDoc->id));
-				echo $dokument->url;
-				echo '</li>';
+			/*
+			$mltResult = $mlt->getResult($dokument->id);
+			if($mltResult){
+				echo 'Max score: '.$mltResult->getMaximumScore().'<br/>';
+				echo 'NumFound: '.$mltResult->getNumFound().'<br/>';
+				echo 'Num. fetched: '.count($mltResult).'<ul>';
+				foreach($mltResult AS $mltDoc) {
+					echo '<li>MLT result doc: ';
+					$dokument = AntragDokument::model()->findByPk(str_replace("Document:", "", $mltDoc->id));
+					echo $dokument->url;
+					echo '</li>';
+				}
+				echo "</ul>";
+			}else{
+				echo 'No MLT results';
 			}
-			echo "</ul>";
-		}else{
-			echo 'No MLT results';
-		}
-		*/
-		echo "</li>";
-	} ?>
-</ul>
+			*/
+			echo "</li>";
+		} ?>
+	</ul>
 <? }

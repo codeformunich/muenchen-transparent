@@ -41,8 +41,9 @@ class IndexController extends RISBaseController
 	{
 		$user = Yii::app()->getUser();
 
-		$correct_person = null;
-		$msg_ok         = $msg_err = "";
+		$correct_person      = null;
+		$msg_ok              = $msg_err = "";
+		$wird_benachrichtigt = false;
 
 		if ($code != "") {
 			$x = explode("-", $code);
@@ -55,6 +56,7 @@ class IndexController extends RISBaseController
 				$msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
 				$identity = new RISUserIdentity($benutzerIn);
 				Yii::app()->user->login($identity);
+				$wird_benachrichtigt = true;
 			}
 		} elseif (AntiXSS::isTokenSet("anmelden")) {
 
@@ -71,6 +73,7 @@ class IndexController extends RISBaseController
 
 						$identity = new RISUserIdentity($p);
 						Yii::app()->user->login($identity);
+						$wird_benachrichtigt = true;
 					} else {
 						$msg_err = "Das angegebene Passwort ist leider falsch.";
 					}
@@ -82,6 +85,7 @@ class IndexController extends RISBaseController
 							$msg_ok   = "Die E-Mail-Adresse wurde freigeschaltet. Ab jetzt wirst du entsprechend deinen Einstellungen benachrichtigt.";
 							$identity = new RISUserIdentity($p);
 							Yii::app()->user->login($identity);
+							$wird_benachrichtigt = true;
 						} else {
 							$msg_err = "Ein sehr seltsamer Fehler ist aufgetreten.";
 						}
@@ -100,7 +104,7 @@ class IndexController extends RISBaseController
 
 				if ($benutzerIn->save()) {
 					$best_code = $benutzerIn->createEmailBestaetigungsCode();
-					$link      = Yii::app()->getBaseUrl(true) . $this->createUrl("veranstaltung/benachrichtigungen", array("code" => $best_code));
+					$link      = Yii::app()->getBaseUrl(true) . $this->createUrl("index/benachrichtigungen", array("code" => $best_code));
 					mail($email, "Anmeldung bei OpenRIS", "Hallo,\n\num Benachrichtigungen bei OpenRIS zu erhalten, klicke entweder auf folgenden Link:\n$link\n\n"
 						. "...oder gib, wenn du auf OpenRIS danach gefragt wirst, folgenden Code ein: $best_code\n\n"
 						. "Das Passwort für den OpenRIS-Zugang lautet: " . $passwort . "\n\n"
@@ -111,16 +115,27 @@ class IndexController extends RISBaseController
 
 					$identity = new RISUserIdentity($benutzerIn);
 					Yii::app()->user->login($identity);
+					$wird_benachrichtigt = true;
 				} else {
 					$msg_err = "Leider ist ein (ungewöhnlicher) Fehler aufgetreten.";
 					$errs    = $benutzerIn->getErrors();
 					foreach ($errs as $err) foreach ($err as $e) $msg_err .= $e;
 				}
 			}
-		}
+		} else {
+			if (!$user->isGuest) {
+				/** @var BenutzerIn $ich */
+				$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 
-		if ($correct_person) {
-			// Do something
+				if (AntiXSS::isTokenSet("benachrichtigung_add")) {
+					$ich->addBenachrichtigung($curr_krits);
+				}
+				if (AntiXSS::isTokenSet("benachrichtigung_del")) {
+					$ich->delBenachrichtigung($curr_krits);
+				}
+
+				$wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);
+			}
 		}
 
 		if ($user->isGuest) {
@@ -131,7 +146,7 @@ class IndexController extends RISBaseController
 		} else {
 			$eingeloggt = true;
 			/** @var BenutzerIn $ich */
-			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+			if (!$ich) $ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 			if ($ich->email == "") {
 				$email_angegeben  = false;
 				$email_bestaetigt = false;
@@ -145,12 +160,13 @@ class IndexController extends RISBaseController
 		}
 
 		return array(
-			"eingeloggt"       => $eingeloggt,
-			"email_angegeben"  => $email_angegeben,
-			"email_bestaetigt" => $email_bestaetigt,
-			"ich"              => $ich,
-			"msg_err"          => $msg_err,
-			"msg_ok"           => $msg_ok,
+			"eingeloggt"          => $eingeloggt,
+			"email_angegeben"     => $email_angegeben,
+			"email_bestaetigt"    => $email_bestaetigt,
+			"wird_benachrichtigt" => $wird_benachrichtigt,
+			"ich"                 => $ich,
+			"msg_err"             => $msg_err,
+			"msg_ok"              => $msg_ok,
 		);
 	}
 
@@ -198,6 +214,63 @@ class IndexController extends RISBaseController
 			"ergebnisse"  => $ergebnisse,
 		), $benachrichtigungen_optionen));
 	}
+
+
+	public function actionBenachrichtigungen($code = "")
+	{
+		$user    = Yii::app()->getUser();
+		$msg_err = "";
+		$msg_ok  = "";
+
+		if ($user->isGuest && AntiXSS::isTokenSet("login")) {
+			/** @var BenutzerIn $benutzerIn */
+			$benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
+			if ($benutzerIn) {
+				if ($benutzerIn->email_bestaetigt) {
+					if ($benutzerIn->validate_password($_REQUEST["password"])) {
+						$identity = new RISUserIdentity($benutzerIn);
+						Yii::app()->user->login($identity);
+					} else {
+						$msg_err = "Das angegebene Passwort ist leider falsch.";
+					}
+				} else {
+					if ($code == "" && isset($_REQUEST["bestaetigungscode"])) $code = $_REQUEST["bestaetigungscode"];
+					if ($benutzerIn->checkEmailBestaetigungsCode($code)) {
+						$benutzerIn->email_bestaetigt = 1;
+						if ($benutzerIn->save()) {
+							$msg_ok   = "Die E-Mail-Adresse wurde freigeschaltet. Ab jetzt wirst du entsprechend deinen Einstellungen benachrichtigt.";
+							$identity = new RISUserIdentity($benutzerIn);
+							Yii::app()->user->login($identity);
+						} else {
+							$msg_err = "Ein sehr seltsamer Fehler ist aufgetreten.";
+						}
+					} else {
+						$msg_err = "Leider stimmt der angegebene Code nicht";
+					}
+				}
+			} else {
+				$msg_err = "Es gibt keinen BenutzerInnenaccount mit dieser E-Mail-Adresse.";
+			}
+		}
+
+		if (!$user->isGuest) {
+			/** @var BenutzerIn $ich */
+			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+
+			$this->render("benachrichtigungen", array(
+				"ich" => $ich,
+				"msg_err"     => $msg_err,
+				"msg_ok"      => $msg_ok,
+			));
+		} else {
+			$this->render("login", array(
+				"current_url" => $this->createUrl("index/benachrichtigungen"),
+				"msg_err"     => $msg_err,
+				"msg_ok"      => $msg_ok,
+			));
+		}
+	}
+
 
 	public function actionDokument($id)
 	{
