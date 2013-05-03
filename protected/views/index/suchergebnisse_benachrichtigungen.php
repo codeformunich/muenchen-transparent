@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var string $current_url
+ * @var RISSucheKrits $krits
  * @var string $msg_ok
  * @var string $msg_err
  * @var bool $email_bestaetigt
@@ -14,35 +14,32 @@
 ?>
 
 
-<form method="POST" style=" float: left; width: 310px; margin: 20px;" action="<?=CHtml::encode($current_url)?>">
+<form method="POST" style=" float: left; width: 310px; margin: 20px;" action="<?= CHtml::encode($krits->getUrl()) ?>">
+
+<div style="border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
 
 <?php if ($email_bestaetigt) { ?>
-	<div style="max-width: 500px; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
+	Deine E-Mail-Adresse:<br><strong><?php echo CHtml::encode($ich->email); ?></strong> (bestätigt)
 
-		Deine E-Mail-Adresse:<br><strong><?php echo CHtml::encode($ich->email); ?></strong> (bestätigt)
+	<hr>
 
-		<hr>
-
-		<? if ($wird_benachrichtigt) { ?>
-			<div style="text-align: center;">
-				<div class="button_hover_change" style="width: 300px;">
-					<button class="btn btn-nohover" disabled>Du wirst benachrichtigt</button>
-					<button type="submit" name="<?php echo AntiXSS::createToken("benachrichtigung_del"); ?>" class="btn btn-primary btn-hover">Nicht mehr benachrichtigen!</button>
-				</div>
+	<? if ($wird_benachrichtigt) { ?>
+		<div style="text-align: center;">
+			<div class="button_hover_change" style="width: 300px;">
+				<button class="btn btn-nohover" disabled>Du wirst benachrichtigt</button>
+				<button type="submit" name="<?php echo AntiXSS::createToken("benachrichtigung_del"); ?>" class="btn btn-primary btn-hover">Nicht mehr benachrichtigen!</button>
 			</div>
-		<? } else { ?>
-			<div style="text-align: center;">
-				<div class="button_hover_change" style="width: 300px;">
-					<button class="btn btn-nohover" disabled>Keine Benachrichtigung aktiv</button>
-					<button type="submit" name="<?php echo AntiXSS::createToken("benachrichtigung_add"); ?>" class="btn btn-primary btn-hover">Benachrichtigen!</button>
-				</div>
+		</div>
+	<? } else { ?>
+		<div style="text-align: center;">
+			<div class="button_hover_change" style="width: 300px;">
+				<button class="btn btn-nohover" disabled>Keine Benachrichtigung aktiv</button>
+				<button type="submit" name="<?php echo AntiXSS::createToken("benachrichtigung_add"); ?>" class="btn btn-primary btn-hover">Benachrichtigen!</button>
 			</div>
-		<? } ?>
-
-	</div>
+		</div>
+	<? } ?>
 
 <?php } elseif ($email_angegeben) { ?>
-<div style="max-width: 500px; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
 
 	<label for="email"><strong>Deine E-Mail-Adresse:</strong></label>
 
@@ -63,78 +60,82 @@
 	<br>
 
 	<button type="submit" name="<?php echo AntiXSS::createToken("anmelden"); ?>" class="btn btn-primary">E-Mail bestätigen</button>
-	<?
-	} else {
-		?>
-		<div style="max-width: 500px; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
-			<label for="email"><strong>Deine E-Mail-Adresse:</strong></label>
+
+<? }
+else { ?>
+
+<label for="email"><strong>Deine E-Mail-Adresse:</strong></label>
 
 
-			<div class="input-group">
-				<span class="input-group-addon">@</span>
-				<input id="email" type="email" name="email" value="<?php if ($ich) echo CHtml::encode($ich->email); ?>">
-			</div>
-			<br><br><br>
-
-			<div id="bestaetigungscode_holder" style="display: none;">
-				Es wurde bereits eine E-Mail mit dem Bestätigungscode an diese Adresse geschickt.<br>
-				<label for="bestaetigungscode"><strong>Bitte gib den Bestätigungscode an:</strong></label>
-
-				<div>
-					<input type="text" name="bestaetigungscode" id="bestaetigungscode" value="" style="width: 280px;">
-				</div>
-				<br><br><br>
-			</div>
-
-			<div id="password_holder" style="display: none;">
-				Du hast bereits einen Zugang bei OpenRIS.<br>
-				<label for="password"><strong>Bitte gib dein Passwort ein:</strong></label>
-
-				<div>
-					<input type="password" name="password" id="password" value="" style="width: 280px;">
-				</div>
-				<br><br><br>
-			</div>
-
-			<script>
-				$(function () {
-					$("#email").on("change blur", function () {
-						var val = $("#email").val(),
-							$pw = $("#password_holder"),
-							$best = $("#bestaetigungscode_holder");
-						if (val == "") {
-							$pw.hide();
-							$best.hide();
-						} else {
-							$.get("<?php echo CHtml::encode($this->createUrl("index/ajaxEmailIstRegistriert")); ?>", {email: val }, function (ret) {
-								if (ret == "-1") {
-									$pw.hide();
-									$pw.find("input[type=password]").prop("required", false);
-									$best.hide();
-									$best.find("input[type=text]").prop("required", false);
-								} else if (ret == "1") {
-									$pw.show();
-									$pw.find("input[type=password]").prop("required", true).focus();
-									$best.hide();
-									$best.find("input[type=text]").prop("required", false);
-								} else {
-									$pw.hide();
-									$pw.find("input[type=password]").prop("required", false);
-									$best.show();
-									$best.find("input[type=text]").prop("required", true).focus();
-								}
-								$("#savebutton").prop("disabled", false);
-							});
-						}
-					});
-				})
-			</script>
-
-			<div style="text-align: center;">
-				<button type="submit" name="<?php echo AntiXSS::createToken("anmelden"); ?>" class="btn btn-primary" id="savebutton" disabled>Speichern</button>
-			</div>
-
-		</div>
-	<? } ?>
+<div class="input-group">
+	<span class="input-group-addon">@</span>
+	<input id="email" type="email" name="email" value="<?php if ($ich) echo CHtml::encode($ich->email); ?>">
 </div>
+<br><br><br>
+
+<div id="bestaetigungscode_holder" style="display: none;">
+	Es wurde bereits eine E-Mail mit dem Bestätigungscode an diese Adresse geschickt.<br>
+	<label for="bestaetigungscode"><strong>Bitte gib den Bestätigungscode an:</strong></label>
+
+	<div>
+		<input type="text" name="bestaetigungscode" id="bestaetigungscode" value="" style="width: 280px;">
+	</div>
+	<br><br><br>
+</div>
+
+<div id="password_holder" style="display: none;">
+	Du hast bereits einen Zugang bei OpenRIS.<br>
+	<label for="password"><strong>Bitte gib dein Passwort ein:</strong></label>
+
+	<div>
+		<input type="password" name="password" id="password" value="" style="width: 280px;">
+	</div>
+	<br><br><br>
+</div>
+
+<script>
+	$(function () {
+		$("#email").on("change blur", function () {
+			var val = $("#email").val(),
+				$pw = $("#password_holder"),
+				$best = $("#bestaetigungscode_holder");
+			if (val == "") {
+				$pw.hide();
+				$best.hide();
+			} else {
+				$.get("<?php echo CHtml::encode($this->createUrl("index/ajaxEmailIstRegistriert")); ?>", {email: val }, function (ret) {
+					if (ret == "-1") {
+						$pw.hide();
+						$pw.find("input[type=password]").prop("required", false);
+						$best.hide();
+						$best.find("input[type=text]").prop("required", false);
+					} else if (ret == "1") {
+						$pw.show();
+						$pw.find("input[type=password]").prop("required", true).focus();
+						$best.hide();
+						$best.find("input[type=text]").prop("required", false);
+					} else {
+						$pw.hide();
+						$pw.find("input[type=password]").prop("required", false);
+						$best.show();
+						$best.find("input[type=text]").prop("required", true).focus();
+					}
+					$("#savebutton").prop("disabled", false);
+				});
+			}
+		});
+	})
+</script>
+
+<div style="text-align: center;">
+	<button type="submit" name="<?php echo AntiXSS::createToken("anmelden"); ?>" class="btn btn-primary" id="savebutton" disabled>Speichern</button>
+</div>
+
+<? } ?>
+</div>
+
+<div style="border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee; margin-top: 15px; font-size: 18px;">
+	<a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="icon-rss"></span> Suchergebnisse als RSS-Feed</a>
+</div>
+
 </form>

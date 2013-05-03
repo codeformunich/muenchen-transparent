@@ -298,7 +298,7 @@ class AntragDokument extends CActiveRecord
 
 	/**
 	 * @param string $id
-	 * @return CActiveRecord
+	 * @return AntragDokument
 	 */
 	public static function getDocumentBySolrId($id) {
 		$x = explode(":", $id);

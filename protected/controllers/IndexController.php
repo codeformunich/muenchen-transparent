@@ -5,14 +5,58 @@ class IndexController extends RISBaseController
 
 	public function actionFeed()
 	{
-		/** @var array|RISAenderung[] $aenderungen */
-		$aenderungen = RISAenderung::model()->findAll(array("order" => "id DESC", "limit" => 100));
 		$data        = array();
-		foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
+		if (isset($_REQUEST["krit_typ"])) {
+			$krits       = RISSucheKrits::createFromUrl();
+			$titel = "OpenRIS: " . $krits->getTitle();
+
+			$solr   = RISSolrHelper::getSolrClient("ris");
+			$select = $solr->createSelect();
+
+			$krits->addKritsToSolr($select);
+
+			$select->setRows(100);
+			$select->addSort('sort_datum', $select::SORT_DESC);
+
+			/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+			$hl = $select->getHighlighting();
+			$hl->setFields('text, text_ocr, antrag_betreff');
+			$hl->setSimplePrefix('<b>');
+			$hl->setSimplePostfix('</b>');
+
+			$ergebnisse = $solr->select($select);
+
+			$dokumente = $ergebnisse->getDocuments();
+			$highlighting = $ergebnisse->getHighlighting();
+			foreach ($dokumente as $dokument) {
+				$model = AntragDokument::getDocumentBySolrId($dokument->id);
+				$link = $this->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id)));
+				$highlightedDoc = $highlighting->getResult($dokument->id);
+				$item = array(
+					"title" => $model->name,
+					"link" => $link,
+					"content" => "",
+					"dateCreated" => RISTools::date_iso2timestamp($model->datum),
+					"aenderung_guid" => $link
+				);
+				if ($highlightedDoc && count($highlightedDoc) > 0) {
+					foreach ($highlightedDoc as $highlight) {
+						$item["content"] .= nl2br(CHtml::encode(implode(' (...) ', $highlight))) . '<br/>';
+					}
+				}
+				$data[] = $item;
+			}
+
+		} else {
+			/** @var array|RISAenderung[] $aenderungen */
+			$aenderungen = RISAenderung::model()->findAll(array("order" => "id DESC", "limit" => 100));
+			foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
+			$titel = "OpenRIS Änderungen";
+		}
 
 		$this->render("feed", array(
-			"feed_title"       => "OpenRIS Änderungen",
-			"feed_description" => "OpenRIS Änderungen",
+			"feed_title"       => $titel,
+			"feed_description" => $titel,
 			"data"             => $data,
 		));
 	}
@@ -258,9 +302,9 @@ class IndexController extends RISBaseController
 			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 
 			$this->render("benachrichtigungen", array(
-				"ich" => $ich,
-				"msg_err"     => $msg_err,
-				"msg_ok"      => $msg_ok,
+				"ich"     => $ich,
+				"msg_err" => $msg_err,
+				"msg_ok"  => $msg_ok,
 			));
 		} else {
 			$this->render("login", array(

@@ -22,6 +22,14 @@ class RISTools {
 	}
 
 	/**
+	 * @param $string
+	 * @return string
+	 */
+	public static function bracketEscape($string) {
+		return str_replace(array("[", "]"), array(urlencode("["), urlencode("]")), $string);
+	}
+
+	/**
 	 * @param string $url_to_read
 	 * @param string $username
 	 * @param string $password

@@ -30,9 +30,10 @@ class RISSucheKrits {
 	}
 
 	/**
-	 *
+	 * @param string $path
+	 * @return string
 	 */
-	public function getUrl() {
+	public function getUrl($path = "index/suche") {
 		$str = "";
 		foreach ($this->krits as $krit) {
 			if ($str != "") $str .= "&";
@@ -44,7 +45,15 @@ class RISSucheKrits {
 				case "antrag_wahlperiode": $str .= rawurlencode($krit["suchbegriff"]); break;
 			}
 		}
-		return Yii::app()->createUrl("index/suche") . "/?" . $str;
+		return Yii::app()->createUrl($path) . "/?" . $str;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFeedUrl() {
+		$krits = $this->getBenachrichtigungKrits();
+		return $krits->getUrl("index/feed");
 	}
 
 
