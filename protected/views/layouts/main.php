@@ -60,8 +60,8 @@
 		<a class="navbar-brand" href="<?=CHtml::encode($this->createUrl("index/index"))?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
 		<div class="nav-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li class="active"><?=CHtml::link("Stadtrat", $this->createUrl("index/stadtrat"))?></li>
-				<li class="dropdown">
+				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?=CHtml::link("Stadtrat", $this->createUrl("index/stadtrat"))?></li>
+				<li class="dropdown  <? if ($this->top_menu == "ba") echo 'active'; ?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <b class="caret"></b></a>
 					<ul class="dropdown-menu" id="ba_nav_list">
 						<?
@@ -71,8 +71,8 @@
 						?>
 					</ul>
 				</li>
-				<li class="active"><?=CHtml::link("Benachrichtigungen", $this->createUrl("index/benachrichtigungen"))?></li>
-				<li class="dropdown">
+				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?=CHtml::link("Benachrichtigungen", $this->createUrl("index/benachrichtigungen"))?></li>
+				<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><?=CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen"))?></li>

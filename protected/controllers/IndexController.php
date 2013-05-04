@@ -262,6 +262,8 @@ class IndexController extends RISBaseController
 
 	public function actionBenachrichtigungen($code = "")
 	{
+		$this->top_menu = "benachrichtigungen";
+
 		$user    = Yii::app()->getUser();
 		$msg_err = "";
 		$msg_ok  = "";
@@ -334,7 +336,12 @@ class IndexController extends RISBaseController
 
 	public function actionBa($ba_nr)
 	{
-		echo "BA $ba_nr";
+		$this->top_menu = "ba";
+
+		$ba = Bezirksausschuss::model()->findByPk($ba_nr);
+		$this->render("ba_uebersicht", array(
+			"ba" => $ba
+		));
 	}
 
 	/**

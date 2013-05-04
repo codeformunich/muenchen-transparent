@@ -6,6 +6,8 @@ class AdminController extends RISBaseController
 
 	public function actionStadtraetInnenPersonen() {
 
+		$this->top_menu = "admin";
+
 		$msg_ok = null;
 		if (isset($_REQUEST["save"])) {
 			/** @var Person $person */
@@ -39,6 +41,8 @@ class AdminController extends RISBaseController
 
 
 	public function actionIndex() {
+		$this->top_menu = "admin";
+
 		$this->render("index");
 	}
 

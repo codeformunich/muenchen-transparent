@@ -3,3 +3,6 @@ protected/runtime/
 solr-4.2.0/
 vendor/
 composer.lock
+
+*.log
+*.bak

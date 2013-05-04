@@ -18,6 +18,8 @@ class RISBaseController extends CController
 	 */
 	public $breadcrumbs=array();
 
+	public $top_menu = "";
+
 
 	private $_assetsBase = null;
 
