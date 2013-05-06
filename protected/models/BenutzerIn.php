@@ -98,7 +98,6 @@ class BenutzerIn extends CActiveRecord
 			'datum_letzte_benachrichtigung' => Yii::t('app', 'Datum der letzten Benachrichtigung'),
 			'einstellungen'                 => null,
 			'abonnierte_antraege'           => null,
-
 		);
 	}
 
@@ -177,6 +176,9 @@ class BenutzerIn extends CActiveRecord
 	 */
 	public function addBenachrichtigung($krits) {
 		$einstellungen = $this->getEinstellungen();
+		foreach ($einstellungen->benachrichtigungen as $ben) {
+			if ($ben == $krits->krits) return;
+		}
 		$einstellungen->benachrichtigungen[] = $krits->krits;
 		$this->setEinstellungen($einstellungen);
 		$this->save();
@@ -191,6 +193,7 @@ class BenutzerIn extends CActiveRecord
 		$neue = array();
 		foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits != $ben) $neue[] = $ben;
 		$einstellungen->benachrichtigungen = $neue;
+		$this->setEinstellungen($einstellungen);
 		$this->save();
 	}
 
@@ -213,6 +216,26 @@ class BenutzerIn extends CActiveRecord
 		$einstellungen = $this->getEinstellungen();
 		foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits == $ben) return true;
 		return false;
+	}
+
+	/**
+	 * @param string $code
+	 * @return BenutzerIn|null
+	 */
+	public static function getByFeedCode($code) {
+		$x = explode("-", $code);
+		if (count($x) != 2) return null;
+		/** @var BenutzerIn $benutzerIn */
+		$benutzerIn = BenutzerIn::model()->findByPk($x[0]);
+		if ($code == $benutzerIn->getFeedCode()) return $benutzerIn;
+		else return null;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFeedCode() {
+		return $this->id . "-" . substr(md5(SEED_KEY . $this->pwd_enc), 0, 10);
 	}
 
 

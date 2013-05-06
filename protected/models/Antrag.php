@@ -213,18 +213,19 @@ class Antrag extends CActiveRecord implements IRISItem
 
 
 	/**
-	 * @param int $stunden
+	 * @param string $zeit_von
+	 * @param string $zeit_bis
 	 * @param int $limit
 	 * @return $this
 	 */
-	public function neueste_stadtratsantragsdokumente($stunden, $limit = 0)
+	public function neueste_stadtratsantragsdokumente($zeit_von, $zeit_bis, $limit = 0)
 	{
 		$params = array(
-			'condition' => 'ba_nr IS NULL AND datum_letzte_aenderung > NOW() - INTERVAL ' . IntVal($stunden) . ' HOUR',
+			'condition' => 'ba_nr IS NULL AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
 			'order' => 'datum DESC',
 			'with' => array(
 				'dokumente' => array(
-					'condition' => 'datum > NOW() - INTERVAL ' . IntVal($stunden) . ' HOUR',
+					'condition' => 'datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
 				),
 		));
 		if ($limit > 0) $params['limit'] = $limit;

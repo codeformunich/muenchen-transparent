@@ -46,6 +46,38 @@ class RISSolrHelper {
 	}
 
 
+	/**
+	 * @param \Solarium\QueryType\Select\Result\Result $ergebnisse
+	 * @return array();
+	 */
+	public static function ergebnisse2FeedData($ergebnisse) {
+		$data = array();
+
+		$dokumente    = $ergebnisse->getDocuments();
+		$highlighting = $ergebnisse->getHighlighting();
+		foreach ($dokumente as $dokument) {
+			$model          = AntragDokument::getDocumentBySolrId($dokument->id);
+			$link           = Yii::app()->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id)));
+			$highlightedDoc = $highlighting->getResult($dokument->id);
+			$item           = array(
+				"title"          => $model->name,
+				"link"           => $link,
+				"content"        => "",
+				"dateCreated"    => RISTools::date_iso2timestamp($model->datum),
+				"aenderung_guid" => $link
+			);
+			if ($highlightedDoc && count($highlightedDoc) > 0) {
+				foreach ($highlightedDoc as $highlight) {
+					$item["content"] .= nl2br(CHtml::encode(implode(' (...) ', $highlight))) . '<br/>';
+				}
+			}
+			$data[] = $item;
+		}
+
+		return $data;
+	}
+
+
 
 
 	/**
@@ -53,8 +85,10 @@ class RISSolrHelper {
 	 */
 	public static function solr_optimize_ris()
 	{
-		$solr = getSolrClient("ris");
-		$solr->optimize();
+		$solr = static::getSolrClient();
+		$update = $solr->createUpdate();
+		$update->addOptimize(true, false, 5);
+		$solr->update($update);
 	}
 
 	/**

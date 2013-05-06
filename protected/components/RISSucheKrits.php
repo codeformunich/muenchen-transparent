@@ -98,6 +98,29 @@ class RISSucheKrits {
 	}
 
 	/**
+	 * @param \Solarium\QueryType\Select\Query\Query $select
+	 * @return string
+	 */
+	public function getSolrQueryStr($select) {
+		foreach ($this->krits as $krit) switch ($krit["typ"]) {
+			case "betreff":
+				$helper = $select->getHelper();
+				return "antrag_betreff:" . $helper->escapeTerm($krit["suchbegriff"]);
+				break;
+			case "antrag_typ":
+				return "antrag_typ:" . $krit["suchbegriff"];
+				break;
+			case "antrag_wahlperiode":
+				return "antrag_wahlperiode:" . $krit["suchbegriff"];
+				break;
+			case "volltext":
+				return $krit["suchbegriff"];
+				break;
+		}
+		return "";
+	}
+
+	/**
 	 * @return RISSucheKrits
 	 */
 	public function getBenachrichtigungKrits() {

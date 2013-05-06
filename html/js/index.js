@@ -97,3 +97,10 @@ function init_startseite(antraege_data) {
 		}
 	});
 }
+
+function index_aeltere_dokumente_load(url) {
+	$.getJSON(url, function(data) {
+		$("#stadtratsdokumente_holder").html(data["html"]);
+	});
+	return false;
+}

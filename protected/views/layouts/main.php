@@ -71,7 +71,7 @@
 						?>
 					</ul>
 				</li>
-				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?=CHtml::link("Benachrichtigungen", $this->createUrl("index/benachrichtigungen"))?></li>
+				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?=CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index"))?></li>
 				<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 					<ul class="dropdown-menu">

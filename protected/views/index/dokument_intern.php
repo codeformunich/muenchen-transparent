@@ -17,7 +17,7 @@
 		<? foreach ($morelikethis as $doc) {
 			echo "<li style='margin-bottom: 10px;'>";
 			$name = $doc->name;
-			if ($doc->antrag) $name = $doc->antrag->betreff . " - " . $name;
+			if ($doc->antrag) $name = $doc->antrag->getName() . " - " . $name;
 			if ($doc->termin) $name = $doc->termin->termin . " - " . $name;
 			echo CHtml::link($name, $this->createUrl("index/dokument", array("id" => $doc->id)));
 			echo "</li>";

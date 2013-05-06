@@ -5,9 +5,8 @@ class IndexController extends RISBaseController
 
 	public function actionFeed()
 	{
-		$data        = array();
 		if (isset($_REQUEST["krit_typ"])) {
-			$krits       = RISSucheKrits::createFromUrl();
+			$krits = RISSucheKrits::createFromUrl();
 			$titel = "OpenRIS: " . $krits->getTitle();
 
 			$solr   = RISSolrHelper::getSolrClient("ris");
@@ -26,28 +25,9 @@ class IndexController extends RISBaseController
 
 			$ergebnisse = $solr->select($select);
 
-			$dokumente = $ergebnisse->getDocuments();
-			$highlighting = $ergebnisse->getHighlighting();
-			foreach ($dokumente as $dokument) {
-				$model = AntragDokument::getDocumentBySolrId($dokument->id);
-				$link = $this->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id)));
-				$highlightedDoc = $highlighting->getResult($dokument->id);
-				$item = array(
-					"title" => $model->name,
-					"link" => $link,
-					"content" => "",
-					"dateCreated" => RISTools::date_iso2timestamp($model->datum),
-					"aenderung_guid" => $link
-				);
-				if ($highlightedDoc && count($highlightedDoc) > 0) {
-					foreach ($highlightedDoc as $highlight) {
-						$item["content"] .= nl2br(CHtml::encode(implode(' (...) ', $highlight))) . '<br/>';
-					}
-				}
-				$data[] = $item;
-			}
-
+			$data = RISSolrHelper::ergebnisse2Feed($ergebnisse);
 		} else {
+			$data = array();
 			/** @var array|RISAenderung[] $aenderungen */
 			$aenderungen = RISAenderung::model()->findAll(array("order" => "id DESC", "limit" => 100));
 			foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
@@ -260,63 +240,6 @@ class IndexController extends RISBaseController
 	}
 
 
-	public function actionBenachrichtigungen($code = "")
-	{
-		$this->top_menu = "benachrichtigungen";
-
-		$user    = Yii::app()->getUser();
-		$msg_err = "";
-		$msg_ok  = "";
-
-		if ($user->isGuest && AntiXSS::isTokenSet("login")) {
-			/** @var BenutzerIn $benutzerIn */
-			$benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
-			if ($benutzerIn) {
-				if ($benutzerIn->email_bestaetigt) {
-					if ($benutzerIn->validate_password($_REQUEST["password"])) {
-						$identity = new RISUserIdentity($benutzerIn);
-						Yii::app()->user->login($identity);
-					} else {
-						$msg_err = "Das angegebene Passwort ist leider falsch.";
-					}
-				} else {
-					if ($code == "" && isset($_REQUEST["bestaetigungscode"])) $code = $_REQUEST["bestaetigungscode"];
-					if ($benutzerIn->checkEmailBestaetigungsCode($code)) {
-						$benutzerIn->email_bestaetigt = 1;
-						if ($benutzerIn->save()) {
-							$msg_ok   = "Die E-Mail-Adresse wurde freigeschaltet. Ab jetzt wirst du entsprechend deinen Einstellungen benachrichtigt.";
-							$identity = new RISUserIdentity($benutzerIn);
-							Yii::app()->user->login($identity);
-						} else {
-							$msg_err = "Ein sehr seltsamer Fehler ist aufgetreten.";
-						}
-					} else {
-						$msg_err = "Leider stimmt der angegebene Code nicht";
-					}
-				}
-			} else {
-				$msg_err = "Es gibt keinen BenutzerInnenaccount mit dieser E-Mail-Adresse.";
-			}
-		}
-
-		if (!$user->isGuest) {
-			/** @var BenutzerIn $ich */
-			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
-
-			$this->render("benachrichtigungen", array(
-				"ich"     => $ich,
-				"msg_err" => $msg_err,
-				"msg_ok"  => $msg_ok,
-			));
-		} else {
-			$this->render("login", array(
-				"current_url" => $this->createUrl("index/benachrichtigungen"),
-				"msg_err"     => $msg_err,
-				"msg_ok"      => $msg_ok,
-			));
-		}
-	}
-
 
 	public function actionDokument($id)
 	{
@@ -345,14 +268,78 @@ class IndexController extends RISBaseController
 	}
 
 	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
+	 * @param Antrag[] $antraege
+	 * @return array
 	 */
+	protected function antraege2geodata(&$antraege) {
+		$geodata = array();
+		foreach ($antraege as $ant) {
+			foreach ($ant->dokumente as $dokument) {
+				foreach ($dokument->orte as $ort) {
+					$str = "<div class='antraglink'>" . CHtml::link($ant->getName(), $ant->getLink()) . "</div>";
+					$str .= "<div class='ort_dokument'>";
+					$str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
+					$str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</div>";
+					$str .= "</div>";
+					$geodata[] = array(
+						FloatVal($ort->ort->lat),
+						FloatVal($ort->ort->lon),
+						$str
+					);
+				}
+			}
+		}
+		return $geodata;
+	}
+
+	public function actionAntraegeAjax($datum_max) {
+		$x = explode("-", $datum_max);
+		$time = mktime(0, 0, 0, $x[1], $x[2], $x[0]);
+
+		$i = 0;
+		do {
+			$datum = date("Y-m-d", $time - 3600*24*$i);
+			/** @var array|Antrag[] $antraege */
+			$antraege = Antrag::model()->neueste_stadtratsantragsdokumente($datum . " 00:00:00", $datum . " 23:59:59")->findAll();
+			$i++;
+		} while (count($antraege) == 0);
+
+		$geodata = $this->antraege2geodata($antraege);
+
+		ob_start();
+		$this->renderPartial('index_antraege_liste', array(
+			"antraege" => $antraege,
+			"geodata" => $geodata,
+			"datum" => $datum,
+			"datum_pre" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1),
+		));
+
+		Header("Content-Type: application/json; charset=UTF-8");
+		echo json_encode(array(
+			"datum" => $datum,
+			"html" => ob_get_clean()
+		));
+		Yii::app()->end();
+	}
+
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$i = 0;
+		do {
+			$datum = date("Y-m-d", time() - 3600*24*$i);
+			/** @var array|Antrag[] $antraege */
+			$antraege = Antrag::model()->neueste_stadtratsantragsdokumente($datum . " 00:00:00", $datum . " 23:59:59")->findAll();
+			$i++;
+		} while (count($antraege) == 0);
+
+		$geodata = $this->antraege2geodata($antraege);
+
+		$this->render('index', array(
+			"antraege" => $antraege,
+			"geodata" => $geodata,
+			"datum" => $datum,
+			"datum_pre" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1),
+		));
 	}
 
 	/**

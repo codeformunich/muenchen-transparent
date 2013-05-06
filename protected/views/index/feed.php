@@ -17,7 +17,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<atom:link href="<?php echo RISTools::bracketEscape(CHtml::encode(Yii::app()->getBaseUrl(true) . Yii::app()->request->requestUri)); ?>" rel="self" type="application/rss+xml" />
 			<title><?php echo CHtml::encode($feed_title); ?></title>
 			<link><?php echo RISTools::bracketEscape(CHtml::encode(Yii::app()->getBaseUrl(true))); ?></link>
-			<description><?php echo CHtml::encode($feed_description); ?></description>
+			<description><![CDATA[<?php echo $feed_description; ?>]]></description>
 			<image>
 				<url><?php echo CHtml::encode(Yii::app()->getBaseUrl(true)); ?>/css/img/logo.png</url>
 				<title><?php echo CHtml::encode($feed_title); ?></title>
