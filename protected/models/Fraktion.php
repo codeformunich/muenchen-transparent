@@ -9,6 +9,7 @@
  *
  * The followings are the available model relations:
  * @property StadtraetInFraktion[] $stadtraeteFraktionen
+ * @property Person[] $personen
  */
 class Fraktion extends CActiveRecord
 {
@@ -56,6 +57,7 @@ class Fraktion extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'fraktion_id'),
+			'personen' => array(self::HAS_MANY, 'Person', 'ris_fraktion'),
 		);
 	}
 

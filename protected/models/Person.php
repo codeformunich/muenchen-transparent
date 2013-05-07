@@ -9,10 +9,12 @@
  * @property string $typ
  * @property string $name
  * @property integer $ris_stadtraetIn
+ * @property integer $ris_fraktion
  *
  * The followings are the available model relations:
  * @property AntragPerson[] $antraegePersonen
  * @property StadtraetIn $stadtraetIn
+ * @property Fraktion $fraktion
  */
 class Person extends CActiveRecord
 {
@@ -53,13 +55,13 @@ class Person extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name_normalized, typ, name', 'required'),
-			array('ris_stadtraetIn', 'numerical', 'integerOnly'=>true),
+			array('ris_stadtraetIn, ris_fraktion', 'numerical', 'integerOnly'=>true),
 			array('name_normalized', 'length', 'max'=>50),
 			array('typ', 'length', 'max'=>9),
 			array('name', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name_normalized, typ, name, ris_stadtraetIn', 'safe', 'on'=>'search'),
+			array('id, name_normalized, typ, name, ris_stadtraetIn, ris_fraktion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +75,7 @@ class Person extends CActiveRecord
 		return array(
 			'antraegePersonen' => array(self::HAS_MANY, 'AntragPerson', 'person_id'),
 			'stadtraetIn' => array(self::BELONGS_TO, 'StadtraetIn', 'ris_stadtraetIn'),
+			'fraktion' => array(self::BELONGS_TO, 'Fraktion', 'ris_fraktion'),
 		);
 	}
 
@@ -86,7 +89,8 @@ class Person extends CActiveRecord
 			'name_normalized' => 'Name Normalized',
 			'typ' => 'Typ',
 			'name' => 'Name',
-			'stadtraetIn' => 'StadträtInnen-ID',
+			'ris_stadtraetIn' => 'StadträtInnen-ID',
+			'ris_fraktion' => 'Fraktion',
 		);
 	}
 
@@ -106,6 +110,7 @@ class Person extends CActiveRecord
 		$criteria->compare('typ',$this->typ,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('ris_stadtraetIn',$this->ris_stadtraetIn);
+		$criteria->compare('ris_fraktion',$this->ris_fraktion);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -138,6 +143,7 @@ class Person extends CActiveRecord
 	 * @return string|null
 	 */
 	public function ratePartei() {
+		if (isset($this->fraktion) && $this->fraktion) return $this->fraktion->name;
 		if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return null;
 		if (!isset($this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion)) return null;
 		return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->name;

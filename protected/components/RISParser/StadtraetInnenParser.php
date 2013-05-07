@@ -86,7 +86,15 @@ class StadtraetInnenParser extends RISParser {
 
 		preg_match_all("/ris_fraktionen_detail\.jsp\?risid=(?<fraktion_id>[0-9]+)&amp;periodeid=(?<wahlperiode>[0-9]+)[\"'& ].*tdborder\">(?<mitgliedschaft>[^<]*)<\/td>.*Funktion[^>]*>(?<funktion>[^<]*) *<.*<\/tr/siU", $unten, $matches);
 		for ($i = 0; $i < count($matches[1]); $i++) {
+
 			$str_fraktion = new StadtraetInFraktion();
+			if (preg_match("/^von (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+) bis (?<bis_tag>[0-9]+)\\.(?<bis_monat>[0-9]+)\\.(?<bis_jahr>[0-9]+)$/", $matches[3][$i], $mitgliedschaft_matches)) {
+				$str_fraktion->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+				$str_fraktion->datum_bis = $mitgliedschaft_matches["bis_jahr"] . "-" . $mitgliedschaft_matches["bis_monat"] . "-" . $mitgliedschaft_matches["bis_tag"];
+			} elseif (preg_match("/^seit (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+)$/", $matches[3][$i], $mitgliedschaft_matches)) {
+				$str_fraktion->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+				$str_fraktion->datum_bis = null;
+			}
 			$str_fraktion->fraktion_id = $matches["fraktion_id"][$i];
 			$str_fraktion->stadtraetIn_id = $stadtraetIn_id;
 			$str_fraktion->wahlperiode = $matches["wahlperiode"][$i];
@@ -98,7 +106,7 @@ class StadtraetInnenParser extends RISParser {
 			/** @var null|StadtraetInFraktion $bisherige  */
 			$bisherige = null;
 			foreach ($bisherige_fraktionen as $fr)  {
-				if ($fr->fraktion_id == $matches["fraktion_id"][$i] && $fr->wahlperiode == $matches["wahlperiode"][$i]) $bisherige = $fr;
+				if ($fr->fraktion_id == $str_fraktion->fraktion_id && $fr->datum_von == $str_fraktion->datum_von && $fr->datum_bis == $str_fraktion->datum_bis && $fr->funktion == $str_fraktion->funktion) $bisherige = $fr;
 			}
 			if ($bisherige === null) {
 				$str_fraktion->save();
@@ -107,6 +115,8 @@ class StadtraetInnenParser extends RISParser {
 				if ($bisherige->wahlperiode != $matches["wahlperiode"][$i]) $aenderungen .= "Neue Wahlperiode: " . $bisherige->wahlperiode . " => " . $matches["wahlperiode"][$i] . "\n";
 				if ($bisherige->funktion != $matches["funktion"][$i]) $aenderungen .= "Neue Funktion in der Fraktion: " . $bisherige->funktion . " => " . $matches["funktion"][$i] . "\n";
 				if ($bisherige->mitgliedschaft != $matches["mitgliedschaft"][$i]) $aenderungen .= "Mitgliedschaft in der Fraktion: " . $bisherige->mitgliedschaft . " => " . $matches["mitgliedschaft"][$i] . "\n";
+				if ($bisherige->datum_von != $str_fraktion->datum_von) $aenderungen .= "Fraktionsmitgliedschaft Start: " . $bisherige->datum_von . " => " . $str_fraktion->datum_von . "\n";
+				if ($bisherige->datum_bis != $str_fraktion->datum_bis) $aenderungen .= "Fraktionsmitgliedschaft Ende: " . $bisherige->datum_bis . " => " . $str_fraktion->datum_bis . "\n";
 				$bisherige->setAttributes($str_fraktion->getAttributes());
 				$bisherige->save();
 			}

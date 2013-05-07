@@ -25,7 +25,7 @@ class IndexController extends RISBaseController
 
 			$ergebnisse = $solr->select($select);
 
-			$data = RISSolrHelper::ergebnisse2Feed($ergebnisse);
+			$data = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
 		} else {
 			$data = array();
 			/** @var array|RISAenderung[] $aenderungen */
