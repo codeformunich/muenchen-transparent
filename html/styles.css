@@ -1,53 +1,51 @@
 @font-face {
 	font-family: 'fontello';
-	src: url("font/fontello.eot?55863451");
-	src: url("font/fontello.eot?55863451#iefix") format('embedded-opentype'), url("font/fontello.woff?55863451") format('woff'), url("font/fontello.ttf?55863451") format('truetype'), url("font/fontello.svg?55863451#fontello") format('svg');
+	src: url('../font/fontello.eot?89489601');
+	src: url('../font/fontello.eot?89489601#iefix') format('embedded-opentype'),
+	url('../font/fontello.woff?89489601') format('woff'),
+	url('../font/fontello.ttf?89489601') format('truetype'),
+	url('../font/fontello.svg?89489601#fontello') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
-
-
-#ba_nav_list { min-width: 270px; }
-
-body {
-	padding-top: 50px;
-	padding-bottom: 20px;
-	background-image: url(/images/imgnoise.png);
-}
-
-
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?55863451#fontello') format('svg');
+    src: url('../font/fontello.svg?89489601#fontello') format('svg');
   }
 }
 */
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
-	font-family: 'fontello';
+
+[class^="icon-"]:before, [class*=" icon-"]:before {
+	font-family: "fontello";
 	font-style: normal;
 	font-weight: normal;
 	speak: none;
+
 	display: inline-block;
 	text-decoration: inherit;
 	width: 1em;
-	margin-right: 0.2em;
+	margin-right: .2em;
 	text-align: center;
-	/* opacity .8 */
+	/* opacity: .8; */
+
 	/* For safety - reset parent styles, that can break glyph codes*/
 	font-variant: normal;
 	text-transform: none;
+
 	/* fix buttons height, for twitter bootstrap */
 	line-height: 1em;
+
 	/* Animation center compensation - magrins should be symmetric */
 	/* remove if not needed */
-	margin-left: 0.2em;
+	margin-left: .2em;
+
 	/* you can be more comfortable with increased icons size */
 	/* font-size: 120%; */
+
 	/* Uncomment for 3D effect */
 	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
@@ -55,8 +53,106 @@ body {
 .icon-rss:before { content: '\52'; } /* 'R' */
 .icon-twitter:before { content: '\54'; } /* 'T' */
 .icon-facebook:before { content: '\66'; } /* 'f' */
+.icon-spin4:before { content: '\e834'; } /* '' */
 
 
+/*
+   Animation example, for spinners
+*/
+.animate-spin {
+	-moz-animation: spin 2s infinite linear;
+	-o-animation: spin 2s infinite linear;
+	-webkit-animation: spin 2s infinite linear;
+	animation: spin 2s infinite linear;
+	display: inline-block;
+}
+@-moz-keyframes spin {
+	0% {
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+@-webkit-keyframes spin {
+	0% {
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+@-o-keyframes spin {
+	0% {
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+@-ms-keyframes spin {
+	0% {
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+@keyframes spin {
+	0% {
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-moz-transform: rotate(359deg);
+		-o-transform: rotate(359deg);
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+
+
+
+
+
+#ba_nav_list { min-width: 270px; }
+
+body {
+	padding-top: 90px;
+	padding-bottom: 20px;
+	background-image: url(/images/imgnoise.png);
+}
 
 
 
@@ -113,6 +209,47 @@ body {
 	color: #777;
 }
 
+#stadtratsdokumente_holder {
+	position: relative;
+	min-height: 400px;
+}
+#stadtratsdokumente_holder .loading_indicator {
+	text-align: center;
+	font-size: 10em;
+	opacity: 0.3;
+	position: absolute;
+	width: 100%;
+	top: 80px;
+	left: 0;
+	z-index: 100;
+}
+
+#stadtratsdokumente_holder.fullsize {
+	width: 100%;
+	/*
+	-webkit-transition: width 0.5s ease;
+	-moz-transition: width 0.5s ease;
+	-ms-transition: width 0.5s ease;
+	-o-transition: width 0.5s ease;
+	transition: width 0.5s ease;
+	*/
+}
+
+#stadtratsdokumente_holder.loading ul.antragsliste {
+	opacity: 0.5;
+}
+#stadtratsdokumente_holder.fullsize ul.antragsliste {
+	-moz-column-count: 2;
+	-moz-column-gap: 40px;
+	-webkit-column-count: 2;
+	-webkit-column-gap: 40px;
+	column-count: 2;
+	column-gap: 40px;
+}
+#stadtratsdokumente_holder .aeltere_caller {
+	font-size: 1.5em;
+	margin-top: 1.5em;
+}
 
 ul.antragsliste {
 	list-style-type: none;
@@ -121,13 +258,21 @@ ul.antragsliste {
 }
 ul.antragsliste > li {
 	margin: 0;
-	margin-top: 5px;
+	margin-top: 6px;
 	border: solid 1px #ccc;
 	border-radius: 5px;
 	background-color: #eee;
 	padding: 1px;
-	display: block;
+	break-inside: avoid-column;
+	display: inline-block;
+	width: 100%;
 }
+html.no-csscolumns #stadtratsdokumente_holder.fullsize ul.antragsliste > li {
+	width: 49%;
+	display: inline-block;
+}
+
+
 ul.antragsliste > li > .add_meta {
 	float: right;
 	font-size: 11px;

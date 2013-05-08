@@ -27,10 +27,14 @@ $cs->registerScriptFile('/js/index.js');
 </div>
 
 <script>
-	ASSETS_BASE = <?=json_encode($assets_base)?>;
-	init_startseite(<?=json_encode($geodata)?>);
+	yepnope({
+		load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js"],
+		complete: function () {
+			var $map = $("#map").AntraegeKarte();
+			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
+		}
+	});
 </script>
-
 
 <div class="row">
 	<div class="col col-lg-5" id="stadtratsdokumente_holder">
@@ -38,10 +42,9 @@ $cs->registerScriptFile('/js/index.js');
 			"antraege"  => $antraege,
 			"datum"     => $datum,
 			"datum_pre" => $datum_pre,
-			"geodata"   => $geodata,
 		)); ?>
 	</div>
-	<div class="col col-lg-4">
+	<div class="col col-lg-4 keine_dokumente">
 		<h3>Kommende Termine</h3>
 		<ul>
 			<li>13.04.2013: ......</li>
@@ -62,7 +65,7 @@ $cs->registerScriptFile('/js/index.js');
 			<li>13.04.2013: ......</li>
 		</ul>
 	</div>
-	<div class="col col-lg-3">
+	<div class="col col-lg-3 keine_dokumente">
 		<h3>Benachrichtigungen</h3>
 
 		<p>

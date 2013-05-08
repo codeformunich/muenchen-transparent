@@ -118,6 +118,20 @@ class RISTools {
 
 
 	/**
+	 * @param string $input
+	 * @return string
+	 */
+	public static function datumstring($input) {
+		$ts = static::date_iso2timestamp($input);
+		$tag = date("d.m.Y", $ts);
+		if ($tag == date("d.m.Y")) return "Heute";
+		if ($tag == date("d.m.Y", time() - 3600*24)) return "Gestern";
+		if ($tag == date("d.m.Y", time() - 2*3600*24)) return "Vorgestern";
+		return $tag;
+	}
+
+
+	/**
 	 * @param string $text
 	 * @return string
 	 */

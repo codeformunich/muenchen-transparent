@@ -2,15 +2,17 @@
 
 /**
  * @var IndexController $this
- * @var array $geodata
  * @var Antrag[] $antraege
  * @var string $datum
  * @var string $datum_pre
  */
 
+$datum_str = RISTools::datumstring($datum);
+if ($datum_str > 0) $datum_str = "vom " . $datum_str;
+else $datum_str = "von " . $datum_str;
 
 ?>
-<h3>Stadtratsdokumente</h3>
+<h3>Stadtratsdokumente <?=$datum_str?></h3>
 <ul class="antragsliste">
 	<?
 	foreach ($antraege as $ant) {
@@ -54,4 +56,6 @@
 	}
 	?>
 </ul>
+<div class="aeltere_caller">
 <a href="#" onClick="return index_aeltere_dokumente_load('<?=CHtml::encode($this->createUrl("index/antraegeAjax", array("datum_max" => $datum_pre)))?>');"><span class="glyphicon glyphicon-chevron-right"></span> Ältere Dokmente</a>
+</div>

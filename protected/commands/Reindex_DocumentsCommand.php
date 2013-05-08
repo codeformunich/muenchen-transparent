@@ -4,7 +4,7 @@ class Reindex_DocumentsCommand extends CConsoleCommand {
 	public function run($args) {
 
 		$sql = Yii::app()->db->createCommand();
-		$sql->select("id")->from("antraege_dokumente")->where("id >= 1900371")->order("id");
+		$sql->select("id")->from("antraege_dokumente")->where("id >= 1993913")->order("id");
 		$data = $sql->queryColumn(array("id"));
 
 		$anz = count($data);

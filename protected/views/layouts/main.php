@@ -38,11 +38,14 @@
 	<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.ie.css" />
 	<![endif]-->
 
+	<link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css" />
 	<link rel="stylesheet" href="/styles.css" />
 
 	<script src="/js/jquery-1.9.1.min.js"></script>
+	<script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
-
+	<script src="/js/scrollintoview.js"></script>
+	<script src="/js/anraegekarte.jquery.js"></script>
 </head>
 
 <body>
@@ -50,7 +53,7 @@
 <div class="clear"></div>
 
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top" id="main_navbar">
 	<div class="container">
 		<a class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
 			<span class="icon-bar"></span>

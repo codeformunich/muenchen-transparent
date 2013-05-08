@@ -1,41 +1,31 @@
 {
   "name": "",
+  "css_prefix_text": "icon-",
+  "css_use_suffix": false,
   "glyphs": [
     {
-      "search": [
-        "rss"
-      ],
-      "code": 82,
+      "uid": "9bd60140934a1eb9236fd7a8ab1ff6ba",
+      "css": "spin4",
+      "code": 59444,
+      "src": "fontelico"
+    },
+    {
       "uid": "2a3192d0f8fe0c7cf959168e68eb16d8",
       "css": "rss",
-      "orig_css": "rss",
-      "orig_code": 82,
-      "src": "zocial",
-      "from": 82
+      "code": 82,
+      "src": "zocial"
     },
     {
-      "search": [
-        "twitter"
-      ],
-      "code": 84,
       "uid": "b1ec8e90c2c85cf0035849980a3789b3",
       "css": "twitter",
-      "orig_css": "twitter",
-      "orig_code": 84,
-      "src": "zocial",
-      "from": 84
+      "code": 84,
+      "src": "zocial"
     },
     {
-      "search": [
-        "facebook"
-      ],
-      "code": 102,
       "uid": "6f7586c6f99798c3c1de6123d1f6cfa9",
       "css": "facebook",
-      "orig_css": "facebook",
-      "orig_code": 102,
-      "src": "zocial",
-      "from": 102
+      "code": 102,
+      "src": "zocial"
     }
   ]
 }

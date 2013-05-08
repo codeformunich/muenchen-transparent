@@ -309,7 +309,6 @@ class IndexController extends RISBaseController
 		ob_start();
 		$this->renderPartial('index_antraege_liste', array(
 			"antraege" => $antraege,
-			"geodata" => $geodata,
 			"datum" => $datum,
 			"datum_pre" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1),
 		));
@@ -317,7 +316,8 @@ class IndexController extends RISBaseController
 		Header("Content-Type: application/json; charset=UTF-8");
 		echo json_encode(array(
 			"datum" => $datum,
-			"html" => ob_get_clean()
+			"html" => ob_get_clean(),
+			"geodata" => $geodata
 		));
 		Yii::app()->end();
 	}
