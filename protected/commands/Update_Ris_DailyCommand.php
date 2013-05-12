@@ -25,5 +25,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand {
 		$parser = new BAAntragParser();
 		$parser->parseUpdate();
 
+		RISMetadaten::setzeLetzteAktualisierung(date("Y-m-d H:i:s"));
+
 	}
 }

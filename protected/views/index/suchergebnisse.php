@@ -11,12 +11,13 @@
  * @var bool $eingeloggt
  * @var bool $wird_benachrichtigt
  * @var BenutzerIn $ich
+ * @var null|array $geodata
  */
 
 $this->pageTitle = Yii::app()->name;
 
 ?>
-	<h1>Suche nach: &quot;<?= CHtml::encode($suchbegriff) ?>&quot;</h1>
+	<h1><?= CHtml::encode($suchbegriff) ?></h1>
 
 <?
 
@@ -36,6 +37,31 @@ if ($msg_err != "") {
 <?
 }
 
+
+
+if (!is_null($geodata) && count($geodata) > 0) {
+	$assets_base = $this->getAssetsBase();
+	$geokrit = $krits->getGeoKrit();
+	?>
+	<div id="mapholder">
+		<div id="map"></div>
+	</div>
+
+	<script>
+		yepnope({
+			load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js"],
+			complete: function () {
+				var $map = $("#map").AntraegeKarte({
+					lat: <?=$geokrit["lat"]?>,
+					lng: <?=$geokrit["lng"]?>,
+					size: 14
+				});
+				$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
+			}
+		});
+	</script>
+<?
+}
 
 $facet_groups = array();
 

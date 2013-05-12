@@ -366,7 +366,8 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 .benachrichtigungsliste button.del {
 	border: none;
 	border-radius: 4px;
-	background-color: transparent : padding : 0.5 em;
+	background-color: transparent ;
+	padding : 0.5em;
 	font-size: 1.3em;
 	width: 2em;
 	height: 2em;

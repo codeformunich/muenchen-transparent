@@ -3,16 +3,23 @@
  * @var RISBaseController $this
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
  */
+
+$dokumente = $ergebnisse->getDocuments();
+
+if (count($dokumente) == 0) { ?>
+	<div class="alert alert-error">
+		Keine Dokumente gefunden.
+	</div>
+<? } else {
 ?>
 	<ul>
 		<?
-		$dokumente = $ergebnisse->getDocuments();
 		//$mlt = $ergebnisse->getMoreLikeThis();
 		//$ergebnisse->getMoreLikeThis();
 		$highlighting = $ergebnisse->getHighlighting();
 		foreach ($dokumente as $dokument) {
-			$model = AntragDokument::getDocumentBySolrId($dokument->id);
-			echo "<li>" . CHtml::link($model->name, $this->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id))));
+			$dok = AntragDokument::getDocumentBySolrId($dokument->id, true);
+			echo "<li>" . CHtml::encode($dok->getRISItem()->getName()) . ": " . CHtml::link($dok->name, $this->createUrl("index/dokument", array("id" => $dok->id)));
 			$highlightedDoc = $highlighting->getResult($dokument->id);
 			if ($highlightedDoc && count($highlightedDoc) > 0) {
 				echo "<blockquote>";
@@ -42,4 +49,4 @@
 			echo "</li>";
 		} ?>
 	</ul>
-<?
+<? }

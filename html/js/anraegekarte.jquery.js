@@ -1,6 +1,9 @@
 "use strict";
 $.widget("openris.AntraegeKarte", {
 	options: {
+		lat: 48.155,
+		lng: 11.55820,
+		size: 11
 	},
 	map: null,
 	markers: [],
@@ -10,7 +13,9 @@ $.widget("openris.AntraegeKarte", {
 			L_style = (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1 ? "997@2x" : "997"),
 			fullScreen = new L.Control.FullScreen(),
 			BAs = {"type": "FeatureCollection", "features": BA_FEATURES},
-			map = L.map('map').setView([48.155, 11.55820], 11);
+			map = L.map('map');
+
+		map.setView([this.options["lat"], this.options["lng"]], this.options["size"]);
 
 		$widget.map = map;
 

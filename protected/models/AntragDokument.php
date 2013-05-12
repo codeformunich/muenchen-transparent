@@ -230,6 +230,8 @@ class AntragDokument extends CActiveRecord
 		foreach ($bisherige_ids as $id) if (!in_array($id, $neue_ids)) {
 			AntragOrt::model()->deleteAllByAttributes(array("dokument_id" => $this->id, "ort_id" => $id));
 		}
+
+		$this->orte = AntragOrt::model()->findAllByAttributes(array("dokument_id" => $this->id));
 	}
 
 
@@ -296,14 +298,30 @@ class AntragDokument extends CActiveRecord
 		return "http://www.ris-muenchen.de" . $this->url;
 	}
 
+
+	private static $dokumente_cache = array();
+
 	/**
 	 * @param string $id
+	 * @param bool $cached
 	 * @return AntragDokument
 	 */
-	public static function getDocumentBySolrId($id) {
+	public static function getDocumentBySolrId($id, $cached = false) {
 		$x = explode(":", $id);
-		$model = AntragDokument::model()->findByPk($x[1]);
-		return $model;
+		$id = IntVal($x[1]);
+		if ($cached) {
+			if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = AntragDokument::model()->with("antrag")->findByPk($id);
+			return static::$dokumente_cache[$id];
+		}
+		return AntragDokument::model()->with("antrag")->findByPk($id);
+	}
+
+	/**
+	 * @return IRISItem
+	 */
+	public function getRISItem() {
+		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
+		else return $this->antrag;
 	}
 
 
@@ -404,6 +422,12 @@ class AntragDokument extends CActiveRecord
 		$doc->antrag_erstellt     = $antrag_erstellt;
 		$doc->aenderungs_datum    = $aenderungs_datum;
 		$doc->antrag_gestellt_von = RISSolrHelper::string_cleanup($this->antrag->gestellt_von . " " . $this->antrag->initiatorInnen);
+
+		$geo = array();
+		foreach ($this->orte as $ort) {
+			$geo[] = $ort->ort->lat . "," . $ort->ort->lon;
+		}
+		$doc->geo = $geo;
 
 		if ($max_datum != "") $doc->sort_datum = RISSolrHelper::mysql2solrDate($max_datum);
 		$update->addDocuments(array($doc));
