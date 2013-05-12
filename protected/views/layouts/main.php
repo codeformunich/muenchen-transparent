@@ -1,5 +1,5 @@
 <?php
-/** @var IndexController $this */
+/** @var RISBaseController $this */
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -27,19 +27,29 @@
 	<link rel="shortcut icon" href="/js/bootstrap/bootstrap//ico/favicon.png">
 	-->
 
-	<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.css" />
-
 	<!--
-	<link rel="stylesheet" href="/js/Leaflet.markercluster/dist/MarkerCluster.css" />
-	<link rel="stylesheet" href="/js/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-	-->
+<link rel="stylesheet" href="/js/Leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="/js/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+-->
 
-	<!--[if lte IE 8]>
-	<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.ie.css" />
-	<![endif]-->
 
-	<link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css" />
-	<link rel="stylesheet" href="/styles.css" />
+	<? if ($this->load_leaflet_css) { ?>
+		<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.css"/>
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.ie.css"/>
+		<![endif]-->
+	<?
+	}
+	if ($this->load_leaflet_draw_css) {
+		?>
+		<link rel="stylesheet" href="/js/Leaflet.draw/dist/leaflet.draw.css"/>
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="/js/Leaflet.draw/dist/leaflet.draw.ie.css"/>
+		<![endif]-->
+	<? } ?>
+
+	<link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css"/>
+	<link rel="stylesheet" href="/styles.css"/>
 
 	<script src="/js/jquery-1.9.1.min.js"></script>
 	<script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -60,10 +70,11 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</a>
-		<a class="navbar-brand" href="<?=CHtml::encode($this->createUrl("index/index"))?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
+		<a class="navbar-brand" href="<?= CHtml::encode($this->createUrl("index/index")) ?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
+
 		<div class="nav-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?=CHtml::link("Stadtrat", $this->createUrl("index/stadtrat"))?></li>
+				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?= CHtml::link("Stadtrat", $this->createUrl("index/stadtrat")) ?></li>
 				<li class="dropdown  <? if ($this->top_menu == "ba") echo 'active'; ?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <b class="caret"></b></a>
 					<ul class="dropdown-menu" id="ba_nav_list">
@@ -74,18 +85,20 @@
 						?>
 					</ul>
 				</li>
-				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?=CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index"))?></li>
+				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
 				<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><?=CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen"))?></li>
+						<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
 					</ul>
 				</li>
 			</ul>
-			<form class="navbar-form pull-right rounded" method="POST" action="<?=CHtml::encode($this->createUrl("index/suche"))?>">
-				<input type="text" name="suchbegriff" placeholder="Volltextsuche"><button type="submit" class="btn"><span class="glyphicon glyphicon-search"></span></button>
+			<form class="navbar-form pull-right rounded" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
+				<input type="text" name="suchbegriff" placeholder="Volltextsuche">
+				<button type="submit" class="btn"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
-		</div><!--/.nav-collapse -->
+		</div>
+		<!--/.nav-collapse -->
 	</div>
 </div>
 
@@ -102,7 +115,8 @@
 		</footer>
 	</div>
 
-</div> <!-- /container -->
+</div>
+<!-- /container -->
 
 
 <!-- Bootstrap core JavaScript

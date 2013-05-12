@@ -62,6 +62,8 @@ class BenachrichtigungenController extends RISBaseController {
 		/** @var BenutzerIn $ich */
 		$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 
+		$this->load_leaflet_css = true;
+		$this->load_leaflet_draw_css = true;
 
 		if (AntiXSS::isTokenSet("del_ben")) {
 			foreach ($_REQUEST[AntiXSS::createToken("del_ben")] as $ben => $_val) {
@@ -79,6 +81,17 @@ class BenachrichtigungenController extends RISBaseController {
 			} else {
 				$ben = new RISSucheKrits();
 				$ben->addVolltextsucheKrit($suchbegriff);
+				$ich->addBenachrichtigung($ben);
+				$msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
+			}
+		}
+
+		if (AntiXSS::isTokenSet("ben_add_geo")) {
+			if ($_REQUEST["geo_lng"] == 0 || $_REQUEST["geo_lat"] == 0 || $_REQUEST["geo_radius"] <= 0) {
+				$msg_err = "Ungültige Eingabe.";
+			} else {
+				$ben = new RISSucheKrits();
+				$ben->addGeoKrit($_REQUEST["geo_lng"], $_REQUEST["geo_lat"], $_REQUEST["geo_radius"]);
 				$ich->addBenachrichtigung($ben);
 				$msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
 			}

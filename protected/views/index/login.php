@@ -69,7 +69,7 @@ if ($msg_err != "") {
 						$pw = $("#password_holder"),
 						$best = $("#bestaetigungscode_holder");
 					if (val == "") {
-						$pw.hide();
+						$pw.show().find("input[type=password]").prop("required", true);
 						$best.hide();
 					} else {
 						$.get("<?php echo CHtml::encode($this->createUrl("index/ajaxEmailIstRegistriert")); ?>", {email: val }, function (ret) {

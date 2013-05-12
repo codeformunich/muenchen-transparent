@@ -20,6 +20,9 @@ class RISBaseController extends CController
 
 	public $top_menu = "";
 
+	public $load_leaflet_css = false;
+	public $load_leaflet_draw_css = false;
+
 
 	private $_assetsBase = null;
 

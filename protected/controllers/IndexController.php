@@ -275,7 +275,7 @@ class IndexController extends RISBaseController
 		$geodata = array();
 		foreach ($antraege as $ant) {
 			foreach ($ant->dokumente as $dokument) {
-				foreach ($dokument->orte as $ort) {
+				foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0) {
 					$str = "<div class='antraglink'>" . CHtml::link($ant->getName(), $ant->getLink()) . "</div>";
 					$str .= "<div class='ort_dokument'>";
 					$str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
@@ -324,6 +324,8 @@ class IndexController extends RISBaseController
 
 	public function actionIndex()
 	{
+		$this->load_leaflet_css = true;
+
 		$i = 0;
 		do {
 			$datum = date("Y-m-d", time() - 3600*24*$i);
