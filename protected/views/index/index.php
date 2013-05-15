@@ -25,12 +25,16 @@ $cs->registerScriptFile('/js/index.js');
 <div id="mapholder">
 	<div id="map"></div>
 </div>
+<div id="benachrichtigung_hinweis">
+	<strong>Hinweis:</strong><br>
+	Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den relevanten Radius.
+</div>
 
 <script>
 	yepnope({
-		load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js"],
+		load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js", "/js/Leaflet.draw/dist/leaflet.draw.js"],
 		complete: function () {
-			var $map = $("#map").AntraegeKarte();
+			var $map = $("#map").AntraegeKarte({ benachrichtigungen_widget: "benachrichtigung_hinweis", show_BAs: true });
 			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
 		}
 	});
