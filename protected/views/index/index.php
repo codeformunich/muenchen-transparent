@@ -26,18 +26,43 @@ $cs->registerScriptFile('/js/index.js');
 	<div id="map"></div>
 </div>
 <div id="benachrichtigung_hinweis">
-	<strong>Hinweis:</strong><br>
-	Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den relevanten Radius.
+	<div id="ben_map_infos">
+		<div class="nichts" style="font-style: italic;">
+			<strong>Hinweis:</strong><br>
+			Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den relevanten Radius.
+		</div>
+		<div class="infos" style="display: none;">
+			Radius: <span class="radius_m"></span> Meter
+		</div>
+		<input type="hidden" name="geo_lng" value="">
+		<input type="hidden" name="geo_lat" value="">
+		<input type="hidden" name="geo_radius" id="geo_radius" value="">
+
+		<div style="margin-top: 20px;">
+			<button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
+		</div>
+	</div>
 </div>
 
 <script>
 	yepnope({
 		load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js", "/js/Leaflet.draw/dist/leaflet.draw.js"],
 		complete: function () {
-			var $map = $("#map").AntraegeKarte({ benachrichtigungen_widget: "benachrichtigung_hinweis", show_BAs: true });
+			var $ben_holder = $("#ben_map_infos"),
+				$map = $("#map").AntraegeKarte({ benachrichtigungen_widget: "benachrichtigung_hinweis", show_BAs: true, onSelect: function (latlng, rad) {
+					$ben_holder.find(".nichts").hide();
+					$ben_holder.find(".infos").show();
+					$(".ben_add_geo").prop("disabled", false);
+
+					$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
+					$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
+					$ben_holder.find("input[name=geo_radius]").val(rad);
+
+					$ben_holder.find(".radius_m").text(parseInt(rad));
+				}});
 			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
 		}
-	});
+	})
 </script>
 
 <div class="row">

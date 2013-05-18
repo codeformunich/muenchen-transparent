@@ -108,7 +108,7 @@ if (count($bens) == 0) {
 		<div id="ben_map_infos">
 			<div class="nichts" style="font-style: italic;">noch nichts ausgewählt</div>
 			<div class="infos" style="display: none;">
-				Auswgewählter Radius: <span class="radius_m"></span> Meter
+				Ausgewählter Radius: <span class="radius_m"></span> Meter
 			</div>
 			<input type="hidden" name="geo_lng" value="">
 			<input type="hidden" name="geo_lat" value="">
@@ -125,60 +125,18 @@ if (count($bens) == 0) {
 		yepnope({
 			load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", "/js/Leaflet.draw/dist/leaflet.draw.js"],
 			complete: function () {
-				var map = L.map('ben_map').setView([48.155, 11.55820], 11),
-					L_style = (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1 ? "997@2x" : "997"),
-					fullScreen = new L.Control.FullScreen(),
-					editer = null;
+				var $ben_holder = $("#ben_map_infos");
+				$("#ben_map").AntraegeKarte({ benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, onSelect: function (latlng, rad) {
+						$ben_holder.find(".nichts").hide();
+						$ben_holder.find(".infos").show();
+						$(".ben_add_geo").prop("disabled", false);
 
-				map.addControl(fullScreen);
-				L.tileLayer('http://{s}.tile.cloudmade.com/2f8dd15a9aab49f9aa53f16ac3cb28cb/' + L_style + '/256/{z}/{x}/{y}.png', {
-					attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-					maxZoom: 18,
-					detectRetina: true
-				}).addTo(map);
+						$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
+						$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
+						$ben_holder.find("input[name=geo_radius]").val(rad);
 
-				var drawnItems = new L.FeatureGroup();
-				map.addLayer(drawnItems);
-
-				map.on('click', function (e) {
-					if (editer !== null) return;
-
-					var circle = L.circle(e.latlng, 500, {
-						color: '#0000ff',
-						fillColor: '#ff7800',
-						fillOpacity: 0.4
-					}),
-						$ben_holder =$("#ben_map_infos");
-					drawnItems.addLayer(circle);
-
-					editer = new L.EditToolbar.Edit(map, {
-						featureGroup: drawnItems,
-						selectedPathOptions: {
-							color: '#0000ff',
-							fillColor: '#ff7800',
-							fillOpacity: 0.4
-						}
-					});
-					editer.enable();
-
-					window.setInterval(function() {
-						var rad = circle.getRadius();
 						$ben_holder.find(".radius_m").text(parseInt(rad));
-					}, 200);
-
-					$ben_holder.find(".nichts").hide();
-					$ben_holder.find(".infos").show();
-					$(".ben_add_geo").prop("disabled", false);
-
-					$("#benachrichtigung_add_geo_form").submit(function() {
-						var ln = circle.getLatLng(),
-							rad = circle.getRadius();
-						$ben_holder.find("input[name=geo_lng]").val(ln.lng);
-						$ben_holder.find("input[name=geo_lat]").val(ln.lat);
-						$ben_holder.find("input[name=geo_radius]").val(circle.getRadius());
-					});
-				});
-
+					}});
 			}
 		});
 	</script>

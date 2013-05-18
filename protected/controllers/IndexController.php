@@ -398,6 +398,7 @@ class IndexController extends RISBaseController
 	public function actionIndex()
 	{
 		$this->load_leaflet_css = true;
+		$this->load_leaflet_draw_css = true;
 
 		$i = 0;
 		do {

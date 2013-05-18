@@ -55,7 +55,7 @@
 	<script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
 	<script src="/js/scrollintoview.js"></script>
-	<script src="/js/anraegekarte.jquery.js"></script>
+	<script src="/js/antraegekarte.jquery.js"></script>
 </head>
 
 <body>

@@ -5,7 +5,9 @@ $.widget("openris.AntraegeKarte", {
 		lng: 11.55820,
 		size: 11,
 		benachrichtigungen_widget: false,
-		show_BAs: false
+		benachrichtigungen_widget_zoom: 14,
+		show_BAs: false,
+		onSelect: null
 	},
 	map: null,
 	markers: [],
@@ -15,7 +17,7 @@ $.widget("openris.AntraegeKarte", {
 			L_style = (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1 ? "997@2x" : "997"),
 			fullScreen = new L.Control.FullScreen();
 
-		$widget.map = L.map('map');
+		$widget.map = L.map($widget.element.attr("id"));
 		$widget.map.setView([this.options["lat"], this.options["lng"]], this.options["size"]);
 
 		$widget.map.addControl(fullScreen);
@@ -26,7 +28,7 @@ $.widget("openris.AntraegeKarte", {
 		}).addTo($widget.map);
 
 		if (this.options["benachrichtigungen_widget"] !== false) this.initBenachrichtigungsWidget();
-		if (this.options["show_BAs"]) this.showBAs();
+		if (this.options["show_BAs"]) this.initBAsWidget();
 	},
 
 	setAntraegeData: function (antraege_data) {
@@ -45,32 +47,90 @@ $.widget("openris.AntraegeKarte", {
 
 	},
 
-	initBenachrichtigungsWidget: function()  {
+	initBenachrichtigungsWidget: function () {
 		var $widget = this,
-			shown = false;
-		$widget.map.on("zoomend", function () {
-			var $info = $("#" + $widget.options["benachrichtigungen_widget"]);
-			if ($widget.map.getZoom() >= 14) {
-				if (!shown) {
-					$info.addClass("half_visible");
-					window.setTimeout(function() {
-						$info.addClass("half_visible_tmp1").removeClass("half_visible").addClass("visible");
-					}, 200);
-					shown = true;
-				}
-			} else {
-				if (shown) {
-					$info.removeClass("half_visible_tmp1").addClass("half_visible_tmp2").removeClass("visible").addClass("half_visible");
-					window.setTimeout(function() {
-						$info.removeClass("half_visible_tmp2").removeClass("half_visible");
-					}, 300);
-					shown = false;
-				}
+			shown = false,
+			drawnItems = new L.FeatureGroup(),
+			$info = $("#" + $widget.options["benachrichtigungen_widget"]),
+			editer = null;
+
+		function ben_show() {
+			if (shown) return;
+			if ($info.length > 0) {
+				$info.addClass("half_visible");
+				window.setTimeout(function () {
+					$info.addClass("half_visible_tmp1").removeClass("half_visible").addClass("visible");
+				}, 200);
 			}
-		});
+			$widget.map.addLayer(drawnItems);
+			shown = true;
+		}
+
+		function ben_hide() {
+			if (!shown) return;
+			if ($info.length > 0) {
+				$info.removeClass("half_visible_tmp1").addClass("half_visible_tmp2").removeClass("visible").addClass("half_visible");
+				window.setTimeout(function () {
+					$info.removeClass("half_visible_tmp2").removeClass("half_visible");
+				}, 300);
+			}
+			$widget.map.removeLayer(drawnItems);
+			shown = false;
+		}
+
+		function ben_onZoom() {
+			if ($widget.map.getZoom() >= $widget.options["benachrichtigungen_widget_zoom"]) {
+				ben_show();
+			} else {
+				ben_hide();
+			}
+		}
+
+		function ben_onClick(e) {
+			if (editer !== null) return;
+
+			var circle = L.circle(e.latlng, 500, {
+					color: '#0000ff',
+					fillColor: '#ff7800',
+					fillOpacity: 0.4
+				}),
+				curr_rad = 500,
+				curr_lat = e.latlng.lat,
+				curr_lng = e.latlng.lng;
+
+			drawnItems.addLayer(circle);
+
+			editer = new L.EditToolbar.Edit($widget.map, {
+				featureGroup: drawnItems,
+				selectedPathOptions: {
+					color: '#0000ff',
+					fillColor: '#ff7800',
+					fillOpacity: 0.4
+				}
+			});
+			editer.enable();
+
+			if (typeof($widget.options["onSelect"]) == "function") {
+				circle.on('draw:edit edit', function () {
+					var rad = circle.getRadius();
+					var latlng = circle.getLatLng();
+					if (rad == curr_rad && latlng.lat == curr_lat && latlng.lng == curr_lng) return;
+					$widget.options["onSelect"](latlng, rad);
+					curr_rad = rad;
+					curr_lat = latlng.lat;
+					curr_lng = latlng.lng;
+				});
+			}
+			$widget.options["onSelect"](e.latlng, 500);
+		}
+
+		$widget.map.on("zoomend", ben_onZoom);
+		$widget.map.on("click", ben_onClick);
+
+		ben_onZoom();
 	},
 
-	showBAs: function () {
+	initBAsWidget: function () {
 		function geojson_show(e) {
 			var layer = e.target;
 
@@ -98,7 +158,6 @@ $.widget("openris.AntraegeKarte", {
 			$widget = this;
 
 
-
 		function addInfo() {
 			info = L.control();
 			info.onAdd = function (map) {
@@ -116,6 +175,7 @@ $.widget("openris.AntraegeKarte", {
 			};
 			$widget.map.addControl(info);
 		}
+
 		addInfo();
 
 		var BAs = {"type": "FeatureCollection", "features": BA_FEATURES},
