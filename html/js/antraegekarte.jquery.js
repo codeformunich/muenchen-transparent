@@ -34,7 +34,8 @@ $.widget("openris.AntraegeKarte", {
 
 	setAntraegeData: function (antraege_data) {
 		var $widget = this,
-			i;
+			i,
+			markers_pos_num;
 
 		if ($widget.oms === null) {
 			$widget.oms = new OverlappingMarkerSpiderfier($widget.map, {
@@ -48,6 +49,10 @@ $.widget("openris.AntraegeKarte", {
 			});
 			$widget.oms.addListener('spiderfy', function (markers) {
 				$widget.map.closePopup();
+				for (i = 0; i < markers.length; i++) $(markers[i]._icon).find(".text").hide();
+			});
+			$widget.oms.addListener('unspiderfy', function (markers) {
+				for (i = 0; i < markers.length; i++) $(markers[i]._icon).find(".text").show();
 			});
 		}
 
@@ -58,13 +63,19 @@ $.widget("openris.AntraegeKarte", {
 		$widget.markers = [];
 		$widget.oms.clearMarkers();
 
+		markers_pos_num = {};
+		for (i = 0; i < antraege_data.length; i++) {
+			var key = antraege_data[i][0] + "_" + antraege_data[i][1];
+			if (typeof(markers_pos_num[key]) != "undefined") markers_pos_num[key]++;
+			else markers_pos_num[key] = 1;
+		}
+
 		for (i = 0; i < antraege_data.length; i++) {
 			// add a marker in the given location, attach some popup content to it and open the popup
-			var markerIcon = L.AwesomeMarkers.icon({
-				icon: 'heart',
-				color: 'red'
-			});
-			var marker = new L.Marker([antraege_data[i][0], antraege_data[i][1]], {icon: markerIcon });
+			var text_key = key = antraege_data[i][0] + "_" + antraege_data[i][1],
+				multi_text = (markers_pos_num[key] > 1 ? markers_pos_num[key] : ""),
+				markerIcon = L.TextMarkers.icon({text: multi_text }),
+				marker = new L.Marker([antraege_data[i][0], antraege_data[i][1]], {icon: markerIcon });
 			marker.desc = antraege_data[i][2];
 			$widget.map.addLayer(marker);
 			$widget.oms.addMarker(marker);

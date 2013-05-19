@@ -424,7 +424,7 @@ class AntragDokument extends CActiveRecord
 		$doc->antrag_gestellt_von = RISSolrHelper::string_cleanup($this->antrag->gestellt_von . " " . $this->antrag->initiatorInnen);
 
 		$geo = array();
-		foreach ($this->orte as $ort) {
+		foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
 			$geo[] = $ort->ort->lat . "," . $ort->ort->lon;
 		}
 		$doc->geo = $geo;

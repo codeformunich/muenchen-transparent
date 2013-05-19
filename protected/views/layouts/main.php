@@ -47,11 +47,6 @@
 		<link rel="stylesheet" href="/js/Leaflet.draw/dist/leaflet.draw.ie.css"/>
 		<![endif]-->
 	<? }
-	if ($this->load_leaflet_markers) {
-		?>
-		<link rel="stylesheet" href="/js/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css">
-	<?
-	}
 	?>
 
 	<link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css"/>

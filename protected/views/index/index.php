@@ -49,7 +49,7 @@ $cs->registerScriptFile('/js/index.js');
 		load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
 			"/js/Leaflet.draw/dist/leaflet.draw.js",
 			"/js/OverlappingMarkerSpiderfier-Leaflet/oms.min.js",
-			"/js/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"
+			"/js/leaflet.textmarkers.js"
 		],
 		complete: function () {
 			var $map = $("#map").AntraegeKarte({ benachrichtigungen_widget: "benachrichtigung_hinweis", show_BAs: true, onSelect: function (latlng, rad) {

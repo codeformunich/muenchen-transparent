@@ -280,11 +280,10 @@ class IndexController extends RISBaseController
 		}
 		$geodata = array();
 		if (count($dokument_ids) > 0) {
-			//$dist_field = "SQRT(POW(69.1 * (lat - ( " . FloatVal($geo["lat"]) . " )), 2) + POW(69.1 * ((" . FloatVal($geo["lng"]) . ") - lon) * COS(lat / 57.3 ), 2 )) <= " . FloatVal($geo["radius"] / 1000);
 			$lat = FloatVal($geo["lat"]);
 			$lng = FloatVal($geo["lng"]);
 			$dist_field = "(((acos(sin(($lat*pi()/180)) * sin((lat*pi()/180))+cos(($lat*pi()/180)) * cos((lat*pi()/180)) * cos((($lng- lon)*pi()/180))))*180/pi())*60*1.1515*1.609344) <= " . FloatVal($geo["radius"] / 1000);
-			$SQL  ="select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (" . implode(", ", $dokument_ids) . ") AND $dist_field";
+			$SQL  ="select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (" . implode(", ", $dokument_ids) . ") AND b.to_hide = 0 AND $dist_field";
 			$result     = Yii::app()->db->createCommand($SQL)->queryAll();
 			foreach ($result as $geo) {
 				/** @var AntragDokument $dokument */
@@ -504,7 +503,6 @@ class IndexController extends RISBaseController
 	{
 		$this->load_leaflet_css = true;
 		$this->load_leaflet_draw_css = true;
-		$this->load_leaflet_markers = true;
 
 		$i = 0;
 		do {
