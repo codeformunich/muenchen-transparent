@@ -22,7 +22,7 @@ class RISBaseController extends CController
 
 	public $load_leaflet_css = false;
 	public $load_leaflet_draw_css = false;
-
+	public $load_leaflet_markers = false;
 
 	private $_assetsBase = null;
 

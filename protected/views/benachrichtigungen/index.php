@@ -113,6 +113,7 @@ if (count($bens) == 0) {
 			<input type="hidden" name="geo_lng" value="">
 			<input type="hidden" name="geo_lat" value="">
 			<input type="hidden" name="geo_radius" id="geo_radius" value="">
+
 			<div style="margin-top: 20px;">
 				<button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
 			</div>
@@ -127,16 +128,16 @@ if (count($bens) == 0) {
 			complete: function () {
 				var $ben_holder = $("#ben_map_infos");
 				$("#ben_map").AntraegeKarte({ benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, onSelect: function (latlng, rad) {
-						$ben_holder.find(".nichts").hide();
-						$ben_holder.find(".infos").show();
-						$(".ben_add_geo").prop("disabled", false);
+					$ben_holder.find(".nichts").hide();
+					$ben_holder.find(".infos").show();
+					$(".ben_add_geo").prop("disabled", false);
 
-						$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
-						$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
-						$ben_holder.find("input[name=geo_radius]").val(rad);
+					$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
+					$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
+					$ben_holder.find("input[name=geo_radius]").val(rad);
 
-						$ben_holder.find(".radius_m").text(parseInt(rad));
-					}});
+					$ben_holder.find(".radius_m").text(parseInt(rad));
+				}});
 			}
 		});
 	</script>

@@ -46,20 +46,15 @@ $cs->registerScriptFile('/js/index.js');
 
 <script>
 	yepnope({
-		load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js", "/js/Leaflet.draw/dist/leaflet.draw.js"],
+		load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
+			"/js/Leaflet.draw/dist/leaflet.draw.js",
+			"/js/OverlappingMarkerSpiderfier-Leaflet/oms.min.js",
+			"/js/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"
+		],
 		complete: function () {
-			var $ben_holder = $("#ben_map_infos"),
-				$map = $("#map").AntraegeKarte({ benachrichtigungen_widget: "benachrichtigung_hinweis", show_BAs: true, onSelect: function (latlng, rad) {
-					$ben_holder.find(".nichts").hide();
-					$ben_holder.find(".infos").show();
-					$(".ben_add_geo").prop("disabled", false);
-
-					$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
-					$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
-					$ben_holder.find("input[name=geo_radius]").val(rad);
-
-					$ben_holder.find(".radius_m").text(parseInt(rad));
-				}});
+			var $map = $("#map").AntraegeKarte({ benachrichtigungen_widget: "benachrichtigung_hinweis", show_BAs: true, onSelect: function (latlng, rad) {
+				index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
+			}});
 			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
 		}
 	})

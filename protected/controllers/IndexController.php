@@ -227,6 +227,54 @@ class IndexController extends RISBaseController
 		return $geodata;
 	}
 
+	/**
+	 * @param RISSucheKrits $krits
+	 * @param \Solarium\QueryType\Select\Result\Result $ergebnisse
+	 * @return array
+	 */
+	protected  function getJSGeodata($krits, $ergebnisse) {
+		$geo            = $krits->getGeoKrit();
+		$solr_dokumente = $ergebnisse->getDocuments();
+		$dokument_ids   = array();
+		foreach ($solr_dokumente as $dokument) {
+			$x              = explode(":", $dokument->id);
+			$dokument_ids[] = IntVal($x[1]);
+		}
+		$geodata = array();
+		if (count($dokument_ids) > 0) {
+			//$dist_field = "SQRT(POW(69.1 * (lat - ( " . FloatVal($geo["lat"]) . " )), 2) + POW(69.1 * ((" . FloatVal($geo["lng"]) . ") - lon) * COS(lat / 57.3 ), 2 )) <= " . FloatVal($geo["radius"] / 1000);
+			$lat = FloatVal($geo["lat"]);
+			$lng = FloatVal($geo["lng"]);
+			$dist_field = "(((acos(sin(($lat*pi()/180)) * sin((lat*pi()/180))+cos(($lat*pi()/180)) * cos((lat*pi()/180)) * cos((($lng- lon)*pi()/180))))*180/pi())*60*1.1515*1.609344) <= " . FloatVal($geo["radius"] / 1000);
+			$SQL  ="select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (" . implode(", ", $dokument_ids) . ") AND $dist_field";
+			$result     = Yii::app()->db->createCommand($SQL)->queryAll();
+			foreach ($result as $geo) {
+				/** @var AntragDokument $dokument */
+				$dokument = AntragDokument::model()->findByPk($geo["dokument_id"]);
+
+				if ($dokument->antrag) {
+					$link = "<div class='antraglink'>" . CHtml::link($dokument->antrag->getName(), $dokument->antrag->getLink()) . "</div>";;
+				} elseif ($dokument->termin) {
+					$link = "<div class='antraglink'>" . CHtml::link($dokument->termin->getName(), $dokument->termin->getLink()) . "</div>";;
+				} else {
+					$link = "";
+				}
+				$str = $link;
+				$str .= "<div class='ort_dokument'>";
+				$str .= "<div class='ort'>" . CHtml::encode($geo["ort"]) . "</div>";
+				$str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</div>";
+				$str .= "</div>";
+				$geodata[] = array(
+					FloatVal($geo["lat"]),
+					FloatVal($geo["lon"]),
+					$str
+				);
+			}
+
+		}
+		return $geodata;
+	}
+
 
 	public function actionSuche($code = "")
 	{
@@ -265,43 +313,8 @@ class IndexController extends RISBaseController
 
 		$ergebnisse = $solr->select($select);
 
-		if ($krits->isGeoKrit()) {
-			$geo            = $krits->getGeoKrit();
-			$solr_dokumente = $ergebnisse->getDocuments();
-			$dokument_ids   = array();
-			foreach ($solr_dokumente as $dokument) {
-				$x              = explode(":", $dokument->id);
-				$dokument_ids[] = IntVal($x[1]);
-			}
-			$geodata = array();
-			if (count($dokument_ids) > 0) {
-				$dist_field = "SQRT(POW(69.1 * (lat - ( " . FloatVal($geo["lat"]) . " )), 2) + POW(69.1 * ((" . FloatVal($geo["lng"]) . ") - lon) * COS(lat / 57.3 ), 2 )) <= " . FloatVal($geo["radius"] / 1000);
-				$result     = Yii::app()->db->createCommand("select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (" . implode(", ", $dokument_ids) . ") AND $dist_field")->queryAll();
-				foreach ($result as $geo) {
-					/** @var AntragDokument $dokument */
-					$dokument = AntragDokument::model()->findByPk($geo["dokument_id"]);
-
-					if ($dokument->antrag) {
-						$link = "<div class='antraglink'>" . CHtml::link($dokument->antrag->getName(), $dokument->antrag->getLink()) . "</div>";;
-					} elseif ($dokument->termin) {
-						$link = "<div class='antraglink'>" . CHtml::link($dokument->termin->getName(), $dokument->termin->getLink()) . "</div>";;
-					} else {
-						$link = "";
-					}
-					$str = $link;
-					$str .= "<div class='ort_dokument'>";
-					$str .= "<div class='ort'>" . CHtml::encode($geo["ort"]) . "</div>";
-					$str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</div>";
-					$str .= "</div>";
-					$geodata[] = array(
-						FloatVal($geo["lat"]),
-						FloatVal($geo["lon"]),
-						$str
-					);
-				}
-
-			}
-		} else $geodata = null;
+		if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
+		else $geodata = null;
 
 		$this->render("suchergebnisse", array_merge(array(
 			"krits"       => $krits,
@@ -364,7 +377,10 @@ class IndexController extends RISBaseController
 		return $geodata;
 	}
 
-	public function actionAntraegeAjax($datum_max)
+	/**
+	 * @param string $datum_max
+	 */
+	public function actionAntraegeAjaxDatum($datum_max)
 	{
 		$x    = explode("-", $datum_max);
 		$time = mktime(0, 0, 0, $x[1], $x[2], $x[0]);
@@ -395,10 +411,62 @@ class IndexController extends RISBaseController
 		Yii::app()->end();
 	}
 
+	/**
+	 * @param float $lat
+	 * @param float $lng
+	 * @param float $radius
+	 */
+	public function actionAntraegeAjaxGeo($lat, $lng, $radius) {
+		$krits = new RISSucheKrits();
+		$krits->addGeoKrit($lng, $lat, $radius);
+
+		$solr   = RISSolrHelper::getSolrClient("ris");
+		$select = $solr->createSelect();
+
+		$krits->addKritsToSolr($select);
+
+
+		$select->setRows(30);
+		$select->addSort('sort_datum', $select::SORT_DESC);
+
+		$ergebnisse = $solr->select($select);
+
+		/** @var Antrag[] $antraege */
+		$antraege = array();
+		$solr_dokumente = $ergebnisse->getDocuments();
+		foreach ($solr_dokumente as $dokument) {
+			$x              = explode(":", $dokument->id);
+			/** @var AntragDokument $ant */
+			$ant = AntragDokument::model()->findByPk(IntVal($x[1]));
+			if ($ant->antrag) {
+				$antraege[$ant->antrag_id] = $ant->antrag;
+				// @TODO Nur passende Dokumente laden
+			}
+		}
+
+		$geodata = $this->getJSGeodata($krits, $ergebnisse);
+		ob_start();
+
+		$this->renderPartial('index_antraege_liste', array(
+			"antraege"  => $antraege,
+			"datum"     => date("Y-m-d"),
+			"datum_pre" => date("Y-m-d"),
+		));
+
+		Header("Content-Type: application/json; charset=UTF-8");
+		echo json_encode(array(
+			"datum"   => date("Y-m-d"),
+			"html"    => ob_get_clean(),
+			"geodata" => $geodata
+		));
+		Yii::app()->end();
+	}
+
 	public function actionIndex()
 	{
 		$this->load_leaflet_css = true;
 		$this->load_leaflet_draw_css = true;
+		$this->load_leaflet_markers = true;
 
 		$i = 0;
 		do {
