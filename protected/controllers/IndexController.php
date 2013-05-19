@@ -3,6 +3,44 @@
 class IndexController extends RISBaseController
 {
 
+	/**
+	 * @param string $style
+	 * @param int $width
+	 * @param int $zoom
+	 * @param int $x
+	 * @param int $y
+	 */
+	public function actionTileCache($style, $width, $zoom, $x, $y) {
+		$url = "http://b.tile.cloudmade.com/" . Yii::app()->params['cloudmateKey'] . "/$style/$width/$zoom/$x/$y.png";
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+		curl_setopt($ch, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		$string = curl_exec($ch);
+		$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		if ($status == 200 && $string != "") {
+			if (!file_exists(TILE_CACHE_DIR . $style)) mkdir(TILE_CACHE_DIR . $style, 0775);
+			if (!file_exists(TILE_CACHE_DIR . "$style/$width")) mkdir(TILE_CACHE_DIR . "$style/$width", 0775);
+			if (!file_exists(TILE_CACHE_DIR . "$style/$width/$zoom")) mkdir(TILE_CACHE_DIR . "$style/$width/$zoom", 0775);
+			if (!file_exists(TILE_CACHE_DIR . "$style/$width/$zoom/$x")) mkdir(TILE_CACHE_DIR . "$style/$width/$zoom/$x", 0775);
+			file_put_contents(TILE_CACHE_DIR . "$style/$width/$zoom/$x/$y.png", $string);
+			Header("Content-Type: image/png");
+			echo $string;
+		} else {
+			Header("Content-Type: text/plain");
+			echo $status;
+			var_dump($ch);
+		}
+		Yii::app()->end();
+	}
+
 	public function actionFeed()
 	{
 		if (isset($_REQUEST["krit_typ"])) {

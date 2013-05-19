@@ -22,7 +22,7 @@ $.widget("openris.AntraegeKarte", {
 		$widget.map.setView([this.options["lat"], this.options["lng"]], this.options["size"]);
 
 		$widget.map.addControl(fullScreen);
-		L.tileLayer('http://{s}.tile.cloudmade.com/2f8dd15a9aab49f9aa53f16ac3cb28cb/' + L_style + '/256/{z}/{x}/{y}.png', {
+		L.tileLayer('/tiles/' + L_style + '/256/{z}/{x}/{y}.png', {
 			attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://cloudmade.com">CloudMade</a>',
 			maxZoom: 18,
 			detectRetina: true
