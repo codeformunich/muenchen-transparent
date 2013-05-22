@@ -32,7 +32,11 @@ if ($msg_err != "") {
 ?>
 
 <form method="POST" style="margin-left: auto; margin-right: auto; width: 310px; overflow: auto;" action="<?= CHtml::encode($current_url) ?>">
-
+	<?
+	foreach ($_POST as $key=>$val) if (!in_array($key, array("email", "bestaetigungscode", "password", AntiXSS::createToken("login")))) {
+		echo "<input type='hidden' name='" . CHtml::encode($key) . "' value='" . CHtml::encode($val) . "'>";
+	}
+	?>
 	<div style="max-width: 500px; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
 		<label for="email"><strong>Deine E-Mail-Adresse:</strong></label>
 

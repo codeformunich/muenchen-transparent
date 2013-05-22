@@ -29,18 +29,23 @@ $cs->registerScriptFile('/js/index.js');
 	<div id="ben_map_infos">
 		<div class="nichts" style="font-style: italic;">
 			<strong>Hinweis:</strong><br>
-			Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den relevanten Radius.
+			Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den relevanten Radius.<br>
+			<br>
 		</div>
 		<div class="infos" style="display: none;">
-			Radius: <span class="radius_m"></span> Meter
+			<strong>Ausgewählt:</strong> <span class="radius_m"></span> Meter um "<span class="zentrum_ort"></span>" (ungefähr)<br>
+			<br>Willst du per E-Mail benachrichtigt werden, wenn neue Dokumente mit diesem Ortsbezug erscheinen?
 		</div>
-		<input type="hidden" name="geo_lng" value="">
-		<input type="hidden" name="geo_lat" value="">
-		<input type="hidden" name="geo_radius" id="geo_radius" value="">
+		<form method="POST" action="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>">
+			<input type="hidden" name="geo_lng" value="">
+			<input type="hidden" name="geo_lat" value="">
+			<input type="hidden" name="geo_radius" id="geo_radius" value="">
+			<input type="hidden" name="krit_str" value="">
 
-		<div style="margin-top: 20px;">
-			<button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
-		</div>
+			<div>
+				<button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
+			</div>
+		</form>
 	</div>
 </div>
 

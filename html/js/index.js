@@ -59,6 +59,8 @@ function index_geo_dokumente_load(url, lng, lat, radius) {
 		else done = true;
 		$holder.html(data["html"]);
 		$holder.removeClass("loading");
+		$ben_holder.find(".zentrum_ort").text(data["naechster_ort"]);
+		$ben_holder.find("input[name=krit_str]").val(data["krit_str"]);
 		$("#map").AntraegeKarte("setAntraegeData", data["geodata"]);
 	});
 

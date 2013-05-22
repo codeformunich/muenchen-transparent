@@ -447,8 +447,8 @@ class IndexController extends RISBaseController
 		ob_start();
 		$this->renderPartial('index_antraege_liste', array(
 			"weitere_url" => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
-			"antraege"  => $antraege,
-			"datum"     => $datum,
+			"antraege"    => $antraege,
+			"datum"       => $datum,
 		));
 
 		Header("Content-Type: application/json; charset=UTF-8");
@@ -485,17 +485,17 @@ class IndexController extends RISBaseController
 		/** @var Antrag[] $antraege */
 		$antraege       = array();
 		$solr_dokumente = $ergebnisse->getDocuments();
-		$dokument_ids = array();
+		$dokument_ids   = array();
 		foreach ($solr_dokumente as $dokument) {
-			$x = explode(":", $dokument->id);
+			$x              = explode(":", $dokument->id);
 			$dokument_ids[] = IntVal($x[1]);
 		}
 		foreach ($dokument_ids as $dok_id) {
 			/** @var AntragDokument $ant */
 			$ant = AntragDokument::model()->with(array(
-				"antrag" => array(),
+				"antrag"           => array(),
 				"antrag.dokumente" => array(
-					"alias" => "dokumente_2",
+					"alias"     => "dokumente_2",
 					"condition" => "dokumente_2.id IN (" . implode(", ", $dokument_ids) . ")"
 				)
 			))->findByPk($dok_id);
@@ -504,23 +504,26 @@ class IndexController extends RISBaseController
 			}
 		}
 
-		$geodata = $this->getJSGeodata($krits, $ergebnisse);
+		$geodata       = $this->getJSGeodata($krits, $ergebnisse);
+		$naechster_ort = OrtGeo::findClosest($lng, $lat);
 		ob_start();
 
 		$this->renderPartial('index_antraege_liste', array(
-			"weitere_url" => $this->createUrl("index/antraegeAjaxGeo", array("lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1))),
+			"weitere_url"   => $this->createUrl("index/antraegeAjaxGeo", array("lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1))),
 			"antraege"      => $antraege,
 			"geo_lng"       => $lng,
 			"geo_lat"       => $lat,
 			"radius"        => $radius,
-			"naechster_ort" => OrtGeo::findClosest($lng, $lat)
+			"naechster_ort" => $naechster_ort
 		));
 
 		Header("Content-Type: application/json; charset=UTF-8");
 		echo json_encode(array(
-			"datum"   => date("Y-m-d"),
-			"html"    => ob_get_clean(),
-			"geodata" => $geodata
+			"datum"         => date("Y-m-d"),
+			"html"          => ob_get_clean(),
+			"geodata"       => $geodata,
+			"krit_str"      => $krits->getJson(),
+			"naechster_ort" => $naechster_ort->ort
 		));
 		Yii::app()->end();
 	}
@@ -542,9 +545,9 @@ class IndexController extends RISBaseController
 
 		$this->render('index', array(
 			"weitere_url" => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
-			"antraege"  => $antraege,
-			"geodata"   => $geodata,
-			"datum"     => $datum,
+			"antraege"    => $antraege,
+			"geodata"     => $geodata,
+			"datum"       => $datum,
 		));
 	}
 
