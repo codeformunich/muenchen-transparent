@@ -35,7 +35,7 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 						/** @var Person $person */
 						if ($person->stadtraetIn) {
 							echo CHtml::link($person->stadtraetIn->name, "#");
-							echo " (" . CHtml::encode($person->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->name) . ")";
+							echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
 						} else {
 							echo CHtml::encode($person->name);
 						}
@@ -57,7 +57,7 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 						/** @var Person $person */
 						if ($person->stadtraetIn) {
 							echo CHtml::link($person->stadtraetIn->name, "#");
-							echo " (" . CHtml::encode($person->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->name) . ")";
+							echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
 						} else {
 							echo CHtml::encode($person->name);
 						}

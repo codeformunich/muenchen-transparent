@@ -4,7 +4,7 @@
  * @var array $geodata
  * @var Antrag[] $antraege
  * @var string $datum
- * @var string $datum_pre
+ * @var string $weitere_url
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -63,9 +63,9 @@ $cs->registerScriptFile('/js/index.js');
 <div class="row">
 	<div class="col col-lg-5" id="stadtratsdokumente_holder">
 		<? $this->renderPartial("index_antraege_liste", array(
-			"antraege"  => $antraege,
-			"datum"     => $datum,
-			"datum_pre" => $datum_pre,
+			"antraege"    => $antraege,
+			"datum"       => $datum,
+			"weitere_url" => $weitere_url,
 		)); ?>
 	</div>
 	<div class="col col-lg-4 keine_dokumente">

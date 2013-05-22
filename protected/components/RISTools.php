@@ -90,7 +90,7 @@ class RISTools {
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
+		//curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
 		curl_exec($ch);
 		//$info = curl_getinfo($ch);
 		curl_close($ch);

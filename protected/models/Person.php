@@ -140,12 +140,17 @@ class Person extends CActiveRecord
 	}
 
 	/**
+	 * @param string $datum
 	 * @return string|null
 	 */
-	public function ratePartei() {
+	public function ratePartei($datum = "") {
 		if (isset($this->fraktion) && $this->fraktion) return $this->fraktion->name;
 		if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return null;
 		if (!isset($this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion)) return null;
+		if ($datum != "") foreach ($this->stadtraetIn->stadtraetInnenFraktionen as $fraktionsZ) {
+			$dat = str_replace("-", "", $datum);
+			if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) return $fraktionsZ->fraktion->name;
+		}
 		return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->name;
 	}
 }
