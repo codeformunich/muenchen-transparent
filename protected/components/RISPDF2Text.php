@@ -84,7 +84,16 @@ class RISPDF2Text
 	{
 		$depth = "-depth 8";
 		$text = "";
-		for ($i = 0; $i < $seiten_anzahl; $i++) {
+
+		if (preg_match("/tiff?$/siu", $filename)) { // TIFF
+			echo "TIFF!\n";
+			$tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
+			exec(PATH_TESSERACT . " $filename $tif_tmp_file -l deu -psm 1", $result);
+			if (file_exists($tif_tmp_file . ".txt")) {
+				$text .= file_get_contents($tif_tmp_file . ".txt");
+				unlink($tif_tmp_file . ".txt");
+			};
+		} else for ($i = 0; $i < $seiten_anzahl; $i++) { // PDF
 			$tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
 			exec(PATH_CONVERT . " -density 300x300 \"${filename}[$i]\" -colorspace Gray $depth $tif_tmp_file", $result);
 			if (file_exists($tif_tmp_file)) {

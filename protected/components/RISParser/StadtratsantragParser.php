@@ -91,7 +91,7 @@ class StadtratsantragParser extends RISParser {
 			
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
-				$alter_eintrag->setAttributes($daten->getAttributes());
+				$alter_eintrag->setAttributes($daten->getAttributes(), false);
 				if (!$alter_eintrag->save()) {
 					echo "StadtratAntrag 1\n";
 					var_dump($alter_eintrag->getErrors());

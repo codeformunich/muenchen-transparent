@@ -43,7 +43,6 @@ class StadtratsvorlageParser extends RISParser {
 
 		preg_match_all("/label_long\">(<span class=\"itext\">)?([^<]*)(<\/span>)?<\/div.*detail_div_(left|right|left_long)\">(.*)<\/div/siU", $dat_details[0], $matches);
 
-
 		for ($i = 0; $i < count($matches[1]); $i++) if ($matches[5][$i] != "&nbsp;") switch ($matches[2][$i]) {
 			case "Typ:": $daten->antrag_typ = $matches[5][$i]; break;
 			case "Zust&auml;ndiges Referat:": $daten->referat = $matches[5][$i]; break;
@@ -134,9 +133,17 @@ class StadtratsvorlageParser extends RISParser {
 				$antrag = Antrag::model()->findByPk(IntVal($link));
 			}
 			if (!$antrag) if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Stadtratsvorlage - Zugordnungs Error", $vorlage_id . " - " . $link);
-			$daten->addAntrag($antrag);
-			$aenderungen .= "Neuer Antrag zugeordnet: http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=$link\n";
+
+			$sql = Yii::app()->db->createCommand();
+			$sql->select("antrag2")->from("antraege_vorlagen")->where("antrag1 = " . IntVal($vorlage_id) . " AND antrag2 = " . IntVal($antrag->id));
+			$data = $sql->queryAll();
+			if (count($data) == 0) {
+				$daten->addAntrag($antrag);
+				$aenderungen .= "Neuer Antrag zugeordnet: http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=$link\n";
+			}
 		}
+
+		var_dump($aenderungen);
 
 		if ($aenderungen != "") {
 			$aend = new RISAenderung();
