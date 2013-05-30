@@ -104,10 +104,14 @@ class StadtraetInnenParser extends RISParser {
 			/** @var array|StadtraetInFraktion[] $bisherige_fraktionen  */
 			$bisherige_fraktionen = StadtraetInFraktion::model()->findAllByAttributes(array("stadtraetIn_id" => $stadtraetIn_id));
 			/** @var null|StadtraetInFraktion $bisherige  */
+
 			$bisherige = null;
 			foreach ($bisherige_fraktionen as $fr)  {
-				if ($fr->fraktion_id == $str_fraktion->fraktion_id && $fr->datum_von == $str_fraktion->datum_von && $fr->datum_bis == $str_fraktion->datum_bis && $fr->funktion == $str_fraktion->funktion) $bisherige = $fr;
+				if ($fr->fraktion_id == $str_fraktion->fraktion_id && $fr->wahlperiode == $str_fraktion->wahlperiode && $fr->funktion == $str_fraktion->funktion) {
+					$bisherige = $fr;
+				}
 			}
+
 			if ($bisherige === null) {
 				$str_fraktion->save();
 				$aenderungen = "Neue Fraktionszugehörigkeit: " . $str_fraktion->fraktion->name . "\n";
