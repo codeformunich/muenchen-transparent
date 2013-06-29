@@ -143,8 +143,6 @@ class StadtratsvorlageParser extends RISParser {
 			}
 		}
 
-		var_dump($aenderungen);
-
 		if ($aenderungen != "") {
 			$aend = new RISAenderung();
 			$aend->ris_id = $daten->id;

@@ -2,7 +2,6 @@
 
 class Update_Ris_DailyCommand extends CConsoleCommand {
 	public function run($args) {
-
 		$fp = fopen("/tmp/ris_daily.log", "a");
 		fwrite($fp, "Gestartet: " . date("Y-m-d H:i:s") . "\n");
 

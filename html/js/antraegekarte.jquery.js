@@ -44,8 +44,7 @@ $.widget("openris.AntraegeKarte", {
 			});
 
 			$widget.oms.addListener('click', function (marker) {
-				marker.bindPopup(marker.desc);
-				marker.openPopup();
+				if (typeof(marker._popup) == "undefined") marker.bindPopup(marker.desc);
 			});
 			$widget.oms.addListener('spiderfy', function (markers) {
 				$widget.map.closePopup();
@@ -89,7 +88,8 @@ $.widget("openris.AntraegeKarte", {
 			shown = false,
 			drawnItems = new L.FeatureGroup(),
 			$info = $("#" + $widget.options["benachrichtigungen_widget"]),
-			editer = null;
+			editer = null,
+			circle = null;
 
 		function ben_show() {
 			if (shown) return;
@@ -111,6 +111,14 @@ $.widget("openris.AntraegeKarte", {
 					$info.removeClass("half_visible_tmp2").removeClass("half_visible");
 				}, 300);
 			}
+			if (editer !== null) {
+				editer.disable();
+				editer = null;
+			}
+			if (circle !== null) {
+				drawnItems.clearLayers();
+				circle = null;
+			}
 			$widget.map.removeLayer(drawnItems);
 			shown = false;
 		}
@@ -125,13 +133,14 @@ $.widget("openris.AntraegeKarte", {
 
 		function ben_onClick(e) {
 			if (editer !== null) return;
+			if ($widget.map.getZoom() < $widget.options["benachrichtigungen_widget_zoom"]) return;
 
-			var circle = L.circle(e.latlng, 500, {
+			circle = L.circle(e.latlng, 500, {
 					color: '#0000ff',
 					fillColor: '#ff7800',
 					fillOpacity: 0.4
-				}),
-				curr_rad = 500,
+				});
+			var curr_rad = 500,
 				curr_lat = e.latlng.lat,
 				curr_lng = e.latlng.lng;
 
@@ -152,13 +161,13 @@ $.widget("openris.AntraegeKarte", {
 					var rad = circle.getRadius();
 					var latlng = circle.getLatLng();
 					if (rad == curr_rad && latlng.lat == curr_lat && latlng.lng == curr_lng) return;
-					$widget.options["onSelect"](latlng, rad);
+					$widget.options["onSelect"](latlng, rad, $widget.map.getZoom());
 					curr_rad = rad;
 					curr_lat = latlng.lat;
 					curr_lng = latlng.lng;
 				});
 			}
-			$widget.options["onSelect"](e.latlng, 500);
+			$widget.options["onSelect"](e.latlng, 500, $widget.map.getZoom());
 		}
 
 		$widget.map.on("zoomend", ben_onZoom);

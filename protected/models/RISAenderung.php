@@ -21,6 +21,7 @@ class RISAenderung extends CActiveRecord
 	public static $TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
 	public static $TYP_STADTRAT_TERMIN = "stadtrat_termin";
 	public static $TYP_STADTRAT_GREMIUM = "stadtrat_gremium";
+	public static $TYP_STADTRAT_FRAKTION = "stadtrat_fraktion";
 	public static $TYP_STADTRAETIN = "stadtraetIn";
 	public static $TYP_BA_ANTRAG = "ba_antrag";
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
@@ -151,6 +152,9 @@ class RISAenderung extends CActiveRecord
 				return StadtraetIn::model()->findByPk($this->ris_id);
 				break;
 			case RISAenderung::$TYP_RATHAUSUMSCHAU:
+				return null; // @TODO
+				break;
+			case RISAenderung::$TYP_STADTRAT_FRAKTION:
 				return null; // @TODO
 				break;
 			default:

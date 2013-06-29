@@ -79,10 +79,11 @@ class BAAntragParser extends RISParser {
 			if ($aenderungen != "") $changed = true;
 		}
 
-		echo "Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
-
 		if ($changed) {
 			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
+
+			echo $aenderungen;
+
 
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();

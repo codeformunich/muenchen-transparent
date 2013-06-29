@@ -1,6 +1,7 @@
 <?php
 
-class StadtraetInnenParser extends RISParser {
+class StadtraetInnenParser extends RISParser
+{
 
 	private $bearbeitete_stadtraetInnen = array();
 	private $antraege_alle = false;
@@ -8,21 +9,24 @@ class StadtraetInnenParser extends RISParser {
 	/**
 	 * @param bool $set
 	 */
-	public function setParseAlleAntraege($set) {
+	public function setParseAlleAntraege($set)
+	{
 		$this->antraege_alle = $set;
 	}
 
-	public function parse_antraege($stadtraetIn_id, $seite) {
+	public function parse_antraege($stadtraetIn_id, $seite)
+	{
 		$antr_text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_trefferliste.jsp?nav=2&selWahlperiode=0&steller=$stadtraetIn_id&txtPosition=" . ($seite * 10));
 
 		preg_match_all("/ris_antrag_detail\.jsp\?risid=(?<antrag_id>[0-9]+)[\"'& ]/siU", $antr_text, $matches);
-		foreach($matches["antrag_id"] as $antrag_id) 		try {
+		foreach ($matches["antrag_id"] as $antrag_id) try {
 			Yii::app()->db->createCommand()->insert("antraege_stadtraetInnen", array("antrag_id" => $antrag_id, "stadtraetIn_id" => $stadtraetIn_id, "gefunden_am" => new CDbExpression("NOW()")));
 		} catch (Exception $e) {
 		}
 	}
 
-	public function parse($stadtraetIn_id) {
+	public function parse($stadtraetIn_id)
+	{
 
 		$stadtraetIn_id = IntVal($stadtraetIn_id);
 
@@ -30,8 +34,8 @@ class StadtraetInnenParser extends RISParser {
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
 
-		$daten = new StadtraetIn();
-		$daten->id = $stadtraetIn_id;
+		$daten      = new StadtraetIn();
+		$daten->id  = $stadtraetIn_id;
 		$daten->web = "";
 
 		if (preg_match("/introheadline\">(.*)( ?\([^\)]*\) ?)<\/h3/siU", $html_details, $matches)) {
@@ -39,8 +43,8 @@ class StadtraetInnenParser extends RISParser {
 		}
 
 		if (preg_match("/Gew&auml;hlt am:.*detail_div\">([0-9\.]+)<\/div/siU", $html_details, $matches)) {
-			$x = explode(".", $matches[1]);
-			$daten->gewaehlt_am = $x[2]."-".$x[1]."-".$x[0];
+			$x                  = explode(".", $matches[1]);
+			$daten->gewaehlt_am = $x[2] . "-" . $x[1] . "-" . $x[0];
 		}
 
 		if (preg_match("/Lebenslauf.*detail_div\">(.*)<\/di/siU", $html_details, $matches)) {
@@ -51,7 +55,7 @@ class StadtraetInnenParser extends RISParser {
 
 		/** @var StadtraetIn $alter_eintrag */
 		$alter_eintrag = StadtraetIn::model()->findByPk($stadtraetIn_id);
-		$changed = true;
+		$changed       = true;
 		if ($alter_eintrag) {
 			$changed = false;
 			if ($alter_eintrag->name != $daten->name) $aenderungen .= "Name: " . $alter_eintrag->name . " => " . $daten->name . "\n";
@@ -95,24 +99,29 @@ class StadtraetInnenParser extends RISParser {
 				$str_fraktion->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
 				$str_fraktion->datum_bis = null;
 			}
-			$str_fraktion->fraktion_id = $matches["fraktion_id"][$i];
+			$str_fraktion->fraktion_id    = $matches["fraktion_id"][$i];
 			$str_fraktion->stadtraetIn_id = $stadtraetIn_id;
-			$str_fraktion->wahlperiode = $matches["wahlperiode"][$i];
-			$str_fraktion->funktion = $matches["funktion"][$i];
+			$str_fraktion->wahlperiode    = $matches["wahlperiode"][$i];
+			$str_fraktion->funktion       = $matches["funktion"][$i];
 			$str_fraktion->mitgliedschaft = $matches["mitgliedschaft"][$i];
 
-			/** @var array|StadtraetInFraktion[] $bisherige_fraktionen  */
+			/** @var array|StadtraetInFraktion[] $bisherige_fraktionen */
 			$bisherige_fraktionen = StadtraetInFraktion::model()->findAllByAttributes(array("stadtraetIn_id" => $stadtraetIn_id));
-			/** @var null|StadtraetInFraktion $bisherige  */
+			/** @var null|StadtraetInFraktion $bisherige */
 
 			$bisherige = null;
-			foreach ($bisherige_fraktionen as $fr)  {
+			foreach ($bisherige_fraktionen as $fr) {
 				if ($fr->fraktion_id == $str_fraktion->fraktion_id && $fr->wahlperiode == $str_fraktion->wahlperiode && $fr->funktion == $str_fraktion->funktion) {
 					$bisherige = $fr;
 				}
 			}
 
 			if ($bisherige === null) {
+				$fraktion = Fraktion::model()->findByPk($str_fraktion->fraktion_id);
+				if (is_null($fraktion)) {
+					$frakt_parser = new StadtratsfraktionParser();
+					$frakt_parser->parse($str_fraktion->fraktion_id, $str_fraktion->wahlperiode);
+				}
 				$str_fraktion->save();
 				$aenderungen = "Neue Fraktionszugehörigkeit: " . $str_fraktion->fraktion->name . "\n";
 			} else {
@@ -130,11 +139,11 @@ class StadtraetInnenParser extends RISParser {
 		if ($aenderungen != "") echo "Verändert: " . $aenderungen . "\n";
 
 		if ($aenderungen != "") {
-			$aend = new RISAenderung();
-			$aend->ris_id = $daten->id;
-			$aend->ba_nr = null;
-			$aend->typ = RISAenderung::$TYP_STADTRAETIN;
-			$aend->datum = new CDbExpression("NOW()");
+			$aend              = new RISAenderung();
+			$aend->ris_id      = $daten->id;
+			$aend->ba_nr       = null;
+			$aend->typ         = RISAenderung::$TYP_STADTRAETIN;
+			$aend->datum       = new CDbExpression("NOW()");
 			$aend->aenderungen = $aenderungen;
 			$aend->save();
 		}
@@ -151,26 +160,32 @@ class StadtraetInnenParser extends RISParser {
 	}
 
 
-
-	public function parseSeite($seite) {
+	public function parseSeite($seite)
+	{
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
-		$txt = explode("<!-- tabellenkopf -->", $text);
+		$txt  = explode("<!-- tabellenkopf -->", $text);
 		if (!isset($txt[1])) {
 			echo "- leer\n";
 			return array();
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_mitglieder_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
-		for ($i = count($matches[1])-1; $i >= 0; $i--) if (!in_array($matches[1][$i], $this->bearbeitete_stadtraetInnen)) {
-			$this->parse($matches[1][$i]);
+		for ($i = count($matches[1]) - 1; $i >= 0; $i--) if (!in_array($matches[1][$i], $this->bearbeitete_stadtraetInnen)) {
+			try {
+				$this->parse($matches[1][$i]);
+			} catch (Exception $e) {
+				mail("tobias@hoessl.eu", "StadträTinnenUpdate Error", $matches[1][$i] . $e);
+			}
+
 			$this->bearbeitete_stadtraetInnen[] = $matches[1][$i];
 		}
 		return $matches[1];
 	}
 
 
-	public function parseAlle() {
-		$anz = 300;
+	public function parseAlle()
+	{
+		$anz                              = 300;
 		$this->bearbeitete_stadtraetInnen = array();
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			echo ($anz - $i) . " / $anz\n";
@@ -178,7 +193,8 @@ class StadtraetInnenParser extends RISParser {
 		}
 	}
 
-	public function parseUpdate() {
+	public function parseUpdate()
+	{
 		$this->parseAlle();
 	}
 }

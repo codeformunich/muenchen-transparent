@@ -36,7 +36,7 @@
 
 
 		initialize: function (options) {
-			options = L.setOptions(this, options);
+			L.setOptions(this, options);
 		},
 
 		createIcon: function () {
@@ -44,7 +44,8 @@
 				options = this.options,
 				iconurl = this._getIconUrl("icon");
 
-			div.innerHTML = '<img src="' + iconurl + '" class="leaflet-marker-icon" alt="Icon"><div class="text">' + options.text + '</div>';
+			if (options.text != "") div.innerHTML = '<img src="' + iconurl + '" class="leaflet-marker-icon" alt="Icon"><div class="text">' + options.text + '</div>';
+			else div.innerHTML = '<img src="' + iconurl + '" class="leaflet-marker-icon" alt="Icon">';
 
 			this._setIconStyles(div, 'textmarker');
 			return div;

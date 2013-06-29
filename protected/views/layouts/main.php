@@ -52,7 +52,7 @@
 	<link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css"/>
 	<link rel="stylesheet" href="/styles.css"/>
 
-	<script src="/js/jquery-1.10.0.min.js"></script>
+	<script src="/js/jquery-1.10.1.min.js"></script>
 	<script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
 	<script src="/js/scrollintoview.js"></script>

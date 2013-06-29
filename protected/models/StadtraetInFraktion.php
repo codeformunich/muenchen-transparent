@@ -5,7 +5,7 @@
  * @property integer $fraktion_id
  * @property string $datum_von
  * @property string $datum_bis
- * @property string $wahlperiode
+ * @property int $wahlperiode
  * @property string $mitgliedschaft
  * @property string $funktion
  *

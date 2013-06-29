@@ -57,9 +57,14 @@ $cs->registerScriptFile('/js/index.js');
 			"/js/leaflet.textmarkers.js"
 		],
 		complete: function () {
-			var $map = $("#map").AntraegeKarte({ benachrichtigungen_widget: "benachrichtigung_hinweis", show_BAs: true, onSelect: function (latlng, rad) {
-				index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
-			}});
+			var $map = $("#map").AntraegeKarte({
+				benachrichtigungen_widget: "benachrichtigung_hinweis",
+				show_BAs: true,
+				benachrichtigungen_widget_zoom: 14,
+				onSelect: function (latlng, rad, zoom) {
+					if (zoom >= 14) index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
+				}
+			});
 			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
 		}
 	})
