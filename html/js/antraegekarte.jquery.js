@@ -71,8 +71,8 @@ $.widget("openris.AntraegeKarte", {
 
 		for (i = 0; i < antraege_data.length; i++) {
 			// add a marker in the given location, attach some popup content to it and open the popup
-			var text_key = key = antraege_data[i][0] + "_" + antraege_data[i][1],
-				multi_text = (markers_pos_num[key] > 1 ? markers_pos_num[key] : ""),
+			var text_key = antraege_data[i][0] + "_" + antraege_data[i][1],
+				multi_text = (markers_pos_num[text_key] > 1 ? markers_pos_num[text_key] : ""),
 				markerIcon = L.TextMarkers.icon({text: multi_text }),
 				marker = new L.Marker([antraege_data[i][0], antraege_data[i][1]], {icon: markerIcon });
 			marker.desc = antraege_data[i][2];

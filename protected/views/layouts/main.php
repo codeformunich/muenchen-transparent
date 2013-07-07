@@ -10,6 +10,7 @@
 	<meta name="author" content="Tobias Hößl">
 
 	<link href="/js/bootstrap/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/bootstrap-glyphicons.css" rel="stylesheet">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
@@ -94,7 +95,7 @@
 					</ul>
 				</li>
 			</ul>
-			<form class="navbar-form pull-right rounded" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
+			<form class="navbar-form form-inline pull-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
 				<input type="text" name="suchbegriff" placeholder="Volltextsuche">
 				<button type="submit" class="btn"><span class="glyphicon glyphicon-search"></span></button>
 			</form>

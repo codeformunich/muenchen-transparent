@@ -86,7 +86,6 @@ class RISPDF2Text
 		$text = "";
 
 		if (preg_match("/tiff?$/siu", $filename)) { // TIFF
-			echo "TIFF!\n";
 			$tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
 			exec(PATH_TESSERACT . " $filename $tif_tmp_file -l deu -psm 1", $result);
 			if (file_exists($tif_tmp_file . ".txt")) {
@@ -95,7 +94,7 @@ class RISPDF2Text
 			};
 		} else for ($i = 0; $i < $seiten_anzahl; $i++) { // PDF
 			$tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
-			exec(PATH_CONVERT . " -density 300x300 \"${filename}[$i]\" -colorspace Gray $depth $tif_tmp_file", $result);
+			exec(PATH_CONVERT . " -background white -flatten +matte -density 300x300 \"${filename}[$i]\" -colorspace Gray $depth $tif_tmp_file", $result);
 			if (file_exists($tif_tmp_file)) {
 				exec(PATH_TESSERACT . " $tif_tmp_file $tif_tmp_file -l deu -psm 1", $result);
 				$text .= "########## SEITE " . ($i + 1) . " ##########\n";
