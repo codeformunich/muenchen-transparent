@@ -44,6 +44,8 @@ class AntragDokument extends CActiveRecord
 		"ba_termin"          => "BA: Termin",
 	);
 
+	private static $_cache = array();
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -146,6 +148,16 @@ class AntragDokument extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
 		));
+	}
+
+
+	/**
+	 * @param int $dokument_id
+	 * @return AntragDokument|null
+	 */
+	public static function getCachedByID($dokument_id) {
+		if (!isset(static::$_cache[$dokument_id])) static::$_cache[$dokument_id] = AntragDokument::model()->findByPk($dokument_id);
+		return static::$_cache[$dokument_id];
 	}
 
 

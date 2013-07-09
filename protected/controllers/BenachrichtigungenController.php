@@ -106,8 +106,8 @@ class BenachrichtigungenController extends RISBaseController {
 	}
 
 	/**
-	 * @var Solarium\Client $solr
-	 * @var BenutzerIn $benutzerIn
+	 * @param Solarium\Client $solr
+	 * @param BenutzerIn $benutzerIn
 	 * @return \Solarium\QueryType\Select\Query\Query
 	 */
 	protected function getAlleSuchergebnisse(&$solr, $benutzerIn) {
@@ -126,6 +126,7 @@ class BenachrichtigungenController extends RISBaseController {
 
 		foreach ($benachrichtigungen as $ben) $krits_solr[] = "(" . $ben->getSolrQueryStr($select) . ")";
 		$querystr = implode(" OR ", $krits_solr);
+
 		$select->setQuery($querystr);
 
 		/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */

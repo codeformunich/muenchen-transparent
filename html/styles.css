@@ -312,12 +312,12 @@ body {
 	margin-top: 1.5em;
 }
 
-ul.antragsliste {
+ul.antragsliste, ul.terminliste {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
-ul.antragsliste > li {
+ul.antragsliste > li, ul.terminliste > li {
 	margin: 0;
 	margin-top: 6px;
 	border: solid 1px #ccc;
@@ -333,6 +333,11 @@ html.no-csscolumns #stadtratsdokumente_holder.fullsize ul.antragsliste > li {
 	display: inline-block;
 }
 
+ul.terminliste > li > .termindetails {
+	background-color: #fff;
+	margin: 0;
+	padding: 3px;
+}
 
 ul.antragsliste > li > .add_meta {
 	float: right;

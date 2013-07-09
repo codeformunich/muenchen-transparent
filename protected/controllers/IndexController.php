@@ -12,6 +12,31 @@ class IndexController extends RISBaseController
 	 */
 	public function actionTileCache($style, $width, $zoom, $x, $y)
 	{
+
+		if ($width == 256) {
+			$boundaries = array(
+				3  => array(2, 2, 6, 3),
+				4  => array(6, 4, 11, 6),
+				5  => array(14, 10, 19, 11),
+				6  => array(31, 21, 36, 22),
+				7  => array(66, 43, 70, 45),
+				8  => array(134, 88, 138, 89),
+				9  => array(270, 176, 274, 178),
+				10 => array(542, 354, 547, 356),
+				11 => array(1086, 708, 1091, 712),
+			);
+			if (isset($boundaries[$zoom])) {
+				$bound       = $boundaries[$zoom];
+				$outofbounds = false;
+				if ($x < $bound[0] || $y < $bound[1] || $x > $bound[2] || $y > $bound[3]) $outofbounds = true;
+
+				if ($outofbounds) {
+					Header("Location: /images/HereBeDragons256.png");
+					Yii::app()->end();
+				}
+			}
+		}
+
 		$url = "http://b.tile.cloudmade.com/" . Yii::app()->params['cloudmateKey'] . "/$style/$width/$zoom/$x/$y.png";
 
 		$ch = curl_init();
@@ -543,11 +568,18 @@ class IndexController extends RISBaseController
 
 		$geodata = $this->antraege2geodata($antraege);
 
+		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + 7 * 24 * 3600), true)->findAll();
+		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time() - 7 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(date("Y-m-d 00:00:00", time() - 7 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+
 		$this->render('index', array(
-			"weitere_url" => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
-			"antraege"    => $antraege,
-			"geodata"     => $geodata,
-			"datum"       => $datum,
+			"weitere_url"           => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
+			"antraege"              => $antraege,
+			"geodata"               => $geodata,
+			"datum"                 => $datum,
+			"termine_zukunft"       => $termine_zukunft,
+			"termine_vergangenheit" => $termine_vergangenheit,
+			"termin_dokumente"      => $termin_dokumente
 		));
 	}
 

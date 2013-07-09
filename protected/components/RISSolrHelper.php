@@ -60,7 +60,7 @@ class RISSolrHelper {
 			$link           = Yii::app()->createUrl("index/dokument", array("id" => str_replace("Document:", "", $dokument->id)));
 			$highlightedDoc = $highlighting->getResult($dokument->id);
 			$item           = array(
-				"title"          => $model->name,
+				"title"          => $model->name . " (zu " . $model->getRISItem()->getTypName() . " \"" . $model->getRISItem()->getName() . "\"",
 				"link"           => $link,
 				"content"        => "",
 				"dateCreated"    => RISTools::date_iso2timestamp($model->datum),

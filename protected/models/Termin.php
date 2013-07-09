@@ -179,4 +179,46 @@ class Termin extends CActiveRecord implements IRISItem
 	{
 		return $this->gremium->name . " (" . $this->termin . ")";
 	}
+
+
+	/**
+	 * @param string $zeit_von
+	 * @param string $zeit_bis
+	 * @param bool $aufsteigend
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function termine_stadtrat_zeitraum($zeit_von, $zeit_bis, $aufsteigend = true, $limit = 0)
+	{
+		$params = array(
+			'condition' => 'termin.ba_nr IS NULL AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
+			'order' => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
+			'with' => array("gremium"),
+			'alias' => 'termin'
+		);
+		if ($limit > 0) $params['limit'] = $limit;
+		$this->getDbCriteria()->mergeWith($params);
+		return $this;
+	}
+
+	/**
+	 * @param string $zeit_von
+	 * @param string $zeit_bis
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function neueste_stadtratsantragsdokumente($zeit_von, $zeit_bis, $limit = 0)
+	{
+		$params = array(
+			'condition' => 'ba_nr IS NULL AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'order' => 'datum DESC',
+			'with' => array(
+				'antraegeDokumente' => array(
+					'condition' => 'datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
+				),
+			));
+		if ($limit > 0) $params['limit'] = $limit;
+		$this->getDbCriteria()->mergeWith($params);
+		return $this;
+	}
 }

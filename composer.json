@@ -20,11 +20,19 @@
 					"type": "zip"
 				}
 			}
+		},
+		{
+			"type": "composer",
+			"url": "https://packages.zendframework.com/"
 		}
 	],
 	"require": {
 		"php": ">=5.3.3",
 		"yiisoft/yii": "1.1.13",
-		"solarium/solarium": "3.1.1"
+		"solarium/solarium": "3.1.1",
+		"zendframework/zend-config": "2.2.*",
+		"zendframework/zend-http": "2.2.*",
+		"zendframework/zend-mail": "2.2.*",
+		"zendframework/zend-mime": "2.2.*"
 	}
 }

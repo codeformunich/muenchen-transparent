@@ -219,6 +219,142 @@ class BenutzerIn extends CActiveRecord
 	}
 
 	/**
+	 * @param int[] $document_ids
+	 * @param RISSucheKrits $benachrichtigung
+	 * @return array
+	 */
+	public function queryBenachrichtigungen($document_ids, $benachrichtigung) {
+		$solr   = RISSolrHelper::getSolrClient("ris");
+
+		$select = $solr->createSelect();
+
+		$select->addSort('sort_datum', $select::SORT_DESC);
+		$select->setRows(100);
+
+		/** @var Solarium\QueryType\Select\Query\Component\DisMax $dismax */
+		$dismax = $select->getDisMax();
+		$dismax->setQueryParser('edismax');
+		$dismax->setQueryFields("text text_ocr");
+
+		$select->setQuery($benachrichtigung->getSolrQueryStr($select));
+
+		$select->createFilterQuery('maxprice')->setQuery(implode(" OR ", $document_ids));
+
+		/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+		$hl = $select->getHighlighting();
+		$hl->setFields('text, text_ocr, antrag_betreff');
+		$hl->setSimplePrefix('<b>');
+		$hl->setSimplePostfix('</b>');
+
+		$ergebnisse = $solr->select($select);
+		$documents = $ergebnisse->getDocuments();
+		$res = array();
+		foreach ($documents as $document) {
+			$res[] = array(
+				"id" => $document->id,
+				"name" => $document->dokument_name . ", " . $document->antrag_betreff,
+			);
+		}
+		return $res;
+	}
+
+
+	private function verschickeNeueBenachrichtigungen_text($data) {
+		$str = "Hallo,\n\nseit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:\n\n";
+
+		if (count($data["antraege"]) > 0) $str .= "=== Anträge & Vorlagen ===\n\n";
+		foreach ($data["antraege"] as $dat) {
+			/** @var Antrag $antrag */
+			$antrag = $dat["antrag"];
+
+			$dokumente_strs = array();
+			$queries = array();
+			foreach ($dat["dokumente"] as $dok) {
+				/** @var AntragDokument $dokument */
+				$dokument = $dok["dokument"];
+				$dokumente_strs[] = "    - " . $dokument->name . " (http://www.ris-muenchen.de" . $dokument->url . ")";
+				foreach ($dok["queries"] as $qu) {
+					/** @var RISSucheKrits $qu */
+					$name = $qu->getTitle();
+					if (!in_array($name, $queries)) $queries[] = $name;
+				}
+			}
+
+			$name = $antrag->betreff;
+			$name = preg_replace("/ *(\n *)+/siu", ", ", $name);
+			if (strlen($name) > 80) $name = substr($name, 0, 78) . "...";
+			$str .= "- \"" . $name . "\n";
+			$str .= "  " . Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".") . "\n";
+			$str .= implode("\n", $dokumente_strs);
+			if (count($queries) == 1) {
+				$str .= "\n    Gefunden über: \"" .$queries[0] . "\"\n";
+			} else {
+				$str .= "\n    Gefunden über: \"" . implode("\", \"", $queries) . "\"\n";
+			}
+			$str .= "\n";
+		}
+
+		$str .= "\nFalls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter " . Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode())) . " abbestellen.\n\nLiebe Grüße,\n  Das OpenRIS-Team";
+		return $str;
+	}
+
+	/**
+	 *
+	 */
+	public function verschickeNeueBenachrichtigungen() {
+		$benachrichtigungen = $this->getBenachrichtigungen();
+
+		$neu_seit = "2013-07-01 00:00:00";
+		$sql = Yii::app()->db->createCommand();
+		$sql->select("id")->from("antraege_dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
+		$data = $sql->queryColumn(array("id"));
+		if (count($data) == 0) return;
+
+		$document_ids = array();
+		foreach ($data as $did) $document_ids[] = "id:\"Document:$did\"";
+
+		$ergebnisse = array(
+			"antraege" => array(),
+			"termine" => array()
+		);
+		foreach ($benachrichtigungen as $benachrichtigung) {
+			$e = $this->queryBenachrichtigungen($document_ids, $benachrichtigung);
+			foreach ($e as $f) {
+				$d = explode(":", $f["id"]);
+				$dokument_id = IntVal($d[1]);
+				$dokument = AntragDokument::getCachedByID($dokument_id);
+				if (!$dokument) continue;
+				if ($dokument->antrag_id > 0) {
+					if (!isset($ergebnisse["antraege"][$dokument->antrag_id])) $ergebnisse["antraege"][$dokument->antrag_id] = array(
+						"antrag" => $dokument->antrag,
+						"dokumente" => array()
+					);
+					if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = array(
+						"dokument" => AntragDokument::model()->findByPk($dokument_id),
+						"queries" => array()
+					);
+					$ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
+				} elseif ($dokument->termin_id > 0) {
+					echo "Skipping termin\n";
+				}
+			}
+		}
+
+		$mail_txt = $this->verschickeNeueBenachrichtigungen_text($ergebnisse);
+
+		$mail = new Zend\Mail\Message();
+		$mail->setBody($mail_txt);
+		$mail->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
+		$mail->addTo($this->email, $this->email);
+		$mail->setSubject("Neue Dokumente im Münchner RIS");
+
+		$transport = new Zend\Mail\Transport\Sendmail();
+		$transport->send($mail);
+
+		echo $mail_txt;
+	}
+
+	/**
 	 * @param string $code
 	 * @return BenutzerIn|null
 	 */

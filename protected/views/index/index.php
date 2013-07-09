@@ -5,6 +5,9 @@
  * @var Antrag[] $antraege
  * @var string $datum
  * @var string $weitere_url
+ * @var Termin[] $termine_zukunft
+ * @var Termin[] $termine_vergangenheit
+ * @var Termin[] $termin_dokumente
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -19,6 +22,32 @@ $cs = $app->getClientScript();
 //$cs->registerScriptFile($assets_base . '/js/index.js');
 $cs->registerScriptFile('/js/index.js');
 
+
+/**
+ * @var Termin[] $termine
+ * @return array[]
+ */
+function gruppiere_termine($termine)
+{
+	$data = array();
+	foreach ($termine as $termin) {
+		$key = $termin->termin . $termin->sitzungsort;
+		if (!isset($data[$key])) {
+			$ts         = RISTools::date_iso2timestamp($termin->termin);
+			$data[$key] = array(
+				"datum"   => date("j.M, H:i", $ts),
+				"gremien" => array(),
+				"ort"     => $termin->sitzungsort,
+				"tos"     => array(),
+			);
+		}
+		$url = "http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=" . $termin->id;
+		if (!isset($data[$key]["gremien"][$termin->gremium->name])) $data[$key]["gremien"][$termin->gremium->name] = array();
+		$data[$key]["gremien"][$termin->gremium->name][] = $url;
+	}
+	foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
+	return $data;
+}
 
 ?>
 
@@ -70,6 +99,7 @@ $cs->registerScriptFile('/js/index.js');
 	})
 </script>
 
+
 <div class="row">
 	<div class="col col-lg-5" id="stadtratsdokumente_holder">
 		<? $this->renderPartial("index_antraege_liste", array(
@@ -80,33 +110,58 @@ $cs->registerScriptFile('/js/index.js');
 	</div>
 	<div class="col col-lg-4 keine_dokumente">
 		<h3>Kommende Termine</h3>
-		<ul>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-		</ul>
+		<ul class="terminliste"><?
+			$data = gruppiere_termine($termine_zukunft);
+			foreach ($data as $termin) {
+				echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
+				$gremien = array();
+				foreach ($termin["gremien"] as $name => $links) {
+					foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
+				}
+				echo implode(", ", $gremien);
+				echo "</div></li>";
+			}
+			?></ul>
 
 		<h3>Vergangene Termine</h3>
-		<ul>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-			<li>13.04.2013: ......</li>
-		</ul>
+		<ul class="terminliste"><?
+			$data = gruppiere_termine($termine_vergangenheit);
+			foreach ($data as $termin) {
+				echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
+				$gremien = array();
+				foreach ($termin["gremien"] as $name => $links) {
+					if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
+					else {
+						$str = CHtml::encode($name);
+						for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
+						$gremien[] = $str;
+					}
+				}
+				echo implode(", ", $gremien);
+				echo "</div></li>";
+			}
+			?></ul>
+		<h3>Neue Sitzungsdokumente</h3>
+		<ul class="antragsliste"><?
+			foreach ($termin_dokumente as $termin) {
+				$ts = RISTools::date_iso2timestamp($termin->termin);
+				echo "<li><div class='antraglink'>" . CHtml::encode(date("j.M, H:i", $ts) . ", " . $termin->gremium->name) . "</div>";
+				foreach ($termin->antraegeDokumente as $dokument) {
+					echo "<ul class='dokumente'><li>";
+					echo "<div style='float: right;'>" . CHtml::encode(date("j.M", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+					echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+					echo "</li></ul>";
+				}
+				echo "</li>";
+			}
+			?></ul>
 	</div>
 	<div class="col col-lg-3 keine_dokumente">
 		<h3>Benachrichtigungen</h3>
-
 		<p>
 			<a href="<?= CHtml::encode($this->createUrl("index/feed")) ?>" class="startseite_benachrichtigung_link" title="RSS-Feed">R</a>
 			<a href="#" class="startseite_benachrichtigung_link" title="Twitter">T</a>
 			<a href="#" class="startseite_benachrichtigung_link" title="Facebook">f</a>
-
 		</p>
 
 		<h3>Infos</h3>
