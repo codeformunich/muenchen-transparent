@@ -298,6 +298,59 @@ class BenutzerIn extends CActiveRecord
 		return $str;
 	}
 
+	private function verschickeNeueBenachrichtigungen_html($data) {
+		$str = '<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+	<style>
+	</style>
+	</head>
+
+<body>
+<h2>Hallo,</h3>
+		seit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:<br><br>';
+
+		if (count($data["antraege"]) > 0) $str .= "<h3>Anträge & Vorlagen</h3><ul>";
+		foreach ($data["antraege"] as $dat) {
+			/** @var Antrag $antrag */
+			$antrag = $dat["antrag"];
+
+			$dokumente_strs = array();
+			$queries = array();
+			foreach ($dat["dokumente"] as $dok) {
+				/** @var AntragDokument $dokument */
+				$dokument = $dok["dokument"];
+				$dokumente_strs[] = "<li><a href='" . CHtml::encode("http://www.ris-muenchen.de" . $dokument->url) . "'>" . CHtml::encode($dokument->name) . "</a></li>";
+				foreach ($dok["queries"] as $qu) {
+					/** @var RISSucheKrits $qu */
+					$name = $qu->getTitle();
+					if (!in_array($name, $queries)) $queries[] = $name;
+				}
+			}
+
+			$name = $antrag->betreff;
+			$name = preg_replace("/ *(\n *)+/siu", ", ", $name);
+			if (strlen($name) > 80) $name = substr($name, 0, 78) . "...";
+			$url = Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".");
+			$str .= "<li><a href='" . CHtml::encode($url). "'>" . CHtml::encode($name) . "</a>";
+			$str .= "<ul>" . implode("", $dokumente_strs) . "</ul>";
+			$str .= "<div class='gefunden_ueber'>";
+			if (count($queries) == 1) {
+				$str .= "Gefunden über: \"" .$queries[0] . "\"";
+			} else {
+				$str .= "Gefunden über: \"" . implode("\"<br>\"", $queries) . "\"";
+			}
+			$str .= "</div></li>\n";
+		}
+		if (count($data["antraege"]) > 0) $str .= "</ul>";
+
+		$url = Yii::app()->params["baseURL"] . Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode()));
+		$str .= "<br>Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href='" . CHtml::encode($url) . "'>hier abbestellen</a>.<br><br><br>Liebe Grüße,<br> &nbsp; Das OpenRIS-Team";
+		$str .= "</body></html>";
+		return $str;
+	}
+
 	/**
 	 *
 	 */
@@ -341,12 +394,26 @@ class BenutzerIn extends CActiveRecord
 		}
 
 		$mail_txt = $this->verschickeNeueBenachrichtigungen_text($ergebnisse);
+		$mail_html = $this->verschickeNeueBenachrichtigungen_html($ergebnisse);
 
 		$mail = new Zend\Mail\Message();
-		$mail->setBody($mail_txt);
 		$mail->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
 		$mail->addTo($this->email, $this->email);
 		$mail->setSubject("Neue Dokumente im Münchner RIS");
+
+		$mail->setEncoding("UTF-8");
+
+		$text_part = new Zend\Mime\Part($mail_txt);
+		$text_part->type = "text/plain";
+		$text_part->charset = "UTF-8";
+		$html_part = new Zend\Mime\Part($mail_html);
+		$html_part->type = "text/html";
+		$html_part->charset = "UTF-8";
+		$mimem = new Zend\Mime\Message();
+		$mimem->setParts(array($text_part, $html_part));
+
+		$mail->setBody($mimem);
+		$mail->getHeaders()->get('content-type')->setType('multipart/alternative');
 
 		$transport = new Zend\Mail\Transport\Sendmail();
 		$transport->send($mail);

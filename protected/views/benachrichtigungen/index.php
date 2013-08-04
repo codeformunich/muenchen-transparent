@@ -124,7 +124,7 @@ if (count($bens) == 0) {
 	<script>
 		ASSETS_BASE = <?=json_encode($assets_base)?>;
 		yepnope({
-			load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", "/js/Leaflet.draw/dist/leaflet.draw.js"],
+			load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", "/js/Leaflet.draw/dist/leaflet.draw.js"],
 			complete: function () {
 				var $ben_holder = $("#ben_map_infos");
 				$("#ben_map").AntraegeKarte({ benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, onSelect: function (latlng, rad) {

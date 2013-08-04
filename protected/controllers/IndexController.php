@@ -37,7 +37,20 @@ class IndexController extends RISBaseController
 			}
 		}
 
-		$url = "http://b.tile.cloudmade.com/" . Yii::app()->params['cloudmateKey'] . "/$style/$width/$zoom/$x/$y.png";
+		if ($width == 256) {
+			$array = array("1", "2", "3");
+			$key   = $array[array_rand($array)];
+			$url   = "http://tiles" . $key . ".api.skobbler.net/tiles/${zoom}/${x}/${y}.png?api_key=" . Yii::app()->params['skobblerKey'];
+		} else {
+			$array = array("a", "b", "c");
+			$key   = $array[array_rand($array)];
+			$url   = "http://$key.tile.cloudmade.com/" . Yii::app()->params['cloudmateKey'] . "/$style/$width/$zoom/$x/$y.png";
+		}
+
+		$fp = fopen("/tmp/tiles.log", "a");
+		fwrite($fp, $url . "\n");
+		fclose($fp);
+
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);

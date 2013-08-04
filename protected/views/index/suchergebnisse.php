@@ -49,7 +49,7 @@ if (!is_null($geodata) && count($geodata) > 0) {
 
 	<script>
 		yepnope({
-			load: ["/js/Leaflet/dist/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js"],
+			load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js"],
 			complete: function () {
 				var $map = $("#map").AntraegeKarte({
 					lat: <?=$geokrit["lat"]?>,

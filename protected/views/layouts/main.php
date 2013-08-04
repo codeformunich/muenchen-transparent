@@ -9,15 +9,15 @@
 	<meta name="description" content="">
 	<meta name="author" content="Tobias Hößl">
 
-	<link href="/js/bootstrap/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="/js/bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="/css/bootstrap-glyphicons.css" rel="stylesheet">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
-	<script src="/js/bootstrap/_gh_pages/assets/js/html5shiv.js"></script>
-	<script src="/js/bootstrap/_gh_pages/assets/js/respond/respond.min.js"></script>
+	<script src="/js/html5shiv.js"></script>
+	<script src="/js/respond.min.js"></script>
 	<![endif]-->
 
 	<!--
@@ -35,9 +35,9 @@
 
 
 	<? if ($this->load_leaflet_css) { ?>
-		<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.css"/>
+		<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>
 		<!--[if lte IE 8]>
-		<link rel="stylesheet" href="/js/Leaflet/dist/leaflet.ie.css"/>
+		<link rel="stylesheet" href="/js/Leaflet/leaflet.ie.css"/>
 		<![endif]-->
 	<?
 	}
@@ -53,7 +53,7 @@
 	<link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css"/>
 	<link rel="stylesheet" href="/styles.css"/>
 
-	<script src="/js/jquery-1.10.1.min.js"></script>
+	<script src="/js/jquery-1.10.2.min.js"></script>
 	<script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
 	<script src="/js/scrollintoview.js"></script>
@@ -123,7 +123,7 @@
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
-<script src="/js/bootstrap/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>
