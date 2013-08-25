@@ -92,6 +92,7 @@ function gruppiere_termine($termine)
 				benachrichtigungen_widget: "benachrichtigung_hinweis",
 				show_BAs: true,
 				benachrichtigungen_widget_zoom: 14,
+				ba_link: "<?=CHtml::encode($this->createUrl("index/ba", array("ba_nr" => "12345")))?>",
 				onSelect: function (latlng, rad, zoom) {
 					if (zoom >= 14) index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
 				}

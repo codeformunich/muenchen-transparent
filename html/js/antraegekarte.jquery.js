@@ -8,6 +8,7 @@ $.widget("openris.AntraegeKarte", {
 		benachrichtigungen_widget: false,
 		benachrichtigungen_widget_zoom: 14,
 		show_BAs: false,
+		ba_link: "#ba#",
 		onSelect: null
 	},
 	map: null,
@@ -278,6 +279,8 @@ $.widget("openris.AntraegeKarte", {
 							geojson_hide(e);
 						},
 						click: function (e) {
+							window.location.href = $widget.options.ba_link.replace("12345", e.target.feature.id);
+							/*
 							if (geojson_clicked) {
 								geojson_clicked = false;
 								geojson_hide(e);
@@ -285,6 +288,7 @@ $.widget("openris.AntraegeKarte", {
 								geojson_clicked = true;
 								geojson_show(e);
 							}
+							*/
 						}
 					});
 				}

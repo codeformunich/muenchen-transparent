@@ -344,11 +344,6 @@ class IndexController extends RISBaseController
 		));
 	}
 
-	public function actionStadtrat()
-	{
-		echo "Stadtrat";
-	}
-
 	public function actionBa($ba_nr)
 	{
 		$this->top_menu = "ba";
@@ -503,8 +498,9 @@ class IndexController extends RISBaseController
 		Yii::app()->end();
 	}
 
-	public function actionIndex()
+	public function actionStadtrat()
 	{
+		$this->top_menu = "stadtrat";
 		$this->performLoginActions();
 
 		$this->load_leaflet_css      = true;
@@ -527,7 +523,7 @@ class IndexController extends RISBaseController
 		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
 		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
 
-		$this->render('index', array(
+		$this->render('stadtrat_uebersicht', array(
 			"weitere_url"           => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
 			"antraege"              => $antraege,
 			"geodata"               => $geodata,
@@ -540,8 +536,14 @@ class IndexController extends RISBaseController
 		));
 	}
 
+
+	public function actionInfos() {
+		$this->top_menu = "infos";
+		$this->render('infos');
+	}
+
 	/**
-	 * This is the action to handle external exceptions.
+	 *
 	 */
 	public function actionError()
 	{
@@ -553,6 +555,13 @@ class IndexController extends RISBaseController
 		} else {
 			$this->render('error', array("code" => 400, "message" => "Ein Fehler ist aufgetreten"));
 		}
+	}
+
+	/**
+	 *
+	 */
+	public function actionIndex() {
+		$this->actionStadtrat();
 	}
 
 }

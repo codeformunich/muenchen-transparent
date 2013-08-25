@@ -76,11 +76,11 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<?= CHtml::encode($this->createUrl("index/index")) ?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
+			<a class="<? if ($this->top_menu == "infos") echo 'active'; ?> navbar-brand" href="<?= CHtml::encode($this->createUrl("index/infos")) ?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?= CHtml::link("Stadtrat", $this->createUrl("index/stadtrat")) ?></li>
+				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?= CHtml::link("Stadtrat", $this->createUrl("index/index")) ?></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <b class="caret"></b></a>
 					<ul class="dropdown-menu" id="ba_nav_list">

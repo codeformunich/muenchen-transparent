@@ -294,7 +294,7 @@ class BenutzerIn extends CActiveRecord
 			$str .= "\n";
 		}
 
-		$str .= "\nFalls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter " . Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode())) . " abbestellen.\n\nLiebe Grüße,\n  Das OpenRIS-Team";
+		$str .= "\nFalls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter " . Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode())), ".") . " abbestellen.\n\nLiebe Grüße,\n  Das OpenRIS-Team";
 		return $str;
 	}
 
