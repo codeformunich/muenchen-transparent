@@ -1,8 +1,9 @@
 "use strict";
+
 $.widget("openris.AntraegeKarte", {
 	options: {
-		lat: 48.155,
-		lng: 11.55820,
+		lat: 48.15509285476017,
+		lng: 11.542510986328125,
 		size: 11,
 		benachrichtigungen_widget: false,
 		benachrichtigungen_widget_zoom: 14,
@@ -24,6 +25,7 @@ $.widget("openris.AntraegeKarte", {
 		$widget.map = L.map($widget.element.attr("id"), {
 			inertia: false
 		});
+		window["map"] = $widget.map; /** @TODO Nur für debug-Zwecke da */
 		$widget.map.setView([this.options["lat"], this.options["lng"]], this.options["size"]);
 		$widget.map.setMaxBounds([
 			[48.4, 11.0],

@@ -13,7 +13,6 @@
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="/js/html5shiv.js"></script>
 	<script src="/js/respond.min.js"></script>
@@ -93,20 +92,22 @@
 					</ul>
 				</li>
 				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
+				<? if (Yii::app()->user->getState("role") == "admin") { ?>
 				<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
 					</ul>
 				</li>
+				<? } ?>
 			</ul>
-			<form class="navbar-form navbar-right">
+			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
 				<div class="form-group">
 					<input type="text" name="suchbegriff" placeholder="Volltextsuche" class="form-control">
 				</div>
 				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
-		</div><!--/.navbar-collapse -->
+		</div>
 	</div>
 </div>
 

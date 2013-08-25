@@ -50,4 +50,33 @@ class RISBaseController extends CController
 		}
 		return $this->_assetsBase;
 	}
+
+	protected function performLoginActions() {
+		$user = Yii::app()->getUser();
+
+		$msg_err = "";
+
+		if (AntiXSS::isTokenSet("abmelden") && !$user->isGuest) {
+			$user->logout();
+		}
+
+		if (AntiXSS::isTokenSet("login") && $user->isGuest) {
+			/** @var BenutzerIn $benutzerIn */
+			$benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
+			if ($benutzerIn) {
+				if ($benutzerIn->validate_password($_REQUEST["password"])) {
+					$identity = new RISUserIdentity($benutzerIn);
+					Yii::app()->user->login($identity);
+
+					if ($benutzerIn->email == Yii::app()->params['adminEmail']) Yii::app()->user->setState("role", "admin");
+				} else {
+					$msg_err = "Das angegebene Passwort ist falsch.";
+				}
+			} else {
+				$msg_err = "Für die angegebene E-Mail-Adresse existiert noch kein Zugang.";
+			}
+		}
+
+		return $msg_err;
+	}
 }

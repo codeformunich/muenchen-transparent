@@ -1,13 +1,11 @@
 @font-face {
 	font-family: 'fontello';
 	src: url('../fonts/fontello.eot?89489601');
-	src: url('../fonts/fontello.eot?89489601#iefix') format('embedded-opentype'),
-	url('../fonts/fontello.woff?89489601') format('woff'),
-	url('../fonts/fontello.ttf?89489601') format('truetype'),
-	url('../fonts/fontello.svg?89489601#fontello') format('svg');
+	src: url('../fonts/fontello.eot?89489601#iefix') format('embedded-opentype'), url('../fonts/fontello.woff?89489601') format('woff'), url('../fonts/fontello.ttf?89489601') format('truetype'), url('../fonts/fontello.svg?89489601#fontello') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
+
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -50,11 +48,26 @@
 	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-rss:before { content: '\52'; } /* 'R' */
-.icon-twitter:before { content: '\54'; } /* 'T' */
-.icon-facebook:before { content: '\66'; } /* 'f' */
-.icon-spin4:before { content: '\e834'; } /* '' */
+.icon-rss:before {
+	content: '\52';
+}
 
+/* 'R' */
+.icon-twitter:before {
+	content: '\54';
+}
+
+/* 'T' */
+.icon-facebook:before {
+	content: '\66';
+}
+
+/* 'f' */
+.icon-spin4:before {
+	content: '\e834';
+}
+
+/* '' */
 
 /*
    Animation example, for spinners
@@ -66,6 +79,7 @@
 	animation: spin 2s infinite linear;
 	display: inline-block;
 }
+
 @-moz-keyframes spin {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -81,6 +95,7 @@
 		transform: rotate(359deg);
 	}
 }
+
 @-webkit-keyframes spin {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -96,6 +111,7 @@
 		transform: rotate(359deg);
 	}
 }
+
 @-o-keyframes spin {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -111,6 +127,7 @@
 		transform: rotate(359deg);
 	}
 }
+
 @-ms-keyframes spin {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -126,6 +143,7 @@
 		transform: rotate(359deg);
 	}
 }
+
 @keyframes spin {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -142,19 +160,15 @@
 	}
 }
 
-
-
-
-
-#ba_nav_list { min-width: 270px; }
+#ba_nav_list {
+	min-width: 270px;
+}
 
 body {
 	padding-top: 60px;
 	padding-bottom: 20px;
 	background-image: url(/images/imgnoise.png);
 }
-
-
 
 /* Set widths on the navbar form inputs since otherwise they're 100% wide */
 .navbar-form input[type="text"],
@@ -169,8 +183,14 @@ body {
 	padding-right: 15px;
 }
 
-.leaflet-popup-content-wrapper { border-radius: 10px; }
-.leaflet-popup .ort { float: right; }
+.leaflet-popup-content-wrapper {
+	border-radius: 10px;
+}
+
+.leaflet-popup .ort {
+	float: right;
+}
+
 .leaflet-popup .ort_dokument {
 	border-top: solid 1px #999;
 	margin-top: 6px;
@@ -197,9 +217,11 @@ body {
 	overflow: hidden;
 	padding: 6px;
 }
+
 #map {
 	height: 420px;
 }
+
 #benachrichtigung_hinweis {
 	border: solid 1px #ccc;
 	background-color: #eee;
@@ -217,6 +239,7 @@ body {
 	-o-transition: height 0.15s ease;
 	transition: height 0.15s ease;
 }
+
 #benachrichtigung_hinweis.half_visible {
 	height: 6em;
 	-webkit-transition: height 0.15s ease;
@@ -225,10 +248,12 @@ body {
 	-o-transition: height 0.15s ease;
 	transition: height 0.15s ease;
 }
+
 #benachrichtigung_hinweis.half_visible_tmp1 {
 	height: auto;
 	min-height: 6em;
 }
+
 #benachrichtigung_hinweis.half_visible_tmp2 {
 	height: 6em;
 	-webkit-transition: opacity 0.35s ease;
@@ -237,6 +262,7 @@ body {
 	-o-transition: opacity 0.35s ease;
 	transition: opacity 0.35s ease;
 }
+
 #benachrichtigung_hinweis.visible {
 	height: auto;
 	min-height: 6em;
@@ -261,10 +287,11 @@ body {
 	padding: 6px 8px;
 	font: 14px/16px Arial, Helvetica, sans-serif;
 	background: white;
-	background: rgba(255,255,255,0.8);
-	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 }
+
 .map-overlay-info h4 {
 	margin: 0 0 5px;
 	color: #777;
@@ -274,6 +301,7 @@ body {
 	position: relative;
 	min-height: 400px;
 }
+
 #stadtratsdokumente_holder .loading_indicator {
 	text-align: center;
 	font-size: 10em;
@@ -299,6 +327,7 @@ body {
 #stadtratsdokumente_holder.loading ul.antragsliste {
 	opacity: 0.5;
 }
+
 #stadtratsdokumente_holder.fullsize ul.antragsliste {
 	-moz-column-count: 2;
 	-moz-column-gap: 40px;
@@ -307,16 +336,23 @@ body {
 	column-count: 2;
 	column-gap: 40px;
 }
+
 #stadtratsdokumente_holder .aeltere_caller {
 	font-size: 1.5em;
 	margin-top: 1.5em;
 }
 
+
+.keine_gefunden {
+	color: gray;
+	font-style: italic;
+}
 ul.antragsliste, ul.terminliste {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
+
 ul.antragsliste > li, ul.terminliste > li {
 	margin: 0;
 	margin-top: 6px;
@@ -328,6 +364,7 @@ ul.antragsliste > li, ul.terminliste > li {
 	display: inline-block;
 	width: 100%;
 }
+
 html.no-csscolumns #stadtratsdokumente_holder.fullsize ul.antragsliste > li {
 	width: 49%;
 	display: inline-block;
@@ -345,31 +382,36 @@ ul.antragsliste > li > .add_meta {
 	color: gray;
 	margin-top: 3px;
 }
+
 ul.antragsliste > li > .add_meta .partei {
 	border-bottom: dotted 1px gray;
 }
+
 ul.antragsliste > li > .antraglink {
 	padding: 1px;
 	font-weight: bold;
 }
+
 ul.antragsliste > li > ul.dokumente {
 	list-style-type: none;
 	margin: 0;
 	padding: 3px;
 	background-color: #fff;
 }
+
 ul.antragsliste > li > ul.dokumente > li {
 	display: inline;
 	margin: 1px;
 	padding: 1px;
 }
+
 ul.antragsliste > li > ul.dokumente > li:before {
 	content: ', '
 }
+
 ul.antragsliste > li > ul.dokumente > li:first-child:before {
 	content: ''
 }
-
 
 .startseite_benachrichtigung_link {
 	display: inline-block;
@@ -385,23 +427,34 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 	color: #5858ff;
 	background-color: #eef;
 }
+
 .startseite_benachrichtigung_link:hover, .startseite_benachrichtigung_link:active {
 	text-decoration: none;
 }
+
 .startseite_benachrichtigung_link:hover {
 	background-color: #5858ff;
 	color: white;
 }
 
+.button_hover_change button {
+	width: 100%;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
 
-.button_hover_change button { width: 100%; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box; }
-.button_hover_change .btn-hover { display: none; }
-.button_hover_change:hover .btn-hover { display: inherit; }
-.button_hover_change:hover .btn-nohover { display: none; }
+.button_hover_change .btn-hover {
+	display: none;
+}
 
+.button_hover_change:hover .btn-hover {
+	display: inherit;
+}
 
-
-
+.button_hover_change:hover .btn-nohover {
+	display: none;
+}
 
 .benachrichtigungsliste {
 	list-style-type: none;
@@ -432,8 +485,8 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 .benachrichtigungsliste button.del {
 	border: none;
 	border-radius: 4px;
-	background-color: transparent ;
-	padding : 0.5em;
+	background-color: transparent;
+	padding: 0.5em;
 	font-size: 1.3em;
 	width: 2em;
 	height: 2em;
@@ -484,6 +537,7 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 	margin-top: 1em;
 	overflow: auto;
 }
+
 .ben_alle_holder > a {
 	display: block;
 	float: left;
@@ -499,7 +553,69 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 	height: 300px;
 }
 
+.form-signin {
+	max-width: 330px;
+	margin: 30px auto 0;
+	width: 310px;
+	overflow: auto;
+	border: 1px solid #E1E1E8;
+	border-radius: 4px;
+	padding: 5px;
+	background-color: #eee;
+}
 
+.form-signin .form-signin-heading {
+	font-size: 2em;
+	margin-top: 5px;
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+	margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+	font-weight: normal;
+}
+
+.form-signin .form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.form-signin .form-control:focus {
+	z-index: 2;
+}
+
+.form-signin input[type="email"], .form-signin.anlegen #password {
+	margin-bottom: -1px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.form-signin.login #password, .form-signin.anlegen #password2 {
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.form-signin.anlegen #password {
+	border-radius: 0;
+}
+
+.form-signin.login #password2 {
+	display: none;
+}
+.form-signin.login .anlegen {
+	display: none;
+}
+.form-signin.anlegen .login {
+	display: none;
+}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {

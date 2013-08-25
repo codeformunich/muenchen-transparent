@@ -8,6 +8,8 @@
  * @var Termin[] $termine_zukunft
  * @var Termin[] $termine_vergangenheit
  * @var Termin[] $termin_dokumente
+ * @var int $tage_zukunft
+ * @var int $tage_vergangenheit
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -110,54 +112,72 @@ function gruppiere_termine($termine)
 	</div>
 	<div class="col col-lg-4 keine_dokumente">
 		<h3>Kommende Termine</h3>
-		<ul class="terminliste"><?
-			$data = gruppiere_termine($termine_zukunft);
-			foreach ($data as $termin) {
-				echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-				$gremien = array();
-				foreach ($termin["gremien"] as $name => $links) {
-					foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
+		<?
+		$data = gruppiere_termine($termine_zukunft);
+		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
+		else {
+			?>
+			<ul class="terminliste"><?
+
+				foreach ($data as $termin) {
+					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
+					$gremien = array();
+					foreach ($termin["gremien"] as $name => $links) {
+						foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
+					}
+					echo implode(", ", $gremien);
+					echo "</div></li>";
 				}
-				echo implode(", ", $gremien);
-				echo "</div></li>";
-			}
-			?></ul>
+				?></ul>
+		<? } ?>
 
 		<h3>Vergangene Termine</h3>
-		<ul class="terminliste"><?
-			$data = gruppiere_termine($termine_vergangenheit);
-			foreach ($data as $termin) {
-				echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-				$gremien = array();
-				foreach ($termin["gremien"] as $name => $links) {
-					if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
-					else {
-						$str = CHtml::encode($name);
-						for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
-						$gremien[] = $str;
+		<?
+		$data = gruppiere_termine($termine_vergangenheit);
+		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
+		else {
+			?>
+			<ul class="terminliste"><?
+				foreach ($data as $termin) {
+					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
+					$gremien = array();
+					foreach ($termin["gremien"] as $name => $links) {
+						if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
+						else {
+							$str = CHtml::encode($name);
+							for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
+							$gremien[] = $str;
+						}
 					}
+					echo implode(", ", $gremien);
+					echo "</div></li>";
 				}
-				echo implode(", ", $gremien);
-				echo "</div></li>";
-			}
-			?></ul>
+				?></ul>
+		<? } ?>
+
 		<h3>Neue Sitzungsdokumente</h3>
-		<ul class="antragsliste"><?
-			foreach ($termin_dokumente as $termin) {
-				$ts = RISTools::date_iso2timestamp($termin->termin);
-				echo "<li><div class='antraglink'>" . CHtml::encode(date("j.M, H:i", $ts) . ", " . $termin->gremium->name) . "</div>";
-				foreach ($termin->antraegeDokumente as $dokument) {
-					echo "<ul class='dokumente'><li>";
-					echo "<div style='float: right;'>" . CHtml::encode(date("j.M", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
-					echo CHtml::link($dokument->name, $dokument->getOriginalLink());
-					echo "</li></ul>";
+		<?
+		if (count($termin_dokumente) == 0) echo "<p class='keine_gefunden'>Keine neue Stadtratsdokumente den letzten $tage_vergangenheit Tagen</p>";
+		else {
+			?>
+			<ul class="antragsliste"><?
+				foreach ($termin_dokumente as $termin) {
+					$ts = RISTools::date_iso2timestamp($termin->termin);
+					echo "<li><div class='antraglink'>" . CHtml::encode(date("j.M, H:i", $ts) . ", " . $termin->gremium->name) . "</div>";
+					foreach ($termin->antraegeDokumente as $dokument) {
+						echo "<ul class='dokumente'><li>";
+						echo "<div style='float: right;'>" . CHtml::encode(date("j.M", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+						echo "</li></ul>";
+					}
+					echo "</li>";
 				}
-				echo "</li>";
-			}
-			?></ul>
+				?></ul>
+		<? } ?>
 	</div>
 	<div class="col col-lg-3 keine_dokumente">
 		<h3>Benachrichtigungen</h3>
+
 		<p>
 			<a href="<?= CHtml::encode($this->createUrl("index/feed")) ?>" class="startseite_benachrichtigung_link" title="RSS-Feed">R</a>
 			<a href="#" class="startseite_benachrichtigung_link" title="Twitter">T</a>

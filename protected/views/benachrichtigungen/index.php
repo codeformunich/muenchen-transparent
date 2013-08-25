@@ -14,6 +14,9 @@ $this->pageTitle = "Benachrichtigungen";
 $assets_base = $this->getAssetsBase();
 ?>
 
+<form style="float: right;" method="POST" action="<?=CHtml::encode($this->createUrl("index/index"))?>">
+	<button type="submit" name="<?=AntiXSS::createToken("abmelden")?>" class="btn btn-default">Abmelden</button>
+</form>
 <h1>Benachrichtigungen</h1>
 
 

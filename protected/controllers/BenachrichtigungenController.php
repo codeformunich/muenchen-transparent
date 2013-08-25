@@ -1,54 +1,23 @@
 <?php
 
-class BenachrichtigungenController extends RISBaseController {
+class BenachrichtigungenController extends RISBaseController
+{
 
 
-	protected function requireLogin($code = "") {
-		$msg_err = "";
-		$msg_ok  = "";
+	protected function requireLogin()
+	{
+		$msg_err = $this->performLoginActions();
 
-		$user    = Yii::app()->getUser();
-
-		if ($user->isGuest && AntiXSS::isTokenSet("login")) {
-			/** @var BenutzerIn $benutzerIn */
-			$benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
-			if ($benutzerIn) {
-				if ($benutzerIn->email_bestaetigt) {
-					if ($benutzerIn->validate_password($_REQUEST["password"])) {
-						$identity = new RISUserIdentity($benutzerIn);
-						Yii::app()->user->login($identity);
-					} else {
-						$msg_err = "Das angegebene Passwort ist leider falsch.";
-					}
-				} else {
-					if ($code == "" && isset($_REQUEST["bestaetigungscode"])) $code = $_REQUEST["bestaetigungscode"];
-					if ($benutzerIn->checkEmailBestaetigungsCode($code)) {
-						$benutzerIn->email_bestaetigt = 1;
-						if ($benutzerIn->save()) {
-							$msg_ok   = "Die E-Mail-Adresse wurde freigeschaltet. Ab jetzt wirst du entsprechend deinen Einstellungen benachrichtigt.";
-							$identity = new RISUserIdentity($benutzerIn);
-							Yii::app()->user->login($identity);
-						} else {
-							$msg_err = "Ein sehr seltsamer Fehler ist aufgetreten.";
-						}
-					} else {
-						$msg_err = "Leider stimmt der angegebene Code nicht";
-					}
-				}
-			} else {
-				$msg_err = "Es gibt keinen BenutzerInnenaccount mit dieser E-Mail-Adresse.";
-			}
-		}
-
-		if ($user->isGuest) {
+		if (Yii::app()->getUser()->isGuest) {
 			$this->render("../index/login", array(
 				"current_url" => $this->createUrl("index/benachrichtigungen"),
 				"msg_err"     => $msg_err,
-				"msg_ok"      => $msg_ok,
+				"msg_ok"      => "",
 			));
 			Yii::app()->end();
 		}
 	}
+
 	public function actionIndex($code = "")
 	{
 		$this->top_menu = "benachrichtigungen";
@@ -62,7 +31,7 @@ class BenachrichtigungenController extends RISBaseController {
 		/** @var BenutzerIn $ich */
 		$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 
-		$this->load_leaflet_css = true;
+		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
 
 		if (AntiXSS::isTokenSet("del_ben")) {
@@ -110,7 +79,8 @@ class BenachrichtigungenController extends RISBaseController {
 	 * @param BenutzerIn $benutzerIn
 	 * @return \Solarium\QueryType\Select\Query\Query
 	 */
-	protected function getAlleSuchergebnisse(&$solr, $benutzerIn) {
+	protected function getAlleSuchergebnisse(&$solr, $benutzerIn)
+	{
 		$select = $solr->createSelect();
 
 		$select->addSort('sort_datum', $select::SORT_DESC);
@@ -122,7 +92,7 @@ class BenachrichtigungenController extends RISBaseController {
 		$dismax->setQueryFields("text text_ocr");
 
 		$benachrichtigungen = $benutzerIn->getBenachrichtigungen();
-		$krits_solr = array();
+		$krits_solr         = array();
 
 		foreach ($benachrichtigungen as $ben) $krits_solr[] = "(" . $ben->getSolrQueryStr($select) . ")";
 		$querystr = implode(" OR ", $krits_solr);
@@ -141,22 +111,23 @@ class BenachrichtigungenController extends RISBaseController {
 	/**
 	 * @param string $code
 	 */
-	public function actionAlleFeed($code) {
+	public function actionAlleFeed($code)
+	{
 		$benutzerIn = BenutzerIn::getByFeedCode($code);
 		if (!$benutzerIn) {
 			$this->render('../index/error', array("code" => 400, "message" => "Ein Fehler ist aufgetreten"));
 			return;
 		}
 
-		$titel = "Suchergebnisse";
+		$titel       = "Suchergebnisse";
 		$description = "Neue Dokumente, die einem der folgenden Kriterien entsprechen:<br>";
-		$bens = $benutzerIn->getBenachrichtigungen();
+		$bens        = $benutzerIn->getBenachrichtigungen();
 		foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getTitle()) . "<br>";
 
-		$solr   = RISSolrHelper::getSolrClient("ris");
-		$select = $this->getAlleSuchergebnisse($solr, $benutzerIn);
+		$solr       = RISSolrHelper::getSolrClient("ris");
+		$select     = $this->getAlleSuchergebnisse($solr, $benutzerIn);
 		$ergebnisse = $solr->select($select);
-		$data = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
+		$data       = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
 
 		$this->render("../index/feed", array(
 			"feed_title"       => $titel,
@@ -167,7 +138,8 @@ class BenachrichtigungenController extends RISBaseController {
 	}
 
 
-	public function actionAlleSuchergebnisse() {
+	public function actionAlleSuchergebnisse()
+	{
 		$this->requireLogin();
 
 		/** @var BenutzerIn $ich */
@@ -184,7 +156,7 @@ class BenachrichtigungenController extends RISBaseController {
 
 
 		$this->render("alle_suchergebnisse", array(
-			"ergebnisse"  => $ergebnisse,
+			"ergebnisse" => $ergebnisse,
 		));
 
 	}

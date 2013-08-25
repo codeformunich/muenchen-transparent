@@ -159,7 +159,7 @@ class IndexController extends RISBaseController
 				Yii::app()->user->login($identity);
 				$wird_benachrichtigt = true;
 			}
-		} elseif (AntiXSS::isTokenSet("anmelden")) {
+		} elseif (AntiXSS::isTokenSet("login")) {
 
 			$benutzerIn = BenutzerIn::model()->findAll(array(
 				"condition" => "email='" . addslashes($_REQUEST["email"]) . "' AND pwd_enc != ''"
@@ -167,33 +167,26 @@ class IndexController extends RISBaseController
 			if (count($benutzerIn) > 0) {
 				/** @var BenutzerIn $p */
 				$p = $benutzerIn[0];
-				if ($p->email_bestaetigt) {
-					if ($p->validate_password($_REQUEST["password"])) {
-						$correct_person = $p;
-						$correct_person->addBenachrichtigung($curr_krits);
+				if ($p->validate_password($_REQUEST["password"])) {
+					$correct_person = $p;
+					$correct_person->addBenachrichtigung($curr_krits);
 
-						$identity = new RISUserIdentity($p);
-						Yii::app()->user->login($identity);
-						$wird_benachrichtigt = true;
-					} else {
-						$msg_err = "Das angegebene Passwort ist leider falsch.";
-					}
+					$identity = new RISUserIdentity($p);
+					Yii::app()->user->login($identity);
+					$wird_benachrichtigt = true;
 				} else {
-					if ($p->checkEmailBestaetigungsCode($_REQUEST["bestaetigungscode"])) {
-						$p->email_bestaetigt = 1;
-						if ($p->save()) {
-							$p->addBenachrichtigung($curr_krits);
-							$msg_ok   = "Die E-Mail-Adresse wurde freigeschaltet. Ab jetzt wirst du entsprechend deinen Einstellungen benachrichtigt.";
-							$identity = new RISUserIdentity($p);
-							Yii::app()->user->login($identity);
-							$wird_benachrichtigt = true;
-						} else {
-							$msg_err = "Ein sehr seltsamer Fehler ist aufgetreten.";
-						}
-					} else {
-						$msg_err = "Leider stimmt der angegebene Code nicht";
-					}
+					$msg_err = "Das angegebene Passwort ist falsch.";
 				}
+			} else {
+				$msg_err = "Für die angegebene E-Mail-Adresse existiert noch kein Zugang.";
+			}
+
+		} elseif (AntiXSS::isTokenSet("anlegen")) {
+			$benutzerIn = BenutzerIn::model()->findAll(array(
+				"condition" => "email='" . addslashes($_REQUEST["email"]) . "' AND pwd_enc != ''"
+			));
+			if (count($benutzerIn) > 0) {
+				$msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
 			} else {
 				$email                        = trim($_REQUEST["email"]);
 				$passwort                     = BenutzerIn::createPassword();
@@ -568,6 +561,8 @@ class IndexController extends RISBaseController
 
 	public function actionIndex()
 	{
+		$this->performLoginActions();
+
 		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
 
@@ -581,9 +576,12 @@ class IndexController extends RISBaseController
 
 		$geodata = $this->antraege2geodata($antraege);
 
-		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + 7 * 24 * 3600), true)->findAll();
-		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time() - 7 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
-		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(date("Y-m-d 00:00:00", time() - 7 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+		$tage_zukunft = 7;
+		$tage_vergangenheit = 7;
+
+		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
+		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
 
 		$this->render('index', array(
 			"weitere_url"           => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
@@ -592,7 +590,9 @@ class IndexController extends RISBaseController
 			"datum"                 => $datum,
 			"termine_zukunft"       => $termine_zukunft,
 			"termine_vergangenheit" => $termine_vergangenheit,
-			"termin_dokumente"      => $termin_dokumente
+			"termin_dokumente"      => $termin_dokumente,
+			"tage_vergangenheit"    => $tage_vergangenheit,
+			"tage_zukunft"          => $tage_zukunft,
 		));
 	}
 
