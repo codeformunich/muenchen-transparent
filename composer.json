@@ -14,9 +14,9 @@
 			"type": "package",
 			"package": {
 				"name": "yiisoft/yii",
-				"version": "1.1.13",
+				"version": "1.1.14",
 				"dist": {
-					"url": "http://yii.googlecode.com/files/yii-1.1.13.e9e4a0.zip",
+					"url": "https://github.com/yiisoft/yii/releases/download/1.1.14/yii-1.1.14.f0fee9.zip",
 					"type": "zip"
 				}
 			}
@@ -28,8 +28,8 @@
 	],
 	"require": {
 		"php": ">=5.3.3",
-		"yiisoft/yii": "1.1.13",
-		"solarium/solarium": "3.1.1",
+		"yiisoft/yii": "1.1.14",
+		"solarium/solarium": "3.1.*",
 		"zendframework/zend-config": "2.2.*",
 		"zendframework/zend-http": "2.2.*",
 		"zendframework/zend-mail": "2.2.*",
