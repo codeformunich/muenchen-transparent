@@ -4,9 +4,9 @@ class BenachrichtigungenController extends RISBaseController
 {
 
 
-	protected function requireLogin()
+	protected function requireLogin($code = "")
 	{
-		list($msg_ok, $msg_err) = $this->performLoginActions();
+		list($msg_ok, $msg_err) = $this->performLoginActions($code);
 
 		if (Yii::app()->getUser()->isGuest) {
 			$this->render("../index/login", array(
@@ -16,16 +16,15 @@ class BenachrichtigungenController extends RISBaseController
 			));
 			Yii::app()->end();
 		}
+
+		return array($msg_ok, $msg_err);
 	}
 
 	public function actionIndex($code = "")
 	{
 		$this->top_menu = "benachrichtigungen";
 
-		$msg_err = "";
-		$msg_ok  = "";
-
-		$this->requireLogin($code);
+		list($msg_ok, $msg_err) = $this->requireLogin($code);
 
 
 		/** @var BenutzerIn $ich */
