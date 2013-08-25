@@ -427,6 +427,10 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 	color: #5858ff;
 	background-color: #eef;
 }
+.startseite_benachrichtigung_link.email {
+	float: right;
+	font-weight: bold;
+}
 
 .startseite_benachrichtigung_link:hover, .startseite_benachrichtigung_link:active {
 	text-decoration: none;
@@ -494,6 +498,9 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 	vertical-align: middle;
 	text-align: center;
 }
+.benachrichtigungsliste button.del span {
+	vertical-align: top;
+}
 
 .benachrichtigungsliste button.del:hover {
 	color: red;
@@ -550,7 +557,7 @@ ul.antragsliste > li > ul.dokumente > li:first-child:before {
 }
 
 #ben_map {
-	height: 300px;
+	height: 400px;
 }
 
 .form-signin {

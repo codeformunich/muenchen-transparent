@@ -143,94 +143,24 @@ class IndexController extends RISBaseController
 		$user = Yii::app()->getUser();
 
 		$correct_person      = null;
-		$msg_ok              = $msg_err = "";
 		$wird_benachrichtigt = false;
 
-		if ($code != "") {
-			$x = explode("-", $code);
-			/** @var BenutzerIn $benutzerIn */
-			$benutzerIn = BenutzerIn::model()->findByPk($x[0]);
-			if (!$benutzerIn) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
-			elseif ($benutzerIn->email_bestaetigt) $msg_err = "Dieser Account wurde bereits bestätigt."; elseif (!$benutzerIn->checkEmailBestaetigungsCode($code)) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist."; else {
-				$benutzerIn->email_bestaetigt = 1;
-				$benutzerIn->save();
-				$msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
-				$identity = new RISUserIdentity($benutzerIn);
-				Yii::app()->user->login($identity);
-				$wird_benachrichtigt = true;
+		list($msg_ok, $msg_err) = $this->performLoginActions();
+
+		if (!$user->isGuest) {
+			/** @var BenutzerIn $ich */
+			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+
+			if (AntiXSS::isTokenSet("benachrichtigung_add")) {
+				$ich->addBenachrichtigung($curr_krits);
 			}
-		} elseif (AntiXSS::isTokenSet("login")) {
-
-			$benutzerIn = BenutzerIn::model()->findAll(array(
-				"condition" => "email='" . addslashes($_REQUEST["email"]) . "' AND pwd_enc != ''"
-			));
-			if (count($benutzerIn) > 0) {
-				/** @var BenutzerIn $p */
-				$p = $benutzerIn[0];
-				if ($p->validate_password($_REQUEST["password"])) {
-					$correct_person = $p;
-					$correct_person->addBenachrichtigung($curr_krits);
-
-					$identity = new RISUserIdentity($p);
-					Yii::app()->user->login($identity);
-					$wird_benachrichtigt = true;
-				} else {
-					$msg_err = "Das angegebene Passwort ist falsch.";
-				}
-			} else {
-				$msg_err = "Für die angegebene E-Mail-Adresse existiert noch kein Zugang.";
+			if (AntiXSS::isTokenSet("benachrichtigung_del")) {
+				$ich->delBenachrichtigung($curr_krits);
 			}
 
-		} elseif (AntiXSS::isTokenSet("anlegen")) {
-			$benutzerIn = BenutzerIn::model()->findAll(array(
-				"condition" => "email='" . addslashes($_REQUEST["email"]) . "' AND pwd_enc != ''"
-			));
-			if (count($benutzerIn) > 0) {
-				$msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
-			} else {
-				$email                        = trim($_REQUEST["email"]);
-				$passwort                     = BenutzerIn::createPassword();
-				$benutzerIn                   = new BenutzerIn;
-				$benutzerIn->email            = $email;
-				$benutzerIn->email_bestaetigt = 0;
-				$benutzerIn->pwd_enc          = BenutzerIn::create_hash($passwort);
-				$benutzerIn->datum_angelegt   = new CDbExpression("NOW()");
-
-				if ($benutzerIn->save()) {
-					$best_code = $benutzerIn->createEmailBestaetigungsCode();
-					$link      = Yii::app()->getBaseUrl(true) . $this->createUrl("index/benachrichtigungen", array("code" => $best_code));
-					mail($email, "Anmeldung bei OpenRIS", "Hallo,\n\num Benachrichtigungen bei OpenRIS zu erhalten, klicke entweder auf folgenden Link:\n$link\n\n"
-						. "...oder gib, wenn du auf OpenRIS danach gefragt wirst, folgenden Code ein: $best_code\n\n"
-						. "Das Passwort für den OpenRIS-Zugang lautet: " . $passwort . "\n\n"
-						. "Liebe Grüße,\n\tDas OpenRIS-Team.");
-					$correct_person = $benutzerIn;
-
-					$correct_person->addBenachrichtigung($curr_krits);
-
-					$identity = new RISUserIdentity($benutzerIn);
-					Yii::app()->user->login($identity);
-					$wird_benachrichtigt = true;
-				} else {
-					$msg_err = "Leider ist ein (ungewöhnlicher) Fehler aufgetreten.";
-					$errs    = $benutzerIn->getErrors();
-					foreach ($errs as $err) foreach ($err as $e) $msg_err .= $e;
-				}
-			}
-		} else {
-			if (!$user->isGuest) {
-				/** @var BenutzerIn $ich */
-				$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
-
-				if (AntiXSS::isTokenSet("benachrichtigung_add")) {
-					$ich->addBenachrichtigung($curr_krits);
-				}
-				if (AntiXSS::isTokenSet("benachrichtigung_del")) {
-					$ich->delBenachrichtigung($curr_krits);
-				}
-
-				$wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);
-			}
+			$wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);
 		}
+
 
 		if ($user->isGuest) {
 			$ich              = null;
@@ -494,6 +424,20 @@ class IndexController extends RISBaseController
 	/**
 	 * @param float $lat
 	 * @param float $lng
+	 */
+	public function actionGeo2Address($lat, $lng) {
+		Header("Content-Type: application/json; charset=UTF-8");
+		$naechster_ort = OrtGeo::findClosest($lng, $lat);
+		echo json_encode(array(
+			"ort_name" => $naechster_ort->ort,
+		));
+		Yii::app()->end();
+	}
+
+
+	/**
+	 * @param float $lat
+	 * @param float $lng
 	 * @param float $radius
 	 * @param int $seite
 	 */
@@ -576,7 +520,7 @@ class IndexController extends RISBaseController
 
 		$geodata = $this->antraege2geodata($antraege);
 
-		$tage_zukunft = 7;
+		$tage_zukunft       = 7;
 		$tage_vergangenheit = 7;
 
 		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();

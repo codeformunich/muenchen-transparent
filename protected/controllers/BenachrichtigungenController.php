@@ -6,13 +6,13 @@ class BenachrichtigungenController extends RISBaseController
 
 	protected function requireLogin()
 	{
-		$msg_err = $this->performLoginActions();
+		list($msg_ok, $msg_err) = $this->performLoginActions();
 
 		if (Yii::app()->getUser()->isGuest) {
 			$this->render("../index/login", array(
 				"current_url" => $this->createUrl("index/benachrichtigungen"),
 				"msg_err"     => $msg_err,
-				"msg_ok"      => "",
+				"msg_ok"      => $msg_ok,
 			));
 			Yii::app()->end();
 		}

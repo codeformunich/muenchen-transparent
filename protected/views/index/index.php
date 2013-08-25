@@ -176,13 +176,16 @@ function gruppiere_termine($termine)
 		<? } ?>
 	</div>
 	<div class="col col-lg-3 keine_dokumente">
-		<h3>Benachrichtigungen</h3>
+		<section style="display: inline-block">
+			<h3>Benachrichtigungen</h3>
 
-		<p>
-			<a href="<?= CHtml::encode($this->createUrl("index/feed")) ?>" class="startseite_benachrichtigung_link" title="RSS-Feed">R</a>
-			<a href="#" class="startseite_benachrichtigung_link" title="Twitter">T</a>
-			<a href="#" class="startseite_benachrichtigung_link" title="Facebook">f</a>
-		</p>
+			<p>
+				<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>" class="startseite_benachrichtigung_link email" title="E-Mail">@</a>
+				<a href="<?= CHtml::encode($this->createUrl("index/feed")) ?>" class="startseite_benachrichtigung_link" title="RSS-Feed">R</a>
+				<a href="#" class="startseite_benachrichtigung_link" title="Twitter">T</a>
+				<a href="#" class="startseite_benachrichtigung_link" title="Facebook">f</a>
+			</p>
+		</section>
 
 		<h3>Infos</h3>
 

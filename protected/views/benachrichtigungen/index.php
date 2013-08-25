@@ -14,10 +14,10 @@ $this->pageTitle = "Benachrichtigungen";
 $assets_base = $this->getAssetsBase();
 ?>
 
-<form style="float: right;" method="POST" action="<?=CHtml::encode($this->createUrl("index/index"))?>">
-	<button type="submit" name="<?=AntiXSS::createToken("abmelden")?>" class="btn btn-default">Abmelden</button>
+<form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/index")) ?>">
+	<button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
 </form>
-<h1>Benachrichtigungen</h1>
+<h1>Benachrichtigung an <?= CHtml::encode($ich->email) ?>:</h1>
 
 
 <?
@@ -30,24 +30,20 @@ if ($msg_ok != "") {
 }
 if ($msg_err != "") {
 	?>
-	<div class="alert alert-error">
+	<div class="alert alert-danger">
 		<?php echo $msg_err; ?>
 	</div>
 <?
 }
 
-?>
-
-<h3 style="margin-top: 4em;">E-Mail-Benachrichtigung an <?= CHtml::encode($ich->email) ?>:</h3>
-<?
 $bens = $ich->getBenachrichtigungen();
 if (count($bens) == 0) {
 	?>
-	<div class="benachrichtigung_keine col col-lg-5 well">Noch keine Benachrichtigungen</div>
+	<div class="benachrichtigung_keine col col-lg-7 well" style="margin-left: 23px;">Noch keine E-Mail-Benachrichtigungen</div>
 <?
 } else {
 	?>
-	<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>">
+	<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" style="margin-left: 23px;">
 		<ul class="benachrichtigungsliste">
 			<li class="header">
 				<div class="del_holder">Löschen</div>
@@ -84,10 +80,10 @@ if (count($bens) == 0) {
 	<fieldset>
 		<legend>Benachrichtige mich bei neuen Dokumenten...</legend>
 
-		<label for="suchbegriff"><span class="glyphicon glyphicon-search"></span> <span class="name">mit diesem Suchbegriff:</span></label><br>
+		<label for="suchbegriff"><span class="glyphicon glyphicon-search"></span> <span class="name">... mit diesem Suchbegriff:</span></label><br>
 
-		<div class="input-group col col-lg-5">
-			<input type="text" placeholder="Suchbegriff" id="suchbegriff" name="suchbegriff">
+		<div class="input-group col col-lg-7 well" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
+			<input type="text" placeholder="Suchbegriff" id="suchbegriff" name="suchbegriff" class="form-control">
   			<span class="input-group-btn">
     			<button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_text") ?>" type="submit">Benachrichtigen!</button>
   			</span>
@@ -96,29 +92,27 @@ if (count($bens) == 0) {
 </form>
 
 
-<br style="clear: both; ">
-<hr style="margin-top: 1.5em; margin-bottom: 1.5em;">
-
 <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add" id="benachrichtigung_add_geo_form">
 	<fieldset>
-		<label for="geo_radius"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">mit diesem Ortsbezug:</span></label>
+		<label for="geo_radius"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... mit diesem Ortsbezug:</span></label>
 
 		<br style="clear: both;">
 
-		<div id="ben_mapholder" class="col col-lg-5">
-			<div id="ben_map"></div>
-		</div>
-		<div id="ben_map_infos">
-			<div class="nichts" style="font-style: italic;">noch nichts ausgewählt</div>
-			<div class="infos" style="display: none;">
-				Ausgewählter Radius: <span class="radius_m"></span> Meter
+		<div class="input-group col col-lg-7 well" style="padding: 10px; margin-left: 23px;">
+			<div id="ben_mapholder">
+				<div id="ben_map"></div>
 			</div>
-			<input type="hidden" name="geo_lng" value="">
-			<input type="hidden" name="geo_lat" value="">
-			<input type="hidden" name="geo_radius" id="geo_radius" value="">
 
-			<div style="margin-top: 20px;">
-				<button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
+			<hr style="margin-top: 10px; margin-bottom: 10px;">
+
+			<div id="ben_map_infos" class="input-group">
+				<input type="hidden" name="geo_lng" value="">
+				<input type="hidden" name="geo_lat" value="">
+				<input type="hidden" name="geo_radius" value="">
+				<input type="text" placeholder="noch kein Ort ausgewählt" id="ort_auswahl" class="form-control" disabled>
+				<span class="input-group-btn">
+    				<button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
+	  			</span>
 			</div>
 		</div>
 
@@ -130,16 +124,18 @@ if (count($bens) == 0) {
 			load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", "/js/Leaflet.draw/dist/leaflet.draw.js"],
 			complete: function () {
 				var $ben_holder = $("#ben_map_infos");
-				$("#ben_map").AntraegeKarte({ benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, onSelect: function (latlng, rad) {
-					$ben_holder.find(".nichts").hide();
-					$ben_holder.find(".infos").show();
-					$(".ben_add_geo").prop("disabled", false);
+				$("#ben_map").AntraegeKarte({ benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, size: 11, onSelect: function (latlng, rad) {
+					$.ajax({
+						"url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
+						"success": function(ret) {
+							$("#ben_map_infos").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
+							$(".ben_add_geo").prop("disabled", false);
 
+						}
+					});
 					$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
 					$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
 					$ben_holder.find("input[name=geo_radius]").val(rad);
-
-					$ben_holder.find(".radius_m").text(parseInt(rad));
 				}});
 			}
 		});

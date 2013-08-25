@@ -6,17 +6,17 @@ class RISBaseController extends CController
 	 * @var string the default layout for the controller view. Defaults to '//layouts/column1',
 	 * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
 	 */
-	public $layout='//layouts/column1';
+	public $layout = '//layouts/column1';
 	/**
 	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
 	 */
-	public $menu=array();
+	public $menu = array();
 	/**
 	 * @var array the breadcrumbs of the current page. The value of this property will
 	 * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
 	 * for more details on how to specify this property.
 	 */
-	public $breadcrumbs=array();
+	public $breadcrumbs = array();
 
 	public $top_menu = "";
 
@@ -29,7 +29,7 @@ class RISBaseController extends CController
 	{
 		if ($this->_assetsBase === null) {
 			/** @var CWebApplication $app */
-			$app = Yii::app();
+			$app               = Yii::app();
 			$this->_assetsBase = $app->assetManager->publish(
 				Yii::getPathOfAlias('application.assets'),
 				false,
@@ -51,10 +51,27 @@ class RISBaseController extends CController
 		return $this->_assetsBase;
 	}
 
-	protected function performLoginActions() {
+	protected function performLoginActions($code = "")
+	{
 		$user = Yii::app()->getUser();
 
 		$msg_err = "";
+		$msg_ok  = "";
+
+		if ($code != "") {
+			$x = explode("-", $code);
+			/** @var BenutzerIn $benutzerIn */
+			$benutzerIn = BenutzerIn::model()->findByPk($x[0]);
+			if (!$benutzerIn) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
+			elseif ($benutzerIn->email_bestaetigt) $msg_err = "Dieser Account wurde bereits bestätigt."; elseif (!$benutzerIn->checkEmailBestaetigungsCode($code)) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist."; else {
+				$benutzerIn->email_bestaetigt = 1;
+				$benutzerIn->save();
+				$msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
+				$identity = new RISUserIdentity($benutzerIn);
+				Yii::app()->user->login($identity);
+			}
+		}
+
 
 		if (AntiXSS::isTokenSet("abmelden") && !$user->isGuest) {
 			$user->logout();
@@ -77,6 +94,43 @@ class RISBaseController extends CController
 			}
 		}
 
-		return $msg_err;
+		if (AntiXSS::isTokenSet("anlegen")) {
+			/** @var BenutzerIn[] $gefundene_benutzerInnen */
+			$gefundene_benutzerInnen = BenutzerIn::model()->findAll(array(
+				"condition" => "email='" . addslashes($_REQUEST["email"]) . "' AND pwd_enc != ''"
+			));
+			if (count($gefundene_benutzerInnen) > 0) {
+				$msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
+			} elseif (trim($_REQUEST["password"]) == "") {
+				$msg_err = "Bitte gib ein Passwort an";
+			} elseif ($_REQUEST["password"] != $_REQUEST["password2"]) {
+				$msg_err = "Die beiden angegebenen Passwörter stimmen nicht überein.";
+			} else {
+				$email                        = trim($_REQUEST["email"]);
+				$benutzerIn                   = new BenutzerIn;
+				$benutzerIn->email            = $email;
+				$benutzerIn->email_bestaetigt = 0;
+				$benutzerIn->pwd_enc          = BenutzerIn::create_hash(trim($_REQUEST["password"]));
+				$benutzerIn->datum_angelegt   = new CDbExpression("NOW()");
+
+				if ($benutzerIn->save()) {
+					$best_code = $benutzerIn->createEmailBestaetigungsCode();
+					$link      = Yii::app()->getBaseUrl(true) . $this->createUrl("index/benachrichtigungen", array("code" => $best_code));
+					mail($email, "Anmeldung bei OpenRIS", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von OpenRIS zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
+						. "Liebe Grüße,\n\tDas OpenRIS-Team.");
+
+					$identity = new RISUserIdentity($benutzerIn);
+					Yii::app()->user->login($identity);
+
+					$msg_ok = "Der Zugang wurde angelegt. Es wurde eine Bestätigungs-Mail an die angegebene Adresse geschickt. Bitte klicke auf den Link in dieser Mail an, um E-Mail-Benachrichtigungen zu erhalten.";
+				} else {
+					$msg_err = "Leider ist ein (ungewöhnlicher) Fehler aufgetreten.";
+					$errs    = $benutzerIn->getErrors();
+					foreach ($errs as $err) foreach ($err as $e) $msg_err .= $e;
+				}
+			}
+		}
+
+		return array($msg_ok, $msg_err);
 	}
 }
