@@ -50,6 +50,7 @@ class BATerminParser extends RISParser {
 		if (preg_match("/Letzte Sitzung:.*ba_sitzungen_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = $matches[1];
 		if (preg_match("/Wahlperiode:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->wahlperiode = $matches[1];
 		if (preg_match("/Status:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->status = $matches[1];
+		if (trim($daten->wahlperiode) == "") $daten->wahlperiode = "?";
 
 		preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
 		for ($i = 0; $i < count($matches[1]); $i++) {

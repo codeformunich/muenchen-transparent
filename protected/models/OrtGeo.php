@@ -12,6 +12,7 @@
  * @property integer $to_hide
  * @property string $to_hide_kommentar
  * @property string $datum
+ * @property int $ba_nr
  *
  * The followings are the available model relations:
  * @property AntragOrt[] $antraegeOrte
@@ -45,14 +46,14 @@ class OrtGeo extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('ort, lat, lon, source, to_hide, datum', 'required'),
-			array('to_hide', 'numerical', 'integerOnly' => true),
+			array('to_hide, ba_nr', 'numerical', 'integerOnly' => true),
 			array('lat, lon', 'numerical'),
 			array('ort', 'length', 'max' => 100),
 			array('source', 'length', 'max' => 6),
 			array('to_hide_kommentar', 'length', 'max' => 200),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, ort, lat, lon, source, to_hide, to_hide_kommentar, datum', 'safe', 'on' => 'search'),
+			array('id, ort, lat, lon, source, to_hide, to_hide_kommentar, datum, ba_nr', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -131,6 +132,7 @@ class OrtGeo extends CActiveRecord
 		$ort->ort = $name;
 		$ort->lat = $data["lat"];
 		$ort->lon = $data["lon"];
+		$ort->setzeBA();
 		$ort->source = "auto";
 		$ort->to_hide = 0;
 		$ort->datum = new CDbExpression('NOW()');
@@ -139,6 +141,17 @@ class OrtGeo extends CActiveRecord
 			throw new Exception("Fehler beim Speichern: Geo");
 		}
 		return $ort;
+	}
+
+
+	public function setzeBA() {
+		/** @var Bezirksausschuss[] $bas */
+		$bas = Bezirksausschuss::model()->findAll();
+
+		$this->ba_nr = null;
+		foreach ($bas as $ba) if ($this->ba_nr === null && $ba->pointInBA($this->lon, $this->lat)) {
+			$this->ba_nr = $ba->ba_nr;
+		}
 	}
 
 	/**

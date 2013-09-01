@@ -182,16 +182,18 @@ class Termin extends CActiveRecord implements IRISItem
 
 
 	/**
+	 * @param null|int $ba_nr
 	 * @param string $zeit_von
 	 * @param string $zeit_bis
 	 * @param bool $aufsteigend
 	 * @param int $limit
 	 * @return $this
 	 */
-	public function termine_stadtrat_zeitraum($zeit_von, $zeit_bis, $aufsteigend = true, $limit = 0)
+	public function termine_stadtrat_zeitraum($ba_nr, $zeit_von, $zeit_bis, $aufsteigend = true, $limit = 0)
 	{
+		$ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
 		$params = array(
-			'condition' => 'termin.ba_nr IS NULL AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
+			'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
 			'order' => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
 			'with' => array("gremium"),
 			'alias' => 'termin'
@@ -202,15 +204,17 @@ class Termin extends CActiveRecord implements IRISItem
 	}
 
 	/**
+	 * @param int $ba_nr
 	 * @param string $zeit_von
 	 * @param string $zeit_bis
 	 * @param int $limit
 	 * @return $this
 	 */
-	public function neueste_stadtratsantragsdokumente($zeit_von, $zeit_bis, $limit = 0)
+	public function neueste_stadtratsantragsdokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
 	{
+		$ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
 		$params = array(
-			'condition' => 'ba_nr IS NULL AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'condition' => 'ba_nr ' . $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
 			'order' => 'datum DESC',
 			'with' => array(
 				'antraegeDokumente' => array(
