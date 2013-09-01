@@ -286,9 +286,10 @@ class IndexController extends RISBaseController
 
 	/**
 	 * @param Antrag[] $antraege
+	 * @param int $typ
 	 * @return array
 	 */
-	protected function antraege2geodata(&$antraege)
+	protected function antraege2geodata(&$antraege, $typ = 0)
 	{
 		$geodata = array();
 		foreach ($antraege as $ant) {
@@ -304,7 +305,8 @@ class IndexController extends RISBaseController
 					$geodata[] = array(
 						FloatVal($ort->ort->lat),
 						FloatVal($ort->ort->lon),
-						$str
+						$str,
+						$typ
 					);
 				}
 			}
@@ -501,31 +503,51 @@ class IndexController extends RISBaseController
 		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
 
+		$tage_zukunft                 = 30;
+		$tage_vergangenheit           = 30;
+		$tage_vergangenheit_dokumente = 30;
+
 		$datum_bis = date("Y-m-d");
-		$datum_von = date("Y-m-d", time() - 31 * 24 * 3600);
+		$datum_von = date("Y-m-d", time() - $tage_vergangenheit_dokumente * 24 * 3600);
 
-		/** @var array|Antrag[] $antraege */
-		$antraege = Antrag::model()->neueste_stadtratsantragsdokumente($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
+		/** @var array|Antrag[] $antraege1 */
+		$antraege1 = Antrag::model()->neueste_stadtratsantragsdokumente($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
+		/** @var array|Antrag[] $antraege2 */
+		$antraege2 = Antrag::model()->neueste_stadtratsantragsdokumente_geo($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
 
-		$geodata = $this->antraege2geodata($antraege);
+		$antraege = $antraege1;
+		$a_ids    = array();
+		foreach ($antraege1 as $a) $a_ids[] = $a->id;
+		foreach ($antraege2 as $a) if (!in_array($a->id, $a_ids)) $antraege[] = $a;
+		usort($antraege, function ($a1, $a2) {
+			/** @var Antrag $a1 */
+			/** @var Antrag $a2 */
+			$ts1 = RISTools::date_iso2timestamp($a1->datum_letzte_aenderung);
+			$ts2 = RISTools::date_iso2timestamp($a2->datum_letzte_aenderung);
+			if ($ts1 > $ts2) return 1;
+			if ($ts1 < $ts2) return -1;
+			return 0;
+		});
 
-		$tage_zukunft       = 30;
-		$tage_vergangenheit = 30;
+		$geodata = $this->antraege2geodata($antraege1);
+		$geodata = array_merge($geodata, $this->antraege2geodata($antraege2, 1));
 
 		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
 		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
 		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
 
+
 		$ba = Bezirksausschuss::model()->findByPk($ba_nr);
 		$this->render("ba_uebersicht", array(
-			"ba"                    => $ba,
-			"antraege"              => $antraege,
-			"geodata"               => $geodata,
-			"termine_zukunft"       => $termine_zukunft,
-			"termine_vergangenheit" => $termine_vergangenheit,
-			"termin_dokumente"      => $termin_dokumente,
-			"tage_vergangenheit"    => $tage_vergangenheit,
-			"tage_zukunft"          => $tage_zukunft,
+			"ba"                           => $ba,
+			"antraege"                     => $antraege,
+			"geodata"                      => $geodata,
+			"termine_zukunft"              => $termine_zukunft,
+			"termine_vergangenheit"        => $termine_vergangenheit,
+			"termin_dokumente"             => $termin_dokumente,
+			"tage_vergangenheit"           => $tage_vergangenheit,
+			"tage_zukunft"                 => $tage_zukunft,
+			"tage_vergangenheit_dokumente" => $tage_vergangenheit_dokumente,
 		));
 	}
 
@@ -573,6 +595,12 @@ class IndexController extends RISBaseController
 	{
 		$this->top_menu = "infos";
 		$this->render('infos');
+	}
+
+	public function actionImpressum()
+	{
+		$this->top_menu = "impressum";
+		$this->render('impressum');
 	}
 
 	/**

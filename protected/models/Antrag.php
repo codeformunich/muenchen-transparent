@@ -235,6 +235,37 @@ class Antrag extends CActiveRecord implements IRISItem
 		return $this;
 	}
 
+	/**
+	 * @param null|int $ba_nr
+	 * @param string $zeit_von
+	 * @param string $zeit_bis
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function neueste_stadtratsantragsdokumente_geo($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
+	{
+		$params = array(
+			'alias' => 'a',
+			'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND a.datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'order' => 'b.datum DESC',
+			'with' => array(
+				'dokumente' => array(
+					'alias' => 'b',
+					'condition' => 'b.datum >= "' . addslashes($zeit_von) . '" AND b.datum <= "' . addslashes($zeit_bis) . '"',
+				),
+				'dokumente.orte' => array(
+
+				),
+				'dokumente.orte.ort' => array(
+					'alias' => 'c',
+					'condition' => 'c.ba_nr = ' . IntVal($ba_nr)
+				)
+			));
+		if ($limit > 0) $params['limit'] = $limit;
+		$this->getDbCriteria()->mergeWith($params);
+		return $this;
+	}
+
 
 	/**
 	 * @throws CDbException|Exception

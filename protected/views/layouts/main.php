@@ -82,7 +82,7 @@
 			<ul class="nav navbar-nav">
 				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?= CHtml::link("Stadtrat", $this->createUrl("index/index")) ?></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <b class="caret"></b></a>
 					<ul class="dropdown-menu" id="ba_nav_list">
 						<?
 						/** @var Bezirksausschuss[] $bas */
@@ -120,7 +120,7 @@
 
 
 		<footer>
-			<p><a href="https://www.hoessl.eu/impressum/">Impressum</a></p>
+			<p><?=CHtml::link("Impressum", Yii::app()->createUrl("index/impressum"))?></p>
 		</footer>
 	</div>
 

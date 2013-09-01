@@ -224,7 +224,7 @@ $.widget("openris.AntraegeKarte", {
 					curr_lng = latlng.lng;
 				});
 			}
-			$widget.options["onSelect"](e.latlng, 500, $widget.map.getZoom());
+			if (typeof($widget.options["onSelect"]) == "function") $widget.options["onSelect"](e.latlng, 500, $widget.map.getZoom());
 		}
 
 		$widget.map.on("zoomend", ben_onZoom);
