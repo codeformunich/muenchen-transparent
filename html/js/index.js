@@ -19,7 +19,7 @@ function index_aeltere_dokumente_load(url) {
 		else done = true;
 		$holder.html(data["html"]);
 		$holder.removeClass("loading");
-		$("#map").AntraegeKarte("setAntraegeData", data["geodata"]);
+		$("#map").AntraegeKarte("setAntraegeData", data["geodata"], data["geodata_overflow"]);
 	});
 
 	return false;
@@ -62,7 +62,7 @@ function index_geo_dokumente_load(url, lng, lat, radius) {
 			$holder.removeClass("loading");
 			$ben_holder.find(".zentrum_ort").text(data["naechster_ort"]);
 			$ben_holder.find("input[name=krit_str]").val(data["krit_str"]);
-			$("#map").AntraegeKarte("setAntraegeData", data["geodata"]);
+			$("#map").AntraegeKarte("setAntraegeData", data["geodata"], data["geodata_overflow"]);
 		});
 	}
 

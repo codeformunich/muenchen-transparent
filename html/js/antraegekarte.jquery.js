@@ -13,6 +13,8 @@ $.widget("openris.AntraegeKarte", {
 		outlineBA: false
 	},
 	map: null,
+	antraege_data: null,
+	antraege_data_overflow: null,
 	markers: [],
 	oms: null,
 
@@ -87,12 +89,55 @@ $.widget("openris.AntraegeKarte", {
 
 		if (this.options["benachrichtigungen_widget"] !== false) this.initBenachrichtigungsWidget();
 		if (this.options["show_BAs"]) this.initBAsWidget();
+
+		$("#overflow_hinweis").find("input").on("click", function() {
+			$widget.rebuildMarkers($(this).prop("checked"));
+		});
 	},
 
-	setAntraegeData: function (antraege_data) {
+	rebuildMarkers: function(mit_overflow) {
+		var markers_pos_num, i, key,
+			$widget = this,
+			data = [];
+
+		for (i = 0; i < $widget.markers.length; i++) {
+			$widget.map.removeLayer($widget.markers[i]);
+		}
+
+		$widget.markers = [];
+		$widget.oms.clearMarkers();
+
+		for (i = 0; i < $widget.antraege_data.length; i++) data.push($widget.antraege_data[i]);
+		if (mit_overflow) {
+			for (i = 0; i < $widget.antraege_data_overflow.length; i++) for (var j in $widget.antraege_data_overflow[i]) data.push($widget.antraege_data_overflow[i][j]);
+		}
+
+		markers_pos_num = {};
+		for (i = 0; i < data.length; i++) {
+			key = data[i][0] + "_" + data[i][1];
+			if (typeof(markers_pos_num[key]) != "undefined") markers_pos_num[key]++;
+			else markers_pos_num[key] = 1;
+		}
+
+
+		for (i = 0; i < data.length; i++) {
+			// add a marker in the given location, attach some popup content to it and open the popup
+			var text_key = data[i][0] + "_" + data[i][1],
+				multi_text = (markers_pos_num[text_key] > 1 ? markers_pos_num[text_key] : ""),
+				markerIcon = L.TextMarkers.icon({text: multi_text }),
+				marker = new L.Marker([data[i][0], data[i][1]], {icon: markerIcon });
+			marker.desc = data[i][2];
+			$widget.map.addLayer(marker);
+			$widget.oms.addMarker(marker);
+			$widget.markers.push(marker);
+		}
+
+	},
+
+	setAntraegeData: function (antraege_data, antraege_data_overflow) {
 		var $widget = this,
-			i,
-			markers_pos_num;
+			$overflow = $("#overflow_hinweis"),
+			i;
 
 		if ($widget.oms === null) {
 			$widget.oms = new OverlappingMarkerSpiderfier($widget.map, {
@@ -112,30 +157,15 @@ $.widget("openris.AntraegeKarte", {
 			});
 		}
 
-		for (i = 0; i < $widget.markers.length; i++) {
-			$widget.map.removeLayer($widget.markers[i]);
-		}
+		$widget.antraege_data = antraege_data;
+		$widget.antraege_data_overflow = antraege_data_overflow;
 
-		$widget.markers = [];
-		$widget.oms.clearMarkers();
+		$widget.rebuildMarkers($overflow.find("input").prop("checked"));
 
-		markers_pos_num = {};
-		for (i = 0; i < antraege_data.length; i++) {
-			var key = antraege_data[i][0] + "_" + antraege_data[i][1];
-			if (typeof(markers_pos_num[key]) != "undefined") markers_pos_num[key]++;
-			else markers_pos_num[key] = 1;
-		}
-
-		for (i = 0; i < antraege_data.length; i++) {
-			// add a marker in the given location, attach some popup content to it and open the popup
-			var text_key = antraege_data[i][0] + "_" + antraege_data[i][1],
-				multi_text = (markers_pos_num[text_key] > 1 ? markers_pos_num[text_key] : ""),
-				markerIcon = L.TextMarkers.icon({text: multi_text }),
-				marker = new L.Marker([antraege_data[i][0], antraege_data[i][1]], {icon: markerIcon });
-			marker.desc = antraege_data[i][2];
-			$widget.map.addLayer(marker);
-			$widget.oms.addMarker(marker);
-			$widget.markers.push(marker);
+		if (antraege_data_overflow.length > 0) {
+			$overflow.css("visibility", "visible").find(".anzahl").text(antraege_data_overflow.length == 1 ? "1 Dokument" : antraege_data_overflow.length + " Dokumente");
+		} else {
+			$overflow.css("visibility", "hidden");
 		}
 
 	},

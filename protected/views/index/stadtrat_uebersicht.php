@@ -2,6 +2,7 @@
 /**
  * @var IndexController $this
  * @var array $geodata
+ * @var array $geodata_overflow
  * @var Antrag[] $antraege
  * @var string $datum
  * @var string $weitere_url
@@ -56,6 +57,7 @@ function gruppiere_termine($termine)
 <div id="mapholder">
 	<div id="map"></div>
 </div>
+<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='visibility: hidden;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span class="anzahl"><?=(count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente")?></span> mit über 20 Ortsbezügen</label></div>
 <div id="benachrichtigung_hinweis">
 	<div id="ben_map_infos">
 		<div class="nichts" style="font-style: italic;">
@@ -99,7 +101,7 @@ function gruppiere_termine($termine)
 					}
 				}
 			});
-			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
+			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
 		}
 	})
 </script>
@@ -121,12 +123,16 @@ function gruppiere_termine($termine)
 		else {
 			?>
 			<ul class="terminliste"><?
-
 				foreach ($data as $termin) {
 					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
 					$gremien = array();
 					foreach ($termin["gremien"] as $name => $links) {
-						foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
+						if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
+						else {
+							$str = CHtml::encode($name);
+							for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
+							$gremien[] = $str;
+						}
 					}
 					echo implode(", ", $gremien);
 					echo "</div></li>";

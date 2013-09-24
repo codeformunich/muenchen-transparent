@@ -12,6 +12,7 @@
  * @var bool $wird_benachrichtigt
  * @var BenutzerIn $ich
  * @var null|array $geodata
+ * @var null|array $geodata_overflow
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -46,6 +47,7 @@ if (!is_null($geodata) && count($geodata) > 0) {
 	<div id="mapholder">
 		<div id="map"></div>
 	</div>
+	<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span class="anzahl"><?=(count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente")?></span> mit über 20 Ortsbezügen</label></div>
 
 	<script>
 		yepnope({
@@ -56,7 +58,7 @@ if (!is_null($geodata) && count($geodata) > 0) {
 					lng: <?=$geokrit["lng"]?>,
 					size: 14
 				});
-				$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
+				$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
 			}
 		});
 	</script>

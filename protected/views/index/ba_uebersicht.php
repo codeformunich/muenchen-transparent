@@ -5,6 +5,7 @@
  * @var Bezirksausschuss $ba
  * @var Antrag[] $antraege
  * @var array $geodata
+ * @var array $geodata_overflow
  * @var Termin[] $termine_zukunft
  * @var Termin[] $termine_vergangenheit
  * @var Termin[] $termin_dokumente
@@ -62,6 +63,8 @@ $cs->registerScriptFile('/js/index.js');
 <div id="mapholder">
 	<div id="map"></div>
 </div>
+<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span class="anzahl"><?=(count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente")?></span> mit über 20 Ortsbezügen</label></div>
+
 <div id="benachrichtigung_hinweis">
 	<div id="ben_map_infos">
 		<div class="nichts" style="font-style: italic;">
@@ -104,7 +107,7 @@ $cs->registerScriptFile('/js/index.js');
 					}
 				}
 			});
-			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>);
+			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
 		}
 	});
 </script>
@@ -186,7 +189,6 @@ $cs->registerScriptFile('/js/index.js');
 	}
 	$weitere_terms = array();
 	foreach ($termin_dokumente as $dok) if (!in_array($dok->id, $termine_ids)) {
-		var_dump($dok->id);
 		$weitere_terms[] = $dok;
 	}
 	if (count($weitere_terms) > 0) {

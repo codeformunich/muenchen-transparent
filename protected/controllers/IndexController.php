@@ -291,7 +291,8 @@ class IndexController extends RISBaseController
 	 */
 	protected function antraege2geodata(&$antraege, $typ = 0)
 	{
-		$geodata = array();
+		$geodata          = $geodata_overflow = array();
+		$geodata_nach_dok = array();
 		foreach ($antraege as $ant) {
 			foreach ($ant->dokumente as $dokument) {
 				foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0) {
@@ -302,7 +303,8 @@ class IndexController extends RISBaseController
 					$str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
 					$str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</div>";
 					$str .= "</div>";
-					$geodata[] = array(
+					if (!isset($geodata_nach_dok[$dokument->id])) $geodata_nach_dok[$dokument->id] = array();
+					$geodata_nach_dok[$dokument->id][] = array(
 						FloatVal($ort->ort->lat),
 						FloatVal($ort->ort->lon),
 						$str,
@@ -311,7 +313,13 @@ class IndexController extends RISBaseController
 				}
 			}
 		}
-		return $geodata;
+		foreach ($geodata_nach_dok as $dok_geo) if (count($dok_geo) >= 20) {
+			$geodata_overflow[] = $dok_geo;
+		} else {
+			foreach ($dok_geo as $d) $geodata[] = $d;
+		}
+
+		return array($geodata, $geodata_overflow);
 	}
 
 	/**
@@ -330,7 +338,7 @@ class IndexController extends RISBaseController
 			$i++;
 		} while (count($antraege) == 0);
 
-		$geodata = $this->antraege2geodata($antraege);
+		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
 		ob_start();
 		$this->renderPartial('index_antraege_liste', array(
@@ -341,9 +349,10 @@ class IndexController extends RISBaseController
 
 		Header("Content-Type: application/json; charset=UTF-8");
 		echo json_encode(array(
-			"datum"   => $datum,
-			"html"    => ob_get_clean(),
-			"geodata" => $geodata
+			"datum"            => $datum,
+			"html"             => ob_get_clean(),
+			"geodata"          => $geodata,
+			"geodata_overflow" => $geodata_overflow
 		));
 		Yii::app()->end();
 	}
@@ -529,8 +538,10 @@ class IndexController extends RISBaseController
 			return 0;
 		});
 
-		$geodata = $this->antraege2geodata($antraege1);
-		$geodata = array_merge($geodata, $this->antraege2geodata($antraege2, 1));
+		list($geodata1, $geodata_overflow1) = $this->antraege2geodata($antraege1);
+		list($geodata2, $geodata_overflow2) = $this->antraege2geodata($antraege2, 1);
+		$geodata          = array_merge($geodata1, $geodata2);
+		$geodata_overflow = array_merge($geodata_overflow1, $geodata_overflow2);
 
 		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
 		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
@@ -542,6 +553,7 @@ class IndexController extends RISBaseController
 			"ba"                           => $ba,
 			"antraege"                     => $antraege,
 			"geodata"                      => $geodata,
+			"geodata_overflow"             => $geodata_overflow,
 			"termine_zukunft"              => $termine_zukunft,
 			"termine_vergangenheit"        => $termine_vergangenheit,
 			"termin_dokumente"             => $termin_dokumente,
@@ -568,7 +580,7 @@ class IndexController extends RISBaseController
 			$i++;
 		} while (count($antraege) == 0);
 
-		$geodata = $this->antraege2geodata($antraege);
+		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
 		$tage_zukunft       = 7;
 		$tage_vergangenheit = 7;
@@ -581,6 +593,7 @@ class IndexController extends RISBaseController
 			"weitere_url"           => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
 			"antraege"              => $antraege,
 			"geodata"               => $geodata,
+			"geodata_overflow"      => $geodata_overflow,
 			"datum"                 => $datum,
 			"termine_zukunft"       => $termine_zukunft,
 			"termine_vergangenheit" => $termine_vergangenheit,
