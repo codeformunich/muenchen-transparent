@@ -27,7 +27,7 @@ function ba_gruppiere_termine($termine)
 			$ts         = RISTools::date_iso2timestamp($termin->termin);
 			$data[$key] = array(
 				"id"        => $termin->id,
-				"datum"     => date("j.M, H:i", $ts),
+				"datum"     => strftime("%e. %b., %H:%M", $ts),
 				"gremien"   => array(),
 				"ort"       => $termin->sitzungsort,
 				"tos"       => array(),
@@ -197,10 +197,10 @@ $cs->registerScriptFile('/js/index.js');
 		<ul class="antragsliste"><?
 			foreach ($weitere_terms as $termin) {
 				$ts = RISTools::date_iso2timestamp($termin->termin);
-				echo "<li><div class='antraglink'>" . CHtml::encode(date("j.M, H:i", $ts) . ", " . $termin->gremium->name) . "</div>";
+				echo "<li><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
 				foreach ($termin->antraegeDokumente as $dokument) {
 					echo "<ul class='dokumente'><li>";
-					echo "<div style='float: right;'>" . CHtml::encode(date("j.M", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+					echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
 					echo CHtml::link($dokument->name, $dokument->getOriginalLink());
 					echo "</li></ul>";
 				}

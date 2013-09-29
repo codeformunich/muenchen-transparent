@@ -38,7 +38,7 @@ function gruppiere_termine($termine)
 		if (!isset($data[$key])) {
 			$ts         = RISTools::date_iso2timestamp($termin->termin);
 			$data[$key] = array(
-				"datum"   => date("j.M, H:i", $ts),
+				"datum"   => strftime("%e. %b., %H:%M", $ts),
 				"gremien" => array(),
 				"ort"     => $termin->sitzungsort,
 				"tos"     => array(),
@@ -166,16 +166,16 @@ function gruppiere_termine($termine)
 
 		<h3>Neue Sitzungsdokumente</h3>
 		<?
-		if (count($termin_dokumente) == 0) echo "<p class='keine_gefunden'>Keine neue Stadtratsdokumente den letzten $tage_vergangenheit Tagen</p>";
+		if (count($termin_dokumente) == 0) echo "<p class='keine_gefunden'>Keine neue Sitzungsdokumente in den letzten $tage_vergangenheit Tagen</p>";
 		else {
 			?>
 			<ul class="antragsliste"><?
 				foreach ($termin_dokumente as $termin) {
 					$ts = RISTools::date_iso2timestamp($termin->termin);
-					echo "<li><div class='antraglink'>" . CHtml::encode(date("j.M, H:i", $ts) . ", " . $termin->gremium->name) . "</div>";
+					echo "<li><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
 					foreach ($termin->antraegeDokumente as $dokument) {
 						echo "<ul class='dokumente'><li>";
-						echo "<div style='float: right;'>" . CHtml::encode(date("j.M", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+						echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
 						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
 						echo "</li></ul>";
 					}

@@ -303,6 +303,8 @@ class IndexController extends RISBaseController
 					$str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
 					$str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</div>";
 					$str .= "</div>";
+					$str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
+
 					if (!isset($geodata_nach_dok[$dokument->id])) $geodata_nach_dok[$dokument->id] = array();
 					$geodata_nach_dok[$dokument->id][] = array(
 						FloatVal($ort->ort->lat),
