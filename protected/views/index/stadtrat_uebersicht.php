@@ -11,6 +11,7 @@
  * @var Termin[] $termin_dokumente
  * @var int $tage_zukunft
  * @var int $tage_vergangenheit
+ * @var array[] $fraktionen
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -196,10 +197,45 @@ function gruppiere_termine($termine)
 			</p>
 		</section>
 
-		<h3>Infos</h3>
+		<h3>StadträtInnen</h3>
 
-		<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+		<ul class="fraktionen_liste"><?
+			usort($fraktionen, function($val1, $val2) {
+				if (count($val1) < count($val2)) return 1;
+				if (count($val1) > count($val2)) return -1;
+				return 0;
+			});
+			foreach ($fraktionen as $fraktion) {
+				/** @var StadtraetIn[] $fraktion */
+				$fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
+				echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'>";
+				echo "<span class='count'>" . count($fraktion) . "</span>";
+				echo CHtml::encode($fr->name) . "</a><ul class='mitglieder'>";
+				foreach ($fraktion as $str) {
+					echo "<li>";
+					if ($str->abgeordnetenwatch != "") echo "<a href='" . CHtml::encode($str->abgeordnetenwatch) . "' class='abgeordnetenwatch_link' title='Abgeordnetenwatch'></a>";
+					if ($str->web != "") echo "<a href='" . CHtml::encode($str->web) . "' title='Homepage' class='web_link'></a>";
+					if ($str->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($str->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
+					if ($str->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($str->facebook) . "' title='Facebook' class='fb_link'>f</a>";
+					echo "<a href='" . CHtml::encode($str->getLink()) . "' class='ris_link'>" . CHtml::encode($str->name) . "</a>";
+					echo "</li>\n";
+				}
+				echo "</ul></li>\n";
 
-		<p><a class="btn" href="#">View details &raquo;</a></p>
+			}
+		?></ul>
+
+		<script>
+			$(function() {
+				var $frakts = $(".fraktionen_liste > li");
+				$frakts.addClass("closed").find("> a").click(function(ev) {
+					ev.preventDefault();
+					var $li = $(this).parents("li").first(),
+						is_open = !$li.hasClass("closed");
+					$frakts.addClass("closed");
+					if (!is_open) $li.removeClass("closed");
+				});
+			})
+		</script>
 	</div>
 </div>

@@ -2,12 +2,19 @@
   "name": "",
   "css_prefix_text": "icon-",
   "css_use_suffix": false,
+  "hinting": true,
   "glyphs": [
     {
       "uid": "9bd60140934a1eb9236fd7a8ab1ff6ba",
       "css": "spin4",
       "code": 59444,
       "src": "fontelico"
+    },
+    {
+      "uid": "d7271d490b71df4311e32cdacae8b331",
+      "css": "home",
+      "code": 59393,
+      "src": "fontawesome"
     },
     {
       "uid": "2a3192d0f8fe0c7cf959168e68eb16d8",

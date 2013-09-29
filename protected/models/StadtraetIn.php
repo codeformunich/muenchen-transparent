@@ -6,6 +6,9 @@
  * @property string $bio
  * @property string $web
  * @property string $name
+ * @property string $twitter
+ * @property string $facebook
+ * @property string $abgeordnetenwatch
  *
  * The followings are the available model relations:
  * @property Antrag[] $antraege
@@ -19,7 +22,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 * @param string $className active record class name.
 	 * @return StadtraetIn the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -41,13 +44,15 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, name', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
-			array('web', 'length', 'max'=>250),
-			array('name', 'length', 'max'=>100),
+			array('id', 'numerical', 'integerOnly' => true),
+			array('web', 'length', 'max' => 250),
+			array('name', 'length', 'max' => 100),
+			array('twitter', 'length', 'max' => 45),
+			array('facebook, abgeordnetenwatch', 'length', 'max' => 200),
 			array('gewaehlt_am', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, gewaehlt_am, bio, web, name', 'safe', 'on'=>'search'),
+			array('id, gewaehlt_am, bio, web, name, twitter, facebook, abgeordnetenwatch', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -59,8 +64,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antraege' => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antraege_id)'),
-			'personen' => array(self::HAS_MANY, 'Person', 'ris_stadtraetIn'),
+			'antraege'                 => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antraege_id)'),
+			'personen'                 => array(self::HAS_MANY, 'Person', 'ris_stadtraetIn'),
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'),
 		);
 	}
@@ -71,11 +76,14 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'gewaehlt_am' => 'Gewaehlt Am',
-			'bio' => 'Bio',
-			'web' => 'Web',
-			'name' => 'Name',
+			'id'                => 'ID',
+			'gewaehlt_am'       => 'Gewaehlt Am',
+			'bio'               => 'Bio',
+			'web'               => 'Web',
+			'name'              => 'Name',
+			'twitter'           => 'Twitter',
+			'facebook'          => 'Facebook',
+			'abgeordnetenwatch' => 'Abgeordnetenwatch'
 		);
 	}
 
@@ -88,16 +96,16 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('gewaehlt_am',$this->gewaehlt_am,true);
-		$criteria->compare('bio',$this->bio,true);
-		$criteria->compare('web',$this->web,true);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('gewaehlt_am', $this->gewaehlt_am, true);
+		$criteria->compare('bio', $this->bio, true);
+		$criteria->compare('web', $this->web, true);
+		$criteria->compare('name', $this->name, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 
@@ -106,7 +114,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("stadtraetIn/anzeigen",array("id" => $this->id));
+		return Yii::app()->createUrl("stadtraetIn/anzeigen", array("id" => $this->id));
 	}
 
 
@@ -120,5 +128,32 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @param string $datum
+	 * @return array[]
+	 */
+	public static function getGroupedByFraktion($datum)
+	{
+		$sql = Yii::app()->db->createCommand();
+		$sql->select("id")->from("antraege_dokumente")->where("id < 1245865 AND (seiten_anzahl = 0 OR seiten_anzahl = 9)")->order("id");
+		/** @var StadtraetIn[] $strs */
+		$strs       = StadtraetIn::model()->findAll(array(
+			'alias' => 'a',
+			'order' => 'a.name ASC',
+			'with'  => array(
+				'stadtraetInnenFraktionen'          => array(
+					'alias'     => 'b',
+					'condition' => 'b.datum_von <= "' . addslashes($datum) . '" AND (b.datum_bis IS NULL OR b.datum_bis >= "' . addslashes($datum) . '")',
+				),
+				'stadtraetInnenFraktionen.fraktion' => array()
+			)));
+		$fraktionen = array();
+		foreach ($strs as $str) {
+			if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = array();
+			$fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
+		}
+		return $fraktionen;
 	}
 }

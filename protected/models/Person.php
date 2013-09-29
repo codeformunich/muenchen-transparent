@@ -16,7 +16,7 @@
  * @property StadtraetIn $stadtraetIn
  * @property Fraktion $fraktion
  */
-class Person extends CActiveRecord
+class Person extends CActiveRecord implements IRISItem
 {
 
 	public static $TYP_SONSTIGES = "sonstiges";
@@ -152,5 +152,23 @@ class Person extends CActiveRecord
 			if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) return $fraktionsZ->fraktion->name;
 		}
 		return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->name;
+	}
+
+	/** @return string */
+	public function getLink()
+	{
+		return "http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+	}
+
+	/** @return string */
+	public function getTypName()
+	{
+		return "Stadtratsmitglied";
+	}
+
+	/** @return string */
+	public function getName()
+	{
+		return $this->name;
 	}
 }

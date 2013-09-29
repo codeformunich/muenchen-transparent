@@ -1,44 +1,16 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg">
-<metadata>
-Created by FontForge 20110222 at Wed May  8 23:29:45 2013
- By root
-Copyright (C) 2012 by original authors @ fontello.com
-</metadata>
+<metadata>Copyright (C) 2012 by original authors @ fontello.com</metadata>
 <defs>
-<font id="fontello" horiz-adv-x="1030" >
-  <font-face 
-    font-family="fontello"
-    font-weight="500"
-    font-stretch="normal"
-    units-per-em="1000"
-    panose-1="2 0 6 3 0 0 0 0 0 0"
-    ascent="850"
-    descent="-150"
-    bbox="14.2012 -150.331 1245 850.331"
-    underline-thickness="50"
-    underline-position="-100"
-    unicode-range="U+0052-E834"
-  />
-<missing-glyph horiz-adv-x="364" 
-d="M33 0v666h265v-666h-265zM66 33h199v600h-199v-600z" />
-    <glyph glyph-name=".notdef" horiz-adv-x="364" 
-d="M33 0v666h265v-666h-265zM66 33h199v600h-199v-600z" />
-    <glyph glyph-name=".null" horiz-adv-x="0" 
- />
-    <glyph glyph-name="nonmarkingreturn" horiz-adv-x="333" 
- />
-    <glyph glyph-name="R" unicode="R" 
-d="M15 -16q0 55 39 94t94 39t94 -39t39 -94t-39 -94t-94 -39t-94 39t-39 94zM15 510q189 0 338 -92.5t233 -236.5q89 -152 89 -331h-192q0 194 -137 331q-138 138 -331 138v191zM15 658v192q211 0 394.5 -82t312.5 -211t211 -312.5t82 -394.5h-192q0 171 -66.5 320
-t-170.5 252q-104 104 -252 170t-319 66z" />
-    <glyph glyph-name="T" unicode="T" horiz-adv-x="1260" 
-d="M15 -37q30 -3 60 -3q176 0 314 108q-84 1 -148.5 51.5t-87.5 123.5q17 -4 47 -4q36 0 67 9q-85 16 -144 85t-59 162v3q52 -29 115 -31q-49 32 -81 87t-32 123t35 127q89 -112 223 -183.5t297 -80.5q-7 31 -7 58q0 104 74 178t179 74q109 0 184 -80q85 18 160 62
-q-28 -91 -110 -140q75 9 144 40q-48 -75 -125 -131v-33q0 -212 -120 -396q-131 -202 -346 -280q-117 -42 -252 -42q-208 0 -387 113z" />
-    <glyph glyph-name="f" unicode="f" horiz-adv-x="568" 
-d="M15 313v191h154v96q0 104 67 177t164 73h153v-191h-153q-17 0 -28 -18t-11 -39v-98h192v-191h-192v-463h-192v463h-154z" />
-    <glyph glyph-name="uniE834" unicode="&#xe834;" 
-d="M193 734q97 81 219.5 106t243.5 -10.5t212 -126.5q108 -108 137.5 -257t-25.5 -282q-8 -29 -41.5 -38t-56.5 14q-26 26 -12 68q57 121 33.5 258.5t-122.5 236.5q-79 79 -184 110.5t-211.5 10.5t-192.5 -90zM837 -34q-97 -81 -219.5 -106t-243.5 10.5t-212 126.5
-q-108 108 -137.5 257t25.5 282q8 29 41.5 38t56.5 -14q26 -26 12 -68q-57 -121 -33.5 -258.5t122.5 -236.5q79 -79 184 -110.5t211.5 -10.5t192.5 90z" />
-  </font>
-</defs></svg>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="rss" unicode="&#x52;" d="M0-16q0 55 39 94t94 39 94-39 39-94q0-56-39-95t-94-39-94 39-39 94z m0 335l0 191q179 0 331-89t241-241 89-331l-192 0q0 194-137 331-138 138-331 138z m0 339l0 192q203 0 388-80t319-214 214-319 80-388l-192 0q0 164-64 314t-173 258-258 172-314 64z" horiz-adv-x="1000" />
+<glyph glyph-name="twitter" unicode="&#x54;" d="M0-37q30-3 60-3 176 0 314 108-82 1-147 50t-89 125q20-4 47-4 35 0 67 9-88 17-146 87t-58 161l0 3q53-30 115-31-52 34-83 90t-31 121q0 68 35 127 94-117 230-187t291-78q-7 33-7 58 0 104 74 178t179 74q109 0 184-80 87 18 160 62-28-91-110-140 73 9 144 40-48-75-125-131l0-33q0-101-30-203t-90-194-145-165-202-115-253-43q-209 0-387 113z" horiz-adv-x="1230" />
+<glyph glyph-name="facebook" unicode="&#x66;" d="M0 313l0 191 154 0 0 96q0 104 68 177t164 73l153 0 0-191-153 0q-15 0-27-17t-12-41l0-98 192 0 0-191-192 0 0-463-192 0 0 463-154 0z" horiz-adv-x="538" />
+<glyph glyph-name="home" unicode="&#xe801;" d="M786 296l0-268q0-15-11-25t-25-11l-214 0 0 214-143 0 0-214-214 0q-15 0-25 11t-11 25l0 268q0 1 0 2t0 2l321 264 321-264q1-1 1-3z m124 39l-35-41q-4-5-12-6l-2 0q-7 0-12 4l-386 322-386-322q-7-4-13-4-7 1-12 6l-35 41q-4 6-4 13t6 12l401 334q18 15 42 15t42-15l136-114 0 109q0 8 5 13t13 5l107 0q8 0 13-5t5-13l0-228 122-102q6-4 6-12t-4-13z" horiz-adv-x="928.571" />
+<glyph glyph-name="spin4" unicode="&#xe834;" d="M498 850c-114 0-227-39-320-116 173 140 427 130 588-31 134-134 163-333 89-495-10-29-6-50 12-68 21-21 61-23 84 0 3 3 12 14 15 24 71 180 33 393-112 539-98 98-227 147-356 147z m-408-274c-15 0-29-6-40-16-3-3-12-14-15-24-71-180-33-393 112-539 185-185 479-195 676-31-173-140-427-130-588 31-134 134-163 333-89 495 10 29 6 50-12 68-11 11-27 17-44 16z" horiz-adv-x="1001" />
+</font>
+</defs>
+</svg>

@@ -38,6 +38,6 @@ if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</d
 	</div>
 
 	<div style="position: fixed; bottom: 0; left: 45%;">
-		<button type="submit" class="btn btn-primary" name="save">Speichern</button>
+		<button type="submit" class="btn btn-primary" name="<?=AntiXSS::createToken("save")?>">Speichern</button>
 	</div>
 </form>

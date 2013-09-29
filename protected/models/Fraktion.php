@@ -8,10 +8,10 @@
  * @property string $name
  *
  * The followings are the available model relations:
- * @property StadtraetInFraktion[] $stadtraeteFraktionen
+ * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
  * @property Person[] $personen
  */
-class Fraktion extends CActiveRecord
+class Fraktion extends CActiveRecord implements IRISItem
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -89,5 +89,24 @@ class Fraktion extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	/** @return string */
+	public function getLink()
+	{
+		$strs = $this->stadtraetInnenFraktionen;
+		return "http://www.ris-muenchen.de/RII2/RII/ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
+	}
+
+	/** @return string */
+	public function getTypName()
+	{
+		return "Fraktion";
+	}
+
+	/** @return string */
+	public function getName()
+	{
+		return $this->name;
 	}
 }
