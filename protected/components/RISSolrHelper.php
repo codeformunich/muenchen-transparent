@@ -63,7 +63,7 @@ class RISSolrHelper {
 				"title"          => $model->name . " (zu " . $model->getRISItem()->getTypName() . " \"" . $model->getRISItem()->getName() . "\"",
 				"link"           => $link,
 				"content"        => "",
-				"dateCreated"    => RISTools::date_iso2timestamp($model->datum),
+				"dateCreated"    => RISTools::date_iso2timestamp(str_replace("T", " ", str_replace("Z", "", $dokument->sort_datum))),
 				"aenderung_guid" => $link
 			);
 			if ($highlightedDoc && count($highlightedDoc) > 0) {

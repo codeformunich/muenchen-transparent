@@ -34,9 +34,8 @@ class StadtraetInnenParser extends RISParser
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
 
-		$daten      = new StadtraetIn();
-		$daten->id  = $stadtraetIn_id;
-		$daten->web = "";
+		$daten     = new StadtraetIn();
+		$daten->id = $stadtraetIn_id;
 
 		if (preg_match("/introheadline\">(.*)( ?\([^\)]*\) ?)<\/h3/siU", $html_details, $matches)) {
 			$daten->name = trim(str_replace("&nbsp;", " ", $matches[1]));
@@ -62,6 +61,11 @@ class StadtraetInnenParser extends RISParser
 			if ($alter_eintrag->gewaehlt_am != $daten->gewaehlt_am) $aenderungen .= "Gewählt am: " . $alter_eintrag->gewaehlt_am . " => " . $daten->gewaehlt_am . "\n";
 			if ($alter_eintrag->bio != $daten->bio) $aenderungen .= "Biografie: " . $alter_eintrag->bio . " => " . $daten->bio . "\n";
 			if ($aenderungen != "") $changed = true;
+
+			$daten->web               = $alter_eintrag->web;
+			$daten->twitter           = $alter_eintrag->twitter;
+			$daten->facebook          = $alter_eintrag->facebook;
+			$daten->abgeordnetenwatch = $alter_eintrag->abgeordnetenwatch;
 		}
 
 		if ($changed) {

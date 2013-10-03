@@ -48,11 +48,31 @@
 	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-rss:before { content: '\52'; } /* 'R' */
-.icon-twitter:before { content: '\54'; } /* 'T' */
-.icon-facebook:before { content: '\66'; } /* 'f' */
-.icon-home:before { content: '\e801'; } /* '' */
-.icon-spin4:before { content: '\e834'; } /* '' */
+.icon-rss:before {
+	content: '\52';
+}
+
+/* 'R' */
+.icon-twitter:before {
+	content: '\54';
+}
+
+/* 'T' */
+.icon-facebook:before {
+	content: '\66';
+}
+
+/* 'f' */
+.icon-home:before {
+	content: '\e801';
+}
+
+/* '' */
+.icon-spin4:before {
+	content: '\e834';
+}
+
+/* '' */
 
 /* '' */
 
@@ -335,11 +355,11 @@ body {
 	margin-bottom: 20px;
 }
 
-
 .keine_gefunden {
 	color: gray;
 	font-style: italic;
 }
+
 ul.antragsliste, ul.terminliste {
 	list-style-type: none;
 	margin: 0;
@@ -415,22 +435,28 @@ ul.fraktionen_liste {
 	border-radius: 5px;
 	overflow: hidden;
 }
+
 ul.fraktionen_liste > li {
 	border-top: solid 1px #ccc;
 }
+
 ul.fraktionen_liste > li:first-child {
 	border-top: none;
 }
+
 ul.fraktionen_liste > li > a {
 	display: block;
 	padding: 2px;
 }
+
 ul.fraktionen_liste > li > a .count {
 	float: right;
 }
+
 ul.fraktionen_liste > li.closed > ul.mitglieder {
 	display: none;
 }
+
 ul.fraktionen_liste > li > ul.mitglieder {
 	list-style-type: none;
 	margin: 0;
@@ -438,17 +464,20 @@ ul.fraktionen_liste > li > ul.mitglieder {
 	border-top: solid 1px #ccc;
 	background-color: #fff;
 }
+
 ul.fraktionen_liste > li > ul.mitglieder > li {
 	padding: 2px;
 }
+
 ul.fraktionen_liste > li > ul.mitglieder .abgeordnetenwatch_link {
 	float: right;
 	display: inline-block;
 	width: 16px;
 	height: 16px;
-	margin-left:3px;
+	margin-left: 3px;
 	background-image: url(/images/abgeordneten_16.png);
 }
+
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
 	ul.fraktionen_liste > li > ul.mitglieder .abgeordnetenwatch_link {
 		background-image: url(/images/abgeordneten_32.png);
@@ -465,6 +494,11 @@ ul.fraktionen_liste > li > ul.mitglieder .twitter_link, ul.fraktionen_liste > li
 	font-family: fontello;
 }
 
+ul.fraktionen_liste > li > ul.mitglieder .twitter_link {
+	font-size: 10px;
+	padding-top: 2px;
+}
+
 .startseite_benachrichtigung_link {
 	display: inline-block;
 	width: 40px;
@@ -479,6 +513,7 @@ ul.fraktionen_liste > li > ul.mitglieder .twitter_link, ul.fraktionen_liste > li
 	color: #5858ff;
 	background-color: #eef;
 }
+
 .startseite_benachrichtigung_link.email {
 	float: right;
 	font-weight: bold;
@@ -550,6 +585,7 @@ ul.fraktionen_liste > li > ul.mitglieder .twitter_link, ul.fraktionen_liste > li
 	vertical-align: middle;
 	text-align: center;
 }
+
 .benachrichtigungsliste button.del span {
 	vertical-align: top;
 }
@@ -656,6 +692,7 @@ ul.fraktionen_liste > li > ul.mitglieder .twitter_link, ul.fraktionen_liste > li
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 }
+
 .form-signin.login #password, .form-signin.anlegen #password2 {
 	margin-bottom: 10px;
 	border-top-left-radius: 0;
@@ -669,9 +706,11 @@ ul.fraktionen_liste > li > ul.mitglieder .twitter_link, ul.fraktionen_liste > li
 .form-signin.login #password2 {
 	display: none;
 }
+
 .form-signin.login .anlegen {
 	display: none;
 }
+
 .form-signin.anlegen .login {
 	display: none;
 }
