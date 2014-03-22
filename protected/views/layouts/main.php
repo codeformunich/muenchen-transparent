@@ -48,17 +48,17 @@
 	<? }
 	?>
 
-	<link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css"/>
+	<link rel="stylesheet" href="/css/jquery-ui-1.10.4.custom.min.css"/>
 	<link rel="stylesheet" href="/styles.css"/>
 
 	<!--[if lt IE 9]>
-	<script src="/js/jquery-1.10.2.min.js"></script>
+	<script src="/js/jquery-1.11.0.min.js"></script>
 	<![endif]-->
 	<!--[if gte IE 9]><!-->
-	<script src="/js/jquery-2.0.3.min.js"></script>
+	<script src="/js/jquery-2.1.0.min.js"></script>
 	<!--<![endif]-->
 
-	<script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
 	<script src="/js/scrollintoview.js"></script>
 	<script src="/js/antraegekarte.jquery.js"></script>

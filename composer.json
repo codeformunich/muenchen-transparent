@@ -4,8 +4,11 @@
 	"type": "library",
 	"license": "AGPL-3.0",
 	"keywords": [
-		"gruen",
-		"antrag"
+		"ris",
+		"münchen",
+        "politik",
+        "anträge",
+        "ratsinformationssystem"
 	],
 	"minimum-stability": "dev",
 	"homepage": "http://ris3.hoessl.eu/",
@@ -29,10 +32,10 @@
 	"require": {
 		"php": ">=5.3.3",
 		"yiisoft/yii": "1.1.14",
-		"solarium/solarium": "3.1.*",
-		"zendframework/zend-config": "2.2.*",
-		"zendframework/zend-http": "2.2.*",
-		"zendframework/zend-mail": "2.2.*",
-		"zendframework/zend-mime": "2.2.*"
+		"solarium/solarium": "3.2.*",
+		"zendframework/zend-config": "2.3.*",
+		"zendframework/zend-http": "2.3.*",
+		"zendframework/zend-mail": "2.3.*",
+		"zendframework/zend-mime": "2.3.*"
 	}
 }
