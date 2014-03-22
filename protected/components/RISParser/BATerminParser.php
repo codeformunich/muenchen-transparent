@@ -131,7 +131,7 @@ class BATerminParser extends RISParser {
 	}
 
 	public function parseAlle() {
-		$anz = 5000;
+		$anz = 4750;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);

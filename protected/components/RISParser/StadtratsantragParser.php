@@ -140,7 +140,7 @@ class StadtratsantragParser extends RISParser {
 	}
 
 	public function parseAlle() {
-		$anz = 13000;
+		$anz = 14500;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);
