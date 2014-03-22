@@ -111,7 +111,7 @@ class RISPDF2Text
 	public static function document_text_pdf($pdf)
 	{
 		$tmp_file_name = TMP_PATH . "pdf.txt." . rand(0, 10000000);
-		exec(PATH_PDFTOTEXT . " -enc UTF-8 $pdf $tmp_file_name", $ret);
+		exec(PATH_JAVA . " -jar " . PATH_PDFBOX . " ExtractText -encoding UTF-8 $pdf $tmp_file_name", $ret);
 		if (file_exists($tmp_file_name)) {
 			$text = file_get_contents($tmp_file_name);
 			unlink($tmp_file_name);
