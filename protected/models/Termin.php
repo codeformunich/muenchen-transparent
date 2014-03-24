@@ -32,7 +32,7 @@ class Termin extends CActiveRecord implements IRISItem
 	 * @param string $className active record class name.
 	 * @return Termin the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -54,14 +54,14 @@ class Termin extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, datum_letzte_aenderung, wahlperiode, status', 'required'),
-			array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly'=>true),
-			array('referat, referent, vorsitz', 'length', 'max'=>200),
-			array('wahlperiode', 'length', 'max'=>20),
-			array('status', 'length', 'max'=>100),
+			array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true),
+			array('referat, referent, vorsitz', 'length', 'max' => 200),
+			array('wahlperiode', 'length', 'max' => 20),
+			array('status', 'length', 'max' => 100),
 			array('termin', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, datum_letzte_aenderung, termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe', 'on'=>'search'),
+			array('id, datum_letzte_aenderung, termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -73,10 +73,10 @@ class Termin extends CActiveRecord implements IRISItem
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antraegeDokumente' => array(self::HAS_MANY, 'AntragDokument', 'termin_id'),
+			'antraegeDokumente'  => array(self::HAS_MANY, 'AntragDokument', 'termin_id'),
 			'antraegeErgebnisse' => array(self::HAS_MANY, 'AntragErgebnis', 'sitzungstermin_id'),
-			'antraegeOrte' => array(self::HAS_MANY, 'AntragOrt', 'termin_id'),
-			'gremium' => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
+			'antraegeOrte'       => array(self::HAS_MANY, 'AntragOrt', 'termin_id'),
+			'gremium'            => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
 		);
 	}
 
@@ -86,20 +86,20 @@ class Termin extends CActiveRecord implements IRISItem
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id'                     => 'ID',
 			'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
-			'termin_reihe' => 'Termin Reihe',
-			'gremium_id' => 'Gremium',
-			'ba_nr' => 'Ba Nr',
-			'termin' => 'Termin',
-			'termin_prev_id' => 'Termin Prev',
-			'termin_next_id' => 'Termin Next',
-			'sitzungsort' => 'Sitzungsort',
-			'referat' => 'Referat',
-			'referent' => 'Referent',
-			'vorsitz' => 'Vorsitz',
-			'wahlperiode' => 'Wahlperiode',
-			'status' => 'Status',
+			'termin_reihe'           => 'Termin Reihe',
+			'gremium_id'             => 'Gremium',
+			'ba_nr'                  => 'Ba Nr',
+			'termin'                 => 'Termin',
+			'termin_prev_id'         => 'Termin Prev',
+			'termin_next_id'         => 'Termin Next',
+			'sitzungsort'            => 'Sitzungsort',
+			'referat'                => 'Referat',
+			'referent'               => 'Referent',
+			'vorsitz'                => 'Vorsitz',
+			'wahlperiode'            => 'Wahlperiode',
+			'status'                 => 'Status',
 		);
 	}
 
@@ -112,29 +112,27 @@ class Termin extends CActiveRecord implements IRISItem
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('datum_letzte_aenderung',$this->datum_letzte_aenderung,true);
-		$criteria->compare('termin_reihe',$this->termin_reihe);
-		$criteria->compare('gremium_id',$this->gremium_id);
-		$criteria->compare('ba_nr',$this->ba_nr);
-		$criteria->compare('termin',$this->termin,true);
-		$criteria->compare('termin_prev_id',$this->termin_prev_id);
-		$criteria->compare('termin_next_id',$this->termin_next_id);
-		$criteria->compare('sitzungsort',$this->sitzungsort,true);
-		$criteria->compare('referat',$this->referat,true);
-		$criteria->compare('referent',$this->referent,true);
-		$criteria->compare('vorsitz',$this->vorsitz,true);
-		$criteria->compare('wahlperiode',$this->wahlperiode,true);
-		$criteria->compare('status',$this->status,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
+		$criteria->compare('termin_reihe', $this->termin_reihe);
+		$criteria->compare('gremium_id', $this->gremium_id);
+		$criteria->compare('ba_nr', $this->ba_nr);
+		$criteria->compare('termin', $this->termin, true);
+		$criteria->compare('termin_prev_id', $this->termin_prev_id);
+		$criteria->compare('termin_next_id', $this->termin_next_id);
+		$criteria->compare('sitzungsort', $this->sitzungsort, true);
+		$criteria->compare('referat', $this->referat, true);
+		$criteria->compare('referent', $this->referent, true);
+		$criteria->compare('vorsitz', $this->vorsitz, true);
+		$criteria->compare('wahlperiode', $this->wahlperiode, true);
+		$criteria->compare('status', $this->status, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
-
-
 
 
 	/**
@@ -163,7 +161,7 @@ class Termin extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("termin/anzeigen",array("id" => $this->id));
+		return Yii::app()->createUrl("termine/anzeigen", array("id" => $this->id));
 	}
 
 
@@ -180,6 +178,12 @@ class Termin extends CActiveRecord implements IRISItem
 		return $this->gremium->name . " (" . $this->termin . ")";
 	}
 
+	public function getSourceLink()
+	{
+		if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
+		else return "http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
+	}
+
 
 	/**
 	 * @param null|int $ba_nr
@@ -194,9 +198,9 @@ class Termin extends CActiveRecord implements IRISItem
 		$ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
 		$params = array(
 			'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
-			'order' => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
-			'with' => array("gremium"),
-			'alias' => 'termin'
+			'order'     => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
+			'with'      => array("gremium"),
+			'alias'     => 'termin'
 		);
 		if ($limit > 0) $params['limit'] = $limit;
 		$this->getDbCriteria()->mergeWith($params);
@@ -215,8 +219,8 @@ class Termin extends CActiveRecord implements IRISItem
 		$ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
 		$params = array(
 			'condition' => 'ba_nr ' . $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
-			'order' => 'datum DESC',
-			'with' => array(
+			'order'     => 'datum DESC',
+			'with'      => array(
 				'antraegeDokumente' => array(
 					'condition' => 'datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
 				),

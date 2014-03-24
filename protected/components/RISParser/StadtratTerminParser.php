@@ -191,12 +191,15 @@ class StadtratTerminParser extends RISParser
 
 
 		preg_match_all("/<tr class=\"ergebnistab_tr\">.*<strong>(?<top>[0-9]+)\..*tdborder\">(?<betreff>.*)<\/td>.*<span[^>]+>(?<vorlage_id>.*)<\/span>.*valign=\"top\">(?<referent>.*)<\/td>/siU", $html_to_geheim, $matches);
+		var_dump($matches);
 		for ($i = 0; $i < count($matches[0]); $i++) {
 			$betreff  = static::text_clean_spaces($matches["betreff"][$i]);
 			$referent = static::text_clean_spaces($matches["referent"][$i]);
 
 			/** @var AntragErgebnis $ergebnis */
-			$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "status" => "geheim"));
+			$krits = array("sitzungstermin_id" => $termin_id, "status" => "geheim",  "top_betreff" => $betreff);
+			$ergebnis = AntragErgebnis::model()->findByAttributes($krits);
+			var_dump($ergebnis);
 			if (is_null($ergebnis)) {
 				$ergebnis = new AntragErgebnis();
 				$aenderungen .= "Neuer geheimer Tagesordnungspunkt: " . $betreff . "\n";
@@ -237,7 +240,10 @@ class StadtratTerminParser extends RISParser
 	{
 		$add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
+
 		$txt  = explode("<table class=\"ergebnistab\" ", $text);
+		if ($seite > 4790 && count($txt) == 1) return;
+
 		$txt  = explode("<!-- tabellenfuss", $txt[1]);
 
 		preg_match_all("/ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
