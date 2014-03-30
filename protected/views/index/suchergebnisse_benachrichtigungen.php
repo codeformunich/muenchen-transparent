@@ -84,7 +84,7 @@ else { ?>
 </div>
 
 <div id="password_holder" style="display: none;">
-	Du hast bereits einen Zugang bei OpenRIS.<br>
+	Du hast bereits einen Zugang beim Ratsinformant.<br>
 	<label for="password"><strong>Bitte gib dein Passwort ein:</strong></label>
 
 	<div>

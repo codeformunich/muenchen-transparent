@@ -1,4 +1,4 @@
 <?php
 
-$_SERVER["HTTP_HOST"] = "ris3.hoessl.eu";
+$_SERVER["HTTP_HOST"] = "www.ratsinformant.de";
 return require(dirname(__FILE__).DIRECTORY_SEPARATOR."main.php");

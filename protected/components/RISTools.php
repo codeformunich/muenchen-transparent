@@ -152,6 +152,7 @@ class RISTools {
 		$titel = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $titel);
 		$titel = preg_replace("/\\s\?$/siu", "?", $titel);
 		$titel = str_replace(" ?", " —", $titel);
+		$titel = str_replace(chr(10) . "?", " —", $titel);
 		return $titel;
 	}
 

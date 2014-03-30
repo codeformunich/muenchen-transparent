@@ -84,7 +84,7 @@ class BAInitiativeParser extends RISParser {
 			if ($alter_eintrag->wahlperiode == "") $alter_eintrag->wahlperiode = "?";
 		}
 
-		echo "Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
+		if ($changed) echo "Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
 
 		if ($changed) {
 			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";

@@ -116,8 +116,8 @@ class RISBaseController extends CController
 				if ($benutzerIn->save()) {
 					$best_code = $benutzerIn->createEmailBestaetigungsCode();
 					$link      = Yii::app()->getBaseUrl(true) . $this->createUrl("index/benachrichtigungen", array("code" => $best_code));
-					mail($email, "Anmeldung bei OpenRIS", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von OpenRIS zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
-						. "Liebe Grüße,\n\tDas OpenRIS-Team.");
+					mail($email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von OpenRIS zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
+						. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
 
 					$identity = new RISUserIdentity($benutzerIn);
 					Yii::app()->user->login($identity);

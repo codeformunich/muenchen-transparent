@@ -1,6 +1,6 @@
 "use strict";
 
-$.widget("openris.AntraegeKarte", {
+$.widget("ratsinformant.AntraegeKarte", {
 	options: {
 		lat: 48.15509285476017,
 		lng: 11.542510986328125,
@@ -73,6 +73,7 @@ $.widget("openris.AntraegeKarte", {
 		L.tileLayer('/tiles/' + L_style + '/256/{z}/{x}/{y}.png', {
 			attribution: attrib,
 			maxZoom: 18,
+            minZoom: 11,
 			detectRetina: true
 		}).addTo($widget.map);
 
@@ -146,7 +147,9 @@ $.widget("openris.AntraegeKarte", {
 			});
 
 			$widget.oms.addListener('click', function (marker) {
-				if (typeof(marker._popup) == "undefined") marker.bindPopup(marker.desc);
+				if (typeof(marker._popup) == "undefined") {
+                    marker.bindPopup(marker.desc).openPopup();
+                }
 			});
 			$widget.oms.addListener('spiderfy', function (markers) {
 				$widget.map.closePopup();

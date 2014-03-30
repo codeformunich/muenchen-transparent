@@ -76,7 +76,6 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="<? if ($this->top_menu == "infos") echo 'active'; ?> navbar-brand" href="<?= CHtml::encode($this->createUrl("index/infos")) ?>"><?php echo CHtml::encode(Yii::app()->name); ?></a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
@@ -101,7 +100,9 @@
 					</ul>
 				</li>
 				<? } ?>
+				<li <? if ($this->top_menu == "infos") echo 'active'; ?>><?= CHtml::link("Infos", $this->createUrl("index/infos")) ?></li>
 			</ul>
+
 			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
 				<div class="form-group">
 					<input type="text" name="suchbegriff" placeholder="Volltextsuche" class="form-control">

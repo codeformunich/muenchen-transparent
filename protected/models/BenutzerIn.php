@@ -294,7 +294,7 @@ class BenutzerIn extends CActiveRecord
 			$str .= "\n";
 		}
 
-		$str .= "\nFalls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter " . Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode())), ".") . " abbestellen.\n\nLiebe Grüße,\n  Das OpenRIS-Team";
+		$str .= "\nFalls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter " . Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode())), ".") . " abbestellen.\n\nLiebe Grüße,\n  Das Ratsinformanten-Team";
 		return $str;
 	}
 
@@ -346,7 +346,7 @@ class BenutzerIn extends CActiveRecord
 		if (count($data["antraege"]) > 0) $str .= "</ul>";
 
 		$url = Yii::app()->params["baseURL"] . Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode()));
-		$str .= "<br>Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href='" . CHtml::encode($url) . "'>hier abbestellen</a>.<br><br><br>Liebe Grüße,<br> &nbsp; Das OpenRIS-Team";
+		$str .= "<br>Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href='" . CHtml::encode($url) . "'>hier abbestellen</a>.<br><br><br>Liebe Grüße,<br> &nbsp; Das Ratsinformanten-Team";
 		$str .= "</body></html>";
 		return $str;
 	}
