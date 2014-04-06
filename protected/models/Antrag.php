@@ -285,6 +285,32 @@ class Antrag extends CActiveRecord implements IRISItem
 
 	}
 
+	/**
+	 * @return HistorienEintragAntrag[]
+	 */
+	public function getHistoryDiffs() {
+		$histories = array();
+
+		$neu = new AntragHistory();
+		$neu->setAttributes($this->getAttributes());
+
+		/**
+		 * @var AntragHistory[] $his
+		 * '='M');
+		$criteria = new CDbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
+		$criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
+		$rows = user::model()->findAllByAttributes($u
+		 */
+		$criteria = new CDbCriteria(array('order' => "datum_letzte_aenderung DESC"));
+		$his = AntragHistory::model()->findAllByAttributes(array("id" => $this->id), $criteria);
+		foreach ($his as $alt) {
+			$histories[] = new HistorienEintragAntrag($alt, $neu);
+			$neu = $alt;
+		}
+
+		return $histories;
+	}
+
 
 	/**
 	 * @throws Exception

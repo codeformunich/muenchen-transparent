@@ -15,6 +15,9 @@ $personen = array(
 );
 foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 
+
+$historie = $antrag->getHistoryDiffs();
+
 ?>
 <h1><?= $antrag->getName() ?></h1>
 
@@ -45,8 +48,10 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 				</ul>
 			</td>
 		</tr>
-	<? }
-	if (count($personen[AntragPerson::$TYP_GESTELLT_VON])) { ?>
+	<?
+	}
+	if (count($personen[AntragPerson::$TYP_GESTELLT_VON])) {
+		?>
 		<tr>
 			<th>Gestellt von:</th>
 			<td>
@@ -67,35 +72,64 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 				</ul>
 			</td>
 		</tr>
-	<? }
+	<?
+	}
 	?>
 	<tr>
 		<th>Dokumente:</th>
-		<td><ul>
-		<? foreach ($antrag->dokumente as $dok) {
-			echo "<li>" . date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $this->createUrl("index/dokument", array("id" => $dok->id))) . "</li>";
-		} ?>
-		</ul></td>
+		<td>
+			<ul>
+				<? foreach ($antrag->dokumente as $dok) {
+					echo "<li>" . date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $this->createUrl("index/dokument", array("id" => $dok->id))) . "</li>";
+				} ?>
+			</ul>
+		</td>
 	</tr>
 	<? if (count($antrag->antrag2vorlagen) > 0) { ?>
 		<tr>
 			<th>Verbundene Stadtratsvorlagen:</th>
-			<td><ul>
+			<td>
+				<ul>
 					<? foreach ($antrag->antrag2vorlagen as $vorlage) {
 						echo "<li>" . CHtml::link($vorlage->getName(), $this->createUrl("antraege/anzeigen", array("id" => $vorlage->id))) . "</li>";
 					} ?>
-				</ul></td>
+				</ul>
+			</td>
 		</tr>
-	<? }
-	if (count($antrag->vorlage2antraege) > 0) { ?>
+	<?
+	}
+	if (count($antrag->vorlage2antraege) > 0) {
+		?>
 		<tr>
 			<th>Verbundene Stadtratsanträge:</th>
-			<td><ul>
+			<td>
+				<ul>
 					<? foreach ($antrag->vorlage2antraege as $antrag2) {
 						echo "<li>" . CHtml::link($antrag2->getName(), $this->createUrl("antraege/anzeigen", array("id" => $antrag2->id))) . "</li>";
 					} ?>
-				</ul></td>
+				</ul>
+			</td>
 		</tr>
-	<? } ?>
+	<?
+	}
+	if (count($historie) > 0) {
+	?>
+	<tr>
+	<th>Historie:</th>
+	<td>
+		<ol>
+			<? foreach ($historie as $hist) {
+				echo "<li>" . $hist->getDatum() . ": <ul>";
+				$diff = $hist->getFormattedDiff();
+				foreach ($diff as $d) {
+					echo "<li><strong>" . $d->getFeld() . ":</strong>";
+					echo "<del>" . $d->getAlt() . "</del> => <ins>" . $d->getNeu() . "</ins></li>";
+				}
+				echo "</ul></li>\n";
+			} ?>
+			</ol ></td >
+		</tr >
+	<? }
+	?>
 	</tbody>
 </table>

@@ -5,6 +5,8 @@ class StadtratsantragParser extends RISParser {
 	public function parse($antrag_id) {
 		$antrag_id = IntVal($antrag_id);
 
+		if (in_array($antrag_id, array(3258272))) return;
+
 		echo "- Antrag $antrag_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $antrag_id);

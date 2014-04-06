@@ -535,8 +535,8 @@ class IndexController extends RISBaseController
 			/** @var Antrag $a2 */
 			$ts1 = RISTools::date_iso2timestamp($a1->datum_letzte_aenderung);
 			$ts2 = RISTools::date_iso2timestamp($a2->datum_letzte_aenderung);
-			if ($ts1 > $ts2) return 1;
-			if ($ts1 < $ts2) return -1;
+			if ($ts1 > $ts2) return -1;
+			if ($ts1 < $ts2) return 1;
 			return 0;
 		});
 

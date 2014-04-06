@@ -5,9 +5,6 @@ class Reindex_BACommand extends CConsoleCommand {
 		$parser = new BAInitiativeParser();
 		$parser->parseAlle();
 
-		$parser = new StadtratTerminParser();
-		$parser->parseAlle();
-
 		$parser = new BATerminParser();
 		$parser->parseAlle();
 

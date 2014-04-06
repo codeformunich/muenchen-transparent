@@ -7,6 +7,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		$fp = fopen("/tmp/ris_daily.log", "a");
 		fwrite($fp, "Gestartet: " . date("Y-m-d H:i:s") . "\n");
 
+
 		try {
 			$parser = new StadtratsvorlageParser();
 			$parser->parseUpdate();

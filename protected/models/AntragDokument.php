@@ -332,8 +332,9 @@ class AntragDokument extends CActiveRecord
 	 * @return IRISItem
 	 */
 	public function getRISItem() {
+		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) return $this->ergebnis;
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
-		else return $this->antrag;
+		return $this->antrag;
 	}
 
 

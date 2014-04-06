@@ -25,12 +25,17 @@ if (isset($datum)) {
 	foreach ($antraege as $ant) if (!method_exists($ant, "getName")) {
 		echo "<li>" . get_class($ant) . "</li>";
 	} else {
-		echo "<li><div class='antraglink'>" . CHtml::link($ant->getName(), $ant->getLink()) . "</div>";
+		echo "<li><div class='antraglink'><a href='" . CHtml::encode($ant->getLink()) . "' title='" . CHtml::encode($ant->getName()) . "'>";
+		echo CHtml::encode($ant->getName()) . "</a></div>";
 
 		$max_date = 0;
 		$doklist  = "";
 		foreach ($ant->dokumente as $dokument) {
-			$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
+			//$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
+			$dokurl = $dokument->getOriginalLink();
+			$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
+			if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
+			$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
 			$dat = RISTools::date_iso2timestamp($dokument->datum);
 			if ($dat > $max_date) $max_date = $dat;
 		}

@@ -15,12 +15,12 @@
 		} else {
 			echo "<li><div class='antraglink'>" . CHtml::link($ant->getName(), $ant->getLink()) . "</div>";
 
-			$max_date = 0;
+			$max_dok_date = 0;
 			$doklist  = "";
 			foreach ($ant->dokumente as $dokument) {
 				$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
 				$dat = RISTools::date_iso2timestamp($dokument->datum);
-				if ($dat > $max_date) $max_date = $dat;
+				if ($dat > $max_dok_date) $max_dok_date = $dat;
 			}
 
 			echo "<div class='add_meta'>";
@@ -44,7 +44,8 @@
 				$p_strs[] = $str;
 			}
 			if (count($p_strs) > 0) echo implode(", ", $p_strs) . ", ";
-			echo date("d.m.", $max_date);
+			//echo date("d.m.", $max_date);
+			echo date("d.m.", RISTools::date_iso2timestamp($ant->datum_letzte_aenderung));
 			echo "</div>";
 
 			echo "<ul class='dokumente'>";

@@ -18,7 +18,11 @@
 $this->pageTitle = Yii::app()->name;
 
 ?>
-	<h1><?= CHtml::encode($suchbegriff) ?></h1>
+	<div class="box" style="font-size: 18px; float: right; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee; overflow: hidden;">
+		<a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="icon-rss"></span> Suchergebnisse als RSS-Feed</a>
+	</div>
+
+	<h1><span style="font-weight: bold;">Suchergebnisse:</span> <?= CHtml::encode($suchbegriff) ?></h1>
 
 <?
 
@@ -39,15 +43,15 @@ if ($msg_err != "") {
 }
 
 
-
 if (!is_null($geodata) && count($geodata) > 0) {
 	$assets_base = $this->getAssetsBase();
-	$geokrit = $krits->getGeoKrit();
+	$geokrit     = $krits->getGeoKrit();
 	?>
 	<div id="mapholder">
 		<div id="map"></div>
 	</div>
-	<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span class="anzahl"><?=(count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente")?></span> mit über 20 Ortsbezügen</label></div>
+	<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span
+				class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen</label></div>
 
 	<script>
 		yepnope({
@@ -74,7 +78,9 @@ foreach ($facet as $value => $count) if ($count > 0) {
 	if (isset(Antrag::$TYPEN_ALLE[$value])) {
 		$x = explode("|", Antrag::$TYPEN_ALLE[$value]);
 		$str .= $x[1] . ' (' . $count . ')';
-	} elseif ($value == "stadtrat_termin") $str .= 'Stadtrats-Termin (' . $count . ')'; elseif ($value == "ba_termin") $str .= 'BA-Termin (' . $count . ')'; else $str .= $value . " (" . $count . ")";
+	} elseif ($value == "stadtrat_termin") $str .= 'Stadtrats-Termin (' . $count . ')';
+	elseif ($value == "ba_termin") $str .= 'BA-Termin (' . $count . ')';
+	else $str .= $value . " (" . $count . ")";
 	$str .= "</a></li>";
 	$antrag_typ[] = $str;
 }
@@ -91,25 +97,26 @@ foreach ($facet as $value => $count) if ($count > 0) {
 if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 
 ?>
-	<div style="float: left; margin: 20px; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee;">
-		<?
-		if (count($facet_groups) > 0) {
+	<div class="suchergebnis_titlebox_holder">
+		<div class="box">
+			<?
+			if (count($facet_groups) > 0) {
+				?>
+				<h2>Ergebnisse einschränken</h2>
+				<ul class="filterlist">
+					<?
+					foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
+						echo "<li><h3>" . CHtml::encode($name) . "</h3><ul>";
+						echo implode("", $facets);
+						echo "</ul></li>";
+					}
+					?></ul>
+				<br>
+			<?
+			}
 			?>
-			<h2>Ergebnisse einschränken</h2>
-			<ul>
-				<?
-				foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
-					echo "<li><h3>" . CHtml::encode($name) . "</h3><ul>";
-					echo implode("", $facets);
-					echo "</ul></li>";
-				}
-				?></ul>
-			<br>
-		<?
-		}
-		?>
+		</div>
 	</div>
-
 
 <? $this->renderPartial("suchergebnisse_benachrichtigungen", array(
 	"eingeloggt"          => $eingeloggt,
@@ -120,11 +127,6 @@ if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 	"krits"               => $krits
 ));
 
-?>
-<br style="clear: both;">
-<h2>Suchergebnisse</h2>
-<?
-
 if ($krits->getKritsCount() > 0) $this->renderPartial("../benachrichtigungen/suchergebnisse_liste", array(
-	"ergebnisse"  => $ergebnisse,
+	"ergebnisse" => $ergebnisse,
 ));

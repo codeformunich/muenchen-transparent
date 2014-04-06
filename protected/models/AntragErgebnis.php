@@ -22,7 +22,7 @@
  * @property Gremium $gremium
  * @property Antrag $antrag
  */
-class AntragErgebnis extends CActiveRecord
+class AntragErgebnis extends CActiveRecord implements IRISItem
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -137,5 +137,27 @@ class AntragErgebnis extends CActiveRecord
 			if (strpos($e->getMessage(), "Duplicate entry") === false) throw $e;
 		}
 
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getLink()
+	{
+		return Yii::app()->createUrl("beschluss/anzeigen",array("id" => $this->id));
+	}
+
+
+	/** @return string */
+	public function getTypName()
+	{
+		return "Stadtratsbeschluss";
+	}
+
+	/** @return string */
+	public function getName()
+	{
+		return $this->top_betreff;
 	}
 }
