@@ -35,7 +35,7 @@
 	?>
 
 	<label class="checkbox">
-		<input type="checkbox" value="remember-me" id="create_account"> Neuen Zugang anlegen
+		<input type="checkbox" name="register" id="create_account"> Neuen Zugang anlegen
 	</label>
 
 	<input id="email" type="email" name="email" class="form-control" placeholder="Email-Adresse" autofocus required>
@@ -52,8 +52,7 @@
 		<br><br><br>
 	</div>
 
-	<button class="login btn btn-lg btn-primary btn-block" type="submit" name="<?php echo AntiXSS::createToken("login"); ?>">Login</button>
-	<button class="anlegen btn btn-lg btn-primary btn-block" type="submit" name="<?php echo AntiXSS::createToken("anlegen"); ?>">Anlegen</button>
+	<button class="btn btn-lg btn-primary btn-block" type="submit" name="<?php echo AntiXSS::createToken("login_anlegen"); ?>"><span class="login">Login</span><span class="anlegen">Anlegen</span></button>
 </form>
 
 <script>

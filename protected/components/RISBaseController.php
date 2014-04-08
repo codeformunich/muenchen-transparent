@@ -63,8 +63,9 @@ class RISBaseController extends CController
 			/** @var BenutzerIn $benutzerIn */
 			$benutzerIn = BenutzerIn::model()->findByPk($x[0]);
 			if (!$benutzerIn) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
-			elseif ($benutzerIn->email_bestaetigt) $msg_err = "Dieser Account wurde bereits bestätigt.";
-			elseif (!$benutzerIn->emailBestaetigen($code)) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist."; else {
+			elseif ($benutzerIn->email_bestaetigt) $msg_err = "Dieser Zugang wurde bereits bestätigt.";
+			elseif (!$benutzerIn->emailBestaetigen($code)) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist.";
+			else {
 				$msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
 				$identity = new RISUserIdentity($benutzerIn);
 				Yii::app()->user->login($identity);
@@ -76,7 +77,7 @@ class RISBaseController extends CController
 			$user->logout();
 		}
 
-		if (AntiXSS::isTokenSet("login") && $user->isGuest) {
+		if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && !isset($_REQUEST["register"])) {
 			/** @var BenutzerIn $benutzerIn */
 			$benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
 			if ($benutzerIn) {
@@ -93,10 +94,10 @@ class RISBaseController extends CController
 			}
 		}
 
-		if (AntiXSS::isTokenSet("anlegen")) {
+		if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && isset($_REQUEST["register"])) {
 			/** @var BenutzerIn[] $gefundene_benutzerInnen */
 			$gefundene_benutzerInnen = BenutzerIn::model()->findAll(array(
-				"condition" => "email='" . addslashes($_REQUEST["email"]) . "' AND pwd_enc != ''"
+				"condition" => "email='" . addslashes($_REQUEST["email"]) . "'"
 			));
 			if (count($gefundene_benutzerInnen) > 0) {
 				$msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
@@ -106,7 +107,7 @@ class RISBaseController extends CController
 				$msg_err = "Die beiden angegebenen Passwörter stimmen nicht überein.";
 			} else {
 
-				$benutzerIn                   = BenutzerIn::createBenutzerIn(trim($_REQUEST["email"]), $_REQUEST["password"]);
+				$benutzerIn = BenutzerIn::createBenutzerIn(trim($_REQUEST["email"]), $_REQUEST["password"]);
 				if ($benutzerIn->save()) {
 					$benutzerIn->sendEmailBestaetigungsMail();
 					$identity = new RISUserIdentity($benutzerIn);
