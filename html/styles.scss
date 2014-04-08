@@ -47,46 +47,15 @@
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
-
-.icon-spin4:before {
-  content: '\e834';
-}
-
-/* '' */
-.icon-home:before {
-  content: '\e801';
-}
-
-/* '' */
-.icon-download:before {
-  content: '\e800';
-}
-
-/* '' */
-.icon-right-open:before {
-  content: '\e802';
-}
-
-/* '' */
-.icon-rss:before {
-  content: '\52';
-}
-
-/* 'R' */
-.icon-twitter:before {
-  content: '\54';
-}
-
-/* 'T' */
-.icon-facebook:before {
-  content: '\66';
-}
-
-/* 'f' */
-
-/* '' */
-
-/* '' */
+.icon-spin4:before { content: '\e834'; } /* '' */
+.icon-ok:before { content: '\e803'; } /* '' */
+.icon-cancel:before { content: '\e804'; } /* '' */
+.icon-home:before { content: '\e801'; } /* '' */
+.icon-download:before { content: '\e800'; } /* '' */
+.icon-right-open:before { content: '\e802'; } /* '' */
+.icon-rss:before { content: '\52'; } /* 'R' */
+.icon-twitter:before { content: '\54'; } /* 'T' */
+.icon-facebook:before { content: '\66'; } /* 'f' */
 
 /*
    Animation example, for spinners
@@ -402,7 +371,9 @@ ul.antragsliste, ul.terminliste, ul.suchergebnisliste {
 
       .datum {
         float: right;
-        color: #555;
+        color: #777;
+        font-size: 10px;
+        padding-top: 10px;
       }
       .dokument {
         display: block;
@@ -492,6 +463,47 @@ ul.antragsliste, ul.terminliste, ul.suchergebnisliste {
         padding-left: 16px;
       }
     }
+  }
+}
+
+#benachrichtigung_einrichten {
+  .bestaetigt, .email_angegeben, .nicht_eingeloggt, .wird_benachrichtigt, .wird_nicht_benachrichtigt {
+    display: none;
+  }
+  &.wird_benachrichtigt .wird_benachrichtigt {
+    display: block;
+  }
+  &.wird_nicht_benachrichtigt .wird_nicht_benachrichtigt {
+    display: block;
+  }
+  &.bestaetigt {
+    .bestaetigt {
+      display: block;
+    }
+    .email_field {
+      display: none;
+    }
+    .submit_row {
+      display: none;
+    }
+  }
+  &.email_angegeben .email_angegeben {
+    display: block;
+  }
+  &.nicht_eingeloggt .nicht_eingeloggt {
+    display: block;
+  }
+  #password, #bestaetigungscode, #bestaetigungscode {
+    width: 280px;
+  }
+  #email {
+    width: 230px;
+  }
+  .wird_nicht_benachrichtigt > div {
+    width: 300px;
+  }
+  .wird_benachrichtigt > div {
+    width: 300px;
   }
 }
 

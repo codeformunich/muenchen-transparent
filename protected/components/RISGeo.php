@@ -72,7 +72,6 @@ class RISGeo
 		static::$STREETS_INITIALIZED = true;
 	}
 
-
 	public static function ris_street_cleanstring($name)
 	{
 		$name = str_replace("\r", "\n", $name);
@@ -130,7 +129,18 @@ class RISGeo
 				for ($i = $offset; $i < $offset + strlen($street->name_normalized); $i++) $antragtext[$i] = "#";
 			}
 		}
-		return $streets_found;
+
+		$streets_found_consolidated = array();
+		foreach ($streets_found as $street) {
+			if (preg_match("/[0-9]/siu", $street)) $streets_found_consolidated[] = $street;
+			else {
+				$mit_hausnummer_gefunden = false;
+				foreach ($streets_found as $street2) if (strpos($street2, $street . " ") === 0 && preg_match("/[0-9]/siu", $street2)) $mit_hausnummer_gefunden = true;
+				if (!$mit_hausnummer_gefunden) $streets_found_consolidated[] = $street;
+			}
+		}
+
+		return $streets_found_consolidated;
 	}
 
 

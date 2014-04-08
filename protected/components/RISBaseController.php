@@ -63,9 +63,8 @@ class RISBaseController extends CController
 			/** @var BenutzerIn $benutzerIn */
 			$benutzerIn = BenutzerIn::model()->findByPk($x[0]);
 			if (!$benutzerIn) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
-			elseif ($benutzerIn->email_bestaetigt) $msg_err = "Dieser Account wurde bereits bestätigt."; elseif (!$benutzerIn->checkEmailBestaetigungsCode($code)) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist."; else {
-				$benutzerIn->email_bestaetigt = 1;
-				$benutzerIn->save();
+			elseif ($benutzerIn->email_bestaetigt) $msg_err = "Dieser Account wurde bereits bestätigt.";
+			elseif (!$benutzerIn->emailBestaetigen($code)) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist."; else {
 				$msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
 				$identity = new RISUserIdentity($benutzerIn);
 				Yii::app()->user->login($identity);
@@ -106,19 +105,10 @@ class RISBaseController extends CController
 			} elseif ($_REQUEST["password"] != $_REQUEST["password2"]) {
 				$msg_err = "Die beiden angegebenen Passwörter stimmen nicht überein.";
 			} else {
-				$email                        = trim($_REQUEST["email"]);
-				$benutzerIn                   = new BenutzerIn;
-				$benutzerIn->email            = $email;
-				$benutzerIn->email_bestaetigt = 0;
-				$benutzerIn->pwd_enc          = BenutzerIn::create_hash(trim($_REQUEST["password"]));
-				$benutzerIn->datum_angelegt   = new CDbExpression("NOW()");
 
+				$benutzerIn                   = BenutzerIn::createBenutzerIn(trim($_REQUEST["email"]), $_REQUEST["password"]);
 				if ($benutzerIn->save()) {
-					$best_code = $benutzerIn->createEmailBestaetigungsCode();
-					$link      = Yii::app()->getBaseUrl(true) . $this->createUrl("index/benachrichtigungen", array("code" => $best_code));
-					mail($email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von OpenRIS zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
-						. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
-
+					$benutzerIn->sendEmailBestaetigungsMail();
 					$identity = new RISUserIdentity($benutzerIn);
 					Yii::app()->user->login($identity);
 

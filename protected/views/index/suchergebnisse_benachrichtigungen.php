@@ -11,128 +11,136 @@
  * @var BenutzerIn $ich
  */
 
+
+$form_state = "";
+if ($email_bestaetigt) {
+	$form_state = "bestaetigt";
+	if ($wird_benachrichtigt) $form_state .= " wird_benachrichtigt";
+	else $form_state .= " wird_nicht_benachrichtigt";
+} elseif ($email_angegeben) {
+	$form_state = "email_angegeben";
+} else {
+	$form_state = "";
+}
+
+$pre_email = ($ich ? CHtml::encode($ich->email) : "");
 ?>
 
 
-<form method="POST" class="suchergebnis_titlebox_holder" action="<?= CHtml::encode($krits->getUrl()) ?>">
+<form method="POST" class="suchergebnis_titlebox_holder <?= $form_state ?>" action="<?= CHtml::encode($krits->getUrl()) ?>" id="benachrichtigung_einrichten">
 
 	<div class="box">
 		<h2>Benachrichtigung bei neuen Treffern</h2>
 
-		<?php if ($email_bestaetigt) { ?>
-			Deine E-Mail-Adresse:<br><strong><?php echo CHtml::encode($ich->email); ?></strong> (bestätigt)
-
-			<hr>
-
-			<? if ($wird_benachrichtigt) { ?>
-				<div style="text-align: center;">
-					<div class="button_hover_change" style="width: 300px;">
-						<button class="btn btn-nohover" disabled>Du wirst benachrichtigt</button>
-						<button type="submit" name="<?php echo AntiXSS::createToken("benachrichtigung_del"); ?>" class="btn btn-primary btn-hover">Nicht mehr benachrichtigen!
-						</button>
-					</div>
-				</div>
-			<? } else { ?>
-				<div style="text-align: center;">
-					<div class="button_hover_change" style="width: 300px;">
-						<button class="btn btn-nohover" disabled>Keine Benachrichtigung aktiv</button>
-						<button type="submit" name="<?php echo AntiXSS::createToken("benachrichtigung_add"); ?>" class="btn btn-primary btn-hover">Benachrichtigen!</button>
-					</div>
-				</div>
-			<? } ?>
-
-		<?php } elseif ($email_angegeben) { ?>
-
+		<div class="email_field">
 			<label for="email"><strong>Deine E-Mail-Adresse:</strong></label>
 
 			<div class="input-group">
 				<span class="input-group-addon">@</span>
-				<input id="email" type="email" name="email" value="<?php echo CHtml::encode($ich->email); ?>" disabled style="width: 230px;" class="form-control">
-				<input type="hidden" name="email" value="<?php echo CHtml::encode($ich->email); ?>">
+				<input id="email" type="email" name="email" value="<?php echo $pre_email; ?>" class="form-control">
 			</div>
-			<br>
-			<br>
+		</div>
+		<br>
 
-			<label for="bestaetigungscode">Bitte gib den Bestätigungscode an:</label>
-
-			<div>
-				<input type="text" name="bestaetigungscode" id="bestaetigungscode" value="" autofocus style="width: 280px;">
+		<div class="bestaetigt">
+			<div style="text-align: center;" class="wird_benachrichtigt">
+				<div class="button_hover_change">
+					<button class="btn btn-nohover"><span class="icon-ok" style="color: green;"></span> Du wirst benachrichtigt</button>
+					<button type="button" class="btn btn-primary btn-hover ben_del_button">Nicht mehr benachrichtigen!</button>
+				</div>
 			</div>
-			<br>
-			<br>
-
-			<button type="submit" name="<?php echo AntiXSS::createToken("anmelden"); ?>" class="btn btn-primary">E-Mail bestätigen</button>
-
-		<? } else { ?>
-
-			<label for="email"><strong>Deine E-Mail-Adresse:</strong></label>
-
-
-			<div class="input-group">
-				<span class="input-group-addon">@</span>
-				<input id="email" type="email" name="email" value="<?php if ($ich) echo CHtml::encode($ich->email); ?>" class="form-control">
+			<div style="text-align: center;" class="wird_nicht_benachrichtigt">
+				<div class="button_hover_change">
+					<button class="btn btn-nohover">Keine Benachrichtigung aktiv</button>
+					<button type="submit" class="btn btn-primary btn-hover">Benachrichtigen!</button>
+				</div>
 			</div>
-			<br>
 
-			<div id="bestaetigungscode_holder" style="display: none;">
-				Es wurde bereits eine E-Mail mit dem Bestätigungscode an diese Adresse geschickt.<br>
+		</div>
+		<div class="email_angegeben">
+			<div id="bestaetigungscode_holder">
+				Dir wurde eine E-Mail mit dem Bestätigungscode an diese Adresse geschickt.<br>
 				<label for="bestaetigungscode"><strong>Bitte gib den Bestätigungscode an:</strong></label>
 
 				<div>
-					<input type="text" name="bestaetigungscode" id="bestaetigungscode" value="" style="width: 280px;">
+					<input type="text" name="bestaetigungscode" id="bestaetigungscode" value="">
 				</div>
 				<br>
 			</div>
+		</div>
+		<div class="nicht_eingeloggt">
 
-			<div id="password_holder" style="display: none;">
+			<div id="password_holder">
 				Du hast bereits einen Zugang beim Ratsinformant.<br>
 				<label for="password"><strong>Bitte gib dein Passwort ein:</strong></label>
 
 				<div>
-					<input type="password" name="password" id="password" value="" style="width: 280px;">
+					<input type="password" name="password" id="password" value="">
 				</div>
 				<br>
 			</div>
+		</div>
 
-			<script>
-				$(function () {
-					$("#email").on("change blur", function () {
-						var val = $("#email").val(),
-							$pw = $("#password_holder"),
-							$best = $("#bestaetigungscode_holder");
-						if (val == "") {
-							$pw.hide();
-							$best.hide();
+
+		<div class="submit_row">
+			<button type="submit" name="<?php echo AntiXSS::createToken("anmelden"); ?>" class="btn btn-primary" id="savebutton">Benachrichtigung einrichten</button>
+		</div>
+
+		<script>
+			$(function () {
+				var $holder = $("#benachrichtigung_einrichten"),
+					curr_krits = <?=json_encode($krits->getUrlArray())?>;
+				$(".ben_del_button").click(function() {
+					var params = $.extend(curr_krits, {
+						"<?php echo AntiXSS::createToken("benachrichtigung_save"); ?>": 1
+					});
+					$.post("<?php echo CHtml::encode($this->createUrl("benachrichtigungen/ajaxBenachrichtigungDel")); ?>", params, function (ret) {
+						if (ret["status"] == "done") {
+							$holder.removeClass("email_angegeben nicht_eingeloggt wird_benachrichtigt").addClass("bestaetigt wird_nicht_benachrichtigt");
 						} else {
-							$.get("<?php echo CHtml::encode($this->createUrl("index/ajaxEmailIstRegistriert")); ?>", {email: val }, function (ret) {
-								if (ret == "-1") {
-									$pw.hide();
-									$pw.find("input[type=password]").prop("required", false);
-									$best.hide();
-									$best.find("input[type=text]").prop("required", false);
-								} else if (ret == "1") {
-									$pw.show();
-									$pw.find("input[type=password]").prop("required", true).focus();
-									$best.hide();
-									$best.find("input[type=text]").prop("required", false);
-								} else {
-									$pw.hide();
-									$pw.find("input[type=password]").prop("required", false);
-									$best.show();
-									$best.find("input[type=text]").prop("required", true).focus();
-								}
-								$("#savebutton").prop("disabled", false);
-							});
+							alert("Ein Fehler ist aufgetreten");
 						}
 					});
-				})
-			</script>
+				});
 
-			<div style="text-align: center;">
-				<button type="submit" name="<?php echo AntiXSS::createToken("anmelden"); ?>" class="btn btn-primary" id="savebutton" disabled>Speichern</button>
-			</div>
+				$holder.submit(function (ev) {
+					ev.preventDefault();
+					var email = $("#email").val(),
+						$pw = $("#password"),
+						$best = $("#bestaetigungscode"),
+						params = $.extend(curr_krits, {
+							"email": email,
+							"password": $pw.val(),
+							"bestaetigung": $best.val(),
+							"<?php echo AntiXSS::createToken("benachrichtigung_save"); ?>": 1
+						});
+					$.post("<?php echo CHtml::encode($this->createUrl("benachrichtigungen/ajaxBenachrichtigungAdd")); ?>", params, function (ret) {
+						switch (ret["status"]) {
+							case "needs_login":
+								$holder.removeClass("bestaetigt email_angegeben").addClass("nicht_eingeloggt");
+								$holder.find("#password").focus();
+								break;
+							case "done":
+								$holder.removeClass("email_angegeben nicht_eingeloggt wird_nicht_benachrichtigt").addClass("bestaetigt wird_benachrichtigt");
+								break;
+							case "login_err_pw":
+								alert("Ungültiges Passwort");
+								break;
+							case "login_err_code":
+								alert("Ungültiger Code");
+								break;
+							case "not_confirmed":
+								$holder.removeClass("bestaetigt nicht_eingeloggt").addClass("email_angegeben");
+								break;
+							case "unknown_sent":
+								$holder.removeClass("bestaetigt nicht_eingeloggt").addClass("email_angegeben");
+								break;
+						}
+					});
+				});
 
-		<? } ?>
+			})
+		</script>
 	</div>
 
 </form>

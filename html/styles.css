@@ -43,6 +43,14 @@
   content: '\e834'; }
 
 /* '' */
+.icon-ok:before {
+  content: '\e803'; }
+
+/* '' */
+.icon-cancel:before {
+  content: '\e804'; }
+
+/* '' */
 .icon-home:before {
   content: '\e801'; }
 
@@ -67,8 +75,6 @@
   content: '\66'; }
 
 /* 'f' */
-/* '' */
-/* '' */
 /*
    Animation example, for spinners
 */
@@ -324,7 +330,9 @@ ul.antragsliste, ul.terminliste, ul.suchergebnisliste {
     height: 117px; }
     #suchergebnisse_holder ul.suchergebnisliste li .datum {
       float: right;
-      color: #555; }
+      color: #777;
+      font-size: 10px;
+      padding-top: 10px; }
     #suchergebnisse_holder ul.suchergebnisliste li .dokument {
       display: block;
       background-color: #ddd;
@@ -405,6 +413,31 @@ ul.antragsliste, ul.terminliste, ul.suchergebnisliste {
         margin-bottom: 5px; }
       .suchergebnis_titlebox_holder .filterlist > li ul {
         padding-left: 16px; }
+
+#benachrichtigung_einrichten .bestaetigt, #benachrichtigung_einrichten .email_angegeben, #benachrichtigung_einrichten .nicht_eingeloggt, #benachrichtigung_einrichten .wird_benachrichtigt, #benachrichtigung_einrichten .wird_nicht_benachrichtigt {
+  display: none; }
+#benachrichtigung_einrichten.wird_benachrichtigt .wird_benachrichtigt {
+  display: block; }
+#benachrichtigung_einrichten.wird_nicht_benachrichtigt .wird_nicht_benachrichtigt {
+  display: block; }
+#benachrichtigung_einrichten.bestaetigt .bestaetigt {
+  display: block; }
+#benachrichtigung_einrichten.bestaetigt .email_field {
+  display: none; }
+#benachrichtigung_einrichten.bestaetigt .submit_row {
+  display: none; }
+#benachrichtigung_einrichten.email_angegeben .email_angegeben {
+  display: block; }
+#benachrichtigung_einrichten.nicht_eingeloggt .nicht_eingeloggt {
+  display: block; }
+#benachrichtigung_einrichten #password, #benachrichtigung_einrichten #bestaetigungscode, #benachrichtigung_einrichten #bestaetigungscode {
+  width: 280px; }
+#benachrichtigung_einrichten #email {
+  width: 230px; }
+#benachrichtigung_einrichten .wird_nicht_benachrichtigt > div {
+  width: 300px; }
+#benachrichtigung_einrichten .wird_benachrichtigt > div {
+  width: 300px; }
 
 ul.terminliste > li > .termindetails {
   background-color: #fff;

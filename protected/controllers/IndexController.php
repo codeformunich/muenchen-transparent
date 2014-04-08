@@ -83,7 +83,7 @@ class IndexController extends RISBaseController
 	public function actionFeed()
 	{
 		if (isset($_REQUEST["krit_typ"])) {
-			$krits = RISSucheKrits::createFromUrl();
+			$krits = RISSucheKrits::createFromUrl($_REQUEST);
 			$titel = "Ratsinformant: " . $krits->getTitle();
 
 			$solr   = RISSolrHelper::getSolrClient("ris");
@@ -450,7 +450,7 @@ class IndexController extends RISBaseController
 			$krits       = new RISSucheKrits();
 			$krits->addVolltextsucheKrit($suchbegriff);
 		} else {
-			$krits       = RISSucheKrits::createFromUrl();
+			$krits       = RISSucheKrits::createFromUrl($_REQUEST);
 			$suchbegriff = $krits->getTitle();
 		}
 
@@ -617,6 +617,12 @@ class IndexController extends RISBaseController
 	{
 		$this->top_menu = "impressum";
 		$this->render('impressum');
+	}
+
+	public function actionDatenschutz()
+	{
+		$this->top_menu = "datenschutz";
+		$this->render('datenschutz');
 	}
 
 	/**

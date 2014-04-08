@@ -122,7 +122,9 @@
 
 
 		<footer>
-			<p><?=CHtml::link("Impressum", Yii::app()->createUrl("index/impressum"))?></p>
+			<p><?=CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("index/datenschutz"))?>
+				&nbsp;
+				<?=CHtml::link("Impressum", Yii::app()->createUrl("index/impressum"))?></p>
 		</footer>
 	</div>
 

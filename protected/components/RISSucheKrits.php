@@ -114,6 +114,19 @@ class RISSucheKrits
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getUrlArray() {
+		$krits = $vals = array();
+		foreach ($this->krits as $krit) {
+			$krits[] = $krit["typ"];
+			if ($krit["typ"] == "geo") $vals[] = $krit["lng"] . "-" . $krit["lat"] . "-" . $krit["radius"];
+			else $vals[] = $krit["suchbegriff"];
+		}
+		return array("krit_typ" => $krits, "krit_val" => $vals);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getFeedUrl()
@@ -124,26 +137,27 @@ class RISSucheKrits
 
 
 	/**
+	 * @param array $request
 	 * @return RISSucheKrits
 	 */
-	public static function createFromUrl()
+	public static function createFromUrl($request)
 	{
 		$x = new RISSucheKrits();
-		if (isset($_REQUEST["krit_typ"])) for ($i = 0; $i < count($_REQUEST["krit_typ"]); $i++) switch ($_REQUEST["krit_typ"][$i]) {
+		if (isset($request["krit_typ"])) for ($i = 0; $i < count($request["krit_typ"]); $i++) switch ($request["krit_typ"][$i]) {
 			case "betreff":
-				$x->addBetreffKrit($_REQUEST["krit_val"][$i]);
+				$x->addBetreffKrit($request["krit_val"][$i]);
 				break;
 			case "volltext":
-				$x->addVolltextsucheKrit($_REQUEST["krit_val"][$i]);
+				$x->addVolltextsucheKrit($request["krit_val"][$i]);
 				break;
 			case "antrag_typ":
-				$x->addAntragTypKrit($_REQUEST["krit_val"][$i]);
+				$x->addAntragTypKrit($request["krit_val"][$i]);
 				break;
 			case "antrag_wahlperiode":
-				$x->addWahlperiodeKrit($_REQUEST["krit_val"][$i]);
+				$x->addWahlperiodeKrit($request["krit_val"][$i]);
 				break;
 			case "geo":
-				$y = explode("-", $_REQUEST["krit_val"][$i]);
+				$y = explode("-", $request["krit_val"][$i]);
 				$x->addGeoKrit($y[0], $y[1], $y[2]);
 				break;
 		}

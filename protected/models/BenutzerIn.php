@@ -17,6 +17,19 @@ class BenutzerIn extends CActiveRecord
 	/** @var null|BenutzerInnenEinstellungen */
 	private $einstellungen_object = null;
 
+	/**
+	 * @param string $email
+	 * @param string $password
+	 * @return BenutzerIn
+	 */
+	public static function createBenutzerIn($email, $password = "") {
+		$benutzerIn                   = new BenutzerIn;
+		$benutzerIn->email            = $email;
+		$benutzerIn->email_bestaetigt = 0;
+		$benutzerIn->pwd_enc          = ($password != "" ? BenutzerIn::create_hash($password) : "");
+		$benutzerIn->datum_angelegt   = new CDbExpression("NOW()");
+		return $benutzerIn;
+	}
 
 	/**
 	 * @return BenutzerInnenEinstellungen
@@ -60,7 +73,7 @@ class BenutzerIn extends CActiveRecord
 	public function rules()
 	{
 		$rules = array(
-			array('email, datum_angelegt, pwd_enc', 'required'),
+			array('email, datum_angelegt', 'required'),
 			array('id, email_bestaetigt', 'numerical', 'integerOnly' => true),
 			array('datum_letzte_benachrichtigung', 'default', 'setOnEmpty' => true, 'value' => null),
 		);
@@ -161,6 +174,26 @@ class BenutzerIn extends CActiveRecord
 		return false;
 	}
 
+	/**
+	 *
+	 */
+	public function sendEmailBestaetigungsMail() {
+		$best_code = $this->createEmailBestaetigungsCode();
+		$link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", array("code" => $best_code));
+		mail($this->email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von OpenRIS zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
+			. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
+	}
+
+	/**
+	 * @param string $code
+	 * @return bool
+	 */
+	public function emailBestaetigen($code) {
+		if (!$this->checkEmailBestaetigungsCode($code)) return false;
+		if ($this->pwd_enc == "") $this->pwd_enc = BenutzerIn::create_hash($code);
+		$this->email_bestaetigt = 1;
+		return $this->save();
+	}
 
 	/**
 	 * @return string
