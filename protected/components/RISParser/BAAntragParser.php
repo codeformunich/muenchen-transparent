@@ -5,7 +5,7 @@ class BAAntragParser extends RISParser {
 	public function parse($antrag_id) {
 		$antrag_id = IntVal($antrag_id);
 
-		echo "- Antrag $antrag_id\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
@@ -61,7 +61,7 @@ class BAAntragParser extends RISParser {
 		*/
 
 		if (!($daten->ba_nr > 0)) {
-			echo "Keine BA-Angabe";
+			echo "BA-Antrag $antrag_id:" . "Keine BA-Angabe";
 			$GLOBALS["RIS_PARSE_ERROR_LOG"][] = "Keine BA-Angabe (Antrag): $antrag_id";
 			return;
 		}
@@ -82,8 +82,7 @@ class BAAntragParser extends RISParser {
 		if ($changed) {
 			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
 
-			echo $aenderungen;
-
+			echo "BA-Antrag $antrag_id: " . $aenderungen;
 
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
@@ -119,6 +118,7 @@ class BAAntragParser extends RISParser {
 	}
 
 	public function parseSeite($seite) {
+		echo "BA-Anträge Seite $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege.jsp?Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
@@ -132,12 +132,13 @@ class BAAntragParser extends RISParser {
 		//$anz = 12000;
 		$anz = 800;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			echo ($anz - $i) . " / $anz\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);
 		}
 	}
 
 	public function parseUpdate() {
+		echo "Updates: BA-Anträge\n";
 		$loaded_ids = array();
 		for ($i = 200; $i >= 0; $i -= 10) {
 			$ids = $this->parseSeite($i);

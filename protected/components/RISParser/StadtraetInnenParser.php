@@ -30,7 +30,7 @@ class StadtraetInnenParser extends RISParser
 
 		$stadtraetIn_id = IntVal($stadtraetIn_id);
 
-		echo "- StadträtIn $stadtraetIn_id\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "- StadträtIn $stadtraetIn_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
 
@@ -140,7 +140,7 @@ class StadtraetInnenParser extends RISParser
 		}
 
 
-		if ($aenderungen != "") echo "Verändert: " . $aenderungen . "\n";
+		if ($aenderungen != "") echo "StadträtIn $stadtraetIn_id: Verändert: " . $aenderungen . "\n";
 
 		if ($aenderungen != "") {
 			$aend              = new RISAenderung();
@@ -157,7 +157,7 @@ class StadtraetInnenParser extends RISParser
 			if (preg_match("/Suchergebnisse:.* ([0-9]+)<\/p>/siU", $text, $matches)) {
 				$seiten = Ceil($matches[1] / 10);
 				for ($i = 0; $i < $seiten; $i++) $this->parse_antraege($stadtraetIn_id, $i);
-			} else echo "Keine Anträge gefunden\n";
+			} else if (RATSINFORMANT_CALL_MODE != "cron") echo "Keine Anträge gefunden\n";
 		} else for ($i = 0; $i < 2; $i++) {
 			$this->parse_antraege($stadtraetIn_id, $i);
 		}
@@ -169,7 +169,7 @@ class StadtraetInnenParser extends RISParser
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
 		$txt  = explode("<!-- tabellenkopf -->", $text);
 		if (!isset($txt[1])) {
-			echo "- leer\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo "- leer\n";
 			return array();
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
@@ -192,13 +192,14 @@ class StadtraetInnenParser extends RISParser
 		$anz                              = 300;
 		$this->bearbeitete_stadtraetInnen = array();
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			echo ($anz - $i) . " / $anz\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);
 		}
 	}
 
 	public function parseUpdate()
 	{
+		echo "Updates: StadträtInnen\n";
 		$this->parseAlle();
 	}
 }

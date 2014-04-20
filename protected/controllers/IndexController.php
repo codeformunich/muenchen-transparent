@@ -301,7 +301,7 @@ class IndexController extends RISBaseController
 					$str = "<div class='antraglink'>" . CHtml::link($name, $ant->getLink()) . "</div>";
 					$str .= "<div class='ort_dokument'>";
 					$str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
-					$str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</div>";
+					$str .= "<div class='dokument'>" . CHtml::link($dokument->name, $dokument->getOriginalLink()) . "</div>";
 					$str .= "</div>";
 					$str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
 
@@ -604,6 +604,69 @@ class IndexController extends RISBaseController
 			"tage_zukunft"          => $tage_zukunft,
 			"fraktionen"            => StadtraetIn::getGroupedByFraktion(date("Y-m-d")),
 		));
+	}
+
+	/**
+	 * @param string $id
+	 * @param string $code
+	 */
+	public function actionResetPassword($id = "", $code = "") {
+		$my_url = $this->createUrl("index/resetPassword", array("id" => $id, "code" => $code));
+		if (AntiXSS::isTokenSet("set")) {
+			/** @var null|BenutzerIn $benutzerIn */
+			$benutzerIn = BenutzerIn::model()->findByPk($id);
+			if ($benutzerIn) {
+				if ($_REQUEST["password"] != $_REQUEST["password2"]) {
+					$this->render('reset_password_set_form', array(
+						"current_url" => $my_url,
+						"msg_err" => "Die beiden Passwörter stimmen nicht überein"
+					));
+				} else {
+					$ret = $benutzerIn->resetPasswordDo($code, $_REQUEST["password"]);
+					if ($ret === true) $this->render('reset_password_done');
+					else $this->render('reset_password_set_form', array(
+						"current_url" => $my_url,
+						"msg_err" => $ret
+					));
+				}
+			} else {
+				$this->render('reset_password_form', array(
+					"current_url" => $this->createUrl("index/resetPasswordForm"),
+					"msg_err" => "Ungültiger Aufruf (BenutzerIn nicht gefunden)"
+				));
+			}
+
+		} else {
+			$this->render('reset_password_set_form', array(
+				"current_url" => $my_url,
+				"msg_err" => ""
+			));
+		}
+	}
+
+	public function actionResetPasswordForm() {
+		if (AntiXSS::isTokenSet("pwd_reset")) {
+			/** @var null|BenutzerIn $benutzerIn */
+			$benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
+			if ($benutzerIn) {
+				$ret = $benutzerIn->resetPasswordStart();
+				if ($ret === true) $this->render('reset_password_sent');
+				else $this->render('reset_password_form', array(
+					"current_url" => $this->createUrl("index/resetPasswordForm"),
+					"msg_err" => $ret
+				));
+			} else {
+				$this->render('reset_password_form', array(
+					"current_url" => $this->createUrl("index/resetPasswordForm"),
+					"msg_err" => "Es gibt keinen Zugang mit dieser E-Mail-Adresse"
+				));
+			}
+		} else {
+			$this->render('reset_password_form', array(
+				"current_url" => $this->createUrl("index/resetPasswordForm"),
+				"msg_err" => ""
+			));
+		}
 	}
 
 

@@ -18,7 +18,7 @@ class Fraktion extends CActiveRecord implements IRISItem
 	 * @param string $className active record class name.
 	 * @return Fraktion the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -40,11 +40,11 @@ class Fraktion extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, name', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>50),
+			array('id', 'numerical', 'integerOnly' => true),
+			array('name', 'length', 'max' => 50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, name', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -57,7 +57,7 @@ class Fraktion extends CActiveRecord implements IRISItem
 		// class name for the relations automatically generated below.
 		return array(
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'fraktion_id'),
-			'personen' => array(self::HAS_MANY, 'Person', 'ris_fraktion'),
+			'personen'                 => array(self::HAS_MANY, 'Person', 'ris_fraktion'),
 		);
 	}
 
@@ -67,7 +67,7 @@ class Fraktion extends CActiveRecord implements IRISItem
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id'   => 'ID',
 			'name' => 'Name',
 		);
 	}
@@ -81,13 +81,13 @@ class Fraktion extends CActiveRecord implements IRISItem
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('name', $this->name, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 

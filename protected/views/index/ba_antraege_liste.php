@@ -45,6 +45,9 @@
 			}
 			if (count($p_strs) > 0) echo implode(", ", $p_strs) . ", ";
 			//echo date("d.m.", $max_date);
+
+			if ($ant->ba_nr > 0) echo " <span title='" . CHtml::encode("Bezirksausschuss " . $ant->ba_nr . " (" . $ant->ba->name . ")") . "' class='ba'>BA " . $ant->ba_nr . "</span>, ";
+
 			echo date("d.m.", RISTools::date_iso2timestamp($ant->datum_letzte_aenderung));
 			echo "</div>";
 

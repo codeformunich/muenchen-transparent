@@ -128,14 +128,14 @@ class OrtGeo extends CActiveRecord
 
 		if ($data["lat"] <= 0 || $data["lon"] <= 0) return null;
 
-		$ort = new OrtGeo();
+		$ort      = new OrtGeo();
 		$ort->ort = $name;
 		$ort->lat = $data["lat"];
 		$ort->lon = $data["lon"];
 		$ort->setzeBA();
-		$ort->source = "auto";
+		$ort->source  = "auto";
 		$ort->to_hide = 0;
-		$ort->datum = new CDbExpression('NOW()');
+		$ort->datum   = new CDbExpression('NOW()');
 		if (!$ort->save()) {
 			if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true));
 			throw new Exception("Fehler beim Speichern: Geo");
@@ -144,7 +144,8 @@ class OrtGeo extends CActiveRecord
 	}
 
 
-	public function setzeBA() {
+	public function setzeBA()
+	{
 		/** @var Bezirksausschuss[] $bas */
 		$bas = Bezirksausschuss::model()->findAll();
 
@@ -159,12 +160,13 @@ class OrtGeo extends CActiveRecord
 	 * @param float $lat
 	 * @return OrtGeo
 	 */
-	public static function findClosest($lng, $lat) {
+	public static function findClosest($lng, $lat)
+	{
 		// SQRT(POW(69.1 * (fld_lat - ( $lat )), 2) + POW(69.1 * (($lon) - fld_lon) * COS(fld_lat / 57.3 ), 2 )) AS distance
-		$lat = FloatVal($lat);
-		$lng = FloatVal($lng);
-		$result = Yii::app()->db->createCommand("select *, SQRT(POW(69.1 * (lat - ( $lat )), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance from orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
-		$res = new OrtGeo();
+		$lat    = FloatVal($lat);
+		$lng    = FloatVal($lng);
+		$result = Yii::app()->db->createCommand("SELECT *, SQRT(POW(69.1 * (lat - ( $lat )), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance FROM orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
+		$res    = new OrtGeo();
 		$res->setAttributes($result[0]);
 		return $res;
 	}

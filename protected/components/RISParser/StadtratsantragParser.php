@@ -7,7 +7,7 @@ class StadtratsantragParser extends RISParser {
 
 		if (in_array($antrag_id, array(3258272))) return;
 
-		echo "- Antrag $antrag_id\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $antrag_id);
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_dokumente.jsp?risid=" . $antrag_id);
@@ -86,10 +86,10 @@ class StadtratsantragParser extends RISParser {
 			if ($aenderungen != "") $changed = true;
 		}
 
-		if ($aenderungen != "") echo "Verändert: " . $aenderungen . "\n";
-
 		if ($changed) {
 			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
+
+			echo "Antrag $antrag_id: Verändert: " . $aenderungen . "\n";
 			
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
@@ -132,7 +132,7 @@ class StadtratsantragParser extends RISParser {
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_trefferliste.jsp?txtPosition=$seite");
 		$txt = explode("<!-- ergebnisreihen -->", $text);
 		if (!isset($txt[1])) {
-			echo "- nichts\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo "- nichts\n";
 			return array();
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
@@ -144,13 +144,14 @@ class StadtratsantragParser extends RISParser {
 	public function parseAlle() {
 		$anz = 14500;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			echo ($anz - $i) . " / $anz\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);
 		}
 	}
 
 	public function parseUpdate() {
 		$loaded_ids = array();
+		echo "Updates: Stadtratsanträge\n";
 
 		for ($i = 200; $i >= 0; $i -= 10) {
 			$ids = $this->parseSeite($i);

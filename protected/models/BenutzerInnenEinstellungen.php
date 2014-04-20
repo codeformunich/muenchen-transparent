@@ -1,6 +1,7 @@
 <?php
 
-class BenutzerInnenEinstellungen {
+class BenutzerInnenEinstellungen
+{
 
 	/** @var array */
 	public $benachrichtigungen = array();
@@ -8,7 +9,8 @@ class BenutzerInnenEinstellungen {
 	/**
 	 * @param string|null $data
 	 */
-	public function __construct($data) {
+	public function __construct($data)
+	{
 		if ($data == "") return;
 		$data = (array)json_decode($data, true);
 
@@ -19,7 +21,8 @@ class BenutzerInnenEinstellungen {
 	/**
 	 * @return string
 	 */
-	public function toJSON() {
+	public function toJSON()
+	{
 		return json_encode(get_object_vars($this));
 	}
 

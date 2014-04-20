@@ -6,6 +6,8 @@
  * @property integer $email_bestaetigt
  * @property string $datum_angelegt
  * @property string $pwd_enc
+ * @property string $pwd_change_date
+ * @property string $pwd_change_code
  * @property string $einstellungen
  * @property string $datum_letzte_benachrichtigung
  *
@@ -22,7 +24,8 @@ class BenutzerIn extends CActiveRecord
 	 * @param string $password
 	 * @return BenutzerIn
 	 */
-	public static function createBenutzerIn($email, $password = "") {
+	public static function createBenutzerIn($email, $password = "")
+	{
 		$benutzerIn                   = new BenutzerIn;
 		$benutzerIn->email            = $email;
 		$benutzerIn->email_bestaetigt = 0;
@@ -107,6 +110,8 @@ class BenutzerIn extends CActiveRecord
 			'email'                         => Yii::t('app', 'E-Mail'),
 			'email_bestaetigt'              => Yii::t('app', 'E-Mail-Adresse bestätigt'),
 			'pwd_enc'                       => Yii::t('app', 'Passwort-Hash'),
+			'pwd_change_date'               => Yii::t('app', 'Passwort-Änderung: Datum'),
+			'pwd_change_code'               => Yii::t('app', 'Passwort-Änderung: Code'),
 			'datum_angelegt'                => Yii::t('app', 'Angelegt Datum'),
 			'datum_letzte_benachrichtigung' => Yii::t('app', 'Datum der letzten Benachrichtigung'),
 			'einstellungen'                 => null,
@@ -177,10 +182,11 @@ class BenutzerIn extends CActiveRecord
 	/**
 	 *
 	 */
-	public function sendEmailBestaetigungsMail() {
+	public function sendEmailBestaetigungsMail()
+	{
 		$best_code = $this->createEmailBestaetigungsCode();
 		$link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", array("code" => $best_code));
-		mail($this->email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von OpenRIS zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
+		mail($this->email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen vom Ratsinformanten zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
 			. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
 	}
 
@@ -188,7 +194,8 @@ class BenutzerIn extends CActiveRecord
 	 * @param string $code
 	 * @return bool
 	 */
-	public function emailBestaetigen($code) {
+	public function emailBestaetigen($code)
+	{
 		if (!$this->checkEmailBestaetigungsCode($code)) return false;
 		if ($this->pwd_enc == "") $this->pwd_enc = BenutzerIn::create_hash($code);
 		$this->email_bestaetigt = 1;
@@ -204,10 +211,47 @@ class BenutzerIn extends CActiveRecord
 		return $code;
 	}
 
+
+	/**
+	 * @return bool|string
+	 */
+	public function resetPasswordStart() {
+		if ($this->pwd_change_date !== null) {
+			$ts = RISTools::date_iso2timestamp($this->pwd_change_date);
+			if (time() - $ts < 3600 * 24) return "Es kann nur eine Passwortänderung innerhalb von 24 Stunden beantragt werden.";
+		}
+		$this->pwd_change_code = sha1(uniqid() . $this->pwd_enc);
+		$this->pwd_change_date = new CDbExpression("NOW()");
+		if ($this->save()) {
+			$link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/resetPassword", array("id" => $this->id, "code" => $this->pwd_change_code));
+			mail($this->email, "Ratsinformant-Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
+				. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
+			return true;
+		}
+		return "Ein (ungewöhnlicher) Fehler ist aufgetreten.";
+	}
+
+	/**
+	 * @param string $code
+	 * @param string $new_pw
+	 * @return string|bool
+	 */
+	public function resetPasswordDo($code, $new_pw) {
+		if ($this->pwd_change_date === null) return "Es wurde keine Passwortänderung beantragt.";
+		$ts = RISTools::date_iso2timestamp($this->pwd_change_date);
+		if (time() - $ts > 3600 * 24) return "Der Antrag liegt bereits mehr als 24 Stunden zurück. Bitte stelle einen neuen Passwort-Änderungs-Antrag.";
+		if ($this->pwd_change_code != $code) return "Ein ungültiger Link bzw. Code.";
+		$this->pwd_enc = BenutzerIn::create_hash($new_pw);
+		$this->pwd_change_code = null;
+		$this->save();
+		return true;
+	}
+
 	/**
 	 * @param RISSucheKrits $krits
 	 */
-	public function addBenachrichtigung($krits) {
+	public function addBenachrichtigung($krits)
+	{
 		$einstellungen = $this->getEinstellungen();
 		foreach ($einstellungen->benachrichtigungen as $ben) {
 			if ($ben == $krits->krits) return;
@@ -220,10 +264,11 @@ class BenutzerIn extends CActiveRecord
 	/**
 	 * @param RISSucheKrits $krits
 	 */
-	public function delBenachrichtigung($krits) {
-		$suchkrits = $krits->getBenachrichtigungKrits();
+	public function delBenachrichtigung($krits)
+	{
+		$suchkrits     = $krits->getBenachrichtigungKrits();
 		$einstellungen = $this->getEinstellungen();
-		$neue = array();
+		$neue          = array();
 		foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits != $ben) $neue[] = $ben;
 		$einstellungen->benachrichtigungen = $neue;
 		$this->setEinstellungen($einstellungen);
@@ -233,8 +278,9 @@ class BenutzerIn extends CActiveRecord
 	/**
 	 * @return RISSucheKrits[]
 	 */
-	public function getBenachrichtigungen() {
-		$arr = array();
+	public function getBenachrichtigungen()
+	{
+		$arr           = array();
 		$einstellungen = $this->getEinstellungen();
 		foreach ($einstellungen->benachrichtigungen as $krit) $arr[] = new RISSucheKrits($krit);
 		return $arr;
@@ -244,8 +290,9 @@ class BenutzerIn extends CActiveRecord
 	 * @param RISSucheKrits $krits
 	 * @return bool
 	 */
-	public function wirdBenachrichtigt($krits) {
-		$suchkrits = $krits->getBenachrichtigungKrits();
+	public function wirdBenachrichtigt($krits)
+	{
+		$suchkrits     = $krits->getBenachrichtigungKrits();
 		$einstellungen = $this->getEinstellungen();
 		foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits == $ben) return true;
 		return false;
@@ -256,8 +303,9 @@ class BenutzerIn extends CActiveRecord
 	 * @param RISSucheKrits $benachrichtigung
 	 * @return array
 	 */
-	public function queryBenachrichtigungen($document_ids, $benachrichtigung) {
-		$solr   = RISSolrHelper::getSolrClient("ris");
+	public function queryBenachrichtigungen($document_ids, $benachrichtigung)
+	{
+		$solr = RISSolrHelper::getSolrClient("ris");
 
 		$select = $solr->createSelect();
 
@@ -280,11 +328,11 @@ class BenutzerIn extends CActiveRecord
 		$hl->setSimplePostfix('</b>');
 
 		$ergebnisse = $solr->select($select);
-		$documents = $ergebnisse->getDocuments();
-		$res = array();
+		$documents  = $ergebnisse->getDocuments();
+		$res        = array();
 		foreach ($documents as $document) {
 			$res[] = array(
-				"id" => $document->id,
+				"id"   => $document->id,
 				"name" => $document->dokument_name . ", " . $document->antrag_betreff,
 			);
 		}
@@ -292,7 +340,8 @@ class BenutzerIn extends CActiveRecord
 	}
 
 
-	private function verschickeNeueBenachrichtigungen_text($data) {
+	private function verschickeNeueBenachrichtigungen_text($data)
+	{
 		$str = "Hallo,\n\nseit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:\n\n";
 
 		if (count($data["antraege"]) > 0) $str .= "=== Anträge & Vorlagen ===\n\n";
@@ -301,10 +350,10 @@ class BenutzerIn extends CActiveRecord
 			$antrag = $dat["antrag"];
 
 			$dokumente_strs = array();
-			$queries = array();
+			$queries        = array();
 			foreach ($dat["dokumente"] as $dok) {
 				/** @var AntragDokument $dokument */
-				$dokument = $dok["dokument"];
+				$dokument         = $dok["dokument"];
 				$dokumente_strs[] = "    - " . $dokument->name . " (http://www.ris-muenchen.de" . $dokument->url . ")";
 				foreach ($dok["queries"] as $qu) {
 					/** @var RISSucheKrits $qu */
@@ -320,7 +369,7 @@ class BenutzerIn extends CActiveRecord
 			$str .= "  " . Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".") . "\n";
 			$str .= implode("\n", $dokumente_strs);
 			if (count($queries) == 1) {
-				$str .= "\n    Gefunden über: \"" .$queries[0] . "\"\n";
+				$str .= "\n    Gefunden über: \"" . $queries[0] . "\"\n";
 			} else {
 				$str .= "\n    Gefunden über: \"" . implode("\", \"", $queries) . "\"\n";
 			}
@@ -331,7 +380,8 @@ class BenutzerIn extends CActiveRecord
 		return $str;
 	}
 
-	private function verschickeNeueBenachrichtigungen_html($data) {
+	private function verschickeNeueBenachrichtigungen_html($data)
+	{
 		$str = '<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -350,10 +400,10 @@ class BenutzerIn extends CActiveRecord
 			$antrag = $dat["antrag"];
 
 			$dokumente_strs = array();
-			$queries = array();
+			$queries        = array();
 			foreach ($dat["dokumente"] as $dok) {
 				/** @var AntragDokument $dokument */
-				$dokument = $dok["dokument"];
+				$dokument         = $dok["dokument"];
 				$dokumente_strs[] = "<li><a href='" . CHtml::encode("http://www.ris-muenchen.de" . $dokument->url) . "'>" . CHtml::encode($dokument->name) . "</a></li>";
 				foreach ($dok["queries"] as $qu) {
 					/** @var RISSucheKrits $qu */
@@ -366,11 +416,11 @@ class BenutzerIn extends CActiveRecord
 			$name = preg_replace("/ *(\n *)+/siu", ", ", $name);
 			if (strlen($name) > 80) $name = substr($name, 0, 78) . "...";
 			$url = Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".");
-			$str .= "<li><a href='" . CHtml::encode($url). "'>" . CHtml::encode($name) . "</a>";
+			$str .= "<li><a href='" . CHtml::encode($url) . "'>" . CHtml::encode($name) . "</a>";
 			$str .= "<ul>" . implode("", $dokumente_strs) . "</ul>";
 			$str .= "<div class='gefunden_ueber'>";
 			if (count($queries) == 1) {
-				$str .= "Gefunden über: \"" .$queries[0] . "\"";
+				$str .= "Gefunden über: \"" . $queries[0] . "\"";
 			} else {
 				$str .= "Gefunden über: \"" . implode("\"<br>\"", $queries) . "\"";
 			}
@@ -387,11 +437,12 @@ class BenutzerIn extends CActiveRecord
 	/**
 	 *
 	 */
-	public function verschickeNeueBenachrichtigungen() {
+	public function verschickeNeueBenachrichtigungen()
+	{
 		$benachrichtigungen = $this->getBenachrichtigungen();
 
 		$neu_seit = "2013-07-01 00:00:00";
-		$sql = Yii::app()->db->createCommand();
+		$sql      = Yii::app()->db->createCommand();
 		$sql->select("id")->from("antraege_dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
 		$data = $sql->queryColumn(array("id"));
 		if (count($data) == 0) return;
@@ -401,23 +452,23 @@ class BenutzerIn extends CActiveRecord
 
 		$ergebnisse = array(
 			"antraege" => array(),
-			"termine" => array()
+			"termine"  => array()
 		);
 		foreach ($benachrichtigungen as $benachrichtigung) {
 			$e = $this->queryBenachrichtigungen($document_ids, $benachrichtigung);
 			foreach ($e as $f) {
-				$d = explode(":", $f["id"]);
+				$d           = explode(":", $f["id"]);
 				$dokument_id = IntVal($d[1]);
-				$dokument = AntragDokument::getCachedByID($dokument_id);
+				$dokument    = AntragDokument::getCachedByID($dokument_id);
 				if (!$dokument) continue;
 				if ($dokument->antrag_id > 0) {
 					if (!isset($ergebnisse["antraege"][$dokument->antrag_id])) $ergebnisse["antraege"][$dokument->antrag_id] = array(
-						"antrag" => $dokument->antrag,
+						"antrag"    => $dokument->antrag,
 						"dokumente" => array()
 					);
 					if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = array(
 						"dokument" => AntragDokument::model()->findByPk($dokument_id),
-						"queries" => array()
+						"queries"  => array()
 					);
 					$ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
 				} elseif ($dokument->termin_id > 0) {
@@ -426,7 +477,7 @@ class BenutzerIn extends CActiveRecord
 			}
 		}
 
-		$mail_txt = $this->verschickeNeueBenachrichtigungen_text($ergebnisse);
+		$mail_txt  = $this->verschickeNeueBenachrichtigungen_text($ergebnisse);
 		$mail_html = $this->verschickeNeueBenachrichtigungen_html($ergebnisse);
 
 		$mail = new Zend\Mail\Message();
@@ -436,13 +487,13 @@ class BenutzerIn extends CActiveRecord
 
 		$mail->setEncoding("UTF-8");
 
-		$text_part = new Zend\Mime\Part($mail_txt);
-		$text_part->type = "text/plain";
+		$text_part          = new Zend\Mime\Part($mail_txt);
+		$text_part->type    = "text/plain";
 		$text_part->charset = "UTF-8";
-		$html_part = new Zend\Mime\Part($mail_html);
-		$html_part->type = "text/html";
+		$html_part          = new Zend\Mime\Part($mail_html);
+		$html_part->type    = "text/html";
 		$html_part->charset = "UTF-8";
-		$mimem = new Zend\Mime\Message();
+		$mimem              = new Zend\Mime\Message();
 		$mimem->setParts(array($text_part, $html_part));
 
 		$mail->setBody($mimem);
@@ -458,7 +509,8 @@ class BenutzerIn extends CActiveRecord
 	 * @param string $code
 	 * @return BenutzerIn|null
 	 */
-	public static function getByFeedCode($code) {
+	public static function getByFeedCode($code)
+	{
 		$x = explode("-", $code);
 		if (count($x) != 2) return null;
 		/** @var BenutzerIn $benutzerIn */
@@ -470,10 +522,10 @@ class BenutzerIn extends CActiveRecord
 	/**
 	 * @return string
 	 */
-	public function getFeedCode() {
+	public function getFeedCode()
+	{
 		return $this->id . "-" . substr(md5(SEED_KEY . $this->pwd_enc), 0, 10);
 	}
-
 
 
 	/**
@@ -485,7 +537,6 @@ class BenutzerIn extends CActiveRecord
 	{
 		return password_hash($password, PASSWORD_DEFAULT);
 	}
-
 
 
 	/**

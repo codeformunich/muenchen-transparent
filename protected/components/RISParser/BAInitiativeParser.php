@@ -5,7 +5,7 @@ class BAInitiativeParser extends RISParser {
 	public function parse($antrag_id) {
 		$antrag_id = IntVal($antrag_id);
 
-		echo "- Antrag $antrag_id\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen_details.jsp?Id=$antrag_id");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen_dokumente.jsp?Id=$antrag_id");
@@ -64,7 +64,7 @@ class BAInitiativeParser extends RISParser {
 		*/
 
 		if ($daten->ba_nr == 0) {
-			echo "Keine BA-Angabe";
+			echo "BA-Initiative $antrag_id: " . "Keine BA-Angabe";
 			$GLOBALS["RIS_PARSE_ERROR_LOG"][] = "Keine BA-Angabe (Initiative): $antrag_id";
 			return;
 		}
@@ -84,10 +84,10 @@ class BAInitiativeParser extends RISParser {
 			if ($alter_eintrag->wahlperiode == "") $alter_eintrag->wahlperiode = "?";
 		}
 
-		if ($changed) echo "Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
-
 		if ($changed) {
 			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
+
+			echo "BA-Initiative $antrag_id: Verändert: " . $aenderungen . "\n";
 
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
@@ -123,6 +123,7 @@ class BAInitiativeParser extends RISParser {
 	}
 
 	public function parseSeite($seite) {
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Initiativen Seite $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen.jsp?Trf=n&Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
@@ -135,13 +136,14 @@ class BAInitiativeParser extends RISParser {
 	public function parseAlle() {
 		$anz = 4320;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			echo ($anz - $i) . " / $anz\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);
 		}
 	}
 
 
 	public function parseUpdate() {
+		echo "Updates: BA-Initiativen\n";
 		$loaded_ids = array();
 		for ($i = 200; $i >= 0; $i -= 10) {
 			$ids = $this->parseSeite($i);

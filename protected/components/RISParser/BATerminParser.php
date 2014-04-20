@@ -5,7 +5,7 @@ class BATerminParser extends RISParser {
 
 	public function parse($termin_id) {
 		$termin_id = IntVal($termin_id);
-		echo "- Termin $termin_id\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=$termin_id");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_dokumente.jsp?Id=$termin_id");
@@ -78,23 +78,23 @@ class BATerminParser extends RISParser {
 			if ($aenderungen != "") $changed = true;
 		}
 
-		if ($changed) echo "Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
-
 		if ($changed) {
 			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
+
+			echo "BA-Termin $termin_id: Verändert: " . $aenderungen . "\n";
 
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
 				$alter_eintrag->setAttributes($daten->getAttributes());
 				if (!$alter_eintrag->save()) {
-					echo "BA-Termin 1\n";
+					if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin 1\n";
 					var_dump($alter_eintrag->getErrors());
 					die("Fehler");
 				}
 				$daten = $alter_eintrag;
 			} else {
 				if (!$daten->save()) {
-					echo "BA-Termin 2\n";
+					if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin 2\n";
 					var_dump($daten->getErrors());
 					die("Fehler");
 				}
@@ -117,6 +117,7 @@ class BATerminParser extends RISParser {
 	}
 
 	public function parseSeite($seite, $alle = false) {
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin Seite $seite\n";
 		$add = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24*3600*180) . "&txtBis=" . date("d.m.Y", time() + 24*3600*356*2));
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
 		$txt = explode("<table class=\"ergebnistab\" ", $text);
@@ -133,13 +134,14 @@ class BATerminParser extends RISParser {
 	public function parseAlle() {
 		$anz = 4750;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			echo ($anz - $i) . " / $anz\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);
 		}
 	}
 
 
 	public function parseUpdate() {
+		echo "Updates: BA-Termine\n";
 		for ($i = 300; $i >= 0; $i -= 10) {
 			$this->parseSeite($i);
 		}

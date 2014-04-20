@@ -18,7 +18,7 @@ class AntragPerson extends CActiveRecord
 	public static $TYP_INITIATORIN = "initiator";
 	public static $TYPEN_ALLE = array(
 		"gestellt_von" => "Gestellt von",
-		"initiator" => "InitiatorIn"
+		"initiator"    => "InitiatorIn"
 	);
 
 
@@ -27,7 +27,7 @@ class AntragPerson extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return AntragPerson the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -49,11 +49,11 @@ class AntragPerson extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('antrag_id, person_id', 'required'),
-			array('antrag_id, person_id', 'numerical', 'integerOnly'=>true),
-			array('typ', 'length', 'max'=>12),
+			array('antrag_id, person_id', 'numerical', 'integerOnly' => true),
+			array('typ', 'length', 'max' => 12),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('antrag_id, person_id, typ', 'safe', 'on'=>'search'),
+			array('antrag_id, person_id, typ', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -63,8 +63,8 @@ class AntragPerson extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'person'               => array(self::BELONGS_TO, 'Person', 'person_id'),
-			'antrag'               => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'person' => array(self::BELONGS_TO, 'Person', 'person_id'),
+			'antrag' => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
 		);
 	}
 
@@ -76,9 +76,9 @@ class AntragPerson extends CActiveRecord
 		return array(
 			'antrag_id' => 'Antrag (ID)',
 			'person_id' => 'Person (ID)',
-			'antrag' => 'Antrag',
-			'person' => 'Person',
-			'typ' => 'Typ',
+			'antrag'    => 'Antrag',
+			'person'    => 'Person',
+			'typ'       => 'Typ',
 		);
 	}
 
@@ -91,14 +91,14 @@ class AntragPerson extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('antrag_id',$this->antrag_id);
-		$criteria->compare('person_id',$this->person_id);
-		$criteria->compare('typ',$this->typ,true);
+		$criteria->compare('antrag_id', $this->antrag_id);
+		$criteria->compare('person_id', $this->person_id);
+		$criteria->compare('typ', $this->typ, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 }

@@ -9,7 +9,7 @@ class StadtratsfraktionParser
 		$fraktion_id = IntVal($fraktion_id);
 		$wahlperiode_id = IntVal($wahlperiode_id);
 
-		echo "- Fraktion $fraktion_id\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Fraktion $fraktion_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_fraktionen_detail.jsp?risid=${fraktion_id}&periodeid=${wahlperiode_id}");
 
@@ -52,7 +52,7 @@ class StadtratsfraktionParser
 			}
 		}
 
-		if ($aenderungen != "") echo "Verändert: " . $aenderungen . "\n";
+		if ($aenderungen != "") echo "Fraktion $fraktion_id: Verändert: " . $aenderungen . "\n";
 
 		if ($aenderungen != "") {
 			$aend              = new RISAenderung();

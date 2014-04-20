@@ -216,14 +216,15 @@ class Bezirksausschuss extends CActiveRecord
 	 * @param float $point_lat
 	 * @return bool
 	 */
-	public function pointInBA($point_lon, $point_lat) {
+	public function pointInBA($point_lon, $point_lat)
+	{
 		// Check if the point is inside the polygon or on the boundary
 		if ($this->kontur_cache === null) $this->kontur_cache = json_decode($this->osm_shape);
-		$intersections = 0;
+		$intersections  = 0;
 		$vertices_count = count($this->kontur_cache);
 
-		for ($i=1; $i < $vertices_count; $i++) {
-			$vertex1 = $this->kontur_cache[$i-1];
+		for ($i = 1; $i < $vertices_count; $i++) {
+			$vertex1 = $this->kontur_cache[$i - 1];
 			$vertex2 = $this->kontur_cache[$i];
 			if ($vertex1[1] == $vertex2[1] and $vertex1[1] == $point_lat and $point_lon > min($vertex1[0], $vertex2[0]) and $point_lon < max($vertex1[0], $vertex2[0])) { // Check if point is on an horizontal polygon boundary
 				return true;

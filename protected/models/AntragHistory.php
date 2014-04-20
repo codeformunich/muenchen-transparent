@@ -13,6 +13,7 @@
  * @property string $antrags_nr
  * @property string $bearbeitungsfrist
  * @property string $registriert_am
+ * @property string $erledigt_am
  * @property string $referat
  * @property string $referent
  * @property string $wahlperiode
@@ -35,7 +36,7 @@ class AntragHistory extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return AntragHistory the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -57,19 +58,19 @@ class AntragHistory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, typ, datum_letzte_aenderung', 'required'),
-			array('id, ba_nr', 'numerical', 'integerOnly'=>true),
-			array('typ', 'length', 'max'=>16),
-			array('antrags_nr', 'length', 'max'=>20),
-			array('referat', 'length', 'max'=>500),
-			array('referent', 'length', 'max'=>200),
-			array('wahlperiode, antrag_typ, status', 'length', 'max'=>50),
-			array('bearbeitung', 'length', 'max'=>100),
-			array('gestellt_am, bearbeitungsfrist, registriert_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on'=>'insert'),
+			array('id, ba_nr', 'numerical', 'integerOnly' => true),
+			array('typ', 'length', 'max' => 16),
+			array('antrags_nr', 'length', 'max' => 20),
+			array('referat', 'length', 'max' => 500),
+			array('referent', 'length', 'max' => 200),
+			array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
+			array('bearbeitung', 'length', 'max' => 100),
+			array('gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on'=>'search'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -91,25 +92,26 @@ class AntragHistory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'typ' => 'Typ',
-			'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
-			'ba_nr' => 'Ba Nr',
-			'gestellt_am' => 'Gestellt Am',
-			'gestellt_von' => 'Gestellt Von',
-			'antrags_nr' => 'Antrags Nr',
-			'bearbeitungsfrist' => 'Bearbeitungsfrist',
-			'registriert_am' => 'Registriert Am',
-			'referat' => 'Referat',
-			'referent' => 'Referent',
-			'wahlperiode' => 'Wahlperiode',
-			'antrag_typ' => 'Antrag Typ',
-			'betreff' => 'Betreff',
-			'kurzinfo' => 'Kurzinfo',
-			'status' => 'Status',
-			'bearbeitung' => 'Bearbeitung',
-			'fristverlaengerung' => 'Fristverlaengerung',
-			'initiatoren' => 'Initiatoren',
+			'id'                        => 'ID',
+			'typ'                       => 'Typ',
+			'datum_letzte_aenderung'    => 'Datum Letzte Aenderung',
+			'ba_nr'                     => 'Ba Nr',
+			'gestellt_am'               => 'Gestellt Am',
+			'gestellt_von'              => 'Gestellt Von',
+			'antrags_nr'                => 'Antrags Nr',
+			'bearbeitungsfrist'         => 'Bearbeitungsfrist',
+			'registriert_am'            => 'Registriert Am',
+			'erledigt_am'               => 'Erledigt Am',
+			'referat'                   => 'Referat',
+			'referent'                  => 'Referent',
+			'wahlperiode'               => 'Wahlperiode',
+			'antrag_typ'                => 'Antrag Typ',
+			'betreff'                   => 'Betreff',
+			'kurzinfo'                  => 'Kurzinfo',
+			'status'                    => 'Status',
+			'bearbeitung'               => 'Bearbeitung',
+			'fristverlaengerung'        => 'Fristverlaengerung',
+			'initiatoren'               => 'Initiatoren',
 			'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
 		);
 	}
@@ -123,31 +125,32 @@ class AntragHistory extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('typ',$this->typ,true);
-		$criteria->compare('datum_letzte_aenderung',$this->datum_letzte_aenderung,true);
-		$criteria->compare('ba_nr',$this->ba_nr);
-		$criteria->compare('gestellt_am',$this->gestellt_am,true);
-		$criteria->compare('gestellt_von',$this->gestellt_von,true);
-		$criteria->compare('antrags_nr',$this->antrags_nr,true);
-		$criteria->compare('bearbeitungsfrist',$this->bearbeitungsfrist,true);
-		$criteria->compare('registriert_am',$this->registriert_am,true);
-		$criteria->compare('referat',$this->referat,true);
-		$criteria->compare('referent',$this->referent,true);
-		$criteria->compare('wahlperiode',$this->wahlperiode,true);
-		$criteria->compare('antrag_typ',$this->antrag_typ,true);
-		$criteria->compare('betreff',$this->betreff,true);
-		$criteria->compare('kurzinfo',$this->kurzinfo,true);
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('bearbeitung',$this->bearbeitung,true);
-		$criteria->compare('fristverlaengerung',$this->fristverlaengerung,true);
-		$criteria->compare('initiatoren',$this->initiatoren,true);
-		$criteria->compare('initiative_to_aufgenommen',$this->initiative_to_aufgenommen,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('typ', $this->typ, true);
+		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
+		$criteria->compare('ba_nr', $this->ba_nr);
+		$criteria->compare('gestellt_am', $this->gestellt_am, true);
+		$criteria->compare('gestellt_von', $this->gestellt_von, true);
+		$criteria->compare('antrags_nr', $this->antrags_nr, true);
+		$criteria->compare('bearbeitungsfrist', $this->bearbeitungsfrist, true);
+		$criteria->compare('registriert_am', $this->registriert_am, true);
+		$criteria->compare('erledigt_am', $this->erledigt_am, true);
+		$criteria->compare('referat', $this->referat, true);
+		$criteria->compare('referent', $this->referent, true);
+		$criteria->compare('wahlperiode', $this->wahlperiode, true);
+		$criteria->compare('antrag_typ', $this->antrag_typ, true);
+		$criteria->compare('betreff', $this->betreff, true);
+		$criteria->compare('kurzinfo', $this->kurzinfo, true);
+		$criteria->compare('status', $this->status, true);
+		$criteria->compare('bearbeitung', $this->bearbeitung, true);
+		$criteria->compare('fristverlaengerung', $this->fristverlaengerung, true);
+		$criteria->compare('initiatoren', $this->initiatoren, true);
+		$criteria->compare('initiative_to_aufgenommen', $this->initiative_to_aufgenommen, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 }

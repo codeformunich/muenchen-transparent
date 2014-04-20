@@ -1,6 +1,7 @@
 <?php
 
-interface IRISItem {
+interface IRISItem
+{
 
 	/** @return string */
 	public function getLink();

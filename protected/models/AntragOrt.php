@@ -26,7 +26,7 @@ class AntragOrt extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return AntragOrt the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -48,12 +48,12 @@ class AntragOrt extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('dokument_id, ort_name, ort_id, source, datum', 'required'),
-			array('antrag_id, termin_id, dokument_id, ort_id', 'numerical', 'integerOnly'=>true),
-			array('ort_name', 'length', 'max'=>100),
-			array('source', 'length', 'max'=>10),
+			array('antrag_id, termin_id, dokument_id, ort_id', 'numerical', 'integerOnly' => true),
+			array('ort_name', 'length', 'max' => 100),
+			array('source', 'length', 'max' => 10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, antrag_id, termin_id, dokument_id, ort_name, ort_id, source, datum', 'safe', 'on'=>'search'),
+			array('id, antrag_id, termin_id, dokument_id, ort_name, ort_id, source, datum', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -66,9 +66,9 @@ class AntragOrt extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'dokument' => array(self::BELONGS_TO, 'AntragDokument', 'dokument_id'),
-			'antrag' => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-			'termin' => array(self::BELONGS_TO, 'Dokument', 'termin_id'),
-			'ort' => array(self::BELONGS_TO, 'OrtGeo', 'ort_id'),
+			'antrag'   => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'termin'   => array(self::BELONGS_TO, 'Dokument', 'termin_id'),
+			'ort'      => array(self::BELONGS_TO, 'OrtGeo', 'ort_id'),
 		);
 	}
 
@@ -78,14 +78,14 @@ class AntragOrt extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'antrag_id' => 'Antrag',
-			'termin_id' => 'Termin',
+			'id'          => 'ID',
+			'antrag_id'   => 'Antrag',
+			'termin_id'   => 'Termin',
 			'dokument_id' => 'Dokument',
-			'ort_name' => 'Ort Name',
-			'ort_id' => 'Ort',
-			'source' => 'Source',
-			'datum' => 'Datum',
+			'ort_name'    => 'Ort Name',
+			'ort_id'      => 'Ort',
+			'source'      => 'Source',
+			'datum'       => 'Datum',
 		);
 	}
 
@@ -98,19 +98,19 @@ class AntragOrt extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('antrag_id',$this->antrag_id);
-		$criteria->compare('termin_id',$this->termin_id);
-		$criteria->compare('dokument_id',$this->dokument_id);
-		$criteria->compare('ort_name',$this->ort_name,true);
-		$criteria->compare('ort_id',$this->ort_id);
-		$criteria->compare('source',$this->source,true);
-		$criteria->compare('datum',$this->datum,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('antrag_id', $this->antrag_id);
+		$criteria->compare('termin_id', $this->termin_id);
+		$criteria->compare('dokument_id', $this->dokument_id);
+		$criteria->compare('ort_name', $this->ort_name, true);
+		$criteria->compare('ort_id', $this->ort_id);
+		$criteria->compare('source', $this->source, true);
+		$criteria->compare('datum', $this->datum, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 }

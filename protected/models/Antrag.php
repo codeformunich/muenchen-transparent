@@ -13,6 +13,7 @@
  * @property string $antrags_nr
  * @property string $bearbeitungsfrist
  * @property string $registriert_am
+ * @property string $erledigt_am
  * @property string $referat
  * @property string $referent
  * @property string $wahlperiode
@@ -87,12 +88,12 @@ class Antrag extends CActiveRecord implements IRISItem
 			array('referent', 'length', 'max' => 200),
 			array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
 			array('bearbeitung', 'length', 'max' => 100),
-			array('gestellt_am, bearbeitungsfrist, registriert_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
+			array('gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -160,6 +161,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'antrags_nr'                => 'Antrags Nr',
 			'bearbeitungsfrist'         => 'Bearbeitungsfrist',
 			'registriert_am'            => 'Registriert Am',
+			'erledigt_am'               => 'Erledigt Am',
 			'referat'                   => 'Referat',
 			'referent'                  => 'Referent',
 			'wahlperiode'               => 'Wahlperiode',
@@ -169,7 +171,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'status'                    => 'Status',
 			'bearbeitung'               => 'Bearbeitung',
 			'fristverlaengerung'        => 'Fristverlaengerung',
-			'initiatorInnen'               => 'InitiatorInnen',
+			'initiatorInnen'            => 'InitiatorInnen',
 			'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
 		);
 	}
@@ -194,6 +196,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		$criteria->compare('antrags_nr', $this->antrags_nr, true);
 		$criteria->compare('bearbeitungsfrist', $this->bearbeitungsfrist, true);
 		$criteria->compare('registriert_am', $this->registriert_am, true);
+		$criteria->compare('erledigt_am', $this->erledigt_am, true);
 		$criteria->compare('referat', $this->referat, true);
 		$criteria->compare('referent', $this->referent, true);
 		$criteria->compare('wahlperiode', $this->wahlperiode, true);
@@ -224,12 +227,12 @@ class Antrag extends CActiveRecord implements IRISItem
 		$ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL");
 		$params = array(
 			'condition' => 'ba_nr ' . $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
-			'order' => 'datum DESC',
-			'with' => array(
+			'order'     => 'datum DESC',
+			'with'      => array(
 				'dokumente' => array(
 					'condition' => 'datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
 				),
-		));
+			));
 		if ($limit > 0) $params['limit'] = $limit;
 		$this->getDbCriteria()->mergeWith($params);
 		return $this;
@@ -245,19 +248,17 @@ class Antrag extends CActiveRecord implements IRISItem
 	public function neueste_stadtratsantragsdokumente_geo($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
 	{
 		$params = array(
-			'alias' => 'a',
+			'alias'     => 'a',
 			'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND a.datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
-			'order' => 'b.datum DESC',
-			'with' => array(
-				'dokumente' => array(
-					'alias' => 'b',
+			'order'     => 'b.datum DESC',
+			'with'      => array(
+				'dokumente'          => array(
+					'alias'     => 'b',
 					'condition' => 'b.datum >= "' . addslashes($zeit_von) . '" AND b.datum <= "' . addslashes($zeit_bis) . '"',
 				),
-				'dokumente.orte' => array(
-
-				),
+				'dokumente.orte'     => array(),
 				'dokumente.orte.ort' => array(
-					'alias' => 'c',
+					'alias'     => 'c',
 					'condition' => 'c.ba_nr = ' . IntVal($ba_nr)
 				)
 			));
@@ -288,7 +289,8 @@ class Antrag extends CActiveRecord implements IRISItem
 	/**
 	 * @return HistorienEintragAntrag[]
 	 */
-	public function getHistoryDiffs() {
+	public function getHistoryDiffs()
+	{
 		$histories = array();
 
 		$neu = new AntragHistory();
@@ -297,15 +299,16 @@ class Antrag extends CActiveRecord implements IRISItem
 		/**
 		 * @var AntragHistory[] $his
 		 * '='M');
-		$criteria = new CDbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
-		$criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
-		$rows = user::model()->findAllByAttributes($u
+		 * $criteria = new CDbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
+		 * $criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
+		 * $rows = user::model()->findAllByAttributes($u
 		 */
 		$criteria = new CDbCriteria(array('order' => "datum_letzte_aenderung DESC"));
+		$criteria->addCondition("datum_letzte_aenderung >= '2014-04-01 00:00:00'");
 		$his = AntragHistory::model()->findAllByAttributes(array("id" => $this->id), $criteria);
 		foreach ($his as $alt) {
 			$histories[] = new HistorienEintragAntrag($alt, $neu);
-			$neu = $alt;
+			$neu         = $alt;
 		}
 
 		return $histories;
@@ -357,13 +360,14 @@ class Antrag extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("antraege/anzeigen",array("id" => $this->id));
+		return Yii::app()->createUrl("antraege/anzeigen", array("id" => $this->id));
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getSourceLink() {
+	public function getSourceLink()
+	{
 		switch ($this->typ) {
 			case Antrag::$TYP_BA_ANTRAG:
 				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";

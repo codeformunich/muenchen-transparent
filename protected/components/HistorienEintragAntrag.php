@@ -26,7 +26,7 @@ class HistorienEintragAntrag implements HistorienEintrag
 
 	public function getDatum()
 	{
-		return $this->antrag_neu->datum_letzte_aenderung;
+		return RISTools::datumstring($this->antrag_neu->datum_letzte_aenderung);
 	}
 
 	/**

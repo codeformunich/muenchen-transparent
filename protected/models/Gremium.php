@@ -257,7 +257,7 @@ class Gremium extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("gremium/anzeigen",array("id" => $this->id));
+		return Yii::app()->createUrl("gremium/anzeigen", array("id" => $this->id));
 	}
 
 

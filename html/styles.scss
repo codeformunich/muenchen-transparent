@@ -47,9 +47,11 @@
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
+
 .icon-spin4:before { content: '\e834'; } /* '' */
 .icon-ok:before { content: '\e803'; } /* '' */
 .icon-cancel:before { content: '\e804'; } /* '' */
+.icon-info-circled:before { content: '\e805'; } /* '' */
 .icon-home:before { content: '\e801'; } /* '' */
 .icon-download:before { content: '\e800'; } /* '' */
 .icon-right-open:before { content: '\e802'; } /* '' */
@@ -524,9 +526,11 @@ ul.antragsliste > li {
     font-size: 11px;
     color: gray;
     margin-top: 3px;
+    font-weight: bold;
 
-    .partei {
+    .partei, .ba {
       border-bottom: dotted 1px gray;
+      font-weight: normal;
     }
   }
 

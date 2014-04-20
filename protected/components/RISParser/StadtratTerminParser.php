@@ -6,7 +6,7 @@ class StadtratTerminParser extends RISParser
 	public function parse($termin_id)
 	{
 		$termin_id = IntVal($termin_id);
-		echo "- Termin $termin_id\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
 		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=$termin_id");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_sitzung_dokumente.jsp?risid=$termin_id");
@@ -95,12 +95,9 @@ class StadtratTerminParser extends RISParser
 		}
 
 		if ($changed) {
-			echo "Verändert: " . $aenderungen . "\n";
-
-		}
-
-		if ($changed) {
 			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
+
+			echo "StR-Termin $termin_id: Verändert: " . $aenderungen . "\n";
 
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
@@ -256,13 +253,14 @@ class StadtratTerminParser extends RISParser
 	{
 		$anz = 4800;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			echo ($anz - $i) . " / $anz\n";
+			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, true);
 		}
 	}
 
 	public function parseUpdate()
 	{
+		echo "Updates: Stadtratstermin\n";
 		for ($i = 270; $i >= 0; $i -= 10) {
 			$this->parseSeite($i, false);
 		}

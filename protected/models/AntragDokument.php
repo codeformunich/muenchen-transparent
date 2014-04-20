@@ -34,6 +34,7 @@ class AntragDokument extends CActiveRecord
 	public static $TYP_BA_ANTRAG = "ba_antrag";
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
 	public static $TYP_BA_TERMIN = "ba_termin";
+	public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung";
 	public static $TYPEN_ALLE = array(
 		"stadtrat_antrag"    => "Stadtratsantrag",
 		"stadtrat_vorlage"   => "Stadtratsvorlage",
@@ -42,6 +43,7 @@ class AntragDokument extends CActiveRecord
 		"ba_antrag"          => "BA: Antrag",
 		"ba_initiative"      => "BA: Initiative",
 		"ba_termin"          => "BA: Termin",
+		"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
 	);
 
 	private static $_cache = array();
@@ -155,7 +157,8 @@ class AntragDokument extends CActiveRecord
 	 * @param int $dokument_id
 	 * @return AntragDokument|null
 	 */
-	public static function getCachedByID($dokument_id) {
+	public static function getCachedByID($dokument_id)
+	{
 		if (!isset(static::$_cache[$dokument_id])) static::$_cache[$dokument_id] = AntragDokument::model()->findByPk($dokument_id);
 		return static::$_cache[$dokument_id];
 	}
@@ -188,8 +191,8 @@ class AntragDokument extends CActiveRecord
 
 		RISTools::download_file($url, $absolute_filename);
 
-		$y      = explode(".", $filename);
-		$endung = mb_strtolower($y[count($y) - 1]);
+		$y                   = explode(".", $filename);
+		$endung              = mb_strtolower($y[count($y) - 1]);
 		$this->seiten_anzahl = RISPDF2Text::document_anzahl_seiten($absolute_filename);
 
 		if ($endung == "pdf") $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
@@ -318,8 +321,9 @@ class AntragDokument extends CActiveRecord
 	 * @param bool $cached
 	 * @return AntragDokument
 	 */
-	public static function getDocumentBySolrId($id, $cached = false) {
-		$x = explode(":", $id);
+	public static function getDocumentBySolrId($id, $cached = false)
+	{
+		$x  = explode(":", $id);
 		$id = IntVal($x[1]);
 		if ($cached) {
 			if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = AntragDokument::model()->with("antrag")->findByPk($id);
@@ -331,7 +335,8 @@ class AntragDokument extends CActiveRecord
 	/**
 	 * @return IRISItem
 	 */
-	public function getRISItem() {
+	public function getRISItem()
+	{
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) return $this->ergebnis;
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
 		return $this->antrag;
@@ -342,14 +347,16 @@ class AntragDokument extends CActiveRecord
 	 * @param int $limit
 	 * @return array|AntragDokument[]
 	 */
-	public function solrMoreLikeThis($limit = 10) {
+	public function solrMoreLikeThis($limit = 10)
+	{
 		$solr   = RISSolrHelper::getSolrClient("ris");
 		$select = $solr->createSelect();
 		$select->setQuery("id:\"Document:" . $this->id . "\"");
-		$select->getMoreLikeThis()->setFields("text")->setMinimumDocumentFrequency(1)->setMinimumTermFrequency(1) /* ->setCount(10) */;
+		$select->getMoreLikeThis()->setFields("text")->setMinimumDocumentFrequency(1)->setMinimumTermFrequency(1) /* ->setCount(10) */
+		;
 		$ergebnisse = $solr->select($select);
-		$mlt = $ergebnisse->getMoreLikeThis();
-		$ret = array();
+		$mlt        = $ergebnisse->getMoreLikeThis();
+		$ret        = array();
 		foreach ($ergebnisse as $document) {
 			$mltResult = $mlt->getResult($document->id);
 			if ($mltResult) foreach ($mltResult as $mltDoc) {
@@ -476,15 +483,24 @@ class AntragDokument extends CActiveRecord
 	public function solrIndex()
 	{
 
-		$solr   = RISSolrHelper::getSolrClient("ris");
-		$update = $solr->createUpdate();
+		$tries = 3;
+		while ($tries > 0) try {
+			$solr   = RISSolrHelper::getSolrClient("ris");
+			$update = $solr->createUpdate();
 
-		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
-		elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) $this->solrIndex_beschluss_do($update); else $this->solrIndex_antrag_do($update);
+			if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
+			elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
+			else $this->solrIndex_antrag_do($update);
 
 
-		$update->addCommit();
-		$solr->update($update);
+			$update->addCommit();
+			$solr->update($update);
+			return;
+		} catch (Exception $e) {
+			$tries--;
+			sleep(15);
+		}
+		mail("tobias@hoessl.eu", "Failed Indexing", print_r($this->getAttributes()));
 	}
 
 }

@@ -29,7 +29,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	 * @param string $className active record class name.
 	 * @return AntragErgebnis the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -51,12 +51,12 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('top_betreff, sitzungstermin_id, sitzungstermin_datum, datum_letzte_aenderung', 'required'),
-			array('antrag_id, gremium_id, sitzungstermin_id', 'numerical', 'integerOnly'=>true),
-			array('gremium_name', 'length', 'max'=>100),
-			array('beschluss_text', 'length', 'max'=>500),
+			array('antrag_id, gremium_id, sitzungstermin_id', 'numerical', 'integerOnly' => true),
+			array('gremium_name', 'length', 'max' => 100),
+			array('beschluss_text', 'length', 'max' => 500),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, antrag_id, gremium_name, gremium_id, sitzungstermin_id, sitzungstermin_datum, beschluss_text, entscheidung, datum_letzte_aenderung', 'safe', 'on'=>'search'),
+			array('id, antrag_id, gremium_name, gremium_id, sitzungstermin_id, sitzungstermin_datum, beschluss_text, entscheidung, datum_letzte_aenderung', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -69,8 +69,8 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		// class name for the relations automatically generated below.
 		return array(
 			'sitzungstermin' => array(self::BELONGS_TO, 'Termin', 'sitzungstermin_id'),
-			'gremium' => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
-			'antrag' => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'gremium'        => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
+			'antrag'         => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
 		);
 	}
 
@@ -80,17 +80,17 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'antrag_id' => 'Antrag',
-			'gremium_name' => 'Gremium Name',
-			'gremium_id' => 'Gremium',
-			'sitzungstermin_id' => 'Sitzungstermin',
-			'sitzungstermin_datum' => 'Sitzungstermin Datum',
-			'beschluss_text' => 'Beschluss',
-			'entscheidung' => 'Entscheidung',
+			'id'                     => 'ID',
+			'antrag_id'              => 'Antrag',
+			'gremium_name'           => 'Gremium Name',
+			'gremium_id'             => 'Gremium',
+			'sitzungstermin_id'      => 'Sitzungstermin',
+			'sitzungstermin_datum'   => 'Sitzungstermin Datum',
+			'beschluss_text'         => 'Beschluss',
+			'entscheidung'           => 'Entscheidung',
 			'datum_letzte_aenderung' => 'Letzte Änderung',
-			'top_nr' => 'Tagesordnungspunkt',
-			'status' => 'Status'
+			'top_nr'                 => 'Tagesordnungspunkt',
+			'status'                 => 'Status'
 		);
 	}
 
@@ -103,20 +103,20 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('antrag_id',$this->antrag_id);
-		$criteria->compare('gremium_name',$this->gremium_name,true);
-		$criteria->compare('gremium_id',$this->gremium_id);
-		$criteria->compare('sitzungstermin_id',$this->sitzungstermin_id);
-		$criteria->compare('sitzungstermin_datum',$this->sitzungstermin_datum,true);
-		$criteria->compare('beschluss_text',$this->beschluss_text,true);
-		$criteria->compare('entscheidung',$this->entscheidung,true);
-		$criteria->compare('datum_letzte_aenderung',$this->datum_letzte_aenderung,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('antrag_id', $this->antrag_id);
+		$criteria->compare('gremium_name', $this->gremium_name, true);
+		$criteria->compare('gremium_id', $this->gremium_id);
+		$criteria->compare('sitzungstermin_id', $this->sitzungstermin_id);
+		$criteria->compare('sitzungstermin_datum', $this->sitzungstermin_datum, true);
+		$criteria->compare('beschluss_text', $this->beschluss_text, true);
+		$criteria->compare('entscheidung', $this->entscheidung, true);
+		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 
@@ -145,7 +145,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("beschluss/anzeigen",array("id" => $this->id));
+		return Yii::app()->createUrl("beschluss/anzeigen", array("id" => $this->id));
 	}
 
 

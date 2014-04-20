@@ -22,7 +22,7 @@ class GremiumHistory extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return GremiumHistory the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -44,12 +44,12 @@ class GremiumHistory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, datum_letzte_aenderung, name, kuerzel, gremientyp, referat', 'required'),
-			array('id, ba_nr', 'numerical', 'integerOnly'=>true),
-			array('name, gremientyp, referat', 'length', 'max'=>100),
-			array('kuerzel', 'length', 'max'=>20),
+			array('id, ba_nr', 'numerical', 'integerOnly' => true),
+			array('name, gremientyp, referat', 'length', 'max' => 100),
+			array('kuerzel', 'length', 'max' => 20),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, datum_letzte_aenderung, ba_nr, name, kuerzel, gremientyp, referat', 'safe', 'on'=>'search'),
+			array('id, datum_letzte_aenderung, ba_nr, name, kuerzel, gremientyp, referat', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -71,13 +71,13 @@ class GremiumHistory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id'                     => 'ID',
 			'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
-			'ba_nr' => 'Ba Nr',
-			'name' => 'Name',
-			'kuerzel' => 'Kuerzel',
-			'gremientyp' => 'Gremientyp',
-			'referat' => 'Referat',
+			'ba_nr'                  => 'Ba Nr',
+			'name'                   => 'Name',
+			'kuerzel'                => 'Kuerzel',
+			'gremientyp'             => 'Gremientyp',
+			'referat'                => 'Referat',
 		);
 	}
 
@@ -90,18 +90,18 @@ class GremiumHistory extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('datum_letzte_aenderung',$this->datum_letzte_aenderung,true);
-		$criteria->compare('ba_nr',$this->ba_nr);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('kuerzel',$this->kuerzel,true);
-		$criteria->compare('gremientyp',$this->gremientyp,true);
-		$criteria->compare('referat',$this->referat,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
+		$criteria->compare('ba_nr', $this->ba_nr);
+		$criteria->compare('name', $this->name, true);
+		$criteria->compare('kuerzel', $this->kuerzel, true);
+		$criteria->compare('gremientyp', $this->gremientyp, true);
+		$criteria->compare('referat', $this->referat, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 }

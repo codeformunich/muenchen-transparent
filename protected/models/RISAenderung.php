@@ -30,17 +30,17 @@ class RISAenderung extends CActiveRecord
 	public static $TYP_RATHAUSUMSCHAU = "rathausumschau";
 	public static $TYP_BA_MITGLIED = "ba_mitglied";
 	public static $TYPEN_ALLE = array(
-		"stadtrat_antrag" => "stadtratsantrag",
+		"stadtrat_antrag"  => "stadtratsantrag",
 		"stadtrat_vorlage" => "Stadtratsvorlage",
-		"stadtrat_termin" => "Stadtratstermin",
+		"stadtrat_termin"  => "Stadtratstermin",
 		"stadtrat_gremium" => "Stadtratsgremium",
-		"stadtraetIn" => "StadträtIn",
-		"ba_antrag" => "BA-Antrag",
-		"ba_initiative" => "BA-Initiative",
-		"ba_termin" => "BA-Termin",
-		"ba_gremium" => "BA-Gremium",
-		"ba_mitglied" => "BA-Mitglied",
-		"rathausumschau" => "Rathausumschau",
+		"stadtraetIn"      => "StadträtIn",
+		"ba_antrag"        => "BA-Antrag",
+		"ba_initiative"    => "BA-Initiative",
+		"ba_termin"        => "BA-Termin",
+		"ba_gremium"       => "BA-Gremium",
+		"ba_mitglied"      => "BA-Mitglied",
+		"rathausumschau"   => "Rathausumschau",
 	);
 
 	/**
@@ -48,7 +48,7 @@ class RISAenderung extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return RISAenderung the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -70,11 +70,11 @@ class RISAenderung extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('ris_id, typ, datum, aenderungen', 'required'),
-			array('ris_id, ba_nr', 'numerical', 'integerOnly'=>true),
-			array('typ', 'length', 'max'=>16),
+			array('ris_id, ba_nr', 'numerical', 'integerOnly' => true),
+			array('typ', 'length', 'max' => 16),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, ris_id, ba_nr, typ, datum, aenderungen', 'safe', 'on'=>'search'),
+			array('id, ris_id, ba_nr, typ, datum, aenderungen', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -96,11 +96,11 @@ class RISAenderung extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'ris_id' => 'Ris',
-			'ba_nr' => 'Ba Nr',
-			'typ' => 'Typ',
-			'datum' => 'Datum',
+			'id'          => 'ID',
+			'ris_id'      => 'Ris',
+			'ba_nr'       => 'Ba Nr',
+			'typ'         => 'Typ',
+			'datum'       => 'Datum',
 			'aenderungen' => 'Aenderungen',
 		);
 	}
@@ -114,31 +114,32 @@ class RISAenderung extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('ris_id',$this->ris_id);
-		$criteria->compare('ba_nr',$this->ba_nr);
-		$criteria->compare('typ',$this->typ,true);
-		$criteria->compare('datum',$this->datum,true);
-		$criteria->compare('aenderungen',$this->aenderungen,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('ris_id', $this->ris_id);
+		$criteria->compare('ba_nr', $this->ba_nr);
+		$criteria->compare('typ', $this->typ, true);
+		$criteria->compare('datum', $this->datum, true);
+		$criteria->compare('aenderungen', $this->aenderungen, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 
 	/**
 	 * @return IRISItem|null
 	 */
-	public function getRISItem() {
+	public function getRISItem()
+	{
 		switch ($this->typ) {
 			case RISAenderung::$TYP_STADTRAT_VORLAGE:
 			case RISAenderung::$TYP_STADTRAT_ANTRAG:
 			case RISAenderung::$TYP_BA_ANTRAG:
 			case RISAenderung::$TYP_BA_INITIATIVE:
 				return Antrag::model()->findByPk($this->ris_id);
-			break;
+				break;
 			case RISAenderung::$TYP_BA_GREMIUM:
 			case RISAenderung::$TYP_STADTRAT_GREMIUM:
 				return Gremium::model()->findByPk($this->ris_id);
@@ -165,14 +166,15 @@ class RISAenderung extends CActiveRecord
 	/**
 	 * @return array
 	 */
-	public function toFeedData() {
+	public function toFeedData()
+	{
 		$item = $this->getRISItem();
 		return array(
-			"title" => ($item ? $item->getTypName() . ": " . $item->getName() : "?"),
-			"link" => ($item ? $item->getLink() : "-"),
-			"content" => nl2br(CHtml::encode($this->aenderungen)),
-			"dateCreated" => RISTools::date_iso2timestamp($this->datum),
-			"aenderung_guid" => Yii::app()->createUrl("aenderung/anzeigen",array("id" => $this->id))
+			"title"          => ($item ? $item->getTypName() . ": " . $item->getName() : "?"),
+			"link"           => ($item ? $item->getLink() : "-"),
+			"content"        => nl2br(CHtml::encode($this->aenderungen)),
+			"dateCreated"    => RISTools::date_iso2timestamp($this->datum),
+			"aenderung_guid" => Yii::app()->createUrl("aenderung/anzeigen", array("id" => $this->id))
 		);
 	}
 }
