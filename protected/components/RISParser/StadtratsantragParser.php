@@ -44,16 +44,17 @@ class StadtratsantragParser extends RISParser {
 		$dat_details = explode("<!-- details und tabelle -->", $html_details);
 		$dat_details = explode("<!-- tabellenfuss -->", $dat_details[1]);
 
-		preg_match_all("/<span class=\"itext\">(.*)<\/span.*detail_div_(left|right|left_long)\">(.*)<\/div/siU", $dat_details[0], $matches);
-		for ($i = 0; $i < count($matches[1]); $i++) if ($matches[3][$i] != "&nbsp;") switch ($matches[1][$i]) {
-			case "Typ:": $daten->antrag_typ = $matches[3][$i]; break;
-			case "Zust&auml;ndiges Referat:": $daten->referat = $matches[3][$i]; break;
-			case "Gestellt am:": $daten->gestellt_am = $this->date_de2mysql($matches[3][$i]); break;
-			case "Wahlperiode:": $daten->wahlperiode = $matches[3][$i]; break;
-			case "Bearbeitungsfrist:": $daten->bearbeitungsfrist = $this->date_de2mysql($matches[3][$i]); break;
-			case "Fristverl&auml;ngerung:": $daten->fristverlaengerung = $this->date_de2mysql($matches[3][$i]); break;
-			case "Gestellt von:": $daten->gestellt_von = $matches[3][$i]; break;
-			case "Initiatoren:": if ($matches[3][$i] != "&nbsp;") $daten->initiatorInnen = $matches[3][$i]; break;
+		preg_match_all("/detail_label_long\">(<span class=\"itext\">)?([^<].*)<\/.*detail_div_(left|right|left_long)\">(.*)<\/div/siU", $dat_details[0], $matches);
+		for ($i = 0; $i < count($matches[2]); $i++) if ($matches[4][$i] != "&nbsp;") switch ($matches[2][$i]) {
+			case "Typ:": $daten->antrag_typ = $matches[4][$i]; break;
+			case "Zust&auml;ndiges Referat:": $daten->referat = $matches[4][$i]; break;
+			case "Gestellt am:": $daten->gestellt_am = $this->date_de2mysql($matches[4][$i]); break;
+			case "Wahlperiode:": $daten->wahlperiode = $matches[4][$i]; break;
+			case "Bearbeitungsfrist:": $daten->bearbeitungsfrist = $this->date_de2mysql($matches[4][$i]); break;
+			case "Fristverl&auml;ngerung:": $daten->fristverlaengerung = $this->date_de2mysql($matches[4][$i]); break;
+			case "Gestellt von:": $daten->gestellt_von = $matches[4][$i]; break;
+			case "Initiatoren:": if ($matches[4][$i] != "&nbsp;") $daten->initiatorInnen = $matches[4][$i]; break;
+			case "Erledigt am:": if ($matches[4][$i] != "&nbsp;") $daten->erledigt_am = $this->date_de2mysql($matches[4][$i]); break;
 		}
 
 		preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
@@ -83,6 +84,7 @@ class StadtratsantragParser extends RISParser {
 			if (isset($daten->initiatorInnen) && $alter_eintrag->initiatorInnen != $daten->initiatorInnen) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatorInnen . " => " . $daten->initiatorInnen . "\n";
 			if ($alter_eintrag->gestellt_von != $daten->gestellt_von) $aenderungen .= "Gestellt von: " . $alter_eintrag->gestellt_von . " => " . $daten->gestellt_von . "\n";
 			if ($alter_eintrag->antrags_nr != $daten->antrags_nr) $aenderungen .= "Antrags-Nr: " . $alter_eintrag->antrags_nr . " => " . $daten->antrags_nr . "\n";
+			if ($alter_eintrag->erledigt_am != $daten->erledigt_am) $aenderungen .= "Erledigt am: " . $alter_eintrag->erledigt_am . " => " . $daten->erledigt_am . "\n";
 			if ($aenderungen != "") $changed = true;
 		}
 
