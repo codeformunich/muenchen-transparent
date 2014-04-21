@@ -56,9 +56,8 @@ class Person extends CActiveRecord implements IRISItem
 		return array(
 			array('name_normalized, typ, name', 'required'),
 			array('ris_stadtraetIn, ris_fraktion', 'numerical', 'integerOnly' => true),
-			array('name_normalized', 'length', 'max' => 50),
 			array('typ', 'length', 'max' => 9),
-			array('name', 'length', 'max' => 100),
+			array('name, name_normalized', 'length', 'max' => 100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name_normalized, typ, name, ris_stadtraetIn, ris_fraktion', 'safe', 'on' => 'search'),

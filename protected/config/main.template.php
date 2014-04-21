@@ -36,6 +36,15 @@ function ris_intern_address2geo($land, $plz, $ort, $strasse)
 	return array("lon" => 0, "lat" => 0);
 }
 
+/**
+ * @param Antrag $referenz
+ * @param Antrag $antrag
+ * @return bool
+ */
+function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag) {
+	return true;
+}
+
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.

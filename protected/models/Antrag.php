@@ -393,4 +393,65 @@ class Antrag extends CActiveRecord implements IRISItem
 	{
 		return RISTools::korrigiereTitelZeichen($this->betreff);
 	}
+
+	/**
+	 * @param int $anz
+	 * @return AntragDokument[]
+	 */
+	public function errateThemenverwandteDokumente($anz) {
+		/** @var AntragDokument[] $dokumente */
+		$dokumente = array();
+		/** @var int[] $dokumente_count */
+		$dokumente_count = array();
+
+		foreach ($this->dokumente as $dokument) {
+			$related = $dokument->solrMoreLikeThis(count($this->dokumente) + $anz);
+			foreach ($related as $rel_dok) if ($rel_dok->antrag_id != $this->id) {
+				if (isset($dokumente_count[$rel_dok->id])) {
+					$dokumente_count[$rel_dok->id]++;
+				} else {
+					$dokumente[$rel_dok->id] = $rel_dok;
+					$dokumente_count[$rel_dok->id] = 1;
+				}
+			}
+		}
+
+		arsort($dokumente_count);
+
+		$ret = array();
+		$i = 0;
+		foreach ($dokumente_count as $dok_id => $anz) if ($i++ < $anz) $ret[] = $dokumente[$dok_id];
+		return $ret;
+	}
+
+	/**
+	 * @param int $limit
+	 * @return Antrag[]
+	 */
+	public function errateThemenverwandteAntraege($limit) {
+		/** @var Antrag[] $rel_antraege */
+		$rel_antraege = array();
+		/** @var int[] $rel_antraege_count */
+		$rel_antraege_count = array();
+
+		foreach ($this->dokumente as $dokument) if ($dokument->antrag_id > 0) {
+			$related = $dokument->solrMoreLikeThis($limit * 2);
+			foreach ($related as $rel_dok) if ($rel_dok->antrag_id > 0 && $rel_dok->antrag_id != $this->id) {
+				if (isset($rel_antraege_count[$rel_dok->antrag_id])) {
+					$rel_antraege_count[$rel_dok->antrag_id]++;
+				} else {
+					$rel_antraege[$rel_dok->antrag_id] = $rel_dok->antrag;
+					$rel_antraege_count[$rel_dok->antrag_id] = 1;
+				}
+			}
+		}
+
+		$ret = array();
+		$i = 0;
+		foreach ($rel_antraege_count as $ant_id => $anz) {
+			if (!ris_intern_antrag_ist_relevant_mlt($this, $rel_antraege[$ant_id])) continue;
+			if ($i++ < $limit) $ret[] = $rel_antraege[$ant_id];
+		}
+		return $ret;
+	}
 }

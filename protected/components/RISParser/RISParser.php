@@ -14,6 +14,7 @@ abstract class RISParser {
 		$text = trim($text);
 		$text = preg_replace("/<br ?\/?>/siU", "\n", $text);
 		$text = str_replace("\n\n", "\n", $text);
+		$text = html_entity_decode($text, ENT_COMPAT, "UTF-8");
 		return $text;
 	}
 

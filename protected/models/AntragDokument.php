@@ -352,8 +352,7 @@ class AntragDokument extends CActiveRecord
 		$solr   = RISSolrHelper::getSolrClient("ris");
 		$select = $solr->createSelect();
 		$select->setQuery("id:\"Document:" . $this->id . "\"");
-		$select->getMoreLikeThis()->setFields("text")->setMinimumDocumentFrequency(1)->setMinimumTermFrequency(1) /* ->setCount(10) */
-		;
+		$select->getMoreLikeThis()->setFields("text")->setMinimumDocumentFrequency(1)->setMinimumTermFrequency(1)->setCount($limit);
 		$ergebnisse = $solr->select($select);
 		$mlt        = $ergebnisse->getMoreLikeThis();
 		$ret        = array();

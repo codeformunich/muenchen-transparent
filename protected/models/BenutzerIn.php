@@ -26,11 +26,12 @@ class BenutzerIn extends CActiveRecord
 	 */
 	public static function createBenutzerIn($email, $password = "")
 	{
-		$benutzerIn                   = new BenutzerIn;
-		$benutzerIn->email            = $email;
-		$benutzerIn->email_bestaetigt = 0;
-		$benutzerIn->pwd_enc          = ($password != "" ? BenutzerIn::create_hash($password) : "");
-		$benutzerIn->datum_angelegt   = new CDbExpression("NOW()");
+		$benutzerIn                                = new BenutzerIn;
+		$benutzerIn->email                         = $email;
+		$benutzerIn->email_bestaetigt              = 0;
+		$benutzerIn->pwd_enc                       = ($password != "" ? BenutzerIn::create_hash($password) : "");
+		$benutzerIn->datum_angelegt                = new CDbExpression("NOW()");
+		$benutzerIn->datum_letzte_benachrichtigung = new CDbExpression("NOW()");
 		return $benutzerIn;
 	}
 
@@ -215,7 +216,8 @@ class BenutzerIn extends CActiveRecord
 	/**
 	 * @return bool|string
 	 */
-	public function resetPasswordStart() {
+	public function resetPasswordStart()
+	{
 		if ($this->pwd_change_date !== null) {
 			$ts = RISTools::date_iso2timestamp($this->pwd_change_date);
 			if (time() - $ts < 3600 * 24) return "Es kann nur eine Passwortänderung innerhalb von 24 Stunden beantragt werden.";
@@ -223,7 +225,7 @@ class BenutzerIn extends CActiveRecord
 		$this->pwd_change_code = sha1(uniqid() . $this->pwd_enc);
 		$this->pwd_change_date = new CDbExpression("NOW()");
 		if ($this->save()) {
-			$link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/resetPassword", array("id" => $this->id, "code" => $this->pwd_change_code));
+			$link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/resetPassword", array("id" => $this->id, "code" => $this->pwd_change_code));
 			mail($this->email, "Ratsinformant-Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
 				. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
 			return true;
@@ -236,12 +238,13 @@ class BenutzerIn extends CActiveRecord
 	 * @param string $new_pw
 	 * @return string|bool
 	 */
-	public function resetPasswordDo($code, $new_pw) {
+	public function resetPasswordDo($code, $new_pw)
+	{
 		if ($this->pwd_change_date === null) return "Es wurde keine Passwortänderung beantragt.";
 		$ts = RISTools::date_iso2timestamp($this->pwd_change_date);
 		if (time() - $ts > 3600 * 24) return "Der Antrag liegt bereits mehr als 24 Stunden zurück. Bitte stelle einen neuen Passwort-Änderungs-Antrag.";
 		if ($this->pwd_change_code != $code) return "Ein ungültiger Link bzw. Code.";
-		$this->pwd_enc = BenutzerIn::create_hash($new_pw);
+		$this->pwd_enc         = BenutzerIn::create_hash($new_pw);
 		$this->pwd_change_code = null;
 		$this->save();
 		return true;
@@ -362,11 +365,11 @@ class BenutzerIn extends CActiveRecord
 				}
 			}
 
-			$name = $antrag->betreff;
+			$name = $antrag->getName();
 			$name = preg_replace("/ *(\n *)+/siu", ", ", $name);
 			if (strlen($name) > 80) $name = substr($name, 0, 78) . "...";
 			$str .= "- \"" . $name . "\n";
-			$str .= "  " . Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".") . "\n";
+			$str .= "  " . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".") . "\n";
 			$str .= implode("\n", $dokumente_strs);
 			if (count($queries) == 1) {
 				$str .= "\n    Gefunden über: \"" . $queries[0] . "\"\n";
@@ -376,7 +379,7 @@ class BenutzerIn extends CActiveRecord
 			$str .= "\n";
 		}
 
-		$str .= "\nFalls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter " . Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode())), ".") . " abbestellen.\n\nLiebe Grüße,\n  Das Ratsinformanten-Team";
+		$str .= "\nFalls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter " . trim(Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode())), ".") . " abbestellen.\n\nLiebe Grüße,\n  Das Ratsinformanten-Team";
 		return $str;
 	}
 
@@ -412,10 +415,10 @@ class BenutzerIn extends CActiveRecord
 				}
 			}
 
-			$name = $antrag->betreff;
+			$name = $antrag->getName();
 			$name = preg_replace("/ *(\n *)+/siu", ", ", $name);
 			if (strlen($name) > 80) $name = substr($name, 0, 78) . "...";
-			$url = Yii::app()->params["baseURL"] . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".");
+			$url = trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".");
 			$str .= "<li><a href='" . CHtml::encode($url) . "'>" . CHtml::encode($name) . "</a>";
 			$str .= "<ul>" . implode("", $dokumente_strs) . "</ul>";
 			$str .= "<div class='gefunden_ueber'>";
@@ -428,7 +431,7 @@ class BenutzerIn extends CActiveRecord
 		}
 		if (count($data["antraege"]) > 0) $str .= "</ul>";
 
-		$url = Yii::app()->params["baseURL"] . Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode()));
+		$url = Yii::app()->createUrl("benachrichtigungen/index", array("code" => $this->getBenachrichtigungAbmeldenCode()));
 		$str .= "<br>Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href='" . CHtml::encode($url) . "'>hier abbestellen</a>.<br><br><br>Liebe Grüße,<br> &nbsp; Das Ratsinformanten-Team";
 		$str .= "</body></html>";
 		return $str;
@@ -441,7 +444,7 @@ class BenutzerIn extends CActiveRecord
 	{
 		$benachrichtigungen = $this->getBenachrichtigungen();
 
-		$neu_seit = "2013-07-01 00:00:00";
+		$neu_seit = $this->datum_letzte_benachrichtigung;
 		$sql      = Yii::app()->db->createCommand();
 		$sql->select("id")->from("antraege_dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
 		$data = $sql->queryColumn(array("id"));
@@ -502,7 +505,8 @@ class BenutzerIn extends CActiveRecord
 		$transport = new Zend\Mail\Transport\Sendmail();
 		$transport->send($mail);
 
-		echo $mail_txt;
+		$this->datum_letzte_benachrichtigung = new CDbExpression("NOW()");
+		$this->save();
 	}
 
 	/**
