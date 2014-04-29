@@ -268,8 +268,11 @@ class Gremium extends CActiveRecord implements IRISItem
 		else return "Stadtratsgremium";
 	}
 
-	/** @return string */
-	public function getName()
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
 	{
 		return $this->name;
 	}

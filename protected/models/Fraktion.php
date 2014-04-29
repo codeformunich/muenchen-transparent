@@ -104,8 +104,11 @@ class Fraktion extends CActiveRecord implements IRISItem
 		return "Fraktion";
 	}
 
-	/** @return string */
-	public function getName()
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
 	{
 		return $this->name;
 	}

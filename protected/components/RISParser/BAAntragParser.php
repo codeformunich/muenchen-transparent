@@ -119,7 +119,7 @@ class BAAntragParser extends RISParser {
 	}
 
 	public function parseSeite($seite) {
-		echo "BA-Anträge Seite $seite\n";
+		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege.jsp?Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);

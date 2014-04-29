@@ -465,7 +465,7 @@ class IndexController extends RISBaseController
 		$krits->addKritsToSolr($select);
 
 
-		$select->setRows(100);
+		$select->setRows(50);
 		$select->addSort('sort_datum', $select::SORT_DESC);
 
 		/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */

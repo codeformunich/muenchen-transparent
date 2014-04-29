@@ -172,8 +172,11 @@ class Termin extends CActiveRecord implements IRISItem
 		else return "Stadtratstermin";
 	}
 
-	/** @return string */
-	public function getName()
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
 	{
 		return $this->gremium->name . " (" . $this->termin . ")";
 	}

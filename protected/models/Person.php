@@ -167,8 +167,11 @@ class Person extends CActiveRecord implements IRISItem
 		return "Stadtratsmitglied";
 	}
 
-	/** @return string */
-	public function getName()
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
 	{
 		return $this->name;
 	}

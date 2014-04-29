@@ -14,7 +14,7 @@ if (count($dokumente) == 0) {
 <?
 } else {
 	?>
-	<div id="suchergebnisse_holder">
+	<div class="suchergebnisse_holder">
 		<ul class="suchergebnisliste">
 			<?
 			//$mlt = $ergebnisse->getMoreLikeThis();
@@ -31,10 +31,10 @@ if (count($dokumente) == 0) {
 					$risitem = $dok->getRISItem();
 					//$dokurl = $this->createUrl("index/dokument", array("id" => $dok->id));
 					$dokurl = $dok->getOriginalLink();
-					echo "<div class='datum'>" . CHtml::encode($dok->datum) . "</div>";
+					echo "<div class='datum'>" . CHtml::encode(date("d.m.Y", RISTools::date_iso2timestamp($dok->datum))) . "</div>";
 					echo "<div class='dokument'><a href='" . CHtml::encode($dokurl) . "'><span class='icon-right-open'></span> " . CHtml::encode($dok->name) . " <span class='icon-download'></span></a></div>";
 					echo "<div class='antraglink'><a href='" . CHtml::encode($risitem->getLink()) . "' title='" . CHtml::encode($risitem->getName()) . "'>";
-					echo CHtml::encode($risitem->getName()) . "</a></div>";
+					echo CHtml::encode($risitem->getName(true)) . "</a></div>";
 
 					$highlightedDoc = $highlighting->getResult($dokument->id);
 					if ($highlightedDoc && count($highlightedDoc) > 0) {

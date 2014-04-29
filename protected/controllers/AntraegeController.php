@@ -13,7 +13,7 @@ class AntraegeController extends RISBaseController
 			$verwandt = $antrag->errateThemenverwandteAntraege(10);
 			foreach ($verwandt as $verw) {
 				$str .= '<li>';
-				$str .= CHtml::link($verw->getName(), $verw->getLink());
+				$str .= CHtml::link($verw->getName(true), $verw->getLink());
 				$str .= '</li>';
 			}
 		}

@@ -10,7 +10,7 @@ $assets_base = $this->getAssetsBase();
 
 
 ?>
-<h1><?= $termin->getName() ?></h1>
+<h1><?= CHtml::encode($termin->getName()) ?></h1>
 
 <table class="table table-bordered">
 	<tbody>

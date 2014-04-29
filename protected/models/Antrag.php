@@ -388,10 +388,19 @@ class Antrag extends CActiveRecord implements IRISItem
 		return $str[0];
 	}
 
-	/** @return string */
-	public function getName()
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
 	{
-		return RISTools::korrigiereTitelZeichen($this->betreff);
+		if ($kurzfassung) {
+			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->betreff);
+			$x = explode(" Antrag Nr.", $betreff);
+			return RISTools::korrigiereTitelZeichen($x[0]);
+		} else {
+			return RISTools::korrigiereTitelZeichen($this->betreff);
+		}
 	}
 
 	/**

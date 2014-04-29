@@ -20,7 +20,7 @@ define("TILE_CACHE_DIR", "/var/www/ris3-data/tile-cache/tiles/");
 
 define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");
 
-ini_set("memory_limit", "128M");
+ini_set("memory_limit", "256M");
 
 define("SEED_KEY", "RANDOMKEY");
 

@@ -145,7 +145,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("beschluss/anzeigen", array("id" => $this->id));
+		return $this->antrag->getLink();
 	}
 
 
@@ -155,9 +155,12 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		return "Stadtratsbeschluss";
 	}
 
-	/** @return string */
-	public function getName()
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
 	{
-		return $this->top_betreff;
+		return RISTools::korrigiereTitelZeichen($this->top_betreff);
 	}
 }

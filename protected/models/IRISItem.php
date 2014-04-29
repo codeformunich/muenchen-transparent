@@ -9,6 +9,9 @@ interface IRISItem
 	/** @return string */
 	public function getTypName();
 
-	/** @return string */
-	public function getName();
+	/**
+	 * @param bool $langfassung
+	 * @return string
+	 */
+	public function getName($langfassung = false);
 }
