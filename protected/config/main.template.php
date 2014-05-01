@@ -16,6 +16,9 @@ define("PDF_PDF", "/var/www/ris3-data/data/pdf/");
 define("TMP_PATH", "/tmp/");
 define("LOG_PATH", "/var/www/ris3-data/logs/");
 define("RU_PDF_PATH", "/var/www/ris3-data/data/ru-pdf/");
+define("OMNIPAGE_PDF_DIR", "/var/www/ris3-data/ocr-todo/");
+define("OMNIPAGE_DST_DIR", "/var/www/ris3-data/ocr-dst/");
+define("OMNIPAGE_IMPORTED_DIR", "/var/www/ris3-data/ocr-imported/");
 define("TILE_CACHE_DIR", "/var/www/ris3-data/tile-cache/tiles/");
 
 define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");

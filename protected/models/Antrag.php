@@ -45,6 +45,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	public static $TYP_STADTRAT_VORLAGE_GEHEIM = "stadtrat_vorlage_geheim";
 	public static $TYP_BA_ANTRAG = "ba_antrag";
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
+	public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung";
 
 	public static $TYPEN_ALLE = array(
 		"stadtrat_antrag"         => "Stadtratsantrag|Stadtratsanträge",
@@ -52,6 +53,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		"ba_antrag"               => "BA-Antrag|BA-Anträge",
 		"ba_initiative"           => "BA-Initiative|BA-Initiativen",
 		"stadtrat_vorlage_geheim" => "Geheime Stadtratsvorlage|Geheime Stadtratsvorlagen",
+		"bv_empfehlung"           => "BV-Empfehlung|BV-Empfehlungen",
 	);
 
 	/**

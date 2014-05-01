@@ -16,6 +16,7 @@
  * @property string $text_ocr_corrected
  * @property string $text_ocr_garbage_seiten
  * @property string $text_pdf
+ * @property string $ocr_von
  * @property integer $seiten_anzahl
  *
  * The followings are the available model relations:
@@ -45,6 +46,9 @@ class AntragDokument extends CActiveRecord
 		"ba_termin"          => "BA: Termin",
 		"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
 	);
+
+	public static $OCR_VON_TESSERACT = "tesseract";
+	public static $OCR_VON_OMNIPAGE = "omnipage";
 
 	private static $_cache = array();
 
@@ -79,10 +83,10 @@ class AntragDokument extends CActiveRecord
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 200),
-			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf', 'safe'),
+			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, typ, antrag_id, termin_id, ergebnis_id, url, name, datum, text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf', 'safe', 'on' => 'search'),
+			array('id, typ, antrag_id, termin_id, ergebnis_id, url, name, datum, text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -146,6 +150,7 @@ class AntragDokument extends CActiveRecord
 		$criteria->compare('text_ocr_corrected', $this->text_ocr_corrected, true);
 		$criteria->compare('text_ocr_garbage_seiten', $this->text_ocr_garbage_seiten, true);
 		$criteria->compare('text_pdf', $this->text_pdf, true);
+		$criteria->compare('ocr_von', $this->ocr_von, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
@@ -200,6 +205,7 @@ class AntragDokument extends CActiveRecord
 
 		$this->text_ocr_raw       = RISPDF2Text::document_text_ocr($absolute_filename, $this->seiten_anzahl);
 		$this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
+		$this->ocr_von            = AntragDokument::$OCR_VON_TESSERACT;
 	}
 
 	/**
