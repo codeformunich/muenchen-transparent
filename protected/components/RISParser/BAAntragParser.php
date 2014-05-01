@@ -14,7 +14,6 @@ class BAAntragParser extends RISParser {
 		$daten = new Antrag();
 		$daten->id = $antrag_id;
 		$daten->datum_letzte_aenderung = new CDbExpression('NOW()');
-		$daten->typ = Antrag::$TYP_BA_ANTRAG;
 
 		$dokumente = array();
 		//$ergebnisse = array();
@@ -32,8 +31,24 @@ class BAAntragParser extends RISParser {
 		$dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
 		$dat_details = explode("<!-- tabellenfuss -->", $dat_details[1]);
 
-		preg_match("/<h3.*>.* +(.*)<\/h3/siU", $dat_details[0], $matches);
-		if (count($matches) == 2) $daten->antrags_nr = trim($matches[1]);
+		preg_match("/<h3.*>(.*) +(.*)<\/h3/siU", $dat_details[0], $matches);
+		if (count($matches) == 3) {
+			$daten->antrags_nr = trim($matches[2]);
+			switch ($matches[1]) {
+				case "BA-Antrags-Nummer:":
+					$daten->typ = Antrag::$TYP_BA_ANTRAG;
+					break;
+				case "BV-Empfehlungs-Nummer:":
+					$daten->typ = Antrag::$TYP_BV_EMPFEHLUNG;
+					break;
+				default:
+					mail("tobias@hoessl.eu", "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $matches[1]);
+					die();
+			}
+		} else {
+			mail("tobias@hoessl.eu", "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $dat_details[0]);
+			die();
+		}
 
 		preg_match_all("/<span class=\"itext\">(.*)<\/span.*detail_div_(left|right|left_long)\">(.*)<\/div/siU", $dat_details[0], $matches);
 		for ($i = 0; $i < count($matches[1]); $i++) if ($matches[3][$i] != "&nbsp;") switch ($matches[1][$i]) {
@@ -77,6 +92,7 @@ class BAAntragParser extends RISParser {
 			if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
 			if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
 			if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
+			if ($alter_eintrag->typ != $daten->typ) $aenderungen .= "Typ: " . $alter_eintrag->typ . " => " . $daten->typ . "\n";
 			if ($aenderungen != "") $changed = true;
 		}
 
@@ -104,14 +120,15 @@ class BAAntragParser extends RISParser {
 		}
 
 		foreach ($dokumente as $dok) {
-			$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_ANTRAG, $daten, $dok);
+			$dok_typ = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? AntragDokument::$TYP_BA_ANTRAG : AntragDokument::$TYP_BV_EMPFEHLUNG);
+			$aenderungen .= AntragDokument::create_if_necessary($dok_typ, $daten, $dok);
 		}
 
 		if ($aenderungen != "") {
 			$aend = new RISAenderung();
 			$aend->ris_id = $daten->id;
 			$aend->ba_nr = $daten->ba_nr;
-			$aend->typ = RISAenderung::$TYP_STADTRAT_ANTRAG;
+			$aend->typ = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? RISAenderung::$TYP_BA_ANTRAG : RISAenderung::$TYP_BV_EMPFEHLUNG);
 			$aend->datum = new CDbExpression("NOW()");
 			$aend->aenderungen = $aenderungen;
 			$aend->save();
@@ -130,8 +147,8 @@ class BAAntragParser extends RISParser {
 	}
 
 	public function parseAlle() {
-		//$anz = 12000;
-		$anz = 800;
+		$anz = 12000;
+		//$anz = 800;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i);

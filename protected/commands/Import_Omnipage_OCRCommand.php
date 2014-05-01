@@ -29,6 +29,7 @@ class Import_Omnipage_OCRCommand extends CConsoleCommand
 
 		/** @var AntragDokument $dokument */
 		$dokument = AntragDokument::model()->findByPk(IntVal($filename));
+		if (!$dokument) return;
 
 		$dokument->text_ocr_raw = $txt;
 		$dokument->text_ocr_corrected = $txt;
