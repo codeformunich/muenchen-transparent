@@ -192,8 +192,10 @@ function gruppiere_termine($termine)
 			<p>
 				<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>" class="startseite_benachrichtigung_link email" title="E-Mail">@</a>
 				<a href="<?= CHtml::encode($this->createUrl("index/feed")) ?>" class="startseite_benachrichtigung_link" title="RSS-Feed">R</a>
+				<!--
 				<a href="#" class="startseite_benachrichtigung_link" title="Twitter">T</a>
 				<a href="#" class="startseite_benachrichtigung_link" title="Facebook">f</a>
+				-->
 			</p>
 		</section>
 

@@ -22,9 +22,6 @@ ul.antragsliste {
     break-inside: avoid-column;
     display: inline-block;
     width: 100%; }
-    html.no-csscolumns #stadtratsdokumente_holder.fullsize ul.antragsliste > li {
-      width: 49%;
-      display: inline-block; }
     ul.antragsliste > li > .add_meta {
       float: right;
       font-size: 11px;
@@ -377,6 +374,11 @@ body {
   #stadtratsdokumente_holder .aeltere_caller {
     font-size: 1.5em;
     margin-top: 1.5em; }
+  #stadtratsdokumente_holder.fullsize {
+    width: 100%; }
+    html.no-csscolumns #stadtratsdokumente_holder.fullsize li {
+      width: 49%;
+      display: inline-block; }
 
 #overflow_hinweis {
   margin-top: -30px;

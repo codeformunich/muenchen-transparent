@@ -163,12 +163,8 @@ class RISTools {
 	 */
 	public static function normalize_antragvon($str) {
 		$a = explode(",", $str);
-		$b = array();
-		foreach ($a as $y) {
-			$b = array_merge($b, explode("/", $y));
-		}
 		$ret = array();
-		foreach ($b as $y) {
+		foreach ($a as $y) {
 			$z = explode(";", $y);
 			if (count($z) == 2) $y = $z[1] . " " . $z[0];
 			$name_orig = $y;

@@ -55,14 +55,16 @@ if (isset($datum)) {
 
 		$p_strs = array();
 		foreach ($parteien as $partei => $personen) {
-			$str = "<span class='partei' title='" . CHtml::encode(implode(", ", $personen)) . "'>";
+			$personen_net = array();
+			foreach ($personen as $p) if ($p != $partei) $personen_net[] = $p;
+			$str = "<span class='partei' title='" . CHtml::encode(implode(", ", $personen_net)) . "'>";
 			$str .= CHtml::encode($partei);
 			$str .= "</span>";
 			$p_strs[] = $str;
 		}
 		if (count($p_strs) > 0) echo implode(", ", $p_strs) . ", ";
 
-		if ($ant->ba_nr > 0) echo " <span title='" . CHtml::encode("Bezirksausschuss " . $ant->ba_nr . " (" . $ant->ba->name . ")") . "' class='ba'>BA " . $ant->ba_nr . "</span>, ";
+		if ($ant->ba_nr > 0) echo ", <span title='" . CHtml::encode("Bezirksausschuss " . $ant->ba_nr . " (" . $ant->ba->name . ")") . "' class='ba'>BA " . $ant->ba_nr . "</span>, ";
 
 		echo date("d.m.", $max_date);
 		echo "</div>";

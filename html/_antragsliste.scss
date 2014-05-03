@@ -1,3 +1,4 @@
+
 ul.antragsliste {
   list-style-type: none;
   margin: 0;
@@ -26,10 +27,6 @@ ul.antragsliste {
     display: inline-block;
     width: 100%;
 
-    html.no-csscolumns #stadtratsdokumente_holder.fullsize & {
-      width: 49%;
-      display: inline-block;
-    }
 
     > .add_meta {
       float: right;

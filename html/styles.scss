@@ -312,6 +312,16 @@ body {
     font-size: 1.5em;
     margin-top: 1.5em;
   }
+
+  &.fullsize {
+    width: 100%;
+
+    html.no-csscolumns &  li{
+      width: 49%;
+      display: inline-block;
+    }
+  }
+
 }
 
 #overflow_hinweis {
