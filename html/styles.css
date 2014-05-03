@@ -70,6 +70,11 @@ ul.antragsliste {
           /* W3C */
           filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00eeeeee', endColorstr='#eeeeee', GradientType=1);
           /* IE6-8 */ }
+    ul.antragsliste > li > div.dokumente {
+      margin: 0;
+      padding: 3px;
+      background-color: #fff;
+      font-size: 11px; }
     ul.antragsliste > li > ul.dokumente {
       list-style-type: none;
       margin: 0;

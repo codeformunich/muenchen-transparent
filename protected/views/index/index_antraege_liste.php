@@ -64,7 +64,7 @@ if (isset($datum)) {
 		}
 		if (count($p_strs) > 0) echo implode(", ", $p_strs) . ", ";
 
-		if ($ant->ba_nr > 0) echo ", <span title='" . CHtml::encode("Bezirksausschuss " . $ant->ba_nr . " (" . $ant->ba->name . ")") . "' class='ba'>BA " . $ant->ba_nr . "</span>, ";
+		if ($ant->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $ant->ba_nr . " (" . $ant->ba->name . ")") . "' class='ba'>BA " . $ant->ba_nr . "</span>, ";
 
 		echo date("d.m.", $max_date);
 		echo "</div>";

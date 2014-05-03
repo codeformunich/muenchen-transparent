@@ -230,8 +230,8 @@ if (count($historie) > 0) {
 </tbody>
 </table>
 </div>
-<section style="border: solid 1px lightgray;" class="col-md-4">
+<section style="background-color: #f7f7f7; padding-top: 10px; padding-bottom: 10px;" class="col-md-4">
 	<h2 style="font-size: 16px; font-weight: bold; text-align: center; padding: 2px; margin: 0;">Könnte themenverwandt sein</h2>
-	<ul id="themenverwandt"><?= $themenverwandt ?></ul>
+	<ul class="antragsliste" id="themenverwandt"><?= $themenverwandt ?></ul>
 </section>
 </div>

@@ -80,6 +80,13 @@ ul.antragsliste {
       }
     }
 
+    > div.dokumente {
+      margin: 0;
+      padding: 3px;
+      background-color: #fff;
+      font-size: 11px;
+    }
+
     > ul.dokumente {
       list-style-type: none;
       margin: 0;
