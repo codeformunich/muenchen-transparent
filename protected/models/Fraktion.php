@@ -41,7 +41,7 @@ class Fraktion extends CActiveRecord implements IRISItem
 		return array(
 			array('id, name', 'required'),
 			array('id', 'numerical', 'integerOnly' => true),
-			array('name', 'length', 'max' => 50),
+			array('name', 'length', 'max' => 70),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name', 'safe', 'on' => 'search'),
