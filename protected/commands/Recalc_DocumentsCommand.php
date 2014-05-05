@@ -18,7 +18,7 @@ class Recalc_DocumentsCommand extends CConsoleCommand {
 			$url      = "http://www.ris-muenchen.de" . $dokument->url;
 			$x        = explode("/", $url);
 			$filename = $x[count($x) - 1];
-			$absolute_filename = PDF_PDF . $filename;
+			$absolute_filename = PATH_PDF . $filename;
 			$dokument->seiten_anzahl = RISPDF2Text::document_anzahl_seiten($absolute_filename);
 			$dokument->save();
 

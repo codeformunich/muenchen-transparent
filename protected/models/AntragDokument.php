@@ -192,7 +192,7 @@ class AntragDokument extends CActiveRecord
 		$filename = $x[count($x) - 1];
 		if (preg_match("/[^a-zA-Z0-9_\.-]/", $filename)) die("Ungültige Zeichen im Dateinamen");
 
-		$absolute_filename = PDF_PDF . $filename;
+		$absolute_filename = PATH_PDF . $filename;
 
 		RISTools::download_file($url, $absolute_filename);
 
@@ -206,6 +206,8 @@ class AntragDokument extends CActiveRecord
 		$this->text_ocr_raw       = RISPDF2Text::document_text_ocr($absolute_filename, $this->seiten_anzahl);
 		$this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
 		$this->ocr_von            = AntragDokument::$OCR_VON_TESSERACT;
+
+		copy($absolute_filename, OMNIPAGE_PDF_DIR . $filename);
 	}
 
 	/**

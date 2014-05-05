@@ -6,7 +6,8 @@ class Import_Omnipage_OCRCommand extends CConsoleCommand
 	{
 		echo $filename . "\n";
 		$txt = file_get_contents(OMNIPAGE_DST_DIR . $filename);
-		$txt = iconv("Windows-1252", "UTF-8//TRANSLIT", $txt);
+		//$txt = iconv("Windows-1252", "UTF-8//TRANSLIT", $txt);
+		$txt = iconv('UTF-16LE', "UTF-8//TRANSLIT", $txt);
 		/*
 		$repl = array(
 			chr(194) . chr(149) => " ",

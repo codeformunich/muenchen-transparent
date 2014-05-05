@@ -306,7 +306,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		 * $rows = user::model()->findAllByAttributes($u
 		 */
 		$criteria = new CDbCriteria(array('order' => "datum_letzte_aenderung DESC"));
-		$criteria->addCondition("datum_letzte_aenderung >= '2014-04-01 00:00:00'");
+		$criteria->addCondition("datum_letzte_aenderung >= '2014-05-01 00:00:00'");
 		$his = AntragHistory::model()->findAllByAttributes(array("id" => $this->id), $criteria);
 		foreach ($his as $alt) {
 			$histories[] = new HistorienEintragAntrag($alt, $neu);

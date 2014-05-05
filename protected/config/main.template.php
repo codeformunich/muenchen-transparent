@@ -1,25 +1,25 @@
 <?php
 
-// uncomment the following to define a path alias
-// Yii::setPathOfAlias('local','path/to/local-folder');
-
+define("RIS_DATA_DIR", "/data/ris3-data/");
+define("RIS_OMNIPAGE_DIR", "/data/nuance/");
 define("PATH_IDENTIFY", "/usr/bin/identify");
 define("PATH_CONVERT", "/usr/bin/convert");
 define("PATH_TESSERACT", "/usr/local/bin/tesseract");
 define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
-define("PATH_PDFBOX", "/var/www/ris3-data/pdfbox-app-1.8.4.jar");
+define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.5.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
 define("PATH_PDFTOHTML", "/usr/bin/pdftohtml");
 
-define("PDF_PDF", "/var/www/ris3-data/data/pdf/");
+define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");
 define("TMP_PATH", "/tmp/");
-define("LOG_PATH", "/var/www/ris3-data/logs/");
-define("RU_PDF_PATH", "/var/www/ris3-data/data/ru-pdf/");
-define("OMNIPAGE_PDF_DIR", "/var/www/ris3-data/ocr-todo/");
-define("OMNIPAGE_DST_DIR", "/var/www/ris3-data/ocr-dst/");
-define("OMNIPAGE_IMPORTED_DIR", "/var/www/ris3-data/ocr-imported/");
-define("TILE_CACHE_DIR", "/var/www/ris3-data/tile-cache/tiles/");
+define("LOG_PATH", RIS_DATA_DIR . "logs/");
+define("RU_PDF_PATH", RIS_DATA_DIR . "data/ru-pdf/");
+define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR . "ocr-todo/");
+define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR . "ocr-dst/");
+define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
+define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
+
 
 define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");
 

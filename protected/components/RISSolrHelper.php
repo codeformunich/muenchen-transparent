@@ -10,7 +10,7 @@ class RISSolrHelper {
 			chr(21), chr(22), chr(23), chr(24), chr(25), chr(26), chr(27), chr(28), chr(29), chr(30), chr(31));
 		$repl = array();
 		foreach ($chars as $c) $repl[] = " ";
-		return str_replace($chars, $repl, iconv("UTF-8", "UTF-8", $text));
+		return str_replace($chars, $repl, iconv("UTF-8", "UTF-8//TRANSLIT", $text));
 	}
 
 
