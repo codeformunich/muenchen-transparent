@@ -1,4 +1,2 @@
-OpenRIS
-=======
-
-OpenRIS
+Ratsinformant
+=============
