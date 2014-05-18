@@ -9,7 +9,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="Tobias Hößl">
 
-	<link href="/js/bootstrap-3.1.1/css/bootstrap.css" rel="stylesheet">
+	<link href="/js/bootstrap/css/bootstrap.css" rel="stylesheet">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 

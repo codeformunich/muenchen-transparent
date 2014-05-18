@@ -16,7 +16,7 @@ if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</d
 ?>
 
 <form method="POST" style="overflow: auto;">
-	<table>
+	<table style="width: 100%;">
 		<thead><tr>
 			<th>Name</th>
 			<th>Fraktion</th>
@@ -33,7 +33,7 @@ if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</d
 			<td><?=CHtml::encode($str->name)?></td>
 			<td><?=CHtml::encode($str->stadtraetInnenFraktionen[0]->fraktion->name)?></td>
 			<td><input name="web[<?=$str->id?>]" title="Homepage" value="<?=CHtml::encode($str->web)?>" width="60" maxlength="200"></td>
-			<td>@<input name="twitter[<?=$str->id?>]" title="Twitter" value="<?=CHtml::encode($str->twitter)?>" maxlength="45"></td>
+			<td style="white-space: nowrap;">@<input name="twitter[<?=$str->id?>]" title="Twitter" value="<?=CHtml::encode($str->twitter)?>" maxlength="45"></td>
 			<td><input name="facebook[<?=$str->id?>]" title="Facebook" value="<?=CHtml::encode($str->facebook)?>" width="60" maxlength="200"></td>
 			<td><input name="abgeordnetenwatch[<?=$str->id?>]" title="Twitter" value="<?=CHtml::encode($str->abgeordnetenwatch)?>" width="60" maxlength="200"></td>
 		</tr>
