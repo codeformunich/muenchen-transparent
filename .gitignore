@@ -3,6 +3,9 @@ protected/runtime/
 solr-4.2.0/
 vendor/
 composer.lock
-
+protected/config/main.php
+html/js/OverlappingMarkerSpiderfier-Leaflet/
+html/js/Leaflet/
+html/js/Leaflet.draw/
 *.log
 *.bak
