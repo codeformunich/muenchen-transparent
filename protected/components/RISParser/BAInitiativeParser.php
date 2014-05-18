@@ -122,22 +122,27 @@ class BAInitiativeParser extends RISParser {
 		}
 	}
 
-	public function parseSeite($seite) {
+	public function parseSeite($seite, $first) {
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Initiativen Seite $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen.jsp?Trf=n&Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ba_initiativen_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
+
+		if ($first && count($matches[1]) > 0) mail(Yii::app()->params['adminEmail'], "BA-Initiativen VOLL", "Erste Seite voll: $seite");
+
 		for ($i = count($matches[1])-1; $i >= 0; $i--) $this->parse($matches[1][$i]);
 		return $matches[1];
 	}
 
 	public function parseAlle() {
 		$anz = 4320;
+		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-			$this->parseSeite($i);
+			$this->parseSeite($i, $first);
+			$first = false;
 		}
 	}
 
@@ -146,7 +151,7 @@ class BAInitiativeParser extends RISParser {
 		echo "Updates: BA-Initiativen\n";
 		$loaded_ids = array();
 		for ($i = 200; $i >= 0; $i -= 10) {
-			$ids = $this->parseSeite($i);
+			$ids = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
 		}
 	}

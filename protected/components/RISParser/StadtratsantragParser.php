@@ -130,7 +130,7 @@ class StadtratsantragParser extends RISParser {
 
 
 
-	public function parseSeite($seite) {
+	public function parseSeite($seite, $first) {
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_trefferliste.jsp?txtPosition=$seite");
 		$txt = explode("<!-- ergebnisreihen -->", $text);
 		if (!isset($txt[1])) {
@@ -139,15 +139,20 @@ class StadtratsantragParser extends RISParser {
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_antrag_detail.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
+
+		if ($first && count($matches[1]) > 0) mail(Yii::app()->params['adminEmail'], "Stadtratsantrag VOLL", "Erste Seite voll: $seite");
+
 		for ($i = count($matches[1])-1; $i >= 0; $i--) $this->parse($matches[1][$i]);
 		return $matches[1];
 	}
 
 	public function parseAlle() {
 		$anz = 14500;
+		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-			$this->parseSeite($i);
+			$this->parseSeite($i, $first);
+			$first = false;
 		}
 	}
 
@@ -156,7 +161,7 @@ class StadtratsantragParser extends RISParser {
 		echo "Updates: Stadtratsanträge\n";
 
 		for ($i = 200; $i >= 0; $i -= 10) {
-			$ids = $this->parseSeite($i);
+			$ids = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
 		}
 

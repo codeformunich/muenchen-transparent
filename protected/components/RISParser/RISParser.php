@@ -2,7 +2,7 @@
 
 abstract class RISParser {
 	public abstract function parse($id);
-	public abstract function parseSeite($seite);
+	public abstract function parseSeite($seite, $first);
 	public abstract function parseAlle();
 	public abstract function parseUpdate();
 

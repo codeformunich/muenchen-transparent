@@ -231,7 +231,7 @@ class StadtratTerminParser extends RISParser
 
 	}
 
-	public function parseSeite($seite, $alle = false)
+	public function parseSeite($seite, $first, $alle = false)
 	{
 		$add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
@@ -242,6 +242,9 @@ class StadtratTerminParser extends RISParser
 		$txt  = explode("<!-- tabellenfuss", $txt[1]);
 
 		preg_match_all("/ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
+
+		if ($first && count($matches[1]) > 0) mail(Yii::app()->params['adminEmail'], "Stadtratstermin VOLL", "Erste Seite voll: $seite");
+
 		for ($i = count($matches[1]) - 1; $i >= 0; $i--) {
 			$this->parse($matches[1][$i]);
 		}
@@ -252,9 +255,11 @@ class StadtratTerminParser extends RISParser
 	public function parseAlle()
 	{
 		$anz = 4800;
+		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-			$this->parseSeite($i, true);
+			$this->parseSeite($i, $first, true);
+			$first = false;
 		}
 	}
 
@@ -262,7 +267,7 @@ class StadtratTerminParser extends RISParser
 	{
 		echo "Updates: Stadtratstermin\n";
 		for ($i = 270; $i >= 0; $i -= 10) {
-			$this->parseSeite($i, false);
+			$this->parseSeite($i, false, false);
 		}
 	}
 }

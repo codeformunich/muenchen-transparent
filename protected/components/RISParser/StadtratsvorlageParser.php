@@ -154,12 +154,15 @@ class StadtratsvorlageParser extends RISParser {
 		}
 	}
 
-	public function parseSeite($seite) {
+	public function parseSeite($seite, $first) {
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "Seite: $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
 		$txt = explode("<!-- ergebnisreihen -->", $text);
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_vorlagen_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
+
+		if ($first && count($matches[1]) > 0) mail(Yii::app()->params['adminEmail'], "Stadtratsvorlagen VOLL", "Erste Seite voll: $seite");
+
 		for ($i = count($matches[1])-1; $i >= 0; $i--) $this->parse($matches[1][$i]);
 		return $matches[1];
 	}
@@ -167,9 +170,11 @@ class StadtratsvorlageParser extends RISParser {
 
 	public function parseAlle() {
 		$anz = 18880;
+		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-			$this->parseSeite($i);
+			$this->parseSeite($i, $first);
+			$first = false;
 		}
 
 	}
@@ -178,7 +183,7 @@ class StadtratsvorlageParser extends RISParser {
 		echo "Updates: Stadtratsvorlagen\n";
 		$loaded_ids = array();
 		for ($i = 400; $i >= 0; $i -= 10) {
-			$ids = $this->parseSeite($i);
+			$ids = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
 		}
 

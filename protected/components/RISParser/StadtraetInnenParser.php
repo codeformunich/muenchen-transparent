@@ -164,13 +164,15 @@ class StadtraetInnenParser extends RISParser
 	}
 
 
-	public function parseSeite($seite)
+	public function parseSeite($seite, $first)
 	{
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
 		$txt  = explode("<!-- tabellenkopf -->", $text);
 		if (!isset($txt[1])) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo "- leer\n";
 			return array();
+		} elseif ($first) {
+			mail(Yii::app()->params['adminEmail'], "StadträTinnenUpdate VOLL", "Erste Seite voll: $seite");
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_mitglieder_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -178,7 +180,7 @@ class StadtraetInnenParser extends RISParser
 			try {
 				$this->parse($matches[1][$i]);
 			} catch (Exception $e) {
-				mail("tobias@hoessl.eu", "StadträTinnenUpdate Error", $matches[1][$i] . $e);
+				mail(Yii::app()->params['adminEmail'], "StadträTinnenUpdate Error", $matches[1][$i] . $e);
 			}
 
 			$this->bearbeitete_stadtraetInnen[] = $matches[1][$i];
@@ -189,11 +191,13 @@ class StadtraetInnenParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz                              = 300;
+		$anz                              = 350;
 		$this->bearbeitete_stadtraetInnen = array();
+		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-			$this->parseSeite($i);
+			$this->parseSeite($i, $first);
+			$first = false;
 		}
 	}
 
