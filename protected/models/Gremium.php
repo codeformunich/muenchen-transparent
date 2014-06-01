@@ -45,7 +45,7 @@ class Gremium extends CActiveRecord implements IRISItem
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, datum_letzte_aenderung, name, kuerzel, gremientyp, referat', 'required'),
+			array('id, datum_letzte_aenderung, name, kuerzel, gremientyp', 'required'),
 			array('id, ba_nr', 'numerical', 'integerOnly' => true),
 			array('name, gremientyp, referat', 'length', 'max' => 100),
 			array('kuerzel', 'length', 'max' => 20),
@@ -206,7 +206,7 @@ class Gremium extends CActiveRecord implements IRISItem
 		if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = $matches[1];
 		if (preg_match("/introheadline\">(?:BA|UA) ([0-9]+) /siU", $html_details, $matches)) $daten->ba_nr = $matches[1];
 		if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = $matches[1];
-		if (preg_match("/Gremientyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
+		if (preg_match("/Gremiumtyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
 
 		$aenderungen = "";
 
