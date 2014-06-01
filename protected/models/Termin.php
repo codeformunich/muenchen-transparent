@@ -58,7 +58,7 @@ class Termin extends CActiveRecord implements IRISItem
 			array('referat, referent, vorsitz', 'length', 'max' => 200),
 			array('wahlperiode', 'length', 'max' => 20),
 			array('status', 'length', 'max' => 100),
-			array('termin', 'safe'),
+			array('termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, datum_letzte_aenderung, termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe', 'on' => 'search'),
@@ -219,9 +219,13 @@ class Termin extends CActiveRecord implements IRISItem
 	 */
 	public function neueste_stadtratsantragsdokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
 	{
-		$ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
+		if ($ba_nr === false) $ba_sql = "";
+		elseif ($ba_nr > 0) $ba_sql = "ba_nr = " . IntVal($ba_nr);
+		elseif ($ba_nr == -1) $ba_sql = "ba_nr > 0";
+		else $ba_sql = "ba_nr IS NULL ";
+
 		$params = array(
-			'condition' => 'ba_nr ' . $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'condition' => $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
 			'order'     => 'datum DESC',
 			'with'      => array(
 				'antraegeDokumente' => array(

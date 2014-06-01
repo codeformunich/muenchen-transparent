@@ -90,7 +90,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			array('referent', 'length', 'max' => 200),
 			array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
 			array('bearbeitung', 'length', 'max' => 100),
-			array('gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
+			array('typ, ba_nr, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe'),
 			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
 
 			// The following rule is used by search().
