@@ -132,6 +132,13 @@ class StadtratTerminParser extends RISParser
 						mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gelöscht", "StadtratTerminParser 2\n" . print_r($daten->getErrors(), true));
 						die("Fehler");
 					}
+					$aend              = new RISAenderung();
+					$aend->ris_id      = $daten->id;
+					$aend->ba_nr       = NULL;
+					$aend->typ         = RISAenderung::$TYP_STADTRAT_TERMIN;
+					$aend->datum       = new CDbExpression("NOW()");
+					$aend->aenderungen = $aenderungen;
+					$aend->save();
 					return;
 				}
 
@@ -280,7 +287,7 @@ class StadtratTerminParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 4800;
+		$anz   = 4900;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

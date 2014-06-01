@@ -35,6 +35,7 @@ class AntragDokument extends CActiveRecord
 	public static $TYP_BA_ANTRAG = "ba_antrag";
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
 	public static $TYP_BA_TERMIN = "ba_termin";
+	public static $TYP_BA_BESCHLUSS = "ba_beschluss";
 	public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung";
 	public static $TYPEN_ALLE = array(
 		"stadtrat_antrag"    => "Stadtratsantrag",
@@ -44,6 +45,7 @@ class AntragDokument extends CActiveRecord
 		"ba_antrag"          => "BA: Antrag",
 		"ba_initiative"      => "BA: Initiative",
 		"ba_termin"          => "BA: Termin",
+		"ba_beschluss"       => "BA: Beschluss",
 		"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
 	);
 
@@ -496,7 +498,7 @@ class AntragDokument extends CActiveRecord
 			$update = $solr->createUpdate();
 
 			if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
-			elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
+			elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
 			else $this->solrIndex_antrag_do($update);
 
 
