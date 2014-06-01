@@ -28,6 +28,21 @@ class StadtratTerminParser extends RISParser
 			}
 		}
 
+		$geloescht            = false;
+		$sitzungsort_gefunden = false;
+
+		if (preg_match("/Sitzungsort:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) {
+			$sitzungsort_gefunden = true;
+			$daten->sitzungsort   = trim(str_replace("&nbsp;", "", $matches[1]));
+		}
+		if (preg_match("/chste Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_next_id = trim(str_replace("&nbsp;", "", $matches[1]));
+		if (preg_match("/Letzte Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = trim(str_replace("&nbsp;", "", $matches[1]));
+		if (preg_match("/Wahlperiode:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->wahlperiode = trim(str_replace("&nbsp;", "", $matches[1]));
+		if (preg_match("/Status:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->status = trim(str_replace("&nbsp;", "", $matches[1]));
+		if (preg_match("/diges Referat:.*detail_div_left_long\">(<a[^>]+>)?([^>]*)<\//siU", $html_details, $matches)) $daten->referat = trim(str_replace("&nbsp;", "", $matches[2]));
+		if (preg_match("/Referent\/in:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->referent = trim(str_replace("&nbsp;", "", $matches[1]));
+		if (preg_match("/Vorsitz:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->vorsitz = trim(str_replace("&nbsp;", "", $matches[1]));
+
 		if (preg_match("/Termin:.*detail_div\">([^&<]+)[&<]/siU", $html_details, $matches)) {
 			$termin = $matches[1];
 			$MONATE = array(
@@ -45,25 +60,23 @@ class StadtratTerminParser extends RISParser
 				"dezember"  => "12",
 			);
 			$x      = explode(" ", trim($termin));
-			$tag    = IntVal($x[1]);
-			if ($tag < 10) $tag = "0" . IntVal($tag);
-			$jahr  = IntVal($x[2]);
-			$y     = explode(".", $x[1]);
-			$monat = $MONATE[mb_strtolower($y[1])];
-			if ($monat < 10) $monat = "0" . IntVal($monat);
-			$zeit          = $x[3];
-			$daten->termin = "${jahr}-${monat}-${tag} ${zeit}:00";
+			if (isset($x[1])) {
+				$tag = IntVal($x[1]);
+				if ($tag < 10) $tag = "0" . IntVal($tag);
+				$jahr  = IntVal($x[2]);
+				$y     = explode(".", $x[1]);
+				$monat = $MONATE[mb_strtolower($y[1])];
+				if ($monat < 10) $monat = "0" . IntVal($monat);
+				$zeit          = $x[3];
+				$daten->termin = "${jahr}-${monat}-${tag} ${zeit}:00";
+			} else {
+				if ($sitzungsort_gefunden && $daten->gremium === null && $daten->sitzungsort == "" && $daten->status == "") $geloescht = true;
+				else {
+					mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Unbekanntes Datum", "ID: $termin_id\n" . print_r($matches, true));
+					die();
+				}
+			}
 		}
-
-		if (preg_match("/Sitzungsort:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) $daten->sitzungsort = trim(str_replace("&nbsp;", "", $matches[1]));
-		if (preg_match("/chste Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_next_id = trim(str_replace("&nbsp;", "", $matches[1]));
-		if (preg_match("/Letzte Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = trim(str_replace("&nbsp;", "", $matches[1]));
-		if (preg_match("/Wahlperiode:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->wahlperiode = trim(str_replace("&nbsp;", "", $matches[1]));
-		if (preg_match("/Status:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->status = trim(str_replace("&nbsp;", "", $matches[1]));
-		if (preg_match("/diges Referat:.*detail_div_left_long\">(<a[^>]+>)?([^>]*)<\//siU", $html_details, $matches)) $daten->referat = trim(str_replace("&nbsp;", "", $matches[2]));
-		if (preg_match("/Referent\/in:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->referent = trim(str_replace("&nbsp;", "", $matches[1]));
-		if (preg_match("/Vorsitz:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->vorsitz = trim(str_replace("&nbsp;", "", $matches[1]));
-
 
 		$dokumente = array();
 
@@ -82,16 +95,21 @@ class StadtratTerminParser extends RISParser
 		$changed       = true;
 		if ($alter_eintrag) {
 			$changed = false;
-			if ($alter_eintrag->termin != $daten->termin) $aenderungen .= "Termin: " . $alter_eintrag->termin . " => " . $daten->termin . "\n";
-			if ($alter_eintrag->gremium_id != $daten->gremium_id) $aenderungen .= "Gremium-ID: " . $alter_eintrag->gremium_id . " => " . $daten->gremium_id . "\n";
-			if ($alter_eintrag->sitzungsort != $daten->sitzungsort) $aenderungen .= "Sitzungsort: " . $alter_eintrag->sitzungsort . " => " . $daten->sitzungsort . "\n";
-			if ($alter_eintrag->termin_next_id != $daten->termin_next_id) $aenderungen .= "Nächster Termin: " . $alter_eintrag->termin_next_id . " => " . $daten->termin_next_id . "\n";
-			if ($alter_eintrag->termin_prev_id != $daten->termin_prev_id) $aenderungen .= "Voriger Termin: " . $alter_eintrag->termin_prev_id . " => " . $daten->termin_prev_id . "\n";
-			if ($alter_eintrag->wahlperiode != $daten->wahlperiode) $aenderungen .= "Wahlperiode: " . $alter_eintrag->wahlperiode . " => " . $daten->wahlperiode . "\n";
-			if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
-			if ($alter_eintrag->referent != $daten->referent) $aenderungen .= "Referent: " . $alter_eintrag->referent . " => " . $daten->referent . "\n";
-			if ($alter_eintrag->vorsitz != $daten->vorsitz) $aenderungen .= "Vorsitz: " . $alter_eintrag->vorsitz . " => " . $daten->vorsitz . "\n";
-			if ($aenderungen != "") $changed = true;
+			if ($geloescht) {
+				$aenderungen = "gelöscht";
+				$changed     = true;
+			} else {
+				if ($alter_eintrag->termin != $daten->termin) $aenderungen .= "Termin: " . $alter_eintrag->termin . " => " . $daten->termin . "\n";
+				if ($alter_eintrag->gremium_id != $daten->gremium_id) $aenderungen .= "Gremium-ID: " . $alter_eintrag->gremium_id . " => " . $daten->gremium_id . "\n";
+				if ($alter_eintrag->sitzungsort != $daten->sitzungsort) $aenderungen .= "Sitzungsort: " . $alter_eintrag->sitzungsort . " => " . $daten->sitzungsort . "\n";
+				if ($alter_eintrag->termin_next_id != $daten->termin_next_id) $aenderungen .= "Nächster Termin: " . $alter_eintrag->termin_next_id . " => " . $daten->termin_next_id . "\n";
+				if ($alter_eintrag->termin_prev_id != $daten->termin_prev_id) $aenderungen .= "Voriger Termin: " . $alter_eintrag->termin_prev_id . " => " . $daten->termin_prev_id . "\n";
+				if ($alter_eintrag->wahlperiode != $daten->wahlperiode) $aenderungen .= "Wahlperiode: " . $alter_eintrag->wahlperiode . " => " . $daten->wahlperiode . "\n";
+				if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
+				if ($alter_eintrag->referent != $daten->referent) $aenderungen .= "Referent: " . $alter_eintrag->referent . " => " . $daten->referent . "\n";
+				if ($alter_eintrag->vorsitz != $daten->vorsitz) $aenderungen .= "Vorsitz: " . $alter_eintrag->vorsitz . " => " . $daten->vorsitz . "\n";
+				if ($aenderungen != "") $changed = true;
+			}
 		}
 
 		if ($changed) {
@@ -102,16 +120,24 @@ class StadtratTerminParser extends RISParser
 			if ($alter_eintrag) {
 				$alter_eintrag->copyToHistory();
 				$alter_eintrag->setAttributes($daten->getAttributes());
-				if (!$alter_eintrag->save()) {
-					echo "StadtratTerminParser 1\n";
-					var_dump($alter_eintrag->getErrors());
+				if (!$alter_eintrag->save(false)) {
+					mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gespeichert", "StadtratTerminParser 1\n" . print_r($alter_eintrag->getErrors(), true));
 					die("Fehler");
 				}
 				$daten = $alter_eintrag;
+
+				if ($geloescht) {
+					echo "Lösche";
+					if (!$daten->delete()) {
+						mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gelöscht", "StadtratTerminParser 2\n" . print_r($daten->getErrors(), true));
+						die("Fehler");
+					}
+					return;
+				}
+
 			} else {
 				if (!$daten->save()) {
-					echo "StadtratTerminParser 1\n";
-					var_dump($daten->getErrors());
+					mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gespeichert", "StadtratTerminParser 3\n" . print_r($daten->getErrors(), true));
 					die("Fehler");
 				}
 			}
@@ -193,7 +219,7 @@ class StadtratTerminParser extends RISParser
 			$referent = static::text_clean_spaces($matches["referent"][$i]);
 
 			/** @var AntragErgebnis $ergebnis */
-			$krits = array("sitzungstermin_id" => $termin_id, "status" => "geheim",  "top_betreff" => $betreff);
+			$krits    = array("sitzungstermin_id" => $termin_id, "status" => "geheim", "top_betreff" => $betreff);
 			$ergebnis = AntragErgebnis::model()->findByAttributes($krits);
 			if (is_null($ergebnis)) {
 				$ergebnis = new AntragErgebnis();
@@ -236,10 +262,10 @@ class StadtratTerminParser extends RISParser
 		$add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
 
-		$txt  = explode("<table class=\"ergebnistab\" ", $text);
+		$txt = explode("<table class=\"ergebnistab\" ", $text);
 		if ($seite > 4790 && count($txt) == 1) return;
 
-		$txt  = explode("<!-- tabellenfuss", $txt[1]);
+		$txt = explode("<!-- tabellenfuss", $txt[1]);
 
 		preg_match_all("/ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
@@ -254,7 +280,7 @@ class StadtratTerminParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz = 4800;
+		$anz   = 4800;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
