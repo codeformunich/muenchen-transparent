@@ -3,7 +3,8 @@
  * @var IndexController $this
  * @var array $geodata
  * @var array $geodata_overflow
- * @var Antrag[] $antraege
+ * @var Antrag[] $antraege_stadtrat
+ * @var Antrag[] $antraege_sonstige
  * @var string $datum
  * @var string $weitere_url
  * @var Termin[] $termine_zukunft
@@ -58,12 +59,14 @@ function gruppiere_termine($termine)
 <div id="mapholder">
 	<div id="map"></div>
 </div>
-<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='visibility: hidden;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span class="anzahl"><?=(count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente")?></span> mit über 20 Ortsbezügen</label></div>
+<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='visibility: hidden;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span
+			class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen</label></div>
 <div id="benachrichtigung_hinweis">
 	<div id="ben_map_infos">
 		<div class="nichts" style="font-style: italic;">
 			<strong>Hinweis:</strong><br>
-			Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den relevanten Radius.<br>
+			Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den
+			relevanten Radius.<br>
 			<br>
 		</div>
 		<div class="infos" style="display: none;">
@@ -110,13 +113,41 @@ function gruppiere_termine($termine)
 
 <div class="row">
 	<div class="col col-lg-5" id="stadtratsdokumente_holder">
-		<? $this->renderPartial("index_antraege_liste", array(
-			"antraege"    => $antraege,
+		<?
+		$this->renderPartial("index_antraege_liste", array(
+			"antraege"    => $antraege_stadtrat,
 			"datum"       => $datum,
 			"weitere_url" => $weitere_url,
-		)); ?>
+		));
+		if (count($antraege_sonstige) > 0) $this->renderPartial("index_antraege_liste", array(
+			"title"       => "Sonstige neue Dokumente",
+			"antraege"    => $antraege_sonstige,
+			"datum"       => $datum,
+			"weitere_url" => null,
+		));
+		?>
 	</div>
 	<div class="col col-lg-4 keine_dokumente">
+
+		<?
+		if (count($termin_dokumente) > 0) {
+			?>
+			<h3>Neue Sitzungsdokumente</h3>
+			<ul class="antragsliste"><?
+				foreach ($termin_dokumente as $termin) {
+					$ts = RISTools::date_iso2timestamp($termin->termin);
+					echo "<li><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
+					foreach ($termin->antraegeDokumente as $dokument) {
+						echo "<ul class='dokumente'><li>";
+						echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+						echo "</li></ul>";
+					}
+					echo "</li>";
+				}
+				?></ul>
+		<? } ?>
+
 		<h3>Kommende Termine</h3>
 		<?
 		$data = gruppiere_termine($termine_zukunft);
@@ -164,26 +195,6 @@ function gruppiere_termine($termine)
 				}
 				?></ul>
 		<? } ?>
-
-		<h3>Neue Sitzungsdokumente</h3>
-		<?
-		if (count($termin_dokumente) == 0) echo "<p class='keine_gefunden'>Keine neue Sitzungsdokumente in den letzten $tage_vergangenheit Tagen</p>";
-		else {
-			?>
-			<ul class="antragsliste"><?
-				foreach ($termin_dokumente as $termin) {
-					$ts = RISTools::date_iso2timestamp($termin->termin);
-					echo "<li><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
-					foreach ($termin->antraegeDokumente as $dokument) {
-						echo "<ul class='dokumente'><li>";
-						echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
-						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
-						echo "</li></ul>";
-					}
-					echo "</li>";
-				}
-				?></ul>
-		<? } ?>
 	</div>
 	<div class="col col-lg-3 keine_dokumente">
 		<section style="display: inline-block">
@@ -202,7 +213,7 @@ function gruppiere_termine($termine)
 		<h3>StadträtInnen</h3>
 
 		<ul class="fraktionen_liste"><?
-			usort($fraktionen, function($val1, $val2) {
+			usort($fraktionen, function ($val1, $val2) {
 				if (count($val1) < count($val2)) return 1;
 				if (count($val1) > count($val2)) return -1;
 				return 0;
@@ -225,12 +236,12 @@ function gruppiere_termine($termine)
 				echo "</ul></li>\n";
 
 			}
-		?></ul>
+			?></ul>
 
 		<script>
-			$(function() {
+			$(function () {
 				var $frakts = $(".fraktionen_liste > li");
-				$frakts.addClass("closed").find("> a").click(function(ev) {
+				$frakts.addClass("closed").find("> a").click(function (ev) {
 					ev.preventDefault();
 					var $li = $(this).parents("li").first(),
 						is_open = !$li.hasClass("closed");

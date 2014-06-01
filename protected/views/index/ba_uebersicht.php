@@ -63,13 +63,15 @@ $cs->registerScriptFile('/js/index.js');
 <div id="mapholder">
 	<div id="map"></div>
 </div>
-<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span class="anzahl"><?=(count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente")?></span> mit über 20 Ortsbezügen</label></div>
+<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span
+			class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen</label></div>
 
 <div id="benachrichtigung_hinweis">
 	<div id="ben_map_infos">
 		<div class="nichts" style="font-style: italic;">
 			<strong>Hinweis:</strong><br>
-			Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den relevanten Radius.<br>
+			Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann den
+			relevanten Radius.<br>
 			<br>
 		</div>
 		<div class="infos" style="display: none;">
@@ -113,104 +115,104 @@ $cs->registerScriptFile('/js/index.js');
 </script>
 
 <div class="row">
-<div class="col col-lg-5" id="stadtratsdokumente_holder">
-	<? $this->renderPartial("ba_antraege_liste", array(
-		"antraege" => $antraege,
-		"titel"    => "Dokumente der letzten $tage_vergangenheit_dokumente Tage"
-	)); ?>
-</div>
-<div class="col col-lg-4 keine_dokumente">
-	<h3>Kommende BA-Termine</h3>
-	<?
-	$termine_ids = array();
-
-	$data = ba_gruppiere_termine($termine_zukunft);
-	if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
-	else {
-		?>
-		<ul class="terminliste"><?
-
-			foreach ($data as $termin) {
-				$termine_ids[] = $termin["id"];
-				echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-				$gremien = array();
-				foreach ($termin["gremien"] as $name => $links) {
-					foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
-				}
-				echo implode(", ", $gremien);
-
-				if (count($termin["dokumente"]) > 0) {
-					echo "<div class='dokumente'><b>Dokumente:</b><ul>";
-					foreach ($termin["dokumente"] as $dokument) {
-						/** @var AntragDokument $dokument */
+	<div class="col col-lg-5" id="stadtratsdokumente_holder">
+		<? $this->renderPartial("index_antraege_liste", array(
+			"antraege"    => $antraege,
+			"title"       => "Dokumente der letzten $tage_vergangenheit_dokumente Tage",
+			"weitere_url" => null,
+		)); ?>
+	</div>
+	<div class="col col-lg-4 keine_dokumente">
+		<?
+		if (count($termin_dokumente) > 0) {
+			?>
+			<h3>Neue Sitzungsdokumente</h3>
+			<ul class="antragsliste"><?
+				foreach ($termin_dokumente as $termin) {
+					$ts = RISTools::date_iso2timestamp($termin->termin);
+					echo "<li><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
+					foreach ($termin->antraegeDokumente as $dokument) {
+						echo "<ul class='dokumente'><li>";
+						echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
 						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+						echo "</li></ul>";
 					}
-					echo "</ul></div>";
+					echo "</li>";
 				}
-				echo "</div></li>";
-			}
-			?></ul>
-	<?
-	}
-	?>
+				?></ul>
+		<? } ?>
 
-	<h3>Vergangene BA-Termine</h3>
-	<?
-	$data = ba_gruppiere_termine($termine_vergangenheit);
-	if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-	else {
-		?>
-		<ul class="terminliste"><?
-			foreach ($data as $termin) {
-				$termine_ids[] = $termin["id"];
-				echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-				$gremien = array();
-				foreach ($termin["gremien"] as $name => $links) {
-					if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
-					else {
-						$str = CHtml::encode($name);
-						for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
-						$gremien[] = $str;
-					}
-				}
-				echo implode(", ", $gremien);
-				if (count($termin["dokumente"]) > 0) {
-					echo "<div class='dokumente'><b>Dokumente:</b><ul>";
-					foreach ($termin["dokumente"] as $dokument) {
-						/** @var AntragDokument $dokument */
-						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
-					}
-					echo "</ul></div>";
-				}
-				echo "</div></li>";
-			}
-			?></ul>
-	<?
-	}
-	$weitere_terms = array();
-	foreach ($termin_dokumente as $dok) if (!in_array($dok->id, $termine_ids)) {
-		$weitere_terms[] = $dok;
-	}
-	if (count($weitere_terms) > 0) {
-		?>
-		<h3>Weitere BA-Sitzungsdokumente</h3>
-		<ul class="antragsliste"><?
-			foreach ($weitere_terms as $termin) {
-				$ts = RISTools::date_iso2timestamp($termin->termin);
-				echo "<li><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
-				foreach ($termin->antraegeDokumente as $dokument) {
-					echo "<ul class='dokumente'><li>";
-					echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
-					echo CHtml::link($dokument->name, $dokument->getOriginalLink());
-					echo "</li></ul>";
-				}
-				echo "</li>";
-			}
-			?></ul>
-	<? } ?>
-</div>
+		<h3>Kommende BA-Termine</h3>
+		<?
+		$termine_ids = array();
 
-<div class="col col-lg-3 keine_dokumente">
-	<h3>Weitere Infos</h3>
-</div>
+		$data = ba_gruppiere_termine($termine_zukunft);
+		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
+		else {
+			?>
+			<ul class="terminliste"><?
+
+				foreach ($data as $termin) {
+					$termine_ids[] = $termin["id"];
+					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
+					$gremien = array();
+					foreach ($termin["gremien"] as $name => $links) {
+						foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
+					}
+					echo implode(", ", $gremien);
+
+					if (count($termin["dokumente"]) > 0) {
+						echo "<div class='dokumente'><b>Dokumente:</b><ul>";
+						foreach ($termin["dokumente"] as $dokument) {
+							/** @var AntragDokument $dokument */
+							echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+						}
+						echo "</ul></div>";
+					}
+					echo "</div></li>";
+				}
+				?></ul>
+		<?
+		}
+		?>
+
+		<h3>Vergangene BA-Termine</h3>
+		<?
+		$data = ba_gruppiere_termine($termine_vergangenheit);
+		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
+		else {
+			?>
+			<ul class="terminliste"><?
+				foreach ($data as $termin) {
+					$termine_ids[] = $termin["id"];
+					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
+					$gremien = array();
+					foreach ($termin["gremien"] as $name => $links) {
+						if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
+						else {
+							$str = CHtml::encode($name);
+							for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
+							$gremien[] = $str;
+						}
+					}
+					echo implode(", ", $gremien);
+					if (count($termin["dokumente"]) > 0) {
+						echo "<div class='dokumente'><b>Dokumente:</b><ul>";
+						foreach ($termin["dokumente"] as $dokument) {
+							/** @var AntragDokument $dokument */
+							echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+						}
+						echo "</ul></div>";
+					}
+					echo "</div></li>";
+				}
+				?></ul>
+		<?
+		}
+		?>
+	</div>
+
+	<div class="col col-lg-3 keine_dokumente">
+		<h3>Weitere Infos</h3>
+	</div>
 </div>

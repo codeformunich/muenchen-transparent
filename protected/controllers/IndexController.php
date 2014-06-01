@@ -546,8 +546,8 @@ class IndexController extends RISBaseController
 		$geodata_overflow = array_merge($geodata_overflow1, $geodata_overflow2);
 
 		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
-		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
-		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
+		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
 
 
 		$ba = Bezirksausschuss::model()->findByPk($ba_nr);
@@ -574,11 +574,22 @@ class IndexController extends RISBaseController
 		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
 
-		$i = 0;
+		$i = 1;
 		do {
-			$datum = date("Y-m-d", time() - 3600 * 24 * $i);
+			if ($i == 1) {
+				$datum_von = date("Y-m-d", time() - 3600 * 24 * $i) . " 00:00:00";
+				$datum_bis = date("Y-m-d H:i:s");
+			} else {
+				$datum_von = date("Y-m-d", time() - 3600 * 24 * $i) . " 00:00:00";
+				$datum_bis = date("Y-m-d", time() - 3600 * 24 * $i) . " 23:59:59";
+			}
 			/** @var array|Antrag[] $antraege */
-			$antraege = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum . " 00:00:00", $datum . " 23:59:59")->findAll();
+			$antraege = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
+			$antraege_stadtrat = $antraege_sonstige = array();
+			foreach ($antraege as $ant) {
+				if ($ant->ba_nr === null) $antraege_stadtrat[] = $ant;
+				else $antraege_sonstige[] = $ant;
+			}
 			$i++;
 		} while (count($antraege) == 0);
 
@@ -592,11 +603,12 @@ class IndexController extends RISBaseController
 		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(0, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
 
 		$this->render('stadtrat_uebersicht', array(
-			"weitere_url"           => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
-			"antraege"              => $antraege,
+			"weitere_url"           => $this->createUrl("index/antraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
+			"antraege_sonstige"     => $antraege_sonstige,
+			"antraege_stadtrat"     => $antraege_stadtrat,
 			"geodata"               => $geodata,
 			"geodata_overflow"      => $geodata_overflow,
-			"datum"                 => $datum,
+			"datum"                 => $datum_von,
 			"termine_zukunft"       => $termine_zukunft,
 			"termine_vergangenheit" => $termine_vergangenheit,
 			"termin_dokumente"      => $termin_dokumente,

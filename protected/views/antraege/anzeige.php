@@ -92,7 +92,7 @@ if (count($personen[AntragPerson::$TYP_GESTELLT_VON])) {
 		if ($antrag->ba_nr > 0) {
 			echo CHtml::link("Bezirksausschuss " . $antrag->ba_nr, $this->createUrl("index/ba", array("ba_nr" => $antrag->ba_nr))) . " (" . CHtml::encode($antrag->ba->name) . ")<br>";
 		} else {
-			echo "Sadtrat<br>";
+			echo "Stadtrat<br>";
 		}
 		echo CHtml::encode(strip_tags($antrag->referat));
 		?></td>
