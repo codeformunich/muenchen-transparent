@@ -18,6 +18,13 @@ class BATerminParser extends RISParser {
 		$dokumente = array();
 
 		if (preg_match("/ba_gremien_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->gremium_id = IntVal($matches[1]);
+		if ($daten->gremium_id) {
+			$gr = Gremium::model()->findByPk($daten->gremium_id);
+			if (!$gr) {
+				echo "Lege Gremium an: " . $daten->gremium_id . "\n";
+				Gremium::parse_ba_gremien($daten->gremium_id);
+			}
+		}
 
 		if (preg_match("/Termin:.*detail_div\">([^&<]+)[&<]/siU", $html_details, $matches)) {
 			$termin = $matches[1];
