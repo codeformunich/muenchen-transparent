@@ -158,6 +158,8 @@ class StadtratsvorlageParser extends RISParser {
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "Seite: $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
 		$txt = explode("<!-- ergebnisreihen -->", $text);
+		if (count($txt) == 1) return array();
+
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_vorlagen_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
@@ -169,7 +171,7 @@ class StadtratsvorlageParser extends RISParser {
 
 
 	public function parseAlle() {
-		$anz = 18880;
+		$anz = 27500;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
