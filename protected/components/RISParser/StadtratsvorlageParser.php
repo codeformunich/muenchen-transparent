@@ -7,7 +7,7 @@ class StadtratsvorlageParser extends RISParser {
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_detail.jsp?risid=" . $vorlage_id);
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_dokumente.jsp?risid=" . $vorlage_id);
-		//$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII2/RII/ris_unterlage_ergebnisse.jsp?risid=" . $vorlage_id);
+		$html_ergebnisse = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=" . $vorlage_id);
 
 		$daten = new Antrag();
 		$daten->id = $vorlage_id;
@@ -15,7 +15,7 @@ class StadtratsvorlageParser extends RISParser {
 		$daten->typ = Antrag::$TYP_STADTRAT_VORLAGE;
 
 		$dokumente = array();
-		// $ergebnisse = array();
+		$ergebnisse = array();
 
 		if (mb_strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
 			$html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
@@ -68,12 +68,25 @@ class StadtratsvorlageParser extends RISParser {
 		preg_match_all("/ris_antrag_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches);
 		$antrag_links = (isset($matches[1]) && is_array($matches[1]) ? $matches[1] : array());
 
-		/*
 		$dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
 		$dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
-		preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-		http://www.ris-muenchen.de/RII2/RII/ris_unterlage_ergebnisse.jsp?risid=6127
-		*/
+		$gremien_link = "<a class=\"link_bold\" href=\"(?<gremien_link>[^\"]*)\"";
+		$sitzung_link = "<a class=\"link_bold\" href=\"(?<sitzung_link>[^\"]*)\"";
+		preg_match_all("/<tr[^>]*ergebnistab_tr[^>]*>.*${gremien_link}.*${sitzung_link}.*<\/tr>/siu", $dat_ergebnisse[0], $matches);
+		$ba = $str = false;
+		if (count($matches) == 0) $str = true;
+		else for ($i = 0; $i < count($matches["gremien_link"]); $i++) {
+			$link = $matches["gremien_link"][$i];
+			if (strpos($link, "ris_gremien_detail.jsp?risid=") === 0) $str = true;
+			if (strpos($link, "/RII2/BA-RII/ba_gremien_details.jsp?Id=") === 0) {
+				$x = explode("/RII2/BA-RII/ba_gremien_details.jsp?Id=", $link);
+				/** @var Gremium $g */
+				$g = Gremium::model()->findByPk($x[1]);
+				$ba = $g->ba_nr;
+			}
+		}
+		if ($ba > 0) $daten->ba_nr = IntVal($ba);
+		else $daten->ba_nr = null;
 
 		$aenderungen = "";
 
