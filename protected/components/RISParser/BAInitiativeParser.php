@@ -137,7 +137,7 @@ class BAInitiativeParser extends RISParser {
 	}
 
 	public function parseAlle() {
-		$anz = 4320;
+		$anz = 4500;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
