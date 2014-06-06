@@ -2,15 +2,21 @@
 
 class Reindex_BACommand extends CConsoleCommand {
 	public function run($args) {
-		$parser = new BAAntragParser();
+		$parser = new BAMitgliederParser();
 		$parser->parseAlle();
+		return;
 
-		$parser = new BAInitiativeParser();
+		$parser = new BAGremienParser();
 		$parser->parseAlle();
 
 		$parser = new BATerminParser();
 		$parser->parseAlle();
 
+		$parser = new BAAntragParser();
+		$parser->parseAlle();
+
+		$parser = new BAInitiativeParser();
+		$parser->parseAlle();
 
 	}
 }

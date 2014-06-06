@@ -48,7 +48,7 @@ class Gremium extends CActiveRecord implements IRISItem
 			array('id, datum_letzte_aenderung, name, kuerzel, gremientyp', 'required'),
 			array('id, ba_nr', 'numerical', 'integerOnly' => true),
 			array('name, gremientyp, referat', 'length', 'max' => 100),
-			array('kuerzel', 'length', 'max' => 20),
+			array('kuerzel', 'length', 'max' => 50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, datum_letzte_aenderung, ba_nr, name, kuerzel, gremientyp, referat', 'safe', 'on' => 'search'),
@@ -118,7 +118,7 @@ class Gremium extends CActiveRecord implements IRISItem
 		$history = new GremiumHistory();
 		$history->setAttributes($this->getAttributes());
 		try {
-			if (!$history->save()) {
+			if (!$history->save(false)) {
 				if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Gremium:moveToHistory Error", print_r($history->getErrors(), true));
 				throw new Exception("Fehler");
 			}
@@ -189,67 +189,6 @@ class Gremium extends CActiveRecord implements IRISItem
 			$aend->save();
 		}
 
-	}
-
-
-	public static function parse_ba_gremien($ris_id)
-	{
-		$ris_id = IntVal($ris_id);
-		echo "- Gremium $ris_id\n";
-
-		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_gremien_details.jsp?Id=" . $ris_id);
-
-		$daten                         = new Gremium();
-		$daten->id                     = $ris_id;
-		$daten->datum_letzte_aenderung = new CDbExpression('NOW()');
-
-		if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = $matches[1];
-		if (preg_match("/introheadline\">(?:BA|UA) ([0-9]+) /siU", $html_details, $matches)) $daten->ba_nr = $matches[1];
-		if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = $matches[1];
-		if (preg_match("/Gremiumtyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
-
-		$aenderungen = "";
-
-		foreach ($daten as $key => $val) $daten[$key] = ($val === null ? null : html_entity_decode(trim($val), ENT_COMPAT, "UTF-8"));
-
-		/** @var Gremium $alter_eintrag */
-		$alter_eintrag = Gremium::model()->findByPk($ris_id);
-		$changed       = true;
-		if ($alter_eintrag) {
-			$changed = false;
-			if ($alter_eintrag->name != $daten->name) $aenderungen .= "Name: " . $alter_eintrag->name . " => " . $daten->name . "\n";
-			if ($alter_eintrag->ba_nr != $daten->ba_nr) $aenderungen .= "BA: " . $alter_eintrag->ba_nr . " => " . $daten->ba_nr . "\n";
-			if ($alter_eintrag->kuerzel != $daten->kuerzel) $aenderungen .= "Kürzel: " . $alter_eintrag->kuerzel . " => " . $daten->kuerzel . "\n";
-			if ($alter_eintrag->gremientyp != $daten->gremientyp) $aenderungen .= "Gremientyp: " . $alter_eintrag->gremientyp . " => " . $daten->gremientyp . "\n";
-			if ($aenderungen != "") $changed = true;
-		}
-
-		if ($changed) {
-			if ($alter_eintrag) {
-				$alter_eintrag->copyToHistory();
-				$alter_eintrag->setAttributes($daten->getAttributes());
-				if (!$alter_eintrag->save()) {
-					echo "Gremium 3";
-					var_dump($alter_eintrag->getErrors());
-					die("Fehler");
-				}
-				$daten = $alter_eintrag;
-			} else {
-				if (!$daten->save()) {
-					echo "Gremium 4";
-					var_dump($daten->getErrors());
-					die("Fehler");
-				}
-			}
-
-			$aend              = new RISAenderung();
-			$aend->ris_id      = $daten->id;
-			$aend->ba_nr       = null;
-			$aend->typ         = RISAenderung::$TYP_BA_GREMIUM;
-			$aend->datum       = new CDbExpression("NOW()");
-			$aend->aenderungen = $aenderungen;
-			$aend->save();
-		}
 	}
 
 	/**

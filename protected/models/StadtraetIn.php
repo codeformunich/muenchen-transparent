@@ -135,12 +135,14 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 
 	/**
 	 * @param string $datum
+	 * @param int|null $ba_nr
 	 * @return array[]
 	 */
-	public static function getGroupedByFraktion($datum)
+	public static function getGroupedByFraktion($datum, $ba_nr)
 	{
-		$sql = Yii::app()->db->createCommand();
-		$sql->select("id")->from("antraege_dokumente")->where("id < 1245865 AND (seiten_anzahl = 0 OR seiten_anzahl = 9)")->order("id");
+		if ($ba_nr === null) $ba_where = "c.ba_nr IS NULL";
+		else $ba_where = "c.ba_nr = " . IntVal($ba_nr);
+
 		/** @var StadtraetIn[] $strs */
 		$strs       = StadtraetIn::model()->findAll(array(
 			'alias' => 'a',
@@ -150,7 +152,10 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 					'alias'     => 'b',
 					'condition' => 'b.datum_von <= "' . addslashes($datum) . '" AND (b.datum_bis IS NULL OR b.datum_bis >= "' . addslashes($datum) . '")',
 				),
-				'stadtraetInnenFraktionen.fraktion' => array()
+				'stadtraetInnenFraktionen.fraktion' => array(
+					'alias'     => 'c',
+					'condition' => $ba_where,
+				)
 			)));
 		$fraktionen = array();
 		foreach ($strs as $str) {

@@ -6,6 +6,8 @@
  * The followings are the available columns in table 'fraktionen':
  * @property integer $id
  * @property string $name
+ * @property integer $ba_nr
+ * @property string $website
  *
  * The followings are the available model relations:
  * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
@@ -40,11 +42,12 @@ class Fraktion extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, name', 'required'),
-			array('id', 'numerical', 'integerOnly' => true),
+			array('id, ba_nr', 'numerical', 'integerOnly' => true),
 			array('name', 'length', 'max' => 70),
+			array('website', 'length', 'max' => 250),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on' => 'search'),
+			array('id, name, website', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -57,6 +60,7 @@ class Fraktion extends CActiveRecord implements IRISItem
 		// class name for the relations automatically generated below.
 		return array(
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'fraktion_id'),
+			'bezirksausschuss'         => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_r'),
 			'personen'                 => array(self::HAS_MANY, 'Person', 'ris_fraktion'),
 		);
 	}
@@ -67,8 +71,9 @@ class Fraktion extends CActiveRecord implements IRISItem
 	public function attributeLabels()
 	{
 		return array(
-			'id'   => 'ID',
-			'name' => 'Name',
+			'id'    => 'ID',
+			'ba_nr' => "BA-Nr",
+			'name'  => 'Name',
 		);
 	}
 
@@ -84,7 +89,9 @@ class Fraktion extends CActiveRecord implements IRISItem
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id);
+		$criteria->compare('ba_nr', $this->ba_nr);
 		$criteria->compare('name', $this->name, true);
+		$criteria->compare('website', $this->website, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

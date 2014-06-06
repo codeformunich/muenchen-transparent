@@ -25,7 +25,8 @@ class BATerminParser extends RISParser
 			$gr = Gremium::model()->findByPk($daten->gremium_id);
 			if (!$gr) {
 				echo "Lege Gremium an: " . $daten->gremium_id . "\n";
-				Gremium::parse_ba_gremien($daten->gremium_id);
+				$parser = new BAGremienParser();
+				$parser->parse($daten->gremium_id);
 			}
 		}
 

@@ -5701,6 +5701,7 @@ ul.antragsliste {
     width: 100%; }
     ul.antragsliste > li > .add_meta {
       float: right;
+      text-align: right;
       font-size: 11px;
       color: gray;
       margin-top: 3px;

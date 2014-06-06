@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'bezirksausschuesse':
  * @property integer $ba_nr
+ * @property integer $ris_id
  * @property string $name
  * @property string $website
  * @property integer $osm_init_zoom
@@ -45,12 +46,12 @@ class Bezirksausschuss extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ba_nr', 'required'),
-			array('ba_nr, osm_init_zoom', 'numerical', 'integerOnly' => true),
+			array('ba_nr, ris_id', 'required'),
+			array('ba_nr, ris_id, osm_init_zoom', 'numerical', 'integerOnly' => true),
 			array('name', 'length', 'max' => 100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('ba_nr, name', 'safe', 'on' => 'search'),
+			array('ba_nr, ris_id, name', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -77,7 +78,8 @@ class Bezirksausschuss extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'ba_nr'         => 'Ba Nr',
+			'ba_nr'         => 'BA Nr',
+			'ris_id'        => "RIS ID",
 			'name'          => 'Name',
 			'website'       => 'Website',
 			'osm_init_zoom' => 'OSM Zoom',
@@ -97,6 +99,7 @@ class Bezirksausschuss extends CActiveRecord
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('ba_nr', $this->ba_nr);
+		$criteria->compare('ris_id', $this->ris_id);
 		$criteria->compare('name', $this->name, true);
 
 		return new CActiveDataProvider($this, array(
@@ -114,7 +117,7 @@ class Bezirksausschuss extends CActiveRecord
 				"name"    => $this->name,
 				"website" => $this->website
 			),
-			"init_zoom"  => IntVal(static::$OSM_ZOOM[$this->ba_nr]),
+			"init_zoom"  => IntVal($this->osm_init_zoom),
 			"geometry"   => array(
 				"type"        => "Polygon",
 				"coordinates" => array(json_decode($this->osm_shape))
@@ -122,92 +125,6 @@ class Bezirksausschuss extends CActiveRecord
 		);
 	}
 
-
-	public static $NAMEN = array(
-		1  => "Altstadt-Lehel",
-		2  => "Ludwigsvorstadt-Isarvorstadt",
-		3  => "Maxvorstadt",
-		4  => "Schwabing-West",
-		5  => "Au-Haidhausen",
-		6  => "Sendling",
-		7  => "Sendling-Westpark",
-		8  => "Schwanthalerhöhe",
-		9  => "Neuhausen-Nymphenburg",
-		10 => "Moosach",
-		11 => "Milbertshofen-Am Hart",
-		12 => "Schwabing-Freimann",
-		13 => "Bogenhausen",
-		14 => "Berg am Laim",
-		15 => "Trudering-Riem",
-		16 => "Ramersdorf-Perlach",
-		17 => "Obergiesing",
-		18 => "Untergiesing-Harlaching",
-		19 => "Thalkirchen-Obersendling-Forstenried-Fürstenried-Solln",
-		20 => "Hadern",
-		21 => "Pasing-Obermenzing",
-		22 => "Aubing-Lochhausen-Langwied",
-		23 => "Allach-Untermenzing",
-		24 => "Feldmoching-Hasenbergl",
-		25 => "Laim",
-	);
-
-
-	public static $HOMEPAGES = array(
-		1  => "http://www.muenchen.info/ba/01/",
-		2  => "http://www.muenchen.info/ba/02/",
-		3  => "http://www.muenchen.info/ba/03/",
-		4  => "http://www.muenchen.info/ba/04/ba04_m.htm",
-		5  => "http://www.muenchen.info/ba/05/",
-		6  => "http://www.muenchen.info/ba/06/",
-		7  => "http://www.muenchen.info/ba/07/",
-		8  => "http://www.muenchen.info/ba/08/",
-		9  => "http://www.muenchen.info/ba/09/",
-		10 => "http://www.muenchen.info/ba/10/",
-		11 => "http://www.muenchen.info/ba/11/",
-		12 => "http://www.muenchen.info/ba/12/",
-		13 => "http://www.muenchen.de/Rathaus/politik_ba/239921/BA13.html",
-		14 => "http://www.muenchen.info/ba/14/",
-		15 => "http://www.muenchen.info/ba/15/",
-		16 => "http://www.muenchen.info/ba/16/",
-		17 => "http://www.muenchen.info/ba/17/",
-		18 => "http://www.ba18.de/",
-		19 => "http://www.muenchen.info/ba/19/",
-		20 => "http://www.muenchen.info/ba/20/",
-		21 => "http://www.muenchen.info/ba/21/ba21_grussworte.php",
-		22 => "http://www.muenchen.info/ba/22/",
-		23 => "http://www.muenchen.info/ba/23/",
-		24 => "http://www.muenchen.info/ba/24/",
-		25 => "http://www.muenchen.info/ba/25/",
-	);
-
-
-	public static $OSM_ZOOM = array(
-		1  => "13",
-		2  => "14",
-		3  => "14",
-		4  => "14",
-		5  => "14",
-		6  => "13",
-		7  => "13",
-		8  => "14",
-		9  => "13",
-		10 => "13",
-		11 => "12",
-		12 => "12",
-		13 => "13",
-		14 => "14",
-		15 => "12",
-		16 => "13",
-		17 => "13",
-		18 => "13",
-		19 => "13",
-		20 => "13",
-		21 => "13",
-		22 => "12",
-		23 => "12",
-		24 => "12",
-		25 => "14",
-	);
 
 	private $kontur_cache = null;
 

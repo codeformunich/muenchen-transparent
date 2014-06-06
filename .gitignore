@@ -1,6 +1,5 @@
 html/assets/
 protected/runtime/
-solr-4.2.0/
 vendor/
 composer.lock
 protected/config/main.php
