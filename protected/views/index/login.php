@@ -53,7 +53,7 @@
 	</div>
 
 	<div style="text-align: right; font-style: italic; margin-top: -5px; font-size: 11px; margin-bottom: 7px;">
-		<?php echo CHtml::link("Passwort vergessen?", $this->createUrl("index/resetPassword")) ?>
+		<?php echo CHtml::link("Passwort vergessen?", $this->createUrl("index/resetPasswordForm")) ?>
 	</div>
 
 	<button class="btn btn-lg btn-primary btn-block" type="submit" name="<?php echo AntiXSS::createToken("login_anlegen"); ?>"><span class="login">Login</span><span class="anlegen">Anlegen</span></button>

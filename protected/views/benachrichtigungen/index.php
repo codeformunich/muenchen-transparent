@@ -69,8 +69,10 @@ if (count($bens) == 0) {
 	</form>
 
 	<div class="ben_alle_holder">
-		<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span class="glyphicon glyphicon-chevron-right"></span> Alle Suchergebnisse</a>
-		<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", array("code" => $ich->getFeedCode()))) ?>" class="ben_alle_feed"><span class="icon-rss"></span> Alle Suchergebnisse als Feed</a>
+		<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span class="glyphicon glyphicon-chevron-right"></span>
+			Alle Suchergebnisse</a>
+		<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", array("code" => $ich->getFeedCode()))) ?>" class="ben_alle_feed"><span class="icon-rss"></span>
+			Alle Suchergebnisse als Feed</a>
 	</div>
 <? } ?>
 
@@ -88,6 +90,36 @@ if (count($bens) == 0) {
     			<button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_text") ?>" type="submit">Benachrichtigen!</button>
   			</span>
 		</div>
+	</fieldset>
+</form>
+
+<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
+	<fieldset>
+		<label for="suchbegriff"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... aus diesem Stadtteil:</span></label><br>
+
+		<div class="input-group col col-lg-7 well" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
+			<select class="selectpicker" name="ba"><?
+				$bas = Bezirksausschuss::model()->findAll();
+				/** @var Bezirksausschuss $ba */
+				foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": "  . CHtml::encode($ba->name) . '</option>';
+				?>
+			</select>
+			<span class="input-group-btn">
+    			<button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_ba") ?>" type="submit">Benachrichtigen!</button>
+  			</span>
+			<!--
+			<input type="text" placeholder="Suchbegriff" id="suchbegriff" name="suchbegriff" class="form-control">
+  			<span class="input-group-btn">
+    			<button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_text") ?>" type="submit">Benachrichtigen!</button>
+  			</span>
+  			-->
+		</div>
+		<script>
+			$(function () {
+				$('.selectpicker').selectpicker();
+				$('.bootstrap-select').css("width", "100%");
+			});
+		</script>
 	</fieldset>
 </form>
 
@@ -127,7 +159,7 @@ if (count($bens) == 0) {
 				$("#ben_map").AntraegeKarte({ benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, size: 11, onSelect: function (latlng, rad) {
 					$.ajax({
 						"url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
-						"success": function(ret) {
+						"success": function (ret) {
 							$("#ben_map_infos").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
 							$(".ben_add_geo").prop("disabled", false);
 

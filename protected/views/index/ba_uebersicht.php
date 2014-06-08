@@ -257,6 +257,7 @@ $cs->registerScriptFile('/js/index.js');
 			$(function () {
 				var $frakts = $(".fraktionen_liste > li");
 				$frakts.addClass("closed").find("> a").click(function (ev) {
+					if (ev.which == 2 || ev.which == 3) return;
 					ev.preventDefault();
 					var $li = $(this).parents("li").first(),
 						is_open = !$li.hasClass("closed");

@@ -382,6 +382,7 @@ class AntragDokument extends CActiveRecord
 	 */
 	private function solrIndex_termin_do($update)
 	{
+		/** @var RISSolrDocument $doc */
 		$doc                     = $update->createDocument();
 		$doc->id                 = "Document:" . $this->id;
 		$doc->text               = RISSolrHelper::string_cleanup($this->termin->gremium->name . " " . $this->text_pdf);
@@ -395,6 +396,16 @@ class AntragDokument extends CActiveRecord
 		$doc->antrag_betreff     = RISSolrHelper::string_cleanup($this->termin->gremium->name);
 		$doc->termin_datum       = RISSolrHelper::mysql2solrDate($this->termin->termin);
 		$max_datum               = $this->termin->termin;
+
+		$geo            = array();
+		$dokument_bas   = array();
+		$dokument_bas[] = ($this->termin->ba_nr > 0 ? $this->termin->ba_nr : 0);
+		foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
+			$geo[] = $ort->ort->lat . "," . $ort->ort->lon;
+			if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
+		}
+		$doc->geo          = $geo;
+		$doc->dokument_bas = $dokument_bas;
 
 		$aenderungs_datum = array();
 
@@ -419,8 +430,11 @@ class AntragDokument extends CActiveRecord
 	 */
 	private function solrIndex_antrag_do($update)
 	{
+		if (!$this->antrag) return;
+
 		$max_datum = "";
-		$doc       = $update->createDocument();
+		/** @var RISSolrDocument $doc */
+		$doc = $update->createDocument();
 
 		$doc->id                 = "Document:" . $this->id;
 		$doc->text               = RISSolrHelper::string_cleanup($this->antrag->betreff . " " . $this->text_pdf);
@@ -441,6 +455,17 @@ class AntragDokument extends CActiveRecord
 			$max_datum          = $this->antrag->gestellt_am . " 12:00:00";
 		}
 
+
+		$geo            = array();
+		$dokument_bas   = array();
+		$dokument_bas[] = ($this->antrag->ba_nr > 0 ? $this->antrag->ba_nr : 0);
+		foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
+			$geo[] = $ort->ort->lat . "," . $ort->ort->lon;
+			if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
+		}
+		$doc->geo          = $geo;
+		$doc->dokument_bas = $dokument_bas;
+
 		/** @var array|RISAenderung[] $aenderungen */
 		$aenderungen = RISAenderung::model()->findAllByAttributes(array("ris_id" => $this->antrag_id), array("order" => "datum DESC"));
 		foreach ($aenderungen as $o) {
@@ -452,11 +477,6 @@ class AntragDokument extends CActiveRecord
 		$doc->aenderungs_datum    = $aenderungs_datum;
 		$doc->antrag_gestellt_von = RISSolrHelper::string_cleanup($this->antrag->gestellt_von . " " . $this->antrag->initiatorInnen);
 
-		$geo = array();
-		foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
-			$geo[] = $ort->ort->lat . "," . $ort->ort->lon;
-		}
-		$doc->geo = $geo;
 
 		if ($max_datum != "") $doc->sort_datum = RISSolrHelper::mysql2solrDate($max_datum);
 		$update->addDocuments(array($doc));
@@ -468,6 +488,7 @@ class AntragDokument extends CActiveRecord
 	 */
 	private function solrIndex_beschluss_do($update)
 	{
+		/** @var RISSolrDocument $doc */
 		$doc = $update->createDocument();
 
 		if (is_null($this->ergebnis)) {
@@ -480,6 +501,15 @@ class AntragDokument extends CActiveRecord
 		$doc->text_ocr      = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
 		$doc->dokument_name = RISSolrHelper::string_cleanup($this->name);
 		$doc->dokument_url  = $this->url;
+
+		$geo          = array();
+		$dokument_bas = array();
+		foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
+			$geo[] = $ort->ort->lat . "," . $ort->ort->lon;
+			if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
+		}
+		$doc->geo          = $geo;
+		$doc->dokument_bas = $dokument_bas;
 
 		$datum           = (is_object($this->datum) ? date("Y-m-d H:i:s") : $this->datum);
 		$doc->sort_datum = RISSolrHelper::mysql2solrDate($datum);

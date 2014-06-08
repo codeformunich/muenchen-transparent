@@ -228,7 +228,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	{
 		$ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL");
 		$params = array(
-			'condition' => 'ba_nr ' . $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'condition' => 'ba_nr ' . $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '"',
 			'order'     => 'datum DESC',
 			'with'      => array(
 				'dokumente' => array(
@@ -251,7 +251,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	{
 		$params = array(
 			'alias'     => 'a',
-			'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND a.datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '"',
 			'order'     => 'b.datum DESC',
 			'with'      => array(
 				'dokumente'          => array(
@@ -267,6 +267,18 @@ class Antrag extends CActiveRecord implements IRISItem
 		if ($limit > 0) $params['limit'] = $limit;
 		$this->getDbCriteria()->mergeWith($params);
 		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function neuestes_dokument_ts() {
+		$ret = 0;
+		foreach ($this->dokumente as $dok) {
+			$ts = RISTools::date_iso2timestamp($dok->datum);
+			if ($ts > $ret) $ret = $ts;
+		}
+		return $ret;
 	}
 
 

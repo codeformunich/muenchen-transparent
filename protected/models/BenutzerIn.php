@@ -331,6 +331,7 @@ class BenutzerIn extends CActiveRecord
 		$hl->setSimplePostfix('</b>');
 
 		$ergebnisse = $solr->select($select);
+		/** @var RISSolrDocument[] $documents */
 		$documents  = $ergebnisse->getDocuments();
 		$res        = array();
 		foreach ($documents as $document) {

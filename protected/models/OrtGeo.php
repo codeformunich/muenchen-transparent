@@ -165,7 +165,7 @@ class OrtGeo extends CActiveRecord
 		// SQRT(POW(69.1 * (fld_lat - ( $lat )), 2) + POW(69.1 * (($lon) - fld_lon) * COS(fld_lat / 57.3 ), 2 )) AS distance
 		$lat    = FloatVal($lat);
 		$lng    = FloatVal($lng);
-		$result = Yii::app()->db->createCommand("SELECT *, SQRT(POW(69.1 * (lat - ( $lat )), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance FROM orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
+		$result = Yii::app()->db->createCommand("SELECT *, SQRT(POW(69.1 * (lat - ( " . $lat . ")), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance FROM orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
 		$res    = new OrtGeo();
 		$res->setAttributes($result[0]);
 		return $res;

@@ -533,8 +533,8 @@ class IndexController extends RISBaseController
 		usort($antraege, function ($a1, $a2) {
 			/** @var Antrag $a1 */
 			/** @var Antrag $a2 */
-			$ts1 = RISTools::date_iso2timestamp($a1->datum_letzte_aenderung);
-			$ts2 = RISTools::date_iso2timestamp($a2->datum_letzte_aenderung);
+			$ts1 = $a1->neuestes_dokument_ts();
+			$ts2 = $a2->neuestes_dokument_ts();
 			if ($ts1 > $ts2) return -1;
 			if ($ts1 < $ts2) return 1;
 			return 0;

@@ -161,6 +161,13 @@ class BenachrichtigungenController extends RISBaseController
 			}
 		}
 
+		if (AntiXSS::isTokenSet("ben_add_ba")) {
+			$ben = new RISSucheKrits();
+			$ben->addBAKrit($_REQUEST["ba"]);
+			$ich->addBenachrichtigung($ben);
+			$msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
+		}
+
 		if (AntiXSS::isTokenSet("ben_add_geo")) {
 			if ($_REQUEST["geo_lng"] == 0 || $_REQUEST["geo_lat"] == 0 || $_REQUEST["geo_radius"] <= 0) {
 				$msg_err = "Ungültige Eingabe.";

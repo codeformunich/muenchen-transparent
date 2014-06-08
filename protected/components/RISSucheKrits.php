@@ -77,7 +77,8 @@ class RISSucheKrits
 	/**
 	 * @return null|array
 	 */
-	public function getGeoKrit() {
+	public function getGeoKrit()
+	{
 		foreach ($this->krits as $krit) if ($krit["typ"] == "geo") return $krit;
 		return null;
 	}
@@ -105,6 +106,9 @@ class RISSucheKrits
 				case "antrag_wahlperiode":
 					$str .= rawurlencode($krit["suchbegriff"]);
 					break;
+				case "ba":
+					$str .= IntVal($krit["ba_nr"]);
+					break;
 				case "geo":
 					$str .= rawurlencode($krit["lng"] . "-" . $krit["lat"] . "-" . $krit["radius"]);
 					break;
@@ -116,11 +120,13 @@ class RISSucheKrits
 	/**
 	 * @return array
 	 */
-	public function getUrlArray() {
+	public function getUrlArray()
+	{
 		$krits = $vals = array();
 		foreach ($this->krits as $krit) {
 			$krits[] = $krit["typ"];
 			if ($krit["typ"] == "geo") $vals[] = $krit["lng"] . "-" . $krit["lat"] . "-" . $krit["radius"];
+			elseif ($krit["typ"] == "ba") $vals[] = $krit["ba_nr"];
 			else $vals[] = $krit["suchbegriff"];
 		}
 		return array("krit_typ" => $krits, "krit_val" => $vals);
@@ -156,6 +162,9 @@ class RISSucheKrits
 			case "antrag_wahlperiode":
 				$x->addWahlperiodeKrit($request["krit_val"][$i]);
 				break;
+			case "ba":
+				$x->addBAKrit($request["krit_val"][$i]);
+				break;
 			case "geo":
 				$y = explode("-", $request["krit_val"][$i]);
 				$x->addGeoKrit($y[0], $y[1], $y[2]);
@@ -187,6 +196,9 @@ class RISSucheKrits
 				$dismax->setQueryFields("text text_ocr");
 
 				$select->setQuery($krit["suchbegriff"]);
+				break;
+			case "ba":
+				$select->createFilterQuery("dokument_bas")->setQuery("dokument_bas:" . $krit["ba_nr"]);
 				break;
 			case "geo":
 				$helper = $select->getHelper();
@@ -246,6 +258,10 @@ class RISSucheKrits
 				return "Dokumente des Typs \"" . $this->krits[0]["suchbegriff"] . "\"";
 			case "volltext":
 				return "Dokumente, die den Suchausdruck \"" . $this->krits[0]["suchbegriff"] . "\" enthalten";
+			case "ba":
+				/** @var Bezirksausschuss $ba */
+				$ba = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $this->krits[0]["ba_nr"]));
+				return "Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
 			case "geo":
 				$ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
 				return "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
@@ -280,6 +296,19 @@ class RISSucheKrits
 			"lng"    => FloatVal($lng),
 			"lat"    => FloatVal($lat),
 			"radius" => FloatVal($radius)
+		);
+		return $this;
+	}
+
+	/**
+	 * @param int $ba_nr
+	 * @return $this
+	 */
+	public function addBAKrit($ba_nr)
+	{
+		$this->krits[] = array(
+			"typ"   => "ba",
+			"ba_nr" => IntVal($ba_nr)
 		);
 		return $this;
 	}

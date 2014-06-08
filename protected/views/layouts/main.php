@@ -10,6 +10,7 @@
 	<meta name="author" content="Tobias Hößl">
 
 	<link href="/js/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" media="screen" href="/js/bootstrap-select/bootstrap-select.min.css">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
@@ -52,10 +53,10 @@
 	<link rel="stylesheet" href="/styles.css"/>
 
 	<!--[if lt IE 9]>
-	<script src="/js/jquery-1.11.0.min.js"></script>
+	<script src="/js/jquery-1.11.1.min.js"></script>
 	<![endif]-->
 	<!--[if gte IE 9]><!-->
-	<script src="/js/jquery-2.1.0.min.js"></script>
+	<script src="/js/jquery-2.1.1.min.js"></script>
 	<!--<![endif]-->
 
 	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
@@ -135,6 +136,7 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <script src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-select/bootstrap-select.min.js"></script>
 
 </body>
 </html>
