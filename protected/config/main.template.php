@@ -132,7 +132,6 @@ return array(
 		// this is used in contact page
 		'adminEmail'     => 'info@ratsinformant.de',
 		'adminEmailName' => "Ratsinformant",
-		'cloudmateKey'   => 'KEY',
 		'skobblerKey'    => 'KEY',
 		'baseURL'        => RATSINFORMANT_BASE_URL,
 		'debug_log'      => true,

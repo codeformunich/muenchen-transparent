@@ -4,13 +4,12 @@ class IndexController extends RISBaseController
 {
 
 	/**
-	 * @param string $style
 	 * @param int $width
 	 * @param int $zoom
 	 * @param int $x
 	 * @param int $y
 	 */
-	public function actionTileCache($style, $width, $zoom, $x, $y)
+	public function actionTileCache($width, $zoom, $x, $y)
 	{
 
 		if ($width == 256) {
@@ -39,12 +38,12 @@ class IndexController extends RISBaseController
 
 		if ($width == 256) {
 			$array = array("1", "2", "3");
-			$key   = $array[array_rand($array)];
-			$url   = "http://tiles" . $key . ".api.skobbler.net/tiles/${zoom}/${x}/${y}.png?api_key=" . Yii::app()->params['skobblerKey'];
+			$key   = $array[array_rand($array)] . "-" . Yii::app()->params['skobblerKey'];
+			$url   = "http://tiles" . $key . ".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png";
 		} else {
-			$array = array("a", "b", "c");
-			$key   = $array[array_rand($array)];
-			$url   = "http://$key.tile.cloudmade.com/" . Yii::app()->params['cloudmateKey'] . "/$style/$width/$zoom/$x/$y.png";
+			$array = array("1", "2", "3");
+			$key   = $array[array_rand($array)] . "-" . Yii::app()->params['skobblerKey'];
+			$url   = "http://tiles" . $key . ".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png@2x";
 		}
 
 		$fp = fopen("/tmp/tiles.log", "a");
@@ -65,11 +64,10 @@ class IndexController extends RISBaseController
 		$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 		if ($status == 200 && $string != "") {
-			if (!file_exists(TILE_CACHE_DIR . $style)) mkdir(TILE_CACHE_DIR . $style, 0775);
-			if (!file_exists(TILE_CACHE_DIR . "$style/$width")) mkdir(TILE_CACHE_DIR . "$style/$width", 0775);
-			if (!file_exists(TILE_CACHE_DIR . "$style/$width/$zoom")) mkdir(TILE_CACHE_DIR . "$style/$width/$zoom", 0775);
-			if (!file_exists(TILE_CACHE_DIR . "$style/$width/$zoom/$x")) mkdir(TILE_CACHE_DIR . "$style/$width/$zoom/$x", 0775);
-			file_put_contents(TILE_CACHE_DIR . "$style/$width/$zoom/$x/$y.png", $string);
+			if (!file_exists(TILE_CACHE_DIR . "$width")) mkdir(TILE_CACHE_DIR . "$width", 0775);
+			if (!file_exists(TILE_CACHE_DIR . "$width/$zoom")) mkdir(TILE_CACHE_DIR . "$width/$zoom", 0775);
+			if (!file_exists(TILE_CACHE_DIR . "$width/$zoom/$x")) mkdir(TILE_CACHE_DIR . "$width/$zoom/$x", 0775);
+			file_put_contents(TILE_CACHE_DIR . "$width/$zoom/$x/$y.png", $string);
 			Header("Content-Type: image/png");
 			echo $string;
 		} else {

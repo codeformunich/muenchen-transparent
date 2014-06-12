@@ -1,5 +1,8 @@
 <?php
-/** @var RISBaseController $this */
+/**
+ * @var RISBaseController $this
+ * @var string $content
+ */
 ?>
 <!DOCTYPE html>
 <html lang="de">

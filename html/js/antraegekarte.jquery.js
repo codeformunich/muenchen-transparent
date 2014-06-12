@@ -20,8 +20,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 	_create: function () {
 		var $widget = this,
-			L_style = (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1 ? "997@2x" : "997"),
-			attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://www.skobbler.com" target="_blank">skobbler</a>',
+			attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>',
 			fullScreen = new L.Control.FullScreen();
 
 		if (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1) attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://cloudmade.com">CloudMade</a>';
@@ -34,8 +33,8 @@ $.widget("ratsinformant.AntraegeKarte", {
 		var geojsonFeature = null;
 		if (this.options["outlineBA"] > 0) {
 			var min_lon = null, min_lat = null, max_lon = null, max_lat = null;
-			for (var i = 0; i < BA_FEATURES[this.options["outlineBA"] - 1]["geometry"]["coordinates"][0].length; i++) {
-				var c = BA_FEATURES[this.options["outlineBA"] - 1]["geometry"]["coordinates"][0][i];
+			for (var i = 0; i < window["BA_FEATURES"][this.options["outlineBA"] - 1]["geometry"]["coordinates"][0].length; i++) {
+				var c = window["BA_FEATURES"][this.options["outlineBA"] - 1]["geometry"]["coordinates"][0][i];
 				if (min_lon === null || min_lon > c[0]) min_lon = c[0];
 				if (max_lon === null || max_lon < c[0]) max_lon = c[0];
 				if (min_lat === null || min_lat > c[1]) min_lat = c[1];
@@ -43,11 +42,11 @@ $.widget("ratsinformant.AntraegeKarte", {
 			}
 			var center_lon = (min_lon + max_lon) / 2,
 				center_lat = (min_lat + max_lat) / 2;
-			$widget.map.setView([center_lat, center_lon], BA_FEATURES[this.options["outlineBA"] - 1]["init_zoom"]);
+			$widget.map.setView([center_lat, center_lon], window["BA_FEATURES"][this.options["outlineBA"] - 1]["init_zoom"]);
 			geojsonFeature = {
 				"type": "Feature",
 				"properties": {},
-				"geometry": BA_FEATURES[this.options["outlineBA"] - 1]["geometry"]
+				"geometry": window["BA_FEATURES"][this.options["outlineBA"] - 1]["geometry"]
 			};
 			geojsonFeature["geometry"]["coordinates"].push([[11,47.6],[13,47.6],[13,48.5],[11,48.5]]);
 		} else {
@@ -70,14 +69,11 @@ $.widget("ratsinformant.AntraegeKarte", {
 		]);
 
 		$widget.map.addControl(fullScreen);
-		L.tileLayer('/tiles/' + L_style + '/256/{z}/{x}/{y}.png', {
+		L.tileLayer('/tiles/' + (L.Browser.retina ? "512" : "256") + '/{z}/{x}/{y}.png', {
 			attribution: attrib,
 			maxZoom: 18,
-            minZoom: 11,
-			detectRetina: true
+            minZoom: 11
 		}).addTo($widget.map);
-
-
 
 		var outside = L.geoJson(geojsonFeature).addTo($widget.map);
 		outside.setStyle({
@@ -86,7 +82,6 @@ $.widget("ratsinformant.AntraegeKarte", {
 			fillOpacity: 0.6,
 			stroke: false
 		});
-
 
 		if (this.options["benachrichtigungen_widget"] !== false) this.initBenachrichtigungsWidget();
 		if (this.options["show_BAs"]) this.initBAsWidget();
@@ -314,7 +309,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 		addInfo();
 
-		var BAs = {"type": "FeatureCollection", "features": BA_FEATURES},
+		var BAs = {"type": "FeatureCollection", "features": window["BA_FEATURES"]},
 			BA_map_options = {
 				style: {
 					fillColor: "#ff7800",
