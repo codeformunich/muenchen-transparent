@@ -1,9 +1,10 @@
 <?php
 
-class RISTools {
+class RISTools
+{
 
 	const STD_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17";
-	const STD_PROXY = "http://127.0.0.1:8118/";
+	const STD_PROXY      = "http://127.0.0.1:8118/";
 
 
 	/**
@@ -25,7 +26,8 @@ class RISTools {
 	 * @param $string
 	 * @return string
 	 */
-	public static function bracketEscape($string) {
+	public static function bracketEscape($string)
+	{
 		return str_replace(array("[", "]"), array(urlencode("["), urlencode("]")), $string);
 	}
 
@@ -121,12 +123,13 @@ class RISTools {
 	 * @param string $input
 	 * @return string
 	 */
-	public static function datumstring($input) {
-		$ts = static::date_iso2timestamp($input);
+	public static function datumstring($input)
+	{
+		$ts  = static::date_iso2timestamp($input);
 		$tag = date("d.m.Y", $ts);
 		if ($tag == date("d.m.Y")) return "Heute";
-		if ($tag == date("d.m.Y", time() - 3600*24)) return "Gestern";
-		if ($tag == date("d.m.Y", time() - 2*3600*24)) return "Vorgestern";
+		if ($tag == date("d.m.Y", time() - 3600 * 24)) return "Gestern";
+		if ($tag == date("d.m.Y", time() - 2 * 3600 * 24)) return "Vorgestern";
 		return $tag;
 	}
 
@@ -146,7 +149,8 @@ class RISTools {
 	 * @param string $titel
 	 * @return string
 	 */
-	public static function korrigiereTitelZeichen($titel) {
+	public static function korrigiereTitelZeichen($titel)
+	{
 		$titel = preg_replace("/([\\s-])\?(\\w[^\\?]*\\w)\?/siu", "\\1„\\2“", $titel);
 		$titel = preg_replace("/^\?(\\w[^\\?]*\\w)\?/siu", " „\\1“", $titel);
 		$titel = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $titel);
@@ -161,8 +165,9 @@ class RISTools {
 	 * @param string $str
 	 * @return array
 	 */
-	public static function normalize_antragvon($str) {
-		$a = explode(",", $str);
+	public static function normalize_antragvon($str)
+	{
+		$a   = explode(",", $str);
 		$ret = array();
 		foreach ($a as $y) {
 			$z = explode(";", $y);
@@ -187,7 +192,7 @@ class RISTools {
 
 			for ($i = 0; $i < 10; $i++) $y = str_replace("  ", " ", $y);
 
-			if (trim($y) != "") $ret[] = array("name"=>$name_orig, "name_normalized"=>$y);
+			if (trim($y) != "") $ret[] = array("name" => $name_orig, "name_normalized" => $y);
 		}
 		return $ret;
 	}
@@ -205,10 +210,10 @@ class RISTools {
 		if ($p) return $p;
 		echo "$name / $name_normalized \n";
 
-		$p = new Person();
+		$p                  = new Person();
 		$p->name_normalized = $name_normalized;
-		$p->name = $name;
-		$p->typ = "sonstiges";
+		$p->name            = $name;
+		$p->typ             = "sonstiges";
 		$p->save();
 		return $p;
 	}
@@ -274,5 +279,43 @@ class RISTools {
 				break;
 		}
 		return "Unbekannt";
+	}
+
+
+	public static function send_email($email, $betreff, $text_plain, $text_html = null)
+	{
+		$mail = new Zend\Mail\Message();
+		$mail->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
+		$mail->addTo($email, $email);
+		$mail->setSubject($betreff);
+
+		$mail->setEncoding("UTF-8");
+
+		if ($text_html !== null) {
+			$converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles($text_html);
+			$converter->setStripOriginalStyleTags(true);
+			$converter->setUseInlineStylesBlock(true);
+			$converter->setEncoding("UTF-8");
+			$converter->setExcludeMediaQueries(true);
+			$converter->setCleanup(false);
+			$text_html = $converter->convert();
+
+			$text_part          = new Zend\Mime\Part($text_plain);
+			$text_part->type    = "text/plain";
+			$text_part->charset = "UTF-8";
+			$html_part          = new Zend\Mime\Part($text_html);
+			$html_part->type    = "text/html";
+			$html_part->charset = "UTF-8";
+			$mimem              = new Zend\Mime\Message();
+			$mimem->setParts(array($text_part, $html_part));
+
+			$mail->setBody($mimem);
+			$mail->getHeaders()->get('content-type')->setType('multipart/alternative');
+		} else {
+			$mail->setBody($text_plain);
+		}
+
+		$transport = new Zend\Mail\Transport\Sendmail();
+		$transport->send($mail);
 	}
 }

@@ -1,3 +1,6 @@
+/*
+  Hinweis: kein > benutzen, wg. CssToInlineStyles
+*/
 
 ul.antragsliste {
   list-style-type: none;
@@ -16,7 +19,7 @@ ul.antragsliste {
     opacity: 0.5;
   }
 
-  > li {
+  li.listitem {
     margin: 0;
     margin-top: 6px;
     border: solid 1px #ccc;
@@ -28,7 +31,7 @@ ul.antragsliste {
     width: 100%;
 
 
-    > .add_meta {
+    .add_meta {
       float: right;
       text-align: right;
       font-size: 11px;
@@ -42,7 +45,7 @@ ul.antragsliste {
       }
     }
 
-    > .antraglink {
+    .antraglink {
       position: relative;
       overflow: hidden;
       a {
@@ -81,21 +84,21 @@ ul.antragsliste {
       }
     }
 
-    > div.dokumente {
+    div.dokumente {
       margin: 0;
       padding: 3px;
       background-color: #fff;
       font-size: 11px;
     }
 
-    > ul.dokumente {
+    ul.dokumente {
       list-style-type: none;
       margin: 0;
       padding: 3px;
       background-color: #fff;
       font-size: 11px;
 
-      > li {
+      li {
         display: inline;
         margin: 1px;
         padding: 1px;

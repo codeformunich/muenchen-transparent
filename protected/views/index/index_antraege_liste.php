@@ -30,9 +30,9 @@ if (isset($title)) {
 	<ul class="antragsliste">
 		<?
 		foreach ($antraege as $ant) if (!method_exists($ant, "getName")) {
-			echo "<li>" . get_class($ant) . "</li>";
+			echo "<li class='listitem'>" . get_class($ant) . "</li>";
 		} else {
-			echo "<li><div class='antraglink'><a href='" . CHtml::encode($ant->getLink()) . "' title='" . CHtml::encode($ant->getName()) . "'>";
+			echo "<li class='listitem'><div class='antraglink'><a href='" . CHtml::encode($ant->getLink()) . "' title='" . CHtml::encode($ant->getName()) . "'>";
 			echo CHtml::encode($ant->getName()) . "</a></div>";
 
 			$max_date = 0;

@@ -9,6 +9,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/assets/styles_mail.css") 
 <html lang="de">
 <head>
 	<meta charset="utf-8">
+	<title>Neue Dokumente im Münchner RIS</title>
 	<style><?php echo $css; ?></style>
 </head>
 
@@ -27,7 +28,7 @@ if (count($data["antraege"]) > 0) {
 				/** @var Antrag $antrag */
 				$antrag = $dat["antrag"];
 
-				echo "<li><div class='antraglink'><a href='" . CHtml::encode($antrag->getLink()) . "' title='" . CHtml::encode($antrag->getName()) . "'>";
+				echo "<li class='listitem'><div class='antraglink'><a href='" . CHtml::encode($antrag->getLink()) . "' title='" . CHtml::encode($antrag->getName()) . "'>";
 				echo CHtml::encode($antrag->getName()) . "</a></div>";
 
 				$dokumente_strs = array();
@@ -88,6 +89,7 @@ if (count($data["antraege"]) > 0) {
 				} else {
 					echo "Gefunden über: \"" . implode("\"<br>\"", $queries) . "\"";
 				}
+				echo "</div>";
 
 				echo "</li>\n";
 			}
@@ -108,7 +110,7 @@ if (count($data["termine"]) > 0) {
 				/** @var Termin $termin */
 				$termin = $dat["termin"];
 
-				echo "<li><div class='antraglink'><a href='" . CHtml::encode($termin->getLink()) . "' title='" . CHtml::encode($termin->getName()) . "'>";
+				echo "<li class='listitem'><div class='antraglink'><a href='" . CHtml::encode($termin->getLink()) . "' title='" . CHtml::encode($termin->getName()) . "'>";
 				echo CHtml::encode($termin->getName()) . "</a></div>";
 
 				$dokumente_strs = array();
@@ -142,7 +144,7 @@ if (count($data["termine"]) > 0) {
 				} else {
 					echo "Gefunden über: \"" . implode("\"<br>\"", $queries) . "\"";
 				}
-
+				echo "</div>";
 				echo "</li>\n";
 			}
 

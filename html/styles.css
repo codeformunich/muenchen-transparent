@@ -1,4 +1,7 @@
 @charset "UTF-8";
+/*
+  Hinweis: kein > benutzen, wg. CssToInlineStyles
+*/
 ul.antragsliste {
   list-style-type: none;
   margin: 0;
@@ -12,7 +15,7 @@ ul.antragsliste {
     column-gap: 40px; }
   .loading ul.antragsliste {
     opacity: 0.5; }
-  ul.antragsliste > li {
+  ul.antragsliste li.listitem {
     margin: 0;
     margin-top: 6px;
     border: solid 1px #ccc;
@@ -22,20 +25,20 @@ ul.antragsliste {
     break-inside: avoid-column;
     display: inline-block;
     width: 100%; }
-    ul.antragsliste > li > .add_meta {
+    ul.antragsliste li.listitem .add_meta {
       float: right;
       text-align: right;
       font-size: 11px;
       color: gray;
       margin-top: 3px;
       font-weight: bold; }
-      ul.antragsliste > li > .add_meta .partei, ul.antragsliste > li > .add_meta .ba {
+      ul.antragsliste li.listitem .add_meta .partei, ul.antragsliste li.listitem .add_meta .ba {
         border-bottom: dotted 1px gray;
         font-weight: normal; }
-    ul.antragsliste > li > .antraglink {
+    ul.antragsliste li.listitem .antraglink {
       position: relative;
       overflow: hidden; }
-      ul.antragsliste > li > .antraglink a {
+      ul.antragsliste li.listitem .antraglink a {
         padding: 1px;
         font-weight: bold;
         display: block;
@@ -43,12 +46,12 @@ ul.antragsliste {
         overflow: hidden;
         position: relative;
         margin-right: -100px; }
-        ul.antragsliste > li > .antraglink a:before {
+        ul.antragsliste li.listitem .antraglink a:before {
           content: ' ';
           float: right;
           width: 100px;
           height: 10px; }
-        ul.antragsliste > li > .antraglink a:after {
+        ul.antragsliste li.listitem .antraglink a:after {
           content: ' ';
           position: absolute;
           top: 21px;
@@ -71,29 +74,29 @@ ul.antragsliste {
           /* W3C */
           filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00eeeeee', endColorstr='#eeeeee', GradientType=1);
           /* IE6-8 */ }
-    ul.antragsliste > li > div.dokumente {
+    ul.antragsliste li.listitem div.dokumente {
       margin: 0;
       padding: 3px;
       background-color: #fff;
       font-size: 11px; }
-    ul.antragsliste > li > ul.dokumente {
+    ul.antragsliste li.listitem ul.dokumente {
       list-style-type: none;
       margin: 0;
       padding: 3px;
       background-color: #fff;
       font-size: 11px; }
-      ul.antragsliste > li > ul.dokumente > li {
+      ul.antragsliste li.listitem ul.dokumente li {
         display: inline;
         margin: 1px;
         padding: 1px;
         font-weight: bold; }
-        ul.antragsliste > li > ul.dokumente > li:before {
+        ul.antragsliste li.listitem ul.dokumente li:before {
           content: ', ';
           font-weight: normal; }
-        ul.antragsliste > li > ul.dokumente > li:first-child:before {
+        ul.antragsliste li.listitem ul.dokumente li:first-child:before {
           content: '';
           font-weight: normal; }
-    ul.antragsliste > li .gefunden_ueber {
+    ul.antragsliste li.listitem .gefunden_ueber {
       padding-left: 6px;
       background-color: #fff;
       font-size: 11px;

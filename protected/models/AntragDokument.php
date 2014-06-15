@@ -539,7 +539,7 @@ class AntragDokument extends CActiveRecord
 			$tries--;
 			sleep(15);
 		}
-		mail("tobias@hoessl.eu", "Failed Indexing", print_r($this->getAttributes()));
+		mail(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes()));
 	}
 
 }

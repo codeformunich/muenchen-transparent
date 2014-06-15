@@ -130,7 +130,7 @@ $cs->registerScriptFile('/js/index.js');
 			<ul class="antragsliste"><?
 				foreach ($termin_dokumente as $termin) {
 					$ts = RISTools::date_iso2timestamp($termin->termin);
-					echo "<li><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
+					echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
 					foreach ($termin->antraegeDokumente as $dokument) {
 						echo "<ul class='dokumente'><li>";
 						echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
