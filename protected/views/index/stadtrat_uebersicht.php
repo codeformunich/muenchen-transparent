@@ -46,7 +46,7 @@ function gruppiere_termine($termine)
 				"tos"     => array(),
 			);
 		}
-		$url = "http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=" . $termin->id;
+		$url = Yii::app()->createUrl("index/terminAnzeige", array("termin_id" => $termin->id));
 		if (!isset($data[$key]["gremien"][$termin->gremium->name])) $data[$key]["gremien"][$termin->gremium->name] = array();
 		$data[$key]["gremien"][$termin->gremium->name][] = $url;
 	}

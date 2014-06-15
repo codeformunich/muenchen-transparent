@@ -10,7 +10,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 		show_BAs: false,
 		ba_link: "#ba#",
 		onSelect: null,
-		outlineBA: false
+		outlineBA: 0
 	},
 	map: null,
 	antraege_data: null,
@@ -41,8 +41,10 @@ $.widget("ratsinformant.AntraegeKarte", {
 				if (max_lat === null || max_lat < c[1]) max_lat = c[1];
 			}
 			var center_lon = (min_lon + max_lon) / 2,
-				center_lat = (min_lat + max_lat) / 2;
-			$widget.map.setView([center_lat, center_lon], window["BA_FEATURES"][this.options["outlineBA"] - 1]["init_zoom"]);
+				center_lat = (min_lat + max_lat) / 2,
+                init_zoom = window["BA_FEATURES"][this.options["outlineBA"] - 1]["init_zoom"];
+            if($widget.element.width() > 1500) init_zoom += 2;
+			$widget.map.setView([center_lat, center_lon], init_zoom);
 			geojsonFeature = {
 				"type": "Feature",
 				"properties": {},
@@ -160,7 +162,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 		$widget.rebuildMarkers($overflow.find("input").prop("checked"));
 
-		if (antraege_data_overflow.length > 0) {
+		if (antraege_data_overflow !== null && antraege_data_overflow.length > 0) {
 			$overflow.css("visibility", "visible").find(".anzahl").text(antraege_data_overflow.length == 1 ? "1 Dokument" : antraege_data_overflow.length + " Dokumente");
 		} else {
 			$overflow.css("visibility", "hidden");

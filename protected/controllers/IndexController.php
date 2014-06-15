@@ -440,6 +440,38 @@ class IndexController extends RISBaseController
 		Yii::app()->end();
 	}
 
+	/**
+	 * @param int $termin_id
+	 */
+	public function actionTerminAnzeige($termin_id) {
+		$termin_id = IntVal($termin_id);
+
+		$this->load_leaflet_css      = true;
+
+		/** @var Termin $sitzung */
+		$termin = Termin::model()->findByPk($termin_id);
+
+		$this->render("termin_anzeige", array(
+			"termin" => $termin
+		));
+	}
+
+	/**
+	 * @param int $termin_id
+	 */
+	public function actionTerminAnzeigeGeoExport($termin_id) {
+		$termin_id = IntVal($termin_id);
+
+		$this->load_leaflet_css      = true;
+
+		/** @var Termin $sitzung */
+		$termin = Termin::model()->findByPk($termin_id);
+
+		$this->renderPartial("termin_anzeige_geo_export", array(
+			"termin" => $termin
+		));
+	}
+
 
 	public function actionSuche($code = "")
 	{

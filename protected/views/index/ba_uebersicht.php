@@ -34,7 +34,7 @@ function ba_gruppiere_termine($termine)
 				"dokumente" => $termin->antraegeDokumente,
 			);
 		}
-		$url = "http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=" . $termin->id;
+		$url = Yii::app()->createUrl("index/terminAnzeige", array("termin_id" => $termin->id));
 		if (!isset($data[$key]["gremien"][$termin->gremium->name])) $data[$key]["gremien"][$termin->gremium->name] = array();
 		$data[$key]["gremien"][$termin->gremium->name][] = $url;
 	}

@@ -139,6 +139,23 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 
 	}
 
+	/**
+	 * @return OrtGeo[]
+	 */
+	public function get_geo()
+	{
+		$return = array();
+		$strassen_gefunden = RISGeo::suche_strassen($this->top_betreff);
+		$indexed  = array();
+		foreach ($strassen_gefunden as $strasse_name) if (!in_array($strasse_name, $indexed)) {
+			$indexed[] = $strasse_name;
+			$geo       = OrtGeo::getOrCreate($strasse_name);
+			if (is_null($geo)) continue;
+			$return[] = $geo;
+		}
+		return $return;
+	}
+
 
 	/**
 	 * @return string
