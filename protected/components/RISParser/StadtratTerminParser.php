@@ -260,6 +260,10 @@ class StadtratTerminParser extends RISParser
 			$aend->aenderungen = $aenderungen;
 			$aend->save();
 
+			/** @var Termin $termin */
+			$termin = Termin::model()->findByPk($termin_id);
+			$termin->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
+			$termin->save();
 		}
 
 	}

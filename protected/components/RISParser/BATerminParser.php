@@ -218,6 +218,21 @@ class BATerminParser extends RISParser
 			$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_TERMIN, $daten, $dok);
 		}
 
+		if ($aenderungen != "") {
+			$aend              = new RISAenderung();
+			$aend->ris_id      = $daten->id;
+			$aend->ba_nr       = NULL;
+			$aend->typ         = RISAenderung::$TYP_BA_TERMIN;
+			$aend->datum       = new CDbExpression("NOW()");
+			$aend->aenderungen = $aenderungen;
+			$aend->save();
+
+			/** @var Termin $termin */
+			$termin = Termin::model()->findByPk($termin_id);
+			$termin->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
+			$termin->save();
+		}
+
 	}
 
 	public function parseSeite($seite, $alle = false)
