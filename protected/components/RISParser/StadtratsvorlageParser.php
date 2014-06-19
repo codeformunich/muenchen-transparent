@@ -22,6 +22,7 @@ class StadtratsvorlageParser extends RISParser
 		if (mb_strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
 			$html_kurzinfo   = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
 			$txt             = explode("introtext_border\">", $html_kurzinfo);
+			if (count($txt) < 2) mail(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo);
 			$txt             = explode("</div>", $txt[1]);
 			$daten->kurzinfo = trim(str_replace(array("<br />", "<p>", "</p>"), array("", "", ""), $txt[0]));
 		}

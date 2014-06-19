@@ -92,18 +92,27 @@ class BATerminParser extends RISParser
 		}
 
 
-		$match_top          = "<strong>(?<top>[0-9]+)\.<\/strong>"; // Hört mit "." auf, im Ggs. zu Zwischen-Überschriften
-		$match_betreff      = "<td [^>]*topbetreff[^>]*>(?<betreff>.*)<\/td>";
-		$match_vorlage      = "<td [^>]*vorgang[^>]*>(?<vorlage_holder>.*)<\/td>";
-		$match_entscheidung = "<td [^>]*beschluss[^>]*>(?<entscheidung>.*)<\/td>";
+		$match_top          = "<strong>(?<top>[0-9\.]+)<\/strong>";
+		$match_betreff      = "<t[hd][^>]*>(?<betreff>.*)<\/t[hd]>";
+		$match_vorlage      = "<t[hd][^>]*>(?<vorlage_holder>.*)<\/t[hd]>";
+		$match_entscheidung = "<td[^>]*>(?<entscheidung>.*)<\/td>";
 		preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
 
-		$nth_1_top = 0;
+		$abschnitt_nr = "";
 
-		for ($i = 0; $i < count($matches[0]); $i++) {
-			if ($matches["top"][$i] == 1) $nth_1_top++;
+		AntragErgebnis::model()->deleteAllByAttributes(array("sitzungstermin_id" => $termin_id));
 
+		for ($i = 0; $i < count($matches["top"]); $i++) {
 			$betreff = static::text_clean_spaces($matches["betreff"][$i]);
+			if (mb_stripos($betreff, "<strong>") !== false) {
+				$abschnitt_nr     = $matches["top"][$i];
+				$top_ueberschrift = true;
+				$top_nr           = $abschnitt_nr;
+				$betreff          = str_replace(array("<strong>", "</strong>"), array("", ""), $betreff);
+			} else {
+				$top_ueberschrift = false;
+				$top_nr           = $abschnitt_nr . "." . $matches["top"][$i];
+			}
 
 			$vorlage_holder = trim(str_replace("&nbsp;", " ", $matches["vorlage_holder"][$i]));
 
@@ -131,33 +140,41 @@ class BATerminParser extends RISParser
 				}
 			}
 
+			$ergebnis = new AntragErgebnis();
 			/** @var AntragErgebnis $ergebnis */
 			if ($vorlage_id) {
+				/*
 				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
 				if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-				$ergebnis->antrag_id              = $vorlage_id;
+				*/
+				$ergebnis->antrag_id = $vorlage_id;
 			} elseif ($baantrag_id) {
+				/*
 				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
 				if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-				$ergebnis->antrag_id              = $baantrag_id;
+				*/
+				$ergebnis->antrag_id = $baantrag_id;
 			} else {
+				/*
 				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
 				if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-				$ergebnis->antrag_id              = null;
+				*/
+				$ergebnis->antrag_id = null;
 			}
 
 			$entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
-			$entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
+			$entscheidung          = static::text_clean_spaces(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
 
 			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
 			$ergebnis->sitzungstermin_id      = $termin_id;
 			$ergebnis->sitzungstermin_datum   = $daten->termin;
-			$ergebnis->top_nr                 = $nth_1_top . "-" . $matches["top"][$i];
+			$ergebnis->top_nr                 = $top_nr;
+			$ergebnis->top_ueberschrift       = ($top_ueberschrift ? 1 : 0);
 			if ($ergebnis->entscheidung != $entscheidung) {
 				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
 				$ergebnis->entscheidung = $entscheidung;
 			}
-			$ergebnis->top_betreff  = $betreff;
+			$ergebnis->top_betreff  = static::text_clean_spaces($betreff);
 			$ergebnis->gremium_id   = $daten->gremium_id;
 			$ergebnis->gremium_name = $daten->gremium->name;
 
@@ -228,7 +245,7 @@ class BATerminParser extends RISParser
 			$aend->save();
 
 			/** @var Termin $termin */
-			$termin = Termin::model()->findByPk($termin_id);
+			$termin                         = Termin::model()->findByPk($termin_id);
 			$termin->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
 			$termin->save();
 		}

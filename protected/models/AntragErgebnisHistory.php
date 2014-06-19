@@ -13,6 +13,8 @@
  * @property string $sitzungstermin_datum
  * @property string $beschluss_text
  * @property string $top_nr
+ * @property int $top_ueberschrift
+ * @property string $top_betreff
  * @property string $status
  *
  * The followings are the available model relations:
@@ -49,7 +51,7 @@ class AntragErgebnisHistory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('sitzungstermin_id, sitzungstermin_datum, datum_letzte_aenderung', 'required'),
-			array('antrag_id, gremium_id, sitzungstermin_id', 'numerical', 'integerOnly' => true),
+			array('antrag_id, gremium_id, sitzungstermin_id, top_ueberschrift', 'numerical', 'integerOnly' => true),
 			array('gremium_name', 'length', 'max' => 100),
 			array('beschluss_text', 'length', 'max' => 500),
 			// The following rule is used by search().
@@ -87,6 +89,8 @@ class AntragErgebnisHistory extends CActiveRecord
 			'beschluss_text'         => 'Beschluss Text',
 			'datum_letzte_aenderung' => 'Letzte Änderung',
 			'top_nr'                 => 'Tagesordnungspunkt',
+			'top_ueberschrift'       => 'Ist Überschrift',
+			'top_betreff'            => 'Betreff',
 			'status'                 => 'Status'
 		);
 	}
