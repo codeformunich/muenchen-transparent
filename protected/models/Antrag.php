@@ -261,7 +261,7 @@ class Antrag extends CActiveRecord implements IRISItem
 				'dokumente.orte'     => array(),
 				'dokumente.orte.ort' => array(
 					'alias'     => 'c',
-					'condition' => 'c.ba_nr = ' . IntVal($ba_nr)
+					'condition' => 'c.ba_nr = ' . IntVal($ba_nr) . ' AND c.to_hide = 0'
 				)
 			));
 		if ($limit > 0) $params['limit'] = $limit;
