@@ -46,7 +46,7 @@ function gruppiere_termine($termine)
 				"tos"     => array(),
 			);
 		}
-		$url = Yii::app()->createUrl("index/terminAnzeige", array("termin_id" => $termin->id));
+		$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->id));
 		if (!isset($data[$key]["gremien"][$termin->gremium->name])) $data[$key]["gremien"][$termin->gremium->name] = array();
 		$data[$key]["gremien"][$termin->gremium->name][] = $url;
 	}

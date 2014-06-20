@@ -5,6 +5,7 @@
 
 $this->pageTitle = $termin->getName(true);
 $assets_base = $this->getAssetsBase();
+$geodata = array();
 
 ?>
 <h1><?= CHtml::encode($termin->getName(true)) ?></h1>
@@ -28,11 +29,11 @@ $assets_base = $this->getAssetsBase();
 			<td>
 				<?
 				if ($termin->termin_next_id > 0) {
-					$url = Yii::app()->createUrl("index/terminAnzeige", array("termin_id" => $termin->termin_next_id));
+					$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
 					echo '<a href="' . CHtml::encode($url) . '" style="float: right;">Nächster Termin <span class="icon-right-open"></span></a>';
 				}
 				if ($termin->termin_prev_id > 0) {
-					$url = Yii::app()->createUrl("index/terminAnzeige", array("termin_id" => $termin->termin_prev_id));
+					$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
 					echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="icon-left-open"> Voriger Termin</span></a>';
 				}
 				?>
@@ -43,18 +44,7 @@ $assets_base = $this->getAssetsBase();
 			<td>
 				<ul>
 					<? foreach ($termin->antraegeDokumente as $dok) {
-						echo "<li>" . CHtml::link($dok->name, $this->createUrl("index/dokument", array("id" => $dok->id))) . "</li>";
-					} ?>
-				</ul>
-			</td>
-		</tr>
-		<tr>
-			<th>Ergebnisse:</th>
-			<td>
-				<ul>
-					<? foreach ($termin->antraegeErgebnisse as $dok) {
-						if (!is_object($dok->antrag)) echo "<li>" . CHtml::encode($dok->top_betreff) . ": " . CHtml::encode($dok->beschluss_text) . "</li>";
-						else echo "<li>" . CHtml::link($dok->antrag->getName(), $dok->antrag->getLink()) . ": " . CHtml::encode($dok->beschluss_text) . "</li>";
+						echo "<li>" . CHtml::link($dok->name, $dok->getOriginalLink()) . " (vom " . RISTools::datumstring($dok->datum) . ")</li>";
 					} ?>
 				</ul>
 			</td>
@@ -62,21 +52,23 @@ $assets_base = $this->getAssetsBase();
 		</tbody>
 	</table>
 
+	<? if (count($termin->antraegeErgebnisse) > 0) { ?>
 	<h3>Tagesordnung auf der Karte</h3>
 	<div id="mapholder">
 		<div id="map"></div>
 	</div>
-	<a href="<?=Yii::app()->createUrl("index/terminAnzeigeGeoExport", array("termin_id" => $termin->id))?>" style="float: right;">Großversion der Karte exportieren <span class="icon-right-open"></span></a>
+	<a href="<?=Yii::app()->createUrl("termine/topGeoExport", array("termin_id" => $termin->id))?>" style="float: right;">Großversion der Karte exportieren <span class="icon-right-open"></span></a>
 	<br>
 
 	<h3>Tagesordnung</h3>
 	<ol style="list-style-type: none;">
 		<?
-		$geodata = array();
 		foreach ($termin->antraegeErgebnisse as $ergebnis) {
 			echo "<li style='margin-bottom: 7px;'>";
 			if ($ergebnis->top_ueberschrift) echo "<strong>";
-			echo CHtml::encode($ergebnis->top_nr . ": " . $ergebnis->top_betreff);
+			$name = $ergebnis->top_nr . ": " . $ergebnis->top_betreff;
+			if (!is_object($ergebnis->antrag)) echo "<li>" . CHtml::encode($name) . "</li>";
+			else echo "<li>" . CHtml::link($name, $ergebnis->antrag->getLink()) . "</li>";
 			if ($ergebnis->top_ueberschrift) echo "</strong>";
 			$geo = $ergebnis->get_geo();
 			foreach ($geo as $g) $geodata[] = array(
@@ -88,22 +80,13 @@ $assets_base = $this->getAssetsBase();
 		}
 		?>
 	</ol>
-	<div id="debugimg"></div>
+	<? } else { ?>
+		<div class="keine_tops">(Noch) Keine Tagesordnung veröffentlicht</div>
+	<? } ?>
 </div>
 
 
 <script>
-	function manipulateCanvasFunction(savedMap) {
-		var dataURL = savedMap.toDataURL("image/png");
-		console.log(dataURL);
-		var $img = $("<img>");
-		$img.attr("src", dataURL);
-		dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-		$.post("ajax/saveMap.php", { savedMap: dataURL }, function(data) {
-			alert('Image Saved to : ' + data);
-		});
-		$("#debugimg").append($img);
-	}
 	yepnope({
 		load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
 			"/js/Leaflet.draw/dist/leaflet.draw.js",
@@ -116,16 +99,5 @@ $assets_base = $this->getAssetsBase();
 			});
 			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, null);
 		}
-	});
-	$("#export_map_btn").click(function(ev) {
-		ev.preventDefault();
-		console.log("clicked");
-		$('#map').html2canvas({
-			flashcanvas: "js/flashcanvas.min.js",
-			proxy: 'proxy.php',
-			logging: false,
-			profile: false,
-			useCORS: true
-		});
 	});
 </script>
