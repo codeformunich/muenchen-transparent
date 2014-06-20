@@ -22,12 +22,14 @@ class BATerminParser extends RISParser
 
 		if (preg_match("/ba_gremien_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->gremium_id = IntVal($matches[1]);
 		if ($daten->gremium_id) {
+			/** @var Gremium $gr */
 			$gr = Gremium::model()->findByPk($daten->gremium_id);
 			if (!$gr) {
 				echo "Lege Gremium an: " . $daten->gremium_id . "\n";
 				$parser = new BAGremienParser();
 				$parser->parse($daten->gremium_id);
 			}
+			$daten->ba_nr = $gr->ba_nr;
 		}
 
 		if (preg_match("/Termin:.*detail_div\">([^&<]+)[&<]/siU", $html_details, $matches)) {
@@ -100,7 +102,7 @@ class BATerminParser extends RISParser
 
 		$abschnitt_nr = "";
 
-		AntragErgebnis::model()->deleteAllByAttributes(array("sitzungstermin_id" => $termin_id));
+		//AntragErgebnis::model()->deleteAllByAttributes(array("sitzungstermin_id" => $termin_id));
 
 		for ($i = 0; $i < count($matches["top"]); $i++) {
 			$betreff = static::text_clean_spaces($matches["betreff"][$i]);

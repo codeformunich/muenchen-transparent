@@ -119,7 +119,7 @@ class Gremium extends CActiveRecord implements IRISItem
 		$history->setAttributes($this->getAttributes());
 		try {
 			if (!$history->save(false)) {
-				if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Gremium:moveToHistory Error", print_r($history->getErrors(), true));
+				RISTools::send_email(Yii::app()->params['adminEmail'], "Gremium:moveToHistory Error", print_r($history->getErrors(), true));
 				throw new Exception("Fehler");
 			}
 		} catch (CDbException $e) {

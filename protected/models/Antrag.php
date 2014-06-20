@@ -291,7 +291,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		$history->setAttributes($this->getAttributes());
 		try {
 			if (!$history->save()) {
-				if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Antrag:moveToHistory Error", print_r($history->getErrors(), true));
+				RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:moveToHistory Error", print_r($history->getErrors(), true));
 				throw new Exception("Fehler");
 			}
 		} catch (CDbException $e) {
@@ -349,7 +349,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			$ap->person_id = $person->id;
 			$ap->typ       = AntragPerson::$TYP_GESTELLT_VON;
 			if (!$ap->save()) {
-				if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
+				RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
 				throw new Exception("Fehler");
 			}
 		}
@@ -363,7 +363,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			$ap->person_id = $person->id;
 			$ap->typ       = AntragPerson::$TYP_INITIATORIN;
 			if (!$ap->save()) {
-				if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
+				RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
 				throw new Exception("Fehler");
 			}
 		}

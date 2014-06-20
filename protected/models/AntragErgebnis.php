@@ -133,7 +133,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		$history->setAttributes($this->getAttributes());
 		try {
 			if (!$history->save()) {
-				if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "AntragErgebnisHistory:moveToHistory Error", print_r($history->getErrors(), true));
+				RISTools::send_email(Yii::app()->params['adminEmail'], "AntragErgebnisHistory:moveToHistory Error", print_r($history->getErrors(), true));
 				throw new Exception("Fehler");
 			}
 		} catch (CDbException $e) {

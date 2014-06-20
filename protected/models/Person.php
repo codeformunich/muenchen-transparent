@@ -132,7 +132,7 @@ class Person extends CActiveRecord implements IRISItem
 			$pers->name_normalized = $name_normalized;
 			$pers->typ             = static::$TYP_SONSTIGES;
 			if (!$pers->save()) {
-				if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "Person:getOrCreate Error", print_r($pers->getErrors(), true));
+				RISTools::send_email(Yii::app()->params['adminEmail'], "Person:getOrCreate Error", print_r($pers->getErrors(), true));
 				throw new Exception("Fehler beim Speichern: Person");
 			}
 		}

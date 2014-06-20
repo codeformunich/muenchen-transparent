@@ -237,6 +237,7 @@ class IndexController extends RISBaseController
 	protected function getJSGeodata($krits, $ergebnisse)
 	{
 		$geo            = $krits->getGeoKrit();
+		/** @var RISSolrDocument[] $solr_dokumente */
 		$solr_dokumente = $ergebnisse->getDocuments();
 		$dokument_ids   = array();
 		foreach ($solr_dokumente as $dokument) {
@@ -396,6 +397,7 @@ class IndexController extends RISBaseController
 
 		/** @var Antrag[] $antraege */
 		$antraege       = array();
+		/** @var RISSolrDocument[] $solr_dokumente */
 		$solr_dokumente = $ergebnisse->getDocuments();
 		$dokument_ids   = array();
 		foreach ($solr_dokumente as $dokument) {
@@ -440,37 +442,6 @@ class IndexController extends RISBaseController
 		Yii::app()->end();
 	}
 
-	/**
-	 * @param int $termin_id
-	 */
-	public function actionTerminAnzeige($termin_id) {
-		$termin_id = IntVal($termin_id);
-
-		$this->load_leaflet_css      = true;
-
-		/** @var Termin $sitzung */
-		$termin = Termin::model()->findByPk($termin_id);
-
-		$this->render("termin_anzeige", array(
-			"termin" => $termin
-		));
-	}
-
-	/**
-	 * @param int $termin_id
-	 */
-	public function actionTerminAnzeigeGeoExport($termin_id) {
-		$termin_id = IntVal($termin_id);
-
-		$this->load_leaflet_css      = true;
-
-		/** @var Termin $sitzung */
-		$termin = Termin::model()->findByPk($termin_id);
-
-		$this->renderPartial("termin_anzeige_geo_export", array(
-			"termin" => $termin
-		));
-	}
 
 
 	public function actionSuche($code = "")

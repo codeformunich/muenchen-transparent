@@ -69,7 +69,7 @@ class BAGremienParser extends RISParser {
 		$txt = explode("<!-- tabellenkopf -->", $text);
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ba_gremien_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
-		if ($first && count($matches[1]) > 0) mail(Yii::app()->params['adminEmail'], "BA-Gremien VOLL", "Erste Seite voll: $seite");
+		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremien VOLL", "Erste Seite voll: $seite");
 		for ($i = count($matches[1])-1; $i >= 0; $i--) $this->parse($matches[1][$i]);
 		return $matches[1];
 	}

@@ -245,7 +245,7 @@ class AntragDokument extends CActiveRecord
 				$antragort->source      = "text_parse";
 				$antragort->datum       = new CDbExpression("NOW()");
 				if (!$antragort->save()) {
-					if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "AntragDokument:geo_extract Error", print_r($antragort->getErrors(), true));
+					RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:geo_extract Error", print_r($antragort->getErrors(), true));
 					throw new Exception("Fehler beim Speichern: geo_extract");
 				}
 				echo "Neu angelegt: " . $antragort->ort_id . " - " . $antragort->ort_name . "\n";
@@ -304,7 +304,7 @@ class AntragDokument extends CActiveRecord
 		}
 
 		if (!$dokument->save()) {
-			if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "AntragDokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
 			throw new Exception("Fehler");
 		}
 
@@ -492,7 +492,7 @@ class AntragDokument extends CActiveRecord
 		$doc = $update->createDocument();
 
 		if (is_null($this->ergebnis)) {
-			if (Yii::app()->params['adminEmail'] != "") mail(Yii::app()->params['adminEmail'], "AntragDokument:solrIndex_beschluss_do Error", print_r($this, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:solrIndex_beschluss_do Error", print_r($this, true));
 			return;
 		}
 
@@ -539,7 +539,7 @@ class AntragDokument extends CActiveRecord
 			$tries--;
 			sleep(15);
 		}
-		mail(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes()));
+		RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes()));
 	}
 
 }

@@ -72,7 +72,7 @@ class StadtratTerminParser extends RISParser
 			} else {
 				if ($sitzungsort_gefunden && $daten->gremium === null && $daten->sitzungsort == "" && $daten->status == "") $geloescht = true;
 				else {
-					mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Unbekanntes Datum", "ID: $termin_id\n" . print_r($matches, true));
+					RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratstermin: Unbekanntes Datum", "ID: $termin_id\n" . print_r($matches, true));
 					die();
 				}
 			}
@@ -121,7 +121,7 @@ class StadtratTerminParser extends RISParser
 				$alter_eintrag->copyToHistory();
 				$alter_eintrag->setAttributes($daten->getAttributes());
 				if (!$alter_eintrag->save(false)) {
-					mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gespeichert", "StadtratTerminParser 1\n" . print_r($alter_eintrag->getErrors(), true));
+					RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gespeichert", "StadtratTerminParser 1\n" . print_r($alter_eintrag->getErrors(), true));
 					die("Fehler");
 				}
 				$daten = $alter_eintrag;
@@ -129,7 +129,7 @@ class StadtratTerminParser extends RISParser
 				if ($geloescht) {
 					echo "Lösche";
 					if (!$daten->delete()) {
-						mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gelöscht", "StadtratTerminParser 2\n" . print_r($daten->getErrors(), true));
+						RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gelöscht", "StadtratTerminParser 2\n" . print_r($daten->getErrors(), true));
 						die("Fehler");
 					}
 					$aend              = new RISAenderung();
@@ -144,7 +144,7 @@ class StadtratTerminParser extends RISParser
 
 			} else {
 				if (!$daten->save()) {
-					mail(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gespeichert", "StadtratTerminParser 3\n" . print_r($daten->getErrors(), true));
+					RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratstermin: Nicht gespeichert", "StadtratTerminParser 3\n" . print_r($daten->getErrors(), true));
 					die("Fehler");
 				}
 			}
@@ -280,7 +280,7 @@ class StadtratTerminParser extends RISParser
 
 		preg_match_all("/ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-		if ($first && count($matches[1]) > 0) mail(Yii::app()->params['adminEmail'], "Stadtratstermin VOLL", "Erste Seite voll: $seite");
+		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratstermin VOLL", "Erste Seite voll: $seite");
 
 		for ($i = count($matches[1]) - 1; $i >= 0; $i--) {
 			$this->parse($matches[1][$i]);

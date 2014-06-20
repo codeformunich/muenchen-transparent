@@ -21,7 +21,7 @@ if (isset($title)) {
 		if ($erkl_str > 0) $erkl_str = "vom " . $erkl_str;
 		else $erkl_str = "von " . $erkl_str;
 	}
-	$erkl_str = "Stadtratsdokumente: " . $erkl_str;
+	$erkl_str = "Stadtratsdokumente " . $erkl_str;
 } else {
 	$erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
 }

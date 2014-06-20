@@ -32,6 +32,7 @@ mb_regex_encoding("UTF-8");
 ini_set('mbstring.substitute_character', "none");
 setlocale(LC_TIME, "de_DE.UTF-8");
 
+require_once(__DIR__ . "/urls.php");
 
 
 function ris_intern_address2geo($land, $plz, $ort, $strasse)
@@ -62,7 +63,7 @@ return array(
 	'import'     => array(
 		'application.models.*',
 		'application.components.*',
-		'application.components.RISParser.*',
+		'application.RISParser.*',
 	),
 
 	'modules'    => array(
@@ -83,20 +84,7 @@ return array(
 		'urlManager'   => array(
 			'urlFormat'      => 'path',
 			'showScriptName' => false,
-			'rules'          => array(
-				RATSINFORMANT_BASE_URL . '/'                                                 => 'index/index',
-				RATSINFORMANT_BASE_URL . '/ajax-<datum_max:[0-9\-]+>'                        => 'index/antraegeAjax',
-				RATSINFORMANT_BASE_URL . '/ba/<ba_nr:\d+>'                                   => 'index/ba',
-				RATSINFORMANT_BASE_URL . '/termine/<termin_id:\d+>'                          => 'index/terminAnzeige',
-				RATSINFORMANT_BASE_URL . '/tiles/<width:\d+>/<zoom:\d+>/<x:\d+>/<y:\d+>.png' => 'index/tileCache',
-				RATSINFORMANT_BASE_URL . '/admin/'                                           => 'admin/index',
-				RATSINFORMANT_BASE_URL . '/benachrichtigungen'                               => 'benachrichtigungen/index',
-				RATSINFORMANT_BASE_URL . '/benachrichtigungen/alleFeed/<code:[0-9\-a-z]+>'   => 'benachrichtigungen/alleFeed',
-				RATSINFORMANT_BASE_URL . '/<action:\w+>'                                     => 'index/<action>',
-				RATSINFORMANT_BASE_URL . '/<controller:\w+>/<id:\d+>'                        => '<controller>/anzeigen',
-				RATSINFORMANT_BASE_URL . '/<controller:\w+>/<action:\w+>/<id:\d+>'           => '<controller>/<action>',
-				RATSINFORMANT_BASE_URL . '/<controller:\w+>/<action:\w+>'                    => '<controller>/<action>',
-			),
+			'rules'          => $GLOBALS["RIS_URL_RULES"],
 		),
 		'db'           => array(
 			'connectionString'      => 'mysql:host=127.0.0.1;dbname=DB',

@@ -172,7 +172,7 @@ class StadtraetInnenParser extends RISParser
 			if (RATSINFORMANT_CALL_MODE != "cron") echo "- leer\n";
 			return array();
 		} elseif ($first) {
-			mail(Yii::app()->params['adminEmail'], "StadträTinnenUpdate VOLL", "Erste Seite voll: $seite");
+			RISTools::send_email(Yii::app()->params['adminEmail'], "StadträTinnenUpdate VOLL", "Erste Seite voll: $seite");
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_mitglieder_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -180,7 +180,7 @@ class StadtraetInnenParser extends RISParser
 			try {
 				$this->parse($matches[1][$i]);
 			} catch (Exception $e) {
-				mail(Yii::app()->params['adminEmail'], "StadträTinnenUpdate Error", $matches[1][$i] . $e);
+				RISTools::send_email(Yii::app()->params['adminEmail'], "StadträTinnenUpdate Error", $matches[1][$i] . $e);
 			}
 
 			$this->bearbeitete_stadtraetInnen[] = $matches[1][$i];
