@@ -22,6 +22,7 @@
  * @property Termin $sitzungstermin
  * @property Gremium $gremium
  * @property Antrag $antrag
+ * @property AntragDokument[] $dokumente
  */
 class AntragErgebnis extends CActiveRecord implements IRISItem
 {
@@ -72,6 +73,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 			'sitzungstermin' => array(self::BELONGS_TO, 'Termin', 'sitzungstermin_id'),
 			'gremium'        => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
 			'antrag'         => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'dokumente'      => array(self::HAS_MANY, 'AntragDokument', 'ergebnis_id'),
 		);
 	}
 
@@ -147,9 +149,9 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	 */
 	public function get_geo()
 	{
-		$return = array();
+		$return            = array();
 		$strassen_gefunden = RISGeo::suche_strassen($this->top_betreff);
-		$indexed  = array();
+		$indexed           = array();
 		foreach ($strassen_gefunden as $strasse_name) if (!in_array($strasse_name, $indexed)) {
 			$indexed[] = $strasse_name;
 			$geo       = OrtGeo::getOrCreate($strasse_name);

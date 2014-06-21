@@ -53,23 +53,41 @@ $geodata = array();
 	</table>
 
 	<? if (count($termin->antraegeErgebnisse) > 0) { ?>
+		<section id="mapsection">
 	<h3>Tagesordnung auf der Karte</h3>
 	<div id="mapholder">
 		<div id="map"></div>
 	</div>
 	<a href="<?=Yii::app()->createUrl("termine/topGeoExport", array("termin_id" => $termin->id))?>" style="float: right;">Großversion der Karte exportieren <span class="icon-right-open"></span></a>
+		</section>
 	<br>
 
 	<h3>Tagesordnung</h3>
 	<ol style="list-style-type: none;">
 		<?
-		foreach ($termin->antraegeErgebnisse as $ergebnis) {
+		$tops = $termin->ergebnisseSortiert();
+		foreach ($tops as $ergebnis) {
 			echo "<li style='margin-bottom: 7px;'>";
-			if ($ergebnis->top_ueberschrift) echo "<strong>";
 			$name = $ergebnis->top_nr . ": " . $ergebnis->top_betreff;
-			if (!is_object($ergebnis->antrag)) echo "<li>" . CHtml::encode($name) . "</li>";
-			else echo "<li>" . CHtml::link($name, $ergebnis->antrag->getLink()) . "</li>";
+			echo "<li>";
+			if ($ergebnis->top_ueberschrift) echo "<strong>";
+			echo CHtml::encode($name);
 			if ($ergebnis->top_ueberschrift) echo "</strong>";
+			if (count($ergebnis->dokumente) > 0 || is_object($ergebnis->antrag)) {
+				echo "<ul class='doks'>";
+				if (is_object($ergebnis->antrag)) {
+					echo "<li>" . CHtml::link("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
+				}
+				foreach ($ergebnis->dokumente as $dokument) {
+					echo "<li>" . CHtml::link($dokument->name, $dokument->getOriginalLink());
+					$x = explode("Beschluss:", $dokument->text_pdf);
+					if (count($x) > 1) echo " (" . CHtml::encode(trim($x[1])) . ")";
+					echo "</li>\n";
+				}
+				echo "</ul>";
+			}
+			echo "</li>";
+
 			$geo = $ergebnis->get_geo();
 			foreach ($geo as $g) $geodata[] = array(
 				FloatVal($g->lat),
@@ -87,17 +105,21 @@ $geodata = array();
 
 
 <script>
-	yepnope({
-		load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
-			"/js/Leaflet.draw/dist/leaflet.draw.js",
-			"/js/OverlappingMarkerSpiderfier-Leaflet/oms.min.js",
-			"/js/leaflet.textmarkers.js"
-		],
-		complete: function () {
-			var $map = $("#map").AntraegeKarte({
-				outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>
-			});
-			$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, null);
-		}
+	$(function() {
+		var geodata = <?=json_encode($geodata)?>;
+		if (geodata.length > 0) yepnope({
+			load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
+				"/js/Leaflet.draw/dist/leaflet.draw.js",
+				"/js/OverlappingMarkerSpiderfier-Leaflet/oms.min.js",
+				"/js/leaflet.textmarkers.js"
+			],
+			complete: function () {
+				var $map = $("#map").AntraegeKarte({
+					outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>
+				});
+				$map.AntraegeKarte("setAntraegeData", geodata, null);
+			}
+		});
+		else $("#mapsection").hide();
 	});
 </script>

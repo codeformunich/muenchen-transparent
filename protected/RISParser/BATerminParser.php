@@ -100,10 +100,10 @@ class BATerminParser extends RISParser
 		$match_entscheidung = "<td[^>]*>(?<entscheidung>.*)<\/td>";
 		preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
 
+		$bisherige_tops = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
+		$aenderungen_tops = "";
 		$abschnitt_nr = "";
-
-		//AntragErgebnis::model()->deleteAllByAttributes(array("sitzungstermin_id" => $termin_id));
-
+		$verwendete_top_betreffs = array();
 		for ($i = 0; $i < count($matches["top"]); $i++) {
 			$betreff = static::text_clean_spaces($matches["betreff"][$i]);
 			if (mb_stripos($betreff, "<strong>") !== false) {
@@ -123,44 +123,44 @@ class BATerminParser extends RISParser
 			preg_match_all("/ba_antraege_details\.jsp\?Id=(?<risid>[0-9]+)\"/siU", $vorlage_holder, $matches2);
 			$baantrag_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
 
-			if ($vorlage_id || $baantrag_id) {
-				if ($vorlage_id) {
-					$vorlage = Antrag::model()->findByPk($vorlage_id);
-					if (!$vorlage) {
-						echo "Creating: $vorlage_id\n";
-						$p = new StadtratsvorlageParser();
-						$p->parse($vorlage_id);
-					}
+			if ($vorlage_id) {
+				$vorlage = Antrag::model()->findByPk($vorlage_id);
+				if (!$vorlage) {
+					echo "Creating: $vorlage_id\n";
+					$p = new StadtratsvorlageParser();
+					$p->parse($vorlage_id);
 				}
-				if ($vorlage_id) {
-					$vorlage = Antrag::model()->findByPk($vorlage_id);
-					if (!$vorlage) {
-						echo "Creating: $vorlage_id\n";
-						$p = new StadtratsvorlageParser();
-						$p->parse($vorlage_id);
-					}
+			}
+			if ($baantrag_id) {
+				$baantrag = Antrag::model()->findByPk($baantrag_id);
+				if (!$baantrag) {
+					echo "Creating: $baantrag_id\n";
+					$p = new BAAntragParser();
+					$p->parse($baantrag);
 				}
 			}
 
-			$ergebnis = new AntragErgebnis();
 			/** @var AntragErgebnis $ergebnis */
 			if ($vorlage_id) {
-				/*
 				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
-				if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-				*/
+				if (is_null($ergebnis)) {
+					$ergebnis = new AntragErgebnis();
+					$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
+				}
 				$ergebnis->antrag_id = $vorlage_id;
 			} elseif ($baantrag_id) {
-				/*
 				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
-				if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-				*/
+				if (is_null($ergebnis)) {
+					$ergebnis = new AntragErgebnis();
+					$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
+				}
 				$ergebnis->antrag_id = $baantrag_id;
 			} else {
-				/*
 				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
-				if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-				*/
+				if (is_null($ergebnis)) {
+					$ergebnis = new AntragErgebnis();
+					$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
+				}
 				$ergebnis->antrag_id = null;
 			}
 
@@ -176,9 +176,10 @@ class BATerminParser extends RISParser
 				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
 				$ergebnis->entscheidung = $entscheidung;
 			}
-			$ergebnis->top_betreff  = static::text_clean_spaces($betreff);
+			$ergebnis->top_betreff  = $betreff;
 			$ergebnis->gremium_id   = $daten->gremium_id;
 			$ergebnis->gremium_name = $daten->gremium->name;
+			$verwendete_top_betreffs[] = $ergebnis->top_betreff;
 
 			/*
 			if (!is_null($vorlage_id)) {
@@ -196,13 +197,22 @@ class BATerminParser extends RISParser
 
 			preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
 			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII2/RII/DOK/TOP/") {
+				echo "Lege an: " . $matches2["url"] . " - " . $ergebnis->id . "\n";
 				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_BESCHLUSS, $ergebnis, array("url" => $matches2["url"], "name" => $matches2["title"]));
 			}
 		}
 
+		foreach ($bisherige_tops as $top) if (!in_array($top->top_betreff, $verwendete_top_betreffs)) {
+			$aenderungen_tops .= "TOP entfernt: " . $top->top_betreff . "\n";
+			$top->delete();
+		}
+
+		if ($aenderungen_tops != "") $changed = true;
+
 
 		if ($changed) {
-			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
+			if (!$alter_eintrag) $aenderungen = "Neu angelegt\n";
+			$aenderungen .= $aenderungen_tops;
 
 			echo "BA-Termin $termin_id: Verändert: " . $aenderungen . "\n";
 
