@@ -542,6 +542,8 @@ ul.terminliste > li > .termindetails {
   background-color: #fff;
   margin: 0;
   padding: 3px; }
+  ul.terminliste > li > .termindetails a {
+    font-weight: bold; }
 
 ul.fraktionen_liste {
   list-style-type: none;

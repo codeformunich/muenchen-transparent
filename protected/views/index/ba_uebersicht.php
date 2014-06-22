@@ -148,70 +148,23 @@ $cs->registerScriptFile('/js/index.js');
 
 		$data = ba_gruppiere_termine($termine_zukunft);
 		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
-		else {
-			?>
-			<ul class="terminliste"><?
-				foreach ($data as $termin) {
-					$termine_ids[] = $termin["id"];
-					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-					$gremien = array();
-					foreach ($termin["gremien"] as $name => $links) {
-						foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
-					}
-					echo implode(", ", $gremien);
-					echo "</div>";
-
-					if (count($termin["dokumente"]) > 0) {
-						echo "<ul class='dokumente'>";
-						foreach ($termin["dokumente"] as $dokument) {
-							/** @var AntragDokument $dokument */
-							echo "<li>" . CHtml::link($dokument->name, $dokument->getOriginalLink()) . "</li>";
-						}
-						echo "</ul>";
-					}
-					echo "</li>";
-				}
-				?></ul>
-		<?
-		}
+		else $this->renderPartial("termin_liste", array(
+			"termine" => $data
+		));
 		?>
 
 		<h3>Vergangene BA-Termine</h3>
 		<?
 		$data = ba_gruppiere_termine($termine_vergangenheit);
 		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-		else {
-			?>
-			<ul class="terminliste"><?
-				foreach ($data as $termin) {
-					$termine_ids[] = $termin["id"];
-					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-					$gremien = array();
-					foreach ($termin["gremien"] as $name => $links) {
-						foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
-					}
-					echo implode(", ", $gremien);
-					echo "</div>";
-
-					if (count($termin["dokumente"]) > 0) {
-						echo "<ul class='dokumente'>";
-						foreach ($termin["dokumente"] as $dokument) {
-							/** @var AntragDokument $dokument */
-							echo "<li>" . CHtml::link($dokument->name, $dokument->getOriginalLink()) . "</li>";
-						}
-						echo "</ul>";
-					}
-					echo "</li>";
-				}
-				?></ul>
-		<?
-		}
+		else $this->renderPartial("termin_liste", array(
+			"termine" => $data
+		));
 		?>
 	</div>
 
 	<div class="col col-lg-3 keine_dokumente">
 		<h3>Weitere Infos</h3>
-
 
 
 		<section style="display: inline-block">

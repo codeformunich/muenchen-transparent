@@ -40,10 +40,12 @@ function gruppiere_termine($termine)
 		if (!isset($data[$key])) {
 			$ts         = RISTools::date_iso2timestamp($termin->termin);
 			$data[$key] = array(
+				"id"        => $termin->id,
 				"datum"   => strftime("%e. %b., %H:%M", $ts),
 				"gremien" => array(),
 				"ort"     => $termin->sitzungsort,
 				"tos"     => array(),
+				"dokumente" => $termin->antraegeDokumente,
 			);
 		}
 		$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->id));
@@ -154,49 +156,18 @@ function gruppiere_termine($termine)
 		<?
 		$data = gruppiere_termine($termine_zukunft);
 		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
-		else {
-			?>
-			<ul class="terminliste"><?
-				foreach ($data as $termin) {
-					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-					$gremien = array();
-					foreach ($termin["gremien"] as $name => $links) {
-						if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
-						else {
-							$str = CHtml::encode($name);
-							for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
-							$gremien[] = $str;
-						}
-					}
-					echo implode(", ", $gremien);
-					echo "</div></li>";
-				}
-				?></ul>
-		<? } ?>
+		else $this->renderPartial("termin_liste", array(
+			"termine" => $data
+		));
+		?>
 
 		<h3>Vergangene Termine</h3>
 		<?
 		$data = gruppiere_termine($termine_vergangenheit);
 		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-		else {
-			?>
-			<ul class="terminliste"><?
-				foreach ($data as $termin) {
-					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-					$gremien = array();
-					foreach ($termin["gremien"] as $name => $links) {
-						if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
-						else {
-							$str = CHtml::encode($name);
-							for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
-							$gremien[] = $str;
-						}
-					}
-					echo implode(", ", $gremien);
-					echo "</div></li>";
-				}
-				?></ul>
-		<? } ?>
+		else $this->renderPartial("termin_liste", array(
+			"termine" => $data
+		)); ?>
 	</div>
 	<div class="col col-lg-3 keine_dokumente">
 		<section style="display: inline-block">
