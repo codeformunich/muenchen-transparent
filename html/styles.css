@@ -299,6 +299,9 @@ body {
   text-shadow: 0 0 4px yellow;
   filter: dropshadow(color=yellow, offx=0, offy=0); }
 
+.leaflet-marker-textmarker.textmarker_top .text {
+  top: -14px; }
+
 #mapholder {
   margin: 30px 0;
   border-radius: 10px;

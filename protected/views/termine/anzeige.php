@@ -110,7 +110,7 @@ $geodata = array();
 		if (geodata.length > 0) yepnope({
 			load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
 				"/js/Leaflet.draw/dist/leaflet.draw.js",
-				"/js/leaflet.OverlappingMarkerSpiderfier.min.js",
+				"/js/leaflet.spiderfy.js",
 				"/js/leaflet.textmarkers.js"
 			],
 			complete: function () {

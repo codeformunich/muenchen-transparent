@@ -94,7 +94,7 @@ function gruppiere_termine($termine)
 			"/js/leaflet.fullscreen/Control.FullScreen.js",
 			<?=json_encode($assets_base)?> +"/ba_features.js",
 			"/js/Leaflet.draw/dist/leaflet.draw.js",
-			"/js/leaflet.OverlappingMarkerSpiderfier.min.js",
+			"/js/leaflet.spiderfy.js",
 			"/js/leaflet.textmarkers.js"
 		],
 		complete: function () {

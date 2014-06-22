@@ -11,7 +11,7 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 	foreach ($geo as $g) $geodata[] = array(
 		FloatVal($g->lat),
 		FloatVal($g->lon),
-		$ergebnis->top_nr . ": " . $ergebnis->top_betreff
+		str_replace(".", ".<br>", trim($ergebnis->top_nr, "."))
 	);
 }
 ?>
@@ -39,7 +39,8 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 			position: absolute;
 			z-index: 203;
 			font-size: 13px;
-			top: 14px;
+			line-height: 12px;
+			top: 3px;
 			left: 0;
 			width: 24px;
 			text-align: center;
@@ -57,9 +58,9 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 	<script src="/js/Leaflet/leaflet.js"></script>
 	<script src="/js/html2canvas.min.js"></script>
 	<script src="<?= CHtml::encode($assets_base) ?>/ba_features.js"></script>
-	<script src="/js/leaflet.OverlappingMarkerSpiderfier.min.js"></script>
+	<script src="/js/leaflet.spiderfy.js"></script>
 	<script src="/js/leaflet.fullscreen/Control.FullScreen.js"></script>
-	<script src="/js/leaflet.textmarkers.js"></script>
+	<script src="/js/leaflet.textmarkers_top.js"></script>
 	<script src="/js/antraegekarte.jquery.js"></script>
 </head>
 <body>
@@ -71,9 +72,10 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 
 <script>
 	var $map = $("#map").AntraegeKarte({
-		outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>
+		outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
+		textMarkerClass: "TextMarkersTOP"
 	});
-	$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, null);
+	$map.AntraegeKarte("setAntraegeDataTOPs", <?=json_encode($geodata)?>, null);
 
 	window.setTimeout(function() {
 		html2canvas($map[0], {

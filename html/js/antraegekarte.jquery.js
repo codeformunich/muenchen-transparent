@@ -10,7 +10,8 @@ $.widget("ratsinformant.AntraegeKarte", {
 		show_BAs: false,
 		ba_link: "#ba#",
 		onSelect: null,
-		outlineBA: 0
+		outlineBA: 0,
+        textMarkerClass: "TextMarkers"
 	},
 	map: null,
 	antraege_data: null,
@@ -93,7 +94,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 		});
 	},
 
-	rebuildMarkers: function(mit_overflow) {
+	rebuildMarkers: function(mit_overflow, inline_marker_text) {
 		var markers_pos_num, i, key,
 			$widget = this,
 			data = [];
@@ -122,7 +123,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 			// add a marker in the given location, attach some popup content to it and open the popup
 			var text_key = data[i][0] + "_" + data[i][1],
 				multi_text = (markers_pos_num[text_key] > 1 ? markers_pos_num[text_key] : ""),
-				markerIcon = L.TextMarkers.icon({text: multi_text }),
+				markerIcon = L[$widget.options["textMarkerClass"]].icon({text: (inline_marker_text ? data[i][2] : multi_text) }),
 				marker = new L.Marker([data[i][0], data[i][1]], {icon: markerIcon });
 			marker.desc = data[i][2];
 			$widget.map.addLayer(marker);
@@ -132,6 +133,10 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 	},
 
+    openAllSpiderifiedMarkers: function() {
+
+    },
+
 	setAntraegeData: function (antraege_data, antraege_data_overflow) {
 		var $widget = this,
 			$overflow = $("#overflow_hinweis"),
@@ -139,9 +144,9 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 		if ($widget.oms === null) {
 			$widget.oms = new OverlappingMarkerSpiderfier($widget.map, {
-				keepSpiderfied: true,
-				nearbyDistance: 20
-			});
+                keepSpiderfied: true,
+                nearbyDistance: 20
+            });
 
 			$widget.oms.addListener('click', function (marker) {
 				if (typeof(marker._popup) == "undefined") {
@@ -153,7 +158,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 				for (i = 0; i < markers.length; i++) $(markers[i]._icon).find(".text").hide();
 			});
 			$widget.oms.addListener('unspiderfy', function (markers) {
-				for (i = 0; i < markers.length; i++) $(markers[i]._icon).find(".text").show();
+                for (i = 0; i < markers.length; i++) $(markers[i]._icon).find(".text").show();
 			});
 		}
 
@@ -170,7 +175,33 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 	},
 
-	initBenachrichtigungsWidget: function () {
+    setAntraegeDataTOPs: function(antraege_data) {
+        var $widget = this,
+            $overflow = $("#overflow_hinweis"),
+            i;
+
+        if ($widget.oms === null) {
+            $widget.oms = new OverlappingMarkerSpiderfier($widget.map, {
+                keepSpiderfied: true,
+                nearbyDistance: 20,
+                keepSpiderfied_override: true
+            });
+
+            $widget.oms.addListener('click', function (marker) {
+                if (typeof(marker._popup) == "undefined") {
+                    marker.bindPopup(marker.desc).openPopup();
+                }
+            });
+        }
+
+        $widget.antraege_data = antraege_data;
+        $widget.rebuildMarkers($overflow.find("input").prop("checked"), true);
+
+        $widget.element.find(".leaflet-marker-textmarker").trigger("click");
+        $widget.element.find(".leaflet-popup").hide();
+    },
+
+    initBenachrichtigungsWidget: function () {
 		var $widget = this,
 			shown = false,
 			drawnItems = new L.FeatureGroup(),
