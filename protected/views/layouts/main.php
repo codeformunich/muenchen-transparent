@@ -30,30 +30,18 @@
 	<link rel="shortcut icon" href="/js/bootstrap/bootstrap//ico/favicon.png">
 	-->
 
-	<!--
-<link rel="stylesheet" href="/js/Leaflet.markercluster/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="/js/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
--->
-
-
 	<? if ($this->load_leaflet_css) { ?>
 		<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>
-		<!--[if lte IE 8]>
-		<link rel="stylesheet" href="/js/Leaflet/leaflet.ie.css"/>
-		<![endif]-->
 	<?
 	}
 	if ($this->load_leaflet_draw_css) {
 		?>
 		<link rel="stylesheet" href="/js/Leaflet.draw/dist/leaflet.draw.css"/>
-		<!--[if lte IE 8]>
-		<link rel="stylesheet" href="/js/Leaflet.draw/dist/leaflet.draw.ie.css"/>
-		<![endif]-->
 	<? }
 	?>
 
 	<link rel="stylesheet" href="/css/jquery-ui-1.10.4.custom.min.css"/>
-	<link rel="stylesheet" href="/styles.css"/>
+	<link rel="stylesheet" href="/css/styles.css"/>
 
 	<!--[if lt IE 9]>
 	<script src="/js/jquery-1.11.1.min.js"></script>
