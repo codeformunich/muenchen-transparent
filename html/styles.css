@@ -79,28 +79,29 @@ ul.antragsliste {
       padding: 3px;
       background-color: #fff;
       font-size: 11px; }
-    ul.antragsliste li.listitem ul.dokumente {
-      list-style-type: none;
-      margin: 0;
-      padding: 3px;
-      background-color: #fff;
-      font-size: 11px; }
-      ul.antragsliste li.listitem ul.dokumente li {
-        display: inline;
-        margin: 1px;
-        padding: 1px;
-        font-weight: bold; }
-        ul.antragsliste li.listitem ul.dokumente li:before {
-          content: ', ';
-          font-weight: normal; }
-        ul.antragsliste li.listitem ul.dokumente li:first-child:before {
-          content: '';
-          font-weight: normal; }
     ul.antragsliste li.listitem .gefunden_ueber {
       padding-left: 6px;
       background-color: #fff;
       font-size: 11px;
       color: gray; }
+
+ul.dokumente {
+  list-style-type: none;
+  margin: 0;
+  padding: 3px;
+  background-color: #fff;
+  font-size: 11px; }
+  ul.dokumente li {
+    display: inline;
+    margin: 1px;
+    padding: 1px;
+    font-weight: bold; }
+    ul.dokumente li:before {
+      content: ', ';
+      font-weight: normal; }
+    ul.dokumente li:first-child:before {
+      content: '';
+      font-weight: normal; }
 
 @font-face {
   font-family: 'fontello';
@@ -413,6 +414,8 @@ ul.terminliste, ul.suchergebnisliste {
     display: inline-block;
     width: 100%;
     /*overflow: hidden; Sonst zerschießt es die Zeilenumbrüche bei zweispaltigen Listen */ }
+    ul.terminliste > li ul.dokumente, ul.suchergebnisliste > li ul.dokumente {
+      border-top: solid 1px #ccc; }
 
 .suchergebnisse_holder {
   position: relative;

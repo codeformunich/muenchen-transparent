@@ -351,6 +351,10 @@ ul.terminliste, ul.suchergebnisliste {
     display: inline-block;
     width: 100%;
     /*overflow: hidden; Sonst zerschießt es die Zeilenumbrüche bei zweispaltigen Listen */
+
+    ul.dokumente {
+      border-top: solid 1px #ccc;
+    }
   }
 }
 

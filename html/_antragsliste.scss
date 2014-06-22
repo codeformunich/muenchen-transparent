@@ -91,38 +91,38 @@ ul.antragsliste {
       font-size: 11px;
     }
 
-    ul.dokumente {
-      list-style-type: none;
-      margin: 0;
-      padding: 3px;
-      background-color: #fff;
-      font-size: 11px;
-
-      li {
-        display: inline;
-        margin: 1px;
-        padding: 1px;
-        font-weight: bold;
-        &:before {
-          content: ', ';
-          font-weight: normal;
-        }
-        &:first-child:before {
-          content: '';
-          font-weight: normal;
-        }
-
-        a.pdf:before {
-          //content: 'pdf'
-        }
-      }
-    }
-
     .gefunden_ueber {
       padding-left: 6px;
       background-color: #fff;
       font-size: 11px;
       color: gray;
+    }
+  }
+}
+
+ul.dokumente {
+  list-style-type: none;
+  margin: 0;
+  padding: 3px;
+  background-color: #fff;
+  font-size: 11px;
+
+  li {
+    display: inline;
+    margin: 1px;
+    padding: 1px;
+    font-weight: bold;
+    &:before {
+      content: ', ';
+      font-weight: normal;
+    }
+    &:first-child:before {
+      content: '';
+      font-weight: normal;
+    }
+
+    a.pdf:before {
+      //content: 'pdf'
     }
   }
 }

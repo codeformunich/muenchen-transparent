@@ -151,7 +151,6 @@ $cs->registerScriptFile('/js/index.js');
 		else {
 			?>
 			<ul class="terminliste"><?
-
 				foreach ($data as $termin) {
 					$termine_ids[] = $termin["id"];
 					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
@@ -160,16 +159,17 @@ $cs->registerScriptFile('/js/index.js');
 						foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
 					}
 					echo implode(", ", $gremien);
+					echo "</div>";
 
 					if (count($termin["dokumente"]) > 0) {
-						echo "<div class='dokumente'><b>Dokumente:</b><ul>";
+						echo "<ul class='dokumente'>";
 						foreach ($termin["dokumente"] as $dokument) {
 							/** @var AntragDokument $dokument */
-							echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+							echo "<li>" . CHtml::link($dokument->name, $dokument->getOriginalLink()) . "</li>";
 						}
-						echo "</ul></div>";
+						echo "</ul>";
 					}
-					echo "</div></li>";
+					echo "</li>";
 				}
 				?></ul>
 		<?
@@ -188,23 +188,20 @@ $cs->registerScriptFile('/js/index.js');
 					echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
 					$gremien = array();
 					foreach ($termin["gremien"] as $name => $links) {
-						if (count($links) == 1) $gremien[] = CHtml::link($name, $links[0]);
-						else {
-							$str = CHtml::encode($name);
-							for ($i = 0; $i < count($links); $i++) $str .= " [" . CHtml::link($i + 1, $links[$i]) . "]";
-							$gremien[] = $str;
-						}
+						foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
 					}
 					echo implode(", ", $gremien);
+					echo "</div>";
+
 					if (count($termin["dokumente"]) > 0) {
-						echo "<div class='dokumente'><b>Dokumente:</b><ul>";
+						echo "<ul class='dokumente'>";
 						foreach ($termin["dokumente"] as $dokument) {
 							/** @var AntragDokument $dokument */
-							echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+							echo "<li>" . CHtml::link($dokument->name, $dokument->getOriginalLink()) . "</li>";
 						}
-						echo "</ul></div>";
+						echo "</ul>";
 					}
-					echo "</div></li>";
+					echo "</li>";
 				}
 				?></ul>
 		<?
