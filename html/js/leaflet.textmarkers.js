@@ -42,10 +42,11 @@
 		createIcon: function () {
 			var div = document.createElement('div'),
 				options = this.options,
-				iconurl = this._getIconUrl("icon");
+				iconurl = this._getIconUrl("icon"),
+                iconsize_style = 'width: ' + options.iconSize[0] + 'px; height: ' + options.iconSize[1] + 'px; ';
 
-			if (options.text != "") div.innerHTML = '<img src="' + iconurl + '" class="leaflet-marker-icon" alt="Icon"><div class="text">' + options.text + '</div>';
-			else div.innerHTML = '<img src="' + iconurl + '" class="leaflet-marker-icon" alt="Icon">';
+			if (options.text != "") div.innerHTML = '<img src="' + iconurl + '" class="leaflet-marker-icon" alt="Icon" style="' + iconsize_style + '"><div class="text">' + options.text + '</div>';
+			else div.innerHTML = '<img src="' + iconurl + '" class="leaflet-marker-icon" alt="Icon" style="' + iconsize_style + '">';
 
 			this._setIconStyles(div, 'textmarker');
 			return div;

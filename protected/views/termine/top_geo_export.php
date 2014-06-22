@@ -57,7 +57,7 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 	<script src="/js/Leaflet/leaflet.js"></script>
 	<script src="/js/html2canvas.min.js"></script>
 	<script src="<?= CHtml::encode($assets_base) ?>/ba_features.js"></script>
-	<script src="/js/OverlappingMarkerSpiderfier-Leaflet/oms.min.js"></script>
+	<script src="/js/leaflet.OverlappingMarkerSpiderfier.min.js"></script>
 	<script src="/js/leaflet.fullscreen/Control.FullScreen.js"></script>
 	<script src="/js/leaflet.textmarkers.js"></script>
 	<script src="/js/antraegekarte.jquery.js"></script>

@@ -28,6 +28,10 @@ class StadtratsvorlageParser extends RISParser
 		}
 
 		$dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
+		if (count($dat_details) == 1) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: Keine Details", $html_details);
+			return;
+		}
 
 		preg_match("/Vorlagen\-Nr\.:&nbsp;([^<]*)</siU", $dat_details[1], $matches);
 		$daten->antrags_nr = $this->text_simple_clean($matches[1]);
