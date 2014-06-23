@@ -36,7 +36,7 @@
 	}
 	if ($this->load_leaflet_draw_css) {
 		?>
-		<link rel="stylesheet" href="/js/Leaflet.draw/dist/leaflet.draw.css"/>
+		<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>
 	<? }
 	?>
 
