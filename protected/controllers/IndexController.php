@@ -621,6 +621,18 @@ class IndexController extends RISBaseController
 	}
 
 	/**
+	 * @param int $id
+	 */
+	public function actionStadtraetIn($id) {
+		/** @var StadtraetIn $stadtraetIn */
+		$stadtraetIn = StadtraetIn::model()->findByPk($id);
+
+		$this->render("stadtraetIn", array(
+			"stadtraetIn" => $stadtraetIn,
+		));
+	}
+
+	/**
 	 * @param string $id
 	 * @param string $code
 	 */

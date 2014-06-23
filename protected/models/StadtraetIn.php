@@ -64,7 +64,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antraege'                 => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antraege_id)'),
+			'antraege'                 => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antrag_id)', 'order' => 'gestellt_am DESC'),
 			'personen'                 => array(self::HAS_MANY, 'Person', 'ris_stadtraetIn'),
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'),
 		);
@@ -114,7 +114,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("stadtraetIn/anzeigen", array("id" => $this->id));
+		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id));
 	}
 
 
@@ -131,6 +131,13 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	public function getName($kurzfassung = false)
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSourceLink() {
+		return "http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
 	}
 
 	/**

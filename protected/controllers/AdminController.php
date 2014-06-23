@@ -60,7 +60,7 @@ class AdminController extends RISBaseController
 		}
 
 		/** @var array[] $fraktionen */
-		$fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"));
+		$fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
 		$this->render("stadtraetInnenSocialMedia", array(
 			"msg_ok" => $msg_ok,

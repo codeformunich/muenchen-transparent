@@ -191,6 +191,7 @@ class RISTools
 			if (mb_substr($y, 0, 3) == "bm ") $y = mb_substr($y, 3);
 
 			for ($i = 0; $i < 10; $i++) $y = str_replace("  ", " ", $y);
+			$y = str_replace("Zeilhofer-Rath", "Zeilnhofer-Rath", $y);
 
 			if (trim($y) != "") $ret[] = array("name" => $name_orig, "name_normalized" => $y);
 		}

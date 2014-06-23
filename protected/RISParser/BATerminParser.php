@@ -197,7 +197,6 @@ class BATerminParser extends RISParser
 
 			preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
 			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII2/RII/DOK/TOP/") {
-				echo "Lege an: " . $matches2["url"] . " - " . $ergebnis->id . "\n";
 				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_BESCHLUSS, $ergebnis, array("url" => $matches2["url"], "name" => $matches2["title"]));
 			}
 		}

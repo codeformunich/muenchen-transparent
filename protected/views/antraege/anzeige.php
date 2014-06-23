@@ -16,7 +16,6 @@ $personen = array(
 );
 foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 
-
 $historie = $antrag->getHistoryDiffs();
 
 ?>
@@ -48,7 +47,7 @@ $historie = $antrag->getHistoryDiffs();
 					echo "<li>";
 					/** @var Person $person */
 					if ($person->stadtraetIn) {
-						echo CHtml::link($person->stadtraetIn->name, "#");
+						echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
 						echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
 					} else {
 						echo CHtml::encode($person->name);
@@ -72,7 +71,7 @@ if (count($personen[AntragPerson::$TYP_GESTELLT_VON])) {
 					echo "<li>";
 					/** @var Person $person */
 					if ($person->stadtraetIn) {
-						echo CHtml::link($person->stadtraetIn->name, "#");
+						echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
 						echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
 					} else {
 						echo CHtml::encode($person->name);
