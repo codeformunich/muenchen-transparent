@@ -60,7 +60,7 @@ class Fraktion extends CActiveRecord implements IRISItem
 		// class name for the relations automatically generated below.
 		return array(
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'fraktion_id'),
-			'bezirksausschuss'         => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_r'),
+			'bezirksausschuss'         => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
 			'personen'                 => array(self::HAS_MANY, 'Person', 'ris_fraktion'),
 		);
 	}
