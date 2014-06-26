@@ -12,7 +12,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="Tobias Hößl">
 
-	<link href="/js/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="/js/bootstrap-3.2.0/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" media="screen" href="/js/bootstrap-select/bootstrap-select.min.css">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -126,7 +126,7 @@
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
-<script src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-3.2.0/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-select/bootstrap-select.min.js"></script>
 
 </body>
