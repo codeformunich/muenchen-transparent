@@ -4,8 +4,15 @@
  * @var IndexController $this
  * @var Bezirksausschuss $ba
  * @var Antrag[] $antraege
+ * @var string|null $aeltere_url_ajax
+ * @var string|null $aeltere_url_std
+ * @var string|null $neuere_url_ajax
+ * @var string|null $neuere_url_std
+ * @var bool $explizites_datum
  * @var array $geodata
  * @var array $geodata_overflow
+ * @var string $datum_von
+ * @var string $datum_bis
  * @var Termin[] $termine_zukunft
  * @var Termin[] $termine_vergangenheit
  * @var Termin[] $termin_dokumente
@@ -63,8 +70,11 @@ $cs->registerScriptFile('/js/index.js');
 <div id="mapholder">
 	<div id="map"></div>
 </div>
-<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span
-			class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen</label></div>
+<div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>>
+	<label><input type="checkbox" name="zeige_overflow">
+		Zeige <span class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen
+	</label>
+</div>
 
 <div id="benachrichtigung_hinweis">
 	<div id="ben_map_infos">
@@ -114,12 +124,19 @@ $cs->registerScriptFile('/js/index.js');
 	});
 </script>
 
-<div class="row">
+<div class="row <? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
 	<div class="col col-lg-5" id="stadtratsdokumente_holder">
 		<? $this->renderPartial("index_antraege_liste", array(
-			"antraege"    => $antraege,
-			"title"       => "Dokumente der letzten $tage_vergangenheit_dokumente Tage",
-			"weitere_url" => null,
+			"aeltere_url_ajax"  => $aeltere_url_ajax,
+			"aeltere_url_std"   => $aeltere_url_std,
+			"neuere_url_ajax"   => $neuere_url_ajax,
+			"neuere_url_std"    => $neuere_url_std,
+			"antraege"          => $antraege,
+			"datum_von"         => $datum_von,
+			"datum_bis"         => $datum_bis,
+			"title"             => ($explizites_datum ? null : "Dokumente der letzten $tage_vergangenheit_dokumente Tage"),
+			"weitere_url"       => null,
+			"weiter_links_oben" => $explizites_datum,
 		)); ?>
 	</div>
 	<div class="col col-lg-4 keine_dokumente">

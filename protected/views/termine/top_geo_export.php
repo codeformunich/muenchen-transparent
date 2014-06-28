@@ -18,7 +18,7 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 <html>
 <head>
 	<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>
-	<link rel="stylesheet" href="/css/jquery-ui-1.10.4.custom.min.css"/>
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.0.custom.min.css"/>
 	<style>
 
 		.leaflet-popup-content-wrapper {
@@ -54,7 +54,7 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 	</style>
 
 	<script src="/js/jquery-2.1.1.min.js"></script>
-	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script src="/js/jquery-ui-1.11.0.custom.min.js"></script>
 	<script src="/js/Leaflet/leaflet.js"></script>
 	<script src="/js/html2canvas.min.js"></script>
 	<script src="<?= CHtml::encode($assets_base) ?>/ba_features.js"></script>
@@ -75,7 +75,7 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 		outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
 		textMarkerClass: "TextMarkersTOP"
 	});
-	$map.AntraegeKarte("setAntraegeDataTOPs", <?=json_encode($geodata)?>, null);
+	$map.AntraegeKarte("setAntraegeDataTOPs", <?=json_encode($geodata)?>, <?=$termin->ba_nr?>);
 
 	window.setTimeout(function() {
 		html2canvas($map[0], {

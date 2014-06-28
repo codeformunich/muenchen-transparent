@@ -1,22 +1,20 @@
-function index_aeltere_dokumente_load(url) {
+function index_datum_dokumente_load(node, url_ajax) {
 	var $holder = $("#stadtratsdokumente_holder"),
-		topc = $("#main_navbar").height() * -1;
+		topc = $("#main_navbar").height() * -1,
+        url_std = $(node).attr("href");
 	$holder.addClass("loading");
 	$holder.prepend('<div class="loading_indicator"><span class="animate-spin icon-spin4"></span></div>');
 
 	$holder.prepend('<div id="scroller" style="position: absolute; width: 1px; height: 1px; left: 0; top: ' + topc + 'px;"></div>');
 	$("#scroller").scrollintoview();
 
-	var done = false;
-	$holder.parent().find("> .keine_dokumente").fadeOut(400, function () {
-		$(this).hide();
-		if (done) $holder.addClass("fullsize");
-		else done = true;
-	});
+    $("#listen_holder").addClass("nur_dokumente");
 
-	$.getJSON(url, function (data) {
-		if (done) $holder.addClass("fullsize");
-		else done = true;
+    if ($("html").hasClass("history")){
+        window.history.pushState(null, null, url_std);
+    }
+
+	$.getJSON(url_ajax, function (data) {
 		$holder.html(data["html"]);
 		$holder.removeClass("loading");
 		$("#map").AntraegeKarte("setAntraegeData", data["geodata"], data["geodata_overflow"]);

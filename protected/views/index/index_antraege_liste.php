@@ -3,7 +3,11 @@
 /**
  * @var IndexController $this
  * @var Antrag[] $antraege
- * @var string|null $weitere_url
+ * @var string|null $neuere_url_ajax
+ * @var string|null $neuere_url_std
+ * @var string|null $aeltere_url_ajax
+ * @var string|null $aeltere_url_std
+ * @var bool $weiter_links_oben
  * @var string $datum
  * @var string $title
  * @var float $geo_lng
@@ -12,7 +16,7 @@
  * @var OrtGeo $naechster_ort
  */
 
-if (isset($title)) {
+if (isset($title) && $title !== null) {
 	$erkl_str = CHtml::encode($title);
 } elseif (isset($datum)) {
 	if ($datum == date("Y-m-d", time() - 3600 * 24) . " 00:00:00") $erkl_str = "des letzten Tages";
@@ -22,11 +26,27 @@ if (isset($title)) {
 		else $erkl_str = "von " . $erkl_str;
 	}
 	$erkl_str = "Stadtratsdokumente " . $erkl_str;
+} elseif (isset($datum_von) && isset($datum_bis)) {
+	$erkl_str = "Dokumente vom " . RISTools::datumstring($datum_von) . " bis " . RISTools::datumstring($datum_bis);
 } else {
 	$erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
 }
 ?>
 	<h3><?= $erkl_str ?></h3>
+<?
+if ($weiter_links_oben) {
+	if ($neuere_url_ajax !== null) { ?>
+		<div class="neuere_caller">
+			<a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
+		</div>
+	<? }
+	if ($aeltere_url_ajax !== null) { ?>
+		<div class="aeltere_caller">
+			<a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere Dokmente <span class="glyphicon glyphicon-chevron-right"></span></a>
+		</div>
+	<? }
+}
+?>
 	<ul class="antragsliste">
 		<?
 		foreach ($antraege as $ant) if (!method_exists($ant, "getName")) {
@@ -82,8 +102,15 @@ if (isset($title)) {
 		}
 		?>
 	</ul>
-<? if ($weitere_url !== null) { ?>
-	<div class="aeltere_caller">
-		<a href="#" onClick="return index_aeltere_dokumente_load('<?= CHtml::encode($weitere_url) ?>');"><span class="glyphicon glyphicon-chevron-right"></span> Ältere Dokmente</a>
+<?
+if ($neuere_url_ajax !== null) { ?>
+	<div class="neuere_caller">
+		<a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
 	</div>
-<? } ?>
+<? }
+if ($aeltere_url_ajax !== null) { ?>
+	<div class="aeltere_caller">
+		<a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere Dokmente <span class="glyphicon glyphicon-chevron-right"></span></a>
+	</div>
+<? }
+?>

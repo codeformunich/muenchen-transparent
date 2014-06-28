@@ -293,9 +293,26 @@ body {
   }
 }
 
+#listen_holder {
+
+  &.nur_dokumente {
+    .keine_dokumente {
+      display: none;
+    }
+  }
+  html.no-csscolumns &.nur_dokumente li{
+    width: 49%;
+    display: inline-block;
+  }
+}
+
 #stadtratsdokumente_holder {
   position: relative;
   min-height: 400px;
+
+  .nur_dokumente & {
+    width: 100%;
+  }
 
   .loading_indicator {
     text-align: center;
@@ -311,15 +328,12 @@ body {
   .aeltere_caller {
     font-size: 1.5em;
     margin-top: 1.5em;
+    float: right;
   }
-
-  &.fullsize {
-    width: 100%;
-
-    html.no-csscolumns &  li{
-      width: 49%;
-      display: inline-block;
-    }
+  .neuere_caller {
+    font-size: 1.5em;
+    margin-top: 1.5em;
+    float: left;
   }
 
 }
@@ -515,7 +529,6 @@ ul.terminliste > li > .termindetails {
   margin: 0;
   padding: 3px;
   a {
-    font-we
   }
 }
 

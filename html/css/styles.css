@@ -5,8 +5,9 @@
 ul.antragsliste {
   list-style-type: none;
   margin: 0;
-  padding: 0; }
-  .fullsize ul.antragsliste {
+  padding: 0;
+  clear: both; }
+  .nur_dokumente ul.antragsliste {
     -moz-column-count: 2;
     -moz-column-gap: 40px;
     -webkit-column-count: 2;
@@ -299,9 +300,6 @@ body {
   text-shadow: 0 0 4px yellow;
   filter: dropshadow(color=yellow, offx=0, offy=0); }
 
-.leaflet-marker-textmarker.textmarker_top .text {
-  top: -14px; }
-
 #mapholder {
   margin: 30px 0;
   border-radius: 10px;
@@ -372,9 +370,17 @@ body {
     margin: 0 0 5px;
     color: #777; }
 
+#listen_holder.nur_dokumente .keine_dokumente {
+  display: none; }
+html.no-csscolumns #listen_holder.nur_dokumente li {
+  width: 49%;
+  display: inline-block; }
+
 #stadtratsdokumente_holder {
   position: relative;
   min-height: 400px; }
+  .nur_dokumente #stadtratsdokumente_holder {
+    width: 100%; }
   #stadtratsdokumente_holder .loading_indicator {
     text-align: center;
     font-size: 10em;
@@ -386,12 +392,12 @@ body {
     z-index: 100; }
   #stadtratsdokumente_holder .aeltere_caller {
     font-size: 1.5em;
-    margin-top: 1.5em; }
-  #stadtratsdokumente_holder.fullsize {
-    width: 100%; }
-    html.no-csscolumns #stadtratsdokumente_holder.fullsize li {
-      width: 49%;
-      display: inline-block; }
+    margin-top: 1.5em;
+    float: right; }
+  #stadtratsdokumente_holder .neuere_caller {
+    font-size: 1.5em;
+    margin-top: 1.5em;
+    float: left; }
 
 #overflow_hinweis {
   margin-top: -30px;
@@ -545,8 +551,6 @@ ul.terminliste > li > .termindetails {
   background-color: #fff;
   margin: 0;
   padding: 3px; }
-  ul.terminliste > li > .termindetails a {
-    font-weight: bold; }
 
 ul.fraktionen_liste {
   list-style-type: none;

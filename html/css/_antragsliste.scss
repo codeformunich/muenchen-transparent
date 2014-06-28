@@ -6,8 +6,9 @@ ul.antragsliste {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  clear: both;
 
-  .fullsize & {
+  .nur_dokumente & {
     -moz-column-count: 2;
     -moz-column-gap: 40px;
     -webkit-column-count: 2;

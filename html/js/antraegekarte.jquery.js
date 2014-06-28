@@ -180,6 +180,13 @@ $.widget("ratsinformant.AntraegeKarte", {
             $overflow = $("#overflow_hinweis"),
             i;
 
+        var curr_bound = $widget.map.getBounds(),
+            visible_markers = [];
+        for (i = 0; i < antraege_data.length; i++) {
+            var item = antraege_data[i];
+            if (curr_bound.contains(L.latLng(item[0], item[1]))) visible_markers.push(item);
+        }
+
         if ($widget.oms === null) {
             $widget.oms = new OverlappingMarkerSpiderfier($widget.map, {
                 keepSpiderfied: true,
@@ -194,7 +201,7 @@ $.widget("ratsinformant.AntraegeKarte", {
             });
         }
 
-        $widget.antraege_data = antraege_data;
+        $widget.antraege_data = visible_markers;
         $widget.rebuildMarkers($overflow.find("input").prop("checked"), true);
 
         $widget.element.find(".leaflet-marker-textmarker").trigger("click");

@@ -1,7 +1,7 @@
 <?php
 
 $GLOBALS["RIS_URL_RULES"] = array(
-	RATSINFORMANT_BASE_URL . '/'                                                 => 'index/index',
+	RATSINFORMANT_BASE_URL . '/'                                                 => 'index/stadtrat',
 	RATSINFORMANT_BASE_URL . '/ajax-<datum_max:[0-9\-]+>'                        => 'index/antraegeAjax',
 	RATSINFORMANT_BASE_URL . '/ba/<ba_nr:\d+>'                                   => 'index/ba',
 	RATSINFORMANT_BASE_URL . '/stadtraetIn/<id:\d+>'                             => 'index/stadtraetIn',
