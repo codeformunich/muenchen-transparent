@@ -1,18 +1,36 @@
-/*! jQuery UI - v1.10.4 - 2014-03-22
+/*! jQuery UI - v1.11.0 - 2014-06-27
 * http://jqueryui.com
-* Includes: jquery.ui.core.js, jquery.ui.widget.js, jquery.ui.position.js, jquery.ui.datepicker.js
+* Includes: core.js, widget.js, position.js, datepicker.js
 * Copyright 2014 jQuery Foundation and other contributors; Licensed MIT */
 
-(function( $, undefined ) {
+(function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
 
-var uuid = 0,
-	runiqueId = /^ui-id-\d+$/;
+		// AMD. Register as an anonymous module.
+		define([ "jquery" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}(function( $ ) {
+/*!
+ * jQuery UI Core 1.11.0
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/ui-core/
+ */
+
 
 // $.ui might exist from components with no dependencies, e.g., $.ui.position
 $.ui = $.ui || {};
 
 $.extend( $.ui, {
-	version: "1.10.4",
+	version: "1.11.0",
 
 	keyCode: {
 		BACKSPACE: 8,
@@ -24,12 +42,6 @@ $.extend( $.ui, {
 		ESCAPE: 27,
 		HOME: 36,
 		LEFT: 37,
-		NUMPAD_ADD: 107,
-		NUMPAD_DECIMAL: 110,
-		NUMPAD_DIVIDE: 111,
-		NUMPAD_ENTER: 108,
-		NUMPAD_MULTIPLY: 106,
-		NUMPAD_SUBTRACT: 109,
 		PAGE_DOWN: 34,
 		PAGE_UP: 33,
 		PERIOD: 190,
@@ -42,77 +54,35 @@ $.extend( $.ui, {
 
 // plugins
 $.fn.extend({
-	focus: (function( orig ) {
-		return function( delay, fn ) {
-			return typeof delay === "number" ?
-				this.each(function() {
-					var elem = this;
-					setTimeout(function() {
-						$( elem ).focus();
-						if ( fn ) {
-							fn.call( elem );
-						}
-					}, delay );
-				}) :
-				orig.apply( this, arguments );
-		};
-	})( $.fn.focus ),
-
 	scrollParent: function() {
-		var scrollParent;
-		if (($.ui.ie && (/(static|relative)/).test(this.css("position"))) || (/absolute/).test(this.css("position"))) {
-			scrollParent = this.parents().filter(function() {
-				return (/(relative|absolute|fixed)/).test($.css(this,"position")) && (/(auto|scroll)/).test($.css(this,"overflow")+$.css(this,"overflow-y")+$.css(this,"overflow-x"));
-			}).eq(0);
-		} else {
-			scrollParent = this.parents().filter(function() {
-				return (/(auto|scroll)/).test($.css(this,"overflow")+$.css(this,"overflow-y")+$.css(this,"overflow-x"));
-			}).eq(0);
-		}
-
-		return (/fixed/).test(this.css("position")) || !scrollParent.length ? $(document) : scrollParent;
-	},
-
-	zIndex: function( zIndex ) {
-		if ( zIndex !== undefined ) {
-			return this.css( "zIndex", zIndex );
-		}
-
-		if ( this.length ) {
-			var elem = $( this[ 0 ] ), position, value;
-			while ( elem.length && elem[ 0 ] !== document ) {
-				// Ignore z-index if position is set to a value where z-index is ignored by the browser
-				// This makes behavior of this function consistent across browsers
-				// WebKit always returns auto if the element is positioned
-				position = elem.css( "position" );
-				if ( position === "absolute" || position === "relative" || position === "fixed" ) {
-					// IE returns 0 when zIndex is not specified
-					// other browsers return a string
-					// we ignore the case of nested elements with an explicit value of 0
-					// <div style="z-index: -10;"><div style="z-index: 0;"></div></div>
-					value = parseInt( elem.css( "zIndex" ), 10 );
-					if ( !isNaN( value ) && value !== 0 ) {
-						return value;
-					}
+		var position = this.css( "position" ),
+			excludeStaticParent = position === "absolute",
+			scrollParent = this.parents().filter( function() {
+				var parent = $( this );
+				if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
+					return false;
 				}
-				elem = elem.parent();
-			}
-		}
+				return (/(auto|scroll)/).test( parent.css( "overflow" ) + parent.css( "overflow-y" ) + parent.css( "overflow-x" ) );
+			}).eq( 0 );
 
-		return 0;
+		return position === "fixed" || !scrollParent.length ? $( this[ 0 ].ownerDocument || document ) : scrollParent;
 	},
 
-	uniqueId: function() {
-		return this.each(function() {
-			if ( !this.id ) {
-				this.id = "ui-id-" + (++uuid);
-			}
-		});
-	},
+	uniqueId: (function() {
+		var uuid = 0;
+
+		return function() {
+			return this.each(function() {
+				if ( !this.id ) {
+					this.id = "ui-id-" + ( ++uuid );
+				}
+			});
+		};
+	})(),
 
 	removeUniqueId: function() {
 		return this.each(function() {
-			if ( runiqueId.test( this.id ) ) {
+			if ( /^ui-id-\d+$/.test( this.id ) ) {
 				$( this ).removeAttr( "id" );
 			}
 		});
@@ -240,93 +210,129 @@ if ( $( "<a>" ).data( "a-b", "a" ).removeData( "a-b" ).data( "a-b" ) ) {
 	})( $.fn.removeData );
 }
 
-
-
-
-
 // deprecated
 $.ui.ie = !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() );
 
-$.support.selectstart = "onselectstart" in document.createElement( "div" );
 $.fn.extend({
-	disableSelection: function() {
-		return this.bind( ( $.support.selectstart ? "selectstart" : "mousedown" ) +
-			".ui-disableSelection", function( event ) {
+	focus: (function( orig ) {
+		return function( delay, fn ) {
+			return typeof delay === "number" ?
+				this.each(function() {
+					var elem = this;
+					setTimeout(function() {
+						$( elem ).focus();
+						if ( fn ) {
+							fn.call( elem );
+						}
+					}, delay );
+				}) :
+				orig.apply( this, arguments );
+		};
+	})( $.fn.focus ),
+
+	disableSelection: (function() {
+		var eventType = "onselectstart" in document.createElement( "div" ) ?
+			"selectstart" :
+			"mousedown";
+
+		return function() {
+			return this.bind( eventType + ".ui-disableSelection", function( event ) {
 				event.preventDefault();
 			});
-	},
+		};
+	})(),
 
 	enableSelection: function() {
 		return this.unbind( ".ui-disableSelection" );
-	}
-});
-
-$.extend( $.ui, {
-	// $.ui.plugin is deprecated. Use $.widget() extensions instead.
-	plugin: {
-		add: function( module, option, set ) {
-			var i,
-				proto = $.ui[ module ].prototype;
-			for ( i in set ) {
-				proto.plugins[ i ] = proto.plugins[ i ] || [];
-				proto.plugins[ i ].push( [ option, set[ i ] ] );
-			}
-		},
-		call: function( instance, name, args ) {
-			var i,
-				set = instance.plugins[ name ];
-			if ( !set || !instance.element[ 0 ].parentNode || instance.element[ 0 ].parentNode.nodeType === 11 ) {
-				return;
-			}
-
-			for ( i = 0; i < set.length; i++ ) {
-				if ( instance.options[ set[ i ][ 0 ] ] ) {
-					set[ i ][ 1 ].apply( instance.element, args );
-				}
-			}
-		}
 	},
 
-	// only used by resizable
-	hasScroll: function( el, a ) {
-
-		//If overflow is hidden, the element might have extra content, but the user wants to hide it
-		if ( $( el ).css( "overflow" ) === "hidden") {
-			return false;
+	zIndex: function( zIndex ) {
+		if ( zIndex !== undefined ) {
+			return this.css( "zIndex", zIndex );
 		}
 
-		var scroll = ( a && a === "left" ) ? "scrollLeft" : "scrollTop",
-			has = false;
-
-		if ( el[ scroll ] > 0 ) {
-			return true;
+		if ( this.length ) {
+			var elem = $( this[ 0 ] ), position, value;
+			while ( elem.length && elem[ 0 ] !== document ) {
+				// Ignore z-index if position is set to a value where z-index is ignored by the browser
+				// This makes behavior of this function consistent across browsers
+				// WebKit always returns auto if the element is positioned
+				position = elem.css( "position" );
+				if ( position === "absolute" || position === "relative" || position === "fixed" ) {
+					// IE returns 0 when zIndex is not specified
+					// other browsers return a string
+					// we ignore the case of nested elements with an explicit value of 0
+					// <div style="z-index: -10;"><div style="z-index: 0;"></div></div>
+					value = parseInt( elem.css( "zIndex" ), 10 );
+					if ( !isNaN( value ) && value !== 0 ) {
+						return value;
+					}
+				}
+				elem = elem.parent();
+			}
 		}
 
-		// TODO: determine which cases actually cause this to happen
-		// if the element doesn't have the scroll set, see if it's possible to
-		// set the scroll
-		el[ scroll ] = 1;
-		has = ( el[ scroll ] > 0 );
-		el[ scroll ] = 0;
-		return has;
+		return 0;
 	}
 });
 
-})( jQuery );
-(function( $, undefined ) {
+// $.ui.plugin is deprecated. Use $.widget() extensions instead.
+$.ui.plugin = {
+	add: function( module, option, set ) {
+		var i,
+			proto = $.ui[ module ].prototype;
+		for ( i in set ) {
+			proto.plugins[ i ] = proto.plugins[ i ] || [];
+			proto.plugins[ i ].push( [ option, set[ i ] ] );
+		}
+	},
+	call: function( instance, name, args, allowDisconnected ) {
+		var i,
+			set = instance.plugins[ name ];
 
-var uuid = 0,
-	slice = Array.prototype.slice,
-	_cleanData = $.cleanData;
-$.cleanData = function( elems ) {
-	for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
-		try {
-			$( elem ).triggerHandler( "remove" );
-		// http://bugs.jquery.com/ticket/8235
-		} catch( e ) {}
+		if ( !set ) {
+			return;
+		}
+
+		if ( !allowDisconnected && ( !instance.element[ 0 ].parentNode || instance.element[ 0 ].parentNode.nodeType === 11 ) ) {
+			return;
+		}
+
+		for ( i = 0; i < set.length; i++ ) {
+			if ( instance.options[ set[ i ][ 0 ] ] ) {
+				set[ i ][ 1 ].apply( instance.element, args );
+			}
+		}
 	}
-	_cleanData( elems );
 };
+
+
+/*!
+ * jQuery UI Widget 1.11.0
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/jQuery.widget/
+ */
+
+
+var widget_uuid = 0,
+	widget_slice = Array.prototype.slice;
+
+$.cleanData = (function( orig ) {
+	return function( elems ) {
+		for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
+			try {
+				$( elem ).triggerHandler( "remove" );
+			// http://bugs.jquery.com/ticket/8235
+			} catch( e ) {}
+		}
+		orig( elems );
+	};
+})( $.cleanData );
 
 $.widget = function( name, base, prototype ) {
 	var fullName, existingConstructor, constructor, basePrototype,
@@ -439,10 +445,12 @@ $.widget = function( name, base, prototype ) {
 	}
 
 	$.widget.bridge( name, constructor );
+
+	return constructor;
 };
 
 $.widget.extend = function( target ) {
-	var input = slice.call( arguments, 1 ),
+	var input = widget_slice.call( arguments, 1 ),
 		inputIndex = 0,
 		inputLength = input.length,
 		key,
@@ -471,7 +479,7 @@ $.widget.bridge = function( name, object ) {
 	var fullName = object.prototype.widgetFullName || name;
 	$.fn[ name ] = function( options ) {
 		var isMethodCall = typeof options === "string",
-			args = slice.call( arguments, 1 ),
+			args = widget_slice.call( arguments, 1 ),
 			returnValue = this;
 
 		// allow multiple hashes to be passed on init
@@ -483,6 +491,10 @@ $.widget.bridge = function( name, object ) {
 			this.each(function() {
 				var methodValue,
 					instance = $.data( this, fullName );
+				if ( options === "instance" ) {
+					returnValue = instance;
+					return false;
+				}
 				if ( !instance ) {
 					return $.error( "cannot call methods on " + name + " prior to initialization; " +
 						"attempted to call method '" + options + "'" );
@@ -502,7 +514,10 @@ $.widget.bridge = function( name, object ) {
 			this.each(function() {
 				var instance = $.data( this, fullName );
 				if ( instance ) {
-					instance.option( options || {} )._init();
+					instance.option( options || {} );
+					if ( instance._init ) {
+						instance._init();
+					}
 				} else {
 					$.data( this, fullName, new object( options, this ) );
 				}
@@ -529,7 +544,7 @@ $.Widget.prototype = {
 	_createWidget: function( options, element ) {
 		element = $( element || this.defaultElement || this )[ 0 ];
 		this.element = $( element );
-		this.uuid = uuid++;
+		this.uuid = widget_uuid++;
 		this.eventNamespace = "." + this.widgetName + this.uuid;
 		this.options = $.widget.extend( {},
 			this.options,
@@ -572,9 +587,6 @@ $.Widget.prototype = {
 		// all event bindings should go through this._on()
 		this.element
 			.unbind( this.eventNamespace )
-			// 1.9 BC for #7810
-			// TODO remove dual storage
-			.removeData( this.widgetName )
 			.removeData( this.widgetFullName )
 			// support: jquery <1.6.3
 			// http://bugs.jquery.com/ticket/9413
@@ -650,20 +662,23 @@ $.Widget.prototype = {
 
 		if ( key === "disabled" ) {
 			this.widget()
-				.toggleClass( this.widgetFullName + "-disabled ui-state-disabled", !!value )
-				.attr( "aria-disabled", value );
-			this.hoverable.removeClass( "ui-state-hover" );
-			this.focusable.removeClass( "ui-state-focus" );
+				.toggleClass( this.widgetFullName + "-disabled", !!value );
+
+			// If the widget is becoming disabled, then nothing is interactive
+			if ( value ) {
+				this.hoverable.removeClass( "ui-state-hover" );
+				this.focusable.removeClass( "ui-state-focus" );
+			}
 		}
 
 		return this;
 	},
 
 	enable: function() {
-		return this._setOption( "disabled", false );
+		return this._setOptions({ disabled: false });
 	},
 	disable: function() {
-		return this._setOption( "disabled", true );
+		return this._setOptions({ disabled: true });
 	},
 
 	_on: function( suppressDisabledCheck, element, handlers ) {
@@ -683,7 +698,6 @@ $.Widget.prototype = {
 			element = this.element;
 			delegateElement = this.widget();
 		} else {
-			// accept selectors, DOM elements
 			element = delegateElement = $( element );
 			this.bindings = this.bindings.add( element );
 		}
@@ -708,7 +722,7 @@ $.Widget.prototype = {
 					handler.guid || handlerProxy.guid || $.guid++;
 			}
 
-			var match = event.match( /^(\w+)\s*(.*)$/ ),
+			var match = event.match( /^([\w:-]*)\s*(.*)$/ ),
 				eventName = match[1] + instance.eventNamespace,
 				selector = match[2];
 			if ( selector ) {
@@ -823,12 +837,25 @@ $.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
 	};
 });
 
-})( jQuery );
-(function( $, undefined ) {
+var widget = $.widget;
+
+
+/*!
+ * jQuery UI Position 1.11.0
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/position/
+ */
+
+(function() {
 
 $.ui = $.ui || {};
 
-var cachedScrollbarWidth,
+var cachedScrollbarWidth, supportsOffsetFractions,
 	max = Math.max,
 	abs = Math.abs,
 	round = Math.round,
@@ -1041,7 +1068,7 @@ $.fn.position = function( options ) {
 		position.top += myOffset[ 1 ];
 
 		// if the browser doesn't support fractions, then round for consistent results
-		if ( !$.support.offsetFractions ) {
+		if ( !supportsOffsetFractions ) {
 			position.left = round( position.left );
 			position.top = round( position.top );
 		}
@@ -1065,7 +1092,7 @@ $.fn.position = function( options ) {
 					my: options.my,
 					at: options.at,
 					within: within,
-					elem : elem
+					elem: elem
 				});
 			}
 		});
@@ -1219,8 +1246,7 @@ $.ui.position = {
 				if ( newOverRight < 0 || newOverRight < abs( overLeft ) ) {
 					position.left += myOffset + atOffset + offset;
 				}
-			}
-			else if ( overRight > 0 ) {
+			} else if ( overRight > 0 ) {
 				newOverLeft = position.left - data.collisionPosition.marginLeft + myOffset + atOffset + offset - offsetLeft;
 				if ( newOverLeft > 0 || abs( newOverLeft ) < overRight ) {
 					position.left += myOffset + atOffset + offset;
@@ -1254,8 +1280,7 @@ $.ui.position = {
 				if ( ( position.top + myOffset + atOffset + offset) > overTop && ( newOverBottom < 0 || newOverBottom < abs( overTop ) ) ) {
 					position.top += myOffset + atOffset + offset;
 				}
-			}
-			else if ( overBottom > 0 ) {
+			} else if ( overBottom > 0 ) {
 				newOverTop = position.top - data.collisionPosition.marginTop + myOffset + atOffset + offset - offsetTop;
 				if ( ( position.top + myOffset + atOffset + offset) > overBottom && ( newOverTop > 0 || abs( newOverTop ) < overBottom ) ) {
 					position.top += myOffset + atOffset + offset;
@@ -1276,7 +1301,7 @@ $.ui.position = {
 };
 
 // fraction support test
-(function () {
+(function() {
 	var testElement, testElementParent, testElementStyle, offsetLeft, i,
 		body = document.getElementsByTagName( "body" )[ 0 ],
 		div = document.createElement( "div" );
@@ -1308,20 +1333,55 @@ $.ui.position = {
 	div.style.cssText = "position: absolute; left: 10.7432222px;";
 
 	offsetLeft = $( div ).offset().left;
-	$.support.offsetFractions = offsetLeft > 10 && offsetLeft < 11;
+	supportsOffsetFractions = offsetLeft > 10 && offsetLeft < 11;
 
 	testElement.innerHTML = "";
 	testElementParent.removeChild( testElement );
 })();
 
-}( jQuery ) );
-(function( $, undefined ) {
+})();
 
-$.extend($.ui, { datepicker: { version: "1.10.4" } });
+var position = $.ui.position;
 
-var PROP_NAME = "datepicker",
-	instActive;
 
+/*!
+ * jQuery UI Datepicker 1.11.0
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/datepicker/
+ */
+
+
+$.extend($.ui, { datepicker: { version: "1.11.0" } });
+
+var datepicker_instActive;
+
+function datepicker_getZindex( elem ) {
+	var position, value;
+	while ( elem.length && elem[ 0 ] !== document ) {
+		// Ignore z-index if position is set to a value where z-index is ignored by the browser
+		// This makes behavior of this function consistent across browsers
+		// WebKit always returns auto if the element is positioned
+		position = elem.css( "position" );
+		if ( position === "absolute" || position === "relative" || position === "fixed" ) {
+			// IE returns 0 when zIndex is not specified
+			// other browsers return a string
+			// we ignore the case of nested elements with an explicit value of 0
+			// <div style="z-index: -10;"><div style="z-index: 0;"></div></div>
+			value = parseInt( elem.css( "zIndex" ), 10 );
+			if ( !isNaN( value ) && value !== 0 ) {
+				return value;
+			}
+		}
+		elem = elem.parent();
+	}
+
+	return 0;
+}
 /* Date picker manager.
    Use the singleton instance of this class, $.datepicker, to interact with the date picker.
    Settings for (groups of) date pickers are maintained in an instance object,
@@ -1412,7 +1472,9 @@ function Datepicker() {
 		disabled: false // The initial disabled state
 	};
 	$.extend(this._defaults, this.regional[""]);
-	this.dpDiv = bindHover($("<div id='" + this._mainDivId + "' class='ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'></div>"));
+	this.regional.en = $.extend( true, {}, this.regional[ "" ]);
+	this.regional[ "en-US" ] = $.extend( true, {}, this.regional.en );
+	this.dpDiv = datepicker_bindHover($("<div id='" + this._mainDivId + "' class='ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'></div>"));
 }
 
 $.extend(Datepicker.prototype, {
@@ -1432,7 +1494,7 @@ $.extend(Datepicker.prototype, {
 	 * @return the manager object
 	 */
 	setDefaults: function(settings) {
-		extendRemove(this._defaults, settings || {});
+		datepicker_extendRemove(this._defaults, settings || {});
 		return this;
 	},
 
@@ -1465,7 +1527,7 @@ $.extend(Datepicker.prototype, {
 			drawMonth: 0, drawYear: 0, // month being drawn
 			inline: inline, // is datepicker inline or not
 			dpDiv: (!inline ? this.dpDiv : // presentation div
-			bindHover($("<div class='" + this._inlineClass + " ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'></div>")))};
+			datepicker_bindHover($("<div class='" + this._inlineClass + " ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'></div>")))};
 	},
 
 	/* Attach the date picker to an input field. */
@@ -1480,7 +1542,7 @@ $.extend(Datepicker.prototype, {
 		input.addClass(this.markerClassName).keydown(this._doKeyDown).
 			keypress(this._doKeyPress).keyup(this._doKeyUp);
 		this._autoSize(inst);
-		$.data(target, PROP_NAME, inst);
+		$.data(target, "datepicker", inst);
 		//If disabled option is true, disable the datepicker once it has been attached to the input (see ticket #5665)
 		if( inst.settings.disabled ) {
 			this._disableDatepicker( target );
@@ -1570,7 +1632,7 @@ $.extend(Datepicker.prototype, {
 			return;
 		}
 		divSpan.addClass(this.markerClassName).append(inst.dpDiv);
-		$.data(target, PROP_NAME, inst);
+		$.data(target, "datepicker", inst);
 		this._setDate(inst, this._getDefaultDate(inst), true);
 		this._updateDatepicker(inst);
 		this._updateAlternate(inst);
@@ -1606,9 +1668,9 @@ $.extend(Datepicker.prototype, {
 			$("body").append(this._dialogInput);
 			inst = this._dialogInst = this._newInst(this._dialogInput, false);
 			inst.settings = {};
-			$.data(this._dialogInput[0], PROP_NAME, inst);
+			$.data(this._dialogInput[0], "datepicker", inst);
 		}
-		extendRemove(inst.settings, settings || {});
+		datepicker_extendRemove(inst.settings, settings || {});
 		date = (date && date.constructor === Date ? this._formatDate(inst, date) : date);
 		this._dialogInput.val(date);
 
@@ -1631,7 +1693,7 @@ $.extend(Datepicker.prototype, {
 		if ($.blockUI) {
 			$.blockUI(this.dpDiv);
 		}
-		$.data(this._dialogInput[0], PROP_NAME, inst);
+		$.data(this._dialogInput[0], "datepicker", inst);
 		return this;
 	},
 
@@ -1641,14 +1703,14 @@ $.extend(Datepicker.prototype, {
 	_destroyDatepicker: function(target) {
 		var nodeName,
 			$target = $(target),
-			inst = $.data(target, PROP_NAME);
+			inst = $.data(target, "datepicker");
 
 		if (!$target.hasClass(this.markerClassName)) {
 			return;
 		}
 
 		nodeName = target.nodeName.toLowerCase();
-		$.removeData(target, PROP_NAME);
+		$.removeData(target, "datepicker");
 		if (nodeName === "input") {
 			inst.append.remove();
 			inst.trigger.remove();
@@ -1668,7 +1730,7 @@ $.extend(Datepicker.prototype, {
 	_enableDatepicker: function(target) {
 		var nodeName, inline,
 			$target = $(target),
-			inst = $.data(target, PROP_NAME);
+			inst = $.data(target, "datepicker");
 
 		if (!$target.hasClass(this.markerClassName)) {
 			return;
@@ -1696,7 +1758,7 @@ $.extend(Datepicker.prototype, {
 	_disableDatepicker: function(target) {
 		var nodeName, inline,
 			$target = $(target),
-			inst = $.data(target, PROP_NAME);
+			inst = $.data(target, "datepicker");
 
 		if (!$target.hasClass(this.markerClassName)) {
 			return;
@@ -1742,7 +1804,7 @@ $.extend(Datepicker.prototype, {
 	 */
 	_getInst: function(target) {
 		try {
-			return $.data(target, PROP_NAME);
+			return $.data(target, "datepicker");
 		}
 		catch (err) {
 			throw "Missing instance data for this datepicker";
@@ -1782,7 +1844,7 @@ $.extend(Datepicker.prototype, {
 			date = this._getDateDatepicker(target, true);
 			minDate = this._getMinMaxDate(inst, "min");
 			maxDate = this._getMinMaxDate(inst, "max");
-			extendRemove(inst.settings, settings);
+			datepicker_extendRemove(inst.settings, settings);
 			// reformat the old minDate/maxDate values if dateFormat changes and a new minDate/maxDate isn't provided
 			if (minDate !== null && settings.dateFormat !== undefined && settings.minDate === undefined) {
 				inst.settings.minDate = this._formatDate(inst, minDate);
@@ -2010,7 +2072,7 @@ $.extend(Datepicker.prototype, {
 		if(beforeShowSettings === false){
 			return;
 		}
-		extendRemove(inst.settings, beforeShowSettings);
+		datepicker_extendRemove(inst.settings, beforeShowSettings);
 
 		inst.lastVal = null;
 		$.datepicker._lastInput = input;
@@ -2047,7 +2109,7 @@ $.extend(Datepicker.prototype, {
 		if (!inst.inline) {
 			showAnim = $.datepicker._get(inst, "showAnim");
 			duration = $.datepicker._get(inst, "duration");
-			inst.dpDiv.zIndex($(input).zIndex()+1);
+			inst.dpDiv.css( "z-index", datepicker_getZindex( $( input ) ) + 1 );
 			$.datepicker._datepickerShowing = true;
 
 			if ( $.effects && $.effects.effect[ showAnim ] ) {
@@ -2067,10 +2129,10 @@ $.extend(Datepicker.prototype, {
 	/* Generate the date picker content. */
 	_updateDatepicker: function(inst) {
 		this.maxRows = 4; //Reset the max number of rows being displayed (see #7043)
-		instActive = inst; // for delegate hover events
+		datepicker_instActive = inst; // for delegate hover events
 		inst.dpDiv.empty().append(this._generateHTML(inst));
 		this._attachHandlers(inst);
-		inst.dpDiv.find("." + this._dayOverClass + " a").mouseover();
+		inst.dpDiv.find("." + this._dayOverClass + " a");
 
 		var origyearshtml,
 			numMonths = this._getNumberOfMonths(inst),
@@ -2153,7 +2215,7 @@ $.extend(Datepicker.prototype, {
 		var showAnim, duration, postProcess, onClose,
 			inst = this._curInst;
 
-		if (!inst || (input && inst !== $.data(input, PROP_NAME))) {
+		if (!inst || (input && inst !== $.data(input, "datepicker"))) {
 			return;
 		}
 
@@ -3003,7 +3065,7 @@ $.extend(Datepicker.prototype, {
 				thead = (showWeek ? "<th class='ui-datepicker-week-col'>" + this._get(inst, "weekHeader") + "</th>" : "");
 				for (dow = 0; dow < 7; dow++) { // days of the week
 					day = (dow + firstDay) % 7;
-					thead += "<th" + ((dow + firstDay + 6) % 7 >= 5 ? " class='ui-datepicker-week-end'" : "") + ">" +
+					thead += "<th scope='col'" + ((dow + firstDay + 6) % 7 >= 5 ? " class='ui-datepicker-week-end'" : "") + ">" +
 						"<span title='" + dayNames[day] + "'>" + dayNamesMin[day] + "</span></th>";
 				}
 				calender += thead + "</tr></thead><tbody>";
@@ -3257,9 +3319,9 @@ $.extend(Datepicker.prototype, {
 /*
  * Bind hover events for datepicker elements.
  * Done via delegate so the binding only occurs once in the lifetime of the parent div.
- * Global instActive, set by _updateDatepicker allows the handlers to find their way back to the active picker.
+ * Global datepicker_instActive, set by _updateDatepicker allows the handlers to find their way back to the active picker.
  */
-function bindHover(dpDiv) {
+function datepicker_bindHover(dpDiv) {
 	var selector = "button, .ui-datepicker-prev, .ui-datepicker-next, .ui-datepicker-calendar td a";
 	return dpDiv.delegate(selector, "mouseout", function() {
 			$(this).removeClass("ui-state-hover");
@@ -3271,7 +3333,7 @@ function bindHover(dpDiv) {
 			}
 		})
 		.delegate(selector, "mouseover", function(){
-			if (!$.datepicker._isDisabledDatepicker( instActive.inline ? dpDiv.parent()[0] : instActive.input[0])) {
+			if (!$.datepicker._isDisabledDatepicker( datepicker_instActive.inline ? dpDiv.parent()[0] : datepicker_instActive.input[0])) {
 				$(this).parents(".ui-datepicker-calendar").find("a").removeClass("ui-state-hover");
 				$(this).addClass("ui-state-hover");
 				if (this.className.indexOf("ui-datepicker-prev") !== -1) {
@@ -3285,7 +3347,7 @@ function bindHover(dpDiv) {
 }
 
 /* jQuery extend now ignores nulls! */
-function extendRemove(target, props) {
+function datepicker_extendRemove(target, props) {
 	$.extend(target, props);
 	for (var name in props) {
 		if (props[name] == null) {
@@ -3337,6 +3399,10 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.10.4";
+$.datepicker.version = "1.11.0";
 
-})(jQuery);
+var datepicker = $.datepicker;
+
+
+
+}));
