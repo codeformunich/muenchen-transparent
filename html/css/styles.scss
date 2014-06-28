@@ -372,6 +372,21 @@ ul.terminliste, ul.suchergebnisliste {
   }
 }
 
+.statistiken, .ba_infos {
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 2px;
+
+  hr {
+    height: 0;
+    border-top: solid 1px #ccc;
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
 
 .suchergebnisse_holder {
   position: relative;

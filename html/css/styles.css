@@ -426,6 +426,19 @@ ul.terminliste, ul.suchergebnisliste {
     ul.terminliste > li ul.dokumente, ul.suchergebnisliste > li ul.dokumente {
       border-top: solid 1px #ccc; }
 
+.statistiken, .ba_infos {
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 2px; }
+  .statistiken hr, .ba_infos hr {
+    height: 0;
+    border-top: solid 1px #ccc;
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 5px; }
+
 .suchergebnisse_holder {
   position: relative;
   width: 100%; }

@@ -77,6 +77,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 
 		RISMetadaten::setzeLetzteAktualisierung(date("Y-m-d H:i:s"));
+		RISMetadaten::recalcStats();
 
 		fwrite($fp, "Done: " . date("Y-m-d H:i:s") . "\n\n");
 

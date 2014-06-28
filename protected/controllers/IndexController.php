@@ -701,6 +701,7 @@ class IndexController extends RISBaseController
 			"tage_vergangenheit"    => $tage_vergangenheit,
 			"tage_zukunft"          => $tage_zukunft,
 			"fraktionen"            => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
+			"statistiken"           => RISMetadaten::getStats(),
 		));
 	}
 

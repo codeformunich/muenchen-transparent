@@ -64,7 +64,7 @@ $cs->registerScriptFile('/js/index.js');
 ?>
 
 
-<h1>BA <?= $ba->ba_nr ?> (<?= CHtml::encode($ba->name) ?>)</h1>
+<h1><?= CHtml::encode($ba->name) ?> <small>(Bezirksausschuss <?= $ba->ba_nr ?>)</small></h1>
 
 
 <div id="mapholder">
@@ -159,7 +159,7 @@ $cs->registerScriptFile('/js/index.js');
 				?></ul>
 		<? } ?>
 
-		<h3>Kommende BA-Termine</h3>
+		<h3>Kommende <abbr title="Bezirksausschuss - Stadtteil-&quot;Parlament&quot;">BA</abbr>-Termine</h3>
 		<?
 		$termine_ids = array();
 
@@ -170,7 +170,7 @@ $cs->registerScriptFile('/js/index.js');
 		));
 		?>
 
-		<h3>Vergangene BA-Termine</h3>
+		<h3>Vergangene <abbr title="Bezirksausschuss - Stadtteil-&quot;Parlament&quot;">BA</abbr>-Termine</h3>
 		<?
 		$data = ba_gruppiere_termine($termine_vergangenheit);
 		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
@@ -181,8 +181,13 @@ $cs->registerScriptFile('/js/index.js');
 	</div>
 
 	<div class="col col-lg-3 keine_dokumente">
-		<h3>Weitere Infos</h3>
+		<section>
+			<h3>Infos zum Stadtteil</h3>
 
+			<div class="ba_infos">
+				<a href="<?=CHtml::encode($ba->website)?>"><span class="glyphicon glyphicon-chevron-right"></span> Website des Bezirksausschuss</a>
+			</div>
+		</section>
 
 		<section style="display: inline-block">
 			<h3>Benachrichtigungen</h3>

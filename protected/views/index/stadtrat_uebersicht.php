@@ -7,14 +7,15 @@
  * @var Antrag[] $antraege_sonstige
  * @var string $datum
  * @var bool $explizites_datum
- * @var string $weitere_url_ajax
- * @var string $weitere_url_std
+ * @var string $neuere_url_ajax
+ * @var string $neuere_url_std
  * @var Termin[] $termine_zukunft
  * @var Termin[] $termine_vergangenheit
  * @var Termin[] $termin_dokumente
  * @var int $tage_zukunft
  * @var int $tage_vergangenheit
  * @var array[] $fraktionen
+ * @var array $statistiken
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -126,16 +127,20 @@ function gruppiere_termine($termine)
 		$this->renderPartial("index_antraege_liste", array(
 			"antraege"          => $antraege_stadtrat,
 			"datum"             => $datum,
-			"weitere_url_ajax"  => $weitere_url_ajax,
-			"weitere_url_std"   => $weitere_url_std,
+			"neuere_url_ajax"   => $neuere_url_ajax,
+			"neuere_url_std"    => $neuere_url_std,
+			"aeltere_url_ajax"  => null,
+			"aeltere_url_std"   => null,
 			"weiter_links_oben" => $explizites_datum,
 		));
 		if (count($antraege_sonstige) > 0) $this->renderPartial("index_antraege_liste", array(
 			"title"             => "Sonstige neue Dokumente",
 			"antraege"          => $antraege_sonstige,
 			"datum"             => $datum,
-			"weitere_url_ajax"  => $weitere_url_ajax,
-			"weitere_url_std"   => $weitere_url_std,
+			"neuere_url_ajax"   => $neuere_url_ajax,
+			"neuere_url_std"    => $neuere_url_std,
+			"aeltere_url_ajax"  => null,
+			"aeltere_url_std"   => null,
 			"weiter_links_oben" => false,
 		));
 		?>
@@ -192,46 +197,64 @@ function gruppiere_termine($termine)
 			</p>
 		</section>
 
-		<h3>StadträtInnen</h3>
+		<section>
+			<h3>StadträtInnen</h3>
 
-		<ul class="fraktionen_liste"><?
-			usort($fraktionen, function ($val1, $val2) {
-				if (count($val1) < count($val2)) return 1;
-				if (count($val1) > count($val2)) return -1;
-				return 0;
-			});
-			foreach ($fraktionen as $fraktion) {
-				/** @var StadtraetIn[] $fraktion */
-				$fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
-				echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'>";
-				echo "<span class='count'>" . count($fraktion) . "</span>";
-				echo CHtml::encode($fr->name) . "</a><ul class='mitglieder'>";
-				foreach ($fraktion as $str) {
-					echo "<li>";
-					if ($str->abgeordnetenwatch != "") echo "<a href='" . CHtml::encode($str->abgeordnetenwatch) . "' class='abgeordnetenwatch_link' title='Abgeordnetenwatch'></a>";
-					if ($str->web != "") echo "<a href='" . CHtml::encode($str->web) . "' title='Homepage' class='web_link'></a>";
-					if ($str->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($str->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
-					if ($str->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($str->facebook) . "' title='Facebook' class='fb_link'>f</a>";
-					echo "<a href='" . CHtml::encode($str->getLink()) . "' class='ris_link'>" . CHtml::encode($str->name) . "</a>";
-					echo "</li>\n";
-				}
-				echo "</ul></li>\n";
-
-			}
-			?></ul>
-
-		<script>
-			$(function () {
-				var $frakts = $(".fraktionen_liste > li");
-				$frakts.addClass("closed").find("> a").click(function (ev) {
-					if (ev.which == 2 || ev.which == 3) return;
-					ev.preventDefault();
-					var $li = $(this).parents("li").first(),
-						is_open = !$li.hasClass("closed");
-					$frakts.addClass("closed");
-					if (!is_open) $li.removeClass("closed");
+			<ul class="fraktionen_liste"><?
+				usort($fraktionen, function ($val1, $val2) {
+					if (count($val1) < count($val2)) return 1;
+					if (count($val1) > count($val2)) return -1;
+					return 0;
 				});
-			})
-		</script>
+				foreach ($fraktionen as $fraktion) {
+					/** @var StadtraetIn[] $fraktion */
+					$fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
+					echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'>";
+					echo "<span class='count'>" . count($fraktion) . "</span>";
+					echo CHtml::encode($fr->name) . "</a><ul class='mitglieder'>";
+					foreach ($fraktion as $str) {
+						echo "<li>";
+						if ($str->abgeordnetenwatch != "") echo "<a href='" . CHtml::encode($str->abgeordnetenwatch) . "' class='abgeordnetenwatch_link' title='Abgeordnetenwatch'></a>";
+						if ($str->web != "") echo "<a href='" . CHtml::encode($str->web) . "' title='Homepage' class='web_link'></a>";
+						if ($str->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($str->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
+						if ($str->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($str->facebook) . "' title='Facebook' class='fb_link'>f</a>";
+						echo "<a href='" . CHtml::encode($str->getLink()) . "' class='ris_link'>" . CHtml::encode($str->name) . "</a>";
+						echo "</li>\n";
+					}
+					echo "</ul></li>\n";
+
+				}
+				?></ul>
+
+			<script>
+				$(function () {
+					var $frakts = $(".fraktionen_liste > li");
+					$frakts.addClass("closed").find("> a").click(function (ev) {
+						if (ev.which == 2 || ev.which == 3) return;
+						ev.preventDefault();
+						var $li = $(this).parents("li").first(),
+							is_open = !$li.hasClass("closed");
+						$frakts.addClass("closed");
+						if (!is_open) $li.removeClass("closed");
+					});
+				})
+			</script>
+		</section>
+
+		<section>
+			<h3>Statistiken</h3>
+
+			<div class="statistiken">
+				<strong><?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> durchsuchbare Dokumente</strong>,<br>
+				insgesamt <strong><?= number_format($statistiken["anzahl_seiten"], 0, ",", ".") ?> Seiten</strong><br>
+				<hr>
+				<?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> neue Dokumente in den letzten 7 Tagen
+				(<?= number_format($statistiken["anzahl_seiten_1w"], 0, ",", ".") ?> Seiten)
+				<hr>
+				Zuletzt aktualisiert: <?=
+				RISTools::datumstring($statistiken["letzte_aktualisierung"]) . ", " . substr($statistiken["letzte_aktualisierung"], 11, 5);
+				?>
+			</div>
+		</section>
 	</div>
 </div>

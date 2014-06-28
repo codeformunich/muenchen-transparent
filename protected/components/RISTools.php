@@ -151,7 +151,7 @@ class RISTools
 	 */
 	public static function korrigiereTitelZeichen($titel)
 	{
-		$titel = preg_replace("/([\\s-])\?(\\w[^\\?]*\\w)\?/siu", "\\1„\\2“", $titel);
+		$titel = preg_replace("/([\\s-\(])\?(\\w[^\\?]*\\w)\?/siu", "\\1„\\2“", $titel);
 		$titel = preg_replace("/^\?(\\w[^\\?]*\\w)\?/siu", " „\\1“", $titel);
 		$titel = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $titel);
 		$titel = preg_replace("/\\s\?$/siu", "?", $titel);
