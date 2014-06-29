@@ -161,6 +161,22 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		return $return;
 	}
 
+	/**
+	 * @return array
+	 */
+	public function zugeordneteAntraegeHeuristisch() {
+		$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
+		$x = explode(" Antrag Nr.", $betreff);
+		$antraege = array();
+		foreach ($x as $y) if (preg_match("/[0-9]{2}\-[0-9]{2} \/ [A-Z] [0-9]+/su", $y, $match)) {
+			/** @var Antrag $antrag */
+			$antrag = Antrag::model()->findByAttributes(array("antrags_nr" => $match[0]));
+			if ($antrag) $antraege[] = $antrag;
+			else $antraege[] = "Antrag Nr." . $y;
+		}
+		return $antraege;
+	}
+
 
 	/**
 	 * @return string
@@ -183,6 +199,12 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	 */
 	public function getName($kurzfassung = false)
 	{
-		return RISTools::korrigiereTitelZeichen($this->top_betreff);
+		if ($kurzfassung) {
+			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
+			$x = explode(" Antrag Nr.", $betreff);
+			return RISTools::korrigiereTitelZeichen($x[0]);
+		} else {
+			return RISTools::korrigiereTitelZeichen($this->top_betreff);
+		}
 	}
 }

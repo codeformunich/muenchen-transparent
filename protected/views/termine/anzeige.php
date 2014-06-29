@@ -65,15 +65,20 @@ $geodata = array();
 	<h3>Tagesordnung</h3>
 	<ol style="list-style-type: none;">
 		<?
+		$geheimer_teil = false;
 		$tops = $termin->ergebnisseSortiert();
 		foreach ($tops as $ergebnis) {
+			if ($ergebnis->status == "geheim" && !$geheimer_teil) {
+				$geheimer_teil = true;
+				echo "</ol><h3>Nicht-Öffentlicher Teil</h3><ol style='list-style-type: none;'>";
+			}
+			$name = $ergebnis->top_nr . ": " . $ergebnis->getName(true);
 			echo "<li style='margin-bottom: 7px;'>";
-			$name = $ergebnis->top_nr . ": " . $ergebnis->top_betreff;
-			echo "<li>";
 			if ($ergebnis->top_ueberschrift) echo "<strong>";
 			echo CHtml::encode($name);
 			if ($ergebnis->top_ueberschrift) echo "</strong>";
-			if (count($ergebnis->dokumente) > 0 || is_object($ergebnis->antrag)) {
+			$antraege = $ergebnis->zugeordneteAntraegeHeuristisch();
+			if (count($ergebnis->dokumente) > 0 || is_object($ergebnis->antrag) || count($antraege) > 0) {
 				echo "<ul class='doks'>";
 				if (is_object($ergebnis->antrag)) {
 					echo "<li>" . CHtml::link("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
@@ -84,6 +89,12 @@ $geodata = array();
 					if (count($x) > 1) echo " (" . CHtml::encode(trim($x[1])) . ")";
 					echo "</li>\n";
 				}
+				foreach ($antraege as $ant) if (is_object($ant)) {
+					/** @var Antrag $ant */
+					echo "<li>Verwandter Antrag: " . CHtml::link($ant->getName(true), $ant->getLink()) . "</li>\n";
+				} else {
+					echo "<li>Verwandter Antrag: " . CHtml::encode($ant) . "</li>\n";
+				}
 				echo "</ul>";
 			}
 			echo "</li>";
@@ -92,7 +103,7 @@ $geodata = array();
 			foreach ($geo as $g) $geodata[] = array(
 				FloatVal($g->lat),
 				FloatVal($g->lon),
-				$ergebnis->top_nr . ": " . $ergebnis->top_betreff
+				$ergebnis->top_nr . ": " . $ergebnis->getName(true)
 			);
 			echo "</li>";
 		}

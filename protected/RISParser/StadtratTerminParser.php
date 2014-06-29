@@ -112,8 +112,143 @@ class StadtratTerminParser extends RISParser
 			}
 		}
 
+
+		$match_top          = "tdborder\">(?<top>.*)<\/t[hd]>";
+		$match_betreff      = "tdborder\">(?<betreff>.*)<\/t[hd]>";
+		$match_vorlage      = "<t(?<ueberschrift>[hd])[^>]*>(?<vorlage_holder>.*)<\/t[hd]>";
+		$match_referentIn   = "<t[hd][^>]*>(?<referentIn>.*)<\/t[hd]>";
+		$match_entscheidung = "<t[hd][^>]*>(?<entscheidung>.*)<\/t[hd]>";
+		preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_referentIn}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
+
+		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
+		$aenderungen_tops        = "";
+		$verwendete_top_betreffs = array();
+		$abschnitt_nr            = 0;
+
+		for ($i = 0; $i < count($matches[0]); $i++) {
+			$top     = trim(str_replace(array("&nbsp;", "<strong>", "</strong>"), array(" ", "", ""), $matches["top"][$i]));
+			$betreff = static::text_clean_spaces($matches["betreff"][$i]);
+			if ($matches["ueberschrift"][$i] == "h") {
+				$abschnitt_nr     = $abschnitt_nr + 1;
+				$top_ueberschrift = true;
+				$top_nr           = $abschnitt_nr;
+				$betreff          = str_replace(array("<strong>", "</strong>"), array("", ""), $betreff);
+			} else {
+				if ($abschnitt_nr == 0) $abschnitt_nr = 1;
+				$top_ueberschrift = false;
+				$top_nr           = $abschnitt_nr . "." . $top;
+			}
+
+			$vorlage_holder = trim(str_replace("&nbsp;", " ", $matches["vorlage_holder"][$i]));
+			preg_match_all("/risid=(?<risid>[0-9]+)>/siU", $vorlage_holder, $matches2);
+			$vorlage_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
+
+			if ($vorlage_id) {
+				$vorlage = Antrag::model()->findByPk($vorlage_id);
+				if (!$vorlage) {
+					echo "Creating: $vorlage_id\n";
+					$p = new StadtratsvorlageParser();
+					$p->parse($vorlage_id);
+				}
+			}
+
+			$entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
+			$entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
+
+			/** @var AntragErgebnis $ergebnis */
+			if (is_null($vorlage_id)) {
+				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
+			} else {
+				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
+			}
+			if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
+
+			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
+			$ergebnis->sitzungstermin_id      = $termin_id;
+			$ergebnis->sitzungstermin_datum   = $daten->termin;
+			$ergebnis->top_nr                 = $top_nr;
+			$ergebnis->antrag_id              = $vorlage_id;
+			$ergebnis->top_ueberschrift       = ($top_ueberschrift ? 1 : 0);
+			if ($ergebnis->entscheidung != $entscheidung) {
+				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
+				$ergebnis->entscheidung = $entscheidung;
+			}
+			$ergebnis->top_betreff     = $betreff;
+			$ergebnis->gremium_id      = $daten->gremium_id;
+			$ergebnis->gremium_name    = $daten->gremium->name;
+			$verwendete_top_betreffs[] = $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
+
+			if (!is_null($vorlage_id)) {
+				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
+				preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
+				$beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
+				if ($ergebnis->beschluss_text != $beschluss) {
+					$aenderungen .= "Beschluss: " . $ergebnis->beschluss_text . " => " . $beschluss . "\n";
+					$ergebnis->beschluss_text = $beschluss;
+				}
+			}
+
+			$ergebnis->save();
+
+			preg_match_all("/<a href=(?<url>[^ ]+) title=\"(?<title>[^\"]*)\"/siU", $entscheidung_original, $matches2);
+			if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
+				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_STADTRAT_BESCHLUSS, $ergebnis, array("url" => $matches2["url"][0], "name" => $matches2["title"][0]));
+				/** @var AntragDokument $dok */
+				$dok = AntragDokument::model()->findByAttributes(array("url" => $matches2["url"][0], "name" => $matches2["title"][0]));
+				if ($dok && $dok->ergebnis_id != $ergebnis->id) {
+					echo "Korrgiere ID\n";
+					$dok->ergebnis_id = $ergebnis->id;
+					$dok->save(false);
+				}
+			}
+		}
+
+
+		preg_match_all("/<tr class=\"ergebnistab_tr\">.*<strong>(?<top>[0-9]+)\..*tdborder\">(?<betreff>.*)<\/td>.*<span[^>]+>(?<vorlage_id>.*)<\/span>.*valign=\"top\">(?<referent>.*)<\/td>/siU", $html_to_geheim, $matches);
+		for ($i = 0; $i < count($matches[0]); $i++) {
+			$betreff  = strip_tags(static::text_clean_spaces($matches["betreff"][$i]));
+			$referent = static::text_clean_spaces($matches["referent"][$i]);
+
+			/** @var AntragErgebnis $ergebnis */
+			$krits    = array("sitzungstermin_id" => $termin_id, "status" => "geheim", "top_betreff" => $betreff);
+			$ergebnis = AntragErgebnis::model()->findByAttributes($krits);
+			if (is_null($ergebnis)) {
+				$ergebnis = new AntragErgebnis();
+				$aenderungen .= "Neuer geheimer Tagesordnungspunkt: " . $betreff . "\n";
+			}
+			$ergebnis->sitzungstermin_id      = $termin_id;
+			$ergebnis->sitzungstermin_datum   = $daten->termin;
+			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
+			$ergebnis->antrag_id              = null;
+			$ergebnis->status                 = "geheim";
+			$ergebnis->beschluss_text         = $matches["vorlage_id"][$i];
+			$ergebnis->top_nr                 = $matches["top"][$i];
+			$ergebnis->top_betreff            = $betreff;
+			$ergebnis->entscheidung           = $referent;
+			$ergebnis->gremium_id             = $daten->gremium_id;
+			$ergebnis->gremium_name           = $daten->gremium->name;
+			$ergebnis->save();
+
+			$verwendete_top_betreffs[] = "geheim-" . $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
+		}
+
+		var_dump($verwendete_top_betreffs);
+
+		foreach ($bisherige_tops as $top) {
+			$top_key = ($top->status == "geheim" ? "geheim-" : "") . $top->top_nr . "-" . $top->top_betreff;
+			echo $top_key . "\n";
+			if (!in_array($top_key, $verwendete_top_betreffs)) {
+				$aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ":" . $top->top_betreff . "\n";
+				$top->delete();
+			}
+		}
+
+		if ($aenderungen_tops != "") $changed = true;
+
+
 		if ($changed) {
-			if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
+			if (!$alter_eintrag) $aenderungen = "Neu angelegt\n";
+			$aenderungen .= $aenderungen_tops;
 
 			echo "StR-Termin $termin_id: Verändert: " . $aenderungen . "\n";
 
@@ -151,101 +286,6 @@ class StadtratTerminParser extends RISParser
 		}
 
 
-		$match_top          = "<strong>(?<top>[0-9]+)\..*<\/td>";
-		$match_betreff      = "tdborder\">(?<betreff>.*)<\/td>";
-		$match_vorlage      = "<td[^>]*nowrap>(?<vorlage_holder>.*)<\/td>";
-		$match_entscheidung = "<td class=\"(bgdunkel)? tdborder\" valign=\"top\">(?<entscheidung>.*)<\/td>";
-		preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*<\/td>.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
-
-		$nth_1_top = 0;
-
-		for ($i = 0; $i < count($matches[0]); $i++) {
-			$vorlage_holder = trim(str_replace("&nbsp;", " ", $matches["vorlage_holder"][$i]));
-			preg_match_all("/risid=(?<risid>[0-9]+)>/siU", $vorlage_holder, $matches2);
-			$vorlage_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
-
-			if ($vorlage_id) {
-				$vorlage = Antrag::model()->findByPk($vorlage_id);
-				if (!$vorlage) {
-					echo "Creating: $vorlage_id\n";
-					$p = new StadtratsvorlageParser();
-					$p->parse($vorlage_id);
-				}
-			}
-
-			if ($matches["top"][$i] == 1) $nth_1_top++;
-
-			$betreff = static::text_clean_spaces($matches["betreff"][$i]);
-
-			$entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
-			$entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
-
-			/** @var AntragErgebnis $ergebnis */
-			if (is_null($vorlage_id)) {
-				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
-			} else {
-				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
-			}
-			if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-
-			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
-			$ergebnis->sitzungstermin_id      = $termin_id;
-			$ergebnis->sitzungstermin_datum   = $daten->termin;
-			$ergebnis->top_nr                 = $nth_1_top . "-" . $matches["top"][$i];
-			$ergebnis->antrag_id              = $vorlage_id;
-			if ($ergebnis->entscheidung != $entscheidung) {
-				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
-				$ergebnis->entscheidung = $entscheidung;
-			}
-			$ergebnis->top_betreff  = $betreff;
-			$ergebnis->gremium_id   = $daten->gremium_id;
-			$ergebnis->gremium_name = $daten->gremium->name;
-
-			if (!is_null($vorlage_id)) {
-				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
-				preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
-				$beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
-				if ($ergebnis->beschluss_text != $beschluss) {
-					$aenderungen .= "Beschluss: " . $ergebnis->beschluss_text . " => " . $beschluss . "\n";
-					$ergebnis->beschluss_text = $beschluss;
-				}
-			}
-
-			$ergebnis->save();
-
-			preg_match_all("/<a href=(?<url>[^ ]+) title=\"(?<title>[^\"]*)\"/siU", $entscheidung_original, $matches2);
-			if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
-				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_STADTRAT_BESCHLUSS, $ergebnis, array("url" => $matches2["url"][0], "name" => $matches2["title"][0]));
-			}
-		}
-
-
-		preg_match_all("/<tr class=\"ergebnistab_tr\">.*<strong>(?<top>[0-9]+)\..*tdborder\">(?<betreff>.*)<\/td>.*<span[^>]+>(?<vorlage_id>.*)<\/span>.*valign=\"top\">(?<referent>.*)<\/td>/siU", $html_to_geheim, $matches);
-		for ($i = 0; $i < count($matches[0]); $i++) {
-			$betreff  = static::text_clean_spaces($matches["betreff"][$i]);
-			$referent = static::text_clean_spaces($matches["referent"][$i]);
-
-			/** @var AntragErgebnis $ergebnis */
-			$krits    = array("sitzungstermin_id" => $termin_id, "status" => "geheim", "top_betreff" => $betreff);
-			$ergebnis = AntragErgebnis::model()->findByAttributes($krits);
-			if (is_null($ergebnis)) {
-				$ergebnis = new AntragErgebnis();
-				$aenderungen .= "Neuer geheimer Tagesordnungspunkt: " . $betreff . "\n";
-			}
-			$ergebnis->sitzungstermin_id      = $termin_id;
-			$ergebnis->sitzungstermin_datum   = $daten->termin;
-			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
-			$ergebnis->antrag_id              = null;
-			$ergebnis->status                 = "geheim";
-			$ergebnis->beschluss_text         = $matches["vorlage_id"][$i];
-			$ergebnis->top_nr                 = $matches["top"][$i];
-			$ergebnis->top_betreff            = $betreff;
-			$ergebnis->entscheidung           = $referent;
-			$ergebnis->gremium_id             = $daten->gremium_id;
-			$ergebnis->gremium_name           = $daten->gremium->name;
-			$ergebnis->save();
-		}
-
 		foreach ($dokumente as $dok) {
 			$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_STADTRAT_TERMIN, $daten, $dok);
 		}
@@ -261,7 +301,7 @@ class StadtratTerminParser extends RISParser
 			$aend->save();
 
 			/** @var Termin $termin */
-			$termin = Termin::model()->findByPk($termin_id);
+			$termin                         = Termin::model()->findByPk($termin_id);
 			$termin->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
 			$termin->save();
 		}

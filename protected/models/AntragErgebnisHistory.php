@@ -119,4 +119,19 @@ class AntragErgebnisHistory extends CActiveRecord
 			'criteria' => $criteria,
 		));
 	}
+
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
+	{
+		if ($kurzfassung) {
+			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
+			$x = explode(" Antrag Nr.", $betreff);
+			return RISTools::korrigiereTitelZeichen($x[0]);
+		} else {
+			return RISTools::korrigiereTitelZeichen($this->top_betreff);
+		}
+	}
 }

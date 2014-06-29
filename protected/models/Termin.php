@@ -245,14 +245,20 @@ class Termin extends CActiveRecord implements IRISItem
 		usort($ergebnisse, function($ergebnis1, $ergebnis2) {
 			/** @var AntragErgebnis $ergebnis1 */
 			/** @var AntragErgebnis $ergebnis2 */
+
+			if ($ergebnis1->status == "geheim" && $ergebnis2->status != "geheim") return 1;
+			if ($ergebnis1->status != "geheim" && $ergebnis2->status == "geheim") return -1;
+
 			$nr1 = explode(".", $ergebnis1->top_nr);
 			$nr2 = explode(".", $ergebnis2->top_nr);
 			if ($nr1[0] > $nr2[0]) return 1;
 			if ($nr1[0] < $nr2[0]) return -1;
+			if (count($nr1) == 1 && count($nr2) == 1) return 0;
 			if (count($nr1) >= 2 && count($nr2) == 1) return 1;
 			if (count($nr1) == 1 && count($nr2) >= 2) return -1;
 			if ($nr1[1] > $nr2[1]) return 1;
 			if ($nr1[1] < $nr2[1]) return -1;
+			if (count($nr1) == 2 && count($nr2) == 2) return 0;
 			if (count($nr1) >= 3 && count($nr2) == 2) return 1;
 			if (count($nr1) == 2 && count($nr2) >= 3) return -1;
 			if ($nr1[2] > $nr2[2]) return 1;
