@@ -240,7 +240,20 @@ class StadtratTerminParser extends RISParser
 			$top_key = ($top->status == "geheim" ? "geheim-" : "") . $top->top_nr . "-" . $top->top_betreff;
 			if (!in_array($top_key, $verwendete_top_betreffs) && !in_array($top->id, $verwendete_ergebnis_ids)) {
 				$aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ":" . $top->top_betreff . "\n";
-				$top->delete();
+				try {
+					$top->delete();
+				} catch (CDbException $e) {
+					$str = "Vermutlich verwaiste Dokumente (war zuvor: \"" . $top->getName() . "\" in " . $daten->getLink() . ":\n";
+					/** @var AntragDokument[] $doks */
+					$doks = AntragDokument::model()->findAllByAttributes(array("ergebnis_id" => $top->id));
+					foreach ($doks as $dok) {
+						$dok->ergebnis_id = null;
+						$dok->save(false);
+						$str .= $dok->getOriginalLink() . "\n";
+					}
+					RISTools::send_email(Yii::app()->params["adminEmail"], "StadtratTermin Verwaist", $str);
+					$top->delete();
+				}
 			}
 		}
 
