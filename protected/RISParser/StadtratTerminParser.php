@@ -2,6 +2,7 @@
 
 class StadtratTerminParser extends RISParser
 {
+	private static $MAX_OFFSET = 4900;
 
 	public function parse($termin_id)
 	{
@@ -232,11 +233,8 @@ class StadtratTerminParser extends RISParser
 			$verwendete_top_betreffs[] = "geheim-" . $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
 		}
 
-		var_dump($verwendete_top_betreffs);
-
 		foreach ($bisherige_tops as $top) {
 			$top_key = ($top->status == "geheim" ? "geheim-" : "") . $top->top_nr . "-" . $top->top_betreff;
-			echo $top_key . "\n";
 			if (!in_array($top_key, $verwendete_top_betreffs)) {
 				$aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ":" . $top->top_betreff . "\n";
 				$top->delete();
@@ -331,7 +329,7 @@ class StadtratTerminParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 4900;
+		$anz   = StadtratTerminParser::$MAX_OFFSET;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
@@ -343,8 +341,8 @@ class StadtratTerminParser extends RISParser
 	public function parseUpdate()
 	{
 		echo "Updates: Stadtratstermin\n";
-		for ($i = 270; $i >= 0; $i -= 10) {
-			$this->parseSeite($i, false, false);
+		for ($i = 0; $i < 300; $i += 10) {
+			$this->parseSeite(StadtratTerminParser::$MAX_OFFSET - $i, false, false);
 		}
 	}
 }
