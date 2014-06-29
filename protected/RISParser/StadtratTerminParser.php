@@ -124,6 +124,7 @@ class StadtratTerminParser extends RISParser
 		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
 		$aenderungen_tops        = "";
 		$verwendete_top_betreffs = array();
+		$verwendete_ergebnis_ids = array();
 		$abschnitt_nr            = 0;
 
 		for ($i = 0; $i < count($matches[0]); $i++) {
@@ -177,7 +178,6 @@ class StadtratTerminParser extends RISParser
 			$ergebnis->top_betreff     = $betreff;
 			$ergebnis->gremium_id      = $daten->gremium_id;
 			$ergebnis->gremium_name    = $daten->gremium->name;
-			$verwendete_top_betreffs[] = $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
 
 			if (!is_null($vorlage_id)) {
 				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
@@ -190,12 +190,14 @@ class StadtratTerminParser extends RISParser
 			}
 
 			$ergebnis->save();
+			$verwendete_top_betreffs[] = $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
+			$verwendete_ergebnis_ids[] = $ergebnis->id;
 
 			preg_match_all("/<a href=(?<url>[^ ]+) title=\"(?<title>[^\"]*)\"/siU", $entscheidung_original, $matches2);
 			if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
 				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_STADTRAT_BESCHLUSS, $ergebnis, array("url" => $matches2["url"][0], "name" => $matches2["title"][0]));
 				/** @var AntragDokument $dok */
-				$dok = AntragDokument::model()->findByAttributes(array("url" => $matches2["url"][0], "name" => $matches2["title"][0]));
+				$dok = AntragDokument::model()->findByAttributes(array("ergebnis_id" => $ergebnis->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]));
 				if ($dok && $dok->ergebnis_id != $ergebnis->id) {
 					echo "Korrgiere ID\n";
 					$dok->ergebnis_id = $ergebnis->id;
@@ -231,11 +233,12 @@ class StadtratTerminParser extends RISParser
 			$ergebnis->save();
 
 			$verwendete_top_betreffs[] = "geheim-" . $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
+			$verwendete_ergebnis_ids[] = $ergebnis->id;
 		}
 
 		foreach ($bisherige_tops as $top) {
 			$top_key = ($top->status == "geheim" ? "geheim-" : "") . $top->top_nr . "-" . $top->top_betreff;
-			if (!in_array($top_key, $verwendete_top_betreffs)) {
+			if (!in_array($top_key, $verwendete_top_betreffs) && !in_array($top->id, $verwendete_ergebnis_ids)) {
 				$aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ":" . $top->top_betreff . "\n";
 				$top->delete();
 			}
