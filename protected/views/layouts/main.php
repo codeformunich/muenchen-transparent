@@ -71,7 +71,7 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?= CHtml::link("Stadtrat", $this->createUrl("index/index")) ?></li>
+				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?= CHtml::link("Stadtrat", $this->createUrl("index/stadtrat")) ?></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <b class="caret"></b></a>
 					<ul class="dropdown-menu" id="ba_nav_list">
