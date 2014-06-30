@@ -3,6 +3,7 @@
 class StadtratTerminParser extends RISParser
 {
 	private static $MAX_OFFSET = 4900;
+	private static $MAX_OFFSET_UPDATE = 500;
 
 	public function parse($termin_id)
 	{
@@ -327,9 +328,9 @@ class StadtratTerminParser extends RISParser
 		$add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
 
-		$txt = explode("<table class=\"ergebnistab\" ", $text);
+		$txt = explode("<!-- ergebnistabellen-bereich -->", $text);
 		if ($seite > 4790 && count($txt) == 1) return;
-
+		if (count($txt) == 1) var_dump($txt);
 		$txt = explode("<!-- tabellenfuss", $txt[1]);
 
 		preg_match_all("/ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -357,8 +358,11 @@ class StadtratTerminParser extends RISParser
 	public function parseUpdate()
 	{
 		echo "Updates: Stadtratstermin\n";
-		for ($i = 0; $i < 300; $i += 10) {
-			$this->parseSeite(StadtratTerminParser::$MAX_OFFSET - $i, false, false);
+		$anz = StadtratTerminParser::$MAX_OFFSET_UPDATE;
+		$first = true;
+		for ($i = 0; $i < $anz; $i += 10) {
+			$this->parseSeite($anz - $i, $first, false);
+			$first = false;
 		}
 	}
 }
