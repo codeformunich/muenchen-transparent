@@ -37,7 +37,7 @@ class StadtraetInnenParser extends RISParser
 		$daten     = new StadtraetIn();
 		$daten->id = $stadtraetIn_id;
 
-		if (preg_match("/introheadline\">(.*)( ?\([^\)]*\) ?)<\/h3/siU", $html_details, $matches)) {
+		if (preg_match("/introheadline\">(.*)<\/h3/siU", $html_details, $matches)) {
 			$daten->name = trim(str_replace("&nbsp;", " ", $matches[1]));
 		}
 

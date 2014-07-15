@@ -37,7 +37,8 @@
 	if ($this->load_leaflet_draw_css) {
 		?>
 		<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>
-	<? }
+	<?
+	}
 	?>
 
 	<link rel="stylesheet" href="/css/jquery-ui-1.11.0.custom.min.css"/>
@@ -78,26 +79,26 @@
 						<?
 						/** @var Bezirksausschuss[] $bas */
 						$bas = Bezirksausschuss::model()->findAll();
-						foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr))) . "</li>\n"
+						foreach ($bas as $ba) echo "<li>".CHtml::link($ba->ba_nr.": ".$ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr)))."</li>\n"
 						?>
 					</ul>
 				</li>
 				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
 				<? if (Yii::app()->user->getState("role") == "admin") { ?>
-				<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
-						<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
-					</ul>
-				</li>
+					<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
+							<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+						</ul>
+					</li>
 				<? } ?>
 				<li <? if ($this->top_menu == "infos") echo 'active'; ?>><?= CHtml::link("Infos", $this->createUrl("index/infos")) ?></li>
 			</ul>
 
 			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
 				<div class="form-group">
-					<input type="text" name="suchbegriff" placeholder="Volltextsuche" class="form-control">
+					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control">
 				</div>
 				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
@@ -114,9 +115,9 @@
 
 
 		<footer>
-			<p><?=CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("index/datenschutz"))?>
+			<p><?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("index/datenschutz")) ?>
 				&nbsp;
-				<?=CHtml::link("Impressum", Yii::app()->createUrl("index/impressum"))?></p>
+				<?= CHtml::link("Impressum", Yii::app()->createUrl("index/impressum")) ?></p>
 		</footer>
 	</div>
 
