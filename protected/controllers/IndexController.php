@@ -416,8 +416,8 @@ class IndexController extends RISBaseController
 
 	public function actionSuche($code = "")
 	{
-		if (isset($_POST["suchbegriff"])) {
-			$suchbegriff     = $_POST["suchbegriff"];
+		if (isset($_REQUEST["suchbegriff"])) {
+			$suchbegriff     = $_REQUEST["suchbegriff"];
 			$this->suche_pre = $suchbegriff;
 			$krits           = new RISSucheKrits();
 			$krits->addVolltextsucheKrit($suchbegriff);

@@ -1,6 +1,6 @@
 <?php
 
-//define("VERYFAST", true);
+define("VERYFAST", true);
 
 class Reindex_Stadtrat_TerminCommand extends CConsoleCommand {
 	public function run($args) {

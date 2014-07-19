@@ -113,6 +113,7 @@ class StadtratTerminParser extends RISParser
 				if ($aenderungen != "") $changed = true;
 			}
 		}
+		if (!$alter_eintrag) $daten->save();
 
 
 		$match_top          = "tdborder\">(?<top>.*)<\/t[hd]>";
@@ -176,9 +177,9 @@ class StadtratTerminParser extends RISParser
 				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
 				$ergebnis->entscheidung = $entscheidung;
 			}
-			$ergebnis->top_betreff     = $betreff;
-			$ergebnis->gremium_id      = $daten->gremium_id;
-			$ergebnis->gremium_name    = $daten->gremium->name;
+			$ergebnis->top_betreff  = $betreff;
+			$ergebnis->gremium_id   = $daten->gremium_id;
+			$ergebnis->gremium_name = $daten->gremium->name;
 
 			if (!is_null($vorlage_id)) {
 				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
@@ -358,7 +359,7 @@ class StadtratTerminParser extends RISParser
 	public function parseUpdate()
 	{
 		echo "Updates: Stadtratstermin\n";
-		$anz = StadtratTerminParser::$MAX_OFFSET_UPDATE;
+		$anz   = StadtratTerminParser::$MAX_OFFSET_UPDATE;
 		$first = true;
 		for ($i = 0; $i < $anz; $i += 10) {
 			$this->parseSeite($anz - $i, $first, false);

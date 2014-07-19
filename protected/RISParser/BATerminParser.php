@@ -92,7 +92,7 @@ class BATerminParser extends RISParser
 			if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
 			if ($aenderungen != "") $changed = true;
 		}
-
+		if (!$alter_eintrag) $daten->save();
 
 		$match_top          = "<strong>(?<top>[0-9\.]+)<\/strong>";
 		$match_betreff      = "<t[hd][^>]*>(?<betreff>.*)<\/t[hd]>";
@@ -100,9 +100,9 @@ class BATerminParser extends RISParser
 		$match_entscheidung = "<td[^>]*>(?<entscheidung>.*)<\/td>";
 		preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
 
-		$bisherige_tops = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
-		$aenderungen_tops = "";
-		$abschnitt_nr = "";
+		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
+		$aenderungen_tops        = "";
+		$abschnitt_nr            = "";
 		$verwendete_top_betreffs = array();
 		for ($i = 0; $i < count($matches["top"]); $i++) {
 			$betreff = static::text_clean_spaces($matches["betreff"][$i]);
@@ -176,9 +176,9 @@ class BATerminParser extends RISParser
 				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
 				$ergebnis->entscheidung = $entscheidung;
 			}
-			$ergebnis->top_betreff  = $betreff;
-			$ergebnis->gremium_id   = $daten->gremium_id;
-			$ergebnis->gremium_name = $daten->gremium->name;
+			$ergebnis->top_betreff     = $betreff;
+			$ergebnis->gremium_id      = $daten->gremium_id;
+			$ergebnis->gremium_name    = $daten->gremium->name;
 			$verwendete_top_betreffs[] = $ergebnis->top_betreff;
 
 			/*
@@ -284,7 +284,7 @@ class BATerminParser extends RISParser
 		$anz = 4750;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-			$this->parseSeite($i);
+			$this->parseSeite($i, true);
 		}
 	}
 

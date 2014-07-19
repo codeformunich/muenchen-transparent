@@ -1,5 +1,7 @@
 <?php
 
+//define("VERYFAST", true);
+
 class Update_Ris_DailyCommand extends CConsoleCommand
 {
 	public function run($args)
@@ -7,6 +9,15 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		$fp = fopen("/tmp/ris_daily.log", "a");
 		fwrite($fp, "Gestartet: " . date("Y-m-d H:i:s") . "\n");
 
+
+		try {
+			$parser = new StadtratTerminParser();
+			$parser->parseUpdate();
+
+			fwrite($fp, "Done Termine: " . date("Y-m-d H:i:s") . "\n");
+		} catch (Exception $e) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Stadtrattermin", print_r($e, true));
+		}
 
 		try {
 			$parser = new StadtratsvorlageParser();
@@ -37,14 +48,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		}
 
 
-		try {
-			$parser = new StadtratTerminParser();
-			$parser->parseUpdate();
-
-			fwrite($fp, "Done Termine: " . date("Y-m-d H:i:s") . "\n");
-		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Stadtrattermin", print_r($e, true));
-		}
 
 		try {
 			$parser = new BATerminParser();
