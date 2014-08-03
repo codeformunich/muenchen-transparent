@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'antraege_history':
  * @property integer $id
+ * @property integer $vorgang_id
  * @property string $typ
  * @property string $datum_letzte_aenderung
  * @property integer $ba_nr
@@ -23,7 +24,7 @@
  * @property string $status
  * @property string $bearbeitung
  * @property string $fristverlaengerung
- * @property string $initiatoren
+ * @property string $initiatorInnen
  * @property string $initiative_to_aufgenommen
  *
  * The followings are the available model relations:
@@ -58,7 +59,7 @@ class AntragHistory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, typ, datum_letzte_aenderung', 'required'),
-			array('id, ba_nr', 'numerical', 'integerOnly' => true),
+			array('id, ba_nr, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 16),
 			array('antrags_nr', 'length', 'max' => 20),
 			array('referat', 'length', 'max' => 500),
@@ -66,11 +67,11 @@ class AntragHistory extends CActiveRecord
 			array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
 			array('bearbeitung', 'length', 'max' => 100),
 			array('gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatoren, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
+			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -93,6 +94,7 @@ class AntragHistory extends CActiveRecord
 	{
 		return array(
 			'id'                        => 'ID',
+			'vorgang_id'                => 'Vorgangs-ID',
 			'typ'                       => 'Typ',
 			'datum_letzte_aenderung'    => 'Datum Letzte Aenderung',
 			'ba_nr'                     => 'Ba Nr',
@@ -111,7 +113,7 @@ class AntragHistory extends CActiveRecord
 			'status'                    => 'Status',
 			'bearbeitung'               => 'Bearbeitung',
 			'fristverlaengerung'        => 'Fristverlaengerung',
-			'initiatoren'               => 'Initiatoren',
+			'initiatorInnen'               => 'InitiatorInnen',
 			'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
 		);
 	}
@@ -128,6 +130,7 @@ class AntragHistory extends CActiveRecord
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id);
+		$criteria->compare('vorgang_id', $this->vorgang_id);
 		$criteria->compare('typ', $this->typ, true);
 		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
 		$criteria->compare('ba_nr', $this->ba_nr);
@@ -146,7 +149,6 @@ class AntragHistory extends CActiveRecord
 		$criteria->compare('status', $this->status, true);
 		$criteria->compare('bearbeitung', $this->bearbeitung, true);
 		$criteria->compare('fristverlaengerung', $this->fristverlaengerung, true);
-		$criteria->compare('initiatoren', $this->initiatoren, true);
 		$criteria->compare('initiative_to_aufgenommen', $this->initiative_to_aufgenommen, true);
 
 		return new CActiveDataProvider($this, array(

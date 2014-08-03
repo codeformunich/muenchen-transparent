@@ -93,7 +93,7 @@ $geodata = array();
 					/** @var Antrag $ant */
 					echo "<li>Verwandter Antrag: " . CHtml::link($ant->getName(true), $ant->getLink()) . "</li>\n";
 				} else {
-					echo "<li>Verwandter Antrag: " . CHtml::encode($ant) . "</li>\n";
+					echo "<li>Verwandter Antrag: " . CHtml::encode(RISTools::korrigiereTitelZeichen($ant)) . "</li>\n";
 				}
 				echo "</ul>";
 			}

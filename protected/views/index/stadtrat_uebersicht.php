@@ -9,6 +9,8 @@
  * @var bool $explizites_datum
  * @var string $neuere_url_ajax
  * @var string $neuere_url_std
+ * @var string $aeltere_url_ajax
+ * @var string $aeltere_url_std
  * @var Termin[] $termine_zukunft
  * @var Termin[] $termine_vergangenheit
  * @var Termin[] $termin_dokumente
@@ -16,6 +18,7 @@
  * @var int $tage_vergangenheit
  * @var array[] $fraktionen
  * @var array $statistiken
+ * @var AntragDokument[] $highlights
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -133,14 +136,14 @@ function gruppiere_termine($termine)
 			"aeltere_url_std"   => null,
 			"weiter_links_oben" => $explizites_datum,
 		));
-		if (count($antraege_sonstige) > 0) $this->renderPartial("index_antraege_liste", array(
+		$this->renderPartial("index_antraege_liste", array(
 			"title"             => "Sonstige neue Dokumente",
 			"antraege"          => $antraege_sonstige,
 			"datum"             => $datum,
 			"neuere_url_ajax"   => $neuere_url_ajax,
 			"neuere_url_std"    => $neuere_url_std,
-			"aeltere_url_ajax"  => null,
-			"aeltere_url_std"   => null,
+			"aeltere_url_ajax"  => $aeltere_url_ajax,
+			"aeltere_url_std"   => $aeltere_url_std,
 			"weiter_links_oben" => false,
 		));
 		?>
@@ -195,6 +198,19 @@ function gruppiere_termine($termine)
 				<a href="#" class="startseite_benachrichtigung_link" title="Facebook">f</a>
 				-->
 			</p>
+		</section>
+
+		<section class="start_berichte">
+			<a href="<?=CHtml::encode(Yii::app()->createUrl("index/highlights"))?>" class="weitere">Weitere</a>
+			<h3>Berichte</h3>
+			<ul><?
+				foreach ($highlights as $dok) {
+					echo "<li>";
+					echo CHtml::link($dok->antrag->getName(true), $dok->getOriginalLink());
+					echo "</li>";
+				}
+				?>
+			</ul>
 		</section>
 
 		<section>

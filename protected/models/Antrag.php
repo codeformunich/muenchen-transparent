@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'antraege':
  * @property integer $id
+ * @property integer $vorgang_id
  * @property string $typ
  * @property string $datum_letzte_aenderung
  * @property integer $ba_nr
@@ -36,6 +37,7 @@
  * @property Antrag[] $antrag2vorlagen
  * @property Antrag[] $vorlage2antraege
  * @property AntragAbo[] $abos
+ * @property Vorgang $vorgang
  */
 class Antrag extends CActiveRecord implements IRISItem
 {
@@ -83,7 +85,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, typ, datum_letzte_aenderung, antrags_nr, wahlperiode, betreff, status', 'required'),
-			array('id, ba_nr', 'numerical', 'integerOnly' => true),
+			array('id, ba_nr, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 16),
 			array('antrags_nr', 'length', 'max' => 20),
 			array('referat', 'length', 'max' => 500),
@@ -118,6 +120,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'vorlage2antraege' => array(self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag1, antrag2)'),
 			'antrag2vorlagen'  => array(self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag2, antrag1)'),
 			'abos'             => array(self::MANY_MANY, 'AntragAbo', 'antraege_abos(antrag_id, benutzerIn_id)'),
+			'vorgang'          => array(self::BELONGS_TO, 'Vorgang', 'vorgang_id'),
 		);
 	}
 
@@ -155,6 +158,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	{
 		return array(
 			'id'                        => 'ID',
+			'vorgang_id'                => 'Vorgangs-ID',
 			'typ'                       => 'Typ',
 			'datum_letzte_aenderung'    => 'Datum Letzte Aenderung',
 			'ba_nr'                     => 'Ba Nr',
@@ -190,6 +194,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id);
+		$criteria->compare('vorgang_id', $this->vorgang_id);
 		$criteria->compare('typ', $this->typ, true);
 		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
 		$criteria->compare('ba_nr', $this->ba_nr);
@@ -272,7 +277,8 @@ class Antrag extends CActiveRecord implements IRISItem
 	/**
 	 * @return int
 	 */
-	public function neuestes_dokument_ts() {
+	public function neuestes_dokument_ts()
+	{
 		$ret = 0;
 		foreach ($this->dokumente as $dok) {
 			$ts = RISTools::date_iso2timestamp($dok->datum);
@@ -410,7 +416,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	{
 		if ($kurzfassung) {
 			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->betreff);
-			$x = explode(" Antrag Nr.", $betreff);
+			$x       = explode(" Antrag Nr.", $betreff);
 			return RISTools::korrigiereTitelZeichen($x[0]);
 		} else {
 			return RISTools::korrigiereTitelZeichen($this->betreff);
@@ -421,7 +427,8 @@ class Antrag extends CActiveRecord implements IRISItem
 	 * @param int $anz
 	 * @return AntragDokument[]
 	 */
-	public function errateThemenverwandteDokumente($anz) {
+	public function errateThemenverwandteDokumente($anz)
+	{
 		/** @var AntragDokument[] $dokumente */
 		$dokumente = array();
 		/** @var int[] $dokumente_count */
@@ -433,7 +440,7 @@ class Antrag extends CActiveRecord implements IRISItem
 				if (isset($dokumente_count[$rel_dok->id])) {
 					$dokumente_count[$rel_dok->id]++;
 				} else {
-					$dokumente[$rel_dok->id] = $rel_dok;
+					$dokumente[$rel_dok->id]       = $rel_dok;
 					$dokumente_count[$rel_dok->id] = 1;
 				}
 			}
@@ -442,7 +449,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		arsort($dokumente_count);
 
 		$ret = array();
-		$i = 0;
+		$i   = 0;
 		foreach ($dokumente_count as $dok_id => $anz) if ($i++ < $anz) $ret[] = $dokumente[$dok_id];
 		return $ret;
 	}
@@ -451,7 +458,8 @@ class Antrag extends CActiveRecord implements IRISItem
 	 * @param int $limit
 	 * @return Antrag[]
 	 */
-	public function errateThemenverwandteAntraege($limit) {
+	public function errateThemenverwandteAntraege($limit)
+	{
 		/** @var Antrag[] $rel_antraege */
 		$rel_antraege = array();
 		/** @var int[] $rel_antraege_count */
@@ -463,18 +471,91 @@ class Antrag extends CActiveRecord implements IRISItem
 				if (isset($rel_antraege_count[$rel_dok->antrag_id])) {
 					$rel_antraege_count[$rel_dok->antrag_id]++;
 				} else {
-					$rel_antraege[$rel_dok->antrag_id] = $rel_dok->antrag;
+					$rel_antraege[$rel_dok->antrag_id]       = $rel_dok->antrag;
 					$rel_antraege_count[$rel_dok->antrag_id] = 1;
 				}
 			}
 		}
 
 		$ret = array();
-		$i = 0;
+		$i   = 0;
 		foreach ($rel_antraege_count as $ant_id => $anz) {
 			if (!ris_intern_antrag_ist_relevant_mlt($this, $rel_antraege[$ant_id])) continue;
 			if ($i++ < $limit) $ret[] = $rel_antraege[$ant_id];
 		}
 		return $ret;
+	}
+
+	/**
+	 * @param Antrag $curr_antrag
+	 * @param Antrag[] $gefundene_antraege
+	 * @param AntragErgebnis[] $gefundene_ergebnisse
+	 * @param AntragDokument[] $gefundene_dokumente
+	 * @param int $vorgang_id
+	 * @throws Exception
+	 */
+	private static function rebuildVorgaengeCache_rek($curr_antrag, &$gefundene_antraege, &$gefundene_ergebnisse, &$gefundene_dokumente, &$vorgang_id)
+	{
+		/** @var Antrag $antrag */
+		foreach ($curr_antrag->vorlage2antraege as $ant) if (!isset($gefundene_antraege[$ant->id])) {
+			if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) throw new Exception("Vorgangskonflikt: Antrag " . $ant->id . " - Vorgang $vorgang_id vs. " . $ant->vorgang_id);
+			if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
+			$gefundene_antraege[$ant->id] = $ant;
+			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
+		}
+		foreach ($curr_antrag->antrag2vorlagen as $ant) if (!isset($gefundene_antraege[$ant->id])) {
+			if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) throw new Exception("Vorgangskonflikt: Antrag " . $ant->id . " - Vorgang $vorgang_id vs. " . $ant->vorgang_id);
+			if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
+			$gefundene_antraege[$ant->id] = $ant;
+			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
+		}
+		foreach ($curr_antrag->ergebnisse as $ergebnis) {
+			$gefundene_ergebnisse[$ergebnis->id] = $ergebnis;
+			foreach ($ergebnis->dokumente as $dokument) $gefundene_dokumente[$dokument->id] = $dokument;
+		}
+		foreach ($curr_antrag->dokumente as $dokument) $gefundene_dokumente[$dokument->id] = $dokument;
+	}
+
+	/**
+	 *
+	 */
+	public function rebuildVorgaengeCache()
+	{
+		if ($this->vorgang_id > 0) return;
+		$vorgang_id = 0;
+		/** @var Antrag[] $gefundene_antraege */
+		$gefundene_antraege = array();
+		/** @var AntragErgebnis[] $gefundene_ergebnisse */
+		$gefundene_ergebnisse = array();
+		/** @var AntragDokument[] $gefundene_dokumente */
+		$gefundene_dokumente = array();
+		try {
+			static::rebuildVorgaengeCache_rek($this, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
+		} catch (Exception $e) {
+			var_dump($e);
+			return;
+		}
+		if ($vorgang_id == 0) {
+			$vorgang = new Vorgang();
+			$vorgang->typ = 0;
+			$vorgang->save(false);
+			$vorgang_id = $vorgang->id;
+		}
+		//echo "Gefundene Anträge:\n";
+		foreach ($gefundene_antraege as $ant) {
+			$ant->vorgang_id = $vorgang_id;
+			$ant->save();
+		}
+		//echo "Gefundene Termine:\n";
+		foreach ($gefundene_ergebnisse as $erg) {
+			$erg->vorgang_id = $vorgang_id;
+			$erg->save();
+		}
+		echo "Gefundene Dokumente:\n";
+		foreach ($gefundene_dokumente as $dok) {
+			$dok->vorgang_id = $vorgang_id;
+			$dok->save();
+		}
+		echo "Fertig";
 	}
 }

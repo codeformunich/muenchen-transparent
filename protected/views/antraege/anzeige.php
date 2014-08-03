@@ -132,8 +132,8 @@ if (count($personen[AntragPerson::$TYP_GESTELLT_VON])) {
 				 */
 				$ts1 = RISTools::date_iso2timestamp($dok1->datum);
 				$ts2 = RISTools::date_iso2timestamp($dok2->datum);
-				if ($ts1 > $ts2) return -1;
-				if ($ts1 < $ts2) return 1;
+				if ($ts1 > $ts2) return 1;
+				if ($ts1 < $ts2) return -1;
 				return 0;
 			});
 			foreach ($doks as $dok) {
@@ -184,7 +184,7 @@ if (count($antrag->ergebnisse) > 0) {
 		<td>
 			<ul>
 				<? foreach ($antrag->antrag2vorlagen as $vorlage) {
-					echo "<li> " . CHtml::link($vorlage->getName(), $this->createUrl("antraege/anzeigen", array("id" => $vorlage->id))) . " </li> ";
+					echo "<li> " . CHtml::link($vorlage->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $vorlage->id))) . " </li> ";
 				} ?>
 			</ul>
 		</td>
@@ -198,7 +198,7 @@ if (count($antrag->vorlage2antraege) > 0) {
 		<td>
 			<ul>
 				<? foreach ($antrag->vorlage2antraege as $antrag2) {
-					echo "<li> " . CHtml::link($antrag2->getName(), $this->createUrl("antraege/anzeigen", array("id" => $antrag2->id))) . " </li> ";
+					echo "<li> " . CHtml::link($antrag2->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $antrag2->id))) . " </li> ";
 				} ?>
 			</ul>
 		</td>

@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'antraege_dokumente':
  * @property integer $id
+ * @property integer $vorgang_id
  * @property string $typ
  * @property integer $antrag_id
  * @property integer $termin_id
@@ -18,12 +19,14 @@
  * @property string $text_pdf
  * @property string $ocr_von
  * @property integer $seiten_anzahl
+ * @property string|null $highlight
  *
  * The followings are the available model relations:
  * @property Antrag $antrag
  * @property Termin $termin
  * @property AntragErgebnis $ergebnis
  * @property AntragOrt[] $orte
+ * @property Vorgang $vorgang
  */
 class AntragDokument extends CActiveRecord
 {
@@ -81,11 +84,11 @@ class AntragDokument extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, url, name, datum', 'required'),
-			array('id, antrag_id, termin_id, ergebnis_id, seiten_anzahl', 'numerical', 'integerOnly' => true),
+			array('id, antrag_id, termin_id, ergebnis_id, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 200),
-			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von', 'safe'),
+			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, typ, antrag_id, termin_id, ergebnis_id, url, name, datum, text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von', 'safe', 'on' => 'search'),
@@ -100,10 +103,11 @@ class AntragDokument extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antrag'   => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-			'termin'   => array(self::BELONGS_TO, 'Termin', 'termin_id'),
-			'ergebnis' => array(self::BELONGS_TO, 'AntragErgebnis', 'ergebnis_id'),
-			'orte'     => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
+			'vorgang_id' => array(self::BELONGS_TO, 'Vorgang', 'id'),
+			'antrag'     => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'termin'     => array(self::BELONGS_TO, 'Termin', 'termin_id'),
+			'ergebnis'   => array(self::BELONGS_TO, 'AntragErgebnis', 'ergebnis_id'),
+			'orte'       => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
 		);
 	}
 
@@ -114,6 +118,7 @@ class AntragDokument extends CActiveRecord
 	{
 		return array(
 			'id'                      => 'ID',
+			'vorgang_id'              => 'Vorgangs-ID',
 			'typ'                     => 'Typ',
 			'antrag_id'               => 'Antrag',
 			'termin_id'               => 'Termin',
@@ -141,6 +146,7 @@ class AntragDokument extends CActiveRecord
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id);
+		$criteria->compare('vorgang_id', $this->vorgang_id);
 		$criteria->compare('typ', $this->typ, true);
 		$criteria->compare('antrag_id', $this->antrag_id);
 		$criteria->compare('termin_id', $this->termin_id);
@@ -310,6 +316,8 @@ class AntragDokument extends CActiveRecord
 
 		$dokument->geo_extract();
 		$dokument->solrIndex();
+
+		$dokument->highlightBenachrichtigung();
 
 		return "Neue Datei: " . $dokument_id . " / " . $dok["name"] . "\n";
 	}
@@ -540,6 +548,21 @@ class AntragDokument extends CActiveRecord
 			sleep(15);
 		}
 		RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes()));
+	}
+
+	/**
+	 * @param int $limit
+	 * @return AntragDokument[]
+	 */
+	public static function getHighlightDokumente($limit = 3)
+	{
+		return AntragDokument::model()->findAll(array("condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit));
+	}
+
+	/**
+	 */
+	public function highlightBenachrichtigung() {
+		if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::app()->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink());
 	}
 
 }

@@ -281,7 +281,7 @@ class BATerminParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz = 4750;
+		$anz = 4770;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, true);

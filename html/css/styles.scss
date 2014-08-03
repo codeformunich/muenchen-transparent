@@ -388,6 +388,27 @@ ul.terminliste, ul.suchergebnisliste {
   }
 }
 
+.start_berichte {
+  .weitere {
+    float: right;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: solid 1px #ccc;
+    background-color: #eee;
+    border-radius: 5px;
+    li {
+      border-top: solid 1px #ccc;
+      padding: 2px;
+      &:first-child {
+        border-top: none;
+      }
+    }
+  }
+}
+
 .suchergebnisse_holder {
   position: relative;
   width: 100%;

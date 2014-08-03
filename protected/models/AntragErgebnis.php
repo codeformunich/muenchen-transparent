@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'antraege_ergebnisse':
  * @property integer $id
+ * @property integer $vorgang_id
  * @property string $datum_letzte_aenderung
  * @property integer $antrag_id
  * @property string $gremium_name
@@ -53,7 +54,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('top_betreff, sitzungstermin_id, sitzungstermin_datum, datum_letzte_aenderung', 'required'),
-			array('antrag_id, gremium_id, sitzungstermin_id, top_ueberschrift', 'numerical', 'integerOnly' => true),
+			array('antrag_id, gremium_id, sitzungstermin_id, top_ueberschrift, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('gremium_name', 'length', 'max' => 100),
 			array('beschluss_text', 'length', 'max' => 500),
 			// The following rule is used by search().
@@ -74,6 +75,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 			'gremium'        => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
 			'antrag'         => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
 			'dokumente'      => array(self::HAS_MANY, 'AntragDokument', 'ergebnis_id'),
+			'vorgang'        => array(self::BELONGS_TO, 'Vorgang', 'vorgang_id'),
 		);
 	}
 
@@ -84,6 +86,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	{
 		return array(
 			'id'                     => 'ID',
+			'vorgang_id'             => 'Vorgangs-ID',
 			'antrag_id'              => 'Antrag',
 			'gremium_name'           => 'Gremium Name',
 			'gremium_id'             => 'Gremium',
@@ -111,6 +114,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id);
+		$criteria->compare('vorgang_id', $this->vorgang_id);
 		$criteria->compare('antrag_id', $this->antrag_id);
 		$criteria->compare('gremium_name', $this->gremium_name, true);
 		$criteria->compare('gremium_id', $this->gremium_id);

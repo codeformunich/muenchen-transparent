@@ -77,8 +77,8 @@ class HistorienEintragAntrag implements HistorienEintrag
 		if ($this->antrag_alt->fristverlaengerung != $this->antrag_neu->fristverlaengerung) $felder[] = new HistorienEintragFeld(
 			"Fristverlängerung", CHtml::encode($this->antrag_alt->fristverlaengerung), CHtml::encode($this->antrag_neu->fristverlaengerung)
 		);
-		if ($this->antrag_alt->initiatoren != $this->antrag_neu->initiatoren) $felder[] = new HistorienEintragFeld(
-			"Initiatoren", CHtml::encode($this->antrag_alt->initiatoren), CHtml::encode($this->antrag_neu->initiatoren)
+		if ($this->antrag_alt->initiatorInnen != $this->antrag_neu->initiatorInnen) $felder[] = new HistorienEintragFeld(
+			"Initiatoren", CHtml::encode($this->antrag_alt->initiatorInnen), CHtml::encode($this->antrag_neu->initiatorInnen)
 		);
 		if ($this->antrag_alt->initiative_to_aufgenommen != $this->antrag_neu->initiative_to_aufgenommen) $felder[] = new HistorienEintragFeld(
 			"TO Aufgenommen", CHtml::encode($this->antrag_alt->initiative_to_aufgenommen), CHtml::encode($this->antrag_neu->initiative_to_aufgenommen)

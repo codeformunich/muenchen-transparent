@@ -439,6 +439,21 @@ ul.terminliste, ul.suchergebnisliste {
     margin-top: 5px;
     margin-bottom: 5px; }
 
+.start_berichte .weitere {
+  float: right; }
+.start_berichte ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: solid 1px #ccc;
+  background-color: #eee;
+  border-radius: 5px; }
+  .start_berichte ul li {
+    border-top: solid 1px #ccc;
+    padding: 2px; }
+    .start_berichte ul li:first-child {
+      border-top: none; }
+
 .suchergebnisse_holder {
   position: relative;
   width: 100%; }
