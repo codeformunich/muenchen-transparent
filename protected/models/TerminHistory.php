@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'termine_history':
  * @property integer $id
- * @property integer $vorgang_id
  * @property string $datum_letzte_aenderung
  * @property integer $termin_reihe
  * @property integer $gremium_id
@@ -49,7 +48,7 @@ class TerminHistory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id, datum_letzte_aenderung', 'required'),
-			array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id, vorgang_id', 'numerical', 'integerOnly'=>true),
+			array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly'=>true),
 			array('referat, referent, vorsitz', 'length', 'max'=>200),
 			array('wahlperiode', 'length', 'max'=>20),
 			array('status', 'length', 'max'=>100),
@@ -78,7 +77,6 @@ class TerminHistory extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'vorgang_id' => 'Vorgangs-ID',
 			'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
 			'termin_reihe' => 'Termin Reihe',
 			'gremium_id' => 'Gremium',

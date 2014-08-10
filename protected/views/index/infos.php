@@ -1,1 +1,0 @@
-Allgemeine Infos

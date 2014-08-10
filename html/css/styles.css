@@ -254,8 +254,18 @@ ul.dokumente {
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+#main_navbar .navbar-nav > li.so_funktioniert > a {
+  /*
+    padding-top: 5px;
+    padding-bottom: 0;
+  */ }
+  #main_navbar .navbar-nav > li.so_funktioniert > a br {
+    display: none; }
+
 #ba_nav_list {
   min-width: 270px; }
+  #ba_nav_list .stadtrat > a {
+    font-weight: bold; }
 
 body {
   padding-top: 60px;

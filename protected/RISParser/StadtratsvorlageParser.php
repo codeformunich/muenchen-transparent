@@ -241,6 +241,7 @@ class StadtratsvorlageParser extends RISParser
 			$antrag = Antrag::model()->findByPk($vorlage_id);
 			$antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
 			$antrag->save();
+			$antrag->rebuildVorgaengeCache();
 		}
 	}
 

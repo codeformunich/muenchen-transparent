@@ -50,16 +50,56 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-spin4:before { content: '\e834'; } /* '' */
-.icon-ok:before { content: '\e803'; } /* '' */
-.icon-cancel:before { content: '\e804'; } /* '' */
-.icon-info-circled:before { content: '\e805'; } /* '' */
-.icon-home:before { content: '\e801'; } /* '' */
-.icon-download:before { content: '\e800'; } /* '' */
-.icon-right-open:before { content: '\e802'; } /* '' */
-.icon-rss:before { content: '\52'; } /* 'R' */
-.icon-twitter:before { content: '\54'; } /* 'T' */
-.icon-facebook:before { content: '\66'; } /* 'f' */
+.icon-spin4:before {
+  content: '\e834';
+}
+
+/* '' */
+.icon-ok:before {
+  content: '\e803';
+}
+
+/* '' */
+.icon-cancel:before {
+  content: '\e804';
+}
+
+/* '' */
+.icon-info-circled:before {
+  content: '\e805';
+}
+
+/* '' */
+.icon-home:before {
+  content: '\e801';
+}
+
+/* '' */
+.icon-download:before {
+  content: '\e800';
+}
+
+/* '' */
+.icon-right-open:before {
+  content: '\e802';
+}
+
+/* '' */
+.icon-rss:before {
+  content: '\52';
+}
+
+/* 'R' */
+.icon-twitter:before {
+  content: '\54';
+}
+
+/* 'T' */
+.icon-facebook:before {
+  content: '\66';
+}
+
+/* 'f' */
 
 /*
    Animation example, for spinners
@@ -152,8 +192,24 @@
   }
 }
 
+#main_navbar {
+  .navbar-nav > li.so_funktioniert > a {
+    /*
+      padding-top: 5px;
+      padding-bottom: 0;
+    */
+    br {
+      display: none;
+    }
+  }
+}
+
 #ba_nav_list {
   min-width: 270px;
+
+  .stadtrat > a {
+    font-weight: bold;
+  }
 }
 
 body {
@@ -300,7 +356,7 @@ body {
       display: none;
     }
   }
-  html.no-csscolumns &.nur_dokumente li{
+  html.no-csscolumns &.nur_dokumente li {
     width: 49%;
     display: inline-block;
   }
@@ -567,7 +623,6 @@ ul.terminliste > li > .termindetails {
   a {
   }
 }
-
 
 ul.fraktionen_liste {
   list-style-type: none;

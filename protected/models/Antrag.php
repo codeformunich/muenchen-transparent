@@ -521,7 +521,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	 */
 	public function rebuildVorgaengeCache()
 	{
-		if ($this->vorgang_id > 0) return;
+		//if ($this->vorgang_id > 0) return;
 		$vorgang_id = 0;
 		/** @var Antrag[] $gefundene_antraege */
 		$gefundene_antraege = array();

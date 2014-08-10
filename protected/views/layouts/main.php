@@ -72,11 +72,11 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li <? if ($this->top_menu == "stadtrat") echo 'class="active"'; ?>><?= CHtml::link("Stadtrat", $this->createUrl("index/stadtrat")) ?></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <b class="caret"></b></a>
 					<ul class="dropdown-menu" id="ba_nav_list">
 						<?
+						echo "<li class='stadtrat'>".CHtml::link("Stadtrat", $this->createUrl("index/stadtrat"))."</li>\n";
 						/** @var Bezirksausschuss[] $bas */
 						$bas = Bezirksausschuss::model()->findAll();
 						foreach ($bas as $ba) echo "<li>".CHtml::link($ba->ba_nr.": ".$ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr)))."</li>\n"
@@ -93,7 +93,10 @@
 						</ul>
 					</li>
 				<? } ?>
-				<li <? if ($this->top_menu == "infos") echo 'active'; ?>><?= CHtml::link("Infos", $this->createUrl("index/infos")) ?></li>
+				<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
+				<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
+				<li class="so_funktioniert<? if ($this->top_menu == "so_funktioniert") echo ' active'; ?>"><?= CHtml::link("So funktioniert<br> Stadtpolitik", $this->createUrl("infos/soFunktioniertStadtpolitik")) ?></li>
+				<li class="<? if ($this->top_menu == "ansprechpartnerInnen") echo ' active'; ?>"><?= CHtml::link("AnsprechpartnerInnen", $this->createUrl("infos/ansprechpartnerInnen")) ?></li>
 			</ul>
 
 			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
@@ -115,9 +118,9 @@
 
 
 		<footer>
-			<p><?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("index/datenschutz")) ?>
+			<p><?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("infos/datenschutz")) ?>
 				&nbsp;
-				<?= CHtml::link("Impressum", Yii::app()->createUrl("index/impressum")) ?></p>
+				<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?></p>
 		</footer>
 	</div>
 

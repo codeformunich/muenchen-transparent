@@ -793,24 +793,6 @@ class IndexController extends RISBaseController
 	}
 
 
-	public function actionInfos()
-	{
-		$this->top_menu = "infos";
-		$this->render('infos');
-	}
-
-	public function actionImpressum()
-	{
-		$this->top_menu = "impressum";
-		$this->render('impressum');
-	}
-
-	public function actionDatenschutz()
-	{
-		$this->top_menu = "datenschutz";
-		$this->render('datenschutz');
-	}
-
 	/**
 	 *
 	 */

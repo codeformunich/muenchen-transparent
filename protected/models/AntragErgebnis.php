@@ -168,9 +168,10 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	/**
 	 * @return array
 	 */
-	public function zugeordneteAntraegeHeuristisch() {
-		$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
-		$x = explode(" Antrag Nr.", $betreff);
+	public function zugeordneteAntraegeHeuristisch()
+	{
+		$betreff  = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
+		$x        = explode(" Antrag Nr.", $betreff);
 		$antraege = array();
 		foreach ($x as $y) if (preg_match("/[0-9]{2}\-[0-9]{2} \/ [A-Z] [0-9]+/su", $y, $match)) {
 			/** @var Antrag $antrag */
@@ -205,7 +206,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	{
 		if ($kurzfassung) {
 			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
-			$x = explode(" Antrag Nr.", $betreff);
+			$x       = explode(" Antrag Nr.", $betreff);
 			return RISTools::korrigiereTitelZeichen($x[0]);
 		} else {
 			return RISTools::korrigiereTitelZeichen($this->top_betreff);
