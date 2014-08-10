@@ -52,7 +52,11 @@ class BAAntragParser extends RISParser {
 
 		preg_match_all("/<span class=\"itext\">(.*)<\/span.*detail_div_(left|right|left_long)\">(.*)<\/div/siU", $dat_details[0], $matches);
 		for ($i = 0; $i < count($matches[1]); $i++) if ($matches[3][$i] != "&nbsp;") switch ($matches[1][$i]) {
-			case "Zust&auml;ndiges Referat:": $daten->referat = $matches[3][$i]; break;
+			case "Zust&auml;ndiges Referat:":
+				$daten->referat = $matches[3][$i];
+				$ref = Referat::getByHtmlName($matches[3][$i]);
+				$daten->referat_id = ($ref ? $ref->id : null);
+				break;
 			case "Gestellt am:": $daten->gestellt_am = $this->date_de2mysql($matches[3][$i]); break;
 			case "Wahlperiode:": $daten->wahlperiode = $matches[3][$i]; break;
 			case "Bearbeitungsfrist:": $daten->bearbeitungsfrist = $this->date_de2mysql($matches[3][$i]); break;
@@ -93,6 +97,8 @@ class BAAntragParser extends RISParser {
 			if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
 			if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
 			if ($alter_eintrag->typ != $daten->typ) $aenderungen .= "Typ: " . $alter_eintrag->typ . " => " . $daten->typ . "\n";
+			if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
+			if ($alter_eintrag->referat_id != $daten->referat_id) $aenderungen .= "Referats-ID: " . $alter_eintrag->referat_id . " => " . $daten->referat_id . "\n";
 			if ($aenderungen != "") $changed = true;
 		}
 

@@ -47,7 +47,11 @@ class StadtratsantragParser extends RISParser {
 		preg_match_all("/detail_label_long\">(<span class=\"itext\">)?([^<].*)<\/.*detail_div_(left|right|left_long)\">(.*)<\/div/siU", $dat_details[0], $matches);
 		for ($i = 0; $i < count($matches[2]); $i++) if ($matches[4][$i] != "&nbsp;") switch ($matches[2][$i]) {
 			case "Typ:": $daten->antrag_typ = $matches[4][$i]; break;
-			case "Zust&auml;ndiges Referat:": $daten->referat = $matches[4][$i]; break;
+			case "Zust&auml;ndiges Referat:":
+				$daten->referat = $matches[4][$i];
+				$ref = Referat::getByHtmlName($matches[4][$i]);
+				$daten->referat_id = ($ref ? $ref->id : null);
+				break;
 			case "Gestellt am:": $daten->gestellt_am = $this->date_de2mysql($matches[4][$i]); break;
 			case "Wahlperiode:": $daten->wahlperiode = $matches[4][$i]; break;
 			case "Bearbeitungsfrist:": $daten->bearbeitungsfrist = $this->date_de2mysql($matches[4][$i]); break;
@@ -85,6 +89,8 @@ class StadtratsantragParser extends RISParser {
 			if ($alter_eintrag->gestellt_von != $daten->gestellt_von) $aenderungen .= "Gestellt von: " . $alter_eintrag->gestellt_von . " => " . $daten->gestellt_von . "\n";
 			if ($alter_eintrag->antrags_nr != $daten->antrags_nr) $aenderungen .= "Antrags-Nr: " . $alter_eintrag->antrags_nr . " => " . $daten->antrags_nr . "\n";
 			if ($alter_eintrag->erledigt_am != $daten->erledigt_am) $aenderungen .= "Erledigt am: " . $alter_eintrag->erledigt_am . " => " . $daten->erledigt_am . "\n";
+			if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
+			if ($alter_eintrag->referat_id != $daten->referat_id) $aenderungen .= "Referats-ID: " . $alter_eintrag->referat_id . " => " . $daten->referat_id . "\n";
 			if ($aenderungen != "") $changed = true;
 		}
 
@@ -153,7 +159,7 @@ class StadtratsantragParser extends RISParser {
 	}
 
 	public function parseAlle() {
-		$anz = 14500;
+		$anz = 14600;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

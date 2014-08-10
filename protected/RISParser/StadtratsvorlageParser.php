@@ -64,6 +64,8 @@ class StadtratsvorlageParser extends RISParser
 				break;
 			case "Zust&auml;ndiges Referat:":
 				$daten->referat = $matches[5][$i];
+				$ref = Referat::getByHtmlName($matches[5][$i]);
+				$daten->referat_id = ($ref ? $ref->id : null);
 				break;
 			case "Erstellt am:":
 				$daten->gestellt_am = $this->date_de2mysql($matches[5][$i]);
@@ -147,6 +149,7 @@ class StadtratsvorlageParser extends RISParser
 				if ($alter_eintrag->ba_nr != $daten->ba_nr) $aenderungen .= "BA: " . $alter_eintrag->ba_nr . " => " . $daten->ba_nr . "\n";
 				if (isset($daten->referat) && $alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
 				if (isset($daten->referent) && $alter_eintrag->referent != $daten->referent) $aenderungen .= "Referent: " . $alter_eintrag->referent . " => " . $daten->referent . "\n";
+				if ($alter_eintrag->referat_id != $daten->referat_id) $aenderungen .= "Referats-ID: " . $alter_eintrag->referat_id . " => " . $daten->referat_id . "\n";
 				if ($aenderungen != "") $changed = true;
 			}
 		}
@@ -264,7 +267,7 @@ class StadtratsvorlageParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 27500;
+		$anz   = 27800;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

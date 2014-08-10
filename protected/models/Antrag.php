@@ -17,6 +17,7 @@
  * @property string $erledigt_am
  * @property string $referat
  * @property string $referent
+ * @property int $referat_id
  * @property string $wahlperiode
  * @property string $antrag_typ
  * @property string $betreff
@@ -85,7 +86,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, typ, datum_letzte_aenderung, antrags_nr, wahlperiode, betreff, status', 'required'),
-			array('id, ba_nr, vorgang_id', 'numerical', 'integerOnly' => true),
+			array('id, ba_nr, vorgang_id, referat_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 16),
 			array('antrags_nr', 'length', 'max' => 20),
 			array('referat', 'length', 'max' => 500),
@@ -170,6 +171,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'erledigt_am'               => 'Erledigt Am',
 			'referat'                   => 'Referat',
 			'referent'                  => 'Referent',
+			'referat_id'                => 'Referat-ID',
 			'wahlperiode'               => 'Wahlperiode',
 			'antrag_typ'                => 'Antrag Typ',
 			'betreff'                   => 'Betreff',
@@ -206,6 +208,7 @@ class Antrag extends CActiveRecord implements IRISItem
 		$criteria->compare('erledigt_am', $this->erledigt_am, true);
 		$criteria->compare('referat', $this->referat, true);
 		$criteria->compare('referent', $this->referent, true);
+		$criteria->compare('referat_id', $this->referat_id, true);
 		$criteria->compare('wahlperiode', $this->wahlperiode, true);
 		$criteria->compare('antrag_typ', $this->antrag_typ, true);
 		$criteria->compare('betreff', $this->betreff, true);

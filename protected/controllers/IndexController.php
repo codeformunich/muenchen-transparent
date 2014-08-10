@@ -703,7 +703,6 @@ class IndexController extends RISBaseController
 			"tage_zukunft"          => $tage_zukunft,
 			"fraktionen"            => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
 			"statistiken"           => RISMetadaten::getStats(),
-			"highlights"            => AntragDokument::getHighlightDokumente(5),
 		));
 	}
 

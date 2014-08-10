@@ -18,7 +18,6 @@
  * @var int $tage_vergangenheit
  * @var array[] $fraktionen
  * @var array $statistiken
- * @var AntragDokument[] $highlights
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -198,19 +197,6 @@ function gruppiere_termine($termine)
 				<a href="#" class="startseite_benachrichtigung_link" title="Facebook">f</a>
 				-->
 			</p>
-		</section>
-
-		<section class="start_berichte">
-			<a href="<?=CHtml::encode(Yii::app()->createUrl("index/highlights"))?>" class="weitere">Weitere</a>
-			<h3>Berichte</h3>
-			<ul><?
-				foreach ($highlights as $dok) {
-					echo "<li>";
-					echo CHtml::link($dok->antrag->getName(true), $dok->getOriginalLink());
-					echo "</li>";
-				}
-				?>
-			</ul>
 		</section>
 
 		<section>
