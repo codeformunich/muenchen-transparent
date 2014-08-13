@@ -386,6 +386,35 @@ html.no-csscolumns #listen_holder.nur_dokumente li {
   width: 49%;
   display: inline-block; }
 
+.teaser_holder > a {
+  display: block;
+  margin-bottom: 15px;
+  border: solid 1px #333;
+  background-color: #e4e4e4;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  border-radius: 5px; }
+  .teaser_holder > a:link, .teaser_holder > a:visited {
+    color: black;
+    text-decoration: none; }
+  .teaser_holder > a:hover {
+    background-color: #eeeeee;
+    -webkit-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    transition: background-color 0.3s; }
+  .teaser_holder > a h4 {
+    margin: 0;
+    padding: 5px; }
+    .teaser_holder > a h4 .glyphicon {
+      font-weight: normal;
+      margin-right: 10px; }
+  .teaser_holder > a .description {
+    border-top: solid 1px #333;
+    padding: 5px; }
+
 #stadtratsdokumente_holder {
   position: relative;
   min-height: 400px; }

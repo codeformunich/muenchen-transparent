@@ -11,12 +11,6 @@
  * @var string $neuere_url_std
  * @var string $aeltere_url_ajax
  * @var string $aeltere_url_std
- * @var Termin[] $termine_zukunft
- * @var Termin[] $termine_vergangenheit
- * @var Termin[] $termin_dokumente
- * @var int $tage_zukunft
- * @var int $tage_vergangenheit
- * @var array[] $fraktionen
  * @var array $statistiken
  */
 
@@ -32,34 +26,6 @@ $cs = $app->getClientScript();
 //$cs->registerScriptFile($assets_base . '/js/index.js');
 $cs->registerScriptFile('/js/index.js');
 
-
-/**
- * @var Termin[] $termine
- * @return array[]
- */
-function gruppiere_termine($termine)
-{
-	$data = array();
-	foreach ($termine as $termin) {
-		$key = $termin->termin . $termin->sitzungsort;
-		if (!isset($data[$key])) {
-			$ts         = RISTools::date_iso2timestamp($termin->termin);
-			$data[$key] = array(
-				"id"        => $termin->id,
-				"datum"     => strftime("%e. %b., %H:%M", $ts),
-				"gremien"   => array(),
-				"ort"       => $termin->sitzungsort,
-				"tos"       => array(),
-				"dokumente" => $termin->antraegeDokumente,
-			);
-		}
-		$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->id));
-		if (!isset($data[$key]["gremien"][$termin->gremium->name])) $data[$key]["gremien"][$termin->gremium->name] = array();
-		$data[$key]["gremien"][$termin->gremium->name][] = $url;
-	}
-	foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
-	return $data;
-}
 
 ?>
 
@@ -124,7 +90,54 @@ function gruppiere_termine($termine)
 
 
 <div class="row <? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
-	<div class="col col-lg-5" id="stadtratsdokumente_holder">
+	<div class="col col-lg-6 keine_dokumente teaser_holder">
+		<h3>Das gibt es hier</h3>
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" class="teaser_dokumente">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span> Dokumentensuche mit E-Mail-Benachrichtigung</h4>
+
+			<div class="description">
+				Durchsuche <?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> Dokumente (insg.
+				<?= number_format($statistiken["anzahl_seiten"], 0, ",", ".") ?> Seiten).<br>
+				<small>Neu in den letzten 7 Tagen: <?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> Dokumente
+				(<?= number_format($statistiken["anzahl_seiten_1w"], 0, ",", ".") ?> Seiten)</small><br>
+				Werde per E-Mail informiert, wenn es neue Dokumente gibt, die dich interessieren könnten.
+			</div>
+		</a>
+
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>" class="teaser_so_funktioniert">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span>So funktioniert Stadtpolitik</h4>
+
+			<div class="description">
+				Kommunalpolitik in München einfach erklärt.
+			</div>
+		</a>
+
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>" class="teaser_themen">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span>Themen</h4>
+
+			<div class="description">
+				Anträge und Stadtratsvorlagen, gegliedert nach Thema und zuständigem städtischem Referat.
+			</div>
+		</a>
+
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/ansprechpartnerInnen")) ?>" class="teaser_anprechpartnerinnen">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span>AnsprechpartnerInnen</h4>
+
+			<div class="description">
+				Wer sitzt im Stadtrat? Wie erreiche ich die städtischen Referate? Welche politischen Institutionen gibt es in meinem Stadtteil?
+			</div>
+		</a>
+
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>" class="teaser_termine">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span>Termine</h4>
+
+			<div class="description">
+				Wann finden welche Stadtrats- und Ausschusssitzungen statt?
+			</div>
+		</a>
+
+	</div>
+	<div class="col col-lg-6" id="stadtratsdokumente_holder">
 		<?
 		$this->renderPartial("index_antraege_liste", array(
 			"antraege"          => $antraege_stadtrat,
@@ -147,116 +160,5 @@ function gruppiere_termine($termine)
 		));
 		?>
 	</div>
-	<div class="col col-lg-4 keine_dokumente">
-
-		<?
-		if (count($termin_dokumente) > 0) {
-			?>
-			<h3>Neue Sitzungsdokumente</h3>
-			<ul class="antragsliste"><?
-				foreach ($termin_dokumente as $termin) {
-					$ts = RISTools::date_iso2timestamp($termin->termin);
-					echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
-					foreach ($termin->antraegeDokumente as $dokument) {
-						echo "<ul class='dokumente'><li>";
-						echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
-						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
-						echo "</li></ul>";
-					}
-					echo "</li>";
-				}
-				?></ul>
-		<? } ?>
-
-		<h3>Kommende Termine</h3>
-		<?
-		$data = gruppiere_termine($termine_zukunft);
-		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
-		else $this->renderPartial("termin_liste", array(
-			"termine" => $data
-		));
-		?>
-
-		<h3>Vergangene Termine</h3>
-		<?
-		$data = gruppiere_termine($termine_vergangenheit);
-		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-		else $this->renderPartial("termin_liste", array(
-			"termine" => $data
-		)); ?>
-	</div>
-	<div class="col col-lg-3 keine_dokumente">
-		<section style="display: inline-block">
-			<h3>Benachrichtigungen</h3>
-
-			<p>
-				<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>" class="startseite_benachrichtigung_link email" title="E-Mail">@</a>
-				<a href="<?= CHtml::encode($this->createUrl("index/feed")) ?>" class="startseite_benachrichtigung_link" title="RSS-Feed">R</a>
-				<!--
-				<a href="#" class="startseite_benachrichtigung_link" title="Twitter">T</a>
-				<a href="#" class="startseite_benachrichtigung_link" title="Facebook">f</a>
-				-->
-			</p>
-		</section>
-
-		<section>
-			<h3>StadträtInnen</h3>
-
-			<ul class="fraktionen_liste"><?
-				usort($fraktionen, function ($val1, $val2) {
-					if (count($val1) < count($val2)) return 1;
-					if (count($val1) > count($val2)) return -1;
-					return 0;
-				});
-				foreach ($fraktionen as $fraktion) {
-					/** @var StadtraetIn[] $fraktion */
-					$fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
-					echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'>";
-					echo "<span class='count'>" . count($fraktion) . "</span>";
-					echo CHtml::encode($fr->name) . "</a><ul class='mitglieder'>";
-					foreach ($fraktion as $str) {
-						echo "<li>";
-						if ($str->abgeordnetenwatch != "") echo "<a href='" . CHtml::encode($str->abgeordnetenwatch) . "' class='abgeordnetenwatch_link' title='Abgeordnetenwatch'></a>";
-						if ($str->web != "") echo "<a href='" . CHtml::encode($str->web) . "' title='Homepage' class='web_link'></a>";
-						if ($str->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($str->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
-						if ($str->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($str->facebook) . "' title='Facebook' class='fb_link'>f</a>";
-						echo "<a href='" . CHtml::encode($str->getLink()) . "' class='ris_link'>" . CHtml::encode($str->name) . "</a>";
-						echo "</li>\n";
-					}
-					echo "</ul></li>\n";
-
-				}
-				?></ul>
-
-			<script>
-				$(function () {
-					var $frakts = $(".fraktionen_liste > li");
-					$frakts.addClass("closed").find("> a").click(function (ev) {
-						if (ev.which == 2 || ev.which == 3) return;
-						ev.preventDefault();
-						var $li = $(this).parents("li").first(),
-							is_open = !$li.hasClass("closed");
-						$frakts.addClass("closed");
-						if (!is_open) $li.removeClass("closed");
-					});
-				})
-			</script>
-		</section>
-
-		<section>
-			<h3>Statistiken</h3>
-
-			<div class="statistiken">
-				<strong><?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> durchsuchbare Dokumente</strong>,<br>
-				insgesamt <strong><?= number_format($statistiken["anzahl_seiten"], 0, ",", ".") ?> Seiten</strong><br>
-				<hr>
-				<?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> neue Dokumente in den letzten 7 Tagen
-				(<?= number_format($statistiken["anzahl_seiten_1w"], 0, ",", ".") ?> Seiten)
-				<hr>
-				Zuletzt aktualisiert: <?=
-				RISTools::datumstring($statistiken["letzte_aktualisierung"]) . ", " . substr($statistiken["letzte_aktualisierung"], 11, 5);
-				?>
-			</div>
-		</section>
-	</div>
 </div>
+

@@ -362,6 +362,46 @@ body {
   }
 }
 
+.teaser_holder {
+  > a {
+    display: block;
+    margin-bottom: 15px;
+    border: solid 1px #333;
+    background-color: #e4e4e4;
+    -webkit-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    &:link, &:visited {
+      color: black;
+      text-decoration: none;
+    }
+    &:hover {
+      background-color: #eeeeee;
+      -webkit-transition: background-color 0.3s;
+      -moz-transition: background-color 0.3s;
+      -o-transition: background-color 0.3s;
+      transition: background-color 0.3s;
+    }
+
+    h4 {
+      margin: 0;
+      padding: 5px;
+
+      .glyphicon {
+        font-weight: normal;
+        margin-right: 10px;
+      }
+    }
+
+    .description {
+      border-top: solid 1px #333;
+      padding: 5px;
+    }
+  }
+}
+
 #stadtratsdokumente_holder {
   position: relative;
   min-height: 400px;

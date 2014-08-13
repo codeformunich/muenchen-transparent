@@ -8,7 +8,22 @@ class TermineController extends RISBaseController
 	 */
 	public function actionIndex() {
 		$this->top_menu = "termine";
-		$this->render("index");
+
+		$tage_zukunft       = 30;
+		$tage_vergangenheit = 30;
+
+		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
+		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(0, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+
+
+		$this->render("index", array(
+			"termine_zukunft"       => $termine_zukunft,
+			"termine_vergangenheit" => $termine_vergangenheit,
+			"termin_dokumente"      => $termin_dokumente,
+			"tage_vergangenheit"    => $tage_vergangenheit,
+			"tage_zukunft"          => $tage_zukunft,
+		));
 	}
 
 	/**

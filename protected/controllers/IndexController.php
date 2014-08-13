@@ -678,13 +678,6 @@ class IndexController extends RISBaseController
 
 		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
-		$tage_zukunft       = 7;
-		$tage_vergangenheit = 7;
-
-		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
-		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
-		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(0, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
-
 		$this->render('stadtrat_uebersicht', array(
 			"aeltere_url_ajax"      => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
 			"aeltere_url_std"       => $this->createUrl("index/stadtrat", array("datum" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
@@ -696,12 +689,6 @@ class IndexController extends RISBaseController
 			"geodata_overflow"      => $geodata_overflow,
 			"datum"                 => $datum_von,
 			"explizites_datum"      => ($datum != ""),
-			"termine_zukunft"       => $termine_zukunft,
-			"termine_vergangenheit" => $termine_vergangenheit,
-			"termin_dokumente"      => $termin_dokumente,
-			"tage_vergangenheit"    => $tage_vergangenheit,
-			"tage_zukunft"          => $tage_zukunft,
-			"fraktionen"            => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
 			"statistiken"           => RISMetadaten::getStats(),
 		));
 	}

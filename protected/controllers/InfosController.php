@@ -22,7 +22,10 @@ class InfosController extends RISBaseController
 
 	public function actionAnsprechpartnerInnen() {
 		$this->top_menu = "ansprechpartnerInnen";
-		$this->render('ansprechpartnerInnen');
+
+		$this->render('ansprechpartnerInnen', array(
+			"fraktionen"            => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
+		));
 	}
 
 }
