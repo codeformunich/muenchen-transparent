@@ -165,7 +165,7 @@ $cs->registerScriptFile('/js/index.js');
 
 		$data = ba_gruppiere_termine($termine_zukunft);
 		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
-		else $this->renderPartial("termin_liste", array(
+		else $this->renderPartial("../termine/termin_liste", array(
 			"termine" => $data
 		));
 		?>
@@ -174,7 +174,7 @@ $cs->registerScriptFile('/js/index.js');
 		<?
 		$data = ba_gruppiere_termine($termine_vergangenheit);
 		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-		else $this->renderPartial("termin_liste", array(
+		else $this->renderPartial("../termine/termin_liste", array(
 			"termine" => $data
 		));
 		?>
