@@ -14,8 +14,8 @@ class AntraegeController extends RISBaseController
 			$verwandt = $antrag->errateThemenverwandteAntraege(10);
 			foreach ($verwandt as $verw) {
 
-				$str .= "<li><div class='antraglink'><a href='" . CHtml::encode($verw->getLink()) . "' title='" . CHtml::encode($verw->getName()) . "'>";
-				$str .= CHtml::encode($verw->getName()) . "</a></div>";
+				$str .= "<li class='listitem'><div class='antraglink'><a href='" . CHtml::encode($verw->getLink()) . "' title='" . CHtml::encode($verw->getName()) . "'>";
+				$str .= CHtml::encode($verw->getName(true)) . "</a></div>";
 
 				$max_date = 0;
 				foreach ($verw->dokumente as $dokument) {

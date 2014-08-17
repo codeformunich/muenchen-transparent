@@ -11,6 +11,7 @@ $GLOBALS["RIS_URL_RULES"] = array(
 	RATSINFORMANT_BASE_URL . '/benachrichtigungen/alleFeed/<code:[0-9\-a-z]+>'   => 'benachrichtigungen/alleFeed',
 	RATSINFORMANT_BASE_URL . '/termine/<termin_id:\d+>'                          => 'termine/anzeigen',
 	RATSINFORMANT_BASE_URL . '/termine/<termin_id:\d+>/geoExport'                => 'termine/topGeoExport',
+	RATSINFORMANT_BASE_URL . '/themen/referat/<referat_url:[a-z0-9_-]+>'         => 'themen/referat',
 	RATSINFORMANT_BASE_URL . '/<action:\w+>'                                     => 'index/<action>',
 	RATSINFORMANT_BASE_URL . '/<controller:\w+>/<id:\d+>'                        => '<controller>/anzeigen',
 	RATSINFORMANT_BASE_URL . '/<controller:\w+>/<action:\w+>/<id:\d+>'           => '<controller>/<action>',

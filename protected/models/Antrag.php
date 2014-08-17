@@ -278,6 +278,32 @@ class Antrag extends CActiveRecord implements IRISItem
 	}
 
 	/**
+	 * @param int $referat_id
+	 * @param string $zeit_von
+	 * @param string $zeit_bis
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function neueste_stadtratsantragsdokumente_referat($referat_id, $zeit_von, $zeit_bis, $limit = 0)
+	{
+		$params = array(
+			'alias'     => 'a',
+			'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND a.referat_id = ' . IntVal($referat_id),
+			'order'     => 'b.datum DESC',
+			'with'      => array(
+				'dokumente'          => array(
+					'alias'     => 'b',
+					'condition' => 'b.datum >= "' . addslashes($zeit_von) . '" AND b.datum <= "' . addslashes($zeit_bis) . '"',
+				),
+			));
+		if ($limit > 0) $params['limit'] = $limit;
+		$this->getDbCriteria()->mergeWith($params);
+		return $this;
+	}
+
+
+
+	/**
 	 * @return int
 	 */
 	public function neuestes_dokument_ts()
@@ -420,6 +446,8 @@ class Antrag extends CActiveRecord implements IRISItem
 		if ($kurzfassung) {
 			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->betreff);
 			$x       = explode(" Antrag Nr.", $betreff);
+			$x       = explode(" Empfehlung Nr.", $x[0]);
+			$x       = explode(" BA-Antrags-", $x[0]);
 			return RISTools::korrigiereTitelZeichen($x[0]);
 		} else {
 			return RISTools::korrigiereTitelZeichen($this->betreff);
@@ -539,7 +567,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			return;
 		}
 		if ($vorgang_id == 0) {
-			$vorgang = new Vorgang();
+			$vorgang      = new Vorgang();
 			$vorgang->typ = 0;
 			$vorgang->save(false);
 			$vorgang_id = $vorgang->id;

@@ -120,8 +120,8 @@ $cs->registerScriptFile('/js/index.js');
 			</div>
 		</a>
 
-		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/ansprechpartnerInnen")) ?>" class="teaser_anprechpartnerinnen">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span>AnsprechpartnerInnen</h4>
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/personen")) ?>" class="teaser_personen">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span>Personen</h4>
 
 			<div class="description">
 				Wer sitzt im Stadtrat? Wie erreiche ich die städtischen Referate? Welche politischen Institutionen gibt es in meinem Stadtteil?

@@ -96,7 +96,7 @@
 				<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
 				<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
 				<li class="so_funktioniert<? if ($this->top_menu == "so_funktioniert") echo ' active'; ?>"><?= CHtml::link("So funktioniert<br> Stadtpolitik", $this->createUrl("infos/soFunktioniertStadtpolitik")) ?></li>
-				<li class="<? if ($this->top_menu == "ansprechpartnerInnen") echo ' active'; ?>"><?= CHtml::link("AnsprechpartnerInnen", $this->createUrl("infos/ansprechpartnerInnen")) ?></li>
+				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("infos/personen")) ?></li>
 			</ul>
 
 			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
