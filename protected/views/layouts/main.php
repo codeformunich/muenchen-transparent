@@ -41,7 +41,7 @@
 	}
 	?>
 
-	<link rel="stylesheet" href="/css/jquery-ui-1.11.0.custom.min.css"/>
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.1.custom.min.css"/>
 	<link rel="stylesheet" href="/css/styles.css"/>
 
 	<!--[if lt IE 9]>
@@ -51,7 +51,7 @@
 	<script src="/js/jquery-2.1.1.min.js"></script>
 	<!--<![endif]-->
 
-	<script src="/js/jquery-ui-1.11.0.custom.min.js"></script>
+	<script src="/js/jquery-ui-1.11.1.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
 	<script src="/js/scrollintoview.js"></script>
 	<script src="/js/antraegekarte.jquery.js"></script>
