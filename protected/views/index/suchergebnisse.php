@@ -1,7 +1,6 @@
 <?php
 /**
  * @var IndexController $this
- * @var string $suchbegriff
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
  * @var RISSucheKrits $krits
  * @var string $msg_ok
@@ -22,7 +21,7 @@ $this->pageTitle = Yii::app()->name;
 		<a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="icon-rss"></span> Suchergebnisse als RSS-Feed</a>
 	</div>
 
-	<h1><span style="font-weight: bold;">Suchergebnisse:</span> <?= CHtml::encode($suchbegriff) ?></h1>
+	<h1><span style="font-weight: bold;">Suchergebnisse:</span> <?= CHtml::encode($krits->getTitle()) ?></h1>
 
 <?
 

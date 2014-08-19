@@ -816,3 +816,10 @@ ul.fraktionen_liste {
     display: none; }
   .form-signin.anlegen .login {
     display: none; }
+
+.form-docsearch {
+  max-width: 800px;
+  border: solid 1px black;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto; }

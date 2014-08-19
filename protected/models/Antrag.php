@@ -291,7 +291,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND a.referat_id = ' . IntVal($referat_id),
 			'order'     => 'b.datum DESC',
 			'with'      => array(
-				'dokumente'          => array(
+				'dokumente' => array(
 					'alias'     => 'b',
 					'condition' => 'b.datum >= "' . addslashes($zeit_von) . '" AND b.datum <= "' . addslashes($zeit_bis) . '"',
 				),
@@ -300,7 +300,6 @@ class Antrag extends CActiveRecord implements IRISItem
 		$this->getDbCriteria()->mergeWith($params);
 		return $this;
 	}
-
 
 
 	/**
@@ -588,5 +587,14 @@ class Antrag extends CActiveRecord implements IRISItem
 			$dok->save();
 		}
 		echo "Fertig";
+	}
+
+	/**
+	 * @param string $antrags_nr
+	 * @return string
+	 */
+	public static function cleanAntragNr($antrags_nr)
+	{
+		return preg_replace("/[^a-zA-Z0-9\/-]/siu", "", $antrags_nr);
 	}
 }

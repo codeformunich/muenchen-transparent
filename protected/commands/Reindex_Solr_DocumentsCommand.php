@@ -1,6 +1,6 @@
 <?php
 
-class ReindexSolr_DocumentsCommand extends CConsoleCommand
+class Reindex_Solr_DocumentsCommand extends CConsoleCommand
 {
 	public function run($args)
 	{

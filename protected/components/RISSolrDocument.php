@@ -5,6 +5,7 @@
 	 public $id;
 	 public $antrag_ba;
 	 public $antrag_id;
+	 public $referat_id;
 
 	 /** @var string */
 	 public $text;

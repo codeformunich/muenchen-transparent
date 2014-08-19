@@ -112,6 +112,9 @@ class RISSucheKrits
 				case "geo":
 					$str .= rawurlencode($krit["lng"] . "-" . $krit["lat"] . "-" . $krit["radius"]);
 					break;
+				case "antrag_nr":
+					$str .= rawurlencode($krit["suchbegriff"]);
+					break;
 			}
 		}
 		return Yii::app()->createUrl($path) . "/?" . $str;
@@ -169,6 +172,9 @@ class RISSucheKrits
 				$y = explode("-", $request["krit_val"][$i]);
 				$x->addGeoKrit($y[0], $y[1], $y[2]);
 				break;
+			case "antrag_nr":
+				$x->addAntragNrKrit($request["krit_val"]);
+				break;
 		}
 		return $x;
 	}
@@ -194,7 +200,6 @@ class RISSucheKrits
 				$dismax = $select->getDisMax();
 				$dismax->setQueryParser('edismax');
 				$dismax->setQueryFields("text text_ocr");
-
 				$select->setQuery($krit["suchbegriff"]);
 				break;
 			case "ba":
@@ -203,6 +208,13 @@ class RISSucheKrits
 			case "geo":
 				$helper = $select->getHelper();
 				$select->createFilterQuery("geo")->setQuery($helper->geofilt("geo", $krit["lat"], $krit["lng"], ($krit["radius"] / 1000)));
+				break;
+			case "antrag_nr":
+				/** @var Solarium\QueryType\Select\Query\Component\DisMax $dismax */
+				$dismax = $select->getDisMax();
+				$dismax->setQueryParser('edismax');
+				$dismax->setQueryFields("antrag_nr");
+				$select->setQuery("*" . $krit["suchbegriff"] . "*");
 				break;
 		}
 	}
@@ -233,6 +245,9 @@ class RISSucheKrits
 			case "geo":
 				$helper = $select->getHelper();
 				return $helper->geofilt("geo", $krit["lat"], $krit["lng"], ($krit["radius"] / 1000));
+				break;
+			case "antrag_nr":
+				return "*" . $krit["antrag_nr"] . "*";
 				break;
 		}
 		return "";
@@ -268,6 +283,8 @@ class RISSucheKrits
 			case "geo":
 				$ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
 				return "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
+			case "antrag_nr":
+				return "Dokumente zum Antrag Nr. " . $this->krits[0]["suchbegriff"];
 		}
 		return json_encode($this->krits);
 	}
@@ -352,6 +369,20 @@ class RISSucheKrits
 		$this->krits[] = array(
 			"typ"         => "betreff",
 			"suchbegriff" => $str
+		);
+		return $this;
+	}
+
+	/**
+	 * @param string $str
+	 * @return $this
+	 */
+	public function addAntragNrKrit($str) {
+		$str = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $str);
+		$str = preg_replace("/ +/siu", "*", $str);
+		$this->krits[] = array(
+			"typ" => "antrag_nr",
+			"suchbegriff" => $str,
 		);
 		return $this;
 	}

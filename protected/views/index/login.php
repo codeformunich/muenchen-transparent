@@ -34,7 +34,7 @@
 	}
 	?>
 
-	<label class="checkbox">
+	<label>
 		<input type="checkbox" name="register" id="create_account"> Neuen Zugang anlegen
 	</label>
 

@@ -455,6 +455,7 @@ class AntragDokument extends CActiveRecord
 		$doc->antrag_ba          = $this->antrag->ba_nr;
 		$doc->antrag_id          = $this->antrag->id;
 		$doc->antrag_betreff     = RISSolrHelper::string_cleanup($this->antrag->betreff);
+		$doc->referat_id         = $this->antrag->referat_id;
 
 		$antrag_erstellt = $aenderungs_datum = array();
 		if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/", $this->antrag->gestellt_am)) {

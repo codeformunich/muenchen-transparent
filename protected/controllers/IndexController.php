@@ -416,7 +416,12 @@ class IndexController extends RISBaseController
 
 	public function actionSuche($code = "")
 	{
-		if (isset($_REQUEST["suchbegriff"])) {
+		if (AntiXSS::isTokenSet("search_form")) {
+			$krits           = new RISSucheKrits();
+			if (trim($_REQUEST["volltext"]) != "") $krits->addVolltextsucheKrit($_REQUEST["volltext"]);
+			if (trim($_REQUEST["antrag_nr"]) != "") $krits->addAntragNrKrit($_REQUEST["antrag_nr"]);
+			if ($_REQUEST["typ"] != "") $krits->addAntragTypKrit($_REQUEST["typ"]);
+		} elseif (isset($_REQUEST["suchbegriff"])) {
 			$suchbegriff     = $_REQUEST["suchbegriff"];
 			$this->suche_pre = $suchbegriff;
 			$krits           = new RISSucheKrits();
@@ -428,39 +433,44 @@ class IndexController extends RISBaseController
 
 		$this->load_leaflet_css = true;
 
-		$benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
+		if ($krits->getKritsCount() > 0) {
+
+			$benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
 
 
-		$solr   = RISSolrHelper::getSolrClient("ris");
-		$select = $solr->createSelect();
+			$solr   = RISSolrHelper::getSolrClient("ris");
+			$select = $solr->createSelect();
 
-		$krits->addKritsToSolr($select);
+			$krits->addKritsToSolr($select);
 
 
-		$select->setRows(50);
-		$select->addSort('sort_datum', $select::SORT_DESC);
+			$select->setRows(50);
+			$select->addSort('sort_datum', $select::SORT_DESC);
 
-		/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
-		$hl = $select->getHighlighting();
-		$hl->setFields('text, text_ocr, antrag_betreff');
-		$hl->setSimplePrefix('<b>');
-		$hl->setSimplePostfix('</b>');
+			/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+			$hl = $select->getHighlighting();
+			$hl->setFields('text, text_ocr, antrag_betreff');
+			$hl->setSimplePrefix('<b>');
+			$hl->setSimplePostfix('</b>');
 
-		$facetSet = $select->getFacetSet();
-		$facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
-		$facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
+			$facetSet = $select->getFacetSet();
+			$facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
+			$facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
 
-		$ergebnisse = $solr->select($select);
+			$ergebnisse = $solr->select($select);
 
-		if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
-		else $geodata = null;
+			if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
+			else $geodata = null;
 
-		$this->render("suchergebnisse", array_merge(array(
-			"krits"       => $krits,
-			"suchbegriff" => $suchbegriff,
-			"ergebnisse"  => $ergebnisse,
-			"geodata"     => $geodata,
-		), $benachrichtigungen_optionen));
+			$this->render("suchergebnisse", array_merge(array(
+				"krits"       => $krits,
+				"ergebnisse"  => $ergebnisse,
+				"geodata"     => $geodata,
+			), $benachrichtigungen_optionen));
+
+		} else {
+			$this->render("suche");
+		}
 	}
 
 
@@ -679,17 +689,17 @@ class IndexController extends RISBaseController
 		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
 		$this->render('stadtrat_uebersicht', array(
-			"aeltere_url_ajax"      => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
-			"aeltere_url_std"       => $this->createUrl("index/stadtrat", array("datum" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
-			"neuere_url_ajax"       => null,
-			"neuere_url_std"        => null,
-			"antraege_sonstige"     => $antraege_sonstige,
-			"antraege_stadtrat"     => $antraege_stadtrat,
-			"geodata"               => $geodata,
-			"geodata_overflow"      => $geodata_overflow,
-			"datum"                 => $datum_von,
-			"explizites_datum"      => ($datum != ""),
-			"statistiken"           => RISMetadaten::getStats(),
+			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
+			"aeltere_url_std"   => $this->createUrl("index/stadtrat", array("datum" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
+			"neuere_url_ajax"   => null,
+			"neuere_url_std"    => null,
+			"antraege_sonstige" => $antraege_sonstige,
+			"antraege_stadtrat" => $antraege_stadtrat,
+			"geodata"           => $geodata,
+			"geodata_overflow"  => $geodata_overflow,
+			"datum"             => $datum_von,
+			"explizites_datum"  => ($datum != ""),
+			"statistiken"       => RISMetadaten::getStats(),
 		));
 	}
 

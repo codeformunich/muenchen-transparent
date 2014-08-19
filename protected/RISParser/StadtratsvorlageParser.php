@@ -20,8 +20,8 @@ class StadtratsvorlageParser extends RISParser
 		$ergebnisse = array();
 
 		if (mb_strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
-			$html_kurzinfo   = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
-			$txt             = explode("introtext_border\">", $html_kurzinfo);
+			$html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
+			$txt           = explode("introtext_border\">", $html_kurzinfo);
 			if (count($txt) < 2) RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo);
 			$txt             = explode("</div>", $txt[1]);
 			$daten->kurzinfo = trim(str_replace(array("<br />", "<p>", "</p>"), array("", "", ""), $txt[0]));
@@ -34,7 +34,7 @@ class StadtratsvorlageParser extends RISParser
 		}
 
 		preg_match("/Vorlagen\-Nr\.:&nbsp;([^<]*)</siU", $dat_details[1], $matches);
-		$daten->antrags_nr = $this->text_simple_clean($matches[1]);
+		$daten->antrags_nr = Antrag::cleanAntragNr($matches[1]);
 
 		$dat_details      = explode("<!-- detailbereich -->", $dat_details[1]);
 		$betreff_gefunden = false;
@@ -63,8 +63,8 @@ class StadtratsvorlageParser extends RISParser
 				$daten->antrag_typ = $matches[5][$i];
 				break;
 			case "Zust&auml;ndiges Referat:":
-				$daten->referat = $matches[5][$i];
-				$ref = Referat::getByHtmlName($matches[5][$i]);
+				$daten->referat    = $matches[5][$i];
+				$ref               = Referat::getByHtmlName($matches[5][$i]);
 				$daten->referat_id = ($ref ? $ref->id : null);
 				break;
 			case "Erstellt am:":
@@ -241,7 +241,7 @@ class StadtratsvorlageParser extends RISParser
 			$aend->save();
 
 			/** @var Antrag $antrag */
-			$antrag = Antrag::model()->findByPk($vorlage_id);
+			$antrag                         = Antrag::model()->findByPk($vorlage_id);
 			$antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
 			$antrag->save();
 			$antrag->rebuildVorgaengeCache();
