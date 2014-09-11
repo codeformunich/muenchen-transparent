@@ -1,5 +1,14 @@
-Ratsinformant
-=============
+[Ratsinformant](https://ratsinformant.de)
+=========================================
+
+
+Entwicklungs-Setup
+------------------
+Im lokalen Projektordner müssen nur noch die Abhängigkeiten installiert werden. Führe diese zwei Kommandos im Terminal aus:
+```bash
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+```
 
 Code-Organisation
 -----------------
