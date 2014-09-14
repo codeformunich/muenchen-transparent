@@ -1,7 +1,7 @@
 html/assets/
-protected/runtime/
 vendor/
 composer.lock
+composer.phar
 protected/config/main.php
 html/js/OverlappingMarkerSpiderfier-Leaflet/
 html/js/Leaflet/
