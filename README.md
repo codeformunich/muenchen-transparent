@@ -1,14 +1,19 @@
 [Ratsinformant](https://ratsinformant.de)
 =========================================
 
-
-Entwicklungs-Setup
+Installation
 ------------------
-Im lokalen Projektordner müssen nur noch die Abhängigkeiten installiert werden. Führe diese zwei Kommandos im Terminal aus:
+Zuerst wird ein Webserver mit php und ein MySQL-Server benötigt, der Lese- und Schreibzugriff auf alle Dateien und Ordner hat.
+Danach müssen die php-Abhängigkeiten mit Hilfe vom composer installiert werden. Wenn composer bereits installiert ist, reicht ein `composer install` im Terminal, ansonsten funktioniert auch die folgenden Befehle
 ```bash
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 ```
+
+Jetzt muss php noch die die richtigen Werte und Pfade für den eigenen Sever erfahren. Dazu muss main.template.php in /protected/config/ in main.php umbenannt werden und die ursprünglichen Werte müssen durch die eigenene ersetzt werden.
+Besonders wichtig sind die Einstellungen für die Verbindung zu MySQL: Dazu müssen alle Tabellen von /docs/schema3.sql in mysql importiert werden, wobei eine Datenbank "ris2" erstellt wird. Danach muss ein Nutzer mit Zugriff auf diese Datenbank erstellt werden, dessen Name und Passwort in main.php eingetragen wird.
+
+to be continued...
 
 Code-Organisation
 -----------------
