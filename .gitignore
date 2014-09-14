@@ -1,5 +1,6 @@
 html/assets/
 vendor/
+protected/runtime/
 composer.lock
 composer.phar
 protected/config/main.php
