@@ -16,7 +16,7 @@ mkdir html/assets
 chown -R www-data:www-data html/assets
 
 cp protected/config/main.template.php protected/config/main.php
-``
+```
 
 Webserver-Konfiguration:
 * DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
