@@ -119,7 +119,7 @@ $geodata = array();
 	$(function() {
 		var geodata = <?=json_encode($geodata)?>;
 		if (geodata.length > 0) yepnope({
-			load: ["/js/Leaflet/leaflet.js", "/js/leaflet.fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
+			load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
 				"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
 				"/js/leaflet.spiderfy.js",
 				"/js/leaflet.textmarkers.js"

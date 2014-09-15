@@ -59,7 +59,7 @@ foreach ($termin->antraegeErgebnisse as $ergebnis) {
 	<script src="/js/html2canvas.min.js"></script>
 	<script src="<?= CHtml::encode($assets_base) ?>/ba_features.js"></script>
 	<script src="/js/leaflet.spiderfy.js"></script>
-	<script src="/js/leaflet.fullscreen/Control.FullScreen.js"></script>
+	<script src="/js/Leaflet.Fullscreen/Control.FullScreen.js"></script>
 	<script src="/js/leaflet.textmarkers_top.js"></script>
 	<script src="/js/antraegekarte.jquery.js"></script>
 </head>

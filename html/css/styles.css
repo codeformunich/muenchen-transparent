@@ -363,7 +363,7 @@ body {
     transition: opacity 0.35s ease; }
 
 .leaflet-control-zoom-fullscreen {
-  background-image: url(/js/leaflet.fullscreen/icon-fullscreen.png); }
+  background-image: url(/js/Leaflet.Fullscreen/icon-fullscreen.png); }
 
 .leaflet-container:-webkit-full-screen {
   width: 100% !important;

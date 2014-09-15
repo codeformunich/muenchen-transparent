@@ -65,7 +65,7 @@ $cs->registerScriptFile('/js/index.js');
 <script>
 	yepnope({
 		load: ["/js/Leaflet/leaflet.js",
-			"/js/leaflet.fullscreen/Control.FullScreen.js",
+			"/js/Leaflet.Fullscreen/Control.FullScreen.js",
 			<?=json_encode($assets_base)?> +"/ba_features.js",
 			"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
 			"/js/leaflet.spiderfy.js",
