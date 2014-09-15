@@ -4,11 +4,39 @@
 
 Entwicklungs-Setup
 ------------------
-Im lokalen Projektordner müssen nur noch die Abhängigkeiten installiert werden. Führe diese zwei Kommandos im Terminal aus:
+
+Berechtigungen setzen u. Abhängigkeiten installieren: (bei Linux; bei MacOS statt "www-data:www-data" "_www:_www" benutzen:
 ```bash
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
-```
+
+mkdir protected/runtime
+chown -R www-data:www-data protected/runtime
+mkdir html/assets
+chown -R www-data:www-data html/assets
+
+cp protected/config/main.template.php protected/config/main.php
+``
+
+Webserver-Konfiguration:
+* DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
+* Bei Apache regelt die html/.htaccess alles weitere. Bei nginx gibt es unter docs/nginx.conf eine Beispiel-Konfigurationsdatei
+* Der Hostname des Webservers muss auch als RATSINFORMANT_BASE_URL bei protected/config/main.php gesetzt werden.
+
+MariaDB/MySQL-Konfiguration
+* Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "ratsinformant", Benutzer "ris", Passwort "sec"
+* cat docs/schema3.sql | mysql -u ris -psec ratsinformant
+* cat docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec ratsinformant
+* Der zugehörige Abschnitt in der protected/config/main.php wäre dann:
+``		'db'           => array(
+			'connectionString'      => 'mysql:host=127.0.0.1;dbname=ratsinformant',
+			'emulatePrepare'        => true,
+			'username'              => 'ris',
+			'password'              => 'sec',
+			'charset'               => 'utf8',
+			'queryCacheID'          => 'apcCache',
+			'schemaCachingDuration' => 3600,
+		),``
 
 Code-Organisation
 -----------------
