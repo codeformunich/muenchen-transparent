@@ -5,7 +5,7 @@
 Entwicklungs-Setup
 ------------------
 
-Berechtigungen setzen u. Abhängigkeiten installieren: (bei Linux; bei MacOS statt "www-data:www-data" "_www:_www" benutzen:
+Berechtigungen setzen und Abhängigkeiten installieren: (www-data muss durch den passenden Nutzer ersetzt werden, bei MacOSX z.B. "_www" benutzen)
 ```bash
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
@@ -25,8 +25,7 @@ Webserver-Konfiguration:
 
 MariaDB/MySQL-Konfiguration
 * Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "ratsinformant", Benutzer "ris", Passwort "sec"
-* cat docs/schema3.sql | mysql -u ris -psec ratsinformant
-* cat docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec ratsinformant
+* `cat docs/schema3.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec ratsinformant`
 * Der zugehörige Abschnitt in der protected/config/main.php wäre dann:
 ``		'db'           => array(
 			'connectionString'      => 'mysql:host=127.0.0.1;dbname=ratsinformant',
