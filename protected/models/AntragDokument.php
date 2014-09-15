@@ -367,6 +367,7 @@ class AntragDokument extends CActiveRecord
 	 */
 	public function solrMoreLikeThis($limit = 10)
 	{
+		if ($GLOBALS["SOLR_CONFIG"] === null) return array();
 		$solr   = RISSolrHelper::getSolrClient("ris");
 		$select = $solr->createSelect();
 		$select->setQuery("id:\"Document:" . $this->id . "\"");

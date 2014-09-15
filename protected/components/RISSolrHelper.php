@@ -20,16 +20,7 @@ class RISSolrHelper {
 	 */
 	public static function getSolrClient()
 	{
-		if (!isset($GLOBALS["SOLR_CLIENT"])) $GLOBALS["SOLR_CLIENT"] = new Solarium\Client(array(
-			'endpoint' => array(
-				'localhost' => array(
-					'host' => '127.0.0.1',
-					'port' => 8983,
-					'path' => '/solr/collection1',
-					'timeout' => 300,
-				)
-			)
-		));
+		if (!isset($GLOBALS["SOLR_CLIENT"])) $GLOBALS["SOLR_CLIENT"] = new Solarium\Client($GLOBALS["SOLR_CONFIG"]);
 		/*
 		$options = array (
 			'hostname' => "localhost",

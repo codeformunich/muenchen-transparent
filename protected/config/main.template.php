@@ -34,6 +34,19 @@ setlocale(LC_TIME, "de_DE.UTF-8");
 
 require_once(__DIR__ . "/urls.php");
 
+$GLOBALS["SOLR_CONFIG"] = null;
+/*
+$GLOBALS["SOLR_CONFIG"] = array(
+	'endpoint' => array(
+		'localhost' => array(
+			'host'    => '127.0.0.1',
+			'port'    => 8983,
+			'path'    => '/solr/collection1',
+			'timeout' => 300,
+		)
+	)
+);
+*/
 
 function ris_intern_address2geo($land, $plz, $ort, $strasse)
 {
@@ -45,7 +58,8 @@ function ris_intern_address2geo($land, $plz, $ort, $strasse)
  * @param Antrag $antrag
  * @return bool
  */
-function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag) {
+function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
+{
 	return true;
 }
 
@@ -69,8 +83,8 @@ return array(
 	'modules'    => array(
 		// uncomment the following to enable the Gii tool
 		'gii' => array(
-			'class'     => 'system.gii.GiiModule',
-			'password'  => 'RANDOMKEY',
+			'class'    => 'system.gii.GiiModule',
+			'password' => 'RANDOMKEY',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			//'ipFilters' => array('*', '::1'),
 		),
