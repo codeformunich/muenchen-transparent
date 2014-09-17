@@ -203,6 +203,11 @@ class BATerminParser extends RISParser
 
 		foreach ($bisherige_tops as $top) if (!in_array($top->top_betreff, $verwendete_top_betreffs)) {
 			$aenderungen_tops .= "TOP entfernt: " . $top->top_betreff . "\n";
+			echo count($top->dokumente);
+			foreach ($top->dokumente as $dok) {
+				$dok->ergebnis_id = null;
+				$dok->save(false);
+			}
 			$top->delete();
 		}
 
