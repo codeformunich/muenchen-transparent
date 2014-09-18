@@ -184,7 +184,7 @@ class StadtratsantragParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 14600;
+		$anz   = 14800;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

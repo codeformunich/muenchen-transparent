@@ -528,13 +528,21 @@ class Antrag extends CActiveRecord implements IRISItem
 	{
 		/** @var Antrag $antrag */
 		foreach ($curr_antrag->vorlage2antraege as $ant) if (!isset($gefundene_antraege[$ant->id])) {
-			if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) throw new Exception("Vorgangskonflikt: Antrag " . $ant->id . " - Vorgang $vorgang_id vs. " . $ant->vorgang_id);
+			if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) {
+				Vorgang::vorgangMerge($ant->vorgang_id, $vorgang_id);
+				$ant->vorgang_id = $vorgang_id;
+				$ant->save(false);
+			}
 			if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
 			$gefundene_antraege[$ant->id] = $ant;
 			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
 		}
 		foreach ($curr_antrag->antrag2vorlagen as $ant) if (!isset($gefundene_antraege[$ant->id])) {
-			if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) throw new Exception("Vorgangskonflikt: Antrag " . $ant->id . " - Vorgang $vorgang_id vs. " . $ant->vorgang_id);
+			if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) {
+				Vorgang::vorgangMerge($ant->vorgang_id, $vorgang_id);
+				$ant->vorgang_id = $vorgang_id;
+				$ant->save(false);
+			}
 			if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
 			$gefundene_antraege[$ant->id] = $ant;
 			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);

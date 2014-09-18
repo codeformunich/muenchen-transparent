@@ -11,7 +11,7 @@
  * The followings are the available model relations:
  * @property Antrag[] $antraege
  * @property AntragErgebnis[] $ergebnisse
- * @propery AntragDokument[] $dokumente
+ * @property AntragDokument[] $dokumente
  */
 class Vorgang extends CActiveRecord
 {
@@ -93,6 +93,39 @@ class Vorgang extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
 		));
+	}
+
+
+	/**
+	 * @param int $vorgang_von_id
+	 * @param int $vorgang_zu_id
+	 */
+	public static function vorgangMerge($vorgang_von_id, $vorgang_zu_id) {
+		$str = "Vorgang Merge: von $vorgang_von_id => $vorgang_zu_id\n";
+		try {
+			/** @var Vorgang $vorgang_von */
+			$vorgang_von = Vorgang::model()->findAllByPk($vorgang_von_id);
+			foreach ($vorgang_von->antraege as $ant) {
+				$ant->vorgang_id = $vorgang_zu_id;
+				$ant->save(false);
+				$str .= "Antrag: " . $ant->getName() . "\n";
+			}
+			foreach ($vorgang_von->dokumente as $dok) {
+				$dok->vorgang_id = $vorgang_zu_id;
+				$dok->save(false);
+				$str .= "Dokument: " . $dok->name . "\n";
+			}
+			foreach ($vorgang_von->ergebnisse as $erg) {
+				$erg->vorgang_id = $vorgang_zu_id;
+				$erg->save(false);
+				$str .= "Ergebnis: " . $erg->getName() . "\n";
+			}
+			$vorgang_von->delete();
+			$str .= "Gelöscht.\n";
+		} catch (Exception $e) {
+			$str .= $e;
+		}
+		RISTools::send_email(Yii::app()->params['adminEmail'], "Vorgang:vorgangMerge Error", $str);
 	}
 
 }
