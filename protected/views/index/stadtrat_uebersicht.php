@@ -91,7 +91,7 @@ $cs->registerScriptFile('/js/index.js');
 
 <div class="row <? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
 	<div class="col col-lg-6 keine_dokumente teaser_holder">
-		<h3>Das gibt es hier</h3>
+		<h3>Übersicht</h3>
 		<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" class="teaser_dokumente">
 			<h4><span class="glyphicon glyphicon-chevron-right"></span> Dokumentensuche mit E-Mail-Benachrichtigung</h4>
 
@@ -161,4 +161,5 @@ $cs->registerScriptFile('/js/index.js');
 		?>
 	</div>
 </div>
+
 

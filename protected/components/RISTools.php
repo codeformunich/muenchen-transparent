@@ -314,6 +314,9 @@ class RISTools
 			$mail->getHeaders()->get('content-type')->setType('multipart/alternative');
 		} else {
 			$mail->setBody($text_plain);
+			$headers = $mail->getHeaders();
+			$headers->removeHeader('Content-Type');
+			$headers->addHeaderLine('Content-Type', 'text/plain; charset=UTF-8');
 		}
 
 		$transport = new Zend\Mail\Transport\Sendmail();
