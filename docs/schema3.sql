@@ -6,15 +6,9 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema ris2
+-- Table `bezirksausschuesse`
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `ris2` DEFAULT CHARACTER SET utf8 ;
-USE `ris2` ;
-
--- -----------------------------------------------------
--- Table `ris2`.`bezirksausschuesse`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`bezirksausschuesse` (
+CREATE TABLE IF NOT EXISTS `bezirksausschuesse` (
   `ba_nr` SMALLINT(6) NOT NULL,
   `ris_id` INT(11) NOT NULL,
   `name` VARCHAR(100) NULL DEFAULT NULL,
@@ -27,9 +21,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`vorgaenge`
+-- Table `vorgaenge`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`vorgaenge` (
+CREATE TABLE IF NOT EXISTS `vorgaenge` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `typ` TINYINT NULL,
   `betreff` VARCHAR(200) NULL,
@@ -39,9 +33,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`referate`
+-- Table `referate`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`referate` (
+CREATE TABLE IF NOT EXISTS `referate` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NULL,
   `urlpart` VARCHAR(45) NOT NULL,
@@ -59,9 +53,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege`
+-- Table `antraege`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege` (
+CREATE TABLE IF NOT EXISTS `antraege` (
   `id` INT(11) NOT NULL,
   `vorgang_id` INT(11) NULL,
   `typ` ENUM('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative','stadtrat_vorlage_geheim','bv_empfehlung') NOT NULL,
@@ -95,17 +89,17 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege` (
   INDEX `fk_antraege_referate1_idx` (`referat_id` ASC),
   CONSTRAINT `fk_antraege_bezirksausschuesse1`
     FOREIGN KEY (`ba_nr`)
-    REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr`)
+    REFERENCES `bezirksausschuesse` (`ba_nr`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_vorgaenge1`
     FOREIGN KEY (`vorgang_id`)
-    REFERENCES `ris2`.`vorgaenge` (`id`)
+    REFERENCES `vorgaenge` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_referate1`
     FOREIGN KEY (`referat_id`)
-    REFERENCES `ris2`.`referate` (`id`)
+    REFERENCES `referate` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -113,9 +107,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`gremien`
+-- Table `gremien`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`gremien` (
+CREATE TABLE IF NOT EXISTS `gremien` (
   `id` INT(11) NOT NULL,
   `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL,
@@ -127,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `ris2`.`gremien` (
   INDEX `fk_gremien_bezirksausschuesse1_idx` (`ba_nr` ASC),
   CONSTRAINT `fk_gremien_bezirksausschuesse1`
     FOREIGN KEY (`ba_nr`)
-    REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr`)
+    REFERENCES `bezirksausschuesse` (`ba_nr`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -135,9 +129,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`termine`
+-- Table `termine`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`termine` (
+CREATE TABLE IF NOT EXISTS `termine` (
   `id` INT(11) NOT NULL,
   `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `termin_reihe` INT(11) NOT NULL DEFAULT '0',
@@ -159,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `ris2`.`termine` (
   INDEX `fk_termine_gremien1_idx` (`gremium_id` ASC),
   CONSTRAINT `fk_termine_gremien1`
     FOREIGN KEY (`gremium_id`)
-    REFERENCES `ris2`.`gremien` (`id`)
+    REFERENCES `gremien` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -167,9 +161,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_ergebnisse`
+-- Table `antraege_ergebnisse`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_ergebnisse` (
+CREATE TABLE IF NOT EXISTS `antraege_ergebnisse` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `vorgang_id` INT NULL,
   `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -192,22 +186,22 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_ergebnisse` (
   INDEX `fk_antraege_ergebnisse_vorgaenge1_idx` (`vorgang_id` ASC),
   CONSTRAINT `fk_antraege_ergebnisse_antraege1`
     FOREIGN KEY (`antrag_id`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_ergebnisse_gremien1`
     FOREIGN KEY (`gremium_id`)
-    REFERENCES `ris2`.`gremien` (`id`)
+    REFERENCES `gremien` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_ergebnisse_termine1`
     FOREIGN KEY (`sitzungstermin_id`)
-    REFERENCES `ris2`.`termine` (`id`)
+    REFERENCES `termine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_ergebnisse_vorgaenge1`
     FOREIGN KEY (`vorgang_id`)
-    REFERENCES `ris2`.`vorgaenge` (`id`)
+    REFERENCES `vorgaenge` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -216,9 +210,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_dokumente`
+-- Table `antraege_dokumente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_dokumente` (
+CREATE TABLE IF NOT EXISTS `antraege_dokumente` (
   `id` INT(11) NOT NULL,
   `typ` ENUM('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative','stadtrat_termin','ba_termin','stadtrat_beschluss','bv_empfehlung','ba_beschluss') NULL DEFAULT NULL,
   `antrag_id` INT(11) NULL DEFAULT NULL,
@@ -246,22 +240,22 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_dokumente` (
   INDEX `highlight_dokument` (`highlight` ASC),
   CONSTRAINT `fk_antraege_dokumente_antraege1`
     FOREIGN KEY (`antrag_id`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_dokumente_antraege_ergebnisse1`
     FOREIGN KEY (`ergebnis_id`)
-    REFERENCES `ris2`.`antraege_ergebnisse` (`id`)
+    REFERENCES `antraege_ergebnisse` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_dokumente_termine1`
     FOREIGN KEY (`termin_id`)
-    REFERENCES `ris2`.`termine` (`id`)
+    REFERENCES `termine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_dokumente_vorgaenge1`
     FOREIGN KEY (`vorgang_id`)
-    REFERENCES `ris2`.`vorgaenge` (`id`)
+    REFERENCES `vorgaenge` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -269,9 +263,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_history`
+-- Table `antraege_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_history` (
+CREATE TABLE IF NOT EXISTS `antraege_history` (
   `id` MEDIUMINT(9) NOT NULL,
   `vorgang_id` INT NULL,
   `typ` ENUM('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative') NOT NULL,
@@ -303,17 +297,17 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_history` (
   INDEX `fk_antraege_history_referate1_idx` (`referat_id` ASC),
   CONSTRAINT `bezirksausschuss`
     FOREIGN KEY (`ba_nr`)
-    REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr`)
+    REFERENCES `bezirksausschuesse` (`ba_nr`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_history_vorgaenge1`
     FOREIGN KEY (`vorgang_id`)
-    REFERENCES `ris2`.`vorgaenge` (`id`)
+    REFERENCES `vorgaenge` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_history_referate1`
     FOREIGN KEY (`referat_id`)
-    REFERENCES `ris2`.`referate` (`id`)
+    REFERENCES `referate` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -321,9 +315,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_vorlagen`
+-- Table `antraege_vorlagen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_vorlagen` (
+CREATE TABLE IF NOT EXISTS `antraege_vorlagen` (
   `antrag1` INT(11) NOT NULL,
   `antrag2` INT(11) NOT NULL,
   `datum` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
@@ -332,12 +326,12 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_vorlagen` (
   INDEX `fk_antraege_links_antraege2_idx` (`antrag2` ASC),
   CONSTRAINT `fk_antraege_vorlagen_antraege1`
     FOREIGN KEY (`antrag2`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_vorlagen_antraege2`
     FOREIGN KEY (`antrag1`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -346,9 +340,9 @@ COLLATE = utf8_general_ci;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`orte_geo`
+-- Table `orte_geo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`orte_geo` (
+CREATE TABLE IF NOT EXISTS `orte_geo` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ort` VARCHAR(100) NOT NULL,
   `lat` DOUBLE NOT NULL,
@@ -366,9 +360,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_orte`
+-- Table `antraege_orte`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_orte` (
+CREATE TABLE IF NOT EXISTS `antraege_orte` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `antrag_id` INT(11) NULL DEFAULT NULL,
   `termin_id` INT(11) NULL DEFAULT NULL,
@@ -385,22 +379,22 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_orte` (
   INDEX `fk_antraege_orte_termine1_idx` (`termin_id` ASC),
   CONSTRAINT `fk_antraege_orte_antraege1`
     FOREIGN KEY (`antrag_id`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_orte_antraege_dokumente1`
     FOREIGN KEY (`dokument_id`)
-    REFERENCES `ris2`.`antraege_dokumente` (`id`)
+    REFERENCES `antraege_dokumente` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_orte_orte_geo1`
     FOREIGN KEY (`ort_id`)
-    REFERENCES `ris2`.`orte_geo` (`id`)
+    REFERENCES `orte_geo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_orte_termine1`
     FOREIGN KEY (`termin_id`)
-    REFERENCES `ris2`.`termine` (`id`)
+    REFERENCES `termine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -409,9 +403,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`fraktionen`
+-- Table `fraktionen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`fraktionen` (
+CREATE TABLE IF NOT EXISTS `fraktionen` (
   `id` INT(11) NOT NULL,
   `name` VARCHAR(70) NOT NULL,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL,
@@ -420,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `ris2`.`fraktionen` (
   INDEX `fk_fraktionen_bezirksausschuesse1_idx` (`ba_nr` ASC),
   CONSTRAINT `fk_fraktionen_bezirksausschuesse1`
     FOREIGN KEY (`ba_nr`)
-    REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr`)
+    REFERENCES `bezirksausschuesse` (`ba_nr`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -428,9 +422,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`stadtraetInnen`
+-- Table `stadtraetInnen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`stadtraetInnen` (
+CREATE TABLE IF NOT EXISTS `stadtraetInnen` (
   `id` INT(11) NOT NULL,
   `gewaehlt_am` DATE NULL DEFAULT NULL,
   `bio` MEDIUMTEXT NOT NULL,
@@ -445,9 +439,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`personen`
+-- Table `personen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`personen` (
+CREATE TABLE IF NOT EXISTS `personen` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name_normalized` VARCHAR(100) NOT NULL,
   `typ` ENUM('person','fraktion','sonstiges') NOT NULL,
@@ -460,12 +454,12 @@ CREATE TABLE IF NOT EXISTS `ris2`.`personen` (
   INDEX `fk_personen_fraktionen1_idx` (`ris_fraktion` ASC),
   CONSTRAINT `fk_personen_fraktionen1`
     FOREIGN KEY (`ris_fraktion`)
-    REFERENCES `ris2`.`fraktionen` (`id`)
+    REFERENCES `fraktionen` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_personen_stadtraete1`
     FOREIGN KEY (`ris_stadtraetIn`)
-    REFERENCES `ris2`.`stadtraetInnen` (`id`)
+    REFERENCES `stadtraetInnen` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -474,9 +468,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_personen`
+-- Table `antraege_personen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_personen` (
+CREATE TABLE IF NOT EXISTS `antraege_personen` (
   `antrag_id` INT(11) NOT NULL,
   `person_id` INT(11) NOT NULL,
   `typ` ENUM('gestellt_von','initiator') NOT NULL DEFAULT 'gestellt_von',
@@ -485,12 +479,12 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_personen` (
   INDEX `fk_antraege_personen_antraege1_idx` (`antrag_id` ASC),
   CONSTRAINT `fk_antraege_personen_antraege1`
     FOREIGN KEY (`antrag_id`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_personen_ris_personen1`
     FOREIGN KEY (`person_id`)
-    REFERENCES `ris2`.`personen` (`id`)
+    REFERENCES `personen` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -498,9 +492,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`gremien_history`
+-- Table `gremien_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`gremien_history` (
+CREATE TABLE IF NOT EXISTS `gremien_history` (
   `id` INT(11) NOT NULL,
   `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL,
@@ -512,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `ris2`.`gremien_history` (
   INDEX `fk_gremien_bezirksausschuesse1_idx` (`ba_nr` ASC),
   CONSTRAINT `fk_gremien_bezirksausschuesse10`
     FOREIGN KEY (`ba_nr`)
-    REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr`)
+    REFERENCES `bezirksausschuesse` (`ba_nr`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -520,9 +514,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`ris_aenderungen`
+-- Table `ris_aenderungen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`ris_aenderungen` (
+CREATE TABLE IF NOT EXISTS `ris_aenderungen` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `ris_id` INT(11) NOT NULL,
   `ba_nr` SMALLINT(6) NULL DEFAULT NULL,
@@ -536,7 +530,7 @@ CREATE TABLE IF NOT EXISTS `ris2`.`ris_aenderungen` (
   INDEX `fk_ris_aenderungen_bezirksausschuesse1_idx` (`ba_nr` ASC),
   CONSTRAINT `fk_ris_aenderungen_bezirksausschuesse1`
     FOREIGN KEY (`ba_nr`)
-    REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr`)
+    REFERENCES `bezirksausschuesse` (`ba_nr`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -545,9 +539,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`stadtraetInnen_fraktionen`
+-- Table `stadtraetInnen_fraktionen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`stadtraetInnen_fraktionen` (
+CREATE TABLE IF NOT EXISTS `stadtraetInnen_fraktionen` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `stadtraetIn_id` INT(11) NOT NULL,
   `fraktion_id` INT(11) NOT NULL,
@@ -562,12 +556,12 @@ CREATE TABLE IF NOT EXISTS `ris2`.`stadtraetInnen_fraktionen` (
   INDEX `uq` (`stadtraetIn_id` ASC, `fraktion_id` ASC, `wahlperiode` ASC),
   CONSTRAINT `fk_stadtraete_fraktionen_fraktionen2`
     FOREIGN KEY (`fraktion_id`)
-    REFERENCES `ris2`.`fraktionen` (`id`)
+    REFERENCES `fraktionen` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stadtraetInnen_fraktionen`
     FOREIGN KEY (`stadtraetIn_id`)
-    REFERENCES `ris2`.`stadtraetInnen` (`id`)
+    REFERENCES `stadtraetInnen` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -576,9 +570,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`strassen`
+-- Table `strassen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`strassen` (
+CREATE TABLE IF NOT EXISTS `strassen` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `plz` VARCHAR(10) NOT NULL,
@@ -590,9 +584,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`termine_history`
+-- Table `termine_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`termine_history` (
+CREATE TABLE IF NOT EXISTS `termine_history` (
   `id` INT(11) NOT NULL,
   `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `termin_reihe` INT(11) NOT NULL DEFAULT '0',
@@ -613,7 +607,7 @@ CREATE TABLE IF NOT EXISTS `ris2`.`termine_history` (
   INDEX `fk_termine_history_bezirksausschuesse1_idx` (`ba_nr` ASC),
   CONSTRAINT `fk_termine_history_bezirksausschuesse1`
     FOREIGN KEY (`ba_nr`)
-    REFERENCES `ris2`.`bezirksausschuesse` (`ba_nr`)
+    REFERENCES `bezirksausschuesse` (`ba_nr`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -621,9 +615,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_stadtraetInnen`
+-- Table `antraege_stadtraetInnen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_stadtraetInnen` (
+CREATE TABLE IF NOT EXISTS `antraege_stadtraetInnen` (
   `antrag_id` INT(11) NOT NULL,
   `stadtraetIn_id` INT(11) NOT NULL,
   `gefunden_am` TIMESTAMP NULL DEFAULT NULL,
@@ -632,12 +626,12 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_stadtraetInnen` (
   INDEX `fk_antraege_stadtraetInnen_stadtraetInnen1_idx` (`stadtraetIn_id` ASC),
   CONSTRAINT `fk_antraege_stadtraetInnen_antraege1`
     FOREIGN KEY (`antrag_id`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_stadtraetInnen_stadtraetInnen1`
     FOREIGN KEY (`stadtraetIn_id`)
-    REFERENCES `ris2`.`stadtraetInnen` (`id`)
+    REFERENCES `stadtraetInnen` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -646,9 +640,9 @@ COLLATE = utf8_general_ci;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`antraege_ergebnisse_history`
+-- Table `antraege_ergebnisse_history`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`antraege_ergebnisse_history` (
+CREATE TABLE IF NOT EXISTS `antraege_ergebnisse_history` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `vorgang_id` INT NULL,
   `datum_letzte_aenderung` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -670,22 +664,22 @@ CREATE TABLE IF NOT EXISTS `ris2`.`antraege_ergebnisse_history` (
   INDEX `fk_antraege_ergebnisse_history_vorgaenge1_idx` (`vorgang_id` ASC),
   CONSTRAINT `fk_antraege_ergebnisse_antraege10`
     FOREIGN KEY (`antrag_id`)
-    REFERENCES `ris2`.`antraege` (`id`)
+    REFERENCES `antraege` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_ergebnisse_gremien10`
     FOREIGN KEY (`gremium_id`)
-    REFERENCES `ris2`.`gremien` (`id`)
+    REFERENCES `gremien` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_ergebnisse_termine10`
     FOREIGN KEY (`sitzungstermin_id`)
-    REFERENCES `ris2`.`termine` (`id`)
+    REFERENCES `termine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_antraege_ergebnisse_history_vorgaenge1`
     FOREIGN KEY (`vorgang_id`)
-    REFERENCES `ris2`.`vorgaenge` (`id`)
+    REFERENCES `vorgaenge` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -693,9 +687,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`benutzerInnen`
+-- Table `benutzerInnen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`benutzerInnen` (
+CREATE TABLE IF NOT EXISTS `benutzerInnen` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NULL DEFAULT NULL,
   `email_bestaetigt` TINYINT(4) NULL DEFAULT '0',
@@ -712,9 +706,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`metadaten`
+-- Table `metadaten`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`metadaten` (
+CREATE TABLE IF NOT EXISTS `metadaten` (
   `meta_key` VARCHAR(25) NOT NULL,
   `meta_val` BLOB NULL,
   PRIMARY KEY (`meta_key`))
@@ -723,9 +717,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `ris2`.`benutzerInnen_vorgaenge_abos`
+-- Table `benutzerInnen_vorgaenge_abos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ris2`.`benutzerInnen_vorgaenge_abos` (
+CREATE TABLE IF NOT EXISTS `benutzerInnen_vorgaenge_abos` (
   `benutzerInnen_id` INT(11) NOT NULL,
   `vorgaenge_id` INT NOT NULL,
   PRIMARY KEY (`benutzerInnen_id`, `vorgaenge_id`),
@@ -733,12 +727,12 @@ CREATE TABLE IF NOT EXISTS `ris2`.`benutzerInnen_vorgaenge_abos` (
   INDEX `fk_benutzerInnen_has_vorgaenge_benutzerInnen1_idx` (`benutzerInnen_id` ASC),
   CONSTRAINT `fk_benutzerInnen_has_vorgaenge_benutzerInnen1`
     FOREIGN KEY (`benutzerInnen_id`)
-    REFERENCES `ris2`.`benutzerInnen` (`id`)
+    REFERENCES `benutzerInnen` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_benutzerInnen_has_vorgaenge_vorgaenge1`
     FOREIGN KEY (`vorgaenge_id`)
-    REFERENCES `ris2`.`vorgaenge` (`id`)
+    REFERENCES `vorgaenge` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
