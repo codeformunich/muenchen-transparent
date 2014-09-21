@@ -11,7 +11,7 @@
  * @property string $einstellungen
  * @property string $datum_letzte_benachrichtigung
  *
- * @property AntragAbo[] $abonnierte_antraege
+ * @property Vorgang[] $abonnierte_vorgaenge
  */
 class BenutzerIn extends CActiveRecord
 {
@@ -90,14 +90,7 @@ class BenutzerIn extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'aenderungsantragKommentare'         => array(self::HAS_MANY, 'AenderungsantragKommentar', 'verfasserIn_id'),
-			'aenderungsantragUnterstuetzerInnen' => array(self::HAS_MANY, 'AenderungsantragUnterstuetzer', 'unterstuetzerIn_id'),
-			'antragKommentare'                   => array(self::HAS_MANY, 'AntragKommentar', 'verfasserIn_id'),
-			'antragUnterstuetzerInnen'           => array(self::HAS_MANY, 'AntragUnterstuetzerInnen', 'unterstuetzerIn_id'),
-			'admin_veranstaltungen'              => array(self::MANY_MANY, 'Veranstaltung', 'veranstaltungs_admins(person_id, veranstaltung_id)'),
-			'admin_veranstaltungsreihen'         => array(self::MANY_MANY, 'Veranstaltungsreihe', 'veranstaltungsreihen_admins(person_id, veranstaltungsreihe_id)'),
-			'veranstaltungsreihenAbos'           => array(self::HAS_MANY, 'VeranstaltungsreihenAbo', 'person_id'),
-			'abonnierte_antraege'                => array(self::HAS_MANY, 'AntragAbo', 'antraege_abos(benutzerIn_id, antrag_id)'),
+			'abonnierte_vorgaenge' => array(self::MANY_MANY, 'Vorgang', 'benutzerInnen_vorgaenge_abos(benutzerInnen_id, vorgaenge_id)'),
 		);
 	}
 
@@ -116,7 +109,7 @@ class BenutzerIn extends CActiveRecord
 			'datum_angelegt'                => Yii::t('app', 'Angelegt Datum'),
 			'datum_letzte_benachrichtigung' => Yii::t('app', 'Datum der letzten Benachrichtigung'),
 			'einstellungen'                 => null,
-			'abonnierte_antraege'           => null,
+			'abonnierte_vorgaenge'          => Yii::t('app', 'Abonnierte Vorgänge'),
 		);
 	}
 
@@ -332,8 +325,8 @@ class BenutzerIn extends CActiveRecord
 
 		$ergebnisse = $solr->select($select);
 		/** @var RISSolrDocument[] $documents */
-		$documents  = $ergebnisse->getDocuments();
-		$res        = array();
+		$documents = $ergebnisse->getDocuments();
+		$res       = array();
 		foreach ($documents as $document) {
 			$res[] = array(
 				"id"   => $document->id,
@@ -342,7 +335,6 @@ class BenutzerIn extends CActiveRecord
 		}
 		return $res;
 	}
-
 
 
 	/**

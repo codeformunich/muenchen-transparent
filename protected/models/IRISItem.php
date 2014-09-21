@@ -9,9 +9,12 @@ interface IRISItem
 	/** @return string */
 	public function getTypName();
 
+	/** @return string */
+	public function getDate();
+
 	/**
-	 * @param bool $langfassung
+	 * @param bool $kurzfassung
 	 * @return string
 	 */
-	public function getName($langfassung = false);
+	public function getName($kurzfassung = false);
 }

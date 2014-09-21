@@ -36,45 +36,86 @@ if ($msg_err != "") {
 <?
 }
 
-$bens = $ich->getBenachrichtigungen();
-if (count($bens) == 0) {
+$bens          = $ich->getBenachrichtigungen();
+$abo_vorgaenge = $ich->abonnierte_vorgaenge;
+if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 	?>
 	<div class="benachrichtigung_keine col col-lg-7 well" style="margin-left: 23px;">Noch keine E-Mail-Benachrichtigungen</div>
 <?
 } else {
 	?>
-	<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" style="margin-left: 23px;">
-		<ul class="benachrichtigungsliste">
-			<li class="header">
-				<div class="del_holder">Löschen</div>
-				<div class="krit_holder">Suchkriterium</div>
-				<div class="such_holder">Suchen</div>
-			</li>
-			<?
-			foreach ($bens as $ben) {
-				$del_form_name = AntiXSS::createToken("del_ben") . "[" . RISTools::bracketEscape(CHtml::encode(json_encode($ben->krits))) . "]";
-				$such_url      = $ben->getUrl();
-				?>
-				<li>
-					<div class='del_holder'>
-						<button type='submit' class='del' name='<?= $del_form_name ?>'><span class='glyphicon glyphicon-minus-sign'></span></button>
-					</div>
-					<div class='krit_holder'><?= $ben->getTitle() ?></div>
-					<div class='such_holder'><a href='<?= RISTools::bracketEscape(CHtml::encode($ben->getUrl())) ?>'><span class='glyphicon glyphicon-search'></span></a></div>
-				</li>
+	<div class="row">
+		<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-7 well" style="margin-left: 23px;">
+			<? if (count($bens) > 0) { ?>
+				<h3>Abonnierte Suchabfragen</h3>
+				<ul class="benachrichtigungsliste">
+					<li class="header">
+						<div class="del_holder">Löschen</div>
+						<div class="krit_holder">Suchkriterium</div>
+						<div class="such_holder">Suchen</div>
+					</li>
+					<?
+					foreach ($bens as $ben) {
+						$del_form_name = AntiXSS::createToken("del_ben") . "[" . RISTools::bracketEscape(CHtml::encode(json_encode($ben->krits))) . "]";
+						$such_url      = $ben->getUrl();
+						?>
+						<li>
+							<div class='del_holder'>
+								<button type='submit' class='del' name='<?= $del_form_name ?>'><span class='glyphicon glyphicon-minus-sign'></span></button>
+							</div>
+							<div class='krit_holder'><?= $ben->getTitle() ?></div>
+							<div class='such_holder'><a href='<?= RISTools::bracketEscape(CHtml::encode($ben->getUrl())) ?>'><span class='glyphicon glyphicon-search'></span></a>
+							</div>
+						</li>
+					<?
+					}
+					?>
+				</ul>
 			<?
 			}
-			?>
-		</ul>
-	</form>
+			if (count($abo_vorgaenge) > 0) {
+				?>
+				<h3>Abonnierte Anträge / Vorgänge</h3>
+				<ul class="benachrichtigungsliste">
+					<li class="header">
+						<div class="del_holder">Löschen</div>
+						<div class="krit_holder">Vorgang</div>
+					</li>
+					<?
+					foreach ($abo_vorgaenge as $vorgang) {
+						$item          = $vorgang->wichtigstesRisItem();
+						$del_form_name = AntiXSS::createToken("del_vorgang_abo") . "[" . $vorgang->id . "]";
+						?>
+						<li>
+							<div class='del_holder'>
+								<button type='submit' class='del' name='<?= $del_form_name ?>'><span class='glyphicon glyphicon-minus-sign'></span></button>
+							</div>
+							<div class='krit_holder'>
+								<a href="<?= CHtml::encode($item->getLink()) ?>"><span class="icon icon-right-open"></span> <?= CHtml::encode($item->getName()) ?></a>
+							</div>
+						</li>
+					<?
+					}
+					?>
+				</ul>
+			<? } ?>
+		</form>
 
-	<div class="ben_alle_holder">
-		<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span class="glyphicon glyphicon-chevron-right"></span>
-			Alle Suchergebnisse</a>
-		<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", array("code" => $ich->getFeedCode()))) ?>" class="ben_alle_feed"><span class="icon-rss"></span>
-			Alle Suchergebnisse als Feed</a>
 	</div>
-<? } ?>
+	<? if (count($bens) > 0) { ?>
+		<div class="row">
+			<div class="ben_alle_holder col col-lg-7">
+				<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
+						class="glyphicon glyphicon-chevron-right"></span>
+					Alle Suchergebnisse</a>
+				<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", array("code" => $ich->getFeedCode()))) ?>" class="ben_alle_feed"><span
+						class="icon-rss"></span>
+					Alle Suchergebnisse als Feed</a>
+			</div>
+		</div>
+	<?
+	}
+} ?>
 
 <br style="clear: both;">
 
@@ -101,7 +142,7 @@ if (count($bens) == 0) {
 			<select class="selectpicker" name="ba"><?
 				$bas = Bezirksausschuss::model()->findAll();
 				/** @var Bezirksausschuss $ba */
-				foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": "  . CHtml::encode($ba->name) . '</option>';
+				foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": " . CHtml::encode($ba->name) . '</option>';
 				?>
 			</select>
 			<span class="input-group-btn">
@@ -156,19 +197,21 @@ if (count($bens) == 0) {
 			load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", "/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js"],
 			complete: function () {
 				var $ben_holder = $("#ben_map_infos");
-				$("#ben_map").AntraegeKarte({ benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, size: 11, onSelect: function (latlng, rad) {
-					$.ajax({
-						"url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
-						"success": function (ret) {
-							$("#ben_map_infos").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
-							$(".ben_add_geo").prop("disabled", false);
+				$("#ben_map").AntraegeKarte({
+					benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, size: 11, onSelect: function (latlng, rad) {
+						$.ajax({
+							"url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
+							"success": function (ret) {
+								$("#ben_map_infos").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
+								$(".ben_add_geo").prop("disabled", false);
 
-						}
-					});
-					$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
-					$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
-					$ben_holder.find("input[name=geo_radius]").val(rad);
-				}});
+							}
+						});
+						$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
+						$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
+						$ben_holder.find("input[name=geo_radius]").val(rad);
+					}
+				});
 			}
 		});
 	</script>

@@ -28,7 +28,7 @@
  * @property AntragOrt[] $orte
  * @property Vorgang $vorgang
  */
-class AntragDokument extends CActiveRecord
+class AntragDokument extends CActiveRecord implements IRISItem
 {
 
 	public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
@@ -189,6 +189,38 @@ class AntragDokument extends CActiveRecord
 		));
 		return $this;
 	}
+
+
+
+	/** @return string */
+	public function getLink()
+	{
+		return "http://www.ris-muenchen.de" . $this->url;
+	}
+
+	/** @return string */
+	public function getTypName()
+	{
+		return "Dokument";
+	}
+
+	/**
+	 * @param bool $langfassung
+	 * @return string
+	 */
+	public function getName($langfassung = false)
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return $this->datum;
+	}
+
+
 
 
 	/**

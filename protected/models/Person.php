@@ -58,9 +58,6 @@ class Person extends CActiveRecord implements IRISItem
 			array('ris_stadtraetIn, ris_fraktion', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 9),
 			array('name, name_normalized', 'length', 'max' => 100),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, name_normalized, typ, name, ris_stadtraetIn, ris_fraktion', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -91,29 +88,6 @@ class Person extends CActiveRecord implements IRISItem
 			'ris_stadtraetIn' => 'StadträtInnen-ID',
 			'ris_fraktion'    => 'Fraktion',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('name_normalized', $this->name_normalized, true);
-		$criteria->compare('typ', $this->typ, true);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('ris_stadtraetIn', $this->ris_stadtraetIn);
-		$criteria->compare('ris_fraktion', $this->ris_fraktion);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 
 	/**
@@ -175,4 +149,13 @@ class Person extends CActiveRecord implements IRISItem
 	{
 		return $this->name;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return "0000-00-00 00:00:00";
+	}
+
+
 }

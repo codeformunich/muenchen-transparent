@@ -37,7 +37,6 @@
  * @property StadtraetIn[] $stadtraetInnen
  * @property Antrag[] $antrag2vorlagen
  * @property Antrag[] $vorlage2antraege
- * @property AntragAbo[] $abos
  * @property Vorgang $vorgang
  */
 class Antrag extends CActiveRecord implements IRISItem
@@ -95,10 +94,6 @@ class Antrag extends CActiveRecord implements IRISItem
 			array('bearbeitung', 'length', 'max' => 100),
 			array('typ, ba_nr, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe'),
 			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
-
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -183,47 +178,6 @@ class Antrag extends CActiveRecord implements IRISItem
 			'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
 		);
 	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('vorgang_id', $this->vorgang_id);
-		$criteria->compare('typ', $this->typ, true);
-		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
-		$criteria->compare('ba_nr', $this->ba_nr);
-		$criteria->compare('gestellt_am', $this->gestellt_am, true);
-		$criteria->compare('gestellt_von', $this->gestellt_von, true);
-		$criteria->compare('antrags_nr', $this->antrags_nr, true);
-		$criteria->compare('bearbeitungsfrist', $this->bearbeitungsfrist, true);
-		$criteria->compare('registriert_am', $this->registriert_am, true);
-		$criteria->compare('erledigt_am', $this->erledigt_am, true);
-		$criteria->compare('referat', $this->referat, true);
-		$criteria->compare('referent', $this->referent, true);
-		$criteria->compare('referat_id', $this->referat_id, true);
-		$criteria->compare('wahlperiode', $this->wahlperiode, true);
-		$criteria->compare('antrag_typ', $this->antrag_typ, true);
-		$criteria->compare('betreff', $this->betreff, true);
-		$criteria->compare('kurzinfo', $this->kurzinfo, true);
-		$criteria->compare('status', $this->status, true);
-		$criteria->compare('bearbeitung', $this->bearbeitung, true);
-		$criteria->compare('fristverlaengerung', $this->fristverlaengerung, true);
-		$criteria->compare('initiatorInnen', $this->initiatorInnen, true);
-		$criteria->compare('initiative_to_aufgenommen', $this->initiative_to_aufgenommen, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
 
 	/**
 	 * @param null|int $ba_nr
@@ -445,12 +399,20 @@ class Antrag extends CActiveRecord implements IRISItem
 		if ($kurzfassung) {
 			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->betreff);
 			$x       = explode(" Antrag Nr.", $betreff);
+			$x       = explode("<strong>Antrag: </strong>", $x[0]);
 			$x       = explode(" Empfehlung Nr.", $x[0]);
 			$x       = explode(" BA-Antrags-", $x[0]);
 			return RISTools::korrigiereTitelZeichen($x[0]);
 		} else {
 			return RISTools::korrigiereTitelZeichen($this->betreff);
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return $this->datum_letzte_aenderung;
 	}
 
 	/**

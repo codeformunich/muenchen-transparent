@@ -51,9 +51,6 @@ class Referat extends CActiveRecord implements IRISItem
 			array('strasse, urlpart', 'length', 'max' => 45),
 			array('plz', 'length', 'max' => 10),
 			array('ort', 'length', 'max' => 30),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, name, aktiv, ort, strasse, plz, email, telefon', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -111,6 +108,15 @@ class Referat extends CActiveRecord implements IRISItem
 	{
 		return $this->name;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return "0000-00-00 00:00:00";
+	}
+
+
 
 	/**
 	 * @param string $name

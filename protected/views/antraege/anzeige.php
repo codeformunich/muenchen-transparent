@@ -19,10 +19,13 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 $historie = $antrag->getHistoryDiffs();
 
 ?>
-<h1><?= CHtml::encode($antrag->getName(true)) ?></h1>
-
 <div class="row">
 <div class="col-md-8">
+
+<div class="row_head" style="min-height: 80px;">
+	<h1><?= CHtml::encode($antrag->getName(true)) ?></h1>
+</div>
+
 <table class="table table-bordered">
 <tbody>
 <tr>
@@ -225,11 +228,41 @@ if (count($historie) > 0) {
 	</tr>
 <?
 }
+/** @var IRISItem[] $vorgang_items */
+$vorgang_items = ($antrag->vorgang ? $antrag->vorgang->getRISItemsByDate() : array());
+if (count($vorgang_items) > 1) {
+	?>
+	<tr>
+		<th>Verwandte Seiten:</th>
+		<td>
+			<ul>
+				<?php
+				foreach ($vorgang_items as $item) {
+					echo '<li>' . CHtml::link($item->getName(true), $item->getLink()) . '</li>';
+				}
+				?>
+			</ul>
+		</td>
+	</tr>
+<?
+}
+
 ?>
+
 </tbody>
 </table>
 </div>
 <section style="background-color: #f7f7f7; padding-top: 10px; padding-bottom: 10px;" class="col-md-4">
+	<form method="POST" action="<?=Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id))?>" class="abo_button row_head" style="min-height: 80px; text-align: right;">
+		<?
+		if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) {
+			?>
+			<button type="submit" name="<?=AntiXSS::createToken("deabonnieren")?>" class="btn btn-primary btn-lg"><span class="email">@</span> Abonniert</button>
+		<? } else { ?>
+			<button type="submit" name="<?=AntiXSS::createToken("abonnieren")?>" class="btn btn-default btn-lg"><span class="email">@</span> Nicht abonniert</button>
+		<? } ?>
+	</form>
+
 	<h2 style="font-size: 16px; font-weight: bold; text-align: center; padding: 2px; margin: 0;">Könnte themenverwandt sein</h2>
 	<ul class="antragsliste" id="themenverwandt"><?= $themenverwandt ?></ul>
 </section>

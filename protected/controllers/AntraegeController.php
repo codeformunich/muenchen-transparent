@@ -72,6 +72,16 @@ class AntraegeController extends RISBaseController
 			return;
 		}
 
+		if (AntiXSS::isTokenSet("abonnieren")) {
+			$this->requireLogin($this->createUrl("antraege/anzeigen", array("id" => $id)));
+			$antrag->vorgang->abonnieren($this->aktuelleBenutzerIn());
+		}
+
+		if (AntiXSS::isTokenSet("deabonnieren")) {
+			$this->requireLogin($this->createUrl("antraege/anzeigen", array("id" => $id)));
+			$antrag->vorgang->deabonnieren($this->aktuelleBenutzerIn());
+		}
+
 		$this->render("anzeige", array(
 			"antrag"         => $antrag,
 			"themenverwandt" => $this->actionAjaxThemenverwandte($id),

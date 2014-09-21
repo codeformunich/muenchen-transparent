@@ -50,9 +50,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			array('twitter', 'length', 'max' => 45),
 			array('facebook, abgeordnetenwatch', 'length', 'max' => 200),
 			array('gewaehlt_am', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, gewaehlt_am, bio, web, name, twitter, facebook, abgeordnetenwatch', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -88,28 +85,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	}
 
 	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('gewaehlt_am', $this->gewaehlt_am, true);
-		$criteria->compare('bio', $this->bio, true);
-		$criteria->compare('web', $this->web, true);
-		$criteria->compare('name', $this->name, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getLink()
@@ -132,6 +107,15 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	{
 		return $this->name;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return "0000-00-00 00:00:00";
+	}
+
+
 
 	/**
 	 * @return string

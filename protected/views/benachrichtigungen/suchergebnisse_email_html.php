@@ -15,13 +15,36 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/assets/styles_mail.css") 
 
 <body>
 <h2>Hallo,</h2>
-seit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:<br><br>
+seit der letzten E-Mail-Benachrichtigung wurde entsprechend deiner Benachrichtigungseinstellungen Folgendes neu gefunden:<br><br>
 <?php
+
+
+if (count($data["vorgaenge"]) > 0) {
+	?>
+	<section class="fullsize">
+		<h3>Abonnierte Vorgänge / Anträge</h3>
+		<ul class="antragsliste">
+			<?
+			foreach ($data["vorgaenge"] as $vorg) {
+				echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode($vorg["vorgang"]) . "</div>";
+				echo "<ul class='dokumente'>";
+				foreach ($vorg["neues"] as $item) {
+					/** @var IRISItem $item */
+					echo '<li><a href="' . CHtml::encode($item->getLink()) . '">'  .CHtml::encode($item->getName(true)) . '</a> (' . CHtml::encode($item->getTypName()) . ')</li><br>';
+				}
+				echo "</ul>";
+				echo "</li>\n";
+			}
+			?>
+		</ul>
+	</section>
+<?
+}
 
 if (count($data["antraege"]) > 0) {
 	?>
 	<section class="fullsize">
-		<h3>Anträge & Vorlagen</h3>
+		<h3>Anträge &amp; Vorlagen</h3>
 		<ul class="antragsliste">
 			<?
 			foreach ($data["antraege"] as $dat) {

@@ -7,6 +7,20 @@
 seit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:
 
 <?
+
+if (count($data["vorgaenge"]) > 0) {
+	echo "=== Abonnierte Vorgänge ===\n\n";
+
+	foreach ($data["vorgaenge"] as $vorg) {
+		echo $vorg["vorgang"] . "\n";
+		foreach ($vorg["neues"] as $item) {
+			/** @var IRISItem $item */
+			echo "- " . $item->getName(true) . " (" . $item->getLink() . ")\n";
+		}
+		echo "\n";
+	}
+}
+
 if (count($data["antraege"]) > 0) {
 	echo "=== Anträge & Vorlagen ===\n\n";
 

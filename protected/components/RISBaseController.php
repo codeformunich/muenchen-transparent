@@ -125,4 +125,37 @@ class RISBaseController extends CController
 
 		return array($msg_ok, $msg_err);
 	}
+
+	/**
+	 * @param string $target_url
+	 * @param string $code
+	 * @return array
+	 */
+	protected function requireLogin($target_url, $code = "")
+	{
+		list($msg_ok, $msg_err) = $this->performLoginActions($code);
+
+		if (Yii::app()->getUser()->isGuest) {
+			$this->render("../index/login", array(
+				"current_url" => $target_url,
+				"msg_err"     => $msg_err,
+				"msg_ok"      => $msg_ok,
+			));
+			Yii::app()->end();
+		}
+
+		return array($msg_ok, $msg_err);
+	}
+
+	/**
+	 * @return BenutzerIn|null
+	 */
+	public function aktuelleBenutzerIn()
+	{
+		$user = Yii::app()->getUser();
+		if ($user->isGuest) return null;
+		/** @var BenutzerIn $ich */
+		$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+		return $ich;
+	}
 }

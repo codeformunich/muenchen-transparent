@@ -49,9 +49,6 @@ class Gremium extends CActiveRecord implements IRISItem
 			array('id, ba_nr', 'numerical', 'integerOnly' => true),
 			array('name, gremientyp, referat', 'length', 'max' => 100),
 			array('kuerzel', 'length', 'max' => 50),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, datum_letzte_aenderung, ba_nr, name, kuerzel, gremientyp, referat', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -84,31 +81,6 @@ class Gremium extends CActiveRecord implements IRISItem
 			'referat'                => 'Referat',
 		);
 	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
-		$criteria->compare('ba_nr', $this->ba_nr);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('kuerzel', $this->kuerzel, true);
-		$criteria->compare('gremientyp', $this->gremientyp, true);
-		$criteria->compare('referat', $this->referat, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
 
 	/**
 	 * @throws CDbException|Exception
@@ -215,4 +187,13 @@ class Gremium extends CActiveRecord implements IRISItem
 	{
 		return $this->name;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return $this->datum_letzte_aenderung;
+	}
+
+
 }

@@ -3,24 +3,6 @@
 class BenachrichtigungenController extends RISBaseController
 {
 
-
-	protected function requireLogin($code = "")
-	{
-		list($msg_ok, $msg_err) = $this->performLoginActions($code);
-
-		if (Yii::app()->getUser()->isGuest) {
-			$this->render("../index/login", array(
-				"current_url" => $this->createUrl("index/benachrichtigungen"),
-				"msg_err"     => $msg_err,
-				"msg_ok"      => $msg_ok,
-			));
-			Yii::app()->end();
-		}
-
-		return array($msg_ok, $msg_err);
-	}
-
-
 	public function actionAjaxBenachrichtigungDel()
 	{
 		Header("Content-Type: application/json; charset=UTF-8");
@@ -131,7 +113,7 @@ class BenachrichtigungenController extends RISBaseController
 	{
 		$this->top_menu = "benachrichtigungen";
 
-		list($msg_ok, $msg_err) = $this->requireLogin($code);
+		list($msg_ok, $msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"), $code);
 
 
 		/** @var BenutzerIn $ich */
@@ -176,6 +158,15 @@ class BenachrichtigungenController extends RISBaseController
 				$ben->addGeoKrit($_REQUEST["geo_lng"], $_REQUEST["geo_lat"], $_REQUEST["geo_radius"]);
 				$ich->addBenachrichtigung($ben);
 				$msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
+			}
+		}
+
+		if (AntiXSS::isTokenSet("del_vorgang_abo")) {
+			foreach (AntiXSS::getTokenVal("del_vorgang_abo") as $vorgang_id => $_tmp) {
+				/** @var Vorgang $vorgang */
+				$vorgang = Vorgang::model()->findByPk($vorgang_id);
+				$vorgang->deabonnieren($ich);
+				$msg_ok = "Der Vorgang wurde entfernt.";
 			}
 		}
 
@@ -253,7 +244,7 @@ class BenachrichtigungenController extends RISBaseController
 
 	public function actionAlleSuchergebnisse()
 	{
-		$this->requireLogin();
+		$this->requireLogin($this->createUrl("index/benachrichtigungen"));
 
 		/** @var BenutzerIn $ich */
 		$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
