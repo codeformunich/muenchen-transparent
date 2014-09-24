@@ -110,6 +110,7 @@ ul.dokumente {
   src: url("../fonts/fontello.eot?89489601#iefix") format("embedded-opentype"), url("../fonts/fontello.woff?89489601") format("woff"), url("../fonts/fontello.ttf?89489601") format("truetype"), url("../fonts/fontello.svg?89489601#fontello") format("svg");
   font-weight: normal;
   font-style: normal; }
+
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -206,6 +207,7 @@ ul.dokumente {
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+
 @-webkit-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
@@ -218,6 +220,7 @@ ul.dokumente {
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+
 @-o-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
@@ -230,6 +233,7 @@ ul.dokumente {
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+
 @-ms-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
@@ -242,6 +246,7 @@ ul.dokumente {
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+
 @keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
@@ -254,6 +259,7 @@ ul.dokumente {
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+
 #main_navbar .navbar-nav > li.so_funktioniert > a {
   /*
     padding-top: 5px;
@@ -823,3 +829,18 @@ ul.fraktionen_liste {
   padding: 10px;
   margin-left: auto;
   margin-right: auto; }
+
+/* keep the footer at the bottom of the page */
+body, html {
+  height: 100%; }
+
+.over_footer_wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -8em; }
+
+.footer_spacer, footer {
+  height: 8em; }
+
+/* /footer */

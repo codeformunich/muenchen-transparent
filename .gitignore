@@ -8,3 +8,4 @@ html/js/Leaflet/
 html/js/Leaflet.draw/
 *.log
 *.bak
+html/css/.sass-cache/
