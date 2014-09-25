@@ -15,6 +15,8 @@
 	<link href="/js/bootstrap-3.2.0/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" media="screen" href="/js/bootstrap-select/bootstrap-select.min.css">
 
+	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
+
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
 	<!--[if lt IE 9]>
@@ -58,7 +60,7 @@
 </head>
 
 <body>
-
+<div class="over_footer_wrapper">
 <div class="clear"></div>
 
 <div class="navbar navbar-inverse navbar-fixed-top" id="main_navbar">
@@ -113,20 +115,22 @@
 	<div class="body-content">
 
 		<?php echo $content; ?>
-
-		<hr>
-
-
-		<footer>
-			<p><?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("infos/datenschutz")) ?>
-				&nbsp;
-				<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?></p>
-		</footer>
 	</div>
-
 </div>
 <!-- /container -->
 
+<!-- Needed to keep the footer at the bottom -->
+<div class="footer_spacer"></div>
+</div> <!-- /over_footer_wrapper -->
+
+<footer>
+	<hr>
+	<p class="container">
+	<?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("infos/datenschutz")) ?>
+	&nbsp;
+	<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
+	</p>
+</footer>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

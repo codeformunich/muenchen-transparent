@@ -968,3 +968,21 @@ ul.fraktionen_liste {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* keep the footer at the bottom of the page */
+body, html {
+  height: 100%;
+}
+
+.over_footer_wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -8em;
+}
+
+.footer_spacer, footer {
+  height: 8em;
+}
+/* /footer */
+
