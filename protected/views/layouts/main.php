@@ -15,6 +15,8 @@
 	<link href="/js/bootstrap-3.2.0/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" media="screen" href="/js/bootstrap-select/bootstrap-select.min.css">
 
+	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
+
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
 	<!--[if lt IE 9]>
