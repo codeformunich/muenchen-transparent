@@ -647,7 +647,7 @@ class IndexController extends RISBaseController
 	/**
 	 * @param string $datum
 	 */
-	public function actionStadtrat($datum = "")
+	public function actionStartseite($datum = "")
 	{
 		$this->top_menu = "stadtrat";
 		$this->performLoginActions();
@@ -688,7 +688,7 @@ class IndexController extends RISBaseController
 
 		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
-		$this->render('stadtrat_uebersicht', array(
+		$this->render('startseite', array(
 			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
 			"aeltere_url_std"   => $this->createUrl("index/stadtrat", array("datum" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
 			"neuere_url_ajax"   => null,

@@ -88,56 +88,75 @@ $cs->registerScriptFile('/js/index.js');
 	})
 </script>
 
-
-<div class="row <? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
-	<div class="col col-lg-6 keine_dokumente teaser_holder">
-		<h3>Übersicht</h3>
-		<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" class="teaser_dokumente">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span> Dokumentensuche mit E-Mail-Benachrichtigung</h4>
-
-			<div class="description">
-				Durchsuche <?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> Dokumente (insg.
-				<?= number_format($statistiken["anzahl_seiten"], 0, ",", ".") ?> Seiten).<br>
-				<small>Neu in den letzten 7 Tagen: <?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> Dokumente
-				(<?= number_format($statistiken["anzahl_seiten_1w"], 0, ",", ".") ?> Seiten)</small><br>
-				Werde per E-Mail informiert, wenn es neue Dokumente gibt, die dich interessieren könnten.
-			</div>
-		</a>
-
-		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>" class="teaser_so_funktioniert">
+<section class="teaser_holder row">
+	<div class="teaser_entry teaser_so_funktioniert">
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>">
 			<h4><span class="glyphicon glyphicon-chevron-right"></span>So funktioniert Stadtpolitik</h4>
 
 			<div class="description">
 				Kommunalpolitik in München einfach erklärt.
 			</div>
 		</a>
+	</div>
 
-		<a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>" class="teaser_themen">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span>Themen</h4>
+	<div class="teaser_entry teaser_dokumente col-lg-6">
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span> Dokumentensuche mit E-Mail-Benachrichtigung</h4>
 
 			<div class="description">
-				Anträge und Stadtratsvorlagen, gegliedert nach Thema und zuständigem städtischem Referat.
+				Durchsuche <?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> Dokumente (insg.
+				<?= number_format($statistiken["anzahl_seiten"], 0, ",", ".") ?> Seiten).<br>
+				Werde per E-Mail informiert, wenn es neue Dokumente gibt.
 			</div>
 		</a>
+	</div>
 
-		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/personen")) ?>" class="teaser_personen">
+	<div class="teaser_personen teaser_dokumente col-lg-6">
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/personen")) ?>">
 			<h4><span class="glyphicon glyphicon-chevron-right"></span>Personen</h4>
 
 			<div class="description">
 				Wer sitzt im Stadtrat? Wie erreiche ich die städtischen Referate? Welche politischen Institutionen gibt es in meinem Stadtteil?
 			</div>
 		</a>
+	</div>
 
-		<a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>" class="teaser_termine">
+	<br style="clear: both;">
+
+	<div class="teaser_entry teaser_themen col-lg-6">
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>">
+			<h4><span class="glyphicon glyphicon-chevron-right"></span>Themen</h4>
+
+			<div class="description">
+				Anträge und Stadtratsvorlagen, gegliedert nach Thema und städtischem Referat.
+			</div>
+		</a>
+	</div>
+
+
+
+
+
+	<div class="teaser_entry teaser_termine col-lg-6">
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>">
 			<h4><span class="glyphicon glyphicon-chevron-right"></span>Termine</h4>
 
 			<div class="description">
 				Wann finden welche Stadtrats- und Ausschusssitzungen statt?
 			</div>
 		</a>
-
 	</div>
-	<div class="col col-lg-6" id="stadtratsdokumente_holder">
+</section>
+
+<!--
+<small>Neu in den letzten 7 Tagen: <?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> Dokumente
+					(<?= number_format($statistiken["anzahl_seiten_1w"], 0, ",", ".") ?> Seiten)
+				</small>
+				-->
+
+<div class="<? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
+
+	<div id="stadtratsdokumente_holder">
 		<?
 		$this->renderPartial("index_antraege_liste", array(
 			"antraege"          => $antraege_stadtrat,

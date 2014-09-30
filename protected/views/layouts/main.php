@@ -74,11 +74,11 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
+				<li><a href="<?=CHtml::encode(Yii::app()->createUrl("index/startseite"))?>" style="font-weight: bold; color: white;">[TODO: Logo]</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <b class="caret"></b></a>
 					<ul class="dropdown-menu" id="ba_nav_list">
 						<?
-						echo "<li class='stadtrat'>".CHtml::link("Stadtrat", $this->createUrl("index/stadtrat"))."</li>\n";
 						/** @var Bezirksausschuss[] $bas */
 						$bas = Bezirksausschuss::model()->findAll();
 						foreach ($bas as $ba) echo "<li>".CHtml::link($ba->ba_nr.": ".$ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr)))."</li>\n"
@@ -97,7 +97,6 @@
 				<? } ?>
 				<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
 				<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
-				<li class="so_funktioniert<? if ($this->top_menu == "so_funktioniert") echo ' active'; ?>"><?= CHtml::link("So funktioniert<br> Stadtpolitik", $this->createUrl("infos/soFunktioniertStadtpolitik")) ?></li>
 				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("infos/personen")) ?></li>
 			</ul>
 

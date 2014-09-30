@@ -110,7 +110,6 @@ ul.dokumente {
   src: url("../fonts/fontello.eot?89489601#iefix") format("embedded-opentype"), url("../fonts/fontello.woff?89489601") format("woff"), url("../fonts/fontello.ttf?89489601") format("truetype"), url("../fonts/fontello.svg?89489601#fontello") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -201,65 +200,55 @@ ul.dokumente {
     -o-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
-
   100% {
     -moz-transform: rotate(359deg);
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
-
 @-webkit-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
-
   100% {
     -moz-transform: rotate(359deg);
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
-
 @-o-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
-
   100% {
     -moz-transform: rotate(359deg);
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
-
 @-ms-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
-
   100% {
     -moz-transform: rotate(359deg);
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
-
 @keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg); }
-
   100% {
     -moz-transform: rotate(359deg);
     -o-transform: rotate(359deg);
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
-
 #main_navbar .navbar-nav > li.so_funktioniert > a {
   /*
     padding-top: 5px;
@@ -270,6 +259,19 @@ ul.dokumente {
 
 #ba_nav_list {
   min-width: 270px; }
+  @media screen and (max-height: 710px) and (min-width: 600px) {
+    #ba_nav_list {
+      -moz-column-count: 2;
+      -moz-column-gap: 10px;
+      -webkit-column-count: 2;
+      -webkit-column-gap: 10px;
+      column-count: 2;
+      column-gap: 10px; }
+      #ba_nav_list > li > a {
+        white-space: normal;
+        width: 250px;
+        text-indent: -25px;
+        margin-left: 25px; } }
   #ba_nav_list .stadtrat > a {
     font-weight: bold; }
 
@@ -392,34 +394,36 @@ html.no-csscolumns #listen_holder.nur_dokumente li {
   width: 49%;
   display: inline-block; }
 
-.teaser_holder > a {
-  display: block;
-  margin-bottom: 15px;
-  border: solid 1px #333;
-  background-color: #e4e4e4;
-  -webkit-transition: background-color 0.3s;
-  -moz-transition: background-color 0.3s;
-  -o-transition: background-color 0.3s;
-  transition: background-color 0.3s;
-  border-radius: 5px; }
-  .teaser_holder > a:link, .teaser_holder > a:visited {
-    color: black;
-    text-decoration: none; }
-  .teaser_holder > a:hover {
-    background-color: #eeeeee;
+.teaser_holder > div {
+  padding: 0px 20px 10px; }
+  .teaser_holder > div > a {
+    display: block;
+    margin-bottom: 15px;
+    border: solid 1px #333;
+    background-color: #e4e4e4;
     -webkit-transition: background-color 0.3s;
     -moz-transition: background-color 0.3s;
     -o-transition: background-color 0.3s;
-    transition: background-color 0.3s; }
-  .teaser_holder > a h4 {
-    margin: 0;
-    padding: 5px; }
-    .teaser_holder > a h4 .glyphicon {
-      font-weight: normal;
-      margin-right: 10px; }
-  .teaser_holder > a .description {
-    border-top: solid 1px #333;
-    padding: 5px; }
+    transition: background-color 0.3s;
+    border-radius: 5px; }
+    .teaser_holder > div > a:link, .teaser_holder > div > a:visited {
+      color: black;
+      text-decoration: none; }
+    .teaser_holder > div > a:hover {
+      background-color: #eeeeee;
+      -webkit-transition: background-color 0.3s;
+      -moz-transition: background-color 0.3s;
+      -o-transition: background-color 0.3s;
+      transition: background-color 0.3s; }
+    .teaser_holder > div > a h4 {
+      margin: 0;
+      padding: 5px; }
+      .teaser_holder > div > a h4 .glyphicon {
+        font-weight: normal;
+        margin-right: 10px; }
+    .teaser_holder > div > a .description {
+      border-top: solid 1px #333;
+      padding: 5px; }
 
 #stadtratsdokumente_holder {
   position: relative;
@@ -844,3 +848,5 @@ body, html {
   height: 8em; }
 
 /* /footer */
+
+/*# sourceMappingURL=styles.css.map */
