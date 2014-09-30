@@ -18,6 +18,13 @@ chown -R www-data:www-data html/assets
 cp protected/config/main.template.php protected/config/main.php
 ```
 
+SASS-Dateien kompilieren:
+```bash
+apt-get install rubygems
+gem install sass
+scss --style compressed html/css/styles.scss > html/css/styles.css
+```
+
 Webserver-Konfiguration:
 * DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
 * Bei Apache regelt die html/.htaccess alles weitere. Bei nginx gibt es unter docs/nginx.conf eine Beispiel-Konfigurationsdatei

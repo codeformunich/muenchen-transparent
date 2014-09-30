@@ -12,9 +12,6 @@
 	<meta name="description" content="">
 	<meta name="author" content="Tobias Hößl">
 
-	<link href="/js/bootstrap-3.2.0/css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" media="screen" href="/js/bootstrap-select/bootstrap-select.min.css">
-
 	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -23,14 +20,6 @@
 	<script src="/js/html5shiv.js"></script>
 	<script src="/js/respond.min.js"></script>
 	<![endif]-->
-
-	<!--
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-72-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-57-precomposed.png">
-	<link rel="shortcut icon" href="/js/bootstrap/bootstrap//ico/favicon.png">
-	-->
 
 	<? if ($this->load_leaflet_css) { ?>
 		<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>
@@ -44,7 +33,7 @@
 	?>
 
 	<link rel="stylesheet" href="/css/jquery-ui-1.11.1.custom.min.css"/>
-	<link rel="stylesheet" href="/css/styles.css"/>
+	<link rel="stylesheet" href="/css/styles.css">
 
 	<!--[if lt IE 9]>
 	<script src="/js/jquery-1.11.1.min.js"></script>
@@ -133,7 +122,7 @@
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
-<script src="/js/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-select/bootstrap-select.min.js"></script>
 
 </body>
