@@ -7,7 +7,7 @@
 ?>
 
 <h2>Personen</h2>
-<a href="<?= CHtml::encode(Yii::app()->createUrl("index/stadtrat")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
+<a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
 
 <div class="row" id="listen_holder">
 	<div class="col col-lg-6">
