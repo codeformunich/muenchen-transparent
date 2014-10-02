@@ -104,6 +104,7 @@ class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
 			foreach ($vorgang->antraege as $ant) {
 				if (RISTools::date_iso2timestamp($ant->datum_letzte_aenderung) < $neu_seit_ts) continue;
 				if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = array("vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => array());
+				$ant->findeAenderungen(time());
 				$ergebnisse["vorgaenge"][$vorgang->id]["neues"][] = $ant;
 			}
 			foreach ($vorgang->dokumente as $dok) {
@@ -130,6 +131,8 @@ class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
 
 	public function run($args)
 	{
+		if (count($args) == 1) die("./yiic benachrichtigungen_verschicken [e@mail tage]\n");
+
 		if (count($args) >= 2) {
 			if (is_numeric($args[0])) {
 				$benutzerIn = BenutzerIn::model()->findByPk($args[0]);
