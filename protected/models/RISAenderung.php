@@ -22,6 +22,7 @@ class RISAenderung extends CActiveRecord
 	public static $TYP_STADTRAT_TERMIN = "stadtrat_termin";
 	public static $TYP_STADTRAT_GREMIUM = "stadtrat_gremium";
 	public static $TYP_STADTRAT_FRAKTION = "stadtrat_fraktion";
+	public static $TYP_STADTRAT_ERGEBNIS = "stadtrat_ergebnis";
 	public static $TYP_STADTRAETIN = "stadtraetIn";
 	public static $TYP_BA_ANTRAG = "ba_antrag";
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
@@ -30,19 +31,22 @@ class RISAenderung extends CActiveRecord
 	public static $TYP_BA_GREMIUM = "ba_gremium";
 	public static $TYP_RATHAUSUMSCHAU = "rathausumschau";
 	public static $TYP_BA_MITGLIED = "ba_mitglied";
+	public static $TYP_BA_ERGEBNIS = "ba_ergebnis";
 	public static $TYPEN_ALLE = array(
-		"stadtrat_antrag"  => "stadtratsantrag",
-		"stadtrat_vorlage" => "Stadtratsvorlage",
-		"stadtrat_termin"  => "Stadtratstermin",
-		"stadtrat_gremium" => "Stadtratsgremium",
-		"stadtraetIn"      => "StadträtIn",
-		"ba_antrag"        => "BA-Antrag",
-		"ba_initiative"    => "BA-Initiative",
-		"bv_empfehlung"    => "BV-Empfehlung",
-		"ba_termin"        => "BA-Termin",
-		"ba_gremium"       => "BA-Gremium",
-		"ba_mitglied"      => "BA-Mitglied",
-		"rathausumschau"   => "Rathausumschau",
+		"stadtrat_antrag"   => "stadtratsantrag",
+		"stadtrat_vorlage"  => "Stadtratsvorlage",
+		"stadtrat_termin"   => "Stadtratstermin",
+		"stadtrat_gremium"  => "Stadtratsgremium",
+		"stadtrat_ergebnis" => "Stadtratstagesordnung",
+		"stadtraetIn"       => "StadträtIn",
+		"ba_antrag"         => "BA-Antrag",
+		"ba_initiative"     => "BA-Initiative",
+		"bv_empfehlung"     => "BV-Empfehlung",
+		"ba_termin"         => "BA-Termin",
+		"ba_gremium"        => "BA-Gremium",
+		"ba_mitglied"       => "BA-Mitglied",
+		"ba_ergebnis"       => "BA-Tagesordnung",
+		"rathausumschau"    => "Rathausumschau",
 	);
 
 	/**
@@ -73,7 +77,7 @@ class RISAenderung extends CActiveRecord
 		return array(
 			array('ris_id, typ, datum, aenderungen', 'required'),
 			array('ris_id, ba_nr', 'numerical', 'integerOnly' => true),
-			array('typ', 'length', 'max' => 16),
+			array('typ', 'length', 'max' => 20),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, ris_id, ba_nr, typ, datum, aenderungen', 'safe', 'on' => 'search'),

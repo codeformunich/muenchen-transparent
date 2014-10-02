@@ -123,6 +123,9 @@ class StadtratTerminParser extends RISParser
 		$match_entscheidung = "<t[hd][^>]*>(?<entscheidung>.*)<\/t[hd]>";
 		preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_referentIn}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
 
+		foreach ($matches["betreff"] as $i => $val) $matches["betreff"][$i] = static::text_clean_spaces($matches["betreff"][$i]);
+		$matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
+
 		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
 		$aenderungen_tops        = "";
 		$verwendete_top_betreffs = array();
@@ -131,7 +134,7 @@ class StadtratTerminParser extends RISParser
 
 		for ($i = 0; $i < count($matches[0]); $i++) {
 			$top     = trim(str_replace(array("&nbsp;", "<strong>", "</strong>"), array(" ", "", ""), $matches["top"][$i]));
-			$betreff = static::text_clean_spaces($matches["betreff"][$i]);
+			$betreff = $matches["betreff"][$i];
 			if ($matches["ueberschrift"][$i] == "h") {
 				$abschnitt_nr     = $abschnitt_nr + 1;
 				$top_ueberschrift = true;
@@ -159,24 +162,14 @@ class StadtratTerminParser extends RISParser
 			$entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
 			$entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
 
-			/** @var AntragErgebnis $ergebnis */
-			if (is_null($vorlage_id)) {
-				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
-			} else {
-				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
-			}
-			if (is_null($ergebnis)) $ergebnis = new AntragErgebnis();
-
+			$ergebnis = new AntragErgebnis();
 			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
 			$ergebnis->sitzungstermin_id      = $termin_id;
-			$ergebnis->sitzungstermin_datum   = $daten->termin;
+			$ergebnis->sitzungstermin_datum   = substr($daten->termin, 0, 10);;
 			$ergebnis->top_nr                 = $top_nr;
 			$ergebnis->antrag_id              = $vorlage_id;
 			$ergebnis->top_ueberschrift       = ($top_ueberschrift ? 1 : 0);
-			if ($ergebnis->entscheidung != $entscheidung) {
-				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
-				$ergebnis->entscheidung = $entscheidung;
-			}
+			$ergebnis->entscheidung = $entscheidung;
 			$ergebnis->top_betreff  = $betreff;
 			$ergebnis->gremium_id   = $daten->gremium_id;
 			$ergebnis->gremium_name = $daten->gremium->name;
@@ -185,13 +178,55 @@ class StadtratTerminParser extends RISParser
 				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
 				preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
 				$beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
-				if ($ergebnis->beschluss_text != $beschluss) {
-					$aenderungen .= "Beschluss: " . $ergebnis->beschluss_text . " => " . $beschluss . "\n";
-					$ergebnis->beschluss_text = $beschluss;
-				}
+				$ergebnis->beschluss_text = $beschluss;
 			}
 
-			$ergebnis->save();
+			/** @var AntragErgebnis $altes_ergebnis */
+			if (is_null($vorlage_id)) {
+				$altes_ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
+			} else {
+				$altes_ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
+			}
+
+			$ergebnis_aenderungen = "";
+			if ($altes_ergebnis) {
+				if ($altes_ergebnis->sitzungstermin_id != $ergebnis->sitzungstermin_id) $ergebnis_aenderungen .= "Sitzung geändert: " . $altes_ergebnis->sitzungstermin_id . " => " . $ergebnis->sitzungstermin_id . "\n";
+				if ($altes_ergebnis->sitzungstermin_datum != $ergebnis->sitzungstermin_datum) $ergebnis_aenderungen .= "Sitzungstermin geändert: " . $altes_ergebnis->sitzungstermin_datum . " => " . $ergebnis->sitzungstermin_datum . "\n";
+				if ($altes_ergebnis->top_nr != $ergebnis->top_nr) $ergebnis_aenderungen .= "TOP geändert: " . $altes_ergebnis->top_nr . " => " . $ergebnis->top_nr . "\n";
+				if ($altes_ergebnis->top_ueberschrift != $ergebnis->top_ueberschrift) $ergebnis_aenderungen .= "Bereich geändert: " . $altes_ergebnis->top_ueberschrift . " => " . $ergebnis->top_ueberschrift . "\n";
+				if ($altes_ergebnis->top_betreff != $ergebnis->top_betreff) $ergebnis_aenderungen .= "Betreff geändert: " . $altes_ergebnis->top_betreff . " => " . $ergebnis->top_betreff . "\n";
+				if ($altes_ergebnis->antrag_id != $ergebnis->antrag_id) $ergebnis_aenderungen .= "Antrag geändert: " . $altes_ergebnis->antrag_id . " => " . $ergebnis->antrag_id . "\n";
+				if ($altes_ergebnis->gremium_id != $ergebnis->gremium_id) $ergebnis_aenderungen .= "Gremium geändert: " . $altes_ergebnis->gremium_id . " => " . $ergebnis->gremium_id . "\n";
+				if ($altes_ergebnis->gremium_name != $ergebnis->gremium_name) $ergebnis_aenderungen .= "Gremium geändert: " . $altes_ergebnis->gremium_name . " => " . $ergebnis->gremium_name . "\n";
+				if ($altes_ergebnis->entscheidung != $ergebnis->entscheidung) $ergebnis_aenderungen .= "Entscheidung: " . $altes_ergebnis->entscheidung . " => " . $ergebnis->entscheidung . "\n";
+				if ($altes_ergebnis->beschluss_text != $ergebnis->beschluss_text) $ergebnis_aenderungen .= "Beschluss: " . $altes_ergebnis->beschluss_text . " => " . $ergebnis->beschluss_text . "\n";
+
+				if ($ergebnis_aenderungen != "") {
+					$aend              = new RISAenderung();
+					$aend->ris_id      = $altes_ergebnis->id;
+					$aend->ba_nr       = NULL;
+					$aend->typ         = RISAenderung::$TYP_STADTRAT_ERGEBNIS;
+					$aend->datum       = new CDbExpression("NOW()");
+					$aend->aenderungen = $ergebnis_aenderungen;
+					$aend->save();
+
+					$aenderungen_tops .= "TOP geändert: " . $ergebnis->top_betreff . "\n   "  . str_replace("\n", "\n   ", $ergebnis_aenderungen) . "\n";
+
+					$altes_ergebnis->copyToHistory();
+					$ergebnis->id = $altes_ergebnis->id;
+					$altes_ergebnis->setAttributes($ergebnis->getAttributes(), false);
+					if (!$altes_ergebnis->save()) {
+						echo "StadtratAntrag 1\n";
+						var_dump($alter_eintrag->getErrors());
+						die("Fehler");
+					}
+					$ergebnis = $altes_ergebnis;
+				}
+			} else {
+				$aenderungen .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
+				$ergebnis->save();
+			}
+
 			$verwendete_top_betreffs[] = $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
 			$verwendete_ergebnis_ids[] = $ergebnis->id;
 
@@ -210,8 +245,11 @@ class StadtratTerminParser extends RISParser
 
 
 		preg_match_all("/<tr class=\"ergebnistab_tr\">.*<strong>(?<top>[0-9]+)\..*tdborder\">(?<betreff>.*)<\/td>.*<span[^>]+>(?<vorlage_id>.*)<\/span>.*valign=\"top\">(?<referent>.*)<\/td>/siU", $html_to_geheim, $matches);
+		foreach ($matches["betreff"] as $i => $val) $matches["betreff"][$i] = static::text_clean_spaces($matches["betreff"][$i]);
+		$matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
+
 		for ($i = 0; $i < count($matches[0]); $i++) {
-			$betreff  = strip_tags(static::text_clean_spaces($matches["betreff"][$i]));
+			$betreff  = $matches["betreff"][$i];
 			$referent = static::text_clean_spaces($matches["referent"][$i]);
 
 			/** @var AntragErgebnis $ergebnis */

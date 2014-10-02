@@ -105,7 +105,7 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	public function copyToHistory()
 	{
 		$history = new AntragErgebnisHistory();
-		$history->setAttributes($this->getAttributes());
+		$history->setAttributes($this->getAttributes(), false);
 		try {
 			if (!$history->save()) {
 				RISTools::send_email(Yii::app()->params['adminEmail'], "AntragErgebnisHistory:moveToHistory Error", print_r($history->getErrors(), true));

@@ -34,7 +34,7 @@ $geodata = array();
 				}
 				if ($termin->termin_prev_id > 0) {
 					$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
-					echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="icon-left-open"> Voriger Termin</span></a>';
+					echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="icon-left-open"></span> Voriger Termin</a>';
 				}
 				?>
 			</td>

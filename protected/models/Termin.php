@@ -106,7 +106,7 @@ class Termin extends CActiveRecord implements IRISItem
 	public function copyToHistory()
 	{
 		$history = new TerminHistory();
-		$history->setAttributes($this->getAttributes());
+		$history->setAttributes($this->getAttributes(), false);
 		if ($history->wahlperiode == "") $history->wahlperiode = "?";
 		if ($history->status == "") $history->status = "?";
 		if ($history->sitzungsort == "") $history->sitzungsort = "?";

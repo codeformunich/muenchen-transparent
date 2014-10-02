@@ -53,13 +53,10 @@ class AntragErgebnisHistory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('sitzungstermin_id, sitzungstermin_datum, datum_letzte_aenderung', 'required'),
+			array('top_betreff, sitzungstermin_id, sitzungstermin_datum, datum_letzte_aenderung', 'required'),
 			array('antrag_id, gremium_id, sitzungstermin_id, top_ueberschrift, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('gremium_name', 'length', 'max' => 100),
 			array('beschluss_text', 'length', 'max' => 500),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, antrag_id, gremium_name, gremium_id, sitzungstermin_id, sitzungstermin_datum, beschluss_text, datum_letzte_aenderung', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -92,39 +89,14 @@ class AntragErgebnisHistory extends CActiveRecord
 			'gremium_id'             => 'Gremium',
 			'sitzungstermin_id'      => 'Sitzungstermin',
 			'sitzungstermin_datum'   => 'Sitzungstermin Datum',
-			'beschluss_text'         => 'Beschluss Text',
+			'beschluss_text'         => 'Beschluss',
+			'entscheidung'           => 'Entscheidung',
 			'datum_letzte_aenderung' => 'Letzte Änderung',
 			'top_nr'                 => 'Tagesordnungspunkt',
 			'top_ueberschrift'       => 'Ist Überschrift',
 			'top_betreff'            => 'Betreff',
 			'status'                 => 'Status'
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('vorgang_id', $this->vorgang_id);
-		$criteria->compare('antrag_id', $this->antrag_id);
-		$criteria->compare('gremium_name', $this->gremium_name, true);
-		$criteria->compare('gremium_id', $this->gremium_id);
-		$criteria->compare('sitzungstermin_id', $this->sitzungstermin_id);
-		$criteria->compare('sitzungstermin_datum', $this->sitzungstermin_datum, true);
-		$criteria->compare('beschluss_text', $this->beschluss_text, true);
-		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 
 	/**

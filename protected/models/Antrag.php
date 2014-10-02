@@ -276,7 +276,7 @@ class Antrag extends CActiveRecord implements IRISItem
 	public function copyToHistory()
 	{
 		$history = new AntragHistory();
-		$history->setAttributes($this->getAttributes());
+		$history->setAttributes($this->getAttributes(), false);
 		try {
 			if (!$history->save()) {
 				RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:moveToHistory Error", print_r($history->getErrors(), true));
@@ -566,5 +566,16 @@ class Antrag extends CActiveRecord implements IRISItem
 	public static function cleanAntragNr($antrags_nr)
 	{
 		return preg_replace("/[^a-zA-Z0-9\/-]/siu", "", $antrags_nr);
+	}
+
+	/**
+	 * @param int $von_ts
+	 * @param int $bis_ts
+	 * @return RISAenderung[]
+	 */
+	public function findeAenderungen($von_ts, $bis_ts = 0) {
+		/** @var RISAenderung[] $aenderungen */
+		$aenderungen = RISAenderung::model()->findAllByAttributes(array("typ" => $this->typ, "ris_id" => $this->id));
+		foreach ($aenderungen as $ae) var_dump($ae->getAttributes());
 	}
 }

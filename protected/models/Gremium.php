@@ -88,7 +88,7 @@ class Gremium extends CActiveRecord implements IRISItem
 	public function copyToHistory()
 	{
 		$history = new GremiumHistory();
-		$history->setAttributes($this->getAttributes());
+		$history->setAttributes($this->getAttributes(), false);
 		try {
 			if (!$history->save(false)) {
 				RISTools::send_email(Yii::app()->params['adminEmail'], "Gremium:moveToHistory Error", print_r($history->getErrors(), true));

@@ -151,7 +151,7 @@ class RISTools
 	 */
 	public static function korrigiereTitelZeichen($titel)
 	{
-		$titel = preg_replace("/([\\s-\(])\?(\\w[^\\?]*\\w)\?/siu", "\\1„\\2“", $titel);
+		$titel = preg_replace("/([\\s-\(])\?(\\w[^\\?]*[\\w.])\?/siu", "\\1„\\2“", $titel);
 		$titel = preg_replace("/^\?(\\w[^\\?]*\\w)\?/siu", " „\\1“", $titel);
 		$titel = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $titel);
 		$titel = preg_replace("/\\s\?$/siu", "?", $titel);
@@ -321,5 +321,25 @@ class RISTools
 
 		$transport = new Zend\Mail\Transport\Sendmail();
 		$transport->send($mail);
+	}
+
+	/**
+	 * @param string[] $arr
+	 * @return string[]
+	 */
+	public static function makeArrValuesUnique($arr) {
+		$val_count =array();
+		foreach ($arr as $elem) {
+			if (isset($val_count[$elem])) $val_count[$elem]++;
+			else $val_count[$elem] = 1;
+		}
+		$vals_used = array();
+		foreach ($arr as $i => $elem) {
+			if ($val_count[$elem] == 1) continue;
+			if (isset($vals_used[$elem])) $vals_used[$elem]++;
+			else $vals_used[$elem] = 1;
+			$arr[$i] = $elem . " (" . $vals_used[$elem] . ")";
+		}
+		return $arr;
 	}
 }
