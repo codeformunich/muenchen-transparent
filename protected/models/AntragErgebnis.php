@@ -157,7 +157,8 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return $this->antrag->getLink();
+		if ($this->antrag) return $this->antrag->getLink();
+		return $this->sitzungstermin->getLink();
 	}
 
 

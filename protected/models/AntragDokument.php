@@ -533,10 +533,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		/** @var RISSolrDocument $doc */
 		$doc = $update->createDocument();
 
-		if (is_null($this->ergebnis)) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:solrIndex_beschluss_do Error", print_r($this, true));
-			return;
-		}
+		if (is_null($this->ergebnis)) return; // Kann vorkommen, wenn ein TOP nachträglich gelöscht wurde
 
 		$doc->id            = "Ergebnis:" . $this->id;
 		$doc->text          = RISSolrHelper::string_cleanup($this->ergebnis->top_betreff . " " . $this->ergebnis->beschluss_text . " " . $this->ergebnis->entscheidung . " " . $this->text_pdf);
