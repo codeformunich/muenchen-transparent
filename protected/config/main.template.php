@@ -67,23 +67,23 @@ function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-	'basePath'   => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-	'name'       => 'Ratsinformant',
+	'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
+	'name'           => 'Ratsinformant',
 
 	// preloading 'log' component
-	'preload'    => array('log'),
+	'preload'        => array('log'),
 
 	// autoloading model and component classes
-	'import'     => array(
+	'import'         => array(
 		'application.models.*',
 		'application.components.*',
 		'application.RISParser.*',
 	),
 
-	'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
-	'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
+	'onBeginRequest' => create_function('$event', 'return ob_start("ob_gzhandler");'),
+	'onEndRequest'   => create_function('$event', 'return ob_end_flush();'),
 
-	'modules'    => array(
+	'modules'        => array(
 		// uncomment the following to enable the Gii tool
 		'gii' => array(
 			'class'    => 'system.gii.GiiModule',
@@ -94,7 +94,7 @@ return array(
 	),
 
 	// application components
-	'components' => array(
+	'components'     => array(
 		'cache'        => array(
 			'class' => 'system.caching.CFileCache',
 		),
@@ -134,12 +134,13 @@ return array(
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
-	'params'     => array(
+	'params'         => array(
 		// this is used in contact page
-		'adminEmail'     => 'info@ratsinformant.de',
-		'adminEmailName' => "Ratsinformant",
-		'skobblerKey'    => 'KEY',
-		'baseURL'        => RATSINFORMANT_BASE_URL,
-		'debug_log'      => true,
+		'adminEmail'      => 'info@ratsinformant.de',
+		'adminEmailName'  => "Ratsinformant",
+		'skobblerKey'     => 'KEY',
+		'baseURL'         => RATSINFORMANT_BASE_URL,
+		'debug_log'       => true,
+		'contentAdminIds' => array(),
 	),
 );

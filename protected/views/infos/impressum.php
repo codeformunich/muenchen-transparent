@@ -1,4 +1,11 @@
-<h1>Impressum</h1>
+<?
+/**
+ * @var InfosController $this
+ */
+$this->pageTitle = "Impressum";
+
+?>
+<h2>Impressum</h2>
 
 <br><br>
 <b>Verantwortlicher im Sinne von § 5 TMG, § 55 RfStV:</b><br>

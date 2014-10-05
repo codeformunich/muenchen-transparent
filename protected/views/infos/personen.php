@@ -1,4 +1,8 @@
-<?php
+<?
+/**
+ * @var InfosController $this
+ */
+$this->pageTitle = "Personen";
 
 /**
  * @var array[] $fraktionen

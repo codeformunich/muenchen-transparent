@@ -158,4 +158,13 @@ class RISBaseController extends CController
 		$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 		return $ich;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function binContentAdmin() {
+		$curr = $this->aktuelleBenutzerIn();
+		if ($curr === null) return false;
+		return in_array($curr->id, Yii::app()->params["contentAdminIds"]);
+	}
 }

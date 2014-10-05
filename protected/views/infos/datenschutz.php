@@ -1,4 +1,11 @@
-<h1>Datenschutzerklärung</h1>
+<?
+/**
+ * @var InfosController $this
+ */
+$this->pageTitle = "Datenschutzerklärung";
+
+?>
+<h2>Datenschutzerklärung</h2>
 
 <h2>Protokollierung von Seitenaufrufen</h2>
 <p>Aufrufe dieser Seite werden vom Server des Ratsinformanten mitprotokolliert. In diesem Protokoll wird die IP-Adresse und der Zeitpunkt des Aufrufs, die aufgerufene Seite sowie
