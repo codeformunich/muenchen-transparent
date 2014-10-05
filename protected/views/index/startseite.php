@@ -80,6 +80,9 @@ $cs->registerScriptFile('/js/index.js');
 				onSelect: function (latlng, rad, zoom) {
 					if (zoom >= 14) {
 						index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
+						$("section.teaser_holder").hide();
+					} else {
+						$("section.teaser_holder").show();
 					}
 				}
 			});

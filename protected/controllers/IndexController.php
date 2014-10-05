@@ -380,7 +380,7 @@ class IndexController extends RISBaseController
 					"condition" => "dokumente_2.id IN (" . implode(", ", $dokument_ids) . ")"
 				)
 			))->findByPk($dok_id);
-			if ($ant->antrag) {
+			if ($ant && $ant->antrag) {
 				$antraege[$ant->antrag_id] = $ant->antrag;
 			}
 		}
