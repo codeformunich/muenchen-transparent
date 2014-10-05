@@ -42,10 +42,7 @@
 	<script src="/js/jquery-2.1.1.min.js"></script>
 	<!--<![endif]-->
 
-	<script src="/js/jquery-ui-1.11.1.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
-	<script src="/js/scrollintoview.js"></script>
-	<script src="/js/antraegekarte.jquery.js"></script>
 </head>
 
 <body>
@@ -89,9 +86,11 @@
 				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("infos/personen")) ?></li>
 			</ul>
 
-			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
+			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
 				<div class="form-group">
-					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control">
+					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
+						   data-prefetch-url="<?=CHtml::encode($this->createUrl("index/quickSearchPrefetch"))?>"
+						   data-search-url="<?=CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF")))?>">
 				</div>
 				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
 			</form>
@@ -120,10 +119,13 @@
 	</p>
 </footer>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
+<script src="/js/jquery-ui-1.11.1.custom.min.js"></script>
+<script src="/js/scrollintoview.js"></script>
+<script src="/js/antraegekarte.jquery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="/js/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="/js/index.js"></script>
 
 </body>
 </html>

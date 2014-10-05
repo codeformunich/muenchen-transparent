@@ -51,16 +51,6 @@ function ba_gruppiere_termine($termine)
 
 $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" . $ba->name . ")";
 
-$assets_base = $this->getAssetsBase();
-
-/** @var CWebApplication $app */
-$app = Yii::app();
-/** @var CClientScript $cs */
-$cs = $app->getClientScript();
-
-//$cs->registerScriptFile($assets_base . '/js/index.js');
-$cs->registerScriptFile('/js/index.js');
-
 ?>
 
 
@@ -103,7 +93,7 @@ $cs->registerScriptFile('/js/index.js');
 
 <script>
 	yepnope({
-		load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
+		load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", <?=json_encode($this->getAssetsBase())?> +"/ba_features.js",
 			"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
 			"/js/leaflet.spiderfy.js",
 			"/js/leaflet.textmarkers.js"

@@ -789,6 +789,16 @@ class IndexController extends RISBaseController
 	}
 
 
+	public function actionQuickSearchPrefetch() {
+		/** @var StadtraetIn[] $stadtraetInnen */
+		$stadtraetInnen = StadtraetIn::model()->findAll();
+
+		$this->render('quicksearch_prefetch', array(
+			'stadtraetInnen' => $stadtraetInnen,
+		));
+	}
+
+
 	/**
 	 *
 	 */
