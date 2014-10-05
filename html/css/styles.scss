@@ -237,6 +237,16 @@ body {
   background-image: url(/images/imgnoise.png);
 }
 
+.accessibility_invisible {
+  display: block;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  left: -100px;
+  top: -100px;
+}
+
 /* Set widths on the navbar form inputs since otherwise they're 100% wide */
 .navbar-form input[type="text"],
 .navbar-form input[type="password"] {
@@ -409,9 +419,10 @@ body {
         transition: background-color 0.3s;
       }
 
-      h4 {
+      h2 {
         margin: 0;
         padding: 5px;
+        font-size: 19px;
 
         .glyphicon {
           font-weight: normal;

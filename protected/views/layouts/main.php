@@ -46,6 +46,7 @@
 </head>
 
 <body>
+<a href="#page_main_content" class="accessibility_invisible">Zum Seiteninhalt</a>
 <div class="over_footer_wrapper">
 <div class="clear"></div>
 
@@ -56,6 +57,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
+				<span class="accessibility_invisible">Menü</span>
 			</button>
 		</div>
 		<div class="navbar-collapse collapse">
@@ -88,19 +90,20 @@
 
 			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
 				<div class="form-group">
-					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
+					<label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
+					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control" id="quicksearch_form_input"
 						   data-prefetch-url="<?=CHtml::encode($this->createUrl("index/quickSearchPrefetch"))?>"
 						   data-search-url="<?=CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF")))?>">
 				</div>
-				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+				<button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="accessibility_invisible">Suchen</span></button>
 			</form>
 		</div>
 	</div>
 </div>
 
 <div class="container">
-	<div class="body-content">
-
+	<div class="body-content" id="page_main_content">
+		<h1 class="accessibility_invisible"><?=CHtml::encode($this->pageTitle)?></h1>
 		<?php echo $content; ?>
 	</div>
 </div>

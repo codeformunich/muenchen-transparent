@@ -83,7 +83,7 @@ $this->pageTitle = Yii::app()->name;
 <section class="teaser_holder row">
 	<div class="teaser_entry teaser_so_funktioniert">
 		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span>So funktioniert Stadtpolitik</h4>
+			<h2><span class="glyphicon glyphicon-chevron-right"></span>So funktioniert Stadtpolitik</h2>
 
 			<div class="description">
 				Kommunalpolitik in München einfach erklärt.
@@ -93,7 +93,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<div class="teaser_entry teaser_dokumente col-lg-6">
 		<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span> Dokumentensuche mit E-Mail-Benachrichtigung</h4>
+			<h2><span class="glyphicon glyphicon-chevron-right"></span> Dokumentensuche mit E-Mail-Benachrichtigung</h2>
 
 			<div class="description">
 				Durchsuche <?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> Dokumente (insg.
@@ -105,7 +105,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<div class="teaser_personen teaser_dokumente col-lg-6">
 		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/personen")) ?>">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span>Personen</h4>
+			<h2><span class="glyphicon glyphicon-chevron-right"></span>Personen</h2>
 
 			<div class="description">
 				Wer sitzt im Stadtrat? Wie erreiche ich die städtischen Referate? Welche politischen Institutionen gibt es in meinem Stadtteil?
@@ -117,7 +117,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<div class="teaser_entry teaser_themen col-lg-6">
 		<a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span>Themen</h4>
+			<h2><span class="glyphicon glyphicon-chevron-right"></span>Themen</h2>
 
 			<div class="description">
 				Anträge und Stadtratsvorlagen, gegliedert nach Thema und städtischem Referat.
@@ -131,7 +131,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<div class="teaser_entry teaser_termine col-lg-6">
 		<a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>">
-			<h4><span class="glyphicon glyphicon-chevron-right"></span>Termine</h4>
+			<h2><span class="glyphicon glyphicon-chevron-right"></span>Termine</h2>
 
 			<div class="description">
 				Wann finden welche Stadtrats- und Ausschusssitzungen statt?
