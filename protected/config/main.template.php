@@ -80,6 +80,9 @@ return array(
 		'application.RISParser.*',
 	),
 
+	'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
+	'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
+
 	'modules'    => array(
 		// uncomment the following to enable the Gii tool
 		'gii' => array(
