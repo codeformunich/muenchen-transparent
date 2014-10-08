@@ -17,6 +17,7 @@
 $this->pageTitle = Yii::app()->name;
 
 ?>
+
 <section class="well">
 	<h1 class="sr-only"><?=CHtml::encode($this->pageTitle)?></h1>
 	<div id="mapholder">

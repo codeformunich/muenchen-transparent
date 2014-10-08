@@ -619,10 +619,11 @@ class IndexController extends RISBaseController
 	 */
 	private function getStadtratsDokumenteByDate($date_ts)
 	{
-		$i = 0;
+		$heute = (date("Y-m-d", $date_ts) == date("Y-m-d"));
+		if ($heute) $i = 1;
+		else        $i = 0;
+
 		do {
-			$heute = (date("Y-m-d", $date_ts) == date("Y-m-d"));
-			if ($heute) $i = 1;
 			if ($heute) {
 				$datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
 				$datum_bis = date("Y-m-d H:i:s");
@@ -686,6 +687,7 @@ class IndexController extends RISBaseController
 
 		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
+
 
 		if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
 			$ts = RISTools::date_iso2timestamp($datum_max);
