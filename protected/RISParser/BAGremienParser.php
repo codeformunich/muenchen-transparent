@@ -1,5 +1,6 @@
 <?php
 class BAGremienParser extends RISParser {
+	private static $MAX_OFFSET = 200;
 
 	public function parse($gremien_id)
 	{
@@ -76,7 +77,7 @@ class BAGremienParser extends RISParser {
 
 	public function parseAlle()
 	{
-		$anz = 190;
+		$anz   = BAGremienParser::$MAX_OFFSET;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

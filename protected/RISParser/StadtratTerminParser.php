@@ -2,7 +2,7 @@
 
 class StadtratTerminParser extends RISParser
 {
-	private static $MAX_OFFSET = 4900;
+	private static $MAX_OFFSET = 5000;
 	private static $MAX_OFFSET_UPDATE = 500;
 
 	public function parse($termin_id)
