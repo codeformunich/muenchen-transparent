@@ -46,7 +46,7 @@ class InfosController extends RISBaseController
 
 		$eintraege = Text::model()->findAllByAttributes(array(
 			"typ" => Text::$TYP_GLOSSAR,
-		));
+		), array("order" => "titel"));
 
 		$this->render('glossar', array(
 			"eintraege" => $eintraege,
