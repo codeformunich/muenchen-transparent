@@ -64,7 +64,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="<?=CHtml::encode(Yii::app()->createUrl("index/startseite"))?>" style="font-weight: bold; color: white;">[TODO: Logo]</a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <span class="caret"></span></a>
 					<ul class="dropdown-menu" id="ba_nav_list">
 						<?
 						/** @var Bezirksausschuss[] $bas */
@@ -79,7 +79,7 @@
 				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("infos/personen")) ?></li>
 				<? if (Yii::app()->user->getState("role") == "admin") { ?>
 					<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
 							<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>

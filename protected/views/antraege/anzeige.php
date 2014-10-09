@@ -18,7 +18,33 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 
 $historie = $antrag->getHistoryDiffs();
 
+function zeile_anzeigen($feld, $name, $callback) {
+	if (count($feld) == 0) {
+		return;
+	} else if (count($feld) == 1) { ?>
+		<tr>
+			<th><? echo $name ?></th>
+			<td>
+			<? $callback($feld[0]); ?>
+			</td>
+		</tr> <?
+	} else { ?>
+		<tr>
+			<th><? echo $name ?></th>
+			<td>
+				<ul>
+					<? foreach ($feld as $element) {
+						?> <li> <?
+						$callback($element);
+						?> </li> <?
+					} ?>
+				</ul>
+			</td>
+		</tr> <?
+	}
+}
 ?>
+
 <div class="row">
 <div class="col-md-8">
 
@@ -40,53 +66,25 @@ $historie = $antrag->getHistoryDiffs();
 		?>
 	</td>
 </tr>
-<? if (count($personen[AntragPerson::$TYP_INITIATORIN])) { ?>
-	<tr>
-		<th>Initiiert von:</th>
-		<td>
-			<ul>
-				<?
-				foreach ($personen[AntragPerson::$TYP_INITIATORIN] as $person) {
-					echo "<li>";
-					/** @var Person $person */
-					if ($person->stadtraetIn) {
-						echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
-						echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
-					} else {
-						echo CHtml::encode($person->name);
-					}
-					echo "</li>\n";
-				}
-				?>
-			</ul>
-		</td>
-	</tr>
 <?
-}
-if (count($personen[AntragPerson::$TYP_GESTELLT_VON])) {
-	?>
-	<tr>
-		<th>Gestellt von:</th>
-		<td>
-			<ul>
-				<?
-				foreach ($personen[AntragPerson::$TYP_GESTELLT_VON] as $person) {
-					echo "<li>";
-					/** @var Person $person */
-					if ($person->stadtraetIn) {
-						echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
-						echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
-					} else {
-						echo CHtml::encode($person->name);
-					}
-					echo "</li>\n";
-				}
-				?>
-			</ul>
-		</td>
-	</tr>
-<?
-}
+zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN],  "Initiiert von:", function($person) {
+	/** @var Person $person */
+	if ($person->stadtraetIn) {
+		echo CHtml::link($element->stadtraetIn->name, $person->stadtraetIn->getLink());
+		echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
+	} else {
+		echo CHtml::encode($person->name);
+	}
+});
+zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON],  "Gestellt von:", function($person) {
+	/** @var Person $person */
+	if ($person->stadtraetIn) {
+		echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
+		echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
+	} else {
+		echo CHtml::encode($person->name);
+	}
+});
 ?>
 <tr>
 	<th>Gremium:</th>
@@ -122,30 +120,23 @@ if (count($personen[AntragPerson::$TYP_GESTELLT_VON])) {
 			?></table>
 	</td>
 </tr>
-<tr>
-	<th>Dokumente:</th>
-	<td>
-		<ul>
-			<?
-			$doks = $antrag->dokumente;
-			usort($doks, function ($dok1, $dok2) {
-				/**
-				 * @var AntragDokument $dok1
-				 * @var AntragDokument $dok2
-				 */
-				$ts1 = RISTools::date_iso2timestamp($dok1->datum);
-				$ts2 = RISTools::date_iso2timestamp($dok2->datum);
-				if ($ts1 > $ts2) return 1;
-				if ($ts1 < $ts2) return -1;
-				return 0;
-			});
-			foreach ($doks as $dok) {
-				echo " <li>" . date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getOriginalLink()) . " </li > ";
-			} ?>
-		</ul>
-	</td>
-</tr>
 <?
+$docs = $antrag->dokumente;
+usort($docs, function ($dok1, $dok2) {
+	/**
+	 * @var AntragDokument $dok1
+	 * @var AntragDokument $dok2
+	 */
+	$ts1 = RISTools::date_iso2timestamp($dok1->datum);
+	$ts2 = RISTools::date_iso2timestamp($dok2->datum);
+	if ($ts1 > $ts2) return 1;
+	if ($ts1 < $ts2) return -1;
+	return 0;
+});
+zeile_anzeigen($docs,  "Dokumente:", function($dok) {
+	echo date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getOriginalLink());
+});
+
 if (count($antrag->ergebnisse) > 0) {
 	?>
 	<tr>
@@ -180,34 +171,15 @@ if (count($antrag->ergebnisse) > 0) {
 	</tr>
 <?
 }
-?>
-<? if (count($antrag->antrag2vorlagen) > 0) { ?>
-	<tr>
-		<th>Verbundene Stadtratsvorlagen:</th>
-		<td>
-			<ul>
-				<? foreach ($antrag->antrag2vorlagen as $vorlage) {
-					echo "<li> " . CHtml::link($vorlage->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $vorlage->id))) . " </li> ";
-				} ?>
-			</ul>
-		</td>
-	</tr>
-<?
-}
-if (count($antrag->vorlage2antraege) > 0) {
-	?>
-	<tr>
-		<th>Verbundene Stadtratsanträge:</th>
-		<td>
-			<ul>
-				<? foreach ($antrag->vorlage2antraege as $antrag2) {
-					echo "<li> " . CHtml::link($antrag2->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $antrag2->id))) . " </li> ";
-				} ?>
-			</ul>
-		</td>
-	</tr>
-<?
-}
+
+zeile_anzeigen($antrag->antrag2vorlagen,  "Verbundene Stadtratsvorlagen:", function($element) {
+	echo CHtml::link($element->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $element->id)));
+});
+
+zeile_anzeigen($antrag->vorlage2antraege, "Verbundene Stadtratsanträge:", function($element) {
+	echo CHtml::link($element->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $element->id)));
+});
+
 if (count($historie) > 0) {
 	?>
 	<tr>
@@ -229,24 +201,11 @@ if (count($historie) > 0) {
 <?
 }
 /** @var IRISItem[] $vorgang_items */
-$vorgang_items = ($antrag->vorgang ? $antrag->vorgang->getRISItemsByDate() : array());
-if (count($vorgang_items) > 1) {
-	?>
-	<tr>
-		<th>Verwandte Seiten:</th>
-		<td>
-			<ul>
-				<?php
-				foreach ($vorgang_items as $item) {
-					echo '<li>' . CHtml::link($item->getName(true), $item->getLink()) . '</li>';
-				}
-				?>
-			</ul>
-		</td>
-	</tr>
-<?
+if($antrag->vorgang) {
+	zeile_anzeigen($antrag->vorgang->getRISItemsByDate(),  "Verwandte Seiten:", function($item) {
+		echo CHtml::link($item->getName(true), $item->getLink());
+	});
 }
-
 ?>
 
 </tbody>
