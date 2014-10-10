@@ -2,6 +2,8 @@
 
 class BAAntragParser extends RISParser
 {
+	private static $MAX_OFFSET = 12200;
+	private static $MAX_OFFSET_UPDATE = 200;
 
 	public function parse($antrag_id)
 	{
@@ -182,7 +184,7 @@ class BAAntragParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 12000;
+		$anz   = static::$MAX_OFFSET;
 		$first = true;
 		//$anz = 800;
 		for ($i = $anz; $i >= 0; $i -= 10) {
@@ -196,7 +198,9 @@ class BAAntragParser extends RISParser
 	{
 		echo "Updates: BA-Anträge\n";
 		$loaded_ids = array();
-		for ($i = 200; $i >= 0; $i -= 10) {
+
+		$anz   = static::$MAX_OFFSET_UPDATE;
+		for ($i = $anz; $i >= 0; $i -= 10) {
 			$ids        = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
 		}

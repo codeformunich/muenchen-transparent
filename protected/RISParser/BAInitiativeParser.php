@@ -2,6 +2,8 @@
 
 class BAInitiativeParser extends RISParser
 {
+	private static $MAX_OFFSET = 4700;
+	private static $MAX_OFFSET_UPDATE = 200;
 
 	public function parse($antrag_id)
 	{
@@ -170,7 +172,7 @@ class BAInitiativeParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 4500;
+		$anz   = static::$MAX_OFFSET;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
@@ -184,7 +186,8 @@ class BAInitiativeParser extends RISParser
 	{
 		echo "Updates: BA-Initiativen\n";
 		$loaded_ids = array();
-		for ($i = 200; $i >= 0; $i -= 10) {
+		$anz   = static::$MAX_OFFSET_UPDATE;
+		for ($i = $anz; $i >= 0; $i -= 10) {
 			$ids        = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
 		}
