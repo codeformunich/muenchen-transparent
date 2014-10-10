@@ -80,8 +80,8 @@ return array(
 		'application.RISParser.*',
 	),
 
-	'onBeginRequest' => create_function('$event', 'return ob_start("ob_gzhandler");'),
-	'onEndRequest'   => create_function('$event', 'return ob_end_flush();'),
+	'onBeginRequest' => create_function('$event', 'if (RATSINFORMANT_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
+	'onEndRequest'   => create_function('$event', 'if (RATSINFORMANT_CALL_MODE == "web") return ob_end_flush();'),
 
 	'modules'        => array(
 		// uncomment the following to enable the Gii tool
