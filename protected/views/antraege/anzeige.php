@@ -67,16 +67,16 @@ function zeile_anzeigen($feld, $name, $callback) {
 	</td>
 </tr>
 <?
-zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN],  "Initiiert von:", function($person) {
+zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN],  "Initiiert von:", function($person) use ($antrag) {
 	/** @var Person $person */
 	if ($person->stadtraetIn) {
-		echo CHtml::link($element->stadtraetIn->name, $person->stadtraetIn->getLink());
+		echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
 		echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
 	} else {
 		echo CHtml::encode($person->name);
 	}
 });
-zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON],  "Gestellt von:", function($person) {
+zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON],  "Gestellt von:", function($person) use ($antrag) {
 	/** @var Person $person */
 	if ($person->stadtraetIn) {
 		echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
