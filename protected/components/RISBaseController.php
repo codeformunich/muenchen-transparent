@@ -8,6 +8,11 @@ class RISBaseController extends CController
 	public $layout = '//layouts/width_std';
 
 	/**
+	 * @var string
+	 */
+	public $html_description = "";
+
+	/**
 	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
 	 */
 	public $menu = array();

@@ -107,7 +107,7 @@ $this->pageTitle = Yii::app()->name;
 			</div>
 
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/personen")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/personen")) ?>" class="btn btn-info">
 					<h2><span class="glyphicon glyphicon-user"></span>Personen</h2>
 
 					<div class="description">
@@ -166,7 +166,7 @@ $this->pageTitle = Yii::app()->name;
 
 </section>
 
-<section class="well <? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
+<section class="well two_cols" id="listen_holder">
 
 	<!--
 <small>Neu in den letzten 7 Tagen: <?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> Dokumente

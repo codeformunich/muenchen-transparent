@@ -20,15 +20,6 @@ class InfosController extends RISBaseController
 		$this->render('datenschutz');
 	}
 
-	public function actionPersonen()
-	{
-		$this->top_menu = "personen";
-
-		$this->render('personen', array(
-			"fraktionen" => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
-		));
-	}
-
 	public function actionUeber()
 	{
 		$this->top_menu = "";

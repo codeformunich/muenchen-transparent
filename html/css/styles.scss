@@ -1,11 +1,11 @@
 $icon-font-path: "bootstrap-sass-3.2.0/assets/fonts/bootstrap/";
-$footer_height: 4em;
+$footer_height: 3em;
 
 @import "bootstrap-sass-3.2.0/assets/stylesheets/bootstrap";
 @import "material-wfont"; // The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
 @import "material/variables";
 @import "antragsliste";
-@import "icons";
+@import "fontello";
 
 #content {
   > section {
@@ -33,6 +33,12 @@ $footer_height: 4em;
 .well {
   > h1, > h2, > h3 {
     margin-top: 0;
+  }
+  > .breadcrumb:first-child {
+    margin-bottom: 5px;
+    margin-left: -18px;
+    margin-right: -18px;
+    margin-top: -18px;
   }
 }
 
@@ -62,7 +68,6 @@ $footer_height: 4em;
 
 body {
   padding-top: 60px;
-  padding-bottom: 20px;
   background-image: url(/images/pattern-7nl1.png);
 }
 
@@ -896,6 +901,8 @@ footer {
     height: $footer_height;
     line-height: $footer_height;
     vert-align: middle;
+    margin-bottom: 0;
+    margin-top: 0;
   }
 }
 .footer_spacer {
@@ -903,6 +910,12 @@ footer {
 }
 /* /footer */
 
+
+section.impressum {
+  h2 {
+    font-size: 20px;
+  }
+}
 
 
 #quicksearch_form {

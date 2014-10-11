@@ -3,13 +3,17 @@
  * @var RISBaseController $this
  * @var string $content
  */
+
 ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
+	<meta name="description" content="<?
+		if ($this->html_description != "") echo CHtml::encode($this->html_description);
+		else echo "Münchner Stadtpolitik einfach erklärt. Aktuelle Entscheidungen, Dokumente und Informationen aus Münchens Stadtrat, übersichtlich nach Themen und Bezirken";
+	?>">
 	<meta name="author" content="Tobias Hößl">
 
 	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
@@ -76,7 +80,7 @@
 				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
 				<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
 				<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
-				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("infos/personen")) ?></li>
+				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("index/personen")) ?></li>
 				<? if (Yii::app()->user->getState("role") == "admin") { ?>
 					<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>

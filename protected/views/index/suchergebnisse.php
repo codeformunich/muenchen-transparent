@@ -19,7 +19,7 @@ $this->pageTitle = Yii::app()->name;
 ?>
 <section class="well">
 	<div class="box" style="font-size: 18px; float: right; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee; overflow: hidden;">
-		<a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="icon-rss"></span> Suchergebnisse als RSS-Feed</a>
+		<a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="fontello-rss"></span> Suchergebnisse als RSS-Feed</a>
 	</div>
 
 	<h1><span style="font-weight: bold;">Suchergebnisse:</span> <?= CHtml::encode($krits->getTitle()) ?></h1>

@@ -89,7 +89,7 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 								<button type='submit' class='del' name='<?= $del_form_name ?>'><span class='glyphicon glyphicon-minus-sign'></span></button>
 							</div>
 							<div class='krit_holder'>
-								<a href="<?= CHtml::encode($item->getLink()) ?>"><span class="icon icon-right-open"></span> <?= CHtml::encode($item->getName()) ?></a>
+								<a href="<?= CHtml::encode($item->getLink()) ?>"><span class="fontello-right-open"></span> <?= CHtml::encode($item->getName()) ?></a>
 							</div>
 						</li>
 					<?
@@ -107,7 +107,7 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 						class="glyphicon glyphicon-chevron-right"></span>
 					Alle Suchergebnisse</a>
 				<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", array("code" => $ich->getFeedCode()))) ?>" class="ben_alle_feed"><span
-						class="icon-rss"></span>
+						class="fontello-rss"></span>
 					Alle Suchergebnisse als Feed</a>
 			</div>
 		</div>
@@ -137,7 +137,7 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 		<label for="suchbegriff"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... aus diesem Stadtteil:</span></label><br>
 
 		<div class="input-group col col-lg-7" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
-			<select name="ba" class="form-control" ><?
+			<select name="ba" class="form-control"><?
 				$bas = Bezirksausschuss::model()->findAll();
 				/** @var Bezirksausschuss $ba */
 				foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": " . CHtml::encode($ba->name) . '</option>';

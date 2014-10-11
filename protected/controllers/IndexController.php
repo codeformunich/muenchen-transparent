@@ -389,7 +389,7 @@ class IndexController extends RISBaseController
 		$naechster_ort = OrtGeo::findClosest($lng, $lat);
 		ob_start();
 
-		$this->renderPartial('index_antraege_liste', array(
+		$this->renderPartial('index_antraege_liste2', array(
 			"aeltere_url_ajax"  => $this->createUrl("index/antraegeAjaxGeo", array("lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1))),
 			"aeltere_url_std"   => $this->createUrl("index/antraegeStdGeo", array("lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1))),
 			"neuere_url_ajax"   => null,
@@ -554,7 +554,7 @@ class IndexController extends RISBaseController
 		$data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
 		ob_start();
-		$this->renderPartial('index_antraege_liste', array_merge(array(
+		$this->renderPartial('index_antraege_liste2', array_merge(array(
 			"weiter_links_oben" => true,
 		), $data));
 
@@ -624,7 +624,7 @@ class IndexController extends RISBaseController
 		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
 		ob_start();
-		$this->renderPartial('index_antraege_liste', array(
+		$this->renderPartial('index_antraege_liste2', array(
 			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
 			"aeltere_url_std"   => $this->createUrl("index/stadtrat", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
 			"neuere_url_ajax"   => null,
@@ -702,6 +702,16 @@ class IndexController extends RISBaseController
 			"statistiken"       => RISMetadaten::getStats(),
 		));
 	}
+
+	public function actionPersonen()
+	{
+		$this->top_menu = "personen";
+
+		$this->render('personen', array(
+			"fraktionen" => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
+		));
+	}
+
 
 	/**
 	 * @param int $id

@@ -53,6 +53,9 @@ function zeile_anzeigen($feld, $name, $callback)
 <section class="row">
 	<div class="col-md-8">
 		<section class="well">
+			<div style="float: right;"><?
+				echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $antrag->getSourceLink());
+				?></div>
 			<h1><?= CHtml::encode($antrag->getName(true)) ?></h1>
 
 			<table class="table antragsdaten">
@@ -60,9 +63,6 @@ function zeile_anzeigen($feld, $name, $callback)
 				<tr>
 					<th>Typ:</th>
 					<td>
-						<div style="float: right;"><?
-							echo CHtml::link("<span class='icon-right-open'></span> Original-Seite im RIS", $antrag->getSourceLink());
-							?></div>
 						<?
 						echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
 						if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")";
@@ -137,6 +137,7 @@ function zeile_anzeigen($feld, $name, $callback)
 					return 0;
 				});
 				zeile_anzeigen($docs, "Dokumente:", function ($dok) {
+					/** @var AntragDokument $dok */
 					echo date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getOriginalLink());
 				});
 
@@ -176,10 +177,12 @@ function zeile_anzeigen($feld, $name, $callback)
 				}
 
 				zeile_anzeigen($antrag->antrag2vorlagen, "Verbundene Stadtratsvorlagen:", function ($element) {
+					/** @var Antrag $element */
 					echo CHtml::link($element->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $element->id)));
 				});
 
 				zeile_anzeigen($antrag->vorlage2antraege, "Verbundene Stadtratsanträge:", function ($element) {
+					/** @var Antrag $element */
 					echo CHtml::link($element->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $element->id)));
 				});
 
@@ -206,6 +209,7 @@ function zeile_anzeigen($feld, $name, $callback)
 				/** @var IRISItem[] $vorgang_items */
 				if ($antrag->vorgang) {
 					zeile_anzeigen($antrag->vorgang->getRISItemsByDate(), "Verwandte Seiten:", function ($item) {
+						/** @var IRISItem $item */
 						echo CHtml::link($item->getName(true), $item->getLink());
 					});
 				}

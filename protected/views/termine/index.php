@@ -37,17 +37,16 @@ function gruppiere_termine($termine)
 
 ?>
 
-<section>
-	<h1 class="sr-only">Termine</h1>
+<section class="well">
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
 		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active">Termine</li>
 	</ul>
-
+	<h1>Termine</h1>
 </section>
 
 <div class="row" id="listen_holder">
-	<div class="col col-lg-6 col-md-6">
+	<div class="col col-md-6">
 		<div class="well">
 			<h3>Kommende Termine</h3>
 			<?
@@ -67,7 +66,7 @@ function gruppiere_termine($termine)
 			)); ?>
 		</div>
 	</div>
-	<div class="col col-lg-6 col-md-6">
+	<div class="col col-md-6">
 		<div class="well">
 			<?
 			if (count($termin_dokumente) > 0) {

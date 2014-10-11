@@ -45,7 +45,7 @@ $pre_email = ($ich ? CHtml::encode($ich->email) : "");
 		<div class="bestaetigt">
 			<div style="text-align: center;" class="wird_benachrichtigt">
 				<div class="button_hover_change">
-					<button class="btn btn-nohover"><span class="icon-ok" style="color: green;"></span> Du wirst benachrichtigt</button>
+					<button class="btn btn-nohover"><span class="fontello-ok" style="color: green;"></span> Du wirst benachrichtigt</button>
 					<button type="button" class="btn btn-primary btn-hover ben_del_button">Nicht mehr benachrichtigen!</button>
 				</div>
 			</div>

@@ -10,12 +10,12 @@ $this->pageTitle = "Personen";
 
 ?>
 
-<section>
-	<h1 class="sr-only">Personen</h1>
+<section class="well">
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
 		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active">Personen</li>
 	</ul>
+	<h1>Personen</h1>
 </section>
 
 <div class="row" id="listen_holder">
@@ -29,6 +29,7 @@ $this->pageTitle = "Personen";
 					if (count($val1) > count($val2)) return -1;
 					return 0;
 				});
+				$insgesamt = 0;
 				foreach ($fraktionen as $fraktion) {
 					/** @var StadtraetIn[] $fraktion */
 					$fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
@@ -43,12 +44,13 @@ $this->pageTitle = "Personen";
 						if ($str->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($str->facebook) . "' title='Facebook' class='fb_link'>f</a>";
 						echo "<a href='" . CHtml::encode($str->getLink()) . "' class='ris_link'>" . CHtml::encode($str->name) . "</a>";
 						echo "</li>\n";
+						$insgesamt++;
 					}
 					echo "</ul></li>\n";
 
 				}
 				?></ul>
-
+			<div style="float: right;">Insgesamt: <?= $insgesamt ?></div>
 			<script>
 				$(function () {
 					var $frakts = $(".fraktionen_liste > li");

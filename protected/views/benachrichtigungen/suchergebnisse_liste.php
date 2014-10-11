@@ -32,7 +32,7 @@ if (count($dokumente) == 0) {
 					//$dokurl = $this->createUrl("index/dokument", array("id" => $dok->id));
 					$dokurl = $dok->getOriginalLink();
 					echo "<div class='datum'>" . CHtml::encode(date("d.m.Y", RISTools::date_iso2timestamp($dok->datum))) . "</div>";
-					echo "<div class='dokument'><a href='" . CHtml::encode($dokurl) . "'><span class='icon-right-open'></span> " . CHtml::encode($dok->name) . " <span class='icon-download'></span></a></div>";
+					echo "<div class='dokument'><a href='" . CHtml::encode($dokurl) . "'><span class='fontello-right-open'></span> " . CHtml::encode($dok->name) . " <span class='fontello-download'></span></a></div>";
 					echo "<div class='antraglink'><a href='" . CHtml::encode($risitem->getLink()) . "' title='" . CHtml::encode($risitem->getName()) . "'>";
 					echo CHtml::encode($risitem->getName(true)) . "</a></div>";
 
