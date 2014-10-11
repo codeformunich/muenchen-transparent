@@ -82,7 +82,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 		outside.setStyle({
 			weight: 0,
 			fillColor: "#ffffff",
-			fillOpacity: 0.6,
+			fillOpacity: 0.75,
 			stroke: false
 		});
 

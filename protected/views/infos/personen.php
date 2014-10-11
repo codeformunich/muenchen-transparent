@@ -10,13 +10,18 @@ $this->pageTitle = "Personen";
 
 ?>
 
-<h2>Personen</h2>
-<a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
+<section>
+	<h1 class="sr-only">Personen</h1>
+	<ul class="breadcrumb" style="margin-bottom: 5px;">
+		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+		<li class="active">Personen</li>
+	</ul>
+</section>
 
 <div class="row" id="listen_holder">
-	<div class="col col-lg-6">
-		<section>
-			<h3>StadträtInnen</h3>
+	<div class="col col-lg-6 col-md-6">
+		<section class="well">
+			<h2>StadträtInnen</h2>
 
 			<ul class="fraktionen_liste"><?
 				usort($fraktionen, function ($val1, $val2) {
@@ -59,14 +64,14 @@ $this->pageTitle = "Personen";
 			</script>
 		</section>
 
-		<section>
-			<h3>Städtische Referate</h3>
+		<section class="well">
+			<h2>Städtische Referate</h2>
 			...
 		</section>
 	</div>
-	<div class="col col-lg-6">
-		<section>
-			<h3>Stadtteilpolitik</h3>
+	<div class="col col-lg-6 col-md-6">
+		<section class="well">
+			<h2>Stadtteilpolitik</h2>
 			...
 		</section>
 	</div>

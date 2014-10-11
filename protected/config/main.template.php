@@ -68,7 +68,7 @@ function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-	'name'           => 'Ratsinformant',
+	'name'           => 'München Transparent: Ratsinformant',
 
 	// preloading 'log' component
 	'preload'        => array('log'),

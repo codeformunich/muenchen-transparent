@@ -17,6 +17,7 @@
 $this->pageTitle = Yii::app()->name;
 
 ?>
+<section class="well">
 	<div class="box" style="font-size: 18px; float: right; border: 1px solid #E1E1E8; border-radius: 4px; padding: 5px; background-color: #eee; overflow: hidden;">
 		<a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="icon-rss"></span> Suchergebnisse als RSS-Feed</a>
 	</div>
@@ -129,3 +130,5 @@ if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 if ($krits->getKritsCount() > 0) $this->renderPartial("../benachrichtigungen/suchergebnisse_liste", array(
 	"ergebnisse" => $ergebnisse,
 ));
+?>
+</section>

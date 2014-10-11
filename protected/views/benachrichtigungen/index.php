@@ -14,9 +14,7 @@ $this->pageTitle = "Benachrichtigungen";
 $assets_base = $this->getAssetsBase();
 ?>
 
-<form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/index")) ?>">
-	<button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
-</form>
+<section class="well">
 <h1>Benachrichtigung an <?= CHtml::encode($ich->email) ?>:</h1>
 
 
@@ -40,12 +38,12 @@ $bens          = $ich->getBenachrichtigungen();
 $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 	?>
-	<div class="benachrichtigung_keine col col-lg-7 well" style="margin-left: 23px;">Noch keine E-Mail-Benachrichtigungen</div>
+	<div class="benachrichtigung_keine col col-lg-7" style="margin-left: 23px;">Noch keine E-Mail-Benachrichtigungen</div>
 <?
 } else {
 	?>
 	<div class="row">
-		<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-7 well" style="margin-left: 23px;">
+		<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-7" style="margin-left: 23px;">
 			<? if (count($bens) > 0) { ?>
 				<h3>Abonnierte Suchabfragen</h3>
 				<ul class="benachrichtigungsliste">
@@ -125,7 +123,7 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 
 		<label for="suchbegriff"><span class="glyphicon glyphicon-search"></span> <span class="name">... mit diesem Suchbegriff:</span></label><br>
 
-		<div class="input-group col col-lg-7 well" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
+		<div class="input-group col col-lg-7" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
 			<input type="text" placeholder="Suchbegriff" id="suchbegriff" name="suchbegriff" class="form-control">
   			<span class="input-group-btn">
     			<button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_text") ?>" type="submit">Benachrichtigen!</button>
@@ -138,8 +136,8 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 	<fieldset>
 		<label for="suchbegriff"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... aus diesem Stadtteil:</span></label><br>
 
-		<div class="input-group col col-lg-7 well" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
-			<select class="selectpicker" name="ba"><?
+		<div class="input-group col col-lg-7" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
+			<select name="ba" class="form-control" ><?
 				$bas = Bezirksausschuss::model()->findAll();
 				/** @var Bezirksausschuss $ba */
 				foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": " . CHtml::encode($ba->name) . '</option>';
@@ -157,7 +155,6 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 		</div>
 		<script>
 			$(function () {
-				$('.selectpicker').selectpicker();
 				$('.bootstrap-select').css("width", "100%");
 			});
 		</script>
@@ -171,7 +168,7 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 
 		<br style="clear: both;">
 
-		<div class="input-group col col-lg-7 well" style="padding: 10px; margin-left: 23px;">
+		<div class="input-group col col-lg-7" style="padding: 10px; margin-left: 23px;">
 			<div id="ben_mapholder">
 				<div id="ben_map"></div>
 			</div>
@@ -216,4 +213,9 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 		});
 	</script>
 
+</form>
+</section>
+
+<form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/index")) ?>">
+	<button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
 </form>

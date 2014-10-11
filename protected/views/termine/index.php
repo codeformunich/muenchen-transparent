@@ -37,49 +37,58 @@ function gruppiere_termine($termine)
 
 ?>
 
-<h1>Termine</h1>
-<a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
+<section>
+	<h1 class="sr-only">Termine</h1>
+	<ul class="breadcrumb" style="margin-bottom: 5px;">
+		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+		<li class="active">Termine</li>
+	</ul>
+
+</section>
 
 <div class="row" id="listen_holder">
-	<div class="col col-lg-6">
-
-		<h3>Kommende Termine</h3>
-		<?
-		$data = gruppiere_termine($termine_zukunft);
-		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
-		else $this->renderPartial("termin_liste", array(
-			"termine" => $data
-		));
-		?>
-
-		<h3>Vergangene Termine</h3>
-		<?
-		$data = gruppiere_termine($termine_vergangenheit);
-		if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-		else $this->renderPartial("termin_liste", array(
-			"termine" => $data
-		)); ?>
-	</div>
-	<div class="col col-lg-6">
-		<?
-		if (count($termin_dokumente) > 0) {
+	<div class="col col-lg-6 col-md-6">
+		<div class="well">
+			<h3>Kommende Termine</h3>
+			<?
+			$data = gruppiere_termine($termine_zukunft);
+			if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
+			else $this->renderPartial("termin_liste", array(
+				"termine" => $data
+			));
 			?>
-			<h3>Neue Sitzungsdokumente</h3>
-			<ul class="antragsliste"><?
-				foreach ($termin_dokumente as $termin) {
-					$ts = RISTools::date_iso2timestamp($termin->termin);
-					echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
-					foreach ($termin->antraegeDokumente as $dokument) {
-						echo "<ul class='dokumente'><li>";
-						echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
-						echo CHtml::link($dokument->name, $dokument->getOriginalLink());
-						echo "</li></ul>";
+
+			<h3>Vergangene Termine</h3>
+			<?
+			$data = gruppiere_termine($termine_vergangenheit);
+			if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
+			else $this->renderPartial("termin_liste", array(
+				"termine" => $data
+			)); ?>
+		</div>
+	</div>
+	<div class="col col-lg-6 col-md-6">
+		<div class="well">
+			<?
+			if (count($termin_dokumente) > 0) {
+				?>
+				<h3>Neue Sitzungsdokumente</h3>
+				<ul class="antragsliste"><?
+					foreach ($termin_dokumente as $termin) {
+						$ts = RISTools::date_iso2timestamp($termin->termin);
+						echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
+						foreach ($termin->antraegeDokumente as $dokument) {
+							echo "<ul class='dokumente'><li>";
+							echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+							echo CHtml::link($dokument->name, $dokument->getOriginalLink());
+							echo "</li></ul>";
+						}
+						echo "</li>";
 					}
-					echo "</li>";
-				}
-				?></ul>
-		<?
-		}
-		?>
+					?></ul>
+			<?
+			}
+			?>
+		</div>
 	</div>
 </div>

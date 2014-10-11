@@ -29,6 +29,14 @@ class InfosController extends RISBaseController
 		));
 	}
 
+	public function actionUeber()
+	{
+		$this->top_menu = "";
+
+		$this->render('ueber', array(
+		));
+	}
+
 	public function actionGlossar()
 	{
 		$this->top_menu = "so_funktioniert";

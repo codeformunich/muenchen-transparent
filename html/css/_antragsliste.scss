@@ -2,6 +2,43 @@
   Hinweis: kein > benutzen, wg. CssToInlineStyles
 */
 
+
+div.antragsliste2 {
+  -moz-column-count: 2;
+  -moz-column-gap: 40px;
+  -webkit-column-count: 2;
+  -webkit-column-gap: 40px;
+  column-count: 2;
+  column-gap: 40px;
+
+  .panel-primary {
+    -webkit-column-break-inside:avoid;
+    -moz-column-break-inside:avoid;
+    -o-column-break-inside:avoid;
+    -ms-column-break-inside:avoid;
+    column-break-inside:avoid;
+    -webkit-break-inside:avoid;
+    -moz-break-inside:avoid;
+    break-inside:avoid;
+
+    .panel-heading a {
+      &:link, &:visited {
+        color: white;
+      }
+    }
+  }
+
+  .add_meta {
+    float: right;
+    color: gray;
+    font-size: 12px;
+  }
+
+  ul.dokumente {
+    font-size: 12px;
+  }
+}
+
 ul.antragsliste {
   list-style-type: none;
   margin: 0;
