@@ -55,8 +55,6 @@ class BenachrichtigungenController extends RISBaseController
 							$identity = new RISUserIdentity($p);
 							Yii::app()->user->login($identity);
 
-							if ($p->email == Yii::app()->params['adminEmail']) Yii::app()->user->setState("role", "admin");
-
 							echo json_encode(array(
 								"status" => "done",
 								"titel"  => $krits->getTitle()

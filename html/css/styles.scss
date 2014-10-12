@@ -2,7 +2,8 @@ $icon-font-path: "bootstrap-sass-3.2.0/assets/fonts/bootstrap/";
 $footer_height: 3em;
 
 @import "bootstrap-sass-3.2.0/assets/stylesheets/bootstrap";
-@import "material-wfont"; // The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
+@import "material-wfont";
+// The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
 @import "material/variables";
 @import "antragsliste";
 @import "fontello";
@@ -40,6 +41,15 @@ $footer_height: 3em;
     margin-right: -18px;
     margin-top: -18px;
   }
+  > .alert {
+    max-width: 600px;
+    margin: 30px auto;
+    .fontello-ok {
+      float: left;
+      font-size: 200%;
+      margin-right: 10px;
+    }
+  }
 }
 
 #ba_nav_list {
@@ -53,7 +63,7 @@ $footer_height: 3em;
     column-count: 2;
     column-gap: 10px;
 
-    >li > a {
+    > li > a {
       white-space: normal;
       width: 250px;
       text-indent: -25px;
@@ -179,7 +189,6 @@ body {
     transition: opacity 0.35s ease;
   }
 }
-
 
 .leaflet-control-zoom-fullscreen {
   background-image: url(/js/Leaflet.Fullscreen/icon-fullscreen.png);
@@ -881,7 +890,6 @@ body, html {
   height: 100%;
 }
 
-
 .over_footer_wrapper {
   min-height: 100%;
   height: auto !important;
@@ -905,18 +913,18 @@ footer {
     margin-top: 0;
   }
 }
+
 .footer_spacer {
   height: $footer_height;
 }
-/* /footer */
 
+/* /footer */
 
 section.impressum {
   h2 {
     font-size: 20px;
   }
 }
-
 
 #quicksearch_form {
   .form-control-wrapper {

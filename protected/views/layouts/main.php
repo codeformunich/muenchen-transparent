@@ -81,7 +81,8 @@
 				<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
 				<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
 				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("index/personen")) ?></li>
-				<? if (Yii::app()->user->getState("role") == "admin") { ?>
+				<?
+				if ($this->binContentAdmin()) { ?>
 					<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
 						<ul class="dropdown-menu">

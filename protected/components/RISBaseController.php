@@ -90,8 +90,6 @@ class RISBaseController extends CController
 				if ($benutzerIn->validate_password($_REQUEST["password"])) {
 					$identity = new RISUserIdentity($benutzerIn);
 					Yii::app()->user->login($identity);
-
-					if ($benutzerIn->email == Yii::app()->params['adminEmail']) Yii::app()->user->setState("role", "admin");
 				} else {
 					$msg_err = "Das angegebene Passwort ist falsch.";
 				}
@@ -167,9 +165,24 @@ class RISBaseController extends CController
 	/**
 	 * @return bool
 	 */
-	public function binContentAdmin() {
+	public function binContentAdmin()
+	{
 		$curr = $this->aktuelleBenutzerIn();
 		if ($curr === null) return false;
 		return in_array($curr->id, Yii::app()->params["contentAdminIds"]);
+	}
+
+	/**
+	 * @param int $error_code
+	 * @param string $error_message
+	 */
+	public function errorMessageAndDie($error_code, $error_message)
+	{
+		$this->render("../index/error", array(
+			"code"    => $error_code,
+			"message" => $error_message,
+		));
+		Yii::app()->end($error_code);
+		die();
 	}
 }

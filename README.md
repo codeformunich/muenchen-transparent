@@ -83,5 +83,6 @@ Eingesetzte JS/CSS-Bibliotheken
 * [Leaflet](http://leafletjs.com/) für die Karten (mit dem Kartenmaterial von [Skobbler](http://www.skobbler.com/))
 * [Modernizr](http://modernizr.com/)
 * [Bootstrap](http://getbootstrap.com/)
+* [Material Design for Bootstrap](http://fezvrasta.github.io/bootstrap-material-design/)
 * [Fontello](http://fontello.com/)
 * ... To be continued

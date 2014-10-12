@@ -5,6 +5,7 @@ class AdminController extends RISBaseController
 
 
 	public function actionStadtraetInnenPersonen() {
+		if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
 
 		$this->top_menu = "admin";
 
@@ -42,6 +43,7 @@ class AdminController extends RISBaseController
 
 
 	public function actionStadtraetInnenSocialMedia() {
+		if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
 
 		$this->top_menu = "admin";
 
@@ -70,6 +72,8 @@ class AdminController extends RISBaseController
 
 
 	public function actionIndex() {
+		if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
+
 		$this->top_menu = "admin";
 
 		$this->render("index");
