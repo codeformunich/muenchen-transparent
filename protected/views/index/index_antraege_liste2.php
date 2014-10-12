@@ -62,7 +62,7 @@ if (count($antraege) > 0) {
 		$titel = $ant->getName(true);
 		echo '<div class="panel panel-primary">
     <div class="panel-heading"><a href="' . CHtml::encode($ant->getLink()) . '"';
-		if (strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
+		if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
 		echo '><span>';
 		echo CHtml::encode($titel) . '</a></span></div>';
 		echo '<div class="panel-body">';

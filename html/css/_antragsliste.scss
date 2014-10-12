@@ -4,6 +4,8 @@
 
 
 div.antragsliste2 {
+  overflow: hidden;
+
   &.two_cols, .two_cols & {
     -moz-column-count: 2;
     -moz-column-gap: 40px;
@@ -22,6 +24,7 @@ div.antragsliste2 {
     -webkit-break-inside:avoid;
     -moz-break-inside:avoid;
     break-inside:avoid;
+    page-break-inside: avoid;
 
     .panel-heading a {
       &:link, &:visited {

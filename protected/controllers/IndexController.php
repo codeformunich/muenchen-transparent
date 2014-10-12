@@ -213,7 +213,7 @@ class IndexController extends RISBaseController
 			} else {
 				$link = $name = "";
 			}
-			if (strlen($name) > 150) $name = substr($name, 0, 148) . "...";
+			if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
 			if ($link != "") $link = "<div class='antraglink'>" . CHtml::link($name, $link) . "</div>";
 			foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0 && ($filter_krits === null || $filter_krits->filterGeo($ort->ort))) {
 				$str = $link;
@@ -266,7 +266,7 @@ class IndexController extends RISBaseController
 				} else {
 					$link = $name = "";
 				}
-				if (strlen($name) > 150) $name = substr($name, 0, 148) . "...";
+				if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
 				if ($link != "") $link = "<div class='antraglink'>" . CHtml::link($name, $link) . "</div>";
 				$str = $link;
 				$str .= "<div class='ort_dokument'>";
@@ -298,7 +298,7 @@ class IndexController extends RISBaseController
 			foreach ($ant->dokumente as $dokument) {
 				foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0) {
 					$name = $ant->getName();
-					if (strlen($name) > 150) $name = substr($name, 0, 148) . "...";
+					if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
 					$str = "<div class='antraglink'>" . CHtml::link($name, $ant->getLink()) . "</div>";
 					$str .= "<div class='ort_dokument'>";
 					$str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";

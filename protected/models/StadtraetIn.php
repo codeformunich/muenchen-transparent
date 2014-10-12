@@ -105,7 +105,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 */
 	public function getName($kurzfassung = false)
 	{
-		if (strpos($this->name, ",") > 0) {
+		if (mb_strpos($this->name, ",") > 0) {
 			$x = explode(",", $this->name);
 			if (count($x) == 2) {
 				return $x[1] . " " . $x[0];

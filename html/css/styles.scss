@@ -424,6 +424,7 @@ ul.terminliste, ul.suchergebnisliste {
         -webkit-break-inside: avoid;
         -moz-break-inside: avoid;
         break-inside: avoid;
+        page-break-inside: avoid;
       }
     }
   }

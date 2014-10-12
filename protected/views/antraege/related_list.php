@@ -16,11 +16,11 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
 		<div class="row-content">
 			<h4 class="list-group-item-heading">
 				<?
-				$title = $verw->getName(true);
-				if (strlen($title) > $max_title_width) {
+				$title = trim($verw->getName(true));
+				if (mb_strlen($title) > $max_title_width) {
 					?>
 					<a href="<?= CHtml::encode($verw->getLink()) ?>" title="<?= CHtml::encode($title) ?>" class="overflow-fadeout-white"><span>
-						<?= CHtml::encode(substr($title, 0, $max_title_width * 1.5)) ?>
+						<?= CHtml::encode(mb_substr($title, 0, $max_title_width * 1.5)) ?>
 					</span></a>
 					<?
 				} else {
