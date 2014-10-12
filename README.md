@@ -63,6 +63,12 @@ Code-Organisation
 * __protected/RISParser/__: Die Parser für das Scraping. Werden von den Kommandozeilentools aufgerufen und beschreiben das Modell.
 * __protected/views/__: Die Views
 
+Weitere Dokumentation
+---------------------
+
+* [nginx.conf](docs/nginx.conf) und [lighttpd.conf](docs/lighttpd.conf) zeigen Beispiel-Konfigurationen für nginx und Lighttpd. 
+
+
 Eingesetzte Shell-Programme
 ---------------------------
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.
