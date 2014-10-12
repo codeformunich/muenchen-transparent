@@ -67,7 +67,7 @@ Weitere Dokumentation
 ---------------------
 
 * [nginx.conf](docs/nginx.conf) und [lighttpd.conf](docs/lighttpd.conf) zeigen Beispiel-Konfigurationen für nginx und Lighttpd. 
-
+* [Icon-Font bearbeiten](docs/fontello/updating.txt)
 
 Eingesetzte Shell-Programme
 ---------------------------
