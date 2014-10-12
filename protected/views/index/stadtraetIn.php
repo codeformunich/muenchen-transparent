@@ -32,7 +32,10 @@ $this->pageTitle = $stadtraetIn->getName();
 						<ul>
 							<? foreach ($stadtraetIn->stadtraetInnenFraktionen as $frakts) {
 								echo "<li>" . CHtml::encode($frakts->fraktion->name);
-								if ($frakts->datum_von > 0 && $frakts->datum_bis > 0) {
+								if ($frakts->fraktion->ba_nr > 0) {
+									echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . CHtml::encode($frakts->fraktion->bezirksausschuss->name) . ")";
+									// @Wird noch nicht zuverlässig erkannt; siehe https://github.com/codeformunich/Ratsinformant/issues/38
+								} elseif ($frakts->datum_von > 0 && $frakts->datum_bis > 0) {
 									echo " (von " . RISTools::datumstring($frakts->datum_von);
 									echo " bis " . RISTools::datumstring($frakts->datum_bis) . ")";
 								} elseif ($frakts->datum_von > 0) {

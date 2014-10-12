@@ -12,6 +12,7 @@
  * The followings are the available model relations:
  * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
  * @property Person[] $personen
+ * @property Bezirksausschuss $bezirksausschuss
  */
 class Fraktion extends CActiveRecord implements IRISItem
 {
