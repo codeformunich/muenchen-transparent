@@ -125,7 +125,6 @@
 <script src="/js/scrollintoview.js"></script>
 <script src="/js/antraegekarte.jquery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/bootstrap-select/bootstrap-select.min.js"></script>
 <script src="/js/material/ripples.min.js"></script>
 <script src="/js/material/material.min.js"></script>
 <script src="/js/typeahead.js/typeahead.bundle.min.js"></script>

@@ -153,11 +153,6 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
   			</span>
   			-->
 		</div>
-		<script>
-			$(function () {
-				$('.bootstrap-select').css("width", "100%");
-			});
-		</script>
 	</fieldset>
 </form>
 
