@@ -157,6 +157,7 @@ class RISTools
 		$titel = preg_replace("/\\s\?$/siu", "?", $titel);
 		$titel = str_replace(" ?", " —", $titel);
 		$titel = str_replace(chr(10) . "?", " —", $titel);
+		$titel = str_replace("Â?", "€", $titel);
 		return $titel;
 	}
 

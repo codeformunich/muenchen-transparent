@@ -47,21 +47,21 @@ $this->pageTitle = $stadtraetIn->getName();
 					</td>
 				</tr>
 				<? if (count($stadtraetIn->antraege) > 0) { ?>
-				<tr>
-					<th>Anträge:</th>
-					<td>
-						<ul>
-							<?
-							foreach ($stadtraetIn->antraege as $antrag) {
-								echo "<li>";
-								echo CHtml::link($antrag->getName(true), $antrag->getLink());
-								echo " (" . RISTools::datumstring($antrag->gestellt_am) . ")";
-								echo "</li>\n";
-							}
-							?>
-						</ul>
-					</td>
-				</tr>
+					<tr>
+						<th>Anträge:</th>
+						<td>
+							<ul>
+								<?
+								foreach ($stadtraetIn->antraege as $antrag) {
+									echo "<li>";
+									echo CHtml::link($antrag->getName(true), $antrag->getLink());
+									echo " (" . RISTools::datumstring($antrag->gestellt_am) . ")";
+									echo "</li>\n";
+								}
+								?>
+							</ul>
+						</td>
+					</tr>
 				<? } ?>
 				</tbody>
 			</table>
@@ -70,6 +70,28 @@ $this->pageTitle = $stadtraetIn->getName();
 	<section class="col-md-4">
 		<div class="well">
 			<h2>Weitere Infos</h2>
+			<?
+			if ($stadtraetIn->web || $stadtraetIn->twitter || $stadtraetIn->facebook || $stadtraetIn->abgeordnetenwatch) {
+				echo '<dl>';
+				if ($stadtraetIn->web != "") {
+					echo '<dt>Homepage:</dt>';
+					echo '<dd><a href="' . CHtml::encode($stadtraetIn->web) . '">' . CHtml::encode($stadtraetIn->web) . '</a></dd>' . "\n";
+				}
+				if ($stadtraetIn->twitter != "") {
+					echo '<dt>Twitter:</dt>';
+					echo '<dd><a href="https://twitter.com/' . CHtml::encode($stadtraetIn->twitter) . '">@' . CHtml::encode($stadtraetIn->twitter) . '</a></dd>' . "\n";
+				}
+				if ($stadtraetIn->facebook != "") {
+					echo '<dt>Facebook:</dt>';
+					echo '<dd><a href="https://www.facebook.com/' . CHtml::encode($stadtraetIn->facebook) . '">Facebook-Profil</a></dd>' . "\n";
+				}
+				if ($stadtraetIn->abgeordnetenwatch != "") {
+					echo '<dt>Abgeordnetenwatch:</dt>';
+					echo '<dd><a href="' . CHtml::encode($stadtraetIn->abgeordnetenwatch) . '">Abgeordnetenwatch-Profil</a></dd>' . "\n";
+				}
+				echo "</dl>";
+			}
+			?>
 			@TODO
 		</div>
 	</section>
