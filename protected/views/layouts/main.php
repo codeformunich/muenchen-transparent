@@ -12,7 +12,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="<?
 		if ($this->html_description != "") echo CHtml::encode($this->html_description);
-		else echo "Münchner Stadtpolitik einfach erklärt. Aktuelle Entscheidungen, Dokumente und Informationen aus Münchens Stadtrat, übersichtlich nach Themen und Bezirken";
+		else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
 	?>">
 	<meta name="author" content="Tobias Hößl">
 

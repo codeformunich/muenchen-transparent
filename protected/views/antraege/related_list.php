@@ -37,6 +37,11 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
 				if ($dat > $max_date) $max_date = $dat;
 			}
 			?>
+			<p class="list-group-item-text">
+				<?
+				echo (count($verw->dokumente) == 1 ? "1 Dokument" : count($verw->dokumente) . " Dokumente");
+				?>
+			</p>
 			<div class="add_meta"><?
 				$parteien = array();
 				foreach ($verw->antraegePersonen as $person) {
@@ -66,11 +71,6 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
 				echo date((date("Y", $max_date) == date("Y") ? "d.m." : "d.m.Y"), $max_date);
 
 				?></div>
-			<p class="list-group-item-text">
-				<?
-				echo (count($verw->dokumente) == 1 ? "1 Dokument" : count($verw->dokumente) . " Dokumente");
-				?>
-			</p>
 		</div>
 	</li>
 <?

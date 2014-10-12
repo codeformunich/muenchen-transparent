@@ -400,6 +400,11 @@ ul.terminliste, ul.suchergebnisliste {
         color: gray;
         font-size: 12px;
       }
+      .list-group-item-text {
+        font-size: 12px;
+        font-weight: normal;
+        float: left;
+      }
     }
 
     &.two_cols {

@@ -5,10 +5,16 @@
 $this->pageTitle = "So funktioniert Stadtpolitik";
 
 ?>
+<section class="well">
+	<ul class="breadcrumb" style="margin-bottom: 5px;">
+		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+		<li class="active">So funktioniert Stadtpolitik</li>
+	</ul>
 
-<h2>So funktioniert Stadtpolitik</h2>
-<a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
+	<h1>So funktioniert Stadtpolitik</h1>
 
-<br><br>
+	<br><br>
 
-<?=CHtml::link("Zum Glossar", array("infos/glossar"))?>
+	<?= CHtml::link("Zum Glossar", array("infos/glossar")) ?>
+
+</section>
