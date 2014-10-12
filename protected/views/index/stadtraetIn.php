@@ -46,6 +46,7 @@ $this->pageTitle = $stadtraetIn->getName();
 						</ul>
 					</td>
 				</tr>
+				<? if (count($stadtraetIn->antraege) > 0) { ?>
 				<tr>
 					<th>Anträge:</th>
 					<td>
@@ -61,7 +62,7 @@ $this->pageTitle = $stadtraetIn->getName();
 						</ul>
 					</td>
 				</tr>
-
+				<? } ?>
 				</tbody>
 			</table>
 		</section>
