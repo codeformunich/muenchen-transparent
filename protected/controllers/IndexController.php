@@ -316,7 +316,7 @@ class IndexController extends RISBaseController
 				}
 			}
 		}
-		foreach ($geodata_nach_dok as $dok_geo) if (count($dok_geo) >= 20) {
+		foreach ($geodata_nach_dok as $dok_geo) if (count($dok_geo) >= 10) {
 			$geodata_overflow[] = $dok_geo;
 		} else {
 			foreach ($dok_geo as $d) $geodata[] = $d;
