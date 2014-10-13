@@ -129,4 +129,6 @@ $(function () {
     $quicksearch.on("typeahead:selected", function (ev, obj) {
         if (typeof(obj.url) != "undefined") window.location.href = obj.url;
     });
+
+    if (!Modernizr.testAllProps("hyphens")) yepnope.injectJs("/js/hyphenator.js");
 });

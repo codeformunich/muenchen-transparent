@@ -18,9 +18,10 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
 				<?
 				$title = trim($verw->getName(true));
 				if (mb_strlen($title) > $max_title_width) {
+					$title_short = mb_substr($title, 0, $max_title_width * 1.5);
 					?>
-					<a href="<?= CHtml::encode($verw->getLink()) ?>" title="<?= CHtml::encode($title) ?>" class="overflow-fadeout-white"><span>
-						<?= CHtml::encode(mb_substr($title, 0, $max_title_width * 1.5)) ?>
+					<a href="<?= CHtml::encode($verw->getLink()) ?>" title="<?= CHtml::encode($title) ?>" class="overflow-fadeout-white"><span class="hyphenate">
+						<?= CHtml::encode($title_short) ?>
 					</span></a>
 					<?
 				} else {

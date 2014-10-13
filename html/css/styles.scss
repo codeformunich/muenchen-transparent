@@ -1063,3 +1063,11 @@ section.impressum {
     font-size: 13px;
   }
 }
+
+
+
+.hyphenate {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
