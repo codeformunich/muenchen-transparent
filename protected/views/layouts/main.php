@@ -11,8 +11,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="<?
-		if ($this->html_description != "") echo CHtml::encode($this->html_description);
-		else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
+	if ($this->html_description != "") echo CHtml::encode($this->html_description);
+	else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
 	?>">
 	<meta name="author" content="Tobias Hößl">
 
@@ -51,73 +51,85 @@
 
 <body>
 <a href="#page_main_content" class="sr-only">Zum Seiteninhalt</a>
-<div class="over_footer_wrapper">
-<div class="clear"></div>
 
-<div class="navbar navbar-inverse navbar-fixed-top" id="main_navbar">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="sr-only">Menü</span>
-			</button>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li><a href="<?=CHtml::encode(Yii::app()->createUrl("index/startseite"))?>" style="font-weight: bold; color: white;">[TODO: Logo]</a></li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <span class="caret"></span></a>
-					<ul class="dropdown-menu" id="ba_nav_list">
-						<?
-						/** @var Bezirksausschuss[] $bas */
-						$bas = Bezirksausschuss::model()->findAll();
-						foreach ($bas as $ba) echo "<li>".CHtml::link($ba->ba_nr.": ".$ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr)))."</li>\n"
-						?>
-					</ul>
-				</li>
-				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
-				<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
-				<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
-				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("index/personen")) ?></li>
-				<?
-				if ($this->binContentAdmin()) { ?>
-					<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
-							<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+<div class="over_footer_wrapper">
+	<div class="clear"></div>
+
+	<div class="navbar navbar-inverse navbar-fixed-top" id="main_navbar">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="sr-only">Menü</span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">[TODO: Logo]</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <span class="caret"></span></a>
+						<ul class="dropdown-menu" id="ba_nav_list">
+							<?
+							/** @var Bezirksausschuss[] $bas */
+							$bas = Bezirksausschuss::model()->findAll();
+							foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr))) . "</li>\n"
+							?>
 						</ul>
 					</li>
-				<? } ?>
-			</ul>
+					<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
+					<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
+					<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
+					<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("index/personen")) ?></li>
+					<?
+					if ($this->binContentAdmin()) {
+						?>
+						<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
+								<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+							</ul>
+						</li>
+					<? } ?>
+				</ul>
 
-			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
+				<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
 					<label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
-					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control" id="quicksearch_form_input"
-						   data-prefetch-url="<?=CHtml::encode($this->createUrl("index/quickSearchPrefetch"))?>"
-						   data-search-url="<?=CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF")))?>">
-				<button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span></button>
-			</form>
+					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
+						   id="quicksearch_form_input"
+						   data-prefetch-url="<?= CHtml::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
+						   data-search-url="<?= CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF"))) ?>">
+					<button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span>
+					</button>
+				</form>
+			</div>
 		</div>
 	</div>
+
+	<main class="container center-block row" id="page_main_content">
+		<?php echo $content; ?>
+	</main>
+	<!-- /container -->
+
+	<!-- Needed to keep the footer at the bottom -->
+	<div class="footer_spacer"></div>
 </div>
-
-<main class="container center-block row" id="page_main_content">
-	<?php echo $content; ?>
-</main>
-<!-- /container -->
-
-<!-- Needed to keep the footer at the bottom -->
-<div class="footer_spacer"></div>
-</div> <!-- /over_footer_wrapper -->
+<!-- /over_footer_wrapper -->
 
 <footer>
 	<p class="container">
+		<span class="pull-left">
 	<?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("infos/datenschutz")) ?>
-	&nbsp;
-	<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
+			&nbsp;
+			<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
+		</span>
+		<span class="pull-right">
+			<?= CHtml::link("API", Yii::app()->createUrl("infos/api")) ?> /
+			<?= CHtml::link("OpenSource-Projekt (Github)", "https://github.com/codeformunich/Ratsinformant") ?> /
+			<?= CHtml::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?>
+		</span>
 	</p>
 </footer>
 

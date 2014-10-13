@@ -20,6 +20,12 @@ class InfosController extends RISBaseController
 		$this->render('datenschutz');
 	}
 
+	public function actionAPI()
+	{
+		$this->top_menu = "api";
+		$this->render('api');
+	}
+
 	public function actionUeber()
 	{
 		$this->top_menu = "";
