@@ -179,9 +179,11 @@ class StadtratsvorlageParser extends RISParser
 						$erg->antrag_id = null;
 						$erg->save();
 					}
-					$command = Yii::app()->db->createCommand();
-					$command->delete("antraege_orte", "antrag_id=:antrag_id", array("antrag_id" => IntVal($vorlage_id)));
-					$command->delete("antraege_vorlagen", "antrag1=:antrag_id", array("antrag_id" => IntVal($vorlage_id)));
+					Yii::app()->db->createCommand("UPDATE antraege_ergebnisse_history SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
+					Yii::app()->db->createCommand("UPDATE antraege_ergebnisse SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
+					Yii::app()->db->createCommand("DELETE FROM antraege_orte WHERE antrag_id = " . IntVal($vorlage_id))->execute();
+					Yii::app()->db->createCommand("DELETE FROM antraege_vorlagen WHERE antrag1 = " . IntVal($vorlage_id))->execute();
+
 					if (!$daten->delete()) {
 						RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: Nicht gelöscht", "VorlageParser 2\n" . print_r($daten->getErrors(), true));
 						die("Fehler");
@@ -195,7 +197,7 @@ class StadtratsvorlageParser extends RISParser
 					$aend->save();
 					return;
 				}
-			} else {
+			} elseif (!$geloescht) {
 				if (!$daten->save()) {
 					echo "Vorlage 2\n";
 					var_dump(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 3));
