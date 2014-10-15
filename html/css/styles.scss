@@ -98,11 +98,6 @@ body {
   }
 }
 
-
-
-
-
-
 .leaflet-popup-content-wrapper {
   border-radius: 10px;
 }
@@ -170,7 +165,6 @@ body {
   margin-bottom: 20px;
 }
 
-
 #benachrichtigung_hinweis {
   border: solid 1px #ccc;
   background-color: #eee;
@@ -223,7 +217,6 @@ body {
     transition: opacity 0.35s ease;
   }
 }
-
 
 #listen_holder {
 
@@ -345,7 +338,6 @@ section.teaser {
 
 }
 
-
 .keine_gefunden {
   color: gray;
   font-style: italic;
@@ -394,6 +386,7 @@ ul.terminliste {
       margin: 10px 0 10px 0;
 
       a.overflow-fadeout-white {
+        max-height: 75px;
         padding-top: 10px;
         border-top: 1px solid rgba(0, 0, 0, .1);
       }
@@ -432,6 +425,9 @@ ul.terminliste {
   }
 
   .list-group .list-group-item {
+    a.overflow-fadeout-white {
+      max-height: 66px;
+    }
     .border {
       display: block;
       margin: 10px auto;
@@ -456,7 +452,6 @@ ul.terminliste {
   a.overflow-fadeout-white {
     font-size: 17px;
     line-height: 22px;
-    max-height: 66px;
     overflow: hidden;
     display: block;
 
@@ -493,7 +488,6 @@ ul.terminliste {
     }
   }
 }
-
 
 .list-group.two_cols {
   -moz-column-count: 2;
@@ -594,7 +588,6 @@ ul.terminliste {
     }
   }
 }
-
 
 #benachrichtigung_einrichten {
   .bestaetigt, .email_angegeben, .nicht_eingeloggt, .wird_benachrichtigt, .wird_nicht_benachrichtigt {
@@ -1033,8 +1026,6 @@ section.impressum {
     font-size: 13px;
   }
 }
-
-
 
 .hyphenate {
   -webkit-hyphens: auto;
