@@ -183,24 +183,13 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 	</div>
 
 	<div class="col col-md-3 keine_dokumente">
-		<div class="well">
-			<section>
-				<h3>Infos zum Stadtteil</h3>
+		<section class="well"><?
+			$insgesamt = 0;
+			foreach ($fraktionen as $fraktion)
+				$insgesamt += count($fraktion);
+			?>
 
-				<div class="ba_infos">
-					<a href="<?= CHtml::encode($ba->website) ?>"><span class="glyphicon glyphicon-chevron-right"></span> Website des Bezirksausschuss</a>
-				</div>
-			</section>
-
-			<section style="display: inline-block">
-				<h3>Benachrichtigungen</h3>
-
-				<p>
-					<a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>" class="startseite_benachrichtigung_link email" title="E-Mail">@</a>
-				</p>
-			</section>
-
-			<h3>BA-Mitglieder</h3>
+			<h2>StadträtInnen <span style="float: right"><?= $insgesamt ?></span></h2>
 
 			<ul class="fraktionen_liste"><?
 				usort($fraktionen, function ($val1, $val2) {
@@ -211,22 +200,21 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 				foreach ($fraktionen as $fraktion) {
 					/** @var StadtraetIn[] $fraktion */
 					$fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
-					echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'>";
+					echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
 					echo "<span class='count'>" . count($fraktion) . "</span>";
 					echo CHtml::encode($fr->name) . "</a><ul class='mitglieder'>";
-					foreach ($fraktion as $str) {
+					foreach ($fraktion as $mitglied) {
 						echo "<li>";
-						if ($str->abgeordnetenwatch != "") echo "<a href='" . CHtml::encode($str->abgeordnetenwatch) . "' class='abgeordnetenwatch_link' title='Abgeordnetenwatch'></a>";
-						if ($str->web != "") echo "<a href='" . CHtml::encode($str->web) . "' title='Homepage' class='web_link'></a>";
-						if ($str->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($str->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
-						if ($str->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($str->facebook) . "' title='Facebook' class='fb_link'>f</a>";
-						echo "<a href='" . CHtml::encode($str->getLink()) . "' class='ris_link'>" . CHtml::encode($str->name) . "</a>";
+						echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>"    . CHtml::encode($mitglied->name             ) .                                                            "</a>";
+						if ($mitglied->abgeordnetenwatch != "") echo "<a href='"                          . CHtml::encode($mitglied->abgeordnetenwatch) . "' title='Abgeordnetenwatch' class='abgeordnetenwatch_link'></a>";
+						if ($mitglied->web               != "") echo "<a href='"                          . CHtml::encode($mitglied->web              ) . "' title='Homepage'          class='web_link'>             </a>";
+						if ($mitglied->twitter           != "") echo "<a href='https://twitter.com/"      . CHtml::encode($mitglied->twitter          ) . "' title='Twitter'           class='twitter_link'>T         </a>";
+						if ($mitglied->facebook          != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($mitglied->facebook         ) . "' title='Facebook'          class='fb_link'>     f         </a>";
 						echo "</li>\n";
 					}
 					echo "</ul></li>\n";
-
 				}
-				?></ul>
+			?></ul>
 
 			<script>
 				$(function () {
@@ -234,14 +222,18 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 					$frakts.addClass("closed").find("> a").click(function (ev) {
 						if (ev.which == 2 || ev.which == 3) return;
 						ev.preventDefault();
-						var $li = $(this).parents("li").first(),
-							is_open = !$li.hasClass("closed");
-						$frakts.addClass("closed");
-						if (!is_open) $li.removeClass("closed");
+						var $li = $(this).parents("li").first();
+						if ($li.hasClass("closed")) {
+							$li.removeClass("closed");
+							$li.find(".glyphicon").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
+						} else {
+                            $li.addClass("closed");
+                            $li.find(".glyphicon").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-right");
+                        }
 					});
 				})
 			</script>
-		</div>
+		</section>
 	</div>
 
 </div>

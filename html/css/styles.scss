@@ -642,9 +642,6 @@ ul.fraktionen_liste {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  border: solid 1px #ccc;
-  background-color: #eee;
-  border-radius: 5px;
   overflow: hidden;
 
   > li {
@@ -660,6 +657,11 @@ ul.fraktionen_liste {
 
       .count {
         float: right;
+        margin: 2px;
+      }
+
+      .glyphicon {
+        margin-right: 4px;
       }
     }
 
@@ -1032,4 +1034,3 @@ section.impressum {
   -moz-hyphens: auto;
   hyphens: auto;
 }
-
