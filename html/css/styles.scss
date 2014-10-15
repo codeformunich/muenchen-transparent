@@ -98,6 +98,11 @@ body {
   }
 }
 
+
+
+
+
+
 .leaflet-popup-content-wrapper {
   border-radius: 10px;
 }
@@ -452,6 +457,7 @@ ul.terminliste {
   a.overflow-fadeout-white {
     font-size: 17px;
     line-height: 22px;
+    max-height: 66px;
     overflow: hidden;
     display: block;
 
