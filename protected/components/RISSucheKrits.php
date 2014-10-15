@@ -273,7 +273,7 @@ class RISSucheKrits
 			case "betreff":
 				return "Dokumente mit \"" . $this->krits[0]["suchbegriff"] . "\" im Betreff";
 			case "antrag_typ":
-				return "Dokumente des Typs \"" . $this->krits[0]["suchbegriff"] . "\"";
+				return "Dokumente des Typs \"" . AntragDokument::$TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
 			case "volltext":
 				return "Dokumente, die den Suchausdruck \"" . $this->krits[0]["suchbegriff"] . "\" enthalten";
 			case "ba":
@@ -285,6 +285,41 @@ class RISSucheKrits
 				return "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
 			case "antrag_nr":
 				return "Dokumente zum Antrag Nr. " . $this->krits[0]["suchbegriff"];
+		}
+		if (count($this->krits) > 1) {
+			$krits = array();
+			foreach ($this->krits as $cr) switch ($cr["typ"]) {
+				case "betreff":
+					$krits[] = "mit \"" . $cr["suchbegriff"] . "\" im Betreff";
+					break;
+				case "antrag_typ":
+					$krits[] = "vom Typ \"" . AntragDokument::$TYPEN_ALLE[$cr["suchbegriff"]] . "\"";
+					break;
+				case "volltext":
+					$krits[] = "mit dem Suchausdruck \"" . $cr["suchbegriff"] . "\"";
+					break;
+				case "ba":
+					/** @var Bezirksausschuss $ba */
+					$ba      = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $cr["ba_nr"]));
+					$krits[] = "aus dem Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
+					break;
+				case "geo":
+					$ort     = OrtGeo::findClosest($this->krits[0]["lng"], $cr["lat"]);
+					$krits[] = "mit einem Ortsbezug (ungefähr: " . IntVal($cr["radius"]) . "m um \"" . $ort->ort . "\")";
+					break;
+				case "antrag_nr":
+					$krits[] = "zum Antrag Nr. " . $cr["suchbegriff"];
+					break;
+				default:
+					$krits[] = json_encode($cr);
+			}
+			$text = "Dokumente ";
+			for ($i = 0; $i < (count($krits) - 1); $i++) {
+				$text .= $krits[$i];
+				if ($i < (count($krits) - 2)) $text .= ", ";
+			}
+			$text .= " und " . $krits[count($krits) - 1];
+			return $text;
 		}
 		return json_encode($this->krits);
 	}
@@ -377,11 +412,12 @@ class RISSucheKrits
 	 * @param string $str
 	 * @return $this
 	 */
-	public function addAntragNrKrit($str) {
-		$str = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $str);
-		$str = preg_replace("/ +/siu", "*", $str);
+	public function addAntragNrKrit($str)
+	{
+		$str           = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $str);
+		$str           = preg_replace("/ +/siu", "*", $str);
 		$this->krits[] = array(
-			"typ" => "antrag_nr",
+			"typ"         => "antrag_nr",
 			"suchbegriff" => $str,
 		);
 		return $this;
