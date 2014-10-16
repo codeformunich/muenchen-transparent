@@ -192,8 +192,8 @@ ul.dokumente {
     padding: 1px;
     font-weight: bold;
     &:before {
-      content: ', ';
-      font-weight: normal;
+      content: '| ';
+      color: #428BCA;
     }
     &:first-child:before {
       content: '';
