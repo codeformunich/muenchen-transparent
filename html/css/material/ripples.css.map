@@ -1,7 +1,8 @@
 {
 "version": 3,
-"mappings": "AAAA,WAAY;EACR,QAAQ,EAAE,QAAQ;;AAEtB,eAAgB;EACZ,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,CAAC;EACN,IAAI,EAAE,CAAC;EACP,OAAO,EAAE,CAAC;EACV,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,QAAQ,EAAE,MAAM;EAChB,aAAa,EAAE,GAAG;;AAEtB,OAAQ;EACJ,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,WAAW,EAAE,KAAK;EAClB,UAAU,EAAE,KAAK;EACjB,aAAa,EAAE,IAAI;EACnB,gBAAgB,EAAE,mBAAgB;EAClC,SAAS,EAAE,QAAQ;EACnB,gBAAgB,EAAE,GAAG;EACrB,OAAO,EAAE,CAAC;EACV,cAAc,EAAE,IAAI;;AAExB,iBAAkB;EACd,UAAU,EAAE,0EAAwB;EACpC,OAAO,EAAE,CAAC;;AAEd,kBAAmB;EACf,UAAU,EAAE,iCAAiC;EAC7C,OAAO,EAAE,CAAC",
-"sources": ["ripples.scss"],
+"mappings": "AAAA,WAAY,CACR,QAAQ,CAAE,QAAQ,CAEtB,eAAgB,CACZ,QAAQ,CAAE,QAAQ,CAClB,GAAG,CAAE,CAAC,CACN,IAAI,CAAE,CAAC,CACP,OAAO,CAAE,CAAC,CACV,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,QAAQ,CAAE,MAAM,CAChB,aAAa,CAAE,GAAG,CAEtB,OAAQ,CACJ,QAAQ,CAAE,QAAQ,CAClB,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,WAAW,CAAE,KAAK,CAClB,UAAU,CAAE,KAAK,CACjB,aAAa,CAAE,IAAI,CACnB,gBAAgB,CAAE,gBAAgB,CAClC,SAAS,CAAE,QAAQ,CACnB,gBAAgB,CAAE,GAAG,CACrB,OAAO,CAAE,CAAC,CACV,cAAc,CAAE,IAAI,CAExB,iBAAkB,CACd,UAAU,CAAE,yEAAwB,CACpC,OAAO,CAAE,CAAC,CAEd,kBAAmB,CACf,UAAU,CAAE,iCAAiC,CAC7C,OAAO,CAAE,CAAC",
+"sources": ["/var/www/ris3/html/css/material/ripples.scss"],
+"sourcesContent": [".withripple {\n    position: relative;\n}\n.ripple-wrapper {\n    position: absolute;\n    top: 0;\n    left: 0;\n    z-index: 1;\n    width: 100%;\n    height: 100%;\n    overflow: hidden;\n    border-radius: 2px;\n}\n.ripple {\n    position: absolute;\n    width: 20px;\n    height: 20px;\n    margin-left: -10px;\n    margin-top: -10px;\n    border-radius: 100%;\n    background-color: rgba(0,0,0,0.05);\n    transform: scale(1);\n    transform-origin: 50%;\n    opacity: 0;\n    pointer-events: none;\n}\n.ripple.ripple-on {\n    transition: opacity 0.15s ease-in 0s, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;\n    opacity: 1;\n}\n.ripple.ripple-out {\n    transition: opacity 0.1s linear 0s !important;\n    opacity: 0;\n}\n"],
 "names": [],
 "file": "ripples.css"
 }

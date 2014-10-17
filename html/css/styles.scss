@@ -3,10 +3,13 @@ $footer_height: 3em;
 
 @import "bootstrap-sass-3.2.0/assets/stylesheets/bootstrap";
 @import "material-wfont";
+
 // The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
-@import "material/variables";
+@import "material/variables.import";
 @import "antragsliste";
 @import "fontello";
+@import "roboto-font";
+
 
 #content {
   > section {
