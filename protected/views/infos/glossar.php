@@ -10,7 +10,7 @@ $this->pageTitle = "Glossar";
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
 		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>">So funktioniert Stadtpolitik</a><br></li>
-		<li class="active">So funktioniert Stadtpolitik</li>
+		<li class="active">Glossar</li>
 	</ul>
 
 	<h1>Glossar</h1>
