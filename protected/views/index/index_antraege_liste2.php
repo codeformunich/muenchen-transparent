@@ -82,14 +82,11 @@ if (count($antraege) > 0) {
 		echo "<div class='add_meta'>";
 		$parteien = array();
 		foreach ($ant->antraegePersonen as $person) {
-			$name   = $person->person->name;
+			$name   = $person->person->getName(true);
 			$partei = $person->person->ratePartei($ant->gestellt_am);
-			if (!$partei) {
-				$parteien[$name] = array($name);
-			} else {
-				if (!isset($parteien[$partei])) $parteien[$partei] = array();
-				$parteien[$partei][] = $person->person->name;
-			}
+			$key = ($partei ? $partei : $name);
+			if (!isset($parteien[$key])) $parteien[$key] = array();
+			$parteien[$key][] = $name;
 		}
 
 		$p_strs = array();

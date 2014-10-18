@@ -147,6 +147,9 @@ class Person extends CActiveRecord implements IRISItem
 	 */
 	public function getName($kurzfassung = false)
 	{
+		if ($kurzfassung) {
+			if (in_array($this->id, array(279))) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
+		}
 		return $this->name;
 	}
 
