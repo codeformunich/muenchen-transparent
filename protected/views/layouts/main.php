@@ -17,6 +17,7 @@
 	<meta name="author" content="Tobias Hößl">
 
 	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
+	<link rel="icon" type="image/png" href="/css/img/logo.png">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
