@@ -51,9 +51,6 @@ class OrtGeo extends CActiveRecord
 			array('ort', 'length', 'max' => 100),
 			array('source', 'length', 'max' => 6),
 			array('to_hide_kommentar', 'length', 'max' => 200),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, ort, lat, lon, source, to_hide, to_hide_kommentar, datum, ba_nr', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -84,31 +81,6 @@ class OrtGeo extends CActiveRecord
 			'to_hide_kommentar' => 'To Hide Kommentar',
 			'datum'             => 'Datum',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('ort', $this->ort, true);
-		$criteria->compare('lat', $this->lat);
-		$criteria->compare('lon', $this->lon);
-		$criteria->compare('source', $this->source, true);
-		$criteria->compare('to_hide', $this->to_hide);
-		$criteria->compare('to_hide_kommentar', $this->to_hide_kommentar, true);
-		$criteria->compare('datum', $this->datum, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 
 	/**

@@ -89,9 +89,6 @@ class AntragDokument extends CActiveRecord implements IRISItem
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 200),
 			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, typ, antrag_id, termin_id, ergebnis_id, url, name, datum, text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -132,37 +129,6 @@ class AntragDokument extends CActiveRecord implements IRISItem
 			'text_pdf'                => 'Text Pdf',
 			'seiten_anzahl'           => 'Seitenanzahl',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('vorgang_id', $this->vorgang_id);
-		$criteria->compare('typ', $this->typ, true);
-		$criteria->compare('antrag_id', $this->antrag_id);
-		$criteria->compare('termin_id', $this->termin_id);
-		$criteria->compare('ergebnis_id', $this->ergebnis_id);
-		$criteria->compare('url', $this->url, true);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('datum', $this->datum, true);
-		$criteria->compare('text_ocr_raw', $this->text_ocr_raw, true);
-		$criteria->compare('text_ocr_corrected', $this->text_ocr_corrected, true);
-		$criteria->compare('text_ocr_garbage_seiten', $this->text_ocr_garbage_seiten, true);
-		$criteria->compare('text_pdf', $this->text_pdf, true);
-		$criteria->compare('ocr_von', $this->ocr_von, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 
 

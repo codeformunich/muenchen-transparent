@@ -53,9 +53,6 @@ class TerminHistory extends CActiveRecord
 			array('wahlperiode', 'length', 'max'=>20),
 			array('status', 'length', 'max'=>100),
 			array('termin', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, datum_letzte_aenderung, termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -91,36 +88,5 @@ class TerminHistory extends CActiveRecord
 			'wahlperiode' => 'Wahlperiode',
 			'status' => 'Status',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id);
-		$criteria->compare('datum_letzte_aenderung',$this->datum_letzte_aenderung,true);
-		$criteria->compare('termin_reihe',$this->termin_reihe);
-		$criteria->compare('gremium_id',$this->gremium_id);
-		$criteria->compare('ba_nr',$this->ba_nr);
-		$criteria->compare('termin',$this->termin,true);
-		$criteria->compare('termin_prev_id',$this->termin_prev_id);
-		$criteria->compare('termin_next_id',$this->termin_next_id);
-		$criteria->compare('sitzungsort',$this->sitzungsort,true);
-		$criteria->compare('referat',$this->referat,true);
-		$criteria->compare('referent',$this->referent,true);
-		$criteria->compare('vorsitz',$this->vorsitz,true);
-		$criteria->compare('wahlperiode',$this->wahlperiode,true);
-		$criteria->compare('status',$this->status,true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
 	}
 }

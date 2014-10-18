@@ -78,9 +78,6 @@ class RISAenderung extends CActiveRecord
 			array('ris_id, typ, datum, aenderungen', 'required'),
 			array('ris_id, ba_nr', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 20),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, ris_id, ba_nr, typ, datum, aenderungen', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -109,29 +106,6 @@ class RISAenderung extends CActiveRecord
 			'datum'       => 'Datum',
 			'aenderungen' => 'Aenderungen',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('ris_id', $this->ris_id);
-		$criteria->compare('ba_nr', $this->ba_nr);
-		$criteria->compare('typ', $this->typ, true);
-		$criteria->compare('datum', $this->datum, true);
-		$criteria->compare('aenderungen', $this->aenderungen, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 
 	/**

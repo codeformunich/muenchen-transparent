@@ -114,21 +114,6 @@ class BenutzerIn extends CActiveRecord
 	}
 
 	/**
-	 * @return CActiveDataProvider
-	 */
-	public function search()
-	{
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('email', $this->email, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
-	/**
 	 * @param int $n
 	 * @return string
 	 */

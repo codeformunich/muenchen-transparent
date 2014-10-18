@@ -51,9 +51,6 @@ class AntragPerson extends CActiveRecord
 			array('antrag_id, person_id', 'required'),
 			array('antrag_id, person_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 12),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('antrag_id, person_id, typ', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -80,25 +77,5 @@ class AntragPerson extends CActiveRecord
 			'person'    => 'Person',
 			'typ'       => 'Typ',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('antrag_id', $this->antrag_id);
-		$criteria->compare('person_id', $this->person_id);
-		$criteria->compare('typ', $this->typ, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 }
