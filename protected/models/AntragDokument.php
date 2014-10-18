@@ -379,7 +379,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 			if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = AntragDokument::model()->with("antrag")->findByPk($id);
 			return static::$dokumente_cache[$id];
 		}
-		return AntragDokument::model()->with("antrag")->findByPk($id);
+		return AntragDokument::model()->with(array("antrag", "ergebnis"))->findByPk($id);
 	}
 
 	/**
@@ -389,6 +389,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	{
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) return $this->ergebnis;
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
+		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) return $this->ergebnis;
 		return $this->antrag;
 	}
 
