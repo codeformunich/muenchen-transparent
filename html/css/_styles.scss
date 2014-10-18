@@ -1,15 +1,3 @@
-$icon-font-path: "bootstrap-sass-3.2.0/assets/fonts/bootstrap/";
-$footer_height: 3em;
-
-@import "bootstrap-sass-3.2.0/assets/stylesheets/bootstrap";
-@import "material-wfont";
-
-// The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
-@import "material/variables.import";
-@import "antragsliste";
-@import "fontello";
-@import "roboto-font";
-
 body,
 h1,
 h2,
@@ -103,7 +91,7 @@ h6 {
 
 body {
   padding-top: 60px;
-  background-image: url(/images/pattern-7nl1.png);
+  background-image: url(#{$pics-path}pattern-7nl1.png);
 }
 
 /* Set widths on the navbar form inputs since otherwise they're 100% wide */
@@ -470,6 +458,10 @@ ul.terminliste {
         padding-left: 20px;
       }
     }
+    .gefunden_ueber {
+      color: gray;
+      font-size: 12px;
+    }
   }
 }
 
@@ -708,10 +700,10 @@ ul.fraktionen_liste {
         width: 16px;
         height: 16px;
         margin-left: 3px;
-        background-image: url(/images/abgeordneten_16.png);
+        background-image: url(#{$pics-path}abgeordneten_16.png);
 
         @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-          background-image: url(/images/abgeordneten_32.png);
+          background-image: url(#{$pics-path}abgeordneten_32.png);
           background-size: 16px 16px;
         }
 

@@ -1,4 +1,3 @@
-
 /**
 * Include Roboto Condensed font in your project
 *
@@ -15,13 +14,13 @@
 font-family: "Roboto Condensed";
 font-style: normal;
 font-weight: 300;
-src: local('Roboto Condensed Light'), local('RobotoCondensed-Light'), url("/fonts/RobotoCondensed-Light.ttf") format('truetype');
+src: local('Roboto Condensed Light'), local('RobotoCondensed-Light'), url("#{$roboto-font-path}RobotoCondensed-Light.ttf") format('truetype');
 }
 @font-face {
 font-family: "Roboto Condensed";
 font-style: italic;
 font-weight: 300;
-src: local('Roboto Condensed Light Italic'), local('RobotoCondensed-LightItalic'), url("/fonts/RobotoCondensed-LightItalic.ttf") format('truetype');
+src: local('Roboto Condensed Light Italic'), local('RobotoCondensed-LightItalic'), url("#{$roboto-font-path}RobotoCondensed-LightItalic.ttf") format('truetype');
 }
 
 /* Normal */
@@ -29,13 +28,13 @@ src: local('Roboto Condensed Light Italic'), local('RobotoCondensed-LightItalic'
 font-family: "Roboto Condensed";
 font-style: normal;
 font-weight: 400;
-src: local('Roboto Condensed Regular'), local('RobotoCondensed-Regular'), url("/fonts/RobotoCondensed-Regular.ttf") format('truetype');
+src: local('Roboto Condensed Regular'), local('RobotoCondensed-Regular'), url("#{$roboto-font-path}RobotoCondensed-Regular.ttf") format('truetype');
 }
 @font-face {
 font-family: "Roboto Condensed";
 font-style: italic;
 font-weight: 400;
-src: local('Roboto Condensed Italic'), local('RobotoCondensed-Italic'), url("/fonts/RobotoCondensed-Italic.ttf") format('truetype');
+src: local('Roboto Condensed Italic'), local('RobotoCondensed-Italic'), url("#{$roboto-font-path}RobotoCondensed-Italic.ttf") format('truetype');
 }
 
 /* Bold */
@@ -43,11 +42,11 @@ src: local('Roboto Condensed Italic'), local('RobotoCondensed-Italic'), url("/fo
 font-family: "Roboto Condensed";
 font-style: normal;
 font-weight: 700;
-src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url("/fonts/RobotoCondensed-Bold.ttf") format('truetype');
+src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url("#{$roboto-font-path}RobotoCondensed-Bold.ttf") format('truetype');
 }
 @font-face {
 font-family: "Roboto Condensed";
 font-style: italic;
 font-weight: 700;
-src: local('Roboto Condensed Bold Italic'), local('RobotoCondensed-BoldItalic'), url("/fonts/RobotoCondensed-BoldItalic.ttf") format('truetype');
+src: local('Roboto Condensed Bold Italic'), local('RobotoCondensed-BoldItalic'), url("#{$roboto-font-path}RobotoCondensed-BoldItalic.ttf") format('truetype');
 }

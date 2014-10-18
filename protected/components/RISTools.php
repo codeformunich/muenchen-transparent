@@ -295,7 +295,7 @@ class RISTools
 
 		if ($text_html !== null) {
 			$converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles($text_html);
-			$converter->setStripOriginalStyleTags(true);
+			$converter->setStripOriginalStyleTags(false);
 			$converter->setUseInlineStylesBlock(true);
 			$converter->setEncoding("UTF-8");
 			$converter->setExcludeMediaQueries(true);

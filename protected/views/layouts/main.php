@@ -38,7 +38,7 @@
 	?>
 
 	<link rel="stylesheet" href="/css/jquery-ui-1.11.1.custom.min.css"/>
-	<link rel="stylesheet" href="/css/styles.css">
+	<link rel="stylesheet" href="/css/styles_website.css">
 
 	<!--[if lt IE 9]>
 	<script src="/js/jquery-1.11.1.min.js"></script>

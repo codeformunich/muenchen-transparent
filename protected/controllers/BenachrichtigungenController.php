@@ -263,4 +263,15 @@ class BenachrichtigungenController extends RISBaseController
 
 	}
 
+
+	public function actionNewsletterHTMLTest() {
+		$benutzerIn = $this->aktuelleBenutzerIn();
+		$data = $benutzerIn->benachrichtigungsErgebnisse(14);
+
+		$path = Yii::getPathOfAlias('application.views.benachrichtigungen') . '/suchergebnisse_email_html.php';
+		if (!file_exists($path)) throw new Exception('Template ' . $path . ' does not exist.');
+		require($path);
+		Yii::app()->end();
+	}
+
 }
