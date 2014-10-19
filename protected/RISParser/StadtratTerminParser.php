@@ -150,7 +150,6 @@ class StadtratTerminParser extends RISParser
 			preg_match_all("/risid=(?<risid>[0-9]+)>/siU", $vorlage_holder, $matches2);
 			$vorlage_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
 
-			/*
 			if ($vorlage_id) {
 				$vorlage = Antrag::model()->findByPk($vorlage_id);
 				if (!$vorlage) {
@@ -159,7 +158,6 @@ class StadtratTerminParser extends RISParser
 					$p->parse($vorlage_id);
 				}
 			}
-			*/
 
 			$entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
 			$entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
@@ -235,7 +233,7 @@ class StadtratTerminParser extends RISParser
 			}
 
 			//$verwendete_top_betreffs[] = $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
-			if ($ergebnis->id > 0) $verwendete_ergebnis_ids[] = $ergebnis->id;
+			$verwendete_ergebnis_ids[] = $ergebnis->id;
 
 			preg_match_all("/<a href=(?<url>[^ ]+) title=\"(?<title>[^\"]*)\"/siU", $entscheidung_original, $matches2);
 			if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
