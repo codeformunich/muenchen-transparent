@@ -35,6 +35,11 @@
 		<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>
 	<?
 	}
+	if ($this->load_calendar) {
+		?>
+		<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>
+	<?
+	}
 	?>
 
 	<link rel="stylesheet" href="/css/jquery-ui-1.11.1.custom.min.css"/>

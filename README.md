@@ -91,4 +91,6 @@ Eingesetzte JS/CSS-Bibliotheken
 * [Bootstrap](http://getbootstrap.com/)
 * [Material Design for Bootstrap](http://fezvrasta.github.io/bootstrap-material-design/)
 * [Fontello](http://fontello.com/)
+* [Moment.js](momentjs.com)
+* [FullCalendar](http://fullcalendar.io/)
 * ... To be continued
