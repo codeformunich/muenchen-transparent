@@ -15,43 +15,38 @@
 		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active">Termine</li>
 	</ul>
-	<h1>Termine</h1>
+	<h1 class="sr-only">Termine</h1>
+
+	<script src="/js/moment-with-locales.js"></script>
+	<script src="/js/fullcalendar-2.1.1/fullcalendar.min.js"></script>
+	<script src="/js/fullcalendar-2.1.1/lang/de.js"></script>
+	<div id='calendar'></div>
+	<script>
+		$(function () {
+			$('#calendar').fullCalendar({
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,basicWeek,basicDay'
+				},
+				eventLimit: true,
+				lang: $("html").attr("lang"),
+				weekNumbers: true,
+				weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
+				eventSources: [
+					"<?=CHtml::encode(Yii::app()->createUrl("termine/fullCalendarFeed"))?>"
+				],
+				eventRender: function (event, element) {
+					element.attr("title", event["title"]);
+					console.log(event);
+					console.log(element);
+				}
+			})
+		})
+	</script>
 </section>
 
-<script src="/js/moment-with-locales.js"></script>
-<script src="/js/fullcalendar-2.1.1/fullcalendar.min.js"></script>
-<script src="/js/fullcalendar-2.1.1/lang/de.js"></script>
 <div class="row" id="listen_holder">
-	<div class="col col-md-12">
-		<section class="well">
-			<div id='calendar'></div>
-			<script>
-				$(function () {
-					$('#calendar').fullCalendar({
-						header: {
-							left: 'prev,next today',
-							center: 'title',
-							right: 'month,basicWeek,basicDay'
-						},
-						eventLimit: true,
-						lang: $("html").attr("lang"),
-						weekNumbers: true,
-						weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
-						eventSources: [
-							"<?=CHtml::encode(Yii::app()->createUrl("termine/fullCalendarFeed"))?>"
-						],
-						eventRender: function(event, element) {
-							element.attr("title", event["title"]);
-							console.log(event);
-							console.log(element);
-						}
-					})
-				})
-			</script>
-		</section>
-	</div>
-
-
 	<div class="col col-md-6">
 		<div class="well">
 			<h3>Kommende Termine</h3>
