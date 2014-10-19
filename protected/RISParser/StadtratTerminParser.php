@@ -128,7 +128,7 @@ class StadtratTerminParser extends RISParser
 
 		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
 		$aenderungen_tops        = "";
-		$verwendete_top_betreffs = array();
+		//$verwendete_top_betreffs = array();
 		$verwendete_ergebnis_ids = array();
 		$abschnitt_nr            = 0;
 
@@ -150,6 +150,7 @@ class StadtratTerminParser extends RISParser
 			preg_match_all("/risid=(?<risid>[0-9]+)>/siU", $vorlage_holder, $matches2);
 			$vorlage_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
 
+			/*
 			if ($vorlage_id) {
 				$vorlage = Antrag::model()->findByPk($vorlage_id);
 				if (!$vorlage) {
@@ -158,6 +159,7 @@ class StadtratTerminParser extends RISParser
 					$p->parse($vorlage_id);
 				}
 			}
+			*/
 
 			$entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
 			$entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
@@ -194,6 +196,7 @@ class StadtratTerminParser extends RISParser
 
 			$ergebnis_aenderungen = "";
 			if ($altes_ergebnis) {
+
 				if ($altes_ergebnis->sitzungstermin_id != $ergebnis->sitzungstermin_id) $ergebnis_aenderungen .= "Sitzung geändert: " . $altes_ergebnis->sitzungstermin_id . " => " . $ergebnis->sitzungstermin_id . "\n";
 				if ($altes_ergebnis->sitzungstermin_datum != $ergebnis->sitzungstermin_datum) $ergebnis_aenderungen .= "Sitzungstermin geändert: " . $altes_ergebnis->sitzungstermin_datum . " => " . $ergebnis->sitzungstermin_datum . "\n";
 				if ($altes_ergebnis->top_nr != $ergebnis->top_nr) $ergebnis_aenderungen .= "TOP geändert: " . $altes_ergebnis->top_nr . " => " . $ergebnis->top_nr . "\n";
@@ -224,15 +227,15 @@ class StadtratTerminParser extends RISParser
 						var_dump($alter_eintrag->getErrors());
 						die("Fehler");
 					}
-					$ergebnis = $altes_ergebnis;
 				}
+				$ergebnis = $altes_ergebnis;
 			} else {
 				$aenderungen .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
 				$ergebnis->save();
 			}
 
-			$verwendete_top_betreffs[] = $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
-			$verwendete_ergebnis_ids[] = $ergebnis->id;
+			//$verwendete_top_betreffs[] = $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
+			if ($ergebnis->id > 0) $verwendete_ergebnis_ids[] = $ergebnis->id;
 
 			preg_match_all("/<a href=(?<url>[^ ]+) title=\"(?<title>[^\"]*)\"/siU", $entscheidung_original, $matches2);
 			if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
@@ -276,13 +279,14 @@ class StadtratTerminParser extends RISParser
 			$ergebnis->gremium_name           = $daten->gremium->name;
 			$ergebnis->save();
 
-			$verwendete_top_betreffs[] = "geheim-" . $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
+			//$verwendete_top_betreffs[] = "geheim-" . $ergebnis->top_nr . "-" . $ergebnis->top_betreff;
 			$verwendete_ergebnis_ids[] = $ergebnis->id;
 		}
 
+
 		foreach ($bisherige_tops as $top) {
-			$top_key = ($top->status == "geheim" ? "geheim-" : "") . $top->top_nr . "-" . $top->top_betreff;
-			if (!in_array($top_key, $verwendete_top_betreffs) && !in_array($top->id, $verwendete_ergebnis_ids)) {
+			//$top_key = ($top->status == "geheim" ? "geheim-" : "") . $top->top_nr . "-" . $top->top_betreff;
+			if (!in_array($top->id, $verwendete_ergebnis_ids)) {
 				$aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ":" . $top->top_betreff . "\n";
 				try {
 					$top->delete();
