@@ -211,6 +211,6 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 </form>
 </section>
 
-<form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/index")) ?>">
+<form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/startseite")) ?>">
 	<button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
 </form>
