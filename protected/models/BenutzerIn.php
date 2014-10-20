@@ -229,6 +229,18 @@ class BenutzerIn extends CActiveRecord
 	}
 
 	/**
+	 * @param string $new_pw
+	 * @throws Exception
+	 */
+	public function setPassword($new_pw) {
+		if (!defined("RATSINFORMANT_CALL_MODE") || RATSINFORMANT_CALL_MODE !== "shell") {
+			throw new Exception("Diese Funktion kann nur über die Kommandozeile aufgerufen werden.");
+		}
+		$this->pwd_enc = BenutzerIn::create_hash($new_pw);
+		$this->save(false);
+	}
+
+	/**
 	 * @param RISSucheKrits $krits
 	 */
 	public function addBenachrichtigung($krits)
