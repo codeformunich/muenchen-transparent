@@ -4,7 +4,7 @@ class RISTools
 {
 
 	const STD_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17";
-	const STD_PROXY      = "http://127.0.0.1:8118/";
+	const STD_PROXY = "http://127.0.0.1:8118/";
 
 
 	/**
@@ -283,8 +283,53 @@ class RISTools
 		return "Unbekannt";
 	}
 
+	/**
+	 * @param string $email
+	 * @param string $betreff
+	 * @param string $text_plain
+	 * @param null|string $text_html
+	 * @param null|string $mail_tag
+	 */
+	public static function send_email($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
+	{
+		if (defined("MANDRILL_API_KEY") && strlen(MANDRILL_API_KEY) > 0) {
+			static::send_email_mandrill($email, $betreff, $text_plain, $text_html, $mail_tag);
+		} else {
+			static::send_email_zend($email, $betreff, $text_plain, $text_html, $mail_tag);
+		}
+	}
 
-	public static function send_email($email, $betreff, $text_plain, $text_html = null)
+
+	public static function send_email_mandrill($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
+	{
+		$mandrill = new Mandrill(MANDRILL_API_KEY);
+		$tags     = array();
+		if ($mail_tag !== null) $tags[] = $mail_tag;
+		$message = array(
+			'html'              => $text_html,
+			'text'              => $text_plain,
+			'subject'           => $betreff,
+			'from_email'        => Yii::app()->params["adminEmail"],
+			'from_name'         => Yii::app()->params["adminEmailName"],
+			'to'                => array(
+				array(
+					"name"  => null,
+					"email" => $email,
+					"type"  => "to",
+				)
+			),
+			'important'         => false,
+			'tags'              => $tags,
+			'track_clicks'      => false,
+			'track_opens'       => false,
+			'inline_css'        => true,
+		);
+		$ret     = $mandrill->messages->send($message, false);
+		var_dump($ret);
+	}
+
+
+	public static function send_email_zend($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
 	{
 		$mail = new Zend\Mail\Message();
 		$mail->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
@@ -328,8 +373,9 @@ class RISTools
 	 * @param string[] $arr
 	 * @return string[]
 	 */
-	public static function makeArrValuesUnique($arr) {
-		$val_count =array();
+	public static function makeArrValuesUnique($arr)
+	{
+		$val_count = array();
 		foreach ($arr as $elem) {
 			if (isset($val_count[$elem])) $val_count[$elem]++;
 			else $val_count[$elem] = 1;

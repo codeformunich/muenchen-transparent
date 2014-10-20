@@ -26,6 +26,7 @@ define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");
 ini_set("memory_limit", "256M");
 
 define("SEED_KEY", "RANDOMKEY");
+define("MANDRILL_API_KEY", "");
 
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");
