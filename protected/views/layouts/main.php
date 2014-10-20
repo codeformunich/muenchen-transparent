@@ -42,7 +42,7 @@
 	}
 	?>
 
-	<link rel="stylesheet" href="/css/jquery-ui-1.11.1.custom.min.css"/>
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
 	<link rel="stylesheet" href="/css/styles_website.css">
 
 	<!--[if lt IE 9]>
@@ -139,7 +139,7 @@
 	</p>
 </footer>
 
-<script src="/js/jquery-ui-1.11.1.custom.min.js"></script>
+<script src="/js/jquery-ui-1.11.2.custom.min.js"></script>
 <script src="/js/scrollintoview.js"></script>
 <script src="/js/antraegekarte.jquery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
