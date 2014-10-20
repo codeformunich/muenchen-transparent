@@ -88,6 +88,7 @@
 
 				<button class="btn btn-lg btn-primary btn-block" type="submit" name="<?php echo AntiXSS::createToken("login_anlegen"); ?>"><span class="login">Login</span><span
 						class="anlegen">Anlegen</span></button>
+			</fieldset>
 		</form>
 	</div>
 </section>
