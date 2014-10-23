@@ -19,6 +19,7 @@ define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR . "ocr-todo/");
 define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR . "ocr-dst/");
 define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
+define("EMAIL_LOG_FILE", "/tmp/email.log");
 
 
 define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");

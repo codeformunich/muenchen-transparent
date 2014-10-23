@@ -324,8 +324,7 @@ class RISTools
 			'track_opens'       => false,
 			'inline_css'        => true,
 		);
-		$ret     = $mandrill->messages->send($message, false);
-		var_dump($ret);
+		$mandrill->messages->send($message, false);
 	}
 
 

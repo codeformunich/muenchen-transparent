@@ -30,8 +30,34 @@ class InfosController extends RISBaseController
 	{
 		$this->top_menu = "";
 
-		$this->render('ueber', array(
-		));
+		$this->render('ueber', array());
+	}
+
+
+	public function actionFeedback()
+	{
+		$this->top_menu = "";
+
+		if (AntiXSS::isTokenSet("send")) {
+			$fp = fopen(EMAIL_LOG_FILE . "." . date("YmdHis"), "a");
+			fwrite($fp, date("Y-m-d H:i:s") . "\n");
+			fwrite($fp, print_r($_REQUEST, true));
+			fclose($fp);
+
+			$text = "Antwort erwünscht: " . (isset($_REQUEST["answer_wanted"]) ? "Ja" : "Nein") . "\n";
+			$text .= "E-Mail: " . $_REQUEST["email"] . "\n";
+			$text .= "\n\n";
+			$text .= $_REQUEST["message"];
+
+			RISTools::send_email(Yii::app()->params['adminEmail'], "[München Transparent] Feedback", $text, null, "feedback");
+
+			$this->render('feedback_done', array());
+		} else {
+			$this->render('feedback_form', array(
+				"current_url" => Yii::app()->createUrl("infos/feedback"),
+				"msg_err"     => "",
+			));
+		}
 	}
 
 	public function actionGlossar()
@@ -59,14 +85,15 @@ class InfosController extends RISBaseController
 	}
 
 
-	public function actionGlossarBearbeiten($id) {
+	public function actionGlossarBearbeiten($id)
+	{
 		if (!$this->binContentAdmin()) throw new Exception("Kein Zugriff");
 
 		$this->top_menu = "so_funktioniert";
 
 		/** @var Text $eintrag */
 		$eintrag = Text::model()->findByAttributes(array(
-			"id" => $id,
+			"id"  => $id,
 			"typ" => Text::$TYP_GLOSSAR,
 		));
 		if (!$eintrag) throw new Exception("Nicht gefunden");

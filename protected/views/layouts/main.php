@@ -128,8 +128,10 @@
 	<p class="container">
 		<span class="pull-left">
 	<?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("infos/datenschutz")) ?>
-			&nbsp;
+			/
 			<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
+			/
+			<?= CHtml::link("Fehler gefunden? Vorschläge?", Yii::app()->createUrl("infos/feedback")) ?>
 		</span>
 		<span class="pull-right">
 			<?= CHtml::link("API", Yii::app()->createUrl("infos/api")) ?> /
