@@ -44,6 +44,7 @@ function zeile_anzeigen($feld, $name, $callback)
 	}
 }
 
+$name = $antrag->getName(true);
 ?>
 
 <section class="row">
@@ -52,7 +53,7 @@ function zeile_anzeigen($feld, $name, $callback)
 		<div style="float: right;"><?
 			echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $antrag->getSourceLink());
 			?></div>
-		<h1><?= CHtml::encode($antrag->getName(true)) ?></h1>
+		<h1<? if (strlen($name) > 200) echo " class=\"small\""; ?>><?= CHtml::encode($name) ?></h1>
 
 		<table class="table antragsdaten">
 			<tbody>
