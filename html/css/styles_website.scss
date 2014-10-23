@@ -1,14 +1,19 @@
 $icon-font-path: "bootstrap-sass-3.2.0/assets/fonts/bootstrap/" !default;
 $roboto-font-path: "../fonts/";
 $pics-path: "/images/";
-$footer_height: 3em !default;
 
 @import "bootstrap-sass-3.2.0/assets/stylesheets/bootstrap";
 @import "material-wfont";
-
 // The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
 @import "material/variables.import";
-@import "antragsliste";
 @import "fontello";
 @import "roboto-font";
+
+$footer_line_height: 3em;
+$footer_height: 6em;
+@media screen and (min-width: $screen-md) {
+  $footer_height: 3em;
+}
+
+@import "antragsliste";
 @import "styles";

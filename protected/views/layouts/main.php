@@ -131,11 +131,11 @@
 			/
 			<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
 			/
-			<?= CHtml::link("Fehler gefunden? Vorschläge?", Yii::app()->createUrl("infos/feedback")) ?>
+			<?= CHtml::link("Fehler gefunden? <small class='hidden-xs'>Vorschläge?</small>", Yii::app()->createUrl("infos/feedback")) ?>
 		</span>
 		<span class="pull-right">
 			<?= CHtml::link("API", Yii::app()->createUrl("infos/api")) ?> /
-			<?= CHtml::link("OpenSource-Projekt (Github)", "https://github.com/codeformunich/Ratsinformant") ?> /
+			<?= CHtml::link("OpenSource<small class='hidden-xs'>-Projekt (Github)</small>", "https://github.com/codeformunich/Ratsinformant") ?> /
 			<?= CHtml::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?>
 		</span>
 	</p>

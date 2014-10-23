@@ -32,6 +32,10 @@ h1.small {
 
 #page_main_content {
   margin-bottom: 25px;
+  @media screen and (max-width: 600px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 #main_navbar {
@@ -509,24 +513,26 @@ ul.terminliste {
   }
 }
 
-.list-group.two_cols {
-  -moz-column-count: 2;
-  -moz-column-gap: 10px;
-  -webkit-column-count: 2;
-  -webkit-column-gap: 10px;
-  column-count: 2;
-  column-gap: 10px;
+@media screen and (min-width: $screen-md) {
+  .list-group.two_cols {
+    -moz-column-count: 2;
+    -moz-column-gap: 10px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 10px;
+    column-count: 2;
+    column-gap: 10px;
 
-  .list-group-item {
-    -webkit-column-break-inside: avoid;
-    -moz-column-break-inside: avoid;
-    -o-column-break-inside: avoid;
-    -ms-column-break-inside: avoid;
-    column-break-inside: avoid;
-    -webkit-break-inside: avoid;
-    -moz-break-inside: avoid;
-    break-inside: avoid;
-    page-break-inside: avoid;
+    .list-group-item {
+      -webkit-column-break-inside: avoid;
+      -moz-column-break-inside: avoid;
+      -o-column-break-inside: avoid;
+      -ms-column-break-inside: avoid;
+      column-break-inside: avoid;
+      -webkit-break-inside: avoid;
+      -moz-break-inside: avoid;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
   }
 }
 
@@ -947,10 +953,10 @@ body > footer {
   }
   p {
     height: $footer_height;
-    line-height: $footer_height;
-    vert-align: middle;
+    line-height: $footer_line_height;
     margin-bottom: 0;
     margin-top: 0;
+    white-space: nowrap;
   }
 }
 

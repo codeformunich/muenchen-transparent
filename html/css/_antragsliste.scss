@@ -6,13 +6,15 @@
 div.antragsliste2 {
   overflow: hidden;
 
-  &.two_cols, .two_cols & {
-    -moz-column-count: 2;
-    -moz-column-gap: 40px;
-    -webkit-column-count: 2;
-    -webkit-column-gap: 40px;
-    column-count: 2;
-    column-gap: 40px;
+  @media screen and (min-width: $screen-md) {
+    &.two_cols, .two_cols & {
+      -moz-column-count: 2;
+      -moz-column-gap: 40px;
+      -webkit-column-count: 2;
+      -webkit-column-gap: 40px;
+      column-count: 2;
+      column-gap: 40px;
+    }
   }
 
   .panel-primary {
