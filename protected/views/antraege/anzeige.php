@@ -53,19 +53,13 @@ $name = $antrag->getName(true);
 		<div style="float: right;"><?
 			echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $antrag->getSourceLink());
 			?></div>
-		<h1<? if (strlen($name) > 200) echo " class=\"small\""; ?>><?= CHtml::encode($name) ?></h1>
+		<h1 class="small"><? 	echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
+				if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")"; ?></h1>
+
+		<p style="font-size: 18px;"><?= CHtml::encode($name) ?></p>
 
 		<table class="table antragsdaten">
 			<tbody>
-			<tr>
-				<th>Typ:</th>
-				<td>
-					<?
-					echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
-					if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")";
-					?>
-				</td>
-			</tr>
 			<?
 			zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", function ($person) use ($antrag) {
 				/** @var Person $person */
