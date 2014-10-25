@@ -21,7 +21,7 @@ $this->pageTitle = "Glossar";
 	<dl class="glossar dl-horizontal" style="max-width: 850px; margin-left: auto; margin-right: auto;">
 		<?
 		foreach ($eintraege as $eintrag) {
-			echo '<dt id="glossar_eintrag_' . $eintrag->id . '">';
+			echo '<dt id="eintrag_' . str_replace(' ', '-', $eintrag->titel) . '">';
 			if ($this->binContentAdmin()) echo ' <a href="' . CHtml::encode($this->createUrl("infos/glossarBearbeiten", array("id" => $eintrag->id))) . '" title="Bearbeiten"><span class="glyphicon glyphicon-pencil"></span></a>';
 			echo CHtml::encode($eintrag->titel);
 			echo '</dt>';
