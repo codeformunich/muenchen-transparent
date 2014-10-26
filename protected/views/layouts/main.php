@@ -53,6 +53,32 @@
 	<!--<![endif]-->
 
 	<script src="/js/modernizr.js"></script>
+
+	<? if (true) { ?>
+	<script>
+	// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
+	function pdf_resize() {
+		$("#mainContainer").height($("footer").offset().top - $("#mainContainer").offset().top - 20);
+	}
+
+	$(pdf_resize);
+	$(window).resize(pdf_resize);
+	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="google" content="notranslate">
+
+	<link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
+
+	<script src="/other/pdfjs/compatibility.js"></script>
+
+	<!-- This snippet is used in production (included from viewer.html) -->
+	<link rel="resource" type="application/l10n" href="/other/pdfjs/locale/locale.properties"/>
+	<script src="/other/pdfjs/l10n.js"></script>
+	<script src="/other/pdfjs/pdf.js"></script>
+
+	<script src="/other/pdfjs/debugger.js"></script>
+	<script src="/other/pdfjs/viewer.js"></script>
+	<? } // end pdf.js ?>
 </head>
 
 <body>

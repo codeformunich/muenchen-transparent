@@ -834,4 +834,8 @@ class IndexController extends RISBaseController
 		}
 	}
 
+	public function actionViewer()
+	{
+		$this->render('viewer', array());
+	}
 }
