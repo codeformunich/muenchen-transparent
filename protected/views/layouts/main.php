@@ -121,22 +121,18 @@
 
 	<!-- Needed to keep the footer at the bottom -->
 	<div class="footer_spacer"></div>
-</div>
-<!-- /over_footer_wrapper -->
+</div><!-- /over_footer_wrapper -->
 
 <footer>
 	<p class="container">
 		<span class="pull-left">
-	<?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("infos/datenschutz")) ?>
-			/
-			<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
-			/
-			<?= CHtml::link("Fehler gefunden? <small class='hidden-xs'>Vorschläge?</small>", Yii::app()->createUrl("infos/feedback")) ?>
+			<?= CHtml::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?> /
+			<?= CHtml::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
 		</span>
 		<span class="pull-right">
-			<?= CHtml::link("API", Yii::app()->createUrl("infos/api")) ?> /
-			<?= CHtml::link("OpenSource<small class='hidden-xs'>-Projekt (Github)</small>", "https://github.com/codeformunich/Ratsinformant") ?> /
-			<?= CHtml::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?>
+			<?= CHtml::link("Open-Source-Projekt (Github)", "https://github.com/codeformunich/Ratsinformant") ?> /
+			<?= CHtml::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
+			<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
 		</span>
 	</p>
 </footer>

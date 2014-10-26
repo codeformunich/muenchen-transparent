@@ -932,6 +932,9 @@ ul.fraktionen_liste {
 }
 
 /* keep the footer at the bottom of the page */
+$footer_height: 3.1em;
+$footer_line_height: 3em;
+
 body, html {
   height: 100%;
 }
