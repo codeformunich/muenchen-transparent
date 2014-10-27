@@ -26,7 +26,9 @@ if ($email_bestaetigt) {
 $pre_email = ($ich ? CHtml::encode($ich->email) : "");
 ?>
 
-<button type="submit" class="btn btn-info btn-raised btn-lg"><span class="email">@</span> Über neue Treffer benachrichtigen</button>
+<form class="abo_button" method="POST" action="">
+	<button type="submit" class="btn btn-info btn-raised btn-lg"><span class="glyphicon">@</span> Über neue Treffer benachrichtigen</button>
+</form>
 
 <form method="POST" class="modal suchergebnis_titlebox_holder <?= $form_state ?>" action="<?= CHtml::encode($krits->getUrl()) ?>" id="benachrichtigung_einrichten">
 	<div class="modal-dialog">

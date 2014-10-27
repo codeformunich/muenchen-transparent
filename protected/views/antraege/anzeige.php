@@ -225,9 +225,9 @@ $name = $antrag->getName(true);
 			<?
 			if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) {
 				?>
-				<button type="submit" name="<?= AntiXSS::createToken("deabonnieren") ?>" class="btn btn-success btn-raised btn-lg"><span class="email">@</span> Abonniert</button>
+				<button type="submit" name="<?= AntiXSS::createToken("deabonnieren") ?>" class="btn btn-success btn-raised btn-lg"><span class="glyphicon">@</span> Abonniert</button>
 			<? } else { ?>
-				<button type="submit" name="<?= AntiXSS::createToken("abonnieren") ?>" class="btn btn-info btn-raised btn-lg"><span class="email">@</span> Nicht abonniert</button>
+				<button type="submit" name="<?= AntiXSS::createToken("abonnieren") ?>" class="btn btn-info btn-raised btn-lg"><span class="glyphicon">@</span> Nicht abonniert</button>
 			<? } ?>
 		</form>
 		<?

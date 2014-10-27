@@ -389,6 +389,16 @@ ul.terminliste {
   }
 }
 
+.abo_button {
+  .glyphicon {
+    font-weight: bold;
+    vertical-align: top;
+    font-size: 1.1em;
+    margin-top: -3px;
+    margin-right: 5px;
+  }
+}
+
 .themenverwandt_liste {
   overflow: auto;
   .col-md-4 & {
