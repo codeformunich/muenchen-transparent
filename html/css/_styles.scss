@@ -21,7 +21,7 @@ h6 {
 }
 
 h1.small {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 #content {
@@ -791,7 +791,7 @@ ul.fraktionen_liste {
 
 .antragsdaten {
   th {
-    text-align: right;
+    text-align: center;
   }
 }
 
@@ -874,9 +874,7 @@ ul.fraktionen_liste {
 }
 
 .benachrichtigung_keine {
-  text-align: center;
-  font-style: italic;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 .ben_alle_holder {
@@ -931,7 +929,15 @@ ul.fraktionen_liste {
   margin-right: auto;
 }
 
+textarea {
+  padding: 5px;
+  border: 1px solid grey;
+}
+
 /* keep the footer at the bottom of the page */
+$footer_height: 3.1em;
+$footer_line_height: 3em;
+
 body, html {
   height: 100%;
 }

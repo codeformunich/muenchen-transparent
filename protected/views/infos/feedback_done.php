@@ -11,8 +11,8 @@ $this->pageTitle = "Danke für die Nachricht";
 	<h1>Nachricht verschickt</h1>
 
 	<div class="alert alert-dismissable alert-success">
-		<strong>Herzichen Dank für Ihre Nachricht!</strong><br>
-		Wir können es gar nicht erwarten, ihre Nachricht zu lesen und zu bearbeiten! :-)
+		<strong>Herzlichen Dank für Ihre Nachricht!</strong><br>
+		Wir können es gar nicht erwarten, Ihre Nachricht zu lesen und zu bearbeiten! :-)
 	</div>
 
 </section>

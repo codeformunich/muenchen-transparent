@@ -177,7 +177,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<div id="stadtratsdokumente_holder">
 		<?
-		$this->renderPartial("index_antraege_liste2", array(
+		$this->renderPartial("index_antraege_liste", array(
 			"antraege"          => $antraege_stadtrat,
 			"datum"             => $datum,
 			"neuere_url_ajax"   => $neuere_url_ajax,
@@ -186,7 +186,7 @@ $this->pageTitle = Yii::app()->name;
 			"aeltere_url_std"   => null,
 			"weiter_links_oben" => $explizites_datum,
 		));
-		$this->renderPartial("index_antraege_liste2", array(
+		$this->renderPartial("index_antraege_liste", array(
 			"title"             => "Sonstige neue Dokumente",
 			"antraege"          => $antraege_sonstige,
 			"datum"             => $datum,
