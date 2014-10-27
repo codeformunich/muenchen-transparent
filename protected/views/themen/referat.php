@@ -20,7 +20,7 @@ $this->pageTitle = $referat->getName();
 		<div class="col col-md-7">
 			<section class="well">
 				<?
-				$this->renderPartial("../index/index_antraege_liste2", array(
+				$this->renderPartial("../index/index_antraege_liste", array(
 					"title"             => "Aktuelle Dokumente",
 					"antraege"          => $antraege_referat,
 					"weiter_links_oben" => false,

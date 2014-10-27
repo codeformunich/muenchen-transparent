@@ -874,9 +874,7 @@ ul.fraktionen_liste {
 }
 
 .benachrichtigung_keine {
-  text-align: center;
-  font-style: italic;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 .ben_alle_holder {
@@ -929,6 +927,11 @@ ul.fraktionen_liste {
   padding: 10px;
   margin-left: auto;
   margin-right: auto;
+}
+
+textarea {
+  padding: 5px;
+  border: 1px solid grey;
 }
 
 /* keep the footer at the bottom of the page */

@@ -41,7 +41,9 @@ $this->pageTitle = "Impressum";
 			Guido-Schneble-Str. 34<br>
 			80689 München<br>
 			<br>
-			<b>Kontakt:</b><br><br>
+			<h2>Kontakt:</h2>
+
+			<a href=<?= $this->createUrl("infos/feedback") ?>>Kontaktformular</a><br>
 
 			Telefon: 0151-56024223<br>
 

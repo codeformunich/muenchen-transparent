@@ -12,10 +12,12 @@
 $this->pageTitle = "Benachrichtigungen";
 
 $assets_base = $this->getAssetsBase();
+$bens          = $ich->getBenachrichtigungen();
+$abo_vorgaenge = $ich->abonnierte_vorgaenge;
 ?>
 
 <section class="well">
-<h1>Benachrichtigung an <?= CHtml::encode($ich->email) ?>:</h1>
+	<h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= CHtml::encode($ich->email) ?>:</h1>
 
 
 <?
@@ -34,11 +36,10 @@ if ($msg_err != "") {
 <?
 }
 
-$bens          = $ich->getBenachrichtigungen();
-$abo_vorgaenge = $ich->abonnierte_vorgaenge;
 if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 	?>
-	<div class="benachrichtigung_keine col col-lg-7" style="margin-left: 23px;">Noch keine E-Mail-Benachrichtigungen</div>
+	<div class="benachrichtigung_keine">Noch keine E-Mail-Benachrichtigungen</div>
+	<p class="benachrichtigung_keine">Wenn neue Dokumente zu einem von ihnen abonnierten Thema oder Vorgang veröffentlicht werden, dann erhalten sie automatisch eine Benachrichtigung an <?= CHtml::encode($ich->email) ?>.</p>
 <?
 } else {
 	?>
@@ -111,11 +112,9 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 					Alle Suchergebnisse als Feed</a>
 			</div>
 		</div>
-	<?
-	}
-} ?>
-
-<br style="clear: both;">
+	<? } ?>
+	<br style="clear: both;">
+<? } ?>
 
 <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
 	<fieldset>
