@@ -21,6 +21,20 @@ $pics-path: "https://www.ratsinformant.de/images/";
 // The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
 @import "material/variables.import";
 @import "antragsliste";
-@import "fontello";
 @import "roboto-font";
 @import "styles";
+
+.fontello-download {
+  color: transparent;
+  display: inline-block;
+  width: 16px;
+  height: 15px;
+  background-image: url(#{$pics-path}mail-download.png);
+}
+.glyphicon-file {
+  color: transparent;
+  display: inline-block;
+  width: 58px;
+  height: 58px;
+  background-image: url(#{$pics-path}mail-file.png);
+}
