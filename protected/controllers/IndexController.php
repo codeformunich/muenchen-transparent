@@ -626,7 +626,7 @@ class IndexController extends RISBaseController
 		ob_start();
 		$this->renderPartial('index_antraege_liste', array(
 			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
-			"aeltere_url_std"   => $this->createUrl("index/stadtrat", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
+			"aeltere_url_std"   => $this->createUrl("index/startseite", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))) . "#stadtratsdokumente_holder",
 			"neuere_url_ajax"   => null,
 			"neuere_url_std"    => null,
 			"antraege"          => $antraege,
@@ -690,7 +690,7 @@ class IndexController extends RISBaseController
 
 		$this->render('startseite', array(
 			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
-			"aeltere_url_std"   => $this->createUrl("index/stadtrat", array("datum" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
+			"aeltere_url_std"   => $this->createUrl("index/startseite", array("datum" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))) . "#stadtratsdokumente_holder",
 			"neuere_url_ajax"   => null,
 			"neuere_url_std"    => null,
 			"antraege_sonstige" => $antraege_sonstige,

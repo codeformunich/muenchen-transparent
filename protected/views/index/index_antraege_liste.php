@@ -32,27 +32,33 @@ if (isset($title) && $title !== null) {
 	$erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
 }
 
-
+$datum_nav = ((isset($neuere_url_ajax) && $neuere_url_ajax !== null) || (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null));
 if (count($antraege) > 0) {
 	echo '<h3>' . $erkl_str . '</h3><br>';
 
-	if ($weiter_links_oben) {
-		if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
+	if ($weiter_links_oben && $datum_nav) {
+		?>
+		<div class="antragsliste_nav">
+			<?
+			if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
+				?>
+				<div class="neuere_caller">
+					<a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
+							class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
+				</div>
+			<?
+			}
+			if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
+				?>
+				<div class="aeltere_caller">
+					<a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
+						Dokmente <span class="glyphicon glyphicon-chevron-right"></span></a>
+				</div>
+			<?
+			}
 			?>
-			<div class="neuere_caller">
-				<a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
-						class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
-			</div>
-		<?
-		}
-		if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
-			?>
-			<div class="aeltere_caller">
-				<a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
-					Dokmente <span class="glyphicon glyphicon-chevron-right"></span></a>
-			</div>
-		<?
-		}
+		</div>
+	<?
 	}
 	echo '<div class="antragsliste2">';
 	foreach ($antraege as $ant) {
@@ -85,7 +91,7 @@ if (count($antraege) > 0) {
 			foreach ($ant->antraegePersonen as $person) {
 				$name   = $person->person->getName(true);
 				$partei = $person->person->ratePartei($ant->gestellt_am);
-				$key = ($partei ? $partei : $name);
+				$key    = ($partei ? $partei : $name);
 				if (!isset($parteien[$key])) $parteien[$key] = array();
 				$parteien[$key][] = $name;
 			}
@@ -114,21 +120,28 @@ if (count($antraege) > 0) {
 	echo '</div>';
 }
 
-
-if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
+if ($datum_nav) {
 	?>
-	<div class="neuere_caller">
-		<a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
-				class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
+	<div class="antragsliste_nav">
+		<?
+		if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
+			?>
+			<div class="neuere_caller">
+				<a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
+						class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
+			</div>
+		<?
+		}
+		if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
+			?>
+			<div class="aeltere_caller">
+				<a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
+					Dokmente
+					<span class="glyphicon glyphicon-chevron-right"></span></a>
+			</div>
+		<?
+		}
+		?>
 	</div>
 <?
 }
-if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
-	?>
-	<div class="aeltere_caller">
-		<a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere Dokmente
-			<span class="glyphicon glyphicon-chevron-right"></span></a>
-	</div>
-<?
-}
-?>
