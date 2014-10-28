@@ -140,13 +140,14 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 	public function zugeordneteAntraegeHeuristisch()
 	{
 		$betreff  = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
-		$x        = explode(" Antrag Nr.", $betreff);
+		preg_match_all("/[0-9]{2}\-[0-9]{2} ?\/ ?[A-Z] ?[0-9]+/su", $betreff, $matches);
+
 		$antraege = array();
-		foreach ($x as $y) if (preg_match("/[0-9]{2}\-[0-9]{2} \/ [A-Z] [0-9]+/su", $y, $match)) {
+		foreach ($matches[0] as $match) {
 			/** @var Antrag $antrag */
-			$antrag = Antrag::model()->findByAttributes(array("antrags_nr" => $match[0]));
+			$antrag = Antrag::model()->findByAttributes(array("antrags_nr" => Antrag::cleanAntragNr($match)));
 			if ($antrag) $antraege[] = $antrag;
-			else $antraege[] = "Antrag Nr." . $y;
+			else $antraege[] = "Nr. " . $match;
 		}
 		return $antraege;
 	}
