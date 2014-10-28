@@ -34,16 +34,16 @@ $this->pageTitle = Yii::app()->name;
 		</div>
 	</div>
 
-	<h1>Suchergebnisse</h1>
-
-	<div class="suchkrit_beschreibung">
-		<?= CHtml::encode($krits->getTitle()) ?>
-	</div>
-
-
-	<br style="clear: both;">
 	<?
-
+	if ($krits->getKritsCount() == 1) {
+		echo '<h1>' . CHtml::encode($krits->getTitle()) . '</h1>';
+	} else {
+		echo '<h1>Suchergebnisse</h1>';
+		echo '<div class="suchkrit_beschreibung">';
+		echo CHtml::encode($krits->getTitle());
+		echo '</div>';
+	}
+	echo '<br style="clear: both;">';
 
 	if ($msg_ok != "") {
 		?>
@@ -114,6 +114,9 @@ $this->pageTitle = Yii::app()->name;
 	}
 	if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 
+	$has_facets = false;
+	foreach ($facet_groups as $name => $facets) if (count($facets) > 1) $has_facets = true;
+	if ($has_facets) {
 	?>
 	<section class="suchergebnis_eingrenzen">
 		<div class="opener"><a href="#suchergebnis_eingrenzen_holder" onclick="$(this).parents('.suchergebnis_eingrenzen').toggleClass('visible'); return false;">
@@ -131,9 +134,9 @@ $this->pageTitle = Yii::app()->name;
 			?>
 		</div>
 	</section>
-	<br style="clear: both;">
+	<? }
 
-	<?
+	echo '<br style="clear: both;">';
 
 	if ($krits->getKritsCount() > 0) $this->renderPartial("../benachrichtigungen/suchergebnisse_liste", array(
 		"ergebnisse" => $ergebnisse,

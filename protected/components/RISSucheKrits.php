@@ -284,7 +284,7 @@ class RISSucheKrits
 				$ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
 				return "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
 			case "antrag_nr":
-				return "Dokumente zum Antrag Nr. " . $this->krits[0]["suchbegriff"];
+				return "Antrag Nr. " . str_replace("*", " ", $this->krits[0]["suchbegriff"]);
 		}
 		if (count($this->krits) > 1) {
 			$krits = array();
