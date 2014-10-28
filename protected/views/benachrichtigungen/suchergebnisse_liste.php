@@ -31,7 +31,8 @@ if (count($dokumente) == 0) {
 				}
 			} else {
 				$risitem = $dok->getRISItem();
-				//$dokurl = $this->createUrl("index/dokument", array("id" => $dok->id));
+				if (!$risitem) continue;
+
 				$dokurl = $dok->getOriginalLink();
 				?>
 				<li class='list-group-item'>

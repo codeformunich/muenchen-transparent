@@ -46,7 +46,7 @@ $this->pageTitle = "Suche";
 			<label for="suche_referat" class="col-sm-3 control-label">Zuständiges Referat:</label>
 
 			<div class="col-sm-9">
-				<select id="suche_referat" name="type" size="1" class="form-control">
+				<select id="suche_referat" name="referat" size="1" class="form-control">
 					<option>- egal -</option>
 					<?
 					/** @var Referat[] $referate */
@@ -59,6 +59,7 @@ $this->pageTitle = "Suche";
 			</div>
 		</div>
 
+		<!-- @TODO: Setzt voraus: offizielles Datum eines Dokuments ermitteln
 		<div class="form-group">
 			<label for="suche_datum_von" class="col-md-3 control-label">Zeitraum von:</label>
 
@@ -73,16 +74,20 @@ $this->pageTitle = "Suche";
 			</div>
 		</div>
 
+		-->
+
 		<div class="" style="text-align: center; margin-top: 10px;">
 			<button type="submit" class="btn btn-success" name="<?= AntiXSS::createToken("search_form") ?>"><span class="glyphicon glyphicon-search"></span> Suche</button>
 		</div>
 
+		<!-- @TODO: Setzt voraus: offizielles Datum eines Dokuments ermitteln
 		<script>
 			$(function() {
 				$("#suche_datum_von").datepicker();
 				$("#suche_datum_bis").datepicker();
 			});
 		</script>
+		-->
 
 	</form>
 </section>

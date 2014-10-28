@@ -51,6 +51,8 @@ class RISSolrHelper
 		foreach ($dokumente as $dokument) {
 			$model          = AntragDokument::getDocumentBySolrId($dokument->id);
 			$risitem        = $model->getRISItem();
+			if (!$risitem) continue;
+
 			$link           = $risitem->getLink();
 			$highlightedDoc = $highlighting->getResult($dokument->id);
 			$item           = array(

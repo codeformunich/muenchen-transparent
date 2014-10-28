@@ -39,7 +39,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
 	public static $TYP_BA_TERMIN = "ba_termin";
 	public static $TYP_BA_BESCHLUSS = "ba_beschluss";
-	public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung";
+	//public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung"; @TODO
 	public static $TYPEN_ALLE = array(
 		"stadtrat_antrag"    => "Stadtratsantrag",
 		"stadtrat_vorlage"   => "Stadtratsvorlage",
@@ -49,7 +49,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		"ba_initiative"      => "BA: Initiative",
 		"ba_termin"          => "BA: Termin",
 		"ba_beschluss"       => "BA: Beschluss",
-		"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
+		//"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
 	);
 
 	public static $OCR_VON_TESSERACT = "tesseract";
@@ -353,9 +353,8 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	 */
 	public function getRISItem()
 	{
-		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) return $this->ergebnis;
-		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) return $this->ergebnis;
+		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
 		return $this->antrag;
 	}
 

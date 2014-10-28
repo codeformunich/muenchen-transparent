@@ -100,7 +100,7 @@ class IndexController extends RISBaseController
 			$hl->setSimplePrefix('<b>');
 			$hl->setSimplePostfix('</b>');
 
-			$ergebnisse = $solr->select($select);
+			$ergebnisse = $solr->execute($select);
 
 			$data = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
 		} else {
@@ -421,6 +421,22 @@ class IndexController extends RISBaseController
 			if (trim($_REQUEST["volltext"]) != "") $krits->addVolltextsucheKrit($_REQUEST["volltext"]);
 			if (trim($_REQUEST["antrag_nr"]) != "") $krits->addAntragNrKrit($_REQUEST["antrag_nr"]);
 			if ($_REQUEST["typ"] != "") $krits->addAntragTypKrit($_REQUEST["typ"]);
+			if ($_REQUEST["referat"] > 0) $krits->addReferatKrit($_REQUEST["referat"]);
+
+			/*
+			 * @TODO: Setzt voraus: offizielles Datum eines Dokuments ermitteln
+			$datum_von = $datum_bis = null;
+			if ($_REQUEST["datum_von"] != "") {
+				$x = explode(".", $_REQUEST["datum_von"]);
+				if (count($x) == 3) $datum_von = $x[2] . "-" . $x[1] . "-" . $x[0] . " 00:00:00";
+			}
+			if ($_REQUEST["datum_bis"] != "") {
+				$x = explode(".", $_REQUEST["datum_bis"]);
+				if (count($x) == 3) $datum_bis = $x[2] . "-" . $x[1] . "-" . $x[0] . " 23:59:59";
+			}
+			if ($datum_von || $datum_bis) $krits->addDatumKrit($datum_von, $datum_bis);
+			*/
+
 		} elseif (isset($_REQUEST["suchbegriff"])) {
 			$suchbegriff     = $_REQUEST["suchbegriff"];
 			$this->suche_pre = $suchbegriff;

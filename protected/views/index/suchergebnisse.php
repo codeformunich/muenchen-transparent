@@ -60,6 +60,10 @@ $this->pageTitle = Yii::app()->name;
 	<?
 	}
 
+	echo "<pre>";
+	var_dump($krits);
+	echo "</pre>";
+
 
 	if (!is_null($geodata) && count($geodata) > 0) {
 		$assets_base = $this->getAssetsBase();
