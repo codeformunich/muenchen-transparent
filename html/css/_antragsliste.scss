@@ -27,6 +27,7 @@ div.antragsliste2 {
     -moz-break-inside:avoid;
     break-inside:avoid;
     page-break-inside: avoid;
+    overflow: hidden; /* Hack for Firefox to prevent preaking the element */
 
     .panel-heading a {
       &:link, &:visited {
