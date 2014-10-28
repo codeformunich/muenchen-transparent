@@ -141,5 +141,10 @@ class Bezirksausschuss extends CActiveRecord
 		}
 	}
 
+	/** @return string */
+	public function getLink()
+	{
+		return Yii::app()->createUrl("index/ba", array("ba_nr" => $this->ba_nr, "ba_name" => $this->name));
+	}
 
 }

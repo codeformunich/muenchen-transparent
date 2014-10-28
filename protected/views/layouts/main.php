@@ -80,7 +80,7 @@
 							<?
 							/** @var Bezirksausschuss[] $bas */
 							$bas = Bezirksausschuss::model()->findAll();
-							foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr))) . "</li>\n"
+							foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
 							?>
 						</ul>
 					</li>
