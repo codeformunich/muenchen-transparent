@@ -84,7 +84,7 @@ $name = $antrag->getName(true);
 				<th>Gremium:</th>
 				<td><?
 					if ($antrag->ba_nr > 0) {
-						echo CHtml::link("Bezirksausschuss " . $antrag->ba_nr, $this->createUrl("index/ba", array("ba_nr" => $antrag->ba_nr))) . " (" . CHtml::encode($antrag->ba->name) . ")<br>";
+						echo CHtml::link("Bezirksausschuss " . $antrag->ba_nr, $antrag->ba->getLink()) . " (" . CHtml::encode($antrag->ba->name) . ")<br>";
 					} else {
 						echo "Stadtrat<br>";
 					}

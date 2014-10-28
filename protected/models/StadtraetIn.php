@@ -89,7 +89,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id));
+		$name = $this->getName();
+		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id, "name" => $name));
 	}
 
 
@@ -106,15 +107,35 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	public function getName($kurzfassung = false)
 	{
 		if (mb_strpos($this->name, ",") > 0) {
-			$x = explode(",", $this->name);
+			preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
+			$titel = trim($matches["titel"]);
+			if (strlen($titel) > 0) $titel .= " ";
+
+			$x = explode(",", $matches["name"]);
 			if (count($x) == 2) {
-				return $x[1] . " " . $x[0];
+				$name = $x[1] . " " . $x[0];
 			} else {
-				return $this->name;
+				$name = $this->name;
 			}
+			return $titel . trim($name);
 		} else {
 			return $this->name;
 		}
+	}
+
+	/**
+	 * @param StadtraetIn[] $personen
+	 * @return StadtraetIn[];
+	 */
+	public static function sortByName($personen) {
+		usort($personen, function($str1, $str2) {
+			/** @var StadtraetIn $str1 */
+			/** @var StadtraetIn $str2 */
+			$name1 = preg_replace("/^([a-z]+\. )*/siu", "", $str1->getName());
+			$name2 = preg_replace("/^([a-z]+\. )*/siu", "", $str2->getName());
+			return strnatcasecmp($name1, $name2);
+		});
+		return $personen;
 	}
 
 	/**

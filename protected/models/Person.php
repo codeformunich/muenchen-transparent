@@ -132,7 +132,7 @@ class Person extends CActiveRecord implements IRISItem
 	/** @return string */
 	public function getLink()
 	{
-		return "http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id, "name" => $this->name));
 	}
 
 	/** @return string */
