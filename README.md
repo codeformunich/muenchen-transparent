@@ -66,7 +66,7 @@ Code-Organisation
 Weitere Dokumentation
 ---------------------
 
-* [nginx.conf](docs/nginx.conf) und [lighttpd.conf](docs/lighttpd.conf) zeigen Beispiel-Konfigurationen für nginx und Lighttpd. 
+* [nginx.conf](docs/nginx.conf) und [lighttpd.conf](docs/lighttpd.conf) zeigen Beispiel-Konfigurationen für nginx und Lighttpd. Von der Verwendung von lighttpd ist aber abzuraten, da einige Funktionen, wie z.B. Kalender oder der "Ältere Dokumente"-Knopf, wegen eines Problems mit dem url-Handlings nicht funktionieren. Wenn es jemanden weiß, wie man das Problem löst, möge er sich bitte in https://github.com/codeformunich/Ratsinformant/issues/10 melden
 * [Icon-Font bearbeiten](docs/fontello/updating.txt)
 
 Eingesetzte Shell-Programme
