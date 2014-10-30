@@ -1,8 +1,8 @@
-$icon-font-path: "bootstrap-sass-3.2.0/assets/fonts/bootstrap/" !default;
+$icon-font-path: "bootstrap-sass-3.3.0/assets/fonts/bootstrap/" !default;
 $roboto-font-path: "../fonts/";
 $pics-path: "/images/";
 
-@import "bootstrap-sass-3.2.0/assets/stylesheets/bootstrap";
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap";
 @import "material-wfont";
 // The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
 @import "material/variables.import";
