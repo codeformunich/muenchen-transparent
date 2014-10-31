@@ -269,7 +269,7 @@ html[dir='rtl'] #viewerContainer {
   position: relative;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 99;
   cursor: default;
 }
 
@@ -1027,7 +1027,7 @@ html[dir='rtl'] .verticalToolbarSeparator {
 }
 
 .horizontalToolbarSeparator {
-  display: block; 
+  display: block;
   margin: 0 0 4px 0;
   height: 1px;
   width: 100%;
@@ -1489,7 +1489,7 @@ canvas {
 }
 
 .dialog .separator {
-  display: block; 
+  display: block;
   margin: 4px 0 4px 0;
   height: 1px;
   width: 100%;
@@ -1672,7 +1672,7 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
     background: url(images/toolbarButton-menuArrows@2x.png) no-repeat;
     background-size: 7px 16px;
   }
-  
+
   html[dir='ltr'] .toolbarButton#sidebarToggle::before {
     content: url(images/toolbarButton-sidebarToggle@2x.png);
   }

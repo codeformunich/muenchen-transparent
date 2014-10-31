@@ -55,7 +55,7 @@ var FindStates = {
 };
 
 PDFJS.imageResourcesPath = '/other/pdfjs/images/';
-  PDFJS.workerSrc = '/js/pdfjs/worker.js';
+  PDFJS.workerSrc = '/other/pdfjs/worker.js';
   PDFJS.cMapUrl = '/other/pdfjs/cmaps/';
   PDFJS.cMapPacked = true;
 
@@ -218,7 +218,7 @@ function getPDFFileNameFromURL(url) {
       }
     }
   }
-  return suggestedFilename || 'document.pdf';
+  return suggestedFilename || 'Namenlos.pdf';
 }
 
 var ProgressBar = (function ProgressBarClosure() {
@@ -1653,10 +1653,8 @@ var SecondaryToolbar = {
     // Define the toolbar buttons.
     this.toggleButton = options.toggleButton;
     this.presentationModeButton = options.presentationModeButton;
-    this.openFile = options.openFile;
     this.print = options.print;
     this.download = options.download;
-    this.viewBookmark = options.viewBookmark;
     this.firstPage = options.firstPage;
     this.lastPage = options.lastPage;
     this.pageRotateCw = options.pageRotateCw;
@@ -1671,10 +1669,8 @@ var SecondaryToolbar = {
       // (except for toggleHandTool, hand_tool.js is responsible for it):
       { element: this.presentationModeButton,
         handler: this.presentationModeClick },
-      { element: this.openFile, handler: this.openFileClick },
       { element: this.print, handler: this.printClick },
       { element: this.download, handler: this.downloadClick },
-      { element: this.viewBookmark, handler: this.viewBookmarkClick },
       { element: this.firstPage, handler: this.firstPageClick },
       { element: this.lastPage, handler: this.lastPageClick },
       { element: this.pageRotateCw, handler: this.pageRotateCwClick },
@@ -1697,11 +1693,6 @@ var SecondaryToolbar = {
     this.close();
   },
 
-  openFileClick: function secondaryToolbarOpenFileClick(evt) {
-    document.getElementById('fileInput').click();
-    this.close();
-  },
-
   printClick: function secondaryToolbarPrintClick(evt) {
     window.print();
     this.close();
@@ -1709,10 +1700,6 @@ var SecondaryToolbar = {
 
   downloadClick: function secondaryToolbarDownloadClick(evt) {
     PDFView.download();
-    this.close();
-  },
-
-  viewBookmarkClick: function secondaryToolbarViewBookmarkClick(evt) {
     this.close();
   },
 
@@ -2729,10 +2716,8 @@ var PDFView = {
       toggleButton: document.getElementById('secondaryToolbarToggle'),
       presentationModeButton:
         document.getElementById('secondaryPresentationMode'),
-      openFile: document.getElementById('secondaryOpenFile'),
       print: document.getElementById('secondaryPrint'),
       download: document.getElementById('secondaryDownload'),
-      viewBookmark: document.getElementById('secondaryViewBookmark'),
       firstPage: document.getElementById('firstPage'),
       lastPage: document.getElementById('lastPage'),
       pageRotateCw: document.getElementById('pageRotateCw'),
@@ -3054,11 +3039,11 @@ var PDFView = {
   setTitleUsingUrl: function pdfViewSetTitleUsingUrl(url) {
     this.url = url;
     try {
-      this.setTitle(decodeURIComponent(getFileName(url)) || url);
+      this.setTitle( (decodeURIComponent(getFileName(url)) || url) + " (Ratsinformant)");
     } catch (e) {
       // decodeURIComponent may throw URIError,
       // fall back to using the unprocessed url in that case
-      this.setTitle(url);
+      this.setTitle("Dokumentenanzeige (Ratsinformant)");
     }
   },
 
@@ -5468,8 +5453,7 @@ function webViewerInitialized() {
   document.body.appendChild(fileInput);
 
   if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-    document.getElementById('openFile').setAttribute('hidden', 'true');
-    document.getElementById('secondaryOpenFile').setAttribute('hidden', 'true');
+    /* removed for ratsinformant */
   } else {
     document.getElementById('fileInput').value = null;
   }
@@ -5514,7 +5498,6 @@ function webViewerInitialized() {
     IGNORE_CURRENT_POSITION_ON_ZOOM =
       (hashParams['ignoreCurrentPositionOnZoom'] === 'true');
   }
-
 
 
   var locale = PDFJS.locale || navigator.language;
@@ -5644,9 +5627,6 @@ function webViewerInitialized() {
   document.getElementById('presentationMode').addEventListener('click',
     SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));
 
-  document.getElementById('openFile').addEventListener('click',
-    SecondaryToolbar.openFileClick.bind(SecondaryToolbar));
-
   document.getElementById('print').addEventListener('click',
     SecondaryToolbar.printClick.bind(SecondaryToolbar));
 
@@ -5758,8 +5738,6 @@ function updateViewarea() {
     });
   });
   var href = PDFView.getAnchorUrl(pdfOpenParams);
-  document.getElementById('viewBookmark').href = href;
-  document.getElementById('secondaryViewBookmark').href = href;
 
   // Update the current bookmark in the browsing history.
   PDFHistory.updateCurrentBookmark(pdfOpenParams, pageNumber);
@@ -5808,9 +5786,6 @@ window.addEventListener('change', function webViewerChange(evt) {
   PDFView.setTitleUsingUrl(file.name);
 
   // URL does not reflect proper document location - hiding some icons.
-  document.getElementById('viewBookmark').setAttribute('hidden', 'true');
-  document.getElementById('secondaryViewBookmark').
-    setAttribute('hidden', 'true');
   document.getElementById('download').setAttribute('hidden', 'true');
   document.getElementById('secondaryDownload').setAttribute('hidden', 'true');
 }, true);
@@ -6183,5 +6158,4 @@ window.addEventListener('afterprint', function afterPrint(evt) {
     window.requestAnimationFrame(resolve);
   });
 })();
-
 

@@ -68,10 +68,6 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 		  <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
 		</button>
 
-		<button id="secondaryOpenFile" class="secondaryToolbarButton openFile visibleLargeView" title="Open File" tabindex="52" data-l10n-id="open_file">
-		  <span data-l10n-id="open_file_label">Open</span>
-		</button>
-
 		<button id="secondaryPrint" class="secondaryToolbarButton print visibleMediumView" title="Print" tabindex="53" data-l10n-id="print">
 		  <span data-l10n-id="print_label">Print</span>
 		</button>
@@ -79,10 +75,6 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 		<button id="secondaryDownload" class="secondaryToolbarButton download visibleMediumView" title="Download" tabindex="54" data-l10n-id="download">
 		  <span data-l10n-id="download_label">Download</span>
 		</button>
-
-		<a href="#" id="secondaryViewBookmark" class="secondaryToolbarButton bookmark visibleSmallView" title="Current view (copy or open in new window)" tabindex="55" data-l10n-id="bookmark">
-		  <span data-l10n-id="bookmark_label">Current View</span>
-		</a>
 
 		<div class="horizontalToolbarSeparator visibleLargeView"></div>
 
@@ -145,10 +137,6 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 			  <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
 			</button>
 
-			<button id="openFile" class="toolbarButton openFile hiddenLargeView" title="Open File" tabindex="32" data-l10n-id="open_file">
-			  <span data-l10n-id="open_file_label">Open</span>
-			</button>
-
 			<button id="print" class="toolbarButton print hiddenMediumView" title="Print" tabindex="33" data-l10n-id="print">
 			  <span data-l10n-id="print_label">Print</span>
 			</button>
@@ -157,9 +145,6 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 			  <span data-l10n-id="download_label">Download</span>
 			</button>
 			<!-- <div class="toolbarButtonSpacer"></div> -->
-			<a href="#" id="viewBookmark" class="toolbarButton bookmark hiddenSmallView" title="Current view (copy or open in new window)" tabindex="35" data-l10n-id="bookmark">
-			  <span data-l10n-id="bookmark_label">Current View</span>
-			</a>
 
 			<div class="verticalToolbarSeparator hiddenSmallView"></div>
 

@@ -836,6 +836,7 @@ class IndexController extends RISBaseController
 
 	public function actionViewer()
 	{
+		$this->load_pdf_js = true;
 		$this->render('viewer', array());
 	}
 }

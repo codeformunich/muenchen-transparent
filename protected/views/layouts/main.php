@@ -3,8 +3,8 @@
  * @var RISBaseController $this
  * @var string $content
  */
-
 ?>
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -20,6 +20,43 @@
 	<link rel="icon" type="image/png" href="/css/img/logo.png">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+
+	<!--[if lt IE 9]>
+	<script src="/js/jquery-1.11.1.min.js"></script>
+	<![endif]-->
+	<!--[if gte IE 9]><!-->
+	<script src="/js/jquery-2.1.1.min.js"></script>
+	<!--<![endif]-->
+
+	<script src="/js/modernizr.js"></script>
+
+	<? if ($this->load_pdf_js) { ?>
+		<script>
+		// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
+		function pdf_resize() {
+			$("#mainContainer").height($("footer").offset().top - $("#mainContainer").offset().top - 20);
+			console.log(">sdvgfagfbd" + $("footer").offset().top - $("#mainContainer").offset().top - 20);
+		}
+
+		$(pdf_resize);
+		$(window).resize(pdf_resize);
+		</script>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="google" content="notranslate">
+
+		<link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
+
+		<script src="/other/pdfjs/compatibility.js"></script>
+
+		<!-- This snippet is used in production (included from viewer.html) -->
+		<link rel="resource" type="application/l10n" href="/other/pdfjs/locale/locale.properties"/>
+		<script src="/other/pdfjs/l10n.js"></script>
+		<script src="/other/pdfjs/pdf.js"></script>
+
+		<script src="/other/pdfjs/debugger.js"></script>
+		<script src="/other/pdfjs/viewer.js"></script>
+	<? } // end pdf.js ?>
 
 	<!--[if lt IE 9]>
 	<script src="/js/html5shiv.js"></script>
@@ -44,41 +81,6 @@
 
 	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
 	<link rel="stylesheet" href="/css/styles_website.css">
-
-	<!--[if lt IE 9]>
-	<script src="/js/jquery-1.11.1.min.js"></script>
-	<![endif]-->
-	<!--[if gte IE 9]><!-->
-	<script src="/js/jquery-2.1.1.min.js"></script>
-	<!--<![endif]-->
-
-	<script src="/js/modernizr.js"></script>
-
-	<? if (true) { ?>
-	<script>
-	// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
-	function pdf_resize() {
-		$("#mainContainer").height($("footer").offset().top - $("#mainContainer").offset().top - 20);
-	}
-
-	$(pdf_resize);
-	$(window).resize(pdf_resize);
-	</script>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="google" content="notranslate">
-
-	<link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
-
-	<script src="/other/pdfjs/compatibility.js"></script>
-
-	<!-- This snippet is used in production (included from viewer.html) -->
-	<link rel="resource" type="application/l10n" href="/other/pdfjs/locale/locale.properties"/>
-	<script src="/other/pdfjs/l10n.js"></script>
-	<script src="/other/pdfjs/pdf.js"></script>
-
-	<script src="/other/pdfjs/debugger.js"></script>
-	<script src="/other/pdfjs/viewer.js"></script>
-	<? } // end pdf.js ?>
 </head>
 
 <body>
