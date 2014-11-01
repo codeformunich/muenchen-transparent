@@ -20,7 +20,8 @@ $this->pageTitle = "Personen";
 <div class="row" id="listen_holder">
 	<div class="col col-lg-6 col-md-6"><?
 		$this->renderPartial("fraktionen", array(
-			"fraktionen"  => $fraktionen,
+			"fraktionen" => $fraktionen,
+			"title"      => "StadträtInnen",
 		));?>
 
 		<section class="well">

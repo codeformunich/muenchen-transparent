@@ -16,6 +16,7 @@
  * @property AntragErgebnis[] $antraegeErgebnisse
  * @property Bezirksausschuss $ba
  * @property Termin[] $termine
+ * @property StadtraetInGremium[] $mitgliedschaften
  */
 class Gremium extends CActiveRecord implements IRISItem
 {
@@ -63,6 +64,7 @@ class Gremium extends CActiveRecord implements IRISItem
 			'antraegeErgebnisse' => array(self::HAS_MANY, 'AntragErgebnis', 'gremium_id'),
 			'ba'                 => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
 			'termine'            => array(self::HAS_MANY, 'Termin', 'gremium_id'),
+			'mitgliedschaften'   => array(self::HAS_MANY, 'StadtraetInGremium', 'gremium_id'),
 		);
 	}
 

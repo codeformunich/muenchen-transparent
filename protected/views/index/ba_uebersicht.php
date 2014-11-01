@@ -19,6 +19,7 @@
  * @var int $tage_zukunft
  * @var int $tage_vergangenheit
  * @var int $tage_vergangenheit_dokumente
+ * @var Gremium[] $gremien
  */
 
 $this->layout = "//layouts/width_wide";
@@ -161,7 +162,13 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 	<div class="col col-md-3 keine_dokumente"><?
 		$this->renderPartial("fraktionen", array(
 			"fraktionen" => $fraktionen,
-		));?>
+			"title"      => "BA-Mitglieder",
+		));
+		$this->renderPartial("ausschuss_mitglieder", array(
+			"gremien" => $gremien,
+			"title"      => "Unterausschüsse",
+		));
+		?>
 	</div>
 
 </div>

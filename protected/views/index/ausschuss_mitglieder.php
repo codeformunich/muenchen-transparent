@@ -1,30 +1,30 @@
 <?
 /**
- * @var StadtraetIn[][] $fraktionen
+ * @var Gremium[] $gremien
  * @var string $title
  */
 ?>
 <section class="well"><?
-	$insgesamt = 0;
-	foreach ($fraktionen as $fraktion)
-		$insgesamt += count($fraktion);
 	?>
 
-	<h2><?=CHtml::encode($title)?> <span style="float: right"><?= $insgesamt ?></span></h2>
+	<h2><?=CHtml::encode($title)?></h2>
 
-	<ul class="fraktionen_liste"><?
-		usort($fraktionen, function ($val1, $val2) {
-			if (count($val1) < count($val2)) return 1;
-			if (count($val1) > count($val2)) return -1;
-			return 0;
+	<ul class="ausschuesse_liste"><?
+		usort($gremien, function ($gr1, $gr2) {
+			/** @var Gremium $gr1 */
+			/** @var Gremium $gr2 */
+			return strnatcasecmp($gr1->name, $gr2->name);
 		});
-		foreach ($fraktionen as $fraktion) {
-			/** @var StadtraetIn[] $fraktion */
-			$fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
-			echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
-			echo "<span class='count'>" . count($fraktion) . "</span>";
-			echo CHtml::encode($fr->name) . "</a><ul class='mitglieder'>";
-			$mitglieder = StadtraetIn::sortByName($fraktion);
+		foreach ($gremien as $gremium) {
+			if (count($gremium->mitgliedschaften) == 0) continue;
+			if (mb_strpos($gremium->name, "Vollgremium") !== false) continue;
+
+			echo "<li><a href='#' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
+			echo "<span class='count'>" . count($gremium->mitgliedschaften) . "</span>";
+			echo CHtml::encode($gremium->getName()) . "</a><ul class='mitglieder'>";
+			$mitglieder = array();
+			foreach ($gremium->mitgliedschaften as $m) $mitglieder[] = $m->stadtraetIn;
+			$mitglieder = StadtraetIn::sortByName($mitglieder);
 			foreach ($mitglieder as $mitglied) {
 				echo "<li>";
 				echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>"    . CHtml::encode($mitglied->getName()        ) .                                                            "</a>";
@@ -36,11 +36,11 @@
 			}
 			echo "</ul></li>\n";
 		}
-	?></ul>
+		?></ul>
 
 	<script>
 		$(function () {
-			var $frakts = $(".fraktionen_liste > li");
+			var $frakts = $(".ausschuesse_liste > li");
 			$frakts.addClass("closed").find("> a").click(function (ev) {
 				if (ev.which == 2 || ev.which == 3) return;
 				ev.preventDefault();

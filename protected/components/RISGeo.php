@@ -109,12 +109,15 @@ class RISGeo
 
 	public static function suche_strassen($str)
 	{
+		$fp = fopen("/tmp/strassen.log", "a"); fwrite($fp, "START\n==========\n" . $str . "\n\n\n"); fclose($fp);
 		static::init_streets();
 		$antragtext    = static::ris_street_cleanstring($str);
 		$streets_found = array();
 		foreach (static::$STREETS as $street) {
+			$fp = fopen("/tmp/strassen.log", "a"); fwrite($fp, "Str: " . $street->name_normalized . "\n"); fclose($fp);
 			$offset = -1;
 			while (($offset = mb_strpos($antragtext, $street->name_normalized, $offset + 1)) !== false) {
+				$fp = fopen("/tmp/strassen.log", "a"); fwrite($fp, "- $offset\n"); fclose($fp);
 				$danach = mb_substr($antragtext, $offset + mb_strlen($street->name_normalized), 10);
 				$nr     = IntVal($danach);
 				$ort    = ($nr > 0 && $nr < 1000 ? $street->name . " $nr" : $street->name);
@@ -130,6 +133,8 @@ class RISGeo
 			}
 		}
 
+		$fp = fopen("/tmp/strassen.log", "a"); fwrite($fp, "Str Fertig 2\n"); fclose($fp);
+
 		$streets_found_consolidated = array();
 		foreach ($streets_found as $street) {
 			if (preg_match("/[0-9]/siu", $street)) $streets_found_consolidated[] = $street;
@@ -139,6 +144,8 @@ class RISGeo
 				if (!$mit_hausnummer_gefunden) $streets_found_consolidated[] = $street;
 			}
 		}
+
+		$fp = fopen("/tmp/strassen.log", "a"); fwrite($fp, "Str ferti 2\n"); fclose($fp);
 
 		return $streets_found_consolidated;
 	}

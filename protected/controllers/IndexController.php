@@ -596,9 +596,13 @@ class IndexController extends RISBaseController
 		$termin_dokumente = Termin::model()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
 		$termine          = Termin::groupAppointments($termine);
 
-		$ba = Bezirksausschuss::model()->findByPk($ba_nr);
+		/** @var Bezirksausschuss $ba */
+		$ba      = Bezirksausschuss::model()->findByPk($ba_nr);
+		$gremien = $ba->gremien;
+
 		$this->render("ba_uebersicht", array_merge(array(
 			"ba"                           => $ba,
+			"gremien"                      => $gremien,
 			"termine"                      => $termine,
 			"termin_dokumente"             => $termin_dokumente,
 			"tage_vergangenheit"           => $tage_vergangenheit,
