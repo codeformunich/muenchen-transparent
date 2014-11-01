@@ -262,22 +262,22 @@ class RISTools
 	{
 		switch ($typ) {
 			case "ba_antrag":
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
 				break;
 			case "ba_initiative":
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
 				break;
 			case "ba_termin":
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
 				break;
 			case "stadtrat_antrag":
-				return "http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $id;
 				break;
 			case "stadtrat_vorlage":
-				return "http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_detail.jsp?risid=" . $id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $id;
 				break;
 			case "stadtrat_termin":
-				return "http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=" . $id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $id;
 				break;
 		}
 		return "Unbekannt";

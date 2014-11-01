@@ -32,9 +32,9 @@ class BATerminParser extends RISParser
 		$termin_id = IntVal($termin_id);
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
-		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=$termin_id");
-		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_dokumente.jsp?Id=$termin_id");
-		$html_to        = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
+		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=$termin_id");
+		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=$termin_id");
+		$html_to        = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
 
 		$daten                         = new Termin();
 		$daten->id                     = $termin_id;
@@ -252,7 +252,7 @@ class BATerminParser extends RISParser
 
 			/*
 			if (!is_null($vorlage_id)) {
-				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
+				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
 				preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
 				$beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
 				if ($ergebnis->beschluss_text != $beschluss) {
@@ -263,7 +263,7 @@ class BATerminParser extends RISParser
 			*/
 
 			preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
-			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII2/RII/DOK/TOP/") {
+			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII/RII/DOK/TOP/") {
 				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_BESCHLUSS, $ergebnis, array("url" => $matches2["url"], "name" => $matches2["title"]));
 			}
 		}
@@ -329,7 +329,7 @@ class BATerminParser extends RISParser
 	{
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin Seite $seite\n";
 		$add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
-		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
+		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
 		$txt  = explode("<table class=\"ergebnistab\" ", $text);
 		$txt  = explode("<!-- tabellenfuss", $txt[1]);
 

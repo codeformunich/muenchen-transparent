@@ -151,7 +151,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 * @return string
 	 */
 	public function getSourceLink() {
-		return "http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+		return "http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
 	}
 
 	/**
@@ -180,7 +180,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			)));
 		$fraktionen = array();
 		foreach ($strs as $str) {
-			if ($str->id == 3425214) continue; // Seltsamer RIS-Testuser http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
+			if ($str->id == 3425214) continue; // Seltsamer RIS-Testuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
 			if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = array();
 			$fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
 		}

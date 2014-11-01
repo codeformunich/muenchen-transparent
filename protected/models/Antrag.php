@@ -372,13 +372,13 @@ class Antrag extends CActiveRecord implements IRISItem
 	{
 		switch ($this->typ) {
 			case Antrag::$TYP_BA_ANTRAG:
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
 			case Antrag::$TYP_BA_INITIATIVE:
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen_details.jsp?Id=" . $this->id;
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $this->id;
 			case Antrag::$TYP_STADTRAT_ANTRAG:
-				return "http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $this->id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $this->id;
 			case Antrag::$TYP_STADTRAT_VORLAGE:
-				return "http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_detail.jsp?risid=" . $this->id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $this->id;
 		}
 		return "";
 	}

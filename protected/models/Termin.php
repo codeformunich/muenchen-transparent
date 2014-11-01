@@ -160,8 +160,8 @@ class Termin extends CActiveRecord implements IRISItem
 	 */
 	public function getSourceLink()
 	{
-		if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
-		else return "http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
+		if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
+		else return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
 	}
 
 

@@ -7,9 +7,9 @@ class StadtratsvorlageParser extends RISParser
 	{
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Beschlussvorlage $vorlage_id\n";
 
-		$html_details    = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_detail.jsp?risid=" . $vorlage_id);
-		$html_dokumente  = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_dokumente.jsp?risid=" . $vorlage_id);
-		$html_ergebnisse = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=" . $vorlage_id);
+		$html_details    = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $vorlage_id);
+		$html_dokumente  = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_dokumente.jsp?risid=" . $vorlage_id);
+		$html_ergebnisse = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=" . $vorlage_id);
 
 		$daten                         = new Antrag();
 		$daten->id                     = $vorlage_id;
@@ -20,7 +20,7 @@ class StadtratsvorlageParser extends RISParser
 		$ergebnisse = array();
 
 		if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
-			$html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
+			$html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
 			$txt           = explode("introtext_border\">", $html_kurzinfo);
 			if (count($txt) < 2) RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo);
 			$txt             = explode("</div>", $txt[1]);
@@ -118,8 +118,8 @@ class StadtratsvorlageParser extends RISParser
 			else for ($i = 0; $i < count($matches["gremien_link"]); $i++) {
 				$link = $matches["gremien_link"][$i];
 				if (strpos($link, "ris_gremien_detail.jsp?risid=") === 0) $str = true;
-				if (strpos($link, "/RII2/BA-RII/ba_gremien_details.jsp?Id=") === 0) {
-					$x = explode("/RII2/BA-RII/ba_gremien_details.jsp?Id=", $link);
+				if (strpos($link, "/RII/BA-RII/ba_gremien_details.jsp?Id=") === 0) {
+					$x = explode("/RII/BA-RII/ba_gremien_details.jsp?Id=", $link);
 					/** @var Gremium $g */
 					$g  = Gremium::model()->findByPk($x[1]);
 					$ba = $g->ba_nr;
@@ -229,7 +229,7 @@ class StadtratsvorlageParser extends RISParser
 			$data = $sql->queryAll();
 			if (count($data) == 0) {
 				$daten->addAntrag($antrag);
-				$aenderungen .= "Neuer Antrag zugeordnet: http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=$link\n";
+				$aenderungen .= "Neuer Antrag zugeordnet: http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=$link\n";
 			}
 		}
 
@@ -253,7 +253,7 @@ class StadtratsvorlageParser extends RISParser
 	public function parseSeite($seite, $first)
 	{
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "Seite: $seite\n";
-		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
+		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
 		$txt  = explode("<!-- ergebnisreihen -->", $text);
 		if (count($txt) == 1) return array();
 
