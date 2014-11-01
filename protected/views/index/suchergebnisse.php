@@ -54,16 +54,11 @@ $this->pageTitle = Yii::app()->name;
 	}
 	if ($msg_err != "") {
 		?>
-		<div class="alert alert-error">
+		<div class="alert alert-danger">
 			<?php echo $msg_err; ?>
 		</div>
 	<?
 	}
-
-	echo "<pre>";
-	var_dump($krits);
-	echo "</pre>";
-
 
 	if (!is_null($geodata) && count($geodata) > 0) {
 		$assets_base = $this->getAssetsBase();

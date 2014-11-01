@@ -71,6 +71,11 @@ h1.small {
     }
   }
 }
+.modal-backdrop {
+
+  display: inherit;
+}
+
 
 #ba_nav_list {
   min-width: 270px;
@@ -906,11 +911,24 @@ ul.fraktionen_liste {
   }
 }
 
+.ben_std_button {
+  .glyphicon {
+    font-weight: bold;
+    font-size: 120%;
+    float: left;
+    margin-right: 15px;
+    margin-left: -15px;
+    margin-top: -2px;
+  }
+}
+
 #ben_map {
   height: 400px;
 }
 
 .form-signin {
+  text-align: left;
+
   fieldset > .form_row {
     padding-top: 0;
     padding-bottom: 15px;

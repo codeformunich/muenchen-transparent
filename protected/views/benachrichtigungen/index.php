@@ -39,7 +39,7 @@ if ($msg_err != "") {
 if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 	?>
 	<div class="benachrichtigung_keine">Noch keine E-Mail-Benachrichtigungen</div>
-	<p class="benachrichtigung_keine">Wenn neue Dokumente zu einem von ihnen abonnierten Thema oder Vorgang veröffentlicht werden, dann erhalten sie automatisch eine Benachrichtigung an <?= CHtml::encode($ich->email) ?>.</p>
+	<p class="benachrichtigung_keine">Wenn neue Dokumente zu einem von Ihnen abonnierten Thema oder Vorgang veröffentlicht werden, dann erhalten Sie automatisch eine Benachrichtigung an <?= CHtml::encode($ich->email) ?>.</p>
 <?
 } else {
 	?>

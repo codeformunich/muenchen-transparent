@@ -289,7 +289,7 @@ class RISSucheKrits
 			case "antrag_typ":
 				return "Dokumente des Typs \"" . AntragDokument::$TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
 			case "volltext":
-				return "Dokumente, die den Suchausdruck \"" . $this->krits[0]["suchbegriff"] . "\" enthalten";
+				return "Volltextsuche nach \"" . $this->krits[0]["suchbegriff"] . "\"";
 			case "ba":
 				/** @var Bezirksausschuss $ba */
 				$ba = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $this->krits[0]["ba_nr"]));

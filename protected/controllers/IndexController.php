@@ -118,21 +118,6 @@ class IndexController extends RISBaseController
 		));
 	}
 
-	public function actionAjaxEmailIstRegistriert($email)
-	{
-		$person = BenutzerIn::model()->findAll(array(
-			"condition" => "email='" . addslashes($email) . "' AND pwd_enc != ''"
-		));
-		if (count($person) > 0) {
-			/** @var BenutzerIn $p */
-			$p = $person[0];
-			if ($p->email_bestaetigt) echo "1";
-			else echo "0";
-		} else {
-			echo "-1";
-		}
-	}
-
 	/**
 	 * @param RISSucheKrits $curr_krits
 	 * @param string $code
@@ -145,17 +130,22 @@ class IndexController extends RISBaseController
 		$correct_person      = null;
 		$wird_benachrichtigt = false;
 
+		$do_benachrichtigung_add = AntiXSS::isTokenSet("benachrichtigung_add"); // Token ändert sich möglicherweise beim Login
+		$do_benachrichtigung_del = AntiXSS::isTokenSet("benachrichtigung_del");
+
 		list($msg_ok, $msg_err) = $this->performLoginActions();
 
 		if (!$user->isGuest) {
 			/** @var BenutzerIn $ich */
 			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 
-			if (AntiXSS::isTokenSet("benachrichtigung_add")) {
+			if ($do_benachrichtigung_add) {
 				$ich->addBenachrichtigung($curr_krits);
+				$msg_ok .= 'Die Benachrichtigung wurde hinzugefügt.';
 			}
-			if (AntiXSS::isTokenSet("benachrichtigung_del")) {
+			if ($do_benachrichtigung_del) {
 				$ich->delBenachrichtigung($curr_krits);
+				$msg_ok .= 'Die Benachrichtigung wurde entfernt.';
 			}
 
 			$wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);

@@ -33,7 +33,7 @@
 	<div class="well">
 		<script>
 			$(function () {
-				var $form = $("form.form-signin");
+				var $form = $(".form-signin");
 				$("#create_account").on("click change", function () {
 					if ($(this).prop("checked")) {
 						$form.removeClass("login").addClass("anlegen");
