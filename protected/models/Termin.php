@@ -194,12 +194,33 @@ class Termin extends CActiveRecord implements IRISItem
 	 * @param int $limit
 	 * @return $this
 	 */
-	public function neueste_stadtratsantragsdokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
+	public function neueste_str_protokolle($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
 	{
-		if ($ba_nr === false) $ba_sql = "";
-		elseif ($ba_nr > 0) $ba_sql = "ba_nr = " . IntVal($ba_nr);
-		elseif ($ba_nr == -1) $ba_sql = "ba_nr > 0";
-		else $ba_sql = "ba_nr IS NULL ";
+		$ba_sql = "ba_nr IS NULL";
+
+		$params = array(
+			'condition' => $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'order'     => 'datum DESC',
+			'with'      => array(
+				'antraegeDokumente' => array(
+					'condition' => 'name like "%protokoll%" AND datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
+				),
+			));
+		if ($limit > 0) $params['limit'] = $limit;
+		$this->getDbCriteria()->mergeWith($params);
+		return $this;
+	}
+
+	/**
+	 * @param int $ba_nr
+	 * @param string $zeit_von
+	 * @param string $zeit_bis
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function neueste_ba_dokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
+	{
+		$ba_sql = "ba_nr = " . IntVal($ba_nr);
 
 		$params = array(
 			'condition' => $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',

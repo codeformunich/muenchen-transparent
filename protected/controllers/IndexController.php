@@ -593,7 +593,7 @@ class IndexController extends RISBaseController
 		$antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
 		$termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll(array('order' => 'termin DESC'));
-		$termin_dokumente = Termin::model()->neueste_stadtratsantragsdokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
+		$termin_dokumente = Termin::model()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
 		$termine          = Termin::groupAppointments($termine);
 
 		$ba = Bezirksausschuss::model()->findByPk($ba_nr);

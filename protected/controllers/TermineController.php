@@ -77,7 +77,7 @@ class TermineController extends RISBaseController
 
 		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
 		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
-		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente(0, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+		$termin_dokumente      = Termin::model()->neueste_str_protokolle(0, date("Y-m-d 00:00:00", time() - 60 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
 		/** @var Termin[] $termine_zukunft */
 		/** @var Termin[] $termine_vergangenheit */
 		/** @var Termin[] $termin_dokumente */
