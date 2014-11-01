@@ -1,28 +1,39 @@
 <?php
 /**
- * @var Termin[] $termine
+ * @var array $termine
+ * @var bool $gremienname
  */
 
 ?>
-<ul class="terminliste"><?
+<ul class="terminliste2 list-group<? if ($gremienname) echo " mit_gremienname"; ?>"><?
 	foreach ($termine as $termin) {
+
 		$termine_ids[] = $termin["id"];
-		echo "<li><div class='termin'>" . CHtml::encode($termin["datum"] . ", " . $termin["ort"]) . "</div><div class='termindetails'>";
-		$gremien = array();
-		foreach ($termin["gremien"] as $name => $links) {
-			foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
+		echo '<li class="list-group-item"><div class="row-action-primary"><span class="glyphicon glyphicon-calendar" title="Termin"></span></div>';
+		echo '<div class="row-content"><h4 class="list-group-item-heading">';
+		echo CHtml::link($termin["datum_long"], $termin["link"]);
+		echo '</h4>';
+
+		if ($gremienname) {
+			echo '<div class="termindetails">';
+			$gremien = array();
+			foreach ($termin["gremien"] as $name => $links) {
+				foreach ($links as $link) $gremien[] = CHtml::link($name, $link);
+			}
+			echo implode(", ", $gremien);
+			echo '</div>';
 		}
-		echo implode(", ", $gremien);
-		echo "</div>";
+
+		echo '<address>' . str_replace(", ", "<br>", CHtml::encode($termin["ort"])) . '</address>';
 
 		if (count($termin["dokumente"]) > 0) {
-			echo "<ul class='dokumente'>";
+			echo '<ul class="dokumentenliste_small">';
 			foreach ($termin["dokumente"] as $dokument) {
 				/** @var AntragDokument $dokument */
-				echo "<li>" . CHtml::link($dokument->name, $dokument->getOriginalLink()) . "</li>";
+				echo '<li><span class="glyphicon glyphicon-file"></span>' . CHtml::link($dokument->name, $dokument->getOriginalLink()) . '</li>';
 			}
 			echo "</ul>";
 		}
-		echo "</li>";
+		echo '</div></li>';
 	}
 	?></ul>

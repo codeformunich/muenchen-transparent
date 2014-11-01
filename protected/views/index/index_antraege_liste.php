@@ -60,14 +60,14 @@ if (count($antraege) > 0) {
 		</div>
 	<?
 	}
-	echo '<div class="antragsliste2">';
+	echo '<ul class="antragsliste2">';
 	foreach ($antraege as $ant) {
 		if (!method_exists($ant, "getName")) {
-			echo '<div class="panel panel-danger">
-			<div class="panel-heading">Fehler</div><div class="panel-body">' . get_class($ant) . "</div></div>";
+			echo '<li class="panel panel-danger">
+			<div class="panel-heading">Fehler</div><div class="panel-body">' . get_class($ant) . "</div></li>";
 		} else {
 			$titel = $ant->getName(true);
-			echo '<div class="panel panel-primary">
+			echo '<li class="panel panel-primary">
 			<div class="panel-heading"><a href="' . CHtml::encode($ant->getLink()) . '"';
 			if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
 			echo '><span>';
@@ -114,10 +114,10 @@ if (count($antraege) > 0) {
 
 			echo "<ul class='dokumente'>";
 			echo $doklist;
-			echo "</ul></div></div>\n";
+			echo "</ul></div></li>\n";
 		}
 	}
-	echo '</div>';
+	echo '</ul>';
 }
 
 if ($datum_nav) {

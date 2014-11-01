@@ -407,7 +407,7 @@ class IndexController extends RISBaseController
 	public function actionSuche($code = "")
 	{
 		if (AntiXSS::isTokenSet("search_form")) {
-			$krits           = new RISSucheKrits();
+			$krits = new RISSucheKrits();
 			if (trim($_REQUEST["volltext"]) != "") $krits->addVolltextsucheKrit($_REQUEST["volltext"]);
 			if (trim($_REQUEST["antrag_nr"]) != "") $krits->addAntragNrKrit($_REQUEST["antrag_nr"]);
 			if ($_REQUEST["typ"] != "") $krits->addAntragTypKrit($_REQUEST["typ"]);
@@ -469,9 +469,9 @@ class IndexController extends RISBaseController
 			else $geodata = null;
 
 			$this->render("suchergebnisse", array_merge(array(
-				"krits"       => $krits,
-				"ergebnisse"  => $ergebnisse,
-				"geodata"     => $geodata,
+				"krits"      => $krits,
+				"ergebnisse" => $ergebnisse,
+				"geodata"    => $geodata,
 			), $benachrichtigungen_optionen));
 
 		} else {
@@ -587,20 +587,19 @@ class IndexController extends RISBaseController
 		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
 
-		$tage_zukunft       = 30;
-		$tage_vergangenheit = 30;
+		$tage_zukunft       = 60;
+		$tage_vergangenheit = 60;
 
 		$antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
-		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
-		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
-		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
+		$termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll(array('order' => 'termin DESC'));
+		$termin_dokumente = Termin::model()->neueste_stadtratsantragsdokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
+		$termine          = Termin::groupAppointments($termine);
 
 		$ba = Bezirksausschuss::model()->findByPk($ba_nr);
 		$this->render("ba_uebersicht", array_merge(array(
 			"ba"                           => $ba,
-			"termine_zukunft"              => $termine_zukunft,
-			"termine_vergangenheit"        => $termine_vergangenheit,
+			"termine"                      => $termine,
 			"termin_dokumente"             => $termin_dokumente,
 			"tage_vergangenheit"           => $tage_vergangenheit,
 			"tage_zukunft"                 => $tage_zukunft,
@@ -614,7 +613,8 @@ class IndexController extends RISBaseController
 	 * @param int $date_ts
 	 * @return array
 	 */
-	private function getStadtratsDokumenteByDate($date_ts) {
+	private function getStadtratsDokumenteByDate($date_ts)
+	{
 		$i = 0;
 		do {
 			$heute = (date("Y-m-d", $date_ts) == date("Y-m-d"));
@@ -804,7 +804,8 @@ class IndexController extends RISBaseController
 	}
 
 
-	public function actionQuickSearchPrefetch() {
+	public function actionQuickSearchPrefetch()
+	{
 		/** @var StadtraetIn[] $stadtraetInnen */
 		$stadtraetInnen = StadtraetIn::model()->findAll();
 

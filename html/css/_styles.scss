@@ -371,6 +371,39 @@ section.teaser {
   font-style: italic;
 }
 
+ul.terminliste2 {
+  &.mit_gremienname {
+    .list-group-item-heading {
+      a:link, a:visited {
+        color: black;
+      }
+    }
+  }
+  &.list-group .list-group-item {
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  address {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .row-action-primary .glyphicon {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 100%;
+    text-align: center;
+    line-height: 56px;
+    font-size: 20px;
+    color: white;
+    width: 56px;
+    height: 56px;
+  }
+  .dokumentenliste_small {
+    > li {
+      line-height: 25px;
+    }
+  }
+}
+
 ul.terminliste {
   list-style-type: none;
   margin: 0;
@@ -442,6 +475,7 @@ ul.terminliste {
         float: right;
         color: gray;
         font-size: 12px;
+        font-weight: normal;
       }
       .list-group-item-text {
         font-size: 12px;
@@ -454,6 +488,27 @@ ul.terminliste {
     margin-top: 10px;
     float: right;
     font-size: 16px;
+  }
+}
+
+.dokumentenliste_small {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+
+    > .add_meta {
+      float: right;
+      color: gray;
+      font-size: 12px;
+      font-weight: normal;
+    }
   }
 }
 

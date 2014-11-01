@@ -10326,17 +10326,19 @@ fieldset[disabled] .navbar .btn-link:focus {
 /*
   Hinweis: kein > benutzen, wg. CssToInlineStyles
 */
-div.antragsliste2 {
-  overflow: hidden; }
+.antragsliste2 {
+  overflow: hidden;
+  padding: 0;
+  margin: 0; }
   @media screen and (min-width: 992px) {
-    div.antragsliste2.two_cols, .two_cols div.antragsliste2 {
+    .antragsliste2.two_cols, .two_cols .antragsliste2 {
       -moz-column-count: 2;
       -moz-column-gap: 40px;
       -webkit-column-count: 2;
       -webkit-column-gap: 40px;
       column-count: 2;
       column-gap: 40px; } }
-  div.antragsliste2 .panel-primary {
+  .antragsliste2 .panel-primary {
     -webkit-column-break-inside: avoid;
     -moz-column-break-inside: avoid;
     -o-column-break-inside: avoid;
@@ -10348,23 +10350,23 @@ div.antragsliste2 {
     page-break-inside: avoid;
     overflow: hidden;
     /* Hack for Firefox to prevent preaking the element */ }
-    div.antragsliste2 .panel-primary .panel-heading a {
+    .antragsliste2 .panel-primary .panel-heading a {
       display: block;
       max-height: 37px;
       overflow: hidden; }
-      div.antragsliste2 .panel-primary .panel-heading a:link, div.antragsliste2 .panel-primary .panel-heading a:visited {
+      .antragsliste2 .panel-primary .panel-heading a:link, .antragsliste2 .panel-primary .panel-heading a:visited {
         color: white; }
-      div.antragsliste2 .panel-primary .panel-heading a span {
+      .antragsliste2 .panel-primary .panel-heading a span {
         display: block;
         max-height: 37px;
         position: relative;
         margin-right: -100px; }
-        div.antragsliste2 .panel-primary .panel-heading a span:before {
+        .antragsliste2 .panel-primary .panel-heading a span:before {
           content: ' ';
           float: right;
           width: 100px;
           height: 10px; }
-        div.antragsliste2 .panel-primary .panel-heading a span:after {
+        .antragsliste2 .panel-primary .panel-heading a span:after {
           content: ' ';
           position: absolute;
           top: 21px;
@@ -10387,11 +10389,12 @@ div.antragsliste2 {
           /* W3C */
           filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00428bca', endColorstr='#428bca', GradientType=1);
           /* IE6-8 */ }
-  div.antragsliste2 .add_meta {
+  .antragsliste2 .add_meta {
     float: right;
     color: gray;
-    font-size: 12px; }
-  div.antragsliste2 ul.dokumente {
+    font-size: 12px;
+    font-weight: normal; }
+  .antragsliste2 ul.dokumente {
     font-size: 12px; }
 
 ul.antragsliste {
@@ -10779,6 +10782,26 @@ section.teaser a {
   color: gray;
   font-style: italic; }
 
+ul.terminliste2.mit_gremienname .list-group-item-heading a:link, ul.terminliste2.mit_gremienname .list-group-item-heading a:visited {
+  color: black; }
+ul.terminliste2.list-group .list-group-item {
+  padding: 0;
+  margin-bottom: 20px; }
+ul.terminliste2 address {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+ul.terminliste2 .row-action-primary .glyphicon {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 100%;
+  text-align: center;
+  line-height: 56px;
+  font-size: 20px;
+  color: white;
+  width: 56px;
+  height: 56px; }
+ul.terminliste2 .dokumentenliste_small > li {
+  line-height: 25px; }
+
 ul.terminliste {
   list-style-type: none;
   margin: 0;
@@ -10831,7 +10854,8 @@ ul.terminliste {
     .themenverwandt_liste .list-group .list-group-item .add_meta {
       float: right;
       color: gray;
-      font-size: 12px; }
+      font-size: 12px;
+      font-weight: normal; }
     .themenverwandt_liste .list-group .list-group-item .list-group-item-text {
       font-size: 12px;
       font-weight: normal;
@@ -10840,6 +10864,22 @@ ul.terminliste {
     margin-top: 10px;
     float: right;
     font-size: 16px; }
+
+.dokumentenliste_small {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  .dokumentenliste_small > li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    line-height: 30px; }
+    .dokumentenliste_small > li > .add_meta {
+      float: right;
+      color: gray;
+      font-size: 12px;
+      font-weight: normal; }
 
 .suchergebnisse_holder2 .list-group .list-group-item a.overflow-fadeout-white {
   max-height: 66px; }

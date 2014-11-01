@@ -3,8 +3,8 @@
 $GLOBALS["RIS_URL_RULES"] = array(
 	RATSINFORMANT_BASE_URL . '/'                                                 => 'index/startseite',
 	RATSINFORMANT_BASE_URL . '/ajax-<datum_max:[0-9\-]+>'                        => 'index/antraegeAjax',
-	RATSINFORMANT_BASE_URL . '/ba/<ba_nr:\d+>_<ba_name:[^\/]*>'                  => 'index/ba',
-	RATSINFORMANT_BASE_URL . '/ba/<ba_nr:\d+>'                                   => 'index/ba',
+	RATSINFORMANT_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>_<ba_name:[^\/]*>'    => 'index/ba',
+	RATSINFORMANT_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>'                     => 'index/ba',
 	RATSINFORMANT_BASE_URL . '/stadtraetIn/<id:\d+>_<name:[^\/]*>'               => 'index/stadtraetIn',
 	RATSINFORMANT_BASE_URL . '/stadtraetIn/<id:\d+>'                             => 'index/stadtraetIn',
 	RATSINFORMANT_BASE_URL . '/tiles/<width:\d+>/<zoom:\d+>/<x:\d+>/<y:\d+>.png' => 'index/tileCache',

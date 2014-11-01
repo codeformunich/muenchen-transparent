@@ -5,41 +5,11 @@ class TermineController extends RISBaseController
 
 	/**
 	 * @var Termin[] $appointments
-	 * @return array[]
-	 */
-	private function groupAppointments($appointments)
-	{
-		$data = array();
-		foreach ($appointments as $appointment) {
-			$key = $appointment->termin . $appointment->sitzungsort;
-			if (!isset($data[$key])) {
-				$ts         = RISTools::date_iso2timestamp($appointment->termin);
-				$data[$key] = array(
-					"id"        => $appointment->id,
-					"datum"     => strftime("%e. %b., %H:%M", $ts),
-					"datum_iso" => $appointment->termin,
-					"datum_ts"  => $ts,
-					"gremien"   => array(),
-					"ort"       => $appointment->sitzungsort,
-					"tos"       => array(),
-					"dokumente" => $appointment->antraegeDokumente,
-				);
-			}
-			$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $appointment->id));
-			if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = array();
-			$data[$key]["gremien"][$appointment->gremium->name][] = $url;
-		}
-		foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
-		return $data;
-	}
-
-	/**
-	 * @var Termin[] $appointments
 	 * @return array
 	 */
 	private function getFullcalendarStruct($appointments)
 	{
-		$appointments_data = $this->groupAppointments($appointments);
+		$appointments_data = Termin::groupAppointments($appointments);
 		$jsdata            = array();
 		$has_weekend       = false;
 		foreach ($appointments_data as $appointment) {
@@ -111,8 +81,8 @@ class TermineController extends RISBaseController
 		/** @var Termin[] $termine_zukunft */
 		/** @var Termin[] $termine_vergangenheit */
 		/** @var Termin[] $termin_dokumente */
-		$gruppiert_zukunft       = $this->groupAppointments($termine_zukunft);
-		$gruppiert_vergangenheit = $this->groupAppointments($termine_vergangenheit);
+		$gruppiert_zukunft       = Termin::groupAppointments($termine_zukunft);
+		$gruppiert_vergangenheit = Termin::groupAppointments($termine_vergangenheit);
 
 		$fullcalendar_struct = $this->getFullCalendarStructByMonth(date("Y"), date("m"));
 

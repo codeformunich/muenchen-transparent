@@ -149,7 +149,8 @@ class Termin extends CActiveRecord implements IRISItem
 	/**
 	 * @return string
 	 */
-	public function getDate() {
+	public function getDate()
+	{
 		return $this->datum_letzte_aenderung;
 	}
 
@@ -216,9 +217,10 @@ class Termin extends CActiveRecord implements IRISItem
 	/**
 	 * @return AntragErgebnis[]
 	 */
-	public function ergebnisseSortiert() {
+	public function ergebnisseSortiert()
+	{
 		$ergebnisse = $this->antraegeErgebnisse;
-		usort($ergebnisse, function($ergebnis1, $ergebnis2) {
+		usort($ergebnisse, function ($ergebnis1, $ergebnis2) {
 			/** @var AntragErgebnis $ergebnis1 */
 			/** @var AntragErgebnis $ergebnis2 */
 
@@ -242,5 +244,38 @@ class Termin extends CActiveRecord implements IRISItem
 			return 0;
 		});
 		return $ergebnisse;
+	}
+
+
+	/**
+	 * @var Termin[] $appointments
+	 * @return array[]
+	 */
+	public static function groupAppointments($appointments)
+	{
+		$data = array();
+		foreach ($appointments as $appointment) {
+			$key = $appointment->termin . $appointment->sitzungsort;
+			if (!isset($data[$key])) {
+				$ts         = RISTools::date_iso2timestamp($appointment->termin);
+				$data[$key] = array(
+					"id"         => $appointment->id,
+					"link"       => $appointment->getLink(),
+					"datum"      => strftime("%e. %b., %H:%M", $ts),
+					"datum_long" => strftime("%e. %B, %H:%M Uhr", $ts),
+					"datum_iso"  => $appointment->termin,
+					"datum_ts"   => $ts,
+					"gremien"    => array(),
+					"ort"        => $appointment->sitzungsort,
+					"tos"        => array(),
+					"dokumente"  => $appointment->antraegeDokumente,
+				);
+			}
+			$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $appointment->id));
+			if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = array();
+			$data[$key]["gremien"][$appointment->gremium->name][] = $url;
+		}
+		foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
+		return $data;
 	}
 }

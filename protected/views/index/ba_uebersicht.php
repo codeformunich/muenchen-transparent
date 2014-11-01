@@ -13,43 +13,15 @@
  * @var array $geodata_overflow
  * @var string $datum_von
  * @var string $datum_bis
- * @var Termin[] $termine_zukunft
- * @var Termin[] $termine_vergangenheit
+ * @var array $termine
  * @var Termin[] $termin_dokumente
+ * @var Fraktion $fraktionen
  * @var int $tage_zukunft
  * @var int $tage_vergangenheit
  * @var int $tage_vergangenheit_dokumente
  */
 
 $this->layout = "//layouts/width_wide";
-
-/**
- * @var Termin[] $termine
- * @return array[]
- */
-function ba_gruppiere_termine($termine)
-{
-	$data = array();
-	foreach ($termine as $termin) {
-		$key = $termin->termin . $termin->sitzungsort;
-		if (!isset($data[$key])) {
-			$ts         = RISTools::date_iso2timestamp($termin->termin);
-			$data[$key] = array(
-				"id"        => $termin->id,
-				"datum"     => strftime("%e. %b., %H:%M", $ts),
-				"gremien"   => array(),
-				"ort"       => $termin->sitzungsort,
-				"tos"       => array(),
-				"dokumente" => $termin->antraegeDokumente,
-			);
-		}
-		$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->id));
-		if (!isset($data[$key]["gremien"][$termin->gremium->name])) $data[$key]["gremien"][$termin->gremium->name] = array();
-		$data[$key]["gremien"][$termin->gremium->name][] = $url;
-	}
-	foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
-	return $data;
-}
 
 $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" . $ba->name . ")";
 
@@ -75,9 +47,8 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 		<div id="ben_map_infos">
 			<div class="nichts" style="font-style: italic;">
 				<strong>Hinweis:</strong><br>
-				Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>Klicke dazu auf den Ort, bestimme dann
-				den
-				relevanten Radius.<br>
+				Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>
+				Klicke dazu auf den Ort, bestimme dann den relevanten Radius.<br>
 				<br>
 			</div>
 			<div class="infos" style="display: none;">
@@ -143,40 +114,45 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 		<div class="well">
 			<?
 			if (count($termin_dokumente) > 0) {
-				?>
-				<h3>Neue Sitzungsdokumente</h3>
-				<ul class="antragsliste"><?
-					foreach ($termin_dokumente as $termin) {
-						$ts = RISTools::date_iso2timestamp($termin->termin);
-						echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode(strftime("%e. %b., %H:%M", $ts) . ", " . $termin->gremium->name) . "</div>";
-						foreach ($termin->antraegeDokumente as $dokument) {
-							echo "<ul class='dokumente'><li>";
-							echo "<div style='float: right;'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
-							echo CHtml::link($dokument->name, $dokument->getOriginalLink());
-							echo "</li></ul>";
-						}
-						echo "</li>";
+				/** @var AntragDokument[] $dokumente */
+				$dokumente = array();
+				foreach ($termin_dokumente as $termin) {
+					foreach ($termin->antraegeDokumente as $dokument) {
+						$dokumente[] = $dokument;
 					}
-					?></ul>
+				}
+				usort($dokumente, function ($dok1, $dok2) {
+					/** @var AntragDokument $dok1 */
+					/** @var AntragDokument $dok2 */
+					$ts1 = RISTools::date_iso2timestamp($dok1->datum);
+					$ts2 = RISTools::date_iso2timestamp($dok2->datum);
+					if ($ts1 > $ts2) return -1;
+					if ($ts1 < $ts2) return 1;
+					return 0;
+				});
+				?>
+				<h3>Protokolle &amp; Tagesordnungen</h3>
+				<br>
+				<ul class="dokumentenliste_small">
+					<? foreach ($dokumente as $dokument) {
+						$name = str_replace(" (oeff)", "", $dokument->name);
+						$name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
+						echo '<li>';
+						echo "<div class='add_meta'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+						echo CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getOriginalLink());
+						echo '</li>';
+					} ?>
+				</ul>
 			<? } ?>
 
-			<h3>Kommende <abbr title="Bezirksausschuss - Stadtteil-&quot;Parlament&quot;">BA</abbr>-Termine</h3>
-			<?
-			$termine_ids = array();
+			<br>
 
-			$data = ba_gruppiere_termine($termine_zukunft);
-			if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
-			else $this->renderPartial("../termine/termin_liste", array(
-				"termine" => $data
-			));
-			?>
-
-			<h3>Vergangene <abbr title="Bezirksausschuss - Stadtteil-&quot;Parlament&quot;">BA</abbr>-Termine</h3>
+			<h3><abbr title="Bezirksausschuss - Stadtteil-&quot;Parlament&quot;">BA</abbr>-Termine</h3>
+			<br>
 			<?
-			$data = ba_gruppiere_termine($termine_vergangenheit);
-			if (count($data) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-			else $this->renderPartial("../termine/termin_liste", array(
-				"termine" => $data
+			$this->renderPartial("../termine/termin_liste", array(
+				"termine"     => $termine,
+				"gremienname" => false,
 			));
 			?>
 		</div>
@@ -184,7 +160,7 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 
 	<div class="col col-md-3 keine_dokumente"><?
 		$this->renderPartial("fraktionen", array(
-			"fraktionen"  => $fraktionen,
+			"fraktionen" => $fraktionen,
 		));?>
 	</div>
 

@@ -53,7 +53,8 @@
 			<?
 			if (count($termine_zukunft) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
 			else $this->renderPartial("termin_liste", array(
-				"termine" => $termine_zukunft
+				"termine"     => $termine_zukunft,
+				"gremienname" => true,
 			));
 			?>
 
@@ -61,7 +62,8 @@
 			<?
 			if (count($termine_vergangenheit) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
 			else $this->renderPartial("termin_liste", array(
-				"termine" => $termine_vergangenheit
+				"termine"     => $termine_vergangenheit,
+				"gremienname" => true,
 			)); ?>
 		</div>
 	</div>

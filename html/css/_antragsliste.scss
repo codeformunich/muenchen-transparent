@@ -3,8 +3,10 @@
 */
 
 
-div.antragsliste2 {
+.antragsliste2 {
   overflow: hidden;
+  padding: 0;
+  margin: 0;
 
   @media screen and (min-width: $screen-md) {
     &.two_cols, .two_cols & {
@@ -76,6 +78,7 @@ div.antragsliste2 {
     float: right;
     color: gray;
     font-size: 12px;
+    font-weight: normal;
   }
 
   ul.dokumente {
