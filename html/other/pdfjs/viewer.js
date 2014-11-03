@@ -5443,7 +5443,7 @@ function webViewerLoad(evt) {
 
 function webViewerInitialized() {
   var params = PDFView.parseQueryString(document.location.search.substring(1));
-  var file = 'file' in params ? params.file : DEFAULT_URL;
+  var file = 'file' in params ? params.file : document.getElementById("filename_store").innerHTML;
 
   var fileInput = document.createElement('input');
   fileInput.id = 'fileInput';

@@ -50,7 +50,7 @@ $geodata         = array();
 			<td>
 				<ul>
 					<? foreach ($termin->antraegeDokumente as $dok) {
-						echo "<li>" . CHtml::link($dok->name, $dok->getLinkToViewer()) . " (vom " . RISTools::datumstring($dok->datum) . ")</li>";
+						echo "<li>" . CHtml::link($dok->name, $dok->getLinkZumDokument()) . " (vom " . RISTools::datumstring($dok->datum) . ")</li>";
 					} ?>
 				</ul>
 			</td>
@@ -92,7 +92,7 @@ $geodata         = array();
 						echo "<li>" . CHtml::link("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
 					}
 					foreach ($ergebnis->dokumente as $dokument) {
-						echo "<li>" . CHtml::link($dokument->name, $dokument->getLinkToViewer());
+						echo "<li>" . CHtml::link($dokument->name, $dokument->getLinkZumDokument());
 						$x = explode("Beschluss:", $dokument->text_pdf);
 						if (count($x) > 1) echo " (" . CHtml::encode(trim($x[1])) . ")";
 						echo "</li>\n";

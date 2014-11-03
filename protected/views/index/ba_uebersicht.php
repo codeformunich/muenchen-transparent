@@ -140,7 +140,7 @@ $this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" 
 						$name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
 						echo '<li>';
 						echo "<div class='add_meta'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
-						echo CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkToViewer());
+						echo CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkZumDokument());
 						echo '</li>';
 					} ?>
 				</ul>

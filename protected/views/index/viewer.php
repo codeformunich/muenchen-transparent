@@ -16,6 +16,7 @@ limitations under the License.
 Adobe CMap resources are covered by their own copyright and license:
 http://sourceforge.net/adobe/cmap/wiki/License/
 -->
+<p id="filename_store" class="hidden">/pdf_proxy/RII2/RII/DOK/<?= $titel ?>.pdf</p>
 <div id="outerContainer" class="loadingInProgress" tabindex="1">
 
   <div id="sidebarContainer">

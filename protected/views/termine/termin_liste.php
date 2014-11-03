@@ -30,7 +30,7 @@
 			echo '<ul class="dokumentenliste_small">';
 			foreach ($termin["dokumente"] as $dokument) {
 				/** @var AntragDokument $dokument */
-				echo '<li>' . CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $dokument->name, $dokument->getLinkToViewer()) . '</li>';
+				echo '<li>' . CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $dokument->name, $dokument->getLinkZumDokument()) . '</li>';
 			}
 			echo "</ul>";
 		}
