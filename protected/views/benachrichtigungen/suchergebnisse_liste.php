@@ -33,7 +33,7 @@ if (count($dokumente) == 0) {
 				$risitem = $dok->getRISItem();
 				if (!$risitem) continue;
 
-				$dokurl = $dok->getOriginalLink();
+				$dokurl = $dok->getLinkToViewer();
 				?>
 				<li class='list-group-item'>
 					<div class="row-action-primary">

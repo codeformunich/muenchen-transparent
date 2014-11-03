@@ -132,7 +132,7 @@ $name = $antrag->getName(true);
 			});
 			zeile_anzeigen($docs, "Dokumente:", function ($dok) {
 				/** @var AntragDokument $dok */
-				echo date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getOriginalLink());
+				echo date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getLinkToViewer());
 			});
 
 			if (count($antrag->ergebnisse) > 0) {

@@ -35,7 +35,6 @@
 		// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
 		function pdf_resize() {
 			$("#mainContainer").height($("footer").offset().top - $("#mainContainer").offset().top - 20);
-			console.log(">sdvgfagfbd" + $("footer").offset().top - $("#mainContainer").offset().top - 20);
 		}
 
 		$(pdf_resize);

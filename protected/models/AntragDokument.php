@@ -330,6 +330,15 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	}
 
 
+	/**
+	 * @return string
+	 */
+	public function getLinkToViewer()
+	{
+		return Yii::app()->createUrl("viewer") . "?file=/pdf_proxy" .  $this->url;
+	}
+
+
 	private static $dokumente_cache = array();
 
 	/**

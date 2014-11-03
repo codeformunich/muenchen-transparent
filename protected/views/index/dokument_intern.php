@@ -9,7 +9,7 @@
 ?>
 <h1><?= CHtml::encode($dokument->name) ?></h1>
 
-<?= CHtml::link("Original", $dokument->getOriginalLink()) ?><br><br>
+<?= CHtml::link("Original", $dokument->getLinkToViewer()) ?><br><br>
 
 <div style="float: right; max-width: 300px;" class="well">
 	<h3>Ähnliche Dokumente</h3>

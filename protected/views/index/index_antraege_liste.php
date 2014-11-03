@@ -78,7 +78,7 @@ if (count($antraege) > 0) {
 			$doklist  = "";
 			foreach ($ant->dokumente as $dokument) {
 				//$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
-				$dokurl = $dokument->getOriginalLink();
+				$dokurl = $dokument->getLinkToViewer();
 				$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
 				if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
 				$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
