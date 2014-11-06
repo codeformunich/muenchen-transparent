@@ -16,6 +16,21 @@ limitations under the License.
 Adobe CMap resources are covered by their own copyright and license:
 http://sourceforge.net/adobe/cmap/wiki/License/
 -->
+
+<? $doc = AntragDokument::getCachedByID(preg_replace("/\D/", "", $titel)); ?>
+<ul class="breadcrumb" style="margin: -15px 0px 5px 20px; background: transparent;">
+	<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+<?
+if ($doc != null) {
+	if      ($doc->antrag_id  ) echo "<li><a href=" . Antrag   ::model()->findByPk($doc->antrag_id  )->getLink() . ">Anträge   </a><br></li>";
+	else if ($doc->ergebnis_id) echo "<li><a href=" . Ergebniss::model()->findByPk($doc->ergebnis_id)->getLink() . ">Ergebnisse</a><br></li>";
+	else if ($doc->termin_id  ) echo "<li><a href=" . Termin   ::model()->findByPk($doc->termin_id  )->getLink() . ">Termine   </a><br></li>";
+	else if ($doc->vorgang_id ) echo "<li class=\"active\">                                                          Vorgänge      <br></li>";
+}
+?>
+	<li class="active"><?= $doc->getName() ?></li>
+</ul>
+
 <p id="filename_store" class="hidden">/pdf_proxy/RII2/RII/DOK/<?= $titel ?>.pdf</p>
 <div id="outerContainer" class="loadingInProgress" tabindex="1">
 

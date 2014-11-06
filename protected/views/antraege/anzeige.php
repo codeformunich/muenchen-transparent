@@ -204,7 +204,10 @@ $name = $antrag->getName(true);
 			if ($antrag->vorgang) {
 				zeile_anzeigen($antrag->vorgang->getRISItemsByDate(), "Verwandte Seiten:", function ($item) {
 					/** @var IRISItem $item */
-					echo CHtml::link($item->getName(true), $item->getLink());
+					if (method_exists ($item , "getLinkZumDokument"))
+						echo CHtml::link($item->getName(true), $item->getLinkZumDokument());
+					else
+						echo CHtml::link($item->getName(true), $item->getLink());
 				});
 			}
 			?>
