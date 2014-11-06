@@ -6,15 +6,13 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 {
 	public function run($args)
 	{
-		$fp = fopen("/tmp/ris_daily.log", "a");
-		fwrite($fp, "Gestartet: " . date("Y-m-d H:i:s") . "\n");
-
+		echo "Gestartet: " . date("Y-m-d H:i:s");
 
 		try {
 			$parser = new StadtratTerminParser();
 			$parser->parseUpdate();
 
-			fwrite($fp, "Done Termine: " . date("Y-m-d H:i:s") . "\n");
+			echo "Done Termine: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Stadtrattermin", print_r($e, true));
 		}
@@ -23,7 +21,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 			$parser = new StadtratsvorlageParser();
 			$parser->parseUpdate();
 
-			fwrite($fp, "Done Vorlagen: " . date("Y-m-d H:i:s") . "\n");
+			echo "Done Vorlagen: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Vorlagen", print_r($e, true));
 		}
@@ -32,7 +30,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 			$parser = new StadtratsantragParser();
 			$parser->parseUpdate();
 
-			fwrite($fp, "Done Stadtratsanträge: " . date("Y-m-d H:i:s") . "\n");
+			echo "Done Stadtratsanträge: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StR-Anträge", print_r($e, true));
 		}
@@ -42,7 +40,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 			//$parser->setParseAlleAntraege(true);
 			$parser->parseUpdate();
 
-			fwrite($fp, "Done StadträtInnen: " . date("Y-m-d H:i:s") . "\n");
+			echo "Done StadträtInnen: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StadträtInnen", print_r($e, true));
 		}
@@ -53,7 +51,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 			$parser = new BATerminParser();
 			$parser->parseUpdate();
 
-			fwrite($fp, "Done BA Termine: " . date("Y-m-d H:i:s") . "\n");
+			echo "Done BA Termine: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Termine", print_r($e, true));
 		}
@@ -63,7 +61,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 			$parser = new BAInitiativeParser();
 			$parser->parseUpdate();
 
-			fwrite($fp, "Done BA Initiative: " . date("Y-m-d H:i:s") . "\n");
+			echo "Done BA Initiative: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Initiative", print_r($e, true));
 		}
@@ -73,7 +71,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 			$parser = new BAAntragParser();
 			$parser->parseUpdate();
 
-			fwrite($fp, "Done BA Anträge: " . date("Y-m-d H:i:s") . "\n");
+			echo "Done BA Anträge: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Anträge", print_r($e, true));
 		}
@@ -82,7 +80,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		RISMetadaten::setzeLetzteAktualisierung(date("Y-m-d H:i:s"));
 		RISMetadaten::recalcStats();
 
-		fwrite($fp, "Done: " . date("Y-m-d H:i:s") . "\n\n");
+		echo "Done: " . date("Y-m-d H:i:s");
 
 	}
 }

@@ -11,7 +11,7 @@
  * @property string $einstellungen
  * @property string $datum_letzte_benachrichtigung
  *
- * @property AntragAbo[] $abonnierte_antraege
+ * @property Vorgang[] $abonnierte_vorgaenge
  */
 class BenutzerIn extends CActiveRecord
 {
@@ -90,14 +90,7 @@ class BenutzerIn extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'aenderungsantragKommentare'         => array(self::HAS_MANY, 'AenderungsantragKommentar', 'verfasserIn_id'),
-			'aenderungsantragUnterstuetzerInnen' => array(self::HAS_MANY, 'AenderungsantragUnterstuetzer', 'unterstuetzerIn_id'),
-			'antragKommentare'                   => array(self::HAS_MANY, 'AntragKommentar', 'verfasserIn_id'),
-			'antragUnterstuetzerInnen'           => array(self::HAS_MANY, 'AntragUnterstuetzerInnen', 'unterstuetzerIn_id'),
-			'admin_veranstaltungen'              => array(self::MANY_MANY, 'Veranstaltung', 'veranstaltungs_admins(person_id, veranstaltung_id)'),
-			'admin_veranstaltungsreihen'         => array(self::MANY_MANY, 'Veranstaltungsreihe', 'veranstaltungsreihen_admins(person_id, veranstaltungsreihe_id)'),
-			'veranstaltungsreihenAbos'           => array(self::HAS_MANY, 'VeranstaltungsreihenAbo', 'person_id'),
-			'abonnierte_antraege'                => array(self::HAS_MANY, 'AntragAbo', 'antraege_abos(benutzerIn_id, antrag_id)'),
+			'abonnierte_vorgaenge' => array(self::MANY_MANY, 'Vorgang', 'benutzerInnen_vorgaenge_abos(benutzerInnen_id, vorgaenge_id)'),
 		);
 	}
 
@@ -116,23 +109,8 @@ class BenutzerIn extends CActiveRecord
 			'datum_angelegt'                => Yii::t('app', 'Angelegt Datum'),
 			'datum_letzte_benachrichtigung' => Yii::t('app', 'Datum der letzten Benachrichtigung'),
 			'einstellungen'                 => null,
-			'abonnierte_antraege'           => null,
+			'abonnierte_vorgaenge'          => Yii::t('app', 'Abonnierte Vorgänge'),
 		);
-	}
-
-	/**
-	 * @return CActiveDataProvider
-	 */
-	public function search()
-	{
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('email', $this->email, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 
 	/**
@@ -251,6 +229,18 @@ class BenutzerIn extends CActiveRecord
 	}
 
 	/**
+	 * @param string $new_pw
+	 * @throws Exception
+	 */
+	public function setPassword($new_pw) {
+		if (!defined("RATSINFORMANT_CALL_MODE") || RATSINFORMANT_CALL_MODE !== "shell") {
+			throw new Exception("Diese Funktion kann nur über die Kommandozeile aufgerufen werden.");
+		}
+		$this->pwd_enc = BenutzerIn::create_hash($new_pw);
+		$this->save(false);
+	}
+
+	/**
 	 * @param RISSucheKrits $krits
 	 */
 	public function addBenachrichtigung($krits)
@@ -332,8 +322,8 @@ class BenutzerIn extends CActiveRecord
 
 		$ergebnisse = $solr->select($select);
 		/** @var RISSolrDocument[] $documents */
-		$documents  = $ergebnisse->getDocuments();
-		$res        = array();
+		$documents = $ergebnisse->getDocuments();
+		$res       = array();
 		foreach ($documents as $document) {
 			$res[] = array(
 				"id"   => $document->id,
@@ -343,6 +333,88 @@ class BenutzerIn extends CActiveRecord
 		return $res;
 	}
 
+	/**
+	 * @param int $zeitspanne
+	 * @return array
+	 */
+	public function benachrichtigungsErgebnisse($zeitspanne) {
+		$benachrichtigungen = $this->getBenachrichtigungen();
+
+		if ($zeitspanne > 0) {
+			$neu_seit_ts = time() - $zeitspanne * 24 * 3600;
+			$neu_seit    = date("Y-m-d H:i:s", $neu_seit_ts);
+		} else {
+			$neu_seit    = $this->datum_letzte_benachrichtigung;
+			$neu_seit_ts = RISTools::date_iso2timestamp($neu_seit);
+		}
+
+		$ergebnisse = array(
+			"antraege"  => array(),
+			"termine"   => array(),
+			"vorgaenge" => array(),
+		);
+
+		$sql = Yii::app()->db->createCommand();
+		$sql->select("id")->from("antraege_dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
+		$data = $sql->queryColumn(array("id"));
+		if (count($data) > 0) {
+
+			$document_ids = array();
+			foreach ($data as $did) $document_ids[] = "id:\"Document:$did\"";
+
+			foreach ($benachrichtigungen as $benachrichtigung) {
+				$e = $this->queryBenachrichtigungen($document_ids, $benachrichtigung);
+				foreach ($e as $f) {
+					$d           = explode(":", $f["id"]);
+					$dokument_id = IntVal($d[1]);
+					$dokument    = AntragDokument::getCachedByID($dokument_id);
+					if (!$dokument) continue;
+					if ($dokument->antrag_id > 0) {
+						if (!isset($ergebnisse["antraege"][$dokument->antrag_id])) $ergebnisse["antraege"][$dokument->antrag_id] = array(
+							"antrag"    => $dokument->antrag,
+							"dokumente" => array()
+						);
+						if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = array(
+							"dokument" => AntragDokument::model()->findByPk($dokument_id),
+							"queries"  => array()
+						);
+						$ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
+					} elseif ($dokument->termin_id > 0) {
+						if (!isset($ergebnisse["termine"][$dokument->termin_id])) $ergebnisse["termine"][$dokument->termin_id] = array(
+							"termin"    => $dokument->termin,
+							"dokumente" => array()
+						);
+						if (!isset($ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id])) $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id] = array(
+							"dokument" => AntragDokument::model()->findByPk($dokument_id),
+							"queries"  => array()
+						);
+						$ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
+					}
+				}
+			}
+		}
+
+		foreach ($this->abonnierte_vorgaenge as $vorgang) {
+			foreach ($vorgang->antraege as $ant) {
+				if (RISTools::date_iso2timestamp($ant->datum_letzte_aenderung) < $neu_seit_ts) continue;
+				if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = array("vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => array());
+				$ant->findeAenderungen(time());
+				$ergebnisse["vorgaenge"][$vorgang->id]["neues"][] = $ant;
+			}
+			foreach ($vorgang->dokumente as $dok) {
+				if (RISTools::date_iso2timestamp($dok->datum) < $neu_seit_ts) continue;
+				if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = array("vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => array());
+				$ergebnisse["vorgaenge"][$vorgang->id]["neues"][] = $dok;
+			}
+			foreach ($vorgang->ergebnisse as $erg) {
+				if (RISTools::date_iso2timestamp($erg->datum_letzte_aenderung) < $neu_seit_ts) continue;
+				if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = array("vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => array());
+				$ergebnisse["vorgaenge"][$vorgang->id]["neues"][] = $erg;
+			}
+		}
+
+		return $ergebnisse;
+	}
 
 
 	/**

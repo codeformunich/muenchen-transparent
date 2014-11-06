@@ -18,6 +18,13 @@ chown -R www-data:www-data html/assets
 cp protected/config/main.template.php protected/config/main.php
 ```
 
+SASS-Dateien kompilieren:
+```bash
+apt-get install rubygems
+gem install sass
+scss --style compressed html/css/styles.scss > html/css/styles.css
+```
+
 Webserver-Konfiguration:
 * DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
 * Bei Apache regelt die html/.htaccess alles weitere. Bei nginx gibt es unter docs/nginx.conf eine Beispiel-Konfigurationsdatei
@@ -56,6 +63,12 @@ Code-Organisation
 * __protected/RISParser/__: Die Parser für das Scraping. Werden von den Kommandozeilentools aufgerufen und beschreiben das Modell.
 * __protected/views/__: Die Views
 
+Weitere Dokumentation
+---------------------
+
+* [nginx.conf](docs/nginx.conf) und [lighttpd.conf](docs/lighttpd.conf) zeigen Beispiel-Konfigurationen für nginx und Lighttpd. Von der Verwendung von lighttpd ist aber abzuraten, da einige Funktionen, wie z.B. Kalender oder der "Ältere Dokumente"-Knopf, wegen eines Problems mit dem url-Handlings nicht funktionieren. Wenn es jemanden weiß, wie man das Problem löst, möge er sich bitte in https://github.com/codeformunich/Ratsinformant/issues/10 melden
+* [Icon-Font bearbeiten](docs/fontello/updating.txt)
+
 Eingesetzte Shell-Programme
 ---------------------------
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.
@@ -76,5 +89,8 @@ Eingesetzte JS/CSS-Bibliotheken
 * [Leaflet](http://leafletjs.com/) für die Karten (mit dem Kartenmaterial von [Skobbler](http://www.skobbler.com/))
 * [Modernizr](http://modernizr.com/)
 * [Bootstrap](http://getbootstrap.com/)
+* [Material Design for Bootstrap](http://fezvrasta.github.io/bootstrap-material-design/)
 * [Fontello](http://fontello.com/)
+* [Moment.js](momentjs.com)
+* [FullCalendar](http://fullcalendar.io/)
 * ... To be continued

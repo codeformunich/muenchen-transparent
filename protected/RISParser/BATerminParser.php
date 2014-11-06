@@ -3,15 +3,38 @@
 class BATerminParser extends RISParser
 {
 
+	/**
+	 * @param AntragErgebnis[] $ergebnisse
+	 * @return AntragErgebnis
+	 */
+	private function loescheDoppelteErgebnisse($ergebnisse) {
+		if (count($ergebnisse) == 0) return null;
+		if (count($ergebnisse) == 1) return $ergebnisse[0];
+
+		$hat_dokumente = null;
+		foreach ($ergebnisse as $ergebnis) if (count($ergebnis->dokumente) > 0) $hat_dokumente = $ergebnis;
+		$behalten = ($hat_dokumente === null ? $ergebnisse[0] : $hat_dokumente);
+
+		foreach ($ergebnisse as $ergebnis) {
+			if ($ergebnis->id == $behalten->id) continue;
+			foreach ($ergebnis->dokumente as $dok) {
+				$dok->ergebnis_id = null;
+				$dok->save(false);
+			}
+			$ergebnis->delete();
+		}
+
+		return $behalten;
+	}
 
 	public function parse($termin_id)
 	{
 		$termin_id = IntVal($termin_id);
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
-		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=$termin_id");
-		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_dokumente.jsp?Id=$termin_id");
-		$html_to        = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
+		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=$termin_id");
+		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=$termin_id");
+		$html_to        = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
 
 		$daten                         = new Termin();
 		$daten->id                     = $termin_id;
@@ -94,23 +117,34 @@ class BATerminParser extends RISParser
 		}
 		if (!$alter_eintrag) $daten->save();
 
-		$match_top          = "<strong>(?<top>[0-9\.]+)<\/strong>";
+		$match_top          = "<strong>(?<top>(([0-9\.]+)|(&nbsp;)))<\/strong>";
 		$match_betreff      = "<t[hd][^>]*>(?<betreff>.*)<\/t[hd]>";
 		$match_vorlage      = "<t[hd][^>]*>(?<vorlage_holder>.*)<\/t[hd]>";
 		$match_entscheidung = "<td[^>]*>(?<entscheidung>.*)<\/td>";
 		preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
+
+		foreach ($matches["betreff"] as $i => $val) $matches["betreff"][$i] = static::text_clean_spaces($matches["betreff"][$i]);
+		$matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
 
 		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
 		$aenderungen_tops        = "";
 		$abschnitt_nr            = "";
 		$verwendete_top_betreffs = array();
 		for ($i = 0; $i < count($matches["top"]); $i++) {
-			$betreff = static::text_clean_spaces($matches["betreff"][$i]);
+			$betreff = $matches["betreff"][$i];
 			if (mb_stripos($betreff, "<strong>") !== false) {
-				$abschnitt_nr     = $matches["top"][$i];
+				$abschnitt_nr     = trim($matches["top"][$i], " \t\n\r\0\x0B.");
+				$betreff          = str_replace(array("<strong>", "</strong>"), array("", ""), $betreff);
+				if ($abschnitt_nr == "&nbsp;") {
+					if (preg_match("/TOP (?<top>[0-9.]+)+: (?<betreff>.*)/siu", $betreff, $matches2)) {
+						$abschnitt_nr = $matches2["top"];
+						$betreff = $matches2["betreff"];
+					} else {
+						$abschnitt_nr = "0";
+					}
+				}
 				$top_ueberschrift = true;
 				$top_nr           = $abschnitt_nr;
-				$betreff          = str_replace(array("<strong>", "</strong>"), array("", ""), $betreff);
 			} else {
 				$top_ueberschrift = false;
 				$top_nr           = $abschnitt_nr . "." . $matches["top"][$i];
@@ -140,27 +174,13 @@ class BATerminParser extends RISParser
 				}
 			}
 
-			/** @var AntragErgebnis $ergebnis */
+			$ergebnis = new AntragErgebnis();
+
 			if ($vorlage_id) {
-				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
-				if (is_null($ergebnis)) {
-					$ergebnis = new AntragErgebnis();
-					$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
-				}
 				$ergebnis->antrag_id = $vorlage_id;
 			} elseif ($baantrag_id) {
-				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
-				if (is_null($ergebnis)) {
-					$ergebnis = new AntragErgebnis();
-					$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
-				}
 				$ergebnis->antrag_id = $baantrag_id;
 			} else {
-				$ergebnis = AntragErgebnis::model()->findByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
-				if (is_null($ergebnis)) {
-					$ergebnis = new AntragErgebnis();
-					$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
-				}
 				$ergebnis->antrag_id = null;
 			}
 
@@ -169,21 +189,70 @@ class BATerminParser extends RISParser
 
 			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
 			$ergebnis->sitzungstermin_id      = $termin_id;
-			$ergebnis->sitzungstermin_datum   = $daten->termin;
+			$ergebnis->sitzungstermin_datum   = substr($daten->termin, 0, 10);
 			$ergebnis->top_nr                 = $top_nr;
 			$ergebnis->top_ueberschrift       = ($top_ueberschrift ? 1 : 0);
-			if ($ergebnis->entscheidung != $entscheidung) {
-				$aenderungen .= "Entscheidung: " . $ergebnis->entscheidung . " => " . $entscheidung . "\n";
-				$ergebnis->entscheidung = $entscheidung;
+			$ergebnis->entscheidung           = $entscheidung;
+			$ergebnis->top_betreff            = $betreff;
+			$ergebnis->gremium_id             = $daten->gremium_id;
+			$ergebnis->gremium_name           = $daten->gremium->name;
+
+			/** @var AntragErgebnis $altes_ergebnis */
+			if ($vorlage_id) {
+				$alte_ergebnisse = AntragErgebnis::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
+			} elseif ($baantrag_id) {
+				$alte_ergebnisse = AntragErgebnis::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
+			} else {
+				$alte_ergebnisse = AntragErgebnis::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
 			}
-			$ergebnis->top_betreff     = $betreff;
-			$ergebnis->gremium_id      = $daten->gremium_id;
-			$ergebnis->gremium_name    = $daten->gremium->name;
+			$altes_ergebnis = $this->loescheDoppelteErgebnisse($alte_ergebnisse);
+
+			$ergebnis_aenderungen = "";
+			if ($altes_ergebnis) {
+				if ($altes_ergebnis->sitzungstermin_id != $ergebnis->sitzungstermin_id) $ergebnis_aenderungen .= "Sitzung geändert: " . $altes_ergebnis->sitzungstermin_id . " => " . $ergebnis->sitzungstermin_id . "\n";
+				if ($altes_ergebnis->sitzungstermin_datum != $ergebnis->sitzungstermin_datum) $ergebnis_aenderungen .= "Sitzungstermin geändert: " . $altes_ergebnis->sitzungstermin_datum . " => " . $ergebnis->sitzungstermin_datum . "\n";
+				if ($altes_ergebnis->top_nr != $ergebnis->top_nr) $ergebnis_aenderungen .= "Position geändert: " . $altes_ergebnis->top_nr . " => " . $ergebnis->top_nr . "\n";
+				if ($altes_ergebnis->top_ueberschrift != $ergebnis->top_ueberschrift) $ergebnis_aenderungen .= "Bereich geändert: " . $altes_ergebnis->top_ueberschrift . " => " . $ergebnis->top_ueberschrift . "\n";
+				if ($altes_ergebnis->top_betreff != $ergebnis->top_betreff) $ergebnis_aenderungen .= "Betreff geändert: " . $altes_ergebnis->top_betreff . " => " . $ergebnis->top_betreff . "\n";
+				if ($altes_ergebnis->antrag_id != $ergebnis->antrag_id) $ergebnis_aenderungen .= "Antrag geändert: " . $altes_ergebnis->antrag_id . " => " . $ergebnis->antrag_id . "\n";
+				if ($altes_ergebnis->gremium_id != $ergebnis->gremium_id) $ergebnis_aenderungen .= "Gremium geändert: " . $altes_ergebnis->gremium_id . " => " . $ergebnis->gremium_id . "\n";
+				if ($altes_ergebnis->gremium_name != $ergebnis->gremium_name) $ergebnis_aenderungen .= "Gremium geändert: " . $altes_ergebnis->gremium_name . " => " . $ergebnis->gremium_name . "\n";
+				if ($altes_ergebnis->entscheidung != $ergebnis->entscheidung) $ergebnis_aenderungen .= "Entscheidung: " . $altes_ergebnis->entscheidung . " => " . $ergebnis->entscheidung . "\n";
+				if ($altes_ergebnis->beschluss_text != $ergebnis->beschluss_text) $ergebnis_aenderungen .= "Beschluss: " . $altes_ergebnis->beschluss_text . " => " . $ergebnis->beschluss_text . "\n";
+
+				if ($ergebnis_aenderungen != "") {
+					$aend              = new RISAenderung();
+					$aend->ris_id      = $altes_ergebnis->id;
+					$aend->ba_nr       = NULL;
+					$aend->typ         = RISAenderung::$TYP_BA_ERGEBNIS;
+					$aend->datum       = new CDbExpression("NOW()");
+					$aend->aenderungen = $ergebnis_aenderungen;
+					if (!$aend->save()) {
+						var_dump($aend->getErrors());
+					}
+
+					$altes_ergebnis->copyToHistory();
+					$ergebnis->id = $altes_ergebnis->id;
+					$altes_ergebnis->setAttributes($ergebnis->getAttributes(), false);
+					if (!$altes_ergebnis->save()) {
+						echo "StadtratAntrag 1\n";
+						var_dump($alter_eintrag->getErrors());
+						die("Fehler");
+					}
+					$ergebnis = $altes_ergebnis;
+
+					$aenderungen_tops .= "TOP geändert: " . $ergebnis->top_nr . ": " . $ergebnis->top_betreff . "\n   "  . str_replace("\n", "\n   ", $ergebnis_aenderungen) . "\n";
+				}
+			} else {
+				$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
+				$ergebnis->save();
+			}
+
 			$verwendete_top_betreffs[] = $ergebnis->top_betreff;
 
 			/*
 			if (!is_null($vorlage_id)) {
-				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
+				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
 				preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
 				$beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
 				if ($ergebnis->beschluss_text != $beschluss) {
@@ -193,16 +262,18 @@ class BATerminParser extends RISParser
 			}
 			*/
 
-			$ergebnis->save();
-
 			preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
-			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII2/RII/DOK/TOP/") {
+			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII/RII/DOK/TOP/") {
 				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_BESCHLUSS, $ergebnis, array("url" => $matches2["url"], "name" => $matches2["title"]));
 			}
 		}
 
 		foreach ($bisherige_tops as $top) if (!in_array($top->top_betreff, $verwendete_top_betreffs)) {
-			$aenderungen_tops .= "TOP entfernt: " . $top->top_betreff . "\n";
+			$aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ": " . $top->top_betreff . "\n";
+			foreach ($top->dokumente as $dok) {
+				$dok->ergebnis_id = null;
+				$dok->save(false);
+			}
 			$top->delete();
 		}
 
@@ -231,15 +302,6 @@ class BATerminParser extends RISParser
 					die("Fehler");
 				}
 			}
-
-			$aend              = new RISAenderung();
-			$aend->ris_id      = $daten->id;
-			$aend->ba_nr       = $daten->ba_nr;
-			$aend->typ         = RISAenderung::$TYP_BA_TERMIN;
-			$aend->datum       = new CDbExpression("NOW()");
-			$aend->aenderungen = $aenderungen;
-			$aend->save();
-
 		}
 
 		foreach ($dokumente as $dok) {
@@ -249,7 +311,7 @@ class BATerminParser extends RISParser
 		if ($aenderungen != "") {
 			$aend              = new RISAenderung();
 			$aend->ris_id      = $daten->id;
-			$aend->ba_nr       = NULL;
+			$aend->ba_nr       = $daten->ba_nr;
 			$aend->typ         = RISAenderung::$TYP_BA_TERMIN;
 			$aend->datum       = new CDbExpression("NOW()");
 			$aend->aenderungen = $aenderungen;
@@ -267,7 +329,7 @@ class BATerminParser extends RISParser
 	{
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin Seite $seite\n";
 		$add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
-		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
+		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
 		$txt  = explode("<table class=\"ergebnistab\" ", $text);
 		$txt  = explode("<!-- tabellenfuss", $txt[1]);
 
@@ -281,7 +343,8 @@ class BATerminParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz = 4770;
+		//$anz = 4850;
+		$anz = 2600;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, true);

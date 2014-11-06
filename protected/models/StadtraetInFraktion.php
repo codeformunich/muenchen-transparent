@@ -46,9 +46,6 @@ class StadtraetInFraktion extends CActiveRecord
 			array('wahlperiode', 'length', 'max' => 30),
 			array('datum_von, datum_bis', 'length', 'max' => 10),
 			array('funktion', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('stadtraetIn_id, fraktion_id, wahlperiode, mitgliedschaft, funktion, datum_von, datum_bis', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -79,29 +76,5 @@ class StadtraetInFraktion extends CActiveRecord
 			'datum_von'      => 'Von',
 			'datum_bis'      => 'Bis',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('stadtraetIn_id', $this->stadtraetIn_id);
-		$criteria->compare('fraktion_id', $this->fraktion_id);
-		$criteria->compare('datum_bis', $this->datum_bis);
-		$criteria->compare('datum_von', $this->datum_von);
-		$criteria->compare('wahlperiode', $this->wahlperiode, true);
-		$criteria->compare('mitgliedschaft', $this->mitgliedschaft, true);
-		$criteria->compare('funktion', $this->funktion, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 }

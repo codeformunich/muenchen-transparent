@@ -112,6 +112,9 @@ class RISSucheKrits
 				case "geo":
 					$str .= rawurlencode($krit["lng"] . "-" . $krit["lat"] . "-" . $krit["radius"]);
 					break;
+				case "referat":
+					$str .= $krit["referat_id"];
+					break;
 				case "antrag_nr":
 					$str .= rawurlencode($krit["suchbegriff"]);
 					break;
@@ -130,6 +133,7 @@ class RISSucheKrits
 			$krits[] = $krit["typ"];
 			if ($krit["typ"] == "geo") $vals[] = $krit["lng"] . "-" . $krit["lat"] . "-" . $krit["radius"];
 			elseif ($krit["typ"] == "ba") $vals[] = $krit["ba_nr"];
+			elseif ($krit["typ"] == "referat") $vals[] = $krit["referat_id"];
 			else $vals[] = $krit["suchbegriff"];
 		}
 		return array("krit_typ" => $krits, "krit_val" => $vals);
@@ -172,8 +176,11 @@ class RISSucheKrits
 				$y = explode("-", $request["krit_val"][$i]);
 				$x->addGeoKrit($y[0], $y[1], $y[2]);
 				break;
+			case "referat":
+				$x->addReferatKrit($request["krit_val"][$i]);
+				break;
 			case "antrag_nr":
-				$x->addAntragNrKrit($request["krit_val"]);
+				$x->addAntragNrKrit($request["krit_val"][$i]);
 				break;
 		}
 		return $x;
@@ -208,6 +215,10 @@ class RISSucheKrits
 			case "geo":
 				$helper = $select->getHelper();
 				$select->createFilterQuery("geo")->setQuery($helper->geofilt("geo", $krit["lat"], $krit["lng"], ($krit["radius"] / 1000)));
+				break;
+			case "referat":
+				$helper = $select->getHelper();
+				$select->createFilterQuery("referat")->setQuery("referat_id:" . $helper->escapeTerm($krit["referat_id"]));
 				break;
 			case "antrag_nr":
 				/** @var Solarium\QueryType\Select\Query\Component\DisMax $dismax */
@@ -246,6 +257,9 @@ class RISSucheKrits
 				$helper = $select->getHelper();
 				return $helper->geofilt("geo", $krit["lat"], $krit["lng"], ($krit["radius"] / 1000));
 				break;
+			case "referat":
+				return "referat_id:" . $krit["referat_id"];
+				break;
 			case "antrag_nr":
 				return "*" . $krit["antrag_nr"] . "*";
 				break;
@@ -273,9 +287,9 @@ class RISSucheKrits
 			case "betreff":
 				return "Dokumente mit \"" . $this->krits[0]["suchbegriff"] . "\" im Betreff";
 			case "antrag_typ":
-				return "Dokumente des Typs \"" . $this->krits[0]["suchbegriff"] . "\"";
+				return "Dokumente des Typs \"" . AntragDokument::$TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
 			case "volltext":
-				return "Dokumente, die den Suchausdruck \"" . $this->krits[0]["suchbegriff"] . "\" enthalten";
+				return "Volltextsuche nach \"" . $this->krits[0]["suchbegriff"] . "\"";
 			case "ba":
 				/** @var Bezirksausschuss $ba */
 				$ba = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $this->krits[0]["ba_nr"]));
@@ -283,8 +297,53 @@ class RISSucheKrits
 			case "geo":
 				$ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
 				return "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
+			case "referat":
+				/** @var Referat $ref */
+				$ref = Referat::model()->findByPk($this->krits[0]["referat_id"]);
+				return $ref->name;
+				break;
 			case "antrag_nr":
-				return "Dokumente zum Antrag Nr. " . $this->krits[0]["suchbegriff"];
+				return "Antrag Nr. " . str_replace("*", " ", $this->krits[0]["suchbegriff"]);
+		}
+		if (count($this->krits) > 1) {
+			$krits = array();
+			foreach ($this->krits as $cr) switch ($cr["typ"]) {
+				case "betreff":
+					$krits[] = "mit \"" . $cr["suchbegriff"] . "\" im Betreff";
+					break;
+				case "antrag_typ":
+					$krits[] = "vom Typ \"" . AntragDokument::$TYPEN_ALLE[$cr["suchbegriff"]] . "\"";
+					break;
+				case "volltext":
+					$krits[] = "mit dem Suchausdruck \"" . $cr["suchbegriff"] . "\"";
+					break;
+				case "ba":
+					/** @var Bezirksausschuss $ba */
+					$ba      = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $cr["ba_nr"]));
+					$krits[] = "aus dem Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
+					break;
+				case "geo":
+					$ort     = OrtGeo::findClosest($this->krits[0]["lng"], $cr["lat"]);
+					$krits[] = "mit einem Ortsbezug (ungefähr: " . IntVal($cr["radius"]) . "m um \"" . $ort->ort . "\")";
+					break;
+				case "antrag_nr":
+					$krits[] = "zum Antrag Nr. " . $cr["suchbegriff"];
+					break;
+				case "referat":
+					/** @var Referat $ref */
+					$ref = Referat::model()->findByPk($this->krits[0]["referat_id"]);
+					$krits[] = "im Zuständigkeitsbereich des " . $ref->name;
+					break;
+				default:
+					$krits[] = json_encode($cr);
+			}
+			$text = "Dokumente ";
+			for ($i = 0; $i < (count($krits) - 1); $i++) {
+				$text .= $krits[$i];
+				if ($i < (count($krits) - 2)) $text .= ", ";
+			}
+			$text .= " und " . $krits[count($krits) - 1];
+			return $text;
 		}
 		return json_encode($this->krits);
 	}
@@ -333,6 +392,15 @@ class RISSucheKrits
 		return $this;
 	}
 
+	public function addReferatKrit($referat_id)
+	{
+		$this->krits[] = array(
+			"typ"        => "referat",
+			"referat_id" => IntVal($referat_id)
+	);
+		return $this;
+	}
+
 	/**
 	 * @param $str
 	 * @return $this
@@ -377,11 +445,12 @@ class RISSucheKrits
 	 * @param string $str
 	 * @return $this
 	 */
-	public function addAntragNrKrit($str) {
-		$str = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $str);
-		$str = preg_replace("/ +/siu", "*", $str);
+	public function addAntragNrKrit($str)
+	{
+		$str           = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $str);
+		$str           = preg_replace("/ +/siu", "*", $str);
 		$this->krits[] = array(
-			"typ" => "antrag_nr",
+			"typ"         => "antrag_nr",
 			"suchbegriff" => $str,
 		);
 		return $this;

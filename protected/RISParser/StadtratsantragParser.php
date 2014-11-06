@@ -11,9 +11,9 @@ class StadtratsantragParser extends RISParser
 
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
-		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $antrag_id);
-		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_dokumente.jsp?risid=" . $antrag_id);
-		//$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
+		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id);
+		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_dokumente.jsp?risid=" . $antrag_id);
+		//$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
 		if (trim($html_details) == "" || trim($html_dokumente) == "") return;
 
@@ -27,7 +27,7 @@ class StadtratsantragParser extends RISParser
 
 		$dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
 		if (!isset($dat_details[1])) {
-			echo $antrag_id . " - " . "http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
+			echo $antrag_id . " - " . "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
 			var_dump($dat_details);
 			return;
 		}
@@ -96,7 +96,7 @@ class StadtratsantragParser extends RISParser
 		$dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
 		$dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
 		preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-		http://www.ris-muenchen.de/RII2/RII/ris_antrag_ergebnisse.jsp?risid=6127
+		http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
 		*/
 
 		$aenderungen = "";
@@ -167,7 +167,7 @@ class StadtratsantragParser extends RISParser
 
 	public function parseSeite($seite, $first)
 	{
-		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_trefferliste.jsp?txtPosition=$seite");
+		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_trefferliste.jsp?txtPosition=$seite");
 		$txt  = explode("<!-- ergebnisreihen -->", $text);
 		if (!isset($txt[1])) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo "- nichts\n";
@@ -184,7 +184,7 @@ class StadtratsantragParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 14600;
+		$anz   = 14800;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

@@ -7,12 +7,18 @@
 $this->pageTitle = "Themen";
 
 ?>
-	<h1>Themen</h1>
-	<a href="<?= CHtml::encode(Yii::app()->createUrl("index/stadtrat")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
+
+	<section class="well">
+		<ul class="breadcrumb">
+			<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+			<li class="active">Themen</li>
+		</ul>
+		<h1>Themen</h1>
+	</section>
 
 	<div class="row" id="listen_holder">
-		<div class="col col-lg-4 keine_dokumente">
-			<section class="start_berichte">
+		<div class="col col-md-6">
+			<section class="start_berichte well">
 				<h3>Städtische Referate</h3>
 				<ul><?
 					foreach ($referate as $ref) {
@@ -24,12 +30,15 @@ $this->pageTitle = "Themen";
 				</ul>
 			</section>
 		</div>
-		<div class="col col-lg-4 keine_dokumente">
+		<div class="col col-md-6">
+			<section class="start_berichte well">
+				<h3>Themen</h3>
+				<br>
+				[@TODO]
+				<br><br>
 
-		</div>
-		<div class="col col-lg-4 keine_dokumente">
-			<section class="start_berichte">
-				<a href="<?=CHtml::encode(Yii::app()->createUrl("index/highlights"))?>" class="weitere">Weitere</a>
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/highlights")) ?>" class="weitere">Weitere</a>
+
 				<h3>Berichte / Highlights</h3>
 				<ul><?
 					foreach ($highlights as $dok) {

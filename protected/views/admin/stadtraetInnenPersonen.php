@@ -9,6 +9,7 @@
 
 
 ?>
+<section class="well">
 
 <h1>StadträtInnen/Personen-Verknüpfung</h1>
 
@@ -17,7 +18,7 @@ if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</d
 ?>
 
 <form method="POST" style="overflow: auto;">
-	<div style="float: left; width: 500px;">
+	<div style="float: left; width: 400px;">
 		<? foreach ($personen as $person) {
 			echo "<label ";
 			if (!is_null($person->stadtraetIn) || $person->typ == Person::$TYP_FRAKTION) echo "style='color: gray;';";
@@ -28,7 +29,7 @@ if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</d
 		} ?>
 	</div>
 
-	<div style="float: left; width: 500px;">
+	<div style="float: left; width: 400px;">
 		<label><input type="checkbox" name="fraktion"> Als Fraktion markieren</label><br><br>
 		<? foreach ($stadtraetInnen as $stadtraetIn) {
 			echo "<label><input type='radio' name='stadtraetIn' value='" . $stadtraetIn->id . "'>";
@@ -48,3 +49,4 @@ if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</d
 		<button type="submit" class="btn btn-primary" name="<?=AntiXSS::createToken("save")?>">Speichern</button>
 	</div>
 </form>
+</section>

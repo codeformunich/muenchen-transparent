@@ -100,7 +100,7 @@ class IndexController extends RISBaseController
 			$hl->setSimplePrefix('<b>');
 			$hl->setSimplePostfix('</b>');
 
-			$ergebnisse = $solr->select($select);
+			$ergebnisse = $solr->execute($select);
 
 			$data = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
 		} else {
@@ -118,21 +118,6 @@ class IndexController extends RISBaseController
 		));
 	}
 
-	public function actionAjaxEmailIstRegistriert($email)
-	{
-		$person = BenutzerIn::model()->findAll(array(
-			"condition" => "email='" . addslashes($email) . "' AND pwd_enc != ''"
-		));
-		if (count($person) > 0) {
-			/** @var BenutzerIn $p */
-			$p = $person[0];
-			if ($p->email_bestaetigt) echo "1";
-			else echo "0";
-		} else {
-			echo "-1";
-		}
-	}
-
 	/**
 	 * @param RISSucheKrits $curr_krits
 	 * @param string $code
@@ -145,17 +130,22 @@ class IndexController extends RISBaseController
 		$correct_person      = null;
 		$wird_benachrichtigt = false;
 
+		$do_benachrichtigung_add = AntiXSS::isTokenSet("benachrichtigung_add"); // Token ändert sich möglicherweise beim Login
+		$do_benachrichtigung_del = AntiXSS::isTokenSet("benachrichtigung_del");
+
 		list($msg_ok, $msg_err) = $this->performLoginActions();
 
 		if (!$user->isGuest) {
 			/** @var BenutzerIn $ich */
 			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
 
-			if (AntiXSS::isTokenSet("benachrichtigung_add")) {
+			if ($do_benachrichtigung_add) {
 				$ich->addBenachrichtigung($curr_krits);
+				$msg_ok .= 'Die Benachrichtigung wurde hinzugefügt.';
 			}
-			if (AntiXSS::isTokenSet("benachrichtigung_del")) {
+			if ($do_benachrichtigung_del) {
 				$ich->delBenachrichtigung($curr_krits);
+				$msg_ok .= 'Die Benachrichtigung wurde entfernt.';
 			}
 
 			$wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);
@@ -213,7 +203,7 @@ class IndexController extends RISBaseController
 			} else {
 				$link = $name = "";
 			}
-			if (strlen($name) > 150) $name = substr($name, 0, 148) . "...";
+			if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
 			if ($link != "") $link = "<div class='antraglink'>" . CHtml::link($name, $link) . "</div>";
 			foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0 && ($filter_krits === null || $filter_krits->filterGeo($ort->ort))) {
 				$str = $link;
@@ -266,7 +256,7 @@ class IndexController extends RISBaseController
 				} else {
 					$link = $name = "";
 				}
-				if (strlen($name) > 150) $name = substr($name, 0, 148) . "...";
+				if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
 				if ($link != "") $link = "<div class='antraglink'>" . CHtml::link($name, $link) . "</div>";
 				$str = $link;
 				$str .= "<div class='ort_dokument'>";
@@ -298,7 +288,7 @@ class IndexController extends RISBaseController
 			foreach ($ant->dokumente as $dokument) {
 				foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0) {
 					$name = $ant->getName();
-					if (strlen($name) > 150) $name = substr($name, 0, 148) . "...";
+					if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
 					$str = "<div class='antraglink'>" . CHtml::link($name, $ant->getLink()) . "</div>";
 					$str .= "<div class='ort_dokument'>";
 					$str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
@@ -316,7 +306,7 @@ class IndexController extends RISBaseController
 				}
 			}
 		}
-		foreach ($geodata_nach_dok as $dok_geo) if (count($dok_geo) >= 20) {
+		foreach ($geodata_nach_dok as $dok_geo) if (count($dok_geo) >= 10) {
 			$geodata_overflow[] = $dok_geo;
 		} else {
 			foreach ($dok_geo as $d) $geodata[] = $d;
@@ -380,7 +370,7 @@ class IndexController extends RISBaseController
 					"condition" => "dokumente_2.id IN (" . implode(", ", $dokument_ids) . ")"
 				)
 			))->findByPk($dok_id);
-			if ($ant->antrag) {
+			if ($ant && $ant->antrag) {
 				$antraege[$ant->antrag_id] = $ant->antrag;
 			}
 		}
@@ -417,10 +407,26 @@ class IndexController extends RISBaseController
 	public function actionSuche($code = "")
 	{
 		if (AntiXSS::isTokenSet("search_form")) {
-			$krits           = new RISSucheKrits();
+			$krits = new RISSucheKrits();
 			if (trim($_REQUEST["volltext"]) != "") $krits->addVolltextsucheKrit($_REQUEST["volltext"]);
 			if (trim($_REQUEST["antrag_nr"]) != "") $krits->addAntragNrKrit($_REQUEST["antrag_nr"]);
 			if ($_REQUEST["typ"] != "") $krits->addAntragTypKrit($_REQUEST["typ"]);
+			if ($_REQUEST["referat"] > 0) $krits->addReferatKrit($_REQUEST["referat"]);
+
+			/*
+			 * @TODO: Setzt voraus: offizielles Datum eines Dokuments ermitteln
+			$datum_von = $datum_bis = null;
+			if ($_REQUEST["datum_von"] != "") {
+				$x = explode(".", $_REQUEST["datum_von"]);
+				if (count($x) == 3) $datum_von = $x[2] . "-" . $x[1] . "-" . $x[0] . " 00:00:00";
+			}
+			if ($_REQUEST["datum_bis"] != "") {
+				$x = explode(".", $_REQUEST["datum_bis"]);
+				if (count($x) == 3) $datum_bis = $x[2] . "-" . $x[1] . "-" . $x[0] . " 23:59:59";
+			}
+			if ($datum_von || $datum_bis) $krits->addDatumKrit($datum_von, $datum_bis);
+			*/
+
 		} elseif (isset($_REQUEST["suchbegriff"])) {
 			$suchbegriff     = $_REQUEST["suchbegriff"];
 			$this->suche_pre = $suchbegriff;
@@ -463,9 +469,9 @@ class IndexController extends RISBaseController
 			else $geodata = null;
 
 			$this->render("suchergebnisse", array_merge(array(
-				"krits"       => $krits,
-				"ergebnisse"  => $ergebnisse,
-				"geodata"     => $geodata,
+				"krits"      => $krits,
+				"ergebnisse" => $ergebnisse,
+				"geodata"    => $geodata,
 			), $benachrichtigungen_optionen));
 
 		} else {
@@ -581,20 +587,23 @@ class IndexController extends RISBaseController
 		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
 
-		$tage_zukunft       = 30;
-		$tage_vergangenheit = 30;
+		$tage_zukunft       = 60;
+		$tage_vergangenheit = 60;
 
 		$antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
-		$termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
-		$termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
-		$termin_dokumente      = Termin::model()->neueste_stadtratsantragsdokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
+		$termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll(array('order' => 'termin DESC'));
+		$termin_dokumente = Termin::model()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
+		$termine          = Termin::groupAppointments($termine);
 
-		$ba = Bezirksausschuss::model()->findByPk($ba_nr);
+		/** @var Bezirksausschuss $ba */
+		$ba      = Bezirksausschuss::model()->findByPk($ba_nr);
+		$gremien = $ba->gremien;
+
 		$this->render("ba_uebersicht", array_merge(array(
 			"ba"                           => $ba,
-			"termine_zukunft"              => $termine_zukunft,
-			"termine_vergangenheit"        => $termine_vergangenheit,
+			"gremien"                      => $gremien,
+			"termine"                      => $termine,
 			"termin_dokumente"             => $termin_dokumente,
 			"tage_vergangenheit"           => $tage_vergangenheit,
 			"tage_zukunft"                 => $tage_zukunft,
@@ -604,60 +613,23 @@ class IndexController extends RISBaseController
 		), $antraege_data));
 	}
 
-
 	/**
-	 * @param string $datum_max
+	 * @param int $date_ts
+	 * @return array
 	 */
-	public function actionStadtratAntraegeAjaxDatum($datum_max)
+	private function getStadtratsDokumenteByDate($date_ts)
 	{
-		$x    = explode("-", $datum_max);
-		$time = mktime(0, 0, 0, $x[1], $x[2], $x[0]);
-
 		$i = 0;
 		do {
-			$datum = date("Y-m-d", $time - 3600 * 24 * $i);
-			/** @var array|Antrag[] $antraege */
-			$antraege = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum . " 00:00:00", $datum . " 23:59:59")->findAll();
-			$i++;
-		} while (count($antraege) == 0);
-
-		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
-
-		ob_start();
-		$this->renderPartial('index_antraege_liste', array(
-			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
-			"aeltere_url_std"   => $this->createUrl("index/stadtrat", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum . " 00:00:00") - 1))),
-			"neuere_url_ajax"   => null,
-			"neuere_url_std"    => null,
-			"antraege"          => $antraege,
-			"datum"             => $datum,
-			"weiter_links_oben" => true,
-		));
-
-		Header("Content-Type: application/json; charset=UTF-8");
-		echo json_encode(array(
-			"datum"            => $datum,
-			"html"             => ob_get_clean(),
-			"geodata"          => $geodata,
-			"geodata_overflow" => $geodata_overflow
-		));
-		Yii::app()->end();
-	}
-
-	/**
-	 * @param string $datum
-	 */
-	public function actionStadtrat($datum = "")
-	{
-		$this->top_menu = "stadtrat";
-		$this->performLoginActions();
-
-		$this->load_leaflet_css      = true;
-		$this->load_leaflet_draw_css = true;
-
-		if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum)) {
-			$datum_von = $datum . " 00:00:00";
-			$datum_bis = $datum . " 23:59:59";
+			$heute = (date("Y-m-d", $date_ts) == date("Y-m-d"));
+			if ($heute) $i = 1;
+			if ($heute) {
+				$datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
+				$datum_bis = date("Y-m-d H:i:s");
+			} else {
+				$datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
+				$datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
+			}
 			/** @var array|Antrag[] $antraege */
 			$antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
 			$antraege_stadtrat = $antraege_sonstige = array();
@@ -665,32 +637,69 @@ class IndexController extends RISBaseController
 				if ($ant->ba_nr === null) $antraege_stadtrat[] = $ant;
 				else $antraege_sonstige[] = $ant;
 			}
+			$i++;
+		} while (count($antraege) == 0);
+		return array($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis);
+	}
+
+
+	/**
+	 * @param string $datum_max
+	 */
+	public function actionStadtratAntraegeAjaxDatum($datum_max)
+	{
+		$time = RISTools::date_iso2timestamp($datum_max);
+		list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($time);
+		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
+
+		$gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von . " 00:00:00") - 1);
+
+		ob_start();
+		$this->renderPartial('index_antraege_liste', array(
+			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => $gestern)),
+			"aeltere_url_std"   => $this->createUrl("index/startseite", array("datum_max" => $gestern)) . "#stadtratsdokumente_holder",
+			"neuere_url_ajax"   => null,
+			"neuere_url_std"    => null,
+			"antraege"          => $antraege,
+			"datum"             => $datum_von,
+			"weiter_links_oben" => true,
+		));
+
+		Header("Content-Type: application/json; charset=UTF-8");
+		echo json_encode(array(
+			"datum"            => $datum_von,
+			"html"             => ob_get_clean(),
+			"geodata"          => $geodata,
+			"geodata_overflow" => $geodata_overflow
+		));
+		Yii::app()->end();
+	}
+
+
+	/**
+	 * @param string $datum_max
+	 */
+	public function actionStartseite($datum_max = "")
+	{
+		$this->top_menu = "stadtrat";
+		$this->performLoginActions();
+
+		$this->load_leaflet_css      = true;
+		$this->load_leaflet_draw_css = true;
+
+		if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
+			$ts = RISTools::date_iso2timestamp($datum_max);
+			list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($ts);
 		} else {
-			$i = 1;
-			do {
-				if ($i == 1) {
-					$datum_von = date("Y-m-d", time() - 3600 * 24 * $i) . " 00:00:00";
-					$datum_bis = date("Y-m-d H:i:s");
-				} else {
-					$datum_von = date("Y-m-d", time() - 3600 * 24 * $i) . " 00:00:00";
-					$datum_bis = date("Y-m-d", time() - 3600 * 24 * $i) . " 23:59:59";
-				}
-				/** @var array|Antrag[] $antraege */
-				$antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
-				$antraege_stadtrat = $antraege_sonstige = array();
-				foreach ($antraege as $ant) {
-					if ($ant->ba_nr === null) $antraege_stadtrat[] = $ant;
-					else $antraege_sonstige[] = $ant;
-				}
-				$i++;
-			} while (count($antraege) == 0);
+			list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate(time());
 		}
 
 		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
+		$gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1);
 
-		$this->render('stadtrat_uebersicht', array(
-			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
-			"aeltere_url_std"   => $this->createUrl("index/stadtrat", array("datum" => date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1))),
+		$this->render('startseite', array(
+			"aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", array("datum_max" => $gestern)),
+			"aeltere_url_std"   => $this->createUrl("index/startseite", array("datum_max" => $gestern)) . "#stadtratsdokumente_holder",
 			"neuere_url_ajax"   => null,
 			"neuere_url_std"    => null,
 			"antraege_sonstige" => $antraege_sonstige,
@@ -698,10 +707,20 @@ class IndexController extends RISBaseController
 			"geodata"           => $geodata,
 			"geodata_overflow"  => $geodata_overflow,
 			"datum"             => $datum_von,
-			"explizites_datum"  => ($datum != ""),
+			"explizites_datum"  => ($datum_max != ""),
 			"statistiken"       => RISMetadaten::getStats(),
 		));
 	}
+
+	public function actionPersonen()
+	{
+		$this->top_menu = "personen";
+
+		$this->render('personen', array(
+			"fraktionen" => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
+		));
+	}
+
 
 	/**
 	 * @param int $id
@@ -786,6 +805,17 @@ class IndexController extends RISBaseController
 	{
 		$dokumente = AntragDokument::model()->with("antrag")->findAll(array("condition" => "highlight IS NOT NULL", "order" => "highlight DESC"));
 		$this->render("dokumentenliste", array("dokumente" => $dokumente));
+	}
+
+
+	public function actionQuickSearchPrefetch()
+	{
+		/** @var StadtraetIn[] $stadtraetInnen */
+		$stadtraetInnen = StadtraetIn::model()->findAll();
+
+		$this->render('quicksearch_prefetch', array(
+			'stadtraetInnen' => $stadtraetInnen,
+		));
 	}
 
 

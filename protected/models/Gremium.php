@@ -16,6 +16,7 @@
  * @property AntragErgebnis[] $antraegeErgebnisse
  * @property Bezirksausschuss $ba
  * @property Termin[] $termine
+ * @property StadtraetInGremium[] $mitgliedschaften
  */
 class Gremium extends CActiveRecord implements IRISItem
 {
@@ -49,9 +50,6 @@ class Gremium extends CActiveRecord implements IRISItem
 			array('id, ba_nr', 'numerical', 'integerOnly' => true),
 			array('name, gremientyp, referat', 'length', 'max' => 100),
 			array('kuerzel', 'length', 'max' => 50),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, datum_letzte_aenderung, ba_nr, name, kuerzel, gremientyp, referat', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -66,6 +64,7 @@ class Gremium extends CActiveRecord implements IRISItem
 			'antraegeErgebnisse' => array(self::HAS_MANY, 'AntragErgebnis', 'gremium_id'),
 			'ba'                 => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
 			'termine'            => array(self::HAS_MANY, 'Termin', 'gremium_id'),
+			'mitgliedschaften'   => array(self::HAS_MANY, 'StadtraetInGremium', 'gremium_id'),
 		);
 	}
 
@@ -86,37 +85,12 @@ class Gremium extends CActiveRecord implements IRISItem
 	}
 
 	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
-		$criteria->compare('ba_nr', $this->ba_nr);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('kuerzel', $this->kuerzel, true);
-		$criteria->compare('gremientyp', $this->gremientyp, true);
-		$criteria->compare('referat', $this->referat, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
-
-	/**
 	 * @throws CDbException|Exception
 	 */
 	public function copyToHistory()
 	{
 		$history = new GremiumHistory();
-		$history->setAttributes($this->getAttributes());
+		$history->setAttributes($this->getAttributes(), false);
 		try {
 			if (!$history->save(false)) {
 				RISTools::send_email(Yii::app()->params['adminEmail'], "Gremium:moveToHistory Error", print_r($history->getErrors(), true));
@@ -134,7 +108,7 @@ class Gremium extends CActiveRecord implements IRISItem
 		$ris_id = IntVal($ris_id);
 		echo "- Gremium $ris_id\n";
 
-		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_gremien_detail.jsp?risid=" . $ris_id);
+		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_gremien_detail.jsp?risid=" . $ris_id);
 
 		$daten                         = new Gremium();
 		$daten->id                     = $ris_id;
@@ -215,4 +189,13 @@ class Gremium extends CActiveRecord implements IRISItem
 	{
 		return $this->name;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return $this->datum_letzte_aenderung;
+	}
+
+
 }

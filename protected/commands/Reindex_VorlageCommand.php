@@ -17,7 +17,7 @@ class Reindex_VorlageCommand extends CConsoleCommand
 			$parser->parse($args[0]);
 			/** @var Antrag $a */
 			$a = Antrag::model()->findByPk($args[0]);
-			$a->resetPersonen();
+			if ($a) $a->resetPersonen();
 		}
 	}
 }

@@ -4,7 +4,7 @@ class RISTools
 {
 
 	const STD_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17";
-	const STD_PROXY      = "http://127.0.0.1:8118/";
+	const STD_PROXY = "http://127.0.0.1:8118/";
 
 
 	/**
@@ -151,12 +151,13 @@ class RISTools
 	 */
 	public static function korrigiereTitelZeichen($titel)
 	{
-		$titel = preg_replace("/([\\s-\(])\?(\\w[^\\?]*\\w)\?/siu", "\\1„\\2“", $titel);
+		$titel = preg_replace("/([\\s-\(])\?(\\w[^\\?]*[\\w.])\?/siu", "\\1„\\2“", $titel);
 		$titel = preg_replace("/^\?(\\w[^\\?]*\\w)\?/siu", " „\\1“", $titel);
 		$titel = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $titel);
 		$titel = preg_replace("/\\s\?$/siu", "?", $titel);
 		$titel = str_replace(" ?", " —", $titel);
 		$titel = str_replace(chr(10) . "?", " —", $titel);
+		$titel = str_replace("Â?", "€", $titel);
 		return $titel;
 	}
 
@@ -261,29 +262,73 @@ class RISTools
 	{
 		switch ($typ) {
 			case "ba_antrag":
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
 				break;
 			case "ba_initiative":
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
 				break;
 			case "ba_termin":
-				return "http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
+				return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
 				break;
 			case "stadtrat_antrag":
-				return "http://www.ris-muenchen.de/RII2/RII/ris_antrag_detail.jsp?risid=" . $id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $id;
 				break;
 			case "stadtrat_vorlage":
-				return "http://www.ris-muenchen.de/RII2/RII/ris_vorlagen_detail.jsp?risid=" . $id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $id;
 				break;
 			case "stadtrat_termin":
-				return "http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=" . $id;
+				return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $id;
 				break;
 		}
 		return "Unbekannt";
 	}
 
+	/**
+	 * @param string $email
+	 * @param string $betreff
+	 * @param string $text_plain
+	 * @param null|string $text_html
+	 * @param null|string $mail_tag
+	 */
+	public static function send_email($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
+	{
+		if (defined("MANDRILL_API_KEY") && strlen(MANDRILL_API_KEY) > 0) {
+			static::send_email_mandrill($email, $betreff, $text_plain, $text_html, $mail_tag);
+		} else {
+			static::send_email_zend($email, $betreff, $text_plain, $text_html, $mail_tag);
+		}
+	}
 
-	public static function send_email($email, $betreff, $text_plain, $text_html = null)
+
+	public static function send_email_mandrill($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
+	{
+		$mandrill = new Mandrill(MANDRILL_API_KEY);
+		$tags     = array();
+		if ($mail_tag !== null) $tags[] = $mail_tag;
+		$message = array(
+			'html'              => $text_html,
+			'text'              => $text_plain,
+			'subject'           => $betreff,
+			'from_email'        => Yii::app()->params["adminEmail"],
+			'from_name'         => Yii::app()->params["adminEmailName"],
+			'to'                => array(
+				array(
+					"name"  => null,
+					"email" => $email,
+					"type"  => "to",
+				)
+			),
+			'important'         => false,
+			'tags'              => $tags,
+			'track_clicks'      => false,
+			'track_opens'       => false,
+			'inline_css'        => true,
+		);
+		$mandrill->messages->send($message, false);
+	}
+
+
+	public static function send_email_zend($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
 	{
 		$mail = new Zend\Mail\Message();
 		$mail->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
@@ -294,7 +339,7 @@ class RISTools
 
 		if ($text_html !== null) {
 			$converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles($text_html);
-			$converter->setStripOriginalStyleTags(true);
+			$converter->setStripOriginalStyleTags(false);
 			$converter->setUseInlineStylesBlock(true);
 			$converter->setEncoding("UTF-8");
 			$converter->setExcludeMediaQueries(true);
@@ -314,9 +359,33 @@ class RISTools
 			$mail->getHeaders()->get('content-type')->setType('multipart/alternative');
 		} else {
 			$mail->setBody($text_plain);
+			$headers = $mail->getHeaders();
+			$headers->removeHeader('Content-Type');
+			$headers->addHeaderLine('Content-Type', 'text/plain; charset=UTF-8');
 		}
 
 		$transport = new Zend\Mail\Transport\Sendmail();
 		$transport->send($mail);
+	}
+
+	/**
+	 * @param string[] $arr
+	 * @return string[]
+	 */
+	public static function makeArrValuesUnique($arr)
+	{
+		$val_count = array();
+		foreach ($arr as $elem) {
+			if (isset($val_count[$elem])) $val_count[$elem]++;
+			else $val_count[$elem] = 1;
+		}
+		$vals_used = array();
+		foreach ($arr as $i => $elem) {
+			if ($val_count[$elem] == 1) continue;
+			if (isset($vals_used[$elem])) $vals_used[$elem]++;
+			else $vals_used[$elem] = 1;
+			$arr[$i] = $elem . " (" . $vals_used[$elem] . ")";
+		}
+		return $arr;
 	}
 }

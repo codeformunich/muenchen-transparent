@@ -3,17 +3,21 @@
  * @var RISBaseController $this
  * @var string $content
  */
+
 ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
+	<meta name="description" content="<?
+	if ($this->html_description != "") echo CHtml::encode($this->html_description);
+	else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
+	?>">
 	<meta name="author" content="Tobias Hößl">
 
-	<link href="/js/bootstrap-3.2.0/css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" media="screen" href="/js/bootstrap-select/bootstrap-select.min.css">
+	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
+	<link rel="icon" type="image/png" href="/css/img/logo.png">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
@@ -21,14 +25,6 @@
 	<script src="/js/html5shiv.js"></script>
 	<script src="/js/respond.min.js"></script>
 	<![endif]-->
-
-	<!--
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-72-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" href="/js/bootstrap/bootstrap//ico/apple-touch-icon-57-precomposed.png">
-	<link rel="shortcut icon" href="/js/bootstrap/bootstrap//ico/favicon.png">
-	-->
 
 	<? if ($this->load_leaflet_css) { ?>
 		<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>
@@ -39,10 +35,15 @@
 		<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>
 	<?
 	}
+	if ($this->load_calendar) {
+		?>
+		<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>
+	<?
+	}
 	?>
 
-	<link rel="stylesheet" href="/css/jquery-ui-1.11.1.custom.min.css"/>
-	<link rel="stylesheet" href="/css/styles.css"/>
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
+	<link rel="stylesheet" href="/css/styles_website.css">
 
 	<!--[if lt IE 9]>
 	<script src="/js/jquery-1.11.1.min.js"></script>
@@ -51,87 +52,99 @@
 	<script src="/js/jquery-2.1.1.min.js"></script>
 	<!--<![endif]-->
 
-	<script src="/js/jquery-ui-1.11.1.custom.min.js"></script>
 	<script src="/js/modernizr.js"></script>
-	<script src="/js/scrollintoview.js"></script>
-	<script src="/js/antraegekarte.jquery.js"></script>
 </head>
 
 <body>
+<a href="#page_main_content" class="sr-only">Zum Seiteninhalt</a>
 
-<div class="clear"></div>
+<div class="over_footer_wrapper">
+	<div class="clear"></div>
 
-<div class="navbar navbar-inverse navbar-fixed-top" id="main_navbar">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <b class="caret"></b></a>
-					<ul class="dropdown-menu" id="ba_nav_list">
-						<?
-						echo "<li class='stadtrat'>".CHtml::link("Stadtrat", $this->createUrl("index/stadtrat"))."</li>\n";
-						/** @var Bezirksausschuss[] $bas */
-						$bas = Bezirksausschuss::model()->findAll();
-						foreach ($bas as $ba) echo "<li>".CHtml::link($ba->ba_nr.": ".$ba->name, $this->createUrl("index/ba", array("ba_nr" => $ba->ba_nr)))."</li>\n"
-						?>
-					</ul>
-				</li>
-				<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
-				<? if (Yii::app()->user->getState("role") == "admin") { ?>
-					<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
-							<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+	<div class="navbar navbar-inverse navbar-fixed-top" id="main_navbar">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="sr-only">Menü</span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">[TODO: Logo]</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <span class="caret"></span></a>
+						<ul class="dropdown-menu" id="ba_nav_list">
+							<?
+							/** @var Bezirksausschuss[] $bas */
+							$bas = Bezirksausschuss::model()->findAll();
+							foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
+							?>
 						</ul>
 					</li>
-				<? } ?>
-				<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
-				<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
-				<li class="so_funktioniert<? if ($this->top_menu == "so_funktioniert") echo ' active'; ?>"><?= CHtml::link("So funktioniert<br> Stadtpolitik", $this->createUrl("infos/soFunktioniertStadtpolitik")) ?></li>
-				<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("infos/personen")) ?></li>
-			</ul>
+					<li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
+					<li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
+					<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
+					<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("index/personen")) ?></li>
+					<?
+					if ($this->binContentAdmin()) {
+						?>
+						<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
+								<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+							</ul>
+						</li>
+					<? } ?>
+				</ul>
 
-			<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>">
-				<div class="form-group">
-					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control">
-				</div>
-				<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
-			</form>
+				<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
+					<label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
+					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
+						   id="quicksearch_form_input"
+						   data-prefetch-url="<?= CHtml::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
+						   data-search-url="<?= CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF"))) ?>">
+					<button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span>
+					</button>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
 
-<div class="container">
-	<div class="body-content">
-
+	<main class="container center-block row" id="page_main_content">
 		<?php echo $content; ?>
+	</main>
+	<!-- /container -->
 
-		<hr>
+	<!-- Needed to keep the footer at the bottom -->
+	<div class="footer_spacer"></div>
+</div><!-- /over_footer_wrapper -->
 
+<footer>
+	<p class="container">
+		<span class="pull-left">
+			<?= CHtml::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?> /
+			<?= CHtml::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
+		</span>
+		<span class="pull-right">
+			<?= CHtml::link("Open-Source-Projekt (Github)", "https://github.com/codeformunich/Ratsinformant") ?> /
+			<?= CHtml::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
+			<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
+		</span>
+	</p>
+</footer>
 
-		<footer>
-			<p><?= CHtml::link("Datenschutzerklärung", Yii::app()->createUrl("infos/datenschutz")) ?>
-				&nbsp;
-				<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?></p>
-		</footer>
-	</div>
-
-</div>
-<!-- /container -->
-
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<script src="/js/bootstrap-3.2.0/js/bootstrap.min.js"></script>
-<script src="/js/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="/js/jquery-ui-1.11.2.custom.min.js"></script>
+<script src="/js/scrollintoview.js"></script>
+<script src="/js/antraegekarte.jquery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/material/ripples.min.js"></script>
+<script src="/js/material/material.min.js"></script>
+<script src="/js/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="/js/index.js"></script>
 
 </body>
 </html>

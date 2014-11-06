@@ -11,7 +11,7 @@ class StadtratsfraktionParser
 
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Fraktion $fraktion_id\n";
 
-		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/RII/ris_fraktionen_detail.jsp?risid=${fraktion_id}&periodeid=${wahlperiode_id}");
+		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_fraktionen_detail.jsp?risid=${fraktion_id}&periodeid=${wahlperiode_id}");
 
 		$daten      = new Fraktion();
 		$daten->id  = $fraktion_id;

@@ -18,6 +18,7 @@
  * @property GremiumHistory[] $gremienHistories
  * @property RISAenderung[] $RISAenderungen
  * @property StadtraetIn[] $stadtraetInnen
+ * @property BezirksausschussBudget[] $budgets
  */
 class Bezirksausschuss extends CActiveRecord
 {
@@ -49,9 +50,6 @@ class Bezirksausschuss extends CActiveRecord
 			array('ba_nr, ris_id', 'required'),
 			array('ba_nr, ris_id, osm_init_zoom', 'numerical', 'integerOnly' => true),
 			array('name', 'length', 'max' => 100),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('ba_nr, ris_id, name', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -69,6 +67,7 @@ class Bezirksausschuss extends CActiveRecord
 			'gremienHistories'  => array(self::HAS_MANY, 'GremiumHistory', 'ba_nr'),
 			'RISAenderungen'    => array(self::HAS_MANY, 'RisAenderung', 'ba_nr'),
 			'stadtraetInnen'    => array(self::HAS_MANY, 'StadtraetIn', 'ba_nr'),
+			'budgets'           => array(self::HAS_MANY, 'BezirksausschussBudget', 'ba_nr'),
 		);
 	}
 
@@ -84,27 +83,8 @@ class Bezirksausschuss extends CActiveRecord
 			'website'       => 'Website',
 			'osm_init_zoom' => 'OSM Zoom',
 			'osm_shape'     => 'OSM Shape',
+			'budgets'       => 'Budgets',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('ba_nr', $this->ba_nr);
-		$criteria->compare('ris_id', $this->ris_id);
-		$criteria->compare('name', $this->name, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
 	}
 
 
@@ -164,5 +144,10 @@ class Bezirksausschuss extends CActiveRecord
 		}
 	}
 
+	/** @return string */
+	public function getLink()
+	{
+		return Yii::app()->createUrl("index/ba", array("ba_nr" => $this->ba_nr, "ba_name" => $this->name));
+	}
 
 }

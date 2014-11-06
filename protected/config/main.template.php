@@ -7,7 +7,7 @@ define("PATH_CONVERT", "/usr/bin/convert");
 define("PATH_TESSERACT", "/usr/local/bin/tesseract");
 define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
-define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.5.jar");
+define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.7.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
 define("PATH_PDFTOHTML", "/usr/bin/pdftohtml");
 
@@ -19,6 +19,7 @@ define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR . "ocr-todo/");
 define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR . "ocr-dst/");
 define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
+define("EMAIL_LOG_FILE", "/tmp/email.log");
 
 
 define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");
@@ -26,6 +27,7 @@ define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");
 ini_set("memory_limit", "256M");
 
 define("SEED_KEY", "RANDOMKEY");
+define("MANDRILL_API_KEY", "");
 
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");
@@ -67,20 +69,23 @@ function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-	'basePath'   => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-	'name'       => 'Ratsinformant',
+	'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
+	'name'           => 'München Transparent: Ratsinformant',
 
 	// preloading 'log' component
-	'preload'    => array('log'),
+	'preload'        => array('log'),
 
 	// autoloading model and component classes
-	'import'     => array(
+	'import'         => array(
 		'application.models.*',
 		'application.components.*',
 		'application.RISParser.*',
 	),
 
-	'modules'    => array(
+	'onBeginRequest' => create_function('$event', 'if (RATSINFORMANT_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
+	'onEndRequest'   => create_function('$event', 'if (RATSINFORMANT_CALL_MODE == "web") return ob_end_flush();'),
+
+	'modules'        => array(
 		// uncomment the following to enable the Gii tool
 		'gii' => array(
 			'class'    => 'system.gii.GiiModule',
@@ -91,7 +96,7 @@ return array(
 	),
 
 	// application components
-	'components' => array(
+	'components'     => array(
 		'cache'        => array(
 			'class' => 'system.caching.CFileCache',
 		),
@@ -131,12 +136,13 @@ return array(
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
-	'params'     => array(
+	'params'         => array(
 		// this is used in contact page
-		'adminEmail'     => 'info@ratsinformant.de',
-		'adminEmailName' => "Ratsinformant",
-		'skobblerKey'    => 'KEY',
-		'baseURL'        => RATSINFORMANT_BASE_URL,
-		'debug_log'      => true,
+		'adminEmail'      => 'info@ratsinformant.de',
+		'adminEmailName'  => "Ratsinformant",
+		'skobblerKey'     => 'KEY',
+		'baseURL'         => RATSINFORMANT_BASE_URL,
+		'debug_log'       => true,
+		'contentAdminIds' => array(),
 	),
 );

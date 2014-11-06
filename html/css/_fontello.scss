@@ -1,0 +1,65 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('../fonts/fontello.eot?42637509');
+  src: url('../fonts/fontello.eot?42637509#iefix') format('embedded-opentype'),
+  url('../fonts/fontello.woff?42637509') format('woff'),
+  url('../fonts/fontello.ttf?42637509') format('truetype'),
+  url('../fonts/fontello.svg?42637509#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?42637509#fontello') format('svg');
+  }
+}
+*/
+
+[class^="fontello-"]:before, [class*=" fontello-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.fontello-rss:before { content: '\52'; } /* 'R' */
+.fontello-twitter:before { content: '\54'; } /* 'T' */
+.fontello-facebook:before { content: '\66'; } /* 'f' */
+.fontello-download:before { content: '\e800'; } /* '' */
+.fontello-home:before { content: '\e801'; } /* '' */
+.fontello-right-open:before { content: '\e802'; } /* '' */
+.fontello-ok:before { content: '\e803'; } /* '' */
+.fontello-cancel:before { content: '\e804'; } /* '' */
+.fontello-info-circled:before { content: '\e805'; } /* '' */
+.fontello-github-circled:before { content: '\e806'; } /* '' */
+.fontello-animexx-karos:before { content: '\e807'; } /* '' */
+.fontello-left-open:before { content: '\e808'; } /* '' */
+.fontello-spin4:before { content: '\e834'; } /* '' */

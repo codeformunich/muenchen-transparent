@@ -114,19 +114,28 @@ class RISGeo
 		$streets_found = array();
 		foreach (static::$STREETS as $street) {
 			$offset = -1;
-			while (($offset = strpos($antragtext, $street->name_normalized, $offset + 1)) !== false) {
-				$danach = substr($antragtext, $offset + strlen($street->name_normalized), 10);
+			$last_offset = -1;
+			while (($offset = mb_strpos($antragtext, $street->name_normalized, $offset + 1)) !== false) {
+				if ($offset == $last_offset) {
+					// Kommt anscheinend bei "kaputten" Strings manchmal vor und führt zu einer Endlosschleife
+					$fp = fopen(TMP_PATH. "strassen-problem.log", "a"); fwrite($fp, "WIEDERHOLUNG! $offset / " . $antragtext . "\n" . $street->name_normalized . "\n"); fclose($fp);
+					$offset += 10;
+					continue;
+				}
+
+				$danach = mb_substr($antragtext, $offset + mb_strlen($street->name_normalized), 10);
 				$nr     = IntVal($danach);
 				$ort    = ($nr > 0 && $nr < 1000 ? $street->name . " $nr" : $street->name);
 
 				$falsepositive = false;
-				if (substr($antragtext, $offset - 11, 11) == "haltestelle") $falsepositive = true;
-				if ($street->name_normalized == "richardstr" && substr($danach, 0, 2) == "au") $falsepositive = true;
+				if (mb_substr($antragtext, $offset - 11, 11) == "haltestelle") $falsepositive = true;
+				if ($street->name_normalized == "richardstr" && mb_substr($danach, 0, 2) == "au") $falsepositive = true;
 
 				if (!$falsepositive && !in_array($ort, $streets_found)) {
 					$streets_found[] = RISTools::toutf8($ort);
 				}
-				for ($i = $offset; $i < $offset + strlen($street->name_normalized); $i++) $antragtext[$i] = "#";
+				for ($i = $offset; $i < $offset + mb_strlen($street->name_normalized); $i++) $antragtext[$i] = "#";
+				$last_offset = $offset;
 			}
 		}
 
@@ -135,7 +144,7 @@ class RISGeo
 			if (preg_match("/[0-9]/siu", $street)) $streets_found_consolidated[] = $street;
 			else {
 				$mit_hausnummer_gefunden = false;
-				foreach ($streets_found as $street2) if (strpos($street2, $street . " ") === 0 && preg_match("/[0-9]/siu", $street2)) $mit_hausnummer_gefunden = true;
+				foreach ($streets_found as $street2) if (mb_strpos($street2, $street . " ") === 0 && preg_match("/[0-9]/siu", $street2)) $mit_hausnummer_gefunden = true;
 				if (!$mit_hausnummer_gefunden) $streets_found_consolidated[] = $street;
 			}
 		}

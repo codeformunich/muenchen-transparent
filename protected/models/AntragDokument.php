@@ -28,7 +28,7 @@
  * @property AntragOrt[] $orte
  * @property Vorgang $vorgang
  */
-class AntragDokument extends CActiveRecord
+class AntragDokument extends CActiveRecord implements IRISItem
 {
 
 	public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
@@ -39,7 +39,7 @@ class AntragDokument extends CActiveRecord
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
 	public static $TYP_BA_TERMIN = "ba_termin";
 	public static $TYP_BA_BESCHLUSS = "ba_beschluss";
-	public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung";
+	//public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung"; @TODO
 	public static $TYPEN_ALLE = array(
 		"stadtrat_antrag"    => "Stadtratsantrag",
 		"stadtrat_vorlage"   => "Stadtratsvorlage",
@@ -49,7 +49,7 @@ class AntragDokument extends CActiveRecord
 		"ba_initiative"      => "BA: Initiative",
 		"ba_termin"          => "BA: Termin",
 		"ba_beschluss"       => "BA: Beschluss",
-		"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
+		//"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
 	);
 
 	public static $OCR_VON_TESSERACT = "tesseract";
@@ -89,9 +89,6 @@ class AntragDokument extends CActiveRecord
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 200),
 			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, typ, antrag_id, termin_id, ergebnis_id, url, name, datum, text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -134,37 +131,6 @@ class AntragDokument extends CActiveRecord
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('vorgang_id', $this->vorgang_id);
-		$criteria->compare('typ', $this->typ, true);
-		$criteria->compare('antrag_id', $this->antrag_id);
-		$criteria->compare('termin_id', $this->termin_id);
-		$criteria->compare('ergebnis_id', $this->ergebnis_id);
-		$criteria->compare('url', $this->url, true);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('datum', $this->datum, true);
-		$criteria->compare('text_ocr_raw', $this->text_ocr_raw, true);
-		$criteria->compare('text_ocr_corrected', $this->text_ocr_corrected, true);
-		$criteria->compare('text_ocr_garbage_seiten', $this->text_ocr_garbage_seiten, true);
-		$criteria->compare('text_pdf', $this->text_pdf, true);
-		$criteria->compare('ocr_von', $this->ocr_von, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
 
 	/**
 	 * @param int $dokument_id
@@ -189,6 +155,38 @@ class AntragDokument extends CActiveRecord
 		));
 		return $this;
 	}
+
+
+
+	/** @return string */
+	public function getLink()
+	{
+		return "http://www.ris-muenchen.de" . $this->url;
+	}
+
+	/** @return string */
+	public function getTypName()
+	{
+		return "Dokument";
+	}
+
+	/**
+	 * @param bool $langfassung
+	 * @return string
+	 */
+	public function getName($langfassung = false)
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return $this->datum;
+	}
+
+
 
 
 	/**
@@ -347,7 +345,7 @@ class AntragDokument extends CActiveRecord
 			if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = AntragDokument::model()->with("antrag")->findByPk($id);
 			return static::$dokumente_cache[$id];
 		}
-		return AntragDokument::model()->with("antrag")->findByPk($id);
+		return AntragDokument::model()->with(array("antrag", "ergebnis"))->findByPk($id);
 	}
 
 	/**
@@ -355,7 +353,7 @@ class AntragDokument extends CActiveRecord
 	 */
 	public function getRISItem()
 	{
-		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS))) return $this->ergebnis;
+		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) return $this->ergebnis;
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
 		return $this->antrag;
 	}
@@ -501,10 +499,7 @@ class AntragDokument extends CActiveRecord
 		/** @var RISSolrDocument $doc */
 		$doc = $update->createDocument();
 
-		if (is_null($this->ergebnis)) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:solrIndex_beschluss_do Error", print_r($this, true));
-			return;
-		}
+		if (is_null($this->ergebnis)) return; // Kann vorkommen, wenn ein TOP nachträglich gelöscht wurde
 
 		$doc->id            = "Ergebnis:" . $this->id;
 		$doc->text          = RISSolrHelper::string_cleanup($this->ergebnis->top_betreff . " " . $this->ergebnis->beschluss_text . " " . $this->ergebnis->entscheidung . " " . $this->text_pdf);

@@ -5,7 +5,7 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
 	public function run($args)
 	{
 
-		if (!isset($args[0])) die("./yiic reindexsolr_documents [id]|alle [offset]\n");
+		if (!isset($args[0])) die("./yiic reindexsolr_documents [id]|stadtrat_beschluss|ba_beschluss|alle [offset]\n");
 
 		if ($args[0] > 0) {
 			$data = array($args[0]);
@@ -13,8 +13,12 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
 			$sql = Yii::app()->db->createCommand();
 			$sql->select("id")->from("antraege_dokumente")->where("id >= 0")->order("id");
 			$data = $sql->queryColumn(array("id"));
+		} elseif (isset(AntragDokument::$TYPEN_ALLE[$args[0]])) {
+			$sql = Yii::app()->db->createCommand();
+			$sql->select("id")->from("antraege_dokumente")->where("typ = '" . addslashes($args[0]) . "'")->order("id");
+			$data = $sql->queryColumn(array("id"));
 		} else {
-			die("./yiic reindexsolr_documents [id]|alle\n");
+			die("./yiic reindexsolr_documents [id]|stadtrat_beschluss|ba_beschluss|alle\n");
 		}
 
 		$offset = (isset($args[1]) && $args[1] > 0 ? IntVal($args[1]) : 0);

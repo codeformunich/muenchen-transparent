@@ -58,9 +58,6 @@ class Person extends CActiveRecord implements IRISItem
 			array('ris_stadtraetIn, ris_fraktion', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 9),
 			array('name, name_normalized', 'length', 'max' => 100),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, name_normalized, typ, name, ris_stadtraetIn, ris_fraktion', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -94,29 +91,6 @@ class Person extends CActiveRecord implements IRISItem
 	}
 
 	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('name_normalized', $this->name_normalized, true);
-		$criteria->compare('typ', $this->typ, true);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('ris_stadtraetIn', $this->ris_stadtraetIn);
-		$criteria->compare('ris_fraktion', $this->ris_fraktion);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
-	/**
 	 * @param string $name
 	 * @param string $name_normalized
 	 * @return Person
@@ -145,20 +119,20 @@ class Person extends CActiveRecord implements IRISItem
 	 */
 	public function ratePartei($datum = "")
 	{
-		if (isset($this->fraktion) && $this->fraktion) return $this->fraktion->name;
+		if (isset($this->fraktion) && $this->fraktion) return $this->fraktion->getName(true);
 		if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return null;
 		if (!isset($this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion)) return null;
 		if ($datum != "") foreach ($this->stadtraetIn->stadtraetInnenFraktionen as $fraktionsZ) {
 			$dat = str_replace("-", "", $datum);
-			if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) return $fraktionsZ->fraktion->name;
+			if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) return $fraktionsZ->fraktion->getName(true);
 		}
-		return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->name;
+		return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->getName(true);
 	}
 
 	/** @return string */
 	public function getLink()
 	{
-		return "http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id, "name" => $this->name));
 	}
 
 	/** @return string */
@@ -173,6 +147,18 @@ class Person extends CActiveRecord implements IRISItem
 	 */
 	public function getName($kurzfassung = false)
 	{
+		if ($kurzfassung) {
+			if (in_array($this->id, array(279))) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
+		}
 		return $this->name;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return "0000-00-00 00:00:00";
+	}
+
+
 }

@@ -43,8 +43,10 @@ $.widget("ratsinformant.AntraegeKarte", {
 			}
 			var center_lon = (min_lon + max_lon) / 2,
 				center_lat = (min_lat + max_lat) / 2,
-                init_zoom = window["BA_FEATURES"][this.options["outlineBA"] - 1]["init_zoom"];
-            if($widget.element.width() > 1500) init_zoom += 2;
+			init_zoom = window["BA_FEATURES"][this.options["outlineBA"] - 1]["init_zoom"];
+			if($widget.element.width() > 1500) init_zoom += 2;
+			if($widget.element.width() < 700) init_zoom -= 1;
+			if($widget.element.width() < 560) init_zoom -= 1;
 			$widget.map.setView([center_lat, center_lon], init_zoom);
 			geojsonFeature = {
 				"type": "Feature",
@@ -63,7 +65,10 @@ $.widget("ratsinformant.AntraegeKarte", {
 					"coordinates": [muc_koords, [[11,47.6],[13,47.6],[13,48.5],[11,48.5]]]
 				}
 			};
-			$widget.map.setView([this.options["lat"], this.options["lng"]], this.options["size"]);
+			console.log($widget.element.width());
+			var size = this.options["size"];
+			if ($widget.element.width() < 560) size--;
+			$widget.map.setView([this.options["lat"], this.options["lng"]], size);
 		}
 
 		$widget.map.setMaxBounds([
@@ -75,14 +80,14 @@ $.widget("ratsinformant.AntraegeKarte", {
 		L.tileLayer('https://www.ratsinformant.de/tiles/' + (L.Browser.retina ? "512" : "256") + '/{z}/{x}/{y}.png', {
 			attribution: attrib,
 			maxZoom: 18,
-            minZoom: 11
+ 		           minZoom: 10
 		}).addTo($widget.map);
 
 		var outside = L.geoJson(geojsonFeature).addTo($widget.map);
 		outside.setStyle({
 			weight: 0,
 			fillColor: "#ffffff",
-			fillOpacity: 0.6,
+			fillOpacity: 0.75,
 			stroke: false
 		});
 

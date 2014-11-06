@@ -3,135 +3,11 @@
 class BenachrichtigungenController extends RISBaseController
 {
 
-
-	protected function requireLogin($code = "")
-	{
-		list($msg_ok, $msg_err) = $this->performLoginActions($code);
-
-		if (Yii::app()->getUser()->isGuest) {
-			$this->render("../index/login", array(
-				"current_url" => $this->createUrl("index/benachrichtigungen"),
-				"msg_err"     => $msg_err,
-				"msg_ok"      => $msg_ok,
-			));
-			Yii::app()->end();
-		}
-
-		return array($msg_ok, $msg_err);
-	}
-
-
-	public function actionAjaxBenachrichtigungDel()
-	{
-		Header("Content-Type: application/json; charset=UTF-8");
-		$krits = RISSucheKrits::createFromUrl($_REQUEST);
-
-		if (!Yii::app()->getUser()->isGuest) {
-
-			/** @var BenutzerIn $ich */
-			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
-			$ich->delBenachrichtigung($krits);
-			echo json_encode(array(
-				"status" => "done",
-				"titel"  => $krits->getTitle()
-			));
-
-		} else {
-			echo json_encode(array(
-				"status" => "login_err"
-			));
-		}
-	}
-
-	public function actionAjaxBenachrichtigungAdd()
-	{
-		Header("Content-Type: application/json; charset=UTF-8");
-		$krits = RISSucheKrits::createFromUrl($_REQUEST);
-
-		if (!Yii::app()->getUser()->isGuest) {
-
-			/** @var BenutzerIn $ich */
-			$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
-			$ich->addBenachrichtigung($krits);
-			echo json_encode(array(
-				"status" => "done",
-				"titel"  => $krits->getTitle()
-			));
-
-		} else {
-
-			$person = BenutzerIn::model()->findAll(array(
-				"condition" => "email='" . addslashes($_REQUEST["email"]) . "'"
-			));
-
-			if (count($person) > 0) {
-				/** @var BenutzerIn $p */
-				$p = $person[0];
-				if ($p->email_bestaetigt) {
-					if ($_REQUEST["password"] != "") {
-						if ($p->validate_password($_REQUEST["password"])) {
-							$identity = new RISUserIdentity($p);
-							Yii::app()->user->login($identity);
-
-							if ($p->email == Yii::app()->params['adminEmail']) Yii::app()->user->setState("role", "admin");
-
-							echo json_encode(array(
-								"status" => "done",
-								"titel"  => $krits->getTitle()
-							));
-						} else {
-							echo json_encode(array(
-								"status" => "login_err_pw"
-							));
-						}
-
-					} else {
-						echo json_encode(array(
-							"status" => "needs_login"
-						));
-					}
-				} else {
-					if ($_REQUEST["bestaetigung"] != "") {
-						if ($p->emailBestaetigen($_REQUEST["bestaetigung"])) {
-							$identity = new RISUserIdentity($p);
-							Yii::app()->user->login($identity);
-							$p->addBenachrichtigung($krits);
-							echo json_encode(array(
-								"status" => "done",
-								"titel"  => $krits->getTitle()
-							));
-						} else {
-							echo json_encode(array(
-								"status" => "login_err_code"
-							));
-						}
-					} else {
-						echo json_encode(array(
-							"status" => "not_confirmed"
-						));
-					}
-				}
-			} else {
-				$benutzerIn = BenutzerIn::createBenutzerIn(trim($_REQUEST["email"]));
-				if ($benutzerIn->save()) {
-					$benutzerIn->sendEmailBestaetigungsMail();
-					echo json_encode(array(
-						"status" => "unknown_sent"
-					));
-				} else {
-					echo json_encode(array(
-						"status" => "error"
-					));
-				}
-			}
-		}
-	}
-
 	public function actionIndex($code = "")
 	{
 		$this->top_menu = "benachrichtigungen";
 
-		list($msg_ok, $msg_err) = $this->requireLogin($code);
+		list($msg_ok, $msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"), $code);
 
 
 		/** @var BenutzerIn $ich */
@@ -176,6 +52,15 @@ class BenachrichtigungenController extends RISBaseController
 				$ben->addGeoKrit($_REQUEST["geo_lng"], $_REQUEST["geo_lat"], $_REQUEST["geo_radius"]);
 				$ich->addBenachrichtigung($ben);
 				$msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
+			}
+		}
+
+		if (AntiXSS::isTokenSet("del_vorgang_abo")) {
+			foreach (AntiXSS::getTokenVal("del_vorgang_abo") as $vorgang_id => $_tmp) {
+				/** @var Vorgang $vorgang */
+				$vorgang = Vorgang::model()->findByPk($vorgang_id);
+				$vorgang->deabonnieren($ich);
+				$msg_ok = "Der Vorgang wurde entfernt.";
 			}
 		}
 
@@ -253,7 +138,7 @@ class BenachrichtigungenController extends RISBaseController
 
 	public function actionAlleSuchergebnisse()
 	{
-		$this->requireLogin();
+		$this->requireLogin($this->createUrl("index/benachrichtigungen"));
 
 		/** @var BenutzerIn $ich */
 		$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
@@ -272,6 +157,17 @@ class BenachrichtigungenController extends RISBaseController
 			"ergebnisse" => $ergebnisse,
 		));
 
+	}
+
+
+	public function actionNewsletterHTMLTest() {
+		$benutzerIn = $this->aktuelleBenutzerIn();
+		$data = $benutzerIn->benachrichtigungsErgebnisse(14);
+
+		$path = Yii::getPathOfAlias('application.views.benachrichtigungen') . '/suchergebnisse_email_html.php';
+		if (!file_exists($path)) throw new Exception('Template ' . $path . ' does not exist.');
+		require($path);
+		Yii::app()->end();
 	}
 
 }

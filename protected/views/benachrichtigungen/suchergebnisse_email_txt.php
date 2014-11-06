@@ -7,6 +7,20 @@
 seit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:
 
 <?
+
+if (count($data["vorgaenge"]) > 0) {
+	echo "=== Abonnierte Vorgänge ===\n\n";
+
+	foreach ($data["vorgaenge"] as $vorg) {
+		echo $vorg["vorgang"] . "\n";
+		foreach ($vorg["neues"] as $item) {
+			/** @var IRISItem $item */
+			echo "- " . $item->getName(true) . " (" . $item->getLink() . ")\n";
+		}
+		echo "\n";
+	}
+}
+
 if (count($data["antraege"]) > 0) {
 	echo "=== Anträge & Vorlagen ===\n\n";
 
@@ -29,7 +43,7 @@ if (count($data["antraege"]) > 0) {
 
 		$name = $antrag->getName();
 		$name = preg_replace("/ *(\n *)+/siu", ", ", $name);
-		if (strlen($name) > 80) $name = substr($name, 0, 78) . "...";
+		if (strlen($name) > 80) $name = mb_substr($name, 0, 78) . "...";
 		echo "- \"" . $name . "\n";
 		echo "  " . trim(Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)), ".") . "\n";
 		echo implode("\n", $dokumente_strs);
@@ -64,7 +78,7 @@ foreach ($data["termine"] as $dat) {
 
 	$name = $termin->getName();
 	$name = preg_replace("/ *(\n *)+/siu", ", ", $name);
-	if (strlen($name) > 80) $name = substr($name, 0, 78) . "...";
+	if (strlen($name) > 80) $name = mb_substr($name, 0, 78) . "...";
 	echo "- \"" . $name . "\n";
 	echo "  " . trim(Yii::app()->createUrl("termine/anzeigen", array("id" => $termin->id)), ".") . "\n";
 	echo implode("\n", $dokumente_strs);

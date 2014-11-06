@@ -2,6 +2,8 @@
 
 class BAAntragParser extends RISParser
 {
+	private static $MAX_OFFSET = 12200;
+	private static $MAX_OFFSET_UPDATE = 200;
 
 	public function parse($antrag_id)
 	{
@@ -9,9 +11,9 @@ class BAAntragParser extends RISParser
 
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
-		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
-		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
-		//$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII2/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
+		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
+		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
+		//$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
 		$daten                         = new Antrag();
 		$daten->id                     = $antrag_id;
@@ -94,7 +96,7 @@ class BAAntragParser extends RISParser
 		$dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
 		$dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
 		preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-		http://www.ris-muenchen.de/RII2/RII/ris_antrag_ergebnisse.jsp?risid=6127
+		http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
 		*/
 
 		if (!($daten->ba_nr > 0)) {
@@ -168,7 +170,7 @@ class BAAntragParser extends RISParser
 	public function parseSeite($seite, $first)
 	{
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
-		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_antraege.jsp?Start=$seite");
+		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege.jsp?Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
@@ -182,7 +184,7 @@ class BAAntragParser extends RISParser
 
 	public function parseAlle()
 	{
-		$anz   = 12000;
+		$anz   = static::$MAX_OFFSET;
 		$first = true;
 		//$anz = 800;
 		for ($i = $anz; $i >= 0; $i -= 10) {
@@ -196,7 +198,9 @@ class BAAntragParser extends RISParser
 	{
 		echo "Updates: BA-Anträge\n";
 		$loaded_ids = array();
-		for ($i = 200; $i >= 0; $i -= 10) {
+
+		$anz   = static::$MAX_OFFSET_UPDATE;
+		for ($i = $anz; $i >= 0; $i -= 10) {
 			$ids        = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
 		}

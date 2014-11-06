@@ -1,12 +1,18 @@
 <?php
-class BAGremienParser extends RISParser {
 
-	public function parse($gremien_id)
+class BAGremienParser extends RISParser
+{
+	private static $MAX_OFFSET = 200;
+
+	public static $WAHLPERIODE_ID = 3184784;
+
+	public function parse($gremien_id, $wahlperiode_id = 0)
 	{
-		$gremien_id = IntVal($gremien_id);
+		$wahlperiode_id = IntVal($wahlperiode_id > 0 ? $wahlperiode_id : static::$WAHLPERIODE_ID);
+		$gremien_id     = IntVal($gremien_id);
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Gremium $gremien_id\n";
 
-		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_gremien_details.jsp?Id=" . $gremien_id);
+		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_gremien_details.jsp?Id=" . $gremien_id . "&Wahlperiode=" . $wahlperiode_id);
 
 		$daten                         = new Gremium();
 		$daten->id                     = $gremien_id;
@@ -23,7 +29,6 @@ class BAGremienParser extends RISParser {
 
 		/** @var Gremium $alter_eintrag */
 		$alter_eintrag = Gremium::model()->findByPk($gremien_id);
-		$changed       = true;
 		if ($alter_eintrag) {
 			$changed = false;
 			if ($alter_eintrag->name != $daten->name) $aenderungen .= "Name: " . $alter_eintrag->name . " => " . $daten->name . "\n";
@@ -31,23 +36,99 @@ class BAGremienParser extends RISParser {
 			if ($alter_eintrag->kuerzel != $daten->kuerzel) $aenderungen .= "Kürzel: " . $alter_eintrag->kuerzel . " => " . $daten->kuerzel . "\n";
 			if ($alter_eintrag->gremientyp != $daten->gremientyp) $aenderungen .= "Gremientyp: " . $alter_eintrag->gremientyp . " => " . $daten->gremientyp . "\n";
 			if ($aenderungen != "") $changed = true;
+		} else {
+			$aenderungen = "Neu angelegt\n";
+			$changed     = true;
 		}
 
-		if ($changed) {
-			if ($alter_eintrag) {
-				$alter_eintrag->copyToHistory();
-				$alter_eintrag->setAttributes($daten->getAttributes());
-				if (!$alter_eintrag->save()) {
-					echo "Gremium 3";
-					var_dump($alter_eintrag->getErrors());
-					die("Fehler");
+
+		/** @var StadtraetInGremium[] $mitglieder_pre */
+		$mitglieder_pre = array();
+
+		$mitglieder_post = array();
+		if ($alter_eintrag) foreach ($alter_eintrag->mitgliedschaften as $mitgliedschaft) $mitglieder_pre[$mitgliedschaft->stadtraetIn_id] = $mitgliedschaft;
+
+		preg_match_all("/ergebnistab_tr.*<\/tr/siU", $html_details, $matches);
+		foreach ($matches[0] as $str) {
+			preg_match("/<a[^>]*Id=(?<id>[0-9]+)&[^>]*>(?<name>[^<]*)<\/a>.*<td[^>]*>(?<partei>[^<]*)<\/td.*<td[^>]*>(?<datum>[^<]*)<\/td.*<td[^>]*>(?<funktion>[^<]*)<\/td/siU", $str, $match2);
+			if ($match2) {
+				/** @var StadtraetIn $stadtraetIn */
+				$stadtraetIn = StadtraetIn::model()->findByPk($match2["id"]);
+				if (!$stadtraetIn) {
+					$par = new BAMitgliederParser();
+					echo "Neu beim BA " . IntVal($daten->kuerzel) . "\n";
+					$par->parse(IntVal($daten->kuerzel));
+
+					$stadtraetIn = StadtraetIn::model()->findByPk($match2["id"]);
+					if (!$stadtraetIn) {
+						$name = trim(str_replace(array("&nbsp;", "Herr", "Frau"), array(" ", " ", " "), $match2["name"]));
+						$stadtraetIn = StadtraetIn::model()->findByAttributes(array("name" => $name));
+						if (!$stadtraetIn) {
+							RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremium nicht zuordbar", "Gremium: $gremien_id\nMitglieds-ID: " . $match2["id"]);
+							return;
+						}
+					}
 				}
-				$daten = $alter_eintrag;
-			} else {
-				if (!$daten->save()) {
-					echo "Gremium 4";
-					var_dump($daten->getErrors());
-					die("Fehler");
+
+				$datum     = trim(str_ireplace("von ", "", $match2["datum"]));
+				$datum     = str_replace("seit ", "", $datum);
+				$datum     = explode(" bis ", $datum);
+				$x         = explode(".", $datum[0]);
+				$datum_von = $x[2] . "-" . $x[1] . "-" . $x[0];
+				if (count($datum) == 2) {
+					$x         = explode(".", $datum[1]);
+					$datum_bis = $x[2] . "-" . $x[1] . "-" . $x[0];
+				} else {
+					$datum_bis = null;
+				}
+
+				if (isset($mitglieder_pre[$stadtraetIn->id])) {
+					$mitgliedschaft = $mitglieder_pre[$stadtraetIn->id];
+					if ($mitgliedschaft->datum_von != $datum_von || $mitgliedschaft->datum_bis != $datum_bis) {
+						$mitgliedschaft->funktion = $match2["funktion"];
+						$aenderungen .= "Mitgliedschaft von " . $mitgliedschaft->stadtraetIn->name . ": ";
+						$aenderungen .= $mitgliedschaft->datum_von . "/" . $mitgliedschaft->datum_bis . " => ";
+						$aenderungen .= $match2["datum_von"] . "/" . $match2["datum_bis"] . "\n";
+						$mitgliedschaft->save();
+					}
+					if ($mitgliedschaft->funktion != $match2["funktion"]) {
+						$mitgliedschaft->funktion = $match2["funktion"];
+						$aenderungen .= "Funktion von " . $mitgliedschaft->stadtraetIn->name . ": " . $mitgliedschaft->funktion . " => " . $match2["funktion"] . "\n";
+						$mitgliedschaft->save();
+					}
+				} else {
+					$mitgliedschaft                 = new StadtraetInGremium();
+					$mitgliedschaft->datum_von      = $datum_von;
+					$mitgliedschaft->datum_bis      = $datum_bis;
+					$mitgliedschaft->funktion       = $match2["funktion"];
+					$mitgliedschaft->gremium_id     = $gremien_id;
+					$mitgliedschaft->stadtraetIn_id = $stadtraetIn->id;
+					$mitgliedschaft->save();
+					$mitgliedschaft->refresh();;
+					$aenderungen .= "Neues Mitglied: " . $mitgliedschaft->stadtraetIn->name . "\n";
+				}
+			}
+		}
+
+
+		if ($aenderungen != "") {
+			echo $aenderungen . "\n";
+			if ($changed) {
+				if ($alter_eintrag) {
+					$alter_eintrag->copyToHistory();
+					$alter_eintrag->setAttributes($daten->getAttributes());
+					if (!$alter_eintrag->save()) {
+						echo "Gremium 3";
+						var_dump($alter_eintrag->getErrors());
+						die("Fehler");
+					}
+					$daten = $alter_eintrag;
+				} else {
+					if (!$daten->save()) {
+						echo "Gremium 4";
+						var_dump($daten->getErrors());
+						die("Fehler");
+					}
 				}
 			}
 
@@ -64,19 +145,19 @@ class BAGremienParser extends RISParser {
 	public function parseSeite($seite, $first)
 	{
 		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
-		$text = RISTools::load_file("http://www.ris-muenchen.de/RII2/BA-RII/ba_gremien.jsp?Start=$seite");
+		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_gremien.jsp?selWahlperiode=" . static::$WAHLPERIODE_ID . "&Trf=n&Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
-		preg_match_all("/ba_gremien_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
+		preg_match_all("/ba_gremien_details\.jsp\?Id=(?<id>[0-9]+)[\"'& ]/siU", $txt[0], $matches);
 		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremien VOLL", "Erste Seite voll: $seite");
-		for ($i = count($matches[1])-1; $i >= 0; $i--) $this->parse($matches[1][$i]);
+		for ($i = count($matches[1]) - 1; $i >= 0; $i--) $this->parse($matches[1][$i], static::$WAHLPERIODE_ID);
 		return $matches[1];
 	}
 
 	public function parseAlle()
 	{
-		$anz = 190;
+		$anz   = BAGremienParser::$MAX_OFFSET;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

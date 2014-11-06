@@ -59,9 +59,6 @@ class Termin extends CActiveRecord implements IRISItem
 			array('wahlperiode', 'length', 'max' => 20),
 			array('status', 'length', 'max' => 100),
 			array('termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, datum_letzte_aenderung, termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -104,44 +101,12 @@ class Termin extends CActiveRecord implements IRISItem
 	}
 
 	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('datum_letzte_aenderung', $this->datum_letzte_aenderung, true);
-		$criteria->compare('termin_reihe', $this->termin_reihe);
-		$criteria->compare('gremium_id', $this->gremium_id);
-		$criteria->compare('ba_nr', $this->ba_nr);
-		$criteria->compare('termin', $this->termin, true);
-		$criteria->compare('termin_prev_id', $this->termin_prev_id);
-		$criteria->compare('termin_next_id', $this->termin_next_id);
-		$criteria->compare('sitzungsort', $this->sitzungsort, true);
-		$criteria->compare('referat', $this->referat, true);
-		$criteria->compare('referent', $this->referent, true);
-		$criteria->compare('vorsitz', $this->vorsitz, true);
-		$criteria->compare('wahlperiode', $this->wahlperiode, true);
-		$criteria->compare('status', $this->status, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
-
-	/**
 	 * @throws CDbException|Exception
 	 */
 	public function copyToHistory()
 	{
 		$history = new TerminHistory();
-		$history->setAttributes($this->getAttributes());
+		$history->setAttributes($this->getAttributes(), false);
 		if ($history->wahlperiode == "") $history->wahlperiode = "?";
 		if ($history->status == "") $history->status = "?";
 		if ($history->sitzungsort == "") $history->sitzungsort = "?";
@@ -181,10 +146,22 @@ class Termin extends CActiveRecord implements IRISItem
 		return $this->gremium->name . " (" . $this->termin . ")";
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getDate()
+	{
+		return $this->datum_letzte_aenderung;
+	}
+
+
+	/**
+	 * @return string
+	 */
 	public function getSourceLink()
 	{
-		if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII2/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
-		else return "http://www.ris-muenchen.de/RII2/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
+		if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
+		else return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
 	}
 
 
@@ -217,12 +194,33 @@ class Termin extends CActiveRecord implements IRISItem
 	 * @param int $limit
 	 * @return $this
 	 */
-	public function neueste_stadtratsantragsdokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
+	public function neueste_str_protokolle($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
 	{
-		if ($ba_nr === false) $ba_sql = "";
-		elseif ($ba_nr > 0) $ba_sql = "ba_nr = " . IntVal($ba_nr);
-		elseif ($ba_nr == -1) $ba_sql = "ba_nr > 0";
-		else $ba_sql = "ba_nr IS NULL ";
+		$ba_sql = "ba_nr IS NULL";
+
+		$params = array(
+			'condition' => $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+			'order'     => 'datum DESC',
+			'with'      => array(
+				'antraegeDokumente' => array(
+					'condition' => 'name like "%protokoll%" AND datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
+				),
+			));
+		if ($limit > 0) $params['limit'] = $limit;
+		$this->getDbCriteria()->mergeWith($params);
+		return $this;
+	}
+
+	/**
+	 * @param int $ba_nr
+	 * @param string $zeit_von
+	 * @param string $zeit_bis
+	 * @param int $limit
+	 * @return $this
+	 */
+	public function neueste_ba_dokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
+	{
+		$ba_sql = "ba_nr = " . IntVal($ba_nr);
 
 		$params = array(
 			'condition' => $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
@@ -240,9 +238,10 @@ class Termin extends CActiveRecord implements IRISItem
 	/**
 	 * @return AntragErgebnis[]
 	 */
-	public function ergebnisseSortiert() {
+	public function ergebnisseSortiert()
+	{
 		$ergebnisse = $this->antraegeErgebnisse;
-		usort($ergebnisse, function($ergebnis1, $ergebnis2) {
+		usort($ergebnisse, function ($ergebnis1, $ergebnis2) {
 			/** @var AntragErgebnis $ergebnis1 */
 			/** @var AntragErgebnis $ergebnis2 */
 
@@ -266,5 +265,38 @@ class Termin extends CActiveRecord implements IRISItem
 			return 0;
 		});
 		return $ergebnisse;
+	}
+
+
+	/**
+	 * @var Termin[] $appointments
+	 * @return array[]
+	 */
+	public static function groupAppointments($appointments)
+	{
+		$data = array();
+		foreach ($appointments as $appointment) {
+			$key = $appointment->termin . $appointment->sitzungsort;
+			if (!isset($data[$key])) {
+				$ts         = RISTools::date_iso2timestamp($appointment->termin);
+				$data[$key] = array(
+					"id"         => $appointment->id,
+					"link"       => $appointment->getLink(),
+					"datum"      => strftime("%e. %b., %H:%M", $ts),
+					"datum_long" => strftime("%e. %B, %H:%M Uhr", $ts),
+					"datum_iso"  => $appointment->termin,
+					"datum_ts"   => $ts,
+					"gremien"    => array(),
+					"ort"        => $appointment->sitzungsort,
+					"tos"        => array(),
+					"dokumente"  => $appointment->antraegeDokumente,
+				);
+			}
+			$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $appointment->id));
+			if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = array();
+			$data[$key]["gremien"][$appointment->gremium->name][] = $url;
+		}
+		foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
+		return $data;
 	}
 }

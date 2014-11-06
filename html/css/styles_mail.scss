@@ -1,0 +1,40 @@
+$icon-font-path: "https://www.ratsinformant.de/css/bootstrap-sass-3.3.0/assets/fonts/bootstrap/";
+$roboto-font-path: "https://www.ratsinformant.de/fonts/";
+$pics-path: "https://www.ratsinformant.de/images/";
+
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap/variables";
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap/mixins";
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap/normalize";
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap/scaffolding";
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap/grid";
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap/list-group";
+@import "bootstrap-sass-3.3.0/assets/stylesheets/bootstrap/wells";
+
+
+@import "material/_variables.import";
+@import "material/_mixins.import";
+@import "material/_shadows.import";
+@import "material/_lists.import";
+@import "material/_welljumbo.import";
+
+
+// The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
+@import "material/variables.import";
+@import "antragsliste";
+@import "roboto-font";
+@import "styles";
+
+.fontello-download {
+  color: transparent;
+  display: inline-block;
+  width: 16px;
+  height: 15px;
+  background-image: url(#{$pics-path}mail-download.png);
+}
+.glyphicon-file {
+  color: transparent;
+  display: inline-block;
+  width: 58px;
+  height: 58px;
+  background-image: url(#{$pics-path}mail-file.png);
+}

@@ -50,9 +50,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			array('twitter', 'length', 'max' => 45),
 			array('facebook, abgeordnetenwatch', 'length', 'max' => 200),
 			array('gewaehlt_am', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, gewaehlt_am, bio, web, name, twitter, facebook, abgeordnetenwatch', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -88,33 +85,12 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	}
 
 	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('gewaehlt_am', $this->gewaehlt_am, true);
-		$criteria->compare('bio', $this->bio, true);
-		$criteria->compare('web', $this->web, true);
-		$criteria->compare('name', $this->name, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getLink()
 	{
-		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id));
+		$name = $this->getName();
+		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id, "name" => $name));
 	}
 
 
@@ -130,14 +106,52 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 */
 	public function getName($kurzfassung = false)
 	{
-		return $this->name;
+		if (mb_strpos($this->name, ",") > 0) {
+			preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
+			$titel = trim($matches["titel"]);
+			if (strlen($titel) > 0) $titel .= " ";
+
+			$x = explode(",", $matches["name"]);
+			if (count($x) == 2) {
+				$name = $x[1] . " " . $x[0];
+			} else {
+				$name = $this->name;
+			}
+			return $titel . trim($name);
+		} else {
+			return $this->name;
+		}
+	}
+
+	/**
+	 * @param StadtraetIn[] $personen
+	 * @return StadtraetIn[];
+	 */
+	public static function sortByName($personen) {
+		usort($personen, function($str1, $str2) {
+			/** @var StadtraetIn $str1 */
+			/** @var StadtraetIn $str2 */
+			$name1 = preg_replace("/^([a-z]+\. )*/siu", "", $str1->getName());
+			$name2 = preg_replace("/^([a-z]+\. )*/siu", "", $str2->getName());
+			return strnatcasecmp($name1, $name2);
+		});
+		return $personen;
 	}
 
 	/**
 	 * @return string
 	 */
+	public function getDate() {
+		return "0000-00-00 00:00:00";
+	}
+
+
+
+	/**
+	 * @return string
+	 */
 	public function getSourceLink() {
-		return "http://www.ris-muenchen.de/RII2/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+		return "http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
 	}
 
 	/**
@@ -166,6 +180,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			)));
 		$fraktionen = array();
 		foreach ($strs as $str) {
+			if ($str->id == 3425214) continue; // Seltsamer RIS-Testuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
 			if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = array();
 			$fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
 		}

@@ -3,10 +3,15 @@
 class RISBaseController extends CController
 {
 	/**
-	 * @var string the default layout for the controller view. Defaults to '//layouts/column1',
-	 * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
+	 * Alternative: //layouts/width_wide
 	 */
-	public $layout = '//layouts/column1';
+	public $layout = '//layouts/width_std';
+
+	/**
+	 * @var string
+	 */
+	public $html_description = "";
+
 	/**
 	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
 	 */
@@ -22,6 +27,7 @@ class RISBaseController extends CController
 
 	public $load_leaflet_css = false;
 	public $load_leaflet_draw_css = false;
+	public $load_calendar = false;
 	public $suche_pre = "";
 
 	private $_assetsBase = null;
@@ -85,8 +91,6 @@ class RISBaseController extends CController
 				if ($benutzerIn->validate_password($_REQUEST["password"])) {
 					$identity = new RISUserIdentity($benutzerIn);
 					Yii::app()->user->login($identity);
-
-					if ($benutzerIn->email == Yii::app()->params['adminEmail']) Yii::app()->user->setState("role", "admin");
 				} else {
 					$msg_err = "Das angegebene Passwort ist falsch.";
 				}
@@ -124,5 +128,62 @@ class RISBaseController extends CController
 		}
 
 		return array($msg_ok, $msg_err);
+	}
+
+	/**
+	 * @param string $target_url
+	 * @param string $code
+	 * @return array
+	 */
+	protected function requireLogin($target_url, $code = "")
+	{
+		list($msg_ok, $msg_err) = $this->performLoginActions($code);
+
+		if (Yii::app()->getUser()->isGuest) {
+			$this->render("../index/login", array(
+				"current_url" => $target_url,
+				"msg_err"     => $msg_err,
+				"msg_ok"      => $msg_ok,
+			));
+			Yii::app()->end();
+		}
+
+		return array($msg_ok, $msg_err);
+	}
+
+	/**
+	 * @return BenutzerIn|null
+	 */
+	public function aktuelleBenutzerIn()
+	{
+		$user = Yii::app()->getUser();
+		if ($user->isGuest) return null;
+		/** @var BenutzerIn $ich */
+		$ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+		return $ich;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function binContentAdmin()
+	{
+		$curr = $this->aktuelleBenutzerIn();
+		if ($curr === null) return false;
+		return in_array($curr->id, Yii::app()->params["contentAdminIds"]);
+	}
+
+	/**
+	 * @param int $error_code
+	 * @param string $error_message
+	 */
+	public function errorMessageAndDie($error_code, $error_message)
+	{
+		$this->render("../index/error", array(
+			"code"    => $error_code,
+			"message" => $error_message,
+		));
+		Yii::app()->end($error_code);
+		die();
 	}
 }

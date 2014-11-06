@@ -44,9 +44,6 @@ class Strasse extends CActiveRecord
 			array('name, plz, osm_ref', 'required'),
 			array('name', 'length', 'max'=>100),
 			array('plz, osm_ref', 'length', 'max'=>10),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, name, plz, osm_ref', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,26 +69,5 @@ class Strasse extends CActiveRecord
 			'plz' => 'Plz',
 			'osm_ref' => 'Osm Ref',
 		);
-	}
-
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('plz',$this->plz,true);
-		$criteria->compare('osm_ref',$this->osm_ref,true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
 	}
 }

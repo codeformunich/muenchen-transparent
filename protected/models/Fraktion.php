@@ -12,6 +12,7 @@
  * The followings are the available model relations:
  * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
  * @property Person[] $personen
+ * @property Bezirksausschuss $bezirksausschuss
  */
 class Fraktion extends CActiveRecord implements IRISItem
 {
@@ -45,9 +46,6 @@ class Fraktion extends CActiveRecord implements IRISItem
 			array('id, ba_nr', 'numerical', 'integerOnly' => true),
 			array('name', 'length', 'max' => 70),
 			array('website', 'length', 'max' => 250),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, name, website', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -77,32 +75,11 @@ class Fraktion extends CActiveRecord implements IRISItem
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$criteria = new CDbCriteria;
-
-		$criteria->compare('id', $this->id);
-		$criteria->compare('ba_nr', $this->ba_nr);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('website', $this->website, true);
-
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
-
 	/** @return string */
 	public function getLink()
 	{
 		$strs = $this->stadtraetInnenFraktionen;
-		return "http://www.ris-muenchen.de/RII2/RII/ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
+		return "http://www.ris-muenchen.de/RII/RII/ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
 	}
 
 	/** @return string */
@@ -117,6 +94,20 @@ class Fraktion extends CActiveRecord implements IRISItem
 	 */
 	public function getName($kurzfassung = false)
 	{
+		if ($kurzfassung) {
+			if (in_array($this->id, array(3339564, 2988265, 3312425))) return "Bürgerliche Mitte";
+			if ($this->id == 3312427) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
+			if (in_array($this->id, array(3312426, 1431959, 33))) return "Die Grünen / RL";
+		}
 		return $this->name;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getDate() {
+		return "0000-00-00 00:00:00";
+	}
+
+
 }
