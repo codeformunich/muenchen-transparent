@@ -132,7 +132,7 @@ $name = $antrag->getName(true);
 			});
 			zeile_anzeigen($docs, "Dokumente:", function ($dok) {
 				/** @var AntragDokument $dok */
-				echo date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getOriginalLink());
+				echo date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getLinkZumDokument());
 			});
 
 			if (count($antrag->ergebnisse) > 0) {
@@ -204,7 +204,10 @@ $name = $antrag->getName(true);
 			if ($antrag->vorgang) {
 				zeile_anzeigen($antrag->vorgang->getRISItemsByDate(), "Verwandte Seiten:", function ($item) {
 					/** @var IRISItem $item */
-					echo CHtml::link($item->getName(true), $item->getLink());
+					if (method_exists ($item , "getLinkZumDokument"))
+						echo CHtml::link($item->getName(true), $item->getLinkZumDokument());
+					else
+						echo CHtml::link($item->getName(true), $item->getLink());
 				});
 			}
 			?>
