@@ -57,22 +57,33 @@ class RISPDF2Text
 
 	/**
 	 * @param string $filename
-	 * @return int
+	 * @return array
 	 */
-	public static function document_anzahl_seiten($filename)
+	public static function document_pdf_metadata($filename)
 	{
 		$result = array();
-		exec(PATH_PDFINFO . " $filename", $result);
-		preg_match("/Pages:\\s*([0-9]+)/siu", implode("", $result), $matches);
+		exec(PATH_PDFINFO . " '" . addslashes($filename) . "'", $result);
+		$seiten = 0;
+		$datum = "";
 
-		if (isset($matches[1])) return IntVal($matches[1]);;
+		if (preg_match("/Pages:\\s*([0-9]+)/siu", implode("\n", $result), $matches_page)) $seiten = IntVal($matches_page[1]);
+		if (preg_match("/CreationDate:\\s*([a-z0-9 :]+)\n/siu", implode("\n", $result), $matches_date)) {
+			$datum = date_parse($matches_date[1]);
+			if ($datum && isset($datum["year"]) && $datum["year"] > 1990) {
+				$datum = $datum["year"] . "-" . $datum["month"] . "-" . $datum["day"] . " " . $datum["hour"] . ":" . $datum["minute"] . ":" . $datum["second"];
+			} else {
+				$datum = "0000-00-00 00:00:00";
+			}
+		}
+
+		if ($seiten > 0) return array("seiten" => $seiten, "datum" => $datum);
 
 		$result = array();
 		exec(PATH_IDENTIFY . " $filename", $result);
 		$anzahl = 0;
 		foreach ($result as $res) if (strpos($res, "DirectClass")) $anzahl++;
 
-		return $anzahl;
+		return array("seiten" => $anzahl, "datum" => $datum);
 	}
 
 	/**

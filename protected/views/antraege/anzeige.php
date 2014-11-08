@@ -124,15 +124,15 @@ $name = $antrag->getName(true);
 				 * @var AntragDokument $dok1
 				 * @var AntragDokument $dok2
 				 */
-				$ts1 = RISTools::date_iso2timestamp($dok1->datum);
-				$ts2 = RISTools::date_iso2timestamp($dok2->datum);
+				$ts1 = RISTools::date_iso2timestamp($dok1->getDate());
+				$ts2 = RISTools::date_iso2timestamp($dok2->getDate());
 				if ($ts1 > $ts2) return 1;
 				if ($ts1 < $ts2) return -1;
 				return 0;
 			});
 			zeile_anzeigen($docs, "Dokumente:", function ($dok) {
 				/** @var AntragDokument $dok */
-				echo date("d.m.Y", RISTools::date_iso2timestamp($dok->datum)) . ": " . CHtml::link($dok->name, $dok->getLinkZumDokument());
+				echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->name, $dok->getLinkZumDokument());
 			});
 
 			if (count($antrag->ergebnisse) > 0) {

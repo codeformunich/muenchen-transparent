@@ -42,7 +42,7 @@ if (count($dokumente) == 0) {
 					<div class="row-content">
 						<h4 class="list-group-item-heading">
 							<a href="<?=CHtml::encode($risitem->getLink())?>" title="<?=CHtml::encode($risitem->getName()) ?>" class="overflow-fadeout-white"><span>
-								<span class="least-content"><?= CHtml::encode(date("d.m.Y", RISTools::date_iso2timestamp($dok->datum))) ?></span>
+								<span class="least-content"><?= CHtml::encode($dok->getDisplayDate()) ?></span>
 								<?=CHtml::encode($risitem->getName(true))?>
 							</span></a>
 						</h4>

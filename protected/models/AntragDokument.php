@@ -13,6 +13,7 @@
  * @property string $url
  * @property string $name
  * @property string $datum
+ * @property string $datum_dokument
  * @property string $text_ocr_raw
  * @property string $text_ocr_corrected
  * @property string $text_ocr_garbage_seiten
@@ -123,6 +124,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 			'url'                     => 'Url',
 			'name'                    => 'Name',
 			'datum'                   => 'Datum',
+			'datum_dokument'          => 'Dokumentendatum',
 			'text_ocr_raw'            => 'Text Ocr Raw',
 			'text_ocr_corrected'      => 'Text Ocr Corrected',
 			'text_ocr_garbage_seiten' => 'Text Ocr Garbage Seiten',
@@ -183,28 +185,50 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	 * @return string
 	 */
 	public function getDate() {
-		return $this->datum;
+		$ts = RISTools::date_iso2timestamp($this->datum);
+		if ($ts > DOCUMENT_DATE_ACCURATE_SINCE || $this->datum_dokument == 0) return $this->datum;
+		return $this->datum_dokument;
 	}
 
+	/**
+	 * @param string $fallback
+	 * @return string
+	 */
+	public function getDisplayDate($fallback = "") {
+		if ($fallback == "") $fallback = "Vor 2008";
 
+		$ts = RISTools::date_iso2timestamp($this->datum);
+		if ($ts > DOCUMENT_DATE_ACCURATE_SINCE) return date("d.m.Y", $ts);
 
+		$ts = RISTools::date_iso2timestamp($this->datum_dokument);
+		if ($ts > DOCUMENT_DATE_UNKNOWN_BEFORE) return date("d.m.Y", $ts);
+
+		return $fallback;
+	}
+
+	/**
+	 */
+	public function download_if_necessary() {
+		$filename = $this->getLocalPath();
+		if (file_exists($filename)) return;
+
+		$url      = "http://www.ris-muenchen.de" . $this->url;
+		RISTools::download_file($url, $filename);
+	}
 
 	/**
 	 */
 	public function download_and_parse()
 	{
-		$url      = "http://www.ris-muenchen.de" . $this->url;
-		$x        = explode("/", $url);
-		$filename = $x[count($x) - 1];
-		if (preg_match("/[^a-zA-Z0-9_\.-]/", $filename)) die("Ungültige Zeichen im Dateinamen");
+		$this->download_if_necessary();
+		$absolute_filename = $this->getLocalPath();
 
-		$absolute_filename = PATH_PDF . $filename;
-
-		RISTools::download_file($url, $absolute_filename);
-
-		$y                   = explode(".", $filename);
+		$y                   = explode(".", $this->url);
 		$endung              = mb_strtolower($y[count($y) - 1]);
-		$this->seiten_anzahl = RISPDF2Text::document_anzahl_seiten($absolute_filename);
+
+		$metadata = RISPDF2Text::document_pdf_metadata($absolute_filename);
+		$this->seiten_anzahl = $metadata["seiten"];
+		$this->datum_dokument = $metadata["datum"];
 
 		if ($endung == "pdf") $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
 		else $this->text_pdf = "";
@@ -213,7 +237,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		$this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
 		$this->ocr_von            = AntragDokument::$OCR_VON_TESSERACT;
 
-		copy($absolute_filename, OMNIPAGE_PDF_DIR . $filename);
+		copy($absolute_filename, OMNIPAGE_PDF_DIR . $this->id . "." . $endung);
 	}
 
 	/**
@@ -327,6 +351,15 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	public function getOriginalLink()
 	{
 		return "http://www.ris-muenchen.de" . $this->url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLocalPath() {
+		$x        = explode(".", $this->url);
+		$extension = $x[count($x) - 1];
+		return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
 	}
 
 
@@ -529,7 +562,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		$doc->geo          = $geo;
 		$doc->dokument_bas = $dokument_bas;
 
-		$datum           = (is_object($this->datum) ? date("Y-m-d H:i:s") : $this->datum);
+		$datum           = $this->getDate();
 		$doc->sort_datum = RISSolrHelper::mysql2solrDate($datum);
 		$update->addDocuments(array($doc));
 	}

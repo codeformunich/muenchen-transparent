@@ -62,7 +62,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.c
 							$dokument = $dok["dokument"];
 							$dokurl   = $dokument->getLinkZumDokument();
 							$doklist .= '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dokument->name) . '</a><br>';
-							$dat = RISTools::date_iso2timestamp($dokument->datum);
+							$dat = RISTools::date_iso2timestamp($dokument->getDate());
 							if ($dat > $max_date) $max_date = $dat;
 
 							foreach ($dok["queries"] as $qu) {
@@ -134,7 +134,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.c
 								$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
 								if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
 								$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
-								$dat = RISTools::date_iso2timestamp($dokument->datum);
+								$dat = RISTools::date_iso2timestamp($dokument->getDate());
 								if ($dat > $max_date) $max_date = $dat;
 
 								foreach ($dok["queries"] as $qu) {

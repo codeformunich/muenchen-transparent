@@ -50,7 +50,7 @@ $geodata         = array();
 			<td>
 				<ul>
 					<? foreach ($termin->antraegeDokumente as $dok) {
-						echo "<li>" . CHtml::link($dok->name, $dok->getLinkZumDokument()) . " (vom " . RISTools::datumstring($dok->datum) . ")</li>";
+						echo "<li>" . CHtml::link($dok->name, $dok->getLinkZumDokument()) . " (" . CHtml::encode($dok->getDisplayDate()) . ")</li>";
 					} ?>
 				</ul>
 			</td>

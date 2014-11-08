@@ -82,7 +82,7 @@ if (count($antraege) > 0) {
 				$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
 				if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
 				$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
-				$dat = RISTools::date_iso2timestamp($dokument->datum);
+				$dat = RISTools::date_iso2timestamp($dokument->getDate());
 				if ($dat > $max_date) $max_date = $dat;
 			}
 

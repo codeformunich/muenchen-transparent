@@ -83,7 +83,7 @@ $this->pageTitle = "Termine";
 							$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
 							if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
 							$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
-							$dat = RISTools::date_iso2timestamp($dokument->datum);
+							$dat = RISTools::date_iso2timestamp($dokument->getDate());
 							if ($dat > $max_date) $max_date = $dat;
 						}
 						echo "<ul class='dokumente'>";

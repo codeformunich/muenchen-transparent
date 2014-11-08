@@ -125,8 +125,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 				usort($dokumente, function ($dok1, $dok2) {
 					/** @var AntragDokument $dok1 */
 					/** @var AntragDokument $dok2 */
-					$ts1 = RISTools::date_iso2timestamp($dok1->datum);
-					$ts2 = RISTools::date_iso2timestamp($dok2->datum);
+					$ts1 = RISTools::date_iso2timestamp($dok1->getDate());
+					$ts2 = RISTools::date_iso2timestamp($dok2->getDate());
 					if ($ts1 > $ts2) return -1;
 					if ($ts1 < $ts2) return 1;
 					return 0;
@@ -139,7 +139,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 						$name = str_replace(" (oeff)", "", $dokument->name);
 						$name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
 						echo '<li>';
-						echo "<div class='add_meta'>" . CHtml::encode(strftime("%e. %b.", RISTools::date_iso2timestamp($dokument->datum))) . "</div>";
+						echo "<div class='add_meta'>" . CHtml::encode($dokument->getDisplayDate()) . "</div>";
 						echo CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkZumDokument());
 						echo '</li>';
 					} ?>

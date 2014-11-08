@@ -5,9 +5,15 @@ class Recalc_DocumentsCommand extends CConsoleCommand {
 
 		define("VERYFAST", true);
 
-		$sql = Yii::app()->db->createCommand();
-		$sql->select("id")->from("antraege_dokumente")->where("id < 1245865 AND (seiten_anzahl = 0 OR seiten_anzahl = 9)")->order("id");
-		$data = $sql->queryColumn(array("id"));
+		if (count($args) == 0) die("./yii recalc_documents [Dokument-ID|alle]\n");
+
+		if ($args[0] == "alle") {
+			$sql = Yii::app()->db->createCommand();
+			$sql->select("id")->from("antraege_dokumente")->where("id >= 579866")->order("id");
+			$data = $sql->queryColumn(array("id"));
+		} else {
+			$data = array(IntVal($args[0]));
+		}
 
 		$anz = count($data);
 		foreach ($data as $nr => $dok_id) {
@@ -15,14 +21,15 @@ class Recalc_DocumentsCommand extends CConsoleCommand {
 			/** @var AntragDokument $dokument */
 			$dokument = AntragDokument::model()->findByPk($dok_id);
 
-			$url      = "http://www.ris-muenchen.de" . $dokument->url;
-			$x        = explode("/", $url);
-			$filename = $x[count($x) - 1];
-			$absolute_filename = PATH_PDF . $filename;
-			$dokument->seiten_anzahl = RISPDF2Text::document_anzahl_seiten($absolute_filename);
+			$dokument->download_if_necessary();
+			$absolute_filename = $dokument->getLocalPath();
+			echo $absolute_filename . "\n";
+			$metadata = RISPDF2Text::document_pdf_metadata($absolute_filename);
+			$dokument->seiten_anzahl = $metadata["seiten"];
+			$dokument->datum_dokument = $metadata["datum"];
 			$dokument->save();
 
-			echo $filename . " => " . $dokument->seiten_anzahl . "\n";
+			echo $dokument->id . " => " . $dokument->seiten_anzahl . " / " . $dokument->datum_dokument . "\n";
 		}
 	}
 }

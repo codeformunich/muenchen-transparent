@@ -34,7 +34,7 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
 			<?
 			$max_date = 0;
 			foreach ($verw->dokumente as $dokument) {
-				$dat = RISTools::date_iso2timestamp($dokument->datum);
+				$dat = RISTools::date_iso2timestamp($dokument->getDate());
 				if ($dat > $max_date) $max_date = $dat;
 			}
 			?>
