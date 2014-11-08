@@ -638,7 +638,7 @@ class IndexController extends RISBaseController
 				else $antraege_sonstige[] = $ant;
 			}
 			$i++;
-		} while (count($antraege) == 0);
+		} while (count($antraege) == 0 && $i < 10);
 		return array($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis);
 	}
 
