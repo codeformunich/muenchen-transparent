@@ -19,7 +19,10 @@
 	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
 	<link rel="icon" type="image/png" href="/css/img/logo.png">
 
-	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+	<title><?php
+		echo CHtml::encode($this->pageTitle);
+		if (strpos($this->pageTitle, "Transparent") === false) echo " (" . CHtml::encode(Yii::app()->params['projectTitle']) . ")";
+		?></title>
 
 	<!--[if lt IE 9]>
 	<script src="/js/jquery-1.11.1.min.js"></script>

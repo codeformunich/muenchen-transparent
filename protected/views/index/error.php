@@ -5,7 +5,7 @@
  * @var string $message
  */
 
-$this->pageTitle = "Fehler: " . Yii::app()->name;
+$this->pageTitle = "Fehler";
 
 switch ($code) {
 	case 404:

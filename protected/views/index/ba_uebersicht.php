@@ -24,7 +24,7 @@
 
 $this->layout = "//layouts/width_wide";
 
-$this->pageTitle = Yii::app()->name . ": Bezirksausschuss " . $ba->ba_nr . " (" . $ba->name . ")";
+$this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
 ?>
 

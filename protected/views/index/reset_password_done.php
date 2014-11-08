@@ -4,6 +4,7 @@
  * @var IndexController $this
  */
 
+$this->pageTitle = "Passwort gesetzt";
 ?>
 
 <section class="col-md-4 col-md-offset-4">

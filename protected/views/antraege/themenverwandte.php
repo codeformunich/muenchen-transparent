@@ -4,7 +4,7 @@
  * @var AntraegeController $this
  */
 
-$this->pageTitle = $antrag->getName(true);
+$this->pageTitle = $antrag->getName(true) . " - Themenverwandt";
 $related         = $antrag->errateThemenverwandteAntraege(50);
 
 ?>

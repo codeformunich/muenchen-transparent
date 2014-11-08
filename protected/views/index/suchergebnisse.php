@@ -14,7 +14,7 @@
  * @var null|array $geodata_overflow
  */
 
-$this->pageTitle = Yii::app()->name;
+$this->pageTitle = "Suchergebnisse";
 
 ?>
 <section class="well suchergebnisse_holder2">

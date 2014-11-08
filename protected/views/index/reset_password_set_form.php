@@ -5,7 +5,7 @@
  * @var string $current_url
  * @var string $msg_err
  */
-
+$this->pageTitle = "Passwort zurücksetzen";
 ?>
 
 

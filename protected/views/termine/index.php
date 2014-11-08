@@ -7,7 +7,7 @@
  * @var int $tage_zukunft
  * @var int $tage_vergangenheit
  */
-
+$this->pageTitle = "Termine";
 ?>
 
 <section class="well">
