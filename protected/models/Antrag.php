@@ -38,6 +38,7 @@
  * @property Antrag[] $antrag2vorlagen
  * @property Antrag[] $vorlage2antraege
  * @property Vorgang $vorgang
+ * @property Tag[] $tags
  */
 class Antrag extends CActiveRecord implements IRISItem
 {
@@ -117,6 +118,7 @@ class Antrag extends CActiveRecord implements IRISItem
 			'antrag2vorlagen'  => array(self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag2, antrag1)'),
 			'abos'             => array(self::MANY_MANY, 'AntragAbo', 'antraege_abos(antrag_id, benutzerIn_id)'),
 			'vorgang'          => array(self::BELONGS_TO, 'Vorgang', 'vorgang_id'),
+			'tags'             => array(self::MANY_MANY, 'Tag', 'antraege_tags(antrag_id, tag_id)'),
 		);
 	}
 

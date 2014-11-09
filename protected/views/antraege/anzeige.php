@@ -60,6 +60,33 @@ $name = $antrag->getName(true);
 
 		<table class="table antragsdaten">
 			<tbody>
+			<tr>
+				<th>Schlagworte:</th>
+				<td><?
+					if (count($antrag->tags) == 0) echo '<em>noch keine</em>';
+					else {
+						echo '<ul class="antrags_tags">';
+						foreach ($antrag->tags as $tag) {
+							echo '<li>' . $tag->getNameLink();
+							if ($this->binContentAdmin()) {
+								$del_link = $antrag->getLink() . "?" . AntiXSS::createToken("tag_del") . "=" . $tag->id;
+								echo ' <a href="' . CHtml::encode($del_link) . '" class="del_link">del</a>';
+							}
+							echo '</li>';
+						}
+						echo '</ul>';
+					}
+					if ($this->aktuelleBenutzerIn()) {
+						?>
+						<a href="#" onclick="$('#tag_add_form').show(); $('#tag_add_link').hide(); return false;" id="tag_add_link">Neues Schlagwort</a>
+						<form method="post" style="display: none;" id="tag_add_form">
+							<label>Neues Schlagwort: <input name="tag_name" required></label>
+							<button class="btn btn-primary" type="submit" name="<?=AntiXSS::createToken("tag_add")?>">Speichern</button>
+						</form>
+					<?
+					}
+				?></td>
+			</tr>
 			<?
 			zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", function ($person) use ($antrag) {
 				/** @var Person $person */

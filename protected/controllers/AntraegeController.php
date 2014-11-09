@@ -58,6 +58,33 @@ class AntraegeController extends RISBaseController
 			$antrag->vorgang->deabonnieren($this->aktuelleBenutzerIn());
 		}
 
+		if (AntiXSS::isTokenSet("tag_del") && $this->binContentAdmin()) {
+			Yii::app()->db->createCommand()->delete("antraege_tags", "antrag_id=:antrag_id AND tag_id=:tag_id", array(
+				"antrag_id" => $antrag->id, "tag_id" => AntiXSS::getTokenVal("tag_del")
+			));
+		}
+
+		if (AntiXSS::isTokenSet("tag_add") && $this->aktuelleBenutzerIn()) {
+			/** @var Tag $tag */
+			$tag = Tag::model()->findByAttributes(array("name" => $_REQUEST["tag_name"]));
+			if (!$tag) {
+				$tag = new Tag();
+				$tag->name = $_REQUEST["tag_name"];
+				$tag->angelegt_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
+				$tag->angelegt_datum = new CDbExpression('NOW()');
+				$tag->reviewed = ($this->binContentAdmin() ? 1 : 0);
+				$tag->save();
+
+				if (count($tag->getErrors()) > 0) {
+					$this->render('/index/error', array("code" => 500, "message" => "Ein Fehler beim Anlegen des Schlagworts trat auf"));
+				}
+			}
+
+			Yii::app()->db->createCommand()->insert("antraege_tags", array(
+				"antrag_id" => $antrag->id, "tag_id" => $tag->id, "zugeordnet_datum" => date("Y-m-d H:i:s"), "zugeordnet_benutzerIn_id" => $this->aktuelleBenutzerIn()->id
+			));
+		}
+
 		$this->render("anzeige", array(
 			"antrag" => $antrag,
 		));

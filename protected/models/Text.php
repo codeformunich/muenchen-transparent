@@ -13,7 +13,7 @@
  * @property integer $edit_benutzerIn_id
  *
  * The followings are the available model relations:
- * @property BenutzerIn $edit_benutzerIN
+ * @property BenutzerIn $edit_benutzerIn
  */
 class Text extends CActiveRecord
 {
@@ -23,7 +23,7 @@ class Text extends CActiveRecord
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Person the static model class
+	 * @return Text the static model class
 	 */
 	public static function model($className = __CLASS__)
 	{
