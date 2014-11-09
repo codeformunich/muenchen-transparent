@@ -840,6 +840,9 @@ class IndexController extends RISBaseController
 	public function actionDokumente($titel)
 	{
 		$this->load_pdf_js = true;
-		$this->render('viewer', array("titel" => $titel));
+		$this->render('viewer', array(
+			"titel" => $titel,
+			"dokument" => AntragDokument::getCachedByID(preg_replace("/\D/", "", $titel))
+		));
 	}
 }

@@ -1,11 +1,27 @@
-﻿<!--
+﻿<ul class="breadcrumb" style="margin: -15px 0px 5px 20px; background: transparent;">
+	<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+<?
+if ($dokument != null) {
+	if      ($dokument->antrag_id  ) echo "<li><a href=" . Antrag   ::model()->findByPk($dokument->antrag_id  )->getLink() . ">Anträge   </a><br></li>";
+	else if ($dokument->ergebnis_id) echo "<li><a href=" . Ergebniss::model()->findByPk($dokument->ergebnis_id)->getLink() . ">Ergebnisse</a><br></li>";
+	else if ($dokument->termin_id  ) echo "<li><a href=" . Termin   ::model()->findByPk($dokument->termin_id  )->getLink() . ">Termine   </a><br></li>";
+	else if ($dokument->vorgang_id ) echo "<li class=\"active\">                                                               Vorgänge      <br></li>";
+
+	echo "<li class=\"active\">" . $dokument->getName() . "</li>";
+}
+?>
+</ul>
+
+<p id="filename_store" class="hidden">/pdf_proxy/RII/RII/DOK/<?= $titel ?>.pdf</p>
+
+<!--
 Copyright 2012 Mozilla Foundation
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,21 +33,6 @@ Adobe CMap resources are covered by their own copyright and license:
 http://sourceforge.net/adobe/cmap/wiki/License/
 -->
 
-<? $doc = AntragDokument::getCachedByID(preg_replace("/\D/", "", $titel)); ?>
-<ul class="breadcrumb" style="margin: -15px 0px 5px 20px; background: transparent;">
-	<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-<?
-if ($doc != null) {
-	if      ($doc->antrag_id  ) echo "<li><a href=" . Antrag   ::model()->findByPk($doc->antrag_id  )->getLink() . ">Anträge   </a><br></li>";
-	else if ($doc->ergebnis_id) echo "<li><a href=" . Ergebniss::model()->findByPk($doc->ergebnis_id)->getLink() . ">Ergebnisse</a><br></li>";
-	else if ($doc->termin_id  ) echo "<li><a href=" . Termin   ::model()->findByPk($doc->termin_id  )->getLink() . ">Termine   </a><br></li>";
-	else if ($doc->vorgang_id ) echo "<li class=\"active\">                                                          Vorgänge      <br></li>";
-}
-?>
-	<li class="active"><?= $doc->getName() ?></li>
-</ul>
-
-<p id="filename_store" class="hidden">/pdf_proxy/RII2/RII/DOK/<?= $titel ?>.pdf</p>
 <div id="outerContainer" class="loadingInProgress" tabindex="1">
 
   <div id="sidebarContainer">
@@ -306,7 +307,7 @@ if ($doc != null) {
   </div>  <!-- overlayContainer -->
 
 </div> <!-- outerContainer -->
-    <div id="printContainer"></div>
+	<div id="printContainer"></div>
 <div id="mozPrintCallback-shim" hidden>
   <style scoped>
 	#mozPrintCallback-shim {
@@ -326,7 +327,7 @@ if ($doc != null) {
 	}
 	@media print {
 	  #mozPrintCallback-shim {
-	    display: none;
+		display: none;
 	  }
 	}
 
@@ -367,15 +368,15 @@ if ($doc != null) {
 	}
   </style>
   <div class="mozPrintCallback-dialog-box">
-    <!-- TODO: Localise the following strings -->
-    Preparing document for printing...
-    <div class="progress-row">
-      <progress value="0" max="100"></progress>
-      <span class="relative-progress">0%</span>
-    </div>
-    <div class="progress-actions">
-      <input type="button" value="Cancel" class="mozPrintCallback-cancel">
-    </div>
+	<!-- TODO: Localise the following strings -->
+	Preparing document for printing...
+	<div class="progress-row">
+	  <progress value="0" max="100"></progress>
+	  <span class="relative-progress">0%</span>
+	</div>
+	<div class="progress-actions">
+	  <input type="button" value="Cancel" class="mozPrintCallback-cancel">
+	</div>
   </div>
 </div>
 
