@@ -1,10 +1,17 @@
-﻿<ul class="breadcrumb" style="margin: -15px 0px 5px 20px; background: transparent;">
+﻿<?
+/**
+ * @var AntragDokument|null $dokument
+ * @var string $titel
+ * @var int $id
+ */
+?>
+<ul class="breadcrumb" style="margin: -15px 0px 5px 20px; background: transparent;">
 	<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 <?
 if ($dokument != null) {
-	if      ($dokument->antrag_id  ) echo "<li><a href=" . Antrag   ::model()->findByPk($dokument->antrag_id  )->getLink() . ">Anträge   </a><br></li>";
-	else if ($dokument->ergebnis_id) echo "<li><a href=" . Ergebniss::model()->findByPk($dokument->ergebnis_id)->getLink() . ">Ergebnisse</a><br></li>";
-	else if ($dokument->termin_id  ) echo "<li><a href=" . Termin   ::model()->findByPk($dokument->termin_id  )->getLink() . ">Termine   </a><br></li>";
+	if      ($dokument->antrag_id  ) echo "<li><a href=" . Antrag        ::model()->findByPk($dokument->antrag_id  )->getLink() . ">Anträge   </a><br></li>";
+	else if ($dokument->ergebnis_id) echo "<li><a href=" . AntragErgebnis::model()->findByPk($dokument->ergebnis_id)->getLink() . ">Ergebnisse</a><br></li>";
+	else if ($dokument->termin_id  ) echo "<li><a href=" . Termin        ::model()->findByPk($dokument->termin_id  )->getLink() . ">Termine   </a><br></li>";
 	else if ($dokument->vorgang_id ) echo "<li class=\"active\">                                                               Vorgänge      <br></li>";
 
 	echo "<li class=\"active\">" . $dokument->getName() . "</li>";
@@ -12,7 +19,7 @@ if ($dokument != null) {
 ?>
 </ul>
 
-<p id="filename_store" class="hidden">/pdf_proxy/RII/RII/DOK/<?= $titel ?>.pdf</p>
+<p id="filename_store" class="hidden">/dokument_proxy/<?= $id ?></p>
 
 <!--
 Copyright 2012 Mozilla Foundation

@@ -7,7 +7,6 @@
  * @property int $id
  * @property string $name
  * @property int $angelegt_benutzerIn_id
- * @property string $angelegt_benutzerIn
  * @property string $angelegt_datum
  * @property int $reviewed
  *

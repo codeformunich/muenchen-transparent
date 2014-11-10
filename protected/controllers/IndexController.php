@@ -480,19 +480,17 @@ class IndexController extends RISBaseController
 	}
 
 
-	public function actionDokument($id)
+	/**
+	 * @param int $id
+	 */
+	public function actionDocumentProxy($id)
 	{
 		/** @var AntragDokument $dokument */
 		$dokument = AntragDokument::model()->findByPk($id);
-		try {
-			$morelikethis = $dokument->solrMoreLikeThis();
-		} catch (Exception $e) {
-			$morelikethis = null;
-		}
-		$this->render("dokument_intern", array(
-			"dokument"     => $dokument,
-			"morelikethis" => $morelikethis,
-		));
+		$data     = ris_download_string("http://www.ris-muenchen.de" . $dokument->url);
+		Header("Content-Type: application/pdf; charset=UTF-8");
+		echo $data;
+		Yii::app()->end();
 	}
 
 	/**
@@ -839,9 +837,12 @@ class IndexController extends RISBaseController
 
 	public function actionDokumente($titel)
 	{
+		$x                 = explode("/", $titel);
+		$id                = IntVal($x[count($x) - 1]);
 		$this->load_pdf_js = true;
 		$this->render('viewer', array(
-			"titel" => $titel,
+			"id"       => $id,
+			"titel"    => $titel,
 			"dokument" => AntragDokument::getCachedByID(preg_replace("/\D/", "", $titel))
 		));
 	}

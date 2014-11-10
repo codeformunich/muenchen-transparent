@@ -6,6 +6,7 @@ $GLOBALS["RIS_URL_RULES"] = array(
 	RATSINFORMANT_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>_<ba_name:[^\/]*>'    => 'index/ba',
 	RATSINFORMANT_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>'                     => 'index/ba',
 	RATSINFORMANT_BASE_URL . '/dokumente/<titel:[\s\S]+>'                        => 'index/dokumente',
+	RATSINFORMANT_BASE_URL . '/dokument_proxy/<id:[\s\S]+>'                      => 'index/documentProxy',
 	RATSINFORMANT_BASE_URL . '/stadtraetIn/<id:\d+>_<name:[^\/]*>'               => 'index/stadtraetIn',
 	RATSINFORMANT_BASE_URL . '/stadtraetIn/<id:\d+>'                             => 'index/stadtraetIn',
 	RATSINFORMANT_BASE_URL . '/tiles/<width:\d+>/<zoom:\d+>/<x:\d+>/<y:\d+>.png' => 'index/tileCache',

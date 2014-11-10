@@ -103,6 +103,7 @@ class RISTools
 	}
 
 
+
 	/**
 	 * @param string $input
 	 * @return int
