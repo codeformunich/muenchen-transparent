@@ -2065,6 +2065,32 @@ ul.terminliste > li > .termindetails {
 
 .antragsdaten th {
   text-align: center; }
+.antragsdaten td {
+  width: 420px; }
+.antragsdaten #tag_add_form .selectizejs-control {
+  display: inline-block;
+  width: 300px; }
+.antragsdaten #tag_add_form .btn {
+  display: inline-block;
+  margin: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  vertical-align: top; }
+.antragsdaten .selectizejs-input {
+  height: 36px;
+  padding-top: 6px; }
+.antragsdaten .antrags_tags {
+  display: inline-block;
+  margin: 0;
+  padding: 0; }
+  .antragsdaten .antrags_tags li {
+    display: inline-block;
+    margin: 0;
+    padding: 0; }
+    .antragsdaten .antrags_tags li:before {
+      content: ', '; }
+    .antragsdaten .antrags_tags li:first-child:before {
+      content: ''; }
 
 .benachrichtigungsliste {
   list-style-type: none;

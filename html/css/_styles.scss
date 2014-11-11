@@ -866,6 +866,42 @@ ul.terminliste > li > .termindetails {
   th {
     text-align: center;
   }
+  td {
+    width: 420px;
+  }
+  #tag_add_form {
+    .selectizejs-control {
+      display: inline-block;
+      width: 300px;
+    }
+    .btn {
+      display: inline-block;
+      margin: 0;
+      padding-left: 15px;
+      padding-right: 15px;
+      vertical-align: top;
+    }
+  }
+  .selectizejs-input {
+    height: 36px;
+    padding-top: 6px;
+  }
+  .antrags_tags {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    li {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      &:before {
+        content: ', ';
+      }
+      &:first-child:before {
+        content: '';
+      }
+    }
+  }
 }
 
 .benachrichtigungsliste {

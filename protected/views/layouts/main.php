@@ -14,7 +14,7 @@
 	if ($this->html_description != "") echo CHtml::encode($this->html_description);
 	else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
 	?>">
-	<meta name="author" content="Tobias Hößl">
+	<meta name="author" content="Tobias Hößl, Konstantin Schütze">
 
 	<link rel="search" type="application/opensearchdescription+xml" title="Ratsinformant" href="/other/OpenSearch.xml">
 	<link rel="icon" type="image/png" href="/css/img/logo.png">
@@ -23,6 +23,17 @@
 		echo CHtml::encode($this->pageTitle);
 		if (strpos($this->pageTitle, "Transparent") === false) echo " (" . CHtml::encode(Yii::app()->params['projectTitle']) . ")";
 		?></title>
+
+	<?
+	if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
+	if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
+	if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>';
+	if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
+	?>
+
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
+	<link rel="stylesheet" href="/css/styles_website.css">
+
 
 	<!--[if lt IE 9]>
 	<script src="/js/jquery-1.11.1.min.js"></script>
@@ -64,25 +75,6 @@
 	<script src="/js/html5shiv.js"></script>
 	<script src="/js/respond.min.js"></script>
 	<![endif]-->
-
-	<? if ($this->load_leaflet_css) { ?>
-		<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>
-	<?
-	}
-	if ($this->load_leaflet_draw_css) {
-		?>
-		<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>
-	<?
-	}
-	if ($this->load_calendar) {
-		?>
-		<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>
-	<?
-	}
-	?>
-
-	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
-	<link rel="stylesheet" href="/css/styles_website.css">
 </head>
 
 <body>
@@ -175,6 +167,8 @@
 <script src="/js/material/material.min.js"></script>
 <script src="/js/typeahead.js/typeahead.bundle.min.js"></script>
 <script src="/js/index.js"></script>
-
+<?
+if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js"></script>';
+?>
 </body>
 </html>
