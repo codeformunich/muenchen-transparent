@@ -57,6 +57,37 @@ function ris_intern_address2geo($land, $plz, $ort, $strasse)
 	return array("lon" => 0, "lat" => 0);
 }
 
+
+
+/**
+ * @param string $url_to_read
+ * @param string $username
+ * @param string $password
+ * @param int $timeout
+ * @return string
+ */
+function ris_download_string($url_to_read, $username = "", $password = "", $timeout = 30)
+{
+	$ch = curl_init();
+
+	if ($username != "" || $password != "") curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+
+	curl_setopt($ch, CURLOPT_URL, $url_to_read);
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	curl_setopt($ch, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
+	$data = curl_exec($ch);
+	curl_close($ch);
+
+	return $data;
+}
+
+
 /**
  * @param Antrag $referenz
  * @param Antrag $antrag
