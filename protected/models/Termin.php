@@ -187,6 +187,11 @@ class Termin extends CActiveRecord implements IRISItem
 		return $this;
 	}
 
+
+	public function getDokumente() {
+		return $this->antraegeDokumente;
+	}
+
 	/**
 	 * @param int $ba_nr
 	 * @param string $zeit_von

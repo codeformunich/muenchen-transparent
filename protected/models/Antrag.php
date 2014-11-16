@@ -417,6 +417,10 @@ class Antrag extends CActiveRecord implements IRISItem
 		return $this->datum_letzte_aenderung;
 	}
 
+	public function getDokumente() {
+		return $this->dokumente;
+	}
+
 	/**
 	 * @param int $anz
 	 * @return AntragDokument[]

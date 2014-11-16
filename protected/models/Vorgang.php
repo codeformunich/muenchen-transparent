@@ -96,6 +96,10 @@ class Vorgang extends CActiveRecord
 		return $items;
 	}
 
+	public function getDokumente() {
+		return $this->dokumente;
+	}
+
 	/**
 	 * @return IRISItem|null
 	 */

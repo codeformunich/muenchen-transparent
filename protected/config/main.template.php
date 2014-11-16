@@ -177,5 +177,6 @@ return array(
 		'baseURL'         => RATSINFORMANT_BASE_URL,
 		'debug_log'       => true,
 		'contentAdminIds' => array(),
+		'projectTitle'    => 'München Transparent',
 	),
 );
