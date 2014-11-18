@@ -122,11 +122,12 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 	}
 
 	/**
+	 * @param array $add_params
 	 * @return string
 	 */
-	public function getLink()
+	public function getLink($add_params = array())
 	{
-		return Yii::app()->createUrl("termine/anzeigen", array("id" => $this->id));
+		return Yii::app()->createUrl("termine/anzeigen", array_merge(array("id" => $this->id), $add_params));
 	}
 
 

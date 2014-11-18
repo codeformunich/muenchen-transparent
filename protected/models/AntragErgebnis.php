@@ -154,12 +154,13 @@ class AntragErgebnis extends CActiveRecord implements IRISItemHasDocuments
 
 
 	/**
+	 * @param array $add_params
 	 * @return string
 	 */
-	public function getLink()
+	public function getLink($add_params = array())
 	{
-		if ($this->antrag) return $this->antrag->getLink();
-		return $this->sitzungstermin->getLink();
+		if ($this->antrag) return $this->antrag->getLink($add_params);
+		return $this->sitzungstermin->getLink($add_params);
 	}
 
 

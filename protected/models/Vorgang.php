@@ -99,7 +99,8 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 	/**
 	 * @return AntragDokument[]
 	 */
-	public function getDokumente() {
+	public function getDokumente()
+	{
 		return $this->dokumente;
 	}
 
@@ -203,9 +204,11 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 		RISTools::send_email(Yii::app()->params['adminEmail'], "Vorgang:vorgangMerge Error", $str);
 	}
 
-
-	/** @return string */
-	public function getLink()
+	/**
+	 * @param array $add_params
+	 * @return string
+	 */
+	public function getLink($add_params = array())
 	{
 		// TODO: Implement getLink() method.
 	}

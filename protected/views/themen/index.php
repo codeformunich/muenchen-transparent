@@ -2,6 +2,7 @@
 /**
  * @var AntragDokument[] $highlights
  * @var Referat[] $referate
+ * @var Tag[] $tags
  */
 
 $this->pageTitle = "Themen";
@@ -31,12 +32,20 @@ $this->pageTitle = "Themen";
 			</section>
 		</div>
 		<div class="col col-md-6">
-			<section class="start_berichte well">
-				<h3>Themen</h3>
+			<section class="well">
+				<h3>Schlagworte</h3>
 				<br>
-				[@TODO]
-				<br><br>
+				<ul>
+					<?
+					foreach ($tags as $tag) {
+						echo '<li>' . $tag->getNameLink() . ' (' . count($tag->antraege) . ')</li>';
+					}
+					?>
 
+				</ul>
+			</section>
+
+			<section class="start_berichte well">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/highlights")) ?>" class="weitere">Weitere</a>
 
 				<h3>Berichte / Highlights</h3>

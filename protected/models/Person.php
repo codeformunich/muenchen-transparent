@@ -129,10 +129,13 @@ class Person extends CActiveRecord implements IRISItem
 		return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->getName(true);
 	}
 
-	/** @return string */
-	public function getLink()
+	/**
+	 * @param array $add_params
+	 * @return string
+	 */
+	public function getLink($add_params = array())
 	{
-		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id, "name" => $this->name));
+		return Yii::app()->createUrl("index/stadtraetIn", array_merge(array("id" => $this->id, "name" => $this->name), $add_params));
 	}
 
 	/** @return string */

@@ -81,7 +81,22 @@ class Tag extends CActiveRecord
 	 * @return string
 	 */
 	public function getNameLink() {
-		return CHtml::encode($this->name); // @TODO
+		$link_name = $this->name;
+		return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", array("tag_id" => $this->id, "tag_name" => $link_name)));
+	}
+
+	/**
+	 * @param int $num
+	 * @return Tag[]
+	 */
+	public static function getTopTags($num) {
+		// @TODO
+
+		/** @var Tag[] $tags */
+		$tags = Tag::model()->findAll();
+		$tags_out = array();
+		foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
+		return $tags_out;
 	}
 
 }

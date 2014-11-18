@@ -85,12 +85,13 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	}
 
 	/**
+	 * @param array $add_params
 	 * @return string
 	 */
-	public function getLink()
+	public function getLink($add_params = array())
 	{
 		$name = $this->getName();
-		return Yii::app()->createUrl("index/stadtraetIn", array("id" => $this->id, "name" => $name));
+		return Yii::app()->createUrl("index/stadtraetIn", array_merge(array("id" => $this->id, "name" => $name), $add_params));
 	}
 
 

@@ -360,11 +360,12 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 	}
 
 	/**
+	 * @param array $add_params
 	 * @return string
 	 */
-	public function getLink()
+	public function getLink($add_params = array())
 	{
-		return Yii::app()->createUrl("antraege/anzeigen", array("id" => $this->id));
+		return Yii::app()->createUrl("antraege/anzeigen", array_merge(array("id" => $this->id), $add_params));
 	}
 
 	/**
@@ -413,14 +414,16 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 	/**
 	 * @return string
 	 */
-	public function getDate() {
+	public function getDate()
+	{
 		return $this->datum_letzte_aenderung;
 	}
 
 	/**
 	 * @return AntragDokument[]
 	 */
-	public function getDokumente() {
+	public function getDokumente()
+	{
 		return $this->dokumente;
 	}
 
@@ -582,7 +585,8 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 	 * @param int $bis_ts
 	 * @return RISAenderung[]
 	 */
-	public function findeAenderungen($von_ts, $bis_ts = 0) {
+	public function findeAenderungen($von_ts, $bis_ts = 0)
+	{
 		/** @var RISAenderung[] $aenderungen */
 		$aenderungen = RISAenderung::model()->findAllByAttributes(array("typ" => $this->typ, "ris_id" => $this->id));
 		foreach ($aenderungen as $ae) var_dump($ae->getAttributes());

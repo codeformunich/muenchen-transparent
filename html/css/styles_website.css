@@ -2931,7 +2931,7 @@ tbody.collapse.in {
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 1000;
+  z-index: 1001;
   display: none;
   float: left;
   min-width: 160px;
@@ -3011,7 +3011,7 @@ tbody.collapse.in {
   right: 0;
   bottom: 0;
   top: 0;
-  z-index: 990; }
+  z-index: 991; }
 
 .pull-right > .dropdown-menu {
   right: 0;

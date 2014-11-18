@@ -86,11 +86,12 @@ class Referat extends CActiveRecord implements IRISItem
 	}
 
 	/**
+	 * @param array $add_params
 	 * @return string
 	 */
-	public function getLink()
+	public function getLink($add_params = array())
 	{
-		return Yii::app()->createUrl("themen/referat", array("id" => $this->id));
+		return Yii::app()->createUrl("themen/referat", array_merge(array("id" => $this->id), $add_params));
 	}
 
 

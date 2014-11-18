@@ -3,10 +3,11 @@
 class AntraegeController extends RISBaseController
 {
 
-	public function actionAjaxTagsSuggest($term) {
+	public function actionAjaxTagsSuggest($term)
+	{
 		$sqlterm = addslashes($term);
-		$found= Yii::app()->db->createCommand("SELECT id, name, LOCATE(\"$sqlterm\", name) firstpos FROM tags WHERE name LIKE \"%$sqlterm%\" ORDER BY firstpos, LENGTH(name), name LIMIT 0,10")->queryAll();
-		$tags = array();
+		$found   = Yii::app()->db->createCommand("SELECT id, name, LOCATE(\"$sqlterm\", name) firstpos FROM tags WHERE name LIKE \"%$sqlterm%\" ORDER BY firstpos, LENGTH(name), name LIMIT 0,10")->queryAll();
+		$tags    = array();
 		foreach ($found as $f) $tags[] = array("text" => $f["name"], "value" => $f["name"]);
 		header('Content-type: application/json; charset=UTF-8');
 		echo json_encode($tags);
@@ -50,6 +51,8 @@ class AntraegeController extends RISBaseController
 	 */
 	public function actionAnzeigen($id)
 	{
+		$this->performLoginActions();
+
 		/** @var Antrag $antrag */
 		$antrag = Antrag::model()->findByPk($id);
 		if (!$antrag) {
@@ -71,7 +74,7 @@ class AntraegeController extends RISBaseController
 			$tags = explode(",", $_REQUEST["tags_neu"]);
 			foreach ($tags as $tag_name) if (mb_strlen(trim($tag_name)) > 0) try {
 				$tag_name = trim($tag_name);
-				$tag = Tag::model()->findByAttributes(array("name" => $tag_name));
+				$tag      = Tag::model()->findByAttributes(array("name" => $tag_name));
 				if (!$tag) {
 					$tag                         = new Tag();
 					$tag->name                   = $tag_name;
@@ -100,7 +103,7 @@ class AntraegeController extends RISBaseController
 			$tags = explode(",", $_REQUEST["tags_set"]);
 			foreach ($tags as $tag_name) if (mb_strlen(trim($tag_name)) > 0) try {
 				$tag_name = trim($tag_name);
-				$tag = Tag::model()->findByAttributes(array("name" => $tag_name));
+				$tag      = Tag::model()->findByAttributes(array("name" => $tag_name));
 				if (!$tag) {
 					$tag                         = new Tag();
 					$tag->name                   = $tag_name;
@@ -123,7 +126,8 @@ class AntraegeController extends RISBaseController
 		}
 
 		$this->render("anzeige", array(
-			"antrag" => $antrag,
+			"antrag"   => $antrag,
+			"tag_mode" => (isset($_REQUEST["tag_mode"]) && $_REQUEST["tag_mode"] == "1"),
 		));
 	}
 
