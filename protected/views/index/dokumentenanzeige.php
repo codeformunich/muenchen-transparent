@@ -1,25 +1,44 @@
 ﻿<?
 /**
- * @var AntragDokument|null $dokument
- * @var string $titel
  * @var int $id
+ * @var AntragDokument|null $dokument
  */
 ?>
 <ul class="breadcrumb" style="margin: -15px 0px 5px 20px; background: transparent;">
 	<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 <?
-if ($dokument != null) {
-	if      ($dokument->antrag_id  ) echo "<li><a href=" . Antrag        ::model()->findByPk($dokument->antrag_id  )->getLink() . ">Anträge   </a><br></li>";
-	else if ($dokument->ergebnis_id) echo "<li><a href=" . AntragErgebnis::model()->findByPk($dokument->ergebnis_id)->getLink() . ">Ergebnisse</a><br></li>";
-	else if ($dokument->termin_id  ) echo "<li><a href=" . Termin        ::model()->findByPk($dokument->termin_id  )->getLink() . ">Termine   </a><br></li>";
-	else if ($dokument->vorgang_id ) echo "<li class=\"active\">                                                               Vorgänge      <br></li>";
+function dokumentenliste($uebergruppe, $name, $dokument, $link) {
+	if ($link) {
+		echo "<li><a href=\"" .  $uebergruppe->getLink() . "\">" . $name . "</a><br></li>";
+	} else {
+		echo "<li class=\"active\">" . $name . "<br></li>";
+	}
 
-	echo "<li class=\"active\">" . $dokument->getName() . "</li>";
+	if (count($uebergruppe->getDokumente()) > 1) { ?>
+		<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= $dokument->getName() ?><span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
+			</ul>
+		</li> <?
+	} else {
+		echo "<li>" . CHtml::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</li>\n" ;
+	}
+}
+
+if ($dokument != null) {
+	if      ($dokument->antrag_id  ) dokumentenliste(Antrag        ::model()->findByPk($dokument->antrag_id  ), "Anträge",    $dokument, true );
+	else if ($dokument->ergebnis_id) dokumentenliste(AntragErgebnis::model()->findByPk($dokument->ergebnis_id), "Ergebnisse", $dokument, true );
+	else if ($dokument->termin_id  ) dokumentenliste(Termin        ::model()->findByPk($dokument->termin_id  ), "Termin",     $dokument, true );
+	else if ($dokument->vorgang_id ) dokumentenliste(Vorgang       ::model()->findByPk($dokument->vorgang_id ), "Vorgang",    $dokument, false);
+	else     echo "<li class=\"active\">" . $dokument->getName() . "</li>";
 }
 ?>
+
+<div style="float: right"><a href=<?= "/dokumente/" . $id . ".pdf" ?> >Dokument mit eigenem Programm ansehen</a></div>
 </ul>
 
-<p id="filename_store" class="hidden">/dokument_proxy/<?= $id ?></p>
+<p id="filename_store" class="hidden">/dokumente/<?= $id ?>.pdf</p>
 
 <!--
 Copyright 2012 Mozilla Foundation

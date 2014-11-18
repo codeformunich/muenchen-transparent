@@ -368,11 +368,8 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	 */
 	public function getLinkZumDokument()
 	{
-		$titel = $this->url;
-		$titel = str_replace("RII2/RII/DOK/", "", $titel);
-		$titel = str_replace("RII/RII/DOK/",  "", $titel);
-		$titel = str_replace(".pdf",          "", $titel);
-		return Yii::app()->createUrl("dokumente") . $titel;
+		$id = preg_replace("/[\d\D]+\/(\d+)\.pdf/", "$1", $this->url);
+		return Yii::app()->createUrl("dokumente") . "/" . $id;
 	}
 
 
@@ -404,6 +401,9 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		return $this->antrag;
 	}
 
+	public function getDokumente() {
+		return $this->dokumente;
+	}
 
 	/**
 	 * @param int $limit

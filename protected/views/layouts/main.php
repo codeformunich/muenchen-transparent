@@ -24,17 +24,6 @@
 		if (strpos($this->pageTitle, "Transparent") === false) echo " (" . CHtml::encode(Yii::app()->params['projectTitle']) . ")";
 		?></title>
 
-	<?
-	if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
-	if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
-	if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>';
-	if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
-	?>
-
-	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
-	<link rel="stylesheet" href="/css/styles_website.css">
-
-
 	<!--[if lt IE 9]>
 	<script src="/js/jquery-1.11.1.min.js"></script>
 	<![endif]-->
@@ -44,17 +33,12 @@
 
 	<script src="/js/modernizr.js"></script>
 
+	<!--[if lt IE 9]>
+	<script src="/js/html5shiv.js"></script>
+	<script src="/js/respond.min.js"></script>
+	<![endif]-->
+
 	<? if ($this->load_pdf_js) { ?>
-		<script>
-		// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
-		function pdf_resize() {
-			$("#mainContainer").height($("footer").offset().top - $("#mainContainer").offset().top - 20);
-		}
-
-		$(pdf_resize);
-		$(window).resize(pdf_resize);
-		</script>
-
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<meta name="google" content="notranslate">
 
@@ -69,12 +53,27 @@
 
 		<script src="/other/pdfjs/debugger.js"></script>
 		<script src="/other/pdfjs/viewer.js"></script>
+
+		<script>
+		// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
+		function pdf_resize() {
+			$("#mainContainer").height($("footer").offset().top - $("#mainContainer").offset().top - 20);
+		}
+
+		$(pdf_resize);
+		$(window).resize(pdf_resize);
+		</script>
 	<? } // end pdf.js ?>
 
-	<!--[if lt IE 9]>
-	<script src="/js/html5shiv.js"></script>
-	<script src="/js/respond.min.js"></script>
-	<![endif]-->
+	<?
+	if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
+	if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
+	if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>';
+	if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
+	?>
+
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
+	<link rel="stylesheet" href="/css/styles_website.css">
 </head>
 
 <body>
