@@ -7,16 +7,23 @@
 <ul class="breadcrumb" style="margin: -15px 0px 5px 20px; background: transparent;">
 	<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 <?
+
+/**
+ * @param IRISItemHasDocuments $uebergruppe
+ * @param string $name
+ * @param AntragDokument $dokument
+ * @param string $link
+ */
 function dokumentenliste($uebergruppe, $name, $dokument, $link) {
 	if ($link) {
-		echo "<li><a href=\"" .  $uebergruppe->getLink() . "\">" . $name . "</a><br></li>";
+		echo "<li>" . CHtml::link($name, $uebergruppe->getLink()) . "<br></li>";
 	} else {
-		echo "<li class=\"active\">" . $name . "<br></li>";
+		echo "<li class=\"active\">" . CHtml::encode($name) . "<br></li>";
 	}
 
 	if (count($uebergruppe->getDokumente()) > 1) { ?>
 		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= $dokument->getName() ?><span class="caret"></span></a>
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= CHtml::encode($dokument->getName()) ?><span class="caret"></span></a>
 			<ul class="dropdown-menu">
 				<? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
 			</ul>
@@ -31,7 +38,7 @@ if ($dokument != null) {
 	else if ($dokument->ergebnis_id) dokumentenliste(AntragErgebnis::model()->findByPk($dokument->ergebnis_id), "Ergebnisse", $dokument, true );
 	else if ($dokument->termin_id  ) dokumentenliste(Termin        ::model()->findByPk($dokument->termin_id  ), "Termin",     $dokument, true );
 	else if ($dokument->vorgang_id ) dokumentenliste(Vorgang       ::model()->findByPk($dokument->vorgang_id ), "Vorgang",    $dokument, false);
-	else     echo "<li class=\"active\">" . $dokument->getName() . "</li>";
+	else     echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
 }
 ?>
 

@@ -25,7 +25,7 @@
  * @property AntragOrt[] $antraegeOrte
  * @property Gremium $gremium
  */
-class Termin extends CActiveRecord implements IRISItem
+class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -187,7 +187,9 @@ class Termin extends CActiveRecord implements IRISItem
 		return $this;
 	}
 
-
+	/**
+	 * @return AntragDokument[]
+	 */
 	public function getDokumente() {
 		return $this->antraegeDokumente;
 	}

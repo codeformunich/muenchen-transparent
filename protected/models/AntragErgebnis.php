@@ -25,7 +25,7 @@
  * @property Antrag $antrag
  * @property AntragDokument[] $dokumente
  */
-class AntragErgebnis extends CActiveRecord implements IRISItem
+class AntragErgebnis extends CActiveRecord implements IRISItemHasDocuments
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -183,6 +183,13 @@ class AntragErgebnis extends CActiveRecord implements IRISItem
 		} else {
 			return RISTools::korrigiereTitelZeichen($this->top_betreff);
 		}
+	}
+
+	/**
+	 * @return AntragDokument[]
+	 */
+	public function getDokumente() {
+		return $this->dokumente;
 	}
 
 	/**

@@ -13,7 +13,7 @@
  * @property AntragErgebnis[] $ergebnisse
  * @property AntragDokument[] $dokumente
  */
-class Vorgang extends CActiveRecord
+class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 {
 	/**
 	 * @param string $className active record class name.
@@ -96,6 +96,9 @@ class Vorgang extends CActiveRecord
 		return $items;
 	}
 
+	/**
+	 * @return AntragDokument[]
+	 */
 	public function getDokumente() {
 		return $this->dokumente;
 	}
@@ -200,4 +203,31 @@ class Vorgang extends CActiveRecord
 		RISTools::send_email(Yii::app()->params['adminEmail'], "Vorgang:vorgangMerge Error", $str);
 	}
 
+
+	/** @return string */
+	public function getLink()
+	{
+		// TODO: Implement getLink() method.
+	}
+
+	/** @return string */
+	public function getTypName()
+	{
+		return "Vorgang";
+	}
+
+	/** @return string */
+	public function getDate()
+	{
+		// TODO: Implement getDate() method.
+	}
+
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
+	{
+		return $this->betreff;
+	}
 }

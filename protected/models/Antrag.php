@@ -40,7 +40,7 @@
  * @property Vorgang $vorgang
  * @property Tag[] $tags
  */
-class Antrag extends CActiveRecord implements IRISItem
+class Antrag extends CActiveRecord implements IRISItemHasDocuments
 {
 
 	public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
@@ -417,6 +417,9 @@ class Antrag extends CActiveRecord implements IRISItem
 		return $this->datum_letzte_aenderung;
 	}
 
+	/**
+	 * @return AntragDokument[]
+	 */
 	public function getDokumente() {
 		return $this->dokumente;
 	}
