@@ -18,6 +18,7 @@
 class Text extends CActiveRecord
 {
 
+	public static $TYP_STD = 0;
 	public static $TYP_GLOSSAR = 1;
 
 	/**

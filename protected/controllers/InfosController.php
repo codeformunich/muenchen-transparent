@@ -5,32 +5,56 @@ class InfosController extends RISBaseController
 	public function actionSoFunktioniertStadtpolitik()
 	{
 		$this->top_menu = "so_funktioniert";
-		$this->render('so_funktioniert_stadtpolitik');
+		$this->std_content_page(25, $this->createUrl("infos/soFunktioniertStadtpolitik"));
 	}
 
 	public function actionImpressum()
 	{
 		$this->top_menu = "impressum";
-		$this->render('impressum');
+		$this->std_content_page(23, $this->createUrl("infos/impressum"));
 	}
 
 	public function actionDatenschutz()
 	{
 		$this->top_menu = "datenschutz";
-		$this->render('datenschutz');
+		$this->std_content_page(26, $this->createUrl("infos/datenschutz"));
 	}
 
 	public function actionAPI()
 	{
 		$this->top_menu = "api";
-		$this->render('api');
+		$this->std_content_page(22, $this->createUrl("infos/api"));
 	}
 
 	public function actionUeber()
 	{
 		$this->top_menu = "";
+		$this->std_content_page(21, $this->createUrl("infos/ueber"));
+	}
 
-		$this->render('ueber', array());
+	/**
+	 * @param int $id
+	 * @param string $my_url
+	 */
+	public function std_content_page($id, $my_url)
+	{
+		/** @var Text $text */
+		$text = Text::model()->findByPk($id);
+
+		$msg_ok = "";
+		if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
+			if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
+			$text->text = $_REQUEST["text"];
+			$text->save();
+			$msg_ok = "Gespeichert.";
+		}
+
+		$this->render("std", array(
+			"text"   => $text,
+			"my_url" => $my_url,
+			"msg_ok" => $msg_ok,
+		));
+
 	}
 
 

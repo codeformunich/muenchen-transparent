@@ -68,9 +68,55 @@ function index_geo_dokumente_load(url, lng, lat, radius) {
 }
 
 
+function ckeditor_init($element, mode) {
+    var options = {
+        removePlugins: 'save,backup,about,pastefromword,pastetext,print,preview,templates,newpage',
+        extraPlugins: 'a11yhelp,codemirror,enterkey,font,format,justify,basicstyles,blockquote,colorbutton,colordialog,elementspath,filebrowser,horizontalrule,htmlwriter,image,indent,indentblock,indentlist,link,list,listblock,pastefromword,resize,showborders,specialchar,stylescombo,tab,table,tabletools,magicline,floatingspace,removeformat,flash,tableresize,maximize',
+        // wordcount,
+        docType: '<!DOCTYPE HTML>',
+        removeButtons: 'Anchor,Redo',
+        contentsLangDirection: 'lrt',
+
+        allowedContent: true,
+        floatSpaceDockedOffsetY: 45,
+        floatSpaceDockedOffsetX: 0,
+
+        codemirror: {
+            showSearchButton: false
+        },
+
+        toolbarGroups: [
+            {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+            {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align']},
+            {name: 'colors'},
+            {name: 'links'},
+            {name: 'clipboard', groups: ['clipboard', 'undo']},
+            '/',
+            {name: 'tools'},
+            {name: 'document', groups: ['mode', 'document', 'doctools']},
+            {name: 'styles'},
+            {name: 'others'},
+            {name: 'editing', groups: ['find', 'selection', 'spellchecker']},
+            {name: 'about'},
+            '/',
+            {name: 'forms'},
+            {name: 'insert'}
+        ],
+        indentClasses: ['indent1', 'indent2', 'indent3', 'indent4', 'indent5', 'indent6', 'indent7', 'indent8', 'indent9', 'indent10', 'indent11', 'indent12', 'indent13', 'indent14', 'indent15']
+
+    };
+    if (mode == "inline") {
+        $element.attr("contenteditable", true);
+        CKEDITOR.inline($element[0], options);
+    }
+    else CKEDITOR.replace($element[0], options);
+}
+
+
 $(function () {
 
-    $.datepicker.regional['de'] = {clearText: 'löschen', clearStatus: 'aktuelles Datum löschen',
+    $.datepicker.regional['de'] = {
+        clearText: 'löschen', clearStatus: 'aktuelles Datum löschen',
         closeText: 'schließen', closeStatus: 'ohne Änderungen schließen',
         prevText: '&#x3c;zurück', prevStatus: 'letzten Monat zeigen',
         nextText: 'Vor&#x3e;', nextStatus: 'nächsten Monat zeigen',
@@ -86,10 +132,11 @@ $(function () {
         dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
         dayStatus: 'Setze DD als ersten Wochentag', dateStatus: 'Wähle D, M d',
         dateFormat: 'dd.mm.yy', firstDay: 1,
-        initStatus: 'Wähle ein Datum', isRTL: false};
+        initStatus: 'Wähle ein Datum', isRTL: false
+    };
     $.datepicker.setDefaults($.datepicker.regional['de']);
 
-    
+
     var $quicksearch = $("#quicksearch_form").find("input[type=text]");
 
     var mitglieder = new Bloodhound({
@@ -98,7 +145,7 @@ $(function () {
         prefetch: $quicksearch.data("prefetch-url")
     });
     var ba_list = [];
-    $("#ba_nav_list").find("a").each(function() {
+    $("#ba_nav_list").find("a").each(function () {
         ba_list.push({
             "value": $(this).text(),
             "url": $(this).attr("href")
