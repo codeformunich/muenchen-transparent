@@ -2,7 +2,7 @@
 
 class BAAntragParser extends RISParser
 {
-	private static $MAX_OFFSET = 12200;
+	private static $MAX_OFFSET        = 12500;
 	private static $MAX_OFFSET_UPDATE = 200;
 
 	public function parse($antrag_id)
@@ -26,9 +26,11 @@ class BAAntragParser extends RISParser
 		$dat_details = explode("<!-- detailbereich -->", $dat_details[1]);
 		preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
 
+		$betreff_gefunden = false;
 		for ($i = 0; $i < count($matches[1]); $i++) switch (trim($matches[1][$i])) {
 			case "Betreff:":
-				$daten->betreff = $this->text_simple_clean($matches[2][$i]);
+				$betreff_gefunden = true;
+				$daten->betreff   = $this->text_simple_clean($matches[2][$i]);
 				break;
 			case "Status:":
 				$daten->status = $this->text_simple_clean($matches[2][$i]);
@@ -36,6 +38,11 @@ class BAAntragParser extends RISParser
 			case "Bearbeitung:":
 				$daten->bearbeitung = trim(strip_tags($matches[2][$i]));
 				break;
+		}
+
+		if (!$betreff_gefunden) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Kein Betreff\n" . $html_details);
+			throw new Exception("Betreff nicht gefunden");
 		}
 
 		$dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
@@ -173,12 +180,18 @@ class BAAntragParser extends RISParser
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege.jsp?Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
+		if (!isset($txt[1])) return array();
+
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ba_antraege_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
 		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Anträge VOLL", "Erste Seite voll: $seite");
 
-		for ($i = count($matches[1]) - 1; $i >= 0; $i--) $this->parse($matches[1][$i]);
+		for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
+			$this->parse($matches[1][$i]);
+		} catch (Exception $e) {
+			echo " EXCEPTION! " . $e . "\n";
+		}
 		return $matches[1];
 	}
 
@@ -199,7 +212,7 @@ class BAAntragParser extends RISParser
 		echo "Updates: BA-Anträge\n";
 		$loaded_ids = array();
 
-		$anz   = static::$MAX_OFFSET_UPDATE;
+		$anz = static::$MAX_OFFSET_UPDATE;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			$ids        = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));

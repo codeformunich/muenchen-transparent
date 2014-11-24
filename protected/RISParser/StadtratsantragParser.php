@@ -2,6 +2,8 @@
 
 class StadtratsantragParser extends RISParser
 {
+	private static $MAX_OFFSET        = 15000;
+	private static $MAX_OFFSET_UPDATE = 200;
 
 	public function parse($antrag_id)
 	{
@@ -37,9 +39,11 @@ class StadtratsantragParser extends RISParser
 		if (count($matches) == 2) $daten->antrags_nr = Antrag::cleanAntragNr($matches[1]);
 
 		preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
+		$betreff_gefunden = false;
 		for ($i = 0; $i < count($matches[1]); $i++) switch ($matches[1][$i]) {
 			case "Betreff:":
-				$daten->betreff = $this->text_simple_clean($matches[2][$i]);
+				$betreff_gefunden = true;
+				$daten->betreff   = $this->text_simple_clean($matches[2][$i]);
 				break;
 			case "Status:":
 				$daten->status = $this->text_simple_clean($matches[2][$i]);
@@ -47,6 +51,11 @@ class StadtratsantragParser extends RISParser
 			case "Bearbeitung:":
 				$daten->bearbeitung = trim(strip_tags($matches[2][$i]));
 				break;
+		}
+
+		if (!$betreff_gefunden) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsantragParser", "Kein Betreff\n" . $html_details);
+			throw new Exception("Betreff nicht gefunden");
 		}
 
 		$dat_details = explode("<!-- details und tabelle -->", $html_details);
@@ -178,16 +187,19 @@ class StadtratsantragParser extends RISParser
 
 		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag VOLL", "Erste Seite voll: $seite");
 
-		for ($i = count($matches[1]) - 1; $i >= 0; $i--) $this->parse($matches[1][$i]);
+		for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
+			$this->parse($matches[1][$i]);
+		} catch (Exception $e) {
+			echo " EXCEPTION! " . $e . "\n";
+		}
 		return $matches[1];
 	}
 
 	public function parseAlle()
 	{
-		$anz   = 14800;
 		$first = true;
-		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+		for ($i = static::$MAX_OFFSET; $i >= 0; $i -= 10) {
+			if (RATSINFORMANT_CALL_MODE != "cron") echo (static::$MAX_OFFSET - $i) . " / " . static::$MAX_OFFSET . "\n";
 			$this->parseSeite($i, $first);
 			$first = false;
 		}
@@ -198,7 +210,7 @@ class StadtratsantragParser extends RISParser
 		$loaded_ids = array();
 		echo "Updates: Stadtratsanträge\n";
 
-		for ($i = 200; $i >= 0; $i -= 10) {
+		for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
 			$ids        = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
 		}

@@ -53,6 +53,11 @@ class StadtratsvorlageParser extends RISParser
 				break;
 		}
 
+		if (!$betreff_gefunden) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsvorlageParser", "Kein Betreff\n" . $html_details);
+			throw new Exception("Betreff nicht gefunden");
+		}
+
 		$dat_details = explode("<!-- details und tabelle -->", $html_details);
 		$dat_details = explode("<!-- tabellenfuss -->", $dat_details[1]);
 
@@ -262,7 +267,11 @@ class StadtratsvorlageParser extends RISParser
 
 		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsvorlagen VOLL", "Erste Seite voll: $seite");
 
-		for ($i = count($matches[1]) - 1; $i >= 0; $i--) $this->parse($matches[1][$i]);
+		for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
+			$this->parse($matches[1][$i]);
+		} catch (Exception $e) {
+			echo " EXCEPTION! " . $e . "\n";
+		}
 		return $matches[1];
 	}
 

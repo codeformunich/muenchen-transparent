@@ -2,7 +2,7 @@
 
 class BAInitiativeParser extends RISParser
 {
-	private static $MAX_OFFSET = 4700;
+	private static $MAX_OFFSET        = 4700;
 	private static $MAX_OFFSET_UPDATE = 200;
 
 	public function parse($antrag_id)
@@ -30,9 +30,11 @@ class BAInitiativeParser extends RISParser
 		$dat_details = explode("<div class=\"formularcontainer\">", $dat_details[1]);
 		preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
 
+		$betreff_gefunden = false;
 		for ($i = 0; $i < count($matches[1]); $i++) switch (trim($matches[1][$i])) {
 			case "Betreff:":
-				$daten->betreff = html_entity_decode($this->text_simple_clean($matches[2][$i]), ENT_COMPAT, "UTF-8");
+				$betreff_gefunden = true;
+				$daten->betreff   = html_entity_decode($this->text_simple_clean($matches[2][$i]), ENT_COMPAT, "UTF-8");
 				break;
 			case "Status:":
 				$daten->status = $this->text_simple_clean($matches[2][$i]);
@@ -41,6 +43,12 @@ class BAInitiativeParser extends RISParser
 				$daten->bearbeitung = trim(strip_tags($matches[2][$i]));
 				break;
 		}
+
+		if (!$betreff_gefunden) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Kein Betreff\n" . $html_details);
+			throw new Exception("Betreff nicht gefunden");
+		}
+
 
 		$dat_details = explode("<div class=\"detailborder\">", $html_details);
 		$dat_details = explode("<!-- seitenfuss -->", $dat_details[1]);
@@ -166,7 +174,11 @@ class BAInitiativeParser extends RISParser
 
 		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Initiativen VOLL", "Erste Seite voll: $seite");
 
-		for ($i = count($matches[1]) - 1; $i >= 0; $i--) $this->parse($matches[1][$i]);
+		for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
+			$this->parse($matches[1][$i]);
+		} catch (Exception $e) {
+			echo " EXCEPTION! " . $e . "\n";
+		}
 		return $matches[1];
 	}
 
@@ -186,7 +198,7 @@ class BAInitiativeParser extends RISParser
 	{
 		echo "Updates: BA-Initiativen\n";
 		$loaded_ids = array();
-		$anz   = static::$MAX_OFFSET_UPDATE;
+		$anz        = static::$MAX_OFFSET_UPDATE;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			$ids        = $this->parseSeite($i, false);
 			$loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));

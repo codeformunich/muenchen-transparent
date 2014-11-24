@@ -1,6 +1,6 @@
 <?php
 
-class Reindex_VorlageCommand extends CConsoleCommand
+class Reindex_Stadtrat_VorlageCommand extends CConsoleCommand
 {
 	public function run($args)
 	{
