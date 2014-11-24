@@ -20,6 +20,11 @@
   }
 
   .panel-primary {
+    margin-left: 3px;
+    margin-right: 3px;
+    border: solid 1px #4285f4;
+    border-radius: 3px;
+
     -webkit-column-break-inside:avoid;
     -moz-column-break-inside:avoid;
     -o-column-break-inside:avoid;
@@ -31,6 +36,11 @@
     page-break-inside: avoid;
     overflow: hidden; /* Hack for Firefox to prevent preaking the element */
 
+    .panel-heading {
+      margin-left: -1px;
+      margin-right: -1px;
+      margin-top: -1px;
+    }
     .panel-heading a {
       &:link, &:visited {
         color: white;
