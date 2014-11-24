@@ -72,8 +72,11 @@ h1.small {
   }
 }
 .modal-backdrop {
-
   display: inherit;
+}
+body.modal-open {
+  overflow: auto;
+  padding-right: 0 !important;
 }
 
 
@@ -1111,8 +1114,6 @@ section.impressum {
   }
 
   span.twitter-typeahead {
-    width: 100%;
-
     .tt-dropdown-menu {
       position: absolute;
       top: 100%;

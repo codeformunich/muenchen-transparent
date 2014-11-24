@@ -1,4 +1,4 @@
-<section class="modal" id="benachrichtigung_login">
+<section class="modal fade" id="benachrichtigung_login">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content form-horizontal form-signin">
 			<div class="modal-header">
