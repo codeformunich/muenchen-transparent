@@ -46,7 +46,31 @@ $this->pageTitle = $stadtraetIn->getName();
 						</ul>
 					</td>
 				</tr>
-				<? if (count($stadtraetIn->antraege) > 0) { ?>
+				<?
+				if (count($stadtraetIn->mitgliedschaften) > 0) {
+					?>
+					<tr>
+						<th>Mitgliedschaften:</th>
+						<td>
+							<ul>
+								<?
+								foreach ($stadtraetIn->mitgliedschaften as $mitgliedschaft) {
+									$gremium = $mitgliedschaft->gremium;
+									echo "<li>";
+									echo CHtml::encode($gremium->getName(true));
+									if ($gremium->ba_nr > 0) {
+										echo " (Bezirksausschuss " . CHtml::link($gremium->ba->name, $gremium->ba->getLink()) . ")";
+									}
+									echo "</li>\n";
+								}
+								?>
+							</ul>
+						</td>
+					</tr>
+				<?
+				}
+				if (count($stadtraetIn->antraege) > 0) {
+					?>
 					<tr>
 						<th>Anträge:</th>
 						<td>

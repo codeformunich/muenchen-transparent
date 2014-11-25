@@ -41,6 +41,24 @@ class BAGremienParser extends RISParser
 			$changed     = true;
 		}
 
+		if ($changed) {
+			if ($alter_eintrag) {
+				$alter_eintrag->copyToHistory();
+				$alter_eintrag->setAttributes($daten->getAttributes());
+				if (!$alter_eintrag->save()) {
+					echo "Gremium 3";
+					var_dump($alter_eintrag->getErrors());
+					die("Fehler");
+				}
+				$daten = $alter_eintrag;
+			} else {
+				if (!$daten->save()) {
+					echo "Gremium 4";
+					var_dump($daten->getErrors());
+					die("Fehler");
+				}
+			}
+		}
 
 		/** @var StadtraetInGremium[] $mitglieder_pre */
 		$mitglieder_pre = array();
@@ -57,7 +75,8 @@ class BAGremienParser extends RISParser
 				if (!$stadtraetIn) {
 					$par = new BAMitgliederParser();
 					echo "Neu beim BA " . IntVal($daten->kuerzel) . "\n";
-					$par->parse(IntVal($daten->kuerzel));
+					$kuerzel = str_replace("ua", "", $daten->kuerzel);
+					$par->parse(IntVal($kuerzel));
 
 					$stadtraetIn = StadtraetIn::model()->findByPk($match2["id"]);
 					if (!$stadtraetIn) {
@@ -88,7 +107,7 @@ class BAGremienParser extends RISParser
 						$mitgliedschaft->funktion = $match2["funktion"];
 						$aenderungen .= "Mitgliedschaft von " . $mitgliedschaft->stadtraetIn->name . ": ";
 						$aenderungen .= $mitgliedschaft->datum_von . "/" . $mitgliedschaft->datum_bis . " => ";
-						$aenderungen .= $match2["datum_von"] . "/" . $match2["datum_bis"] . "\n";
+						$aenderungen .= $datum_von . "/" . $datum_bis . "\n";
 						$mitgliedschaft->save();
 					}
 					if ($mitgliedschaft->funktion != $match2["funktion"]) {
@@ -113,24 +132,6 @@ class BAGremienParser extends RISParser
 
 		if ($aenderungen != "") {
 			echo $aenderungen . "\n";
-			if ($changed) {
-				if ($alter_eintrag) {
-					$alter_eintrag->copyToHistory();
-					$alter_eintrag->setAttributes($daten->getAttributes());
-					if (!$alter_eintrag->save()) {
-						echo "Gremium 3";
-						var_dump($alter_eintrag->getErrors());
-						die("Fehler");
-					}
-					$daten = $alter_eintrag;
-				} else {
-					if (!$daten->save()) {
-						echo "Gremium 4";
-						var_dump($daten->getErrors());
-						die("Fehler");
-					}
-				}
-			}
 
 			$aend              = new RISAenderung();
 			$aend->ris_id      = $daten->id;

@@ -51,7 +51,7 @@ class Import_Omnipage_OCRCommand extends CConsoleCommand
 		else {
 			$dh = opendir(OMNIPAGE_DST_DIR);
 			while (($file = readdir($dh)) !== false) if (is_file(OMNIPAGE_DST_DIR . $file)) {
-				$this->importFile($file);
+				if (strpos($file, ".txt") !== false) $this->importFile($file);
 			}
 			closedir($dh);
 		}

@@ -14,6 +14,7 @@
  * @property Antrag[] $antraege
  * @property Person[] $personen
  * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
+ * @property StadtraetInGremium[] $mitgliedschaften
  */
 class StadtraetIn extends CActiveRecord implements IRISItem
 {
@@ -64,6 +65,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			'antraege'                 => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antrag_id)', 'order' => 'gestellt_am DESC'),
 			'personen'                 => array(self::HAS_MANY, 'Person', 'ris_stadtraetIn'),
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'),
+			'mitgliedschaften'         => array(self::HAS_MANY, 'StadtraetInGremium', 'stadtraetIn_id'),
 		);
 	}
 
@@ -128,8 +130,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	 * @param StadtraetIn[] $personen
 	 * @return StadtraetIn[];
 	 */
-	public static function sortByName($personen) {
-		usort($personen, function($str1, $str2) {
+	public static function sortByName($personen)
+	{
+		usort($personen, function ($str1, $str2) {
 			/** @var StadtraetIn $str1 */
 			/** @var StadtraetIn $str2 */
 			$name1 = preg_replace("/^([a-z]+\. )*/siu", "", $str1->getName());
@@ -142,16 +145,17 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	/**
 	 * @return string
 	 */
-	public function getDate() {
+	public function getDate()
+	{
 		return "0000-00-00 00:00:00";
 	}
-
 
 
 	/**
 	 * @return string
 	 */
-	public function getSourceLink() {
+	public function getSourceLink()
+	{
 		return "http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
 	}
 

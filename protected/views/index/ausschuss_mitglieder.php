@@ -13,7 +13,7 @@
 		usort($gremien, function ($gr1, $gr2) {
 			/** @var Gremium $gr1 */
 			/** @var Gremium $gr2 */
-			return strnatcasecmp($gr1->name, $gr2->name);
+			return strnatcasecmp($gr1->getName(true), $gr2->getName(true));
 		});
 		foreach ($gremien as $gremium) {
 			if (count($gremium->mitgliedschaften) == 0) continue;
@@ -21,7 +21,7 @@
 
 			echo "<li><a href='#' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
 			echo "<span class='count'>" . count($gremium->mitgliedschaften) . "</span>";
-			echo CHtml::encode($gremium->getName()) . "</a><ul class='mitglieder'>";
+			echo CHtml::encode($gremium->getName(true)) . "</a><ul class='mitglieder'>";
 			$mitglieder = array();
 			foreach ($gremium->mitgliedschaften as $m) $mitglieder[] = $m->stadtraetIn;
 			$mitglieder = StadtraetIn::sortByName($mitglieder);

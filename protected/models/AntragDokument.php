@@ -274,7 +274,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 				$antragort->ort_name    = $strasse_name;
 				$antragort->ort_id      = $geo->id;
 				$antragort->source      = "text_parse";
-				$antragort->datum       = new CDbExpression("NOW()");
+				$antragort->datum       = date("Y-m-d H:i:s");
 				if (!$antragort->save()) {
 					RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:geo_extract Error", print_r($antragort->getErrors(), true));
 					throw new Exception("Fehler beim Speichern: geo_extract");
@@ -327,7 +327,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		if (is_a($antrag_termin_ergebnis, "AntragErgebnis")) $dokument->ergebnis_id = $antrag_termin_ergebnis->id;
 		$dokument->url   = $dok["url"];
 		$dokument->name  = $dok["name"];
-		$dokument->datum = new CDbExpression('NOW()');
+		$dokument->datum = date("Y-m-d H:i:s");
 		if (defined("NO_TEXT")) {
 			throw new Exception("Noch nicht implementiert");
 		} else {
