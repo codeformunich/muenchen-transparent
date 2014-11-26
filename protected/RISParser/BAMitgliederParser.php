@@ -19,7 +19,7 @@ class BAMitgliederParser extends RISParser
 		$x = explode('<!-- tabellenkopf -->', $ba_details);
 		$x = explode('<!-- seitenfuss -->', $x[1]);
 
-		preg_match_all("/ba_mitglieder_details_mitgliedschaft\.jsp\?Id=(?<mitglied_id>[0-9]+)&amp;Wahlperiode=(?<wahlperiode>[0-9]+)[\"'& ]>(?<name>[^<]*)<.*tdborder\">seit (?<mitgliedschaft>[^<]*)<\/td>.*tdborder[^>]*>(?<fraktion>[^<]*) *<\/td>.*notdborder[^>]*>(?<funktion>[^<]*) *<\/td.*<\/tr/siU", $x[0], $matches);
+		preg_match_all("/ba_mitglieder_details_mitgliedschaft\.jsp\?Id=(?<mitglied_id>[0-9]+)&amp;Wahlperiode=(?<wahlperiode>[0-9]+)[\"'& ]>(?<name>[^<]*)<.*tdborder\">(?<mitgliedschaft>[^<]*)<\/td>.*tdborder[^>]*>(?<fraktion>[^<]*) *<\/td>.*notdborder[^>]*>(?<funktion>[^<]*) *<\/td.*<\/tr/siU", $x[0], $matches);
 		for ($i = 0; $i < count($matches[1]); $i++) {
 			$fraktion_name = $matches["fraktion"][$i];
 			$name          = str_replace("&nbsp;", " ", $matches["name"][$i]);
@@ -59,9 +59,15 @@ class BAMitgliederParser extends RISParser
 				$strfrakt->fraktion_id    = $fraktion->id;
 				$strfrakt->stadtraetIn_id = $strIn->id;
 				$strfrakt->wahlperiode    = $wahlperiode;
-				$strfrakt->mitgliedschaft = "seit " . $matches["mitgliedschaft"][$i];
-				$x                        = explode(".", $matches["mitgliedschaft"][$i]);
-				$strfrakt->datum_von      = $x[2] . "-" . $x[1] . "-" . $x[0];
+				$strfrakt->mitgliedschaft = $matches["mitgliedschaft"][$i];
+
+				if (preg_match("/^von (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+) bis (?<bis_tag>[0-9]+)\\.(?<bis_monat>[0-9]+)\\.(?<bis_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
+					$strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+					$strfrakt->datum_bis = $mitgliedschaft_matches["bis_jahr"] . "-" . $mitgliedschaft_matches["bis_monat"] . "-" . $mitgliedschaft_matches["bis_tag"];
+				} elseif (preg_match("/^seit (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
+					$strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+					$strfrakt->datum_bis = null;
+				}
 				$strfrakt->save();
 			}
 		}
