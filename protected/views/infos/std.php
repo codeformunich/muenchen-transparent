@@ -18,12 +18,14 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
 		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active"><?=CHtml::encode($text->titel)?></li>
 	</ul>
+	<? if ($this->binContentAdmin()) { ?>
 	<a href="#" style="display: inline; float: right;" id="text_edit_caller">
 		<span class="mdi-content-create"></span> Bearbeiten
 	</a>
 	<a href="#" style="display: none; float: right;" id="text_edit_aborter">
 		<span class="mdi-content-clear"></span> Abbrechen
 	</a>
+	<? } ?>
 
 	<h1><?=CHtml::encode($text->titel)?></h1>
 
