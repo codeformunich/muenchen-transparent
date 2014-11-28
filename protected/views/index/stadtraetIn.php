@@ -86,7 +86,53 @@ $this->pageTitle = $stadtraetIn->getName();
 							</ul>
 						</td>
 					</tr>
-				<? } ?>
+				<?
+				} else {
+					$suche = new RISSucheKrits();
+					$suche->addVolltextsucheKrit($stadtraetIn->getName());
+					$solr   = RISSolrHelper::getSolrClient("ris");
+					$select = $solr->createSelect();
+					$suche->addKritsToSolr($select);
+					$select->setRows(50);
+					$select->addSort('sort_datum', $select::SORT_DESC);
+
+					/** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+					$hl = $select->getHighlighting();
+					$hl->setFields('text, text_ocr, antrag_betreff');
+					$hl->setSimplePrefix('<b>');
+					$hl->setSimplePostfix('</b>');
+
+					/** @var \Solarium\QueryType\Select\Result\Result $ergebnisse */
+					$ergebnisse = $solr->select($select);
+					$dokumente  = $ergebnisse->getDocuments();
+
+					if (count($dokumente) > 0) {
+						echo '<tr><th>Namentlich erwähnt in:</th><td><ul>';
+						$highlighting = $ergebnisse->getHighlighting();
+						foreach ($dokumente as $dokument) {
+							$dok = AntragDokument::getDocumentBySolrId($dokument->id, true);
+							if (!$dok) {
+								if ($this->binContentAdmin()) {
+									echo "<li>Dokument nicht gefunden: " . $dokument->id . "</li>";
+								}
+							} elseif (!$dok->getRISItem()) {
+								if ($this->binContentAdmin()) {
+									echo "<li>Dokument-Zuordnung nicht gefunden: " . $dokument->typ . " / " . $dokument->id . "</li>";
+								}
+							} else {
+								$risitem = $dok->getRISItem();
+								if (!$risitem) continue;
+
+								$dokurl = $dok->getLinkZumDokument();
+								echo '<li style="margin-bottom: 10px;">';
+								echo CHtml::link($risitem->getName(true), $risitem->getLink()) . '<br>';
+								echo '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dok->name) . '</a>';
+								echo '</li>';
+							}
+						}
+						echo '</ul></td></tr>';
+					}
+				} ?>
 				</tbody>
 			</table>
 		</section>
