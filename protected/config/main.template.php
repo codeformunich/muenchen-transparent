@@ -99,7 +99,7 @@ function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
 	return true;
 }
 
-function ris_intern_html_extra_headers = function() {
+function ris_intern_html_extra_headers() {
     return '';
 }
 
