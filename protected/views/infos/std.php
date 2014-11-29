@@ -4,6 +4,7 @@
  * @var InfosController $this
  * @var Text $text
  * @var string $msg_ok
+ * @var bool $notitle
  */
 
 $this->pageTitle = $text->titel;
@@ -25,12 +26,10 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
 	<a href="#" style="display: none; float: right;" id="text_edit_aborter">
 		<span class="mdi-content-clear"></span> Abbrechen
 	</a>
-	<? } ?>
+	<? }
 
-	<h1><?=CHtml::encode($text->titel)?></h1>
+    if (!$notitle) echo '<h1>' . CHtml::encode($text->titel) . '</h1><br>';
 
-	<?
-	echo '<br>';
 	if ($msg_ok != "") echo '<div class="alert alert-dismissable alert-success">
     <button type="button" class="close" data-dismiss="alert">×</button>' . $msg_ok . '</div>';
 	echo '<br>';

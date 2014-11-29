@@ -13,6 +13,7 @@ h6,
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
+
 h5,
 h6 {
   font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -71,14 +72,15 @@ h1.small {
     }
   }
 }
+
 .modal-backdrop {
   display: inherit;
 }
+
 body.modal-open {
   overflow: auto;
   padding-right: 0 !important;
 }
-
 
 #ba_nav_list {
   min-width: 270px;
@@ -259,32 +261,49 @@ body {
   }
 }
 
-section.teaser {
-  a {
+a.teaser_button {
+  text-align: left;
+  display: block;
+  overflow: auto;
+  padding-right: 10px;
+  color: white;
+  &:link, &:visited {
+    color: white;
+  }
+
+
+  h2 {
+    margin: 0;
+    padding: 5px;
+    font-size: 19px;
+    font-weight: bold;
     text-align: left;
-    display: block;
-    overflow: auto;
-    padding-right: 10px;
 
-    h2 {
-      margin: 0;
-      padding: 5px;
-      font-size: 19px;
-      font-weight: bold;
-      text-align: left;
-
-      .glyphicon {
-        font-weight: normal;
-        margin-right: 10px;
-        float: left;
-        font-size: 30px;
-        margin-left: -20px;
-      }
-    }
-
-    .description {
+    .glyphicon {
+      font-weight: normal;
+      margin-right: 10px;
       float: left;
+      font-size: 30px;
+      margin-left: -20px;
     }
+
+    .paragraph {
+      margin-right: 10px;
+      float: left;
+      font-size: 30px;
+      margin-left: -20px;
+      width: 30px;
+      height: 30px;
+      display: block;
+      vertical-align: top;
+      font-weight: bold;
+      margin-top: -5px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .description {
+    float: left;
   }
 }
 

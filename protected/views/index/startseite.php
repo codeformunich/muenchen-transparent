@@ -85,7 +85,7 @@ $this->pageTitle = Yii::app()->name;
 	<section class="teaser">
 		<div class="row">
 			<div class="col-md-12">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>" class="btn btn-success">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>" class="teaser_button btn btn-success">
 					<h2><span class="glyphicon glyphicon-info-sign"></span>So funktioniert Stadtpolitik</h2>
 
 					<div class="description">
@@ -98,7 +98,7 @@ $this->pageTitle = Yii::app()->name;
 
 		<div class="row">
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>" class="teaser_button btn btn-info">
 					<h2><span class="glyphicon glyphicon-calendar"></span>Termine</h2>
 
 					<div class="description">
@@ -108,7 +108,7 @@ $this->pageTitle = Yii::app()->name;
 			</div>
 
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/personen")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/personen")) ?>" class="teaser_button btn btn-info">
 					<h2><span class="glyphicon glyphicon-user"></span>Personen</h2>
 
 					<div class="description">
@@ -120,7 +120,7 @@ $this->pageTitle = Yii::app()->name;
 
 		<div class="row">
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>" class="teaser_button btn btn-info">
 					<h2><span class="glyphicon glyphicon-chevron-right"></span>Themen</h2>
 
 					<div class="description">
@@ -130,7 +130,7 @@ $this->pageTitle = Yii::app()->name;
 			</div>
 
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("benachrichtigungen/index")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("benachrichtigungen/index")) ?>" class="teaser_button btn btn-info">
 					<h2><span class="glyphicon" style="height: 37px; font-weight: bold;">@</span> E-Mail-Benachrichtigung</h2>
 
 					<div class="description">
@@ -142,7 +142,7 @@ $this->pageTitle = Yii::app()->name;
 
 		<div class="row">
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" class="teaser_button btn btn-info">
 					<h2><span class="glyphicon glyphicon-search"></span> Dokumentensuche</h2>
 
 					<div class="description">
@@ -154,7 +154,7 @@ $this->pageTitle = Yii::app()->name;
 			</div>
 
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/ueber")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/ueber")) ?>" class="teaser_button btn btn-info">
 					<h2><span class="glyphicon glyphicon-question-sign"></span>Über München-Transparent</h2>
 
 					<div class="description">

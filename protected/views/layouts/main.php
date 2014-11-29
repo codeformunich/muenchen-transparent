@@ -30,7 +30,13 @@
     if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
     if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>';
     if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
-    ?>
+
+    if ($this->load_pdf_js) { ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="google" content="notranslate">
+        <link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
+
+    <? } ?>
 
     <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
     <link rel="stylesheet" href="/css/styles_website.css">
@@ -43,19 +49,12 @@
 	<script src="/js/jquery-2.1.1.min.js"></script>
 	<!--<![endif]-->
 
-	<script src="/js/modernizr.js"></script>
-
 	<!--[if lt IE 9]>
 	<script src="/js/html5shiv.js"></script>
 	<script src="/js/respond.min.js"></script>
 	<![endif]-->
 
 	<? if ($this->load_pdf_js) { ?>
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta name="google" content="notranslate">
-
-		<link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
-
 		<script src="/other/pdfjs/compatibility.js"></script>
 
 		<!-- This snippet is used in production (included from viewer.html) -->
@@ -76,13 +75,14 @@
 		$(window).resize(pdf_resize);
 		</script>
 	<? } // end pdf.js ?>
-
-    <?
-    echo ris_intern_html_extra_headers();
-    ?>
 </head>
 
 <body>
+<script src="/js/modernizr.js"></script>
+<?
+echo ris_intern_html_extra_headers();
+?>
+
 <a href="#page_main_content" class="sr-only">Zum Seiteninhalt</a>
 
 <div class="over_footer_wrapper">
@@ -100,7 +100,7 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">[TODO: Logo]</a></li>
+					<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseitemod</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <span class="caret"></span></a>
 						<ul class="dropdown-menu" id="ba_nav_list">

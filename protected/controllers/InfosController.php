@@ -2,143 +2,150 @@
 
 class InfosController extends RISBaseController
 {
-	public function actionSoFunktioniertStadtpolitik()
-	{
-		$this->top_menu = "so_funktioniert";
-		$this->std_content_page(25, $this->createUrl("infos/soFunktioniertStadtpolitik"));
-	}
+    public function actionSoFunktioniertStadtpolitik()
+    {
+        $this->top_menu = "so_funktioniert";
+        $this->render("stadtpolitik");
+    }
 
-	public function actionImpressum()
-	{
-		$this->top_menu = "impressum";
-		$this->std_content_page(23, $this->createUrl("infos/impressum"));
-	}
+    public function actionImpressum()
+    {
+        $this->top_menu = "impressum";
+        $this->std_content_page(23, $this->createUrl("infos/impressum"));
+    }
 
-	public function actionDatenschutz()
-	{
-		$this->top_menu = "datenschutz";
-		$this->std_content_page(26, $this->createUrl("infos/datenschutz"));
-	}
+    public function actionDatenschutz()
+    {
+        $this->top_menu = "datenschutz";
+        $this->std_content_page(26, $this->createUrl("infos/datenschutz"));
+    }
 
-	public function actionAPI()
-	{
-		$this->top_menu = "api";
-		$this->std_content_page(22, $this->createUrl("infos/api"));
-	}
+    public function actionAPI()
+    {
+        $this->top_menu = "api";
+        $this->std_content_page(22, $this->createUrl("infos/api"));
+    }
 
-	public function actionUeber()
-	{
-		$this->top_menu = "";
-		$this->std_content_page(21, $this->createUrl("infos/ueber"));
-	}
+    public function actionUeber()
+    {
+        $this->top_menu = "";
+        $this->std_content_page(21, $this->createUrl("infos/ueber"));
+    }
 
-	/**
-	 * @param int $id
-	 * @param string $my_url
-	 */
-	public function std_content_page($id, $my_url)
-	{
-		/** @var Text $text */
-		$text = Text::model()->findByPk($id);
+    public function actionStadtrecht() {
+        $this->top_menu = "so_funktioniert";
+        $this->render("stadtrecht");
+    }
 
-		$msg_ok = "";
-		if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
-			if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
-			$text->text = $_REQUEST["text"];
-			$text->save();
-			$msg_ok = "Gespeichert.";
-		}
+    /**
+     * @param int $id
+     * @param string $my_url
+     * @param bool $notitle
+     */
+    public function std_content_page($id, $my_url, $notitle = false)
+    {
+        /** @var Text $text */
+        $text = Text::model()->findByPk($id);
 
-		$this->render("std", array(
-			"text"   => $text,
-			"my_url" => $my_url,
-			"msg_ok" => $msg_ok,
-		));
+        $msg_ok = "";
+        if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
+            if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
+            $text->text = $_REQUEST["text"];
+            $text->save();
+            $msg_ok = "Gespeichert.";
+        }
 
-	}
+        $this->render("std", array(
+            "text"    => $text,
+            "my_url"  => $my_url,
+            "msg_ok"  => $msg_ok,
+            "notitle" => $notitle,
+        ));
 
-
-	public function actionFeedback()
-	{
-		$this->top_menu = "";
-
-		if (AntiXSS::isTokenSet("send")) {
-			$fp = fopen(EMAIL_LOG_FILE . "." . date("YmdHis"), "a");
-			fwrite($fp, date("Y-m-d H:i:s") . "\n");
-			fwrite($fp, print_r($_REQUEST, true));
-			fclose($fp);
-
-			$text = "Antwort erwünscht: " . (isset($_REQUEST["answer_wanted"]) ? "Ja" : "Nein") . "\n";
-			$text .= "E-Mail: " . $_REQUEST["email"] . "\n";
-			$text .= "\n\n";
-			$text .= $_REQUEST["message"];
-
-			RISTools::send_email(Yii::app()->params['adminEmail'], "[München Transparent] Feedback", $text, null, "feedback");
-
-			$this->render('feedback_done', array());
-		} else {
-			$this->render('feedback_form', array(
-				"current_url" => Yii::app()->createUrl("infos/feedback"),
-				"msg_err"     => "",
-			));
-		}
-	}
-
-	public function actionGlossar()
-	{
-		$this->top_menu = "so_funktioniert";
-
-		if (AntiXSS::isTokenSet("anlegen") && $this->binContentAdmin()) {
-			$text                     = new Text();
-			$text->typ                = Text::$TYP_GLOSSAR;
-			$text->titel              = $_REQUEST["titel"];
-			$text->text               = $_REQUEST["text"];
-			$text->pos                = 0;
-			$text->edit_datum         = new CDbExpression("NOW()");
-			$text->edit_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
-			$text->save();
-		}
-
-		$eintraege = Text::model()->findAllByAttributes(array(
-			"typ" => Text::$TYP_GLOSSAR,
-		), array("order" => "titel"));
-
-		$this->render('glossar', array(
-			"eintraege" => $eintraege,
-		));
-	}
+    }
 
 
-	public function actionGlossarBearbeiten($id)
-	{
-		if (!$this->binContentAdmin()) throw new Exception("Kein Zugriff");
+    public function actionFeedback()
+    {
+        $this->top_menu = "";
 
-		$this->top_menu = "so_funktioniert";
+        if (AntiXSS::isTokenSet("send")) {
+            $fp = fopen(EMAIL_LOG_FILE . "." . date("YmdHis"), "a");
+            fwrite($fp, date("Y-m-d H:i:s") . "\n");
+            fwrite($fp, print_r($_REQUEST, true));
+            fclose($fp);
 
-		/** @var Text $eintrag */
-		$eintrag = Text::model()->findByAttributes(array(
-			"id"  => $id,
-			"typ" => Text::$TYP_GLOSSAR,
-		));
-		if (!$eintrag) throw new Exception("Nicht gefunden");
+            $text = "Antwort erwünscht: " . (isset($_REQUEST["answer_wanted"]) ? "Ja" : "Nein") . "\n";
+            $text .= "E-Mail: " . $_REQUEST["email"] . "\n";
+            $text .= "\n\n";
+            $text .= $_REQUEST["message"];
 
-		if (AntiXSS::isTokenSet("speichern")) {
-			$eintrag->titel              = $_REQUEST["titel"];
-			$eintrag->text               = $_REQUEST["text"];
-			$eintrag->edit_datum         = new CDbExpression("NOW()");
-			$eintrag->edit_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
-			$eintrag->save();
+            RISTools::send_email(Yii::app()->params['adminEmail'], "[München Transparent] Feedback", $text, null, "feedback");
 
-			$this->redirect($this->createUrl("infos/glossar"));
-		}
+            $this->render('feedback_done', array());
+        } else {
+            $this->render('feedback_form', array(
+                "current_url" => Yii::app()->createUrl("infos/feedback"),
+                "msg_err"     => "",
+            ));
+        }
+    }
 
-		if (AntiXSS::isTokenSet("del")) {
-			$eintrag->delete();
-			$this->redirect($this->createUrl("infos/glossar"));
-		}
+    public function actionGlossar()
+    {
+        $this->top_menu = "so_funktioniert";
 
-		$this->render('glossar_bearbeiten', array(
-			"eintrag" => $eintrag,
-		));
-	}
+        if (AntiXSS::isTokenSet("anlegen") && $this->binContentAdmin()) {
+            $text                     = new Text();
+            $text->typ                = Text::$TYP_GLOSSAR;
+            $text->titel              = $_REQUEST["titel"];
+            $text->text               = $_REQUEST["text"];
+            $text->pos                = 0;
+            $text->edit_datum         = new CDbExpression("NOW()");
+            $text->edit_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
+            $text->save();
+        }
+
+        $eintraege = Text::model()->findAllByAttributes(array(
+            "typ" => Text::$TYP_GLOSSAR,
+        ), array("order" => "titel"));
+
+        $this->render('glossar', array(
+            "eintraege" => $eintraege,
+        ));
+    }
+
+
+    public function actionGlossarBearbeiten($id)
+    {
+        if (!$this->binContentAdmin()) throw new Exception("Kein Zugriff");
+
+        $this->top_menu = "so_funktioniert";
+
+        /** @var Text $eintrag */
+        $eintrag = Text::model()->findByAttributes(array(
+            "id"  => $id,
+            "typ" => Text::$TYP_GLOSSAR,
+        ));
+        if (!$eintrag) throw new Exception("Nicht gefunden");
+
+        if (AntiXSS::isTokenSet("speichern")) {
+            $eintrag->titel              = $_REQUEST["titel"];
+            $eintrag->text               = $_REQUEST["text"];
+            $eintrag->edit_datum         = new CDbExpression("NOW()");
+            $eintrag->edit_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
+            $eintrag->save();
+
+            $this->redirect($this->createUrl("infos/glossar"));
+        }
+
+        if (AntiXSS::isTokenSet("del")) {
+            $eintrag->delete();
+            $this->redirect($this->createUrl("infos/glossar"));
+        }
+
+        $this->render('glossar_bearbeiten', array(
+            "eintrag" => $eintrag,
+        ));
+    }
 }
