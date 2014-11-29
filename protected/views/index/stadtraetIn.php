@@ -89,7 +89,7 @@ $this->pageTitle = $stadtraetIn->getName();
 				<?
 				} else {
 					$suche = new RISSucheKrits();
-					$suche->addVolltextsucheKrit($stadtraetIn->getName());
+					$suche->addVolltextsucheKrit("\"" . $stadtraetIn->getName() . "\"");
 					$solr   = RISSolrHelper::getSolrClient("ris");
 					$select = $solr->createSelect();
 					$suche->addKritsToSolr($select);
