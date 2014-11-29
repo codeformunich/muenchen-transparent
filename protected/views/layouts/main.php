@@ -24,9 +24,21 @@
 		if (strpos($this->pageTitle, "Transparent") === false) echo " (" . CHtml::encode(Yii::app()->params['projectTitle']) . ")";
 		?></title>
 
-	<!--[if lt IE 9]>
-	<script src="/js/jquery-1.11.1.min.js"></script>
-	<![endif]-->
+
+    <?
+    if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
+    if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
+    if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>';
+    if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
+    ?>
+
+    <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
+    <link rel="stylesheet" href="/css/styles_website.css">
+
+
+    <!--[if lt IE 9]>
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <![endif]-->
 	<!--[if gte IE 9]><!-->
 	<script src="/js/jquery-2.1.1.min.js"></script>
 	<!--<![endif]-->
@@ -65,15 +77,9 @@
 		</script>
 	<? } // end pdf.js ?>
 
-	<?
-	if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
-	if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
-	if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>';
-	if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
-	?>
-
-	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
-	<link rel="stylesheet" href="/css/styles_website.css">
+    <?
+    echo ris_intern_html_extra_headers();
+    ?>
 </head>
 
 <body>
