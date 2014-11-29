@@ -487,9 +487,18 @@ class IndexController extends RISBaseController
 	{
 		/** @var AntragDokument $dokument */
 		$dokument = AntragDokument::model()->findByPk($id);
-		$data     = ris_download_string("http://www.ris-muenchen.de" . $dokument->url);
-		Header("Content-Type: application/pdf; charset=UTF-8");
-		echo $data;
+        try {
+            $data = ris_download_string("http://www.ris-muenchen.de" . $dokument->url);
+
+            Header("Content-Type: application/pdf; charset=UTF-8");
+            echo $data;
+        } catch (Exception $e) {
+            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
+            fwrite($fp, $id . " - " . "http://www.ris-muenchen.de" . $dokument->url . "\n");
+            fclose($fp);
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
 		Yii::app()->end();
 	}
 
