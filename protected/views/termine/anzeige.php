@@ -83,7 +83,7 @@ $geodata         = array();
 				$name = $ergebnis->top_nr . ": " . $ergebnis->getName(true);
 				echo "<li style='margin-bottom: 7px;'>";
 				if ($ergebnis->top_ueberschrift) echo "<strong>";
-				echo CHtml::encode($name);
+				echo CHtml::encode(strip_tags($name));
 				if ($ergebnis->top_ueberschrift) echo "</strong>";
 				$antraege = $ergebnis->zugeordneteAntraegeHeuristisch();
 				if (count($ergebnis->dokumente) > 0 || is_object($ergebnis->antrag) || count($antraege) > 0) {
@@ -113,7 +113,6 @@ $geodata         = array();
 					FloatVal($g->lon),
 					$ergebnis->top_nr . ": " . $ergebnis->getName(true)
 				);
-				echo "</li>";
 			}
 			?>
 		</ol>
