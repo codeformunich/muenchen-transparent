@@ -41,6 +41,11 @@
     <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
     <link rel="stylesheet" href="/css/styles_website.css">
 
+    <?
+    if ($this->inline_css != "") {
+        echo '<style>' . $this->inline_css . '</style>';
+    }
+    ?>
 
     <!--[if lt IE 9]>
     <script src="/js/jquery-1.11.1.min.js"></script>

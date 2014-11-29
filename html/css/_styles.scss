@@ -271,7 +271,6 @@ a.teaser_button {
     color: white;
   }
 
-
   h2 {
     margin: 0;
     padding: 5px;
@@ -1204,4 +1203,26 @@ section.impressum {
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
+}
+
+.rechtstext {
+  .seite {
+    margin-left: 50px;
+    margin-top: 220px;
+    margin-bottom: 420px;
+    -webkit-transform: scale(1.4);
+    -moz-transform: scale(1.4);
+    -ms-transform: scale(1.4);
+    -o-transform: scale(1.4);
+    transform: scale(1.4);
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 750px;
+    height: 1070px;
+    overflow: hidden;
+
+  }
 }

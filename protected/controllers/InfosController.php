@@ -37,6 +37,16 @@ class InfosController extends RISBaseController
         $this->render("stadtrecht");
     }
 
+    public function actionStadtrechtDokument($doknr) {
+        /** @var Rechtsdokument $dok */
+        $dok = Rechtsdokument::model()->findByAttributes(array("nr" => $doknr));
+        if (!$dok) {
+            $this->render('../index/error', array("code" => 404, "message" => "Das Dokument wurde nicht gefunden"));
+            Yii::app()->end();
+        }
+        $this->render("stadtrecht_dokument", array("dokument" => $dok));
+    }
+
     /**
      * @param int $id
      * @param string $my_url

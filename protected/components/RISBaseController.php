@@ -12,6 +12,12 @@ class RISBaseController extends CController
 	 */
 	public $html_description = "";
 
+    /**
+     * @var string
+     */
+    public $inline_css = "";
+
+
 	/**
 	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
 	 */
