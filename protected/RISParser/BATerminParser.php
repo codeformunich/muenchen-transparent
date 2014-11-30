@@ -4,24 +4,24 @@ class BATerminParser extends RISParser
 {
 
 	/**
-	 * @param Tagesordnungspunkt[] $ergebnisse
+	 * @param Tagesordnungspunkt[] $tops
 	 * @return Tagesordnungspunkt
 	 */
-	private function loescheDoppelteErgebnisse($ergebnisse) {
-		if (count($ergebnisse) == 0) return null;
-		if (count($ergebnisse) == 1) return $ergebnisse[0];
+	private function loescheDoppelteTOPs($tops) {
+		if (count($tops) == 0) return null;
+		if (count($tops) == 1) return $tops[0];
 
 		$hat_dokumente = null;
-		foreach ($ergebnisse as $ergebnis) if (count($ergebnis->dokumente) > 0) $hat_dokumente = $ergebnis;
-		$behalten = ($hat_dokumente === null ? $ergebnisse[0] : $hat_dokumente);
+		foreach ($tops as $tagesordnungspunkt) if (count($tagesordnungspunkt->dokumente) > 0) $hat_dokumente = $tagesordnungspunkt;
+		$behalten = ($hat_dokumente === null ? $tops[0] : $hat_dokumente);
 
-		foreach ($ergebnisse as $ergebnis) {
-			if ($ergebnis->id == $behalten->id) continue;
-			foreach ($ergebnis->dokumente as $dok) {
+		foreach ($tops as $tagesordnungspunkt) {
+			if ($tagesordnungspunkt->id == $behalten->id) continue;
+			foreach ($tagesordnungspunkt->dokumente as $dok) {
 				$dok->tagesordnungspunkt_id = null;
 				$dok->save(false);
 			}
-			$ergebnis->delete();
+			$tagesordnungspunkt->delete();
 		}
 
 		return $behalten;
@@ -175,97 +175,97 @@ class BATerminParser extends RISParser
 				}
 			}
 
-			$ergebnis = new Tagesordnungspunkt();
+			$tagesordnungspunkt = new Tagesordnungspunkt();
 
 			if ($vorlage_id) {
-				$ergebnis->antrag_id = $vorlage_id;
+				$tagesordnungspunkt->antrag_id = $vorlage_id;
 			} elseif ($baantrag_id) {
-				$ergebnis->antrag_id = $baantrag_id;
+				$tagesordnungspunkt->antrag_id = $baantrag_id;
 			} else {
-				$ergebnis->antrag_id = null;
+				$tagesordnungspunkt->antrag_id = null;
 			}
 
 			$entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
 			$entscheidung          = static::text_clean_spaces(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
 
-			$ergebnis->datum_letzte_aenderung = new CDbExpression("NOW()");
-			$ergebnis->sitzungstermin_id      = $termin_id;
-			$ergebnis->sitzungstermin_datum   = substr($daten->termin, 0, 10);
-			$ergebnis->top_nr                 = $top_nr;
-			$ergebnis->top_ueberschrift       = ($top_ueberschrift ? 1 : 0);
-			$ergebnis->entscheidung           = $entscheidung;
-			$ergebnis->top_betreff            = $betreff;
-			$ergebnis->gremium_id             = $daten->gremium_id;
-			$ergebnis->gremium_name           = $daten->gremium->name;
+			$tagesordnungspunkt->datum_letzte_aenderung = new CDbExpression("NOW()");
+			$tagesordnungspunkt->sitzungstermin_id      = $termin_id;
+			$tagesordnungspunkt->sitzungstermin_datum   = substr($daten->termin, 0, 10);
+			$tagesordnungspunkt->top_nr                 = $top_nr;
+			$tagesordnungspunkt->top_ueberschrift       = ($top_ueberschrift ? 1 : 0);
+			$tagesordnungspunkt->entscheidung           = $entscheidung;
+			$tagesordnungspunkt->top_betreff            = $betreff;
+			$tagesordnungspunkt->gremium_id             = $daten->gremium_id;
+			$tagesordnungspunkt->gremium_name           = $daten->gremium->name;
 
-			/** @var Tagesordnungspunkt $altes_ergebnis */
+			/** @var Tagesordnungspunkt[] $alte_tops */
 			if ($vorlage_id) {
-				$alte_ergebnisse = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
+				$alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
 			} elseif ($baantrag_id) {
-				$alte_ergebnisse = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
+				$alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
 			} else {
-				$alte_ergebnisse = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
+				$alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
 			}
-			$altes_ergebnis = $this->loescheDoppelteErgebnisse($alte_ergebnisse);
+			$alter_top = $this->loescheDoppelteTOPs($alte_tops);
 
-			$ergebnis_aenderungen = "";
-			if ($altes_ergebnis) {
-				if ($altes_ergebnis->sitzungstermin_id != $ergebnis->sitzungstermin_id) $ergebnis_aenderungen .= "Sitzung geändert: " . $altes_ergebnis->sitzungstermin_id . " => " . $ergebnis->sitzungstermin_id . "\n";
-				if ($altes_ergebnis->sitzungstermin_datum != $ergebnis->sitzungstermin_datum) $ergebnis_aenderungen .= "Sitzungstermin geändert: " . $altes_ergebnis->sitzungstermin_datum . " => " . $ergebnis->sitzungstermin_datum . "\n";
-				if ($altes_ergebnis->top_nr != $ergebnis->top_nr) $ergebnis_aenderungen .= "Position geändert: " . $altes_ergebnis->top_nr . " => " . $ergebnis->top_nr . "\n";
-				if ($altes_ergebnis->top_ueberschrift != $ergebnis->top_ueberschrift) $ergebnis_aenderungen .= "Bereich geändert: " . $altes_ergebnis->top_ueberschrift . " => " . $ergebnis->top_ueberschrift . "\n";
-				if ($altes_ergebnis->top_betreff != $ergebnis->top_betreff) $ergebnis_aenderungen .= "Betreff geändert: " . $altes_ergebnis->top_betreff . " => " . $ergebnis->top_betreff . "\n";
-				if ($altes_ergebnis->antrag_id != $ergebnis->antrag_id) $ergebnis_aenderungen .= "Antrag geändert: " . $altes_ergebnis->antrag_id . " => " . $ergebnis->antrag_id . "\n";
-				if ($altes_ergebnis->gremium_id != $ergebnis->gremium_id) $ergebnis_aenderungen .= "Gremium geändert: " . $altes_ergebnis->gremium_id . " => " . $ergebnis->gremium_id . "\n";
-				if ($altes_ergebnis->gremium_name != $ergebnis->gremium_name) $ergebnis_aenderungen .= "Gremium geändert: " . $altes_ergebnis->gremium_name . " => " . $ergebnis->gremium_name . "\n";
-				if ($altes_ergebnis->entscheidung != $ergebnis->entscheidung) $ergebnis_aenderungen .= "Entscheidung: " . $altes_ergebnis->entscheidung . " => " . $ergebnis->entscheidung . "\n";
-				if ($altes_ergebnis->beschluss_text != $ergebnis->beschluss_text) $ergebnis_aenderungen .= "Beschluss: " . $altes_ergebnis->beschluss_text . " => " . $ergebnis->beschluss_text . "\n";
+			$tagesordnungspunkt_aenderungen = "";
+			if ($alter_top) {
+				if ($alter_top->sitzungstermin_id != $tagesordnungspunkt->sitzungstermin_id) $tagesordnungspunkt_aenderungen .= "Sitzung geändert: " . $alter_top->sitzungstermin_id . " => " . $tagesordnungspunkt->sitzungstermin_id . "\n";
+				if ($alter_top->sitzungstermin_datum != $tagesordnungspunkt->sitzungstermin_datum) $tagesordnungspunkt_aenderungen .= "Sitzungstermin geändert: " . $alter_top->sitzungstermin_datum . " => " . $tagesordnungspunkt->sitzungstermin_datum . "\n";
+				if ($alter_top->top_nr != $tagesordnungspunkt->top_nr) $tagesordnungspunkt_aenderungen .= "Position geändert: " . $alter_top->top_nr . " => " . $tagesordnungspunkt->top_nr . "\n";
+				if ($alter_top->top_ueberschrift != $tagesordnungspunkt->top_ueberschrift) $tagesordnungspunkt_aenderungen .= "Bereich geändert: " . $alter_top->top_ueberschrift . " => " . $tagesordnungspunkt->top_ueberschrift . "\n";
+				if ($alter_top->top_betreff != $tagesordnungspunkt->top_betreff) $tagesordnungspunkt_aenderungen .= "Betreff geändert: " . $alter_top->top_betreff . " => " . $tagesordnungspunkt->top_betreff . "\n";
+				if ($alter_top->antrag_id != $tagesordnungspunkt->antrag_id) $tagesordnungspunkt_aenderungen .= "Antrag geändert: " . $alter_top->antrag_id . " => " . $tagesordnungspunkt->antrag_id . "\n";
+				if ($alter_top->gremium_id != $tagesordnungspunkt->gremium_id) $tagesordnungspunkt_aenderungen .= "Gremium geändert: " . $alter_top->gremium_id . " => " . $tagesordnungspunkt->gremium_id . "\n";
+				if ($alter_top->gremium_name != $tagesordnungspunkt->gremium_name) $tagesordnungspunkt_aenderungen .= "Gremium geändert: " . $alter_top->gremium_name . " => " . $tagesordnungspunkt->gremium_name . "\n";
+				if ($alter_top->entscheidung != $tagesordnungspunkt->entscheidung) $tagesordnungspunkt_aenderungen .= "Entscheidung: " . $alter_top->entscheidung . " => " . $tagesordnungspunkt->entscheidung . "\n";
+				if ($alter_top->beschluss_text != $tagesordnungspunkt->beschluss_text) $tagesordnungspunkt_aenderungen .= "Beschluss: " . $alter_top->beschluss_text . " => " . $tagesordnungspunkt->beschluss_text . "\n";
 
-				if ($ergebnis_aenderungen != "") {
+				if ($tagesordnungspunkt_aenderungen != "") {
 					$aend              = new RISAenderung();
-					$aend->ris_id      = $altes_ergebnis->id;
+					$aend->ris_id      = $alter_top->id;
 					$aend->ba_nr       = NULL;
 					$aend->typ         = RISAenderung::$TYP_BA_ERGEBNIS;
 					$aend->datum       = new CDbExpression("NOW()");
-					$aend->aenderungen = $ergebnis_aenderungen;
+					$aend->aenderungen = $tagesordnungspunkt_aenderungen;
 					if (!$aend->save()) {
 						var_dump($aend->getErrors());
 					}
 
-					$altes_ergebnis->copyToHistory();
-					$ergebnis->id = $altes_ergebnis->id;
-					$altes_ergebnis->setAttributes($ergebnis->getAttributes(), false);
-					if (!$altes_ergebnis->save()) {
+					$alter_top->copyToHistory();
+					$tagesordnungspunkt->id = $alter_top->id;
+					$alter_top->setAttributes($tagesordnungspunkt->getAttributes(), false);
+					if (!$alter_top->save()) {
 						echo "StadtratAntrag 1\n";
 						var_dump($alter_eintrag->getErrors());
 						die("Fehler");
 					}
-					$ergebnis = $altes_ergebnis;
+					$tagesordnungspunkt = $alter_top;
 
-					$aenderungen_tops .= "TOP geändert: " . $ergebnis->top_nr . ": " . $ergebnis->top_betreff . "\n   "  . str_replace("\n", "\n   ", $ergebnis_aenderungen) . "\n";
+					$aenderungen_tops .= "TOP geändert: " . $tagesordnungspunkt->top_nr . ": " . $tagesordnungspunkt->top_betreff . "\n   "  . str_replace("\n", "\n   ", $tagesordnungspunkt_aenderungen) . "\n";
 				}
 			} else {
 				$aenderungen_tops .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
-				$ergebnis->save();
+				$tagesordnungspunkt->save();
 			}
 
-			$verwendete_top_betreffs[] = $ergebnis->top_betreff;
+			$verwendete_top_betreffs[] = $tagesordnungspunkt->top_betreff;
 
 			/*
 			if (!is_null($vorlage_id)) {
 				$html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
 				preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
 				$beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
-				if ($ergebnis->beschluss_text != $beschluss) {
-					$aenderungen .= "Beschluss: " . $ergebnis->beschluss_text . " => " . $beschluss . "\n";
-					$ergebnis->beschluss_text = $beschluss;
+				if ($tagesordnungspunkt->beschluss_text != $beschluss) {
+					$aenderungen .= "Beschluss: " . $tagesordnungspunkt->beschluss_text . " => " . $beschluss . "\n";
+					$tagesordnungspunkt->beschluss_text = $beschluss;
 				}
 			}
 			*/
 
 			preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
 			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII/RII/DOK/TOP/") {
-				$aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $ergebnis, array("url" => $matches2["url"], "name" => $matches2["title"]));
+				$aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $tagesordnungspunkt, array("url" => $matches2["url"], "name" => $matches2["title"]));
 			}
 		}
 

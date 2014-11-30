@@ -9,6 +9,15 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		echo "Gestartet: " . date("Y-m-d H:i:s");
 
 		try {
+			$parser = new RathausumschauParser();
+			$parser->parseUpdate();
+
+			echo "Done Rathausumschau: " . date("Y-m-d H:i:s");
+		} catch (Exception $e) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Rathausumschau", print_r($e, true));
+		}
+
+		try {
 			$parser = new StadtratTerminParser();
 			$parser->parseUpdate();
 

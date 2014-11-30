@@ -291,55 +291,38 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- -----------------------------------------------------
 -- Table `dokumente`
 -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `dokumente` (
-  `id` INT(11) NOT NULL,
-  `typ` ENUM('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative','stadtrat_termin','ba_termin','stadtrat_beschluss','bv_empfehlung','ba_beschluss') NULL DEFAULT NULL,
-  `antrag_id` INT(11) NULL DEFAULT NULL,
-  `termin_id` INT(11) NULL DEFAULT NULL,
-  `tagesordnungspunkt_id` INT(11) NULL DEFAULT NULL,
-  `vorgang_id` INT(11) NULL DEFAULT NULL,
-  `url` VARCHAR(500) NOT NULL,
-  `name` VARCHAR(200) NOT NULL,
-  `datum` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `datum_dokument` TIMESTAMP NULL DEFAULT NULL,
-  `text_ocr_raw` LONGTEXT NULL DEFAULT NULL,
-  `text_ocr_corrected` LONGTEXT NULL DEFAULT NULL,
-  `text_ocr_garbage_seiten` MEDIUMTEXT NULL DEFAULT NULL,
-  `text_pdf` LONGTEXT NULL DEFAULT NULL,
-  `seiten_anzahl` MEDIUMINT(9) NULL DEFAULT NULL,
-  `ocr_von` ENUM('','tesseract','omnipage') NULL DEFAULT NULL,
-  `highlight` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `antrag_id` (`antrag_id` ASC),
-  INDEX `typ` (`typ` ASC),
-  INDEX `fk_antraege_dokumente_termine1_idx` (`termin_id` ASC),
-  INDEX `fk_antraege_dokumente_antraege_ergebnisse1_idx` (`tagesordnungspunkt_id` ASC),
-  INDEX `datum` (`datum` ASC),
-  INDEX `fk_antraege_dokumente_vorgaenge1_idx` (`vorgang_id` ASC),
-  INDEX `highlight_dokument` (`highlight` ASC),
-  INDEX `url` (`url`(60) ASC),
-  CONSTRAINT `fk_antraege_dokumente_antraege1`
-    FOREIGN KEY (`antrag_id`)
-    REFERENCES `antraege` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_antraege_dokumente_antraege_ergebnisse1`
-    FOREIGN KEY (`tagesordnungspunkt_id`)
-    REFERENCES `tagesordnungspunkte` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_antraege_dokumente_termine1`
-    FOREIGN KEY (`termin_id`)
-    REFERENCES `termine` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_antraege_dokumente_vorgaenge1`
-    FOREIGN KEY (`vorgang_id`)
-    REFERENCES `vorgaenge` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+  `id` int(11) NOT NULL,
+  `typ` enum('stadtrat_antrag','stadtrat_vorlage','ba_antrag','ba_initiative','stadtrat_termin','ba_termin','stadtrat_beschluss','bv_empfehlung','ba_beschluss','rathausumschau') DEFAULT NULL,
+  `antrag_id` int(11) DEFAULT NULL,
+  `termin_id` int(11) DEFAULT NULL,
+  `tagesordnungspunkt_id` int(11) DEFAULT NULL,
+  `vorgang_id` int(11) DEFAULT NULL,
+  `rathausumschau_id` mediumint(11) DEFAULT NULL,
+  `url` varchar(500) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `datum` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `datum_dokument` timestamp NULL DEFAULT NULL,
+  `text_ocr_raw` longtext,
+  `text_ocr_corrected` longtext,
+  `text_ocr_garbage_seiten` mediumtext,
+  `text_pdf` longtext,
+  `seiten_anzahl` mediumint(9) DEFAULT NULL,
+  `ocr_von` enum('','tesseract','omnipage') DEFAULT NULL,
+  `highlight` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+ALTER TABLE `dokumente`
+ADD PRIMARY KEY (`id`), ADD KEY `antrag_id` (`antrag_id`), ADD KEY `typ` (`typ`), ADD KEY `fk_antraege_dokumente_termine1_idx` (`termin_id`), ADD KEY `fk_antraege_dokumente_antraege_ergebnisse1_idx` (`tagesordnungspunkt_id`), ADD KEY `datum` (`datum`), ADD KEY `fk_antraege_dokumente_vorgaenge1_idx` (`vorgang_id`), ADD KEY `highlight_dokument` (`highlight`), ADD KEY `url` (`url`(60)), ADD KEY `rathausumschau_id` (`rathausumschau_id`);
+
+ALTER TABLE `dokumente`
+ADD CONSTRAINT `dokumente_ibfk_1` FOREIGN KEY (`rathausumschau_id`) REFERENCES `rathausumschau` (`id`),
+ADD CONSTRAINT `fk_antraege_dokumente_antraege1` FOREIGN KEY (`antrag_id`) REFERENCES `antraege` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_antraege_dokumente_termine1` FOREIGN KEY (`termin_id`) REFERENCES `termine` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_antraege_dokumente_vorgaenge1` FOREIGN KEY (`vorgang_id`) REFERENCES `vorgaenge` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 
 -- -----------------------------------------------------

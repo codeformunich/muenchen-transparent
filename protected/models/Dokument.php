@@ -28,6 +28,7 @@
  * @property Tagesordnungspunkt $tagesordnungspunkt
  * @property AntragOrt[] $orte
  * @property Vorgang $vorgang
+ * @property Rathausumschau $rathausumschau
  */
 class Dokument extends CActiveRecord implements IRISItem
 {
@@ -40,6 +41,7 @@ class Dokument extends CActiveRecord implements IRISItem
 	public static $TYP_BA_INITIATIVE = "ba_initiative";
 	public static $TYP_BA_TERMIN = "ba_termin";
 	public static $TYP_BA_BESCHLUSS = "ba_beschluss";
+	public static $TYP_RATHAUSUMSCHAU = "rathausumschau";
 	//public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung"; @TODO
 	public static $TYPEN_ALLE = array(
 		"stadtrat_antrag"    => "Stadtratsantrag",
@@ -50,6 +52,7 @@ class Dokument extends CActiveRecord implements IRISItem
 		"ba_initiative"      => "BA: Initiative",
 		"ba_termin"          => "BA: Termin",
 		"ba_beschluss"       => "BA: Beschluss",
+		"rathausumschau"     => "Rathausumschau",
 		//"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
 	);
 
@@ -85,7 +88,7 @@ class Dokument extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, url, name, datum', 'required'),
-			array('id, antrag_id, termin_id, tagesordnungspunkt_id, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
+			array('id, antrag_id, termin_id, tagesordnungspunkt_id, rathausumschau_id, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 200),
@@ -105,6 +108,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			'antrag'             => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
 			'termin'             => array(self::BELONGS_TO, 'Termin', 'termin_id'),
 			'tagesordnungspunkt' => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'tagesordnungspunkt_id'),
+			'rathausumschau'     => array(self::BELONGS_TO, 'Rathausumschau', 'rathausumschau_id'),
 			'orte'               => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
 		);
 	}
@@ -121,6 +125,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			'antrag_id'               => 'Antrag',
 			'termin_id'               => 'Termin',
 			'tagesordnungspunkt_id'   => 'Tagesordnungspunkt',
+			'rathausumschau_id'       => 'Rathausumschau',
 			'url'                     => 'Url',
 			'name'                    => 'Name',
 			'datum'                   => 'Datum',
