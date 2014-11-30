@@ -21,9 +21,12 @@ class BAMitgliederParser extends RISParser
 
 		preg_match_all("/ba_mitglieder_details_mitgliedschaft\.jsp\?Id=(?<mitglied_id>[0-9]+)&amp;Wahlperiode=(?<wahlperiode>[0-9]+)[\"'& ]>(?<name>[^<]*)<.*tdborder\">(?<mitgliedschaft>[^<]*)<\/td>.*tdborder[^>]*>(?<fraktion>[^<]*) *<\/td>.*notdborder[^>]*>(?<funktion>[^<]*) *<\/td.*<\/tr/siU", $x[0], $matches);
 		for ($i = 0; $i < count($matches[1]); $i++) {
-			$fraktion_name = $matches["fraktion"][$i];
+			$fraktion_name = trim(html_entity_decode($matches["fraktion"][$i]));
 			$name          = str_replace("&nbsp;", " ", $matches["name"][$i]);
 			$name          = trim(str_replace(array("Herr", "Frau"), array(" ", " "), $name));
+
+			if ($fraktion_name == "")
+				$fraktion_name = "Parteifrei";
 
 			/** @var StadtraetIn $strIn */
 			$strIn = StadtraetIn::model()->findByPk($matches["mitglied_id"][$i]);

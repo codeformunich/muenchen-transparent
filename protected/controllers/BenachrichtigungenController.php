@@ -113,7 +113,7 @@ class BenachrichtigungenController extends RISBaseController
 	{
 		$benutzerIn = BenutzerIn::getByFeedCode($code);
 		if (!$benutzerIn) {
-			$this->render('../index/error', array("code" => 400, "message" => "Ein Fehler ist aufgetreten"));
+			$this->render('../index/error', array("code" => 400, "message" => "Das Feed konnte leider nicht gefunden werden."));
 			return;
 		}
 

@@ -427,7 +427,8 @@ class BenutzerIn extends CActiveRecord
 		if (count($x) != 2) return null;
 		/** @var BenutzerIn $benutzerIn */
 		$benutzerIn = BenutzerIn::model()->findByPk($x[0]);
-		if ($code == $benutzerIn->getFeedCode()) return $benutzerIn;
+		if (!$benutzerIn) return null;
+		elseif ($code == $benutzerIn->getFeedCode()) return $benutzerIn;
 		else return null;
 	}
 
