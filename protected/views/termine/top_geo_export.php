@@ -6,7 +6,7 @@
 $this->pageTitle = $termin->getName(true);
 $assets_base = $this->getAssetsBase();
 
-foreach ($termin->antraegeErgebnisse as $ergebnis) {
+foreach ($termin->tagesordnungspunkte as $ergebnis) {
 	$geo = $ergebnis->get_geo();
 	foreach ($geo as $g) $geodata[] = array(
 		FloatVal($g->lat),

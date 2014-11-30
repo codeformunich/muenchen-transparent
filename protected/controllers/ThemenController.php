@@ -27,7 +27,7 @@ class ThemenController extends RISBaseController
 		$this->top_menu = "themen";
 		$this->render("index", array(
 			"referate"   => Referat::model()->findAll(),
-			"highlights" => AntragDokument::getHighlightDokumente(5),
+			"highlights" => Dokument::getHighlightDokumente(5),
 			"tags"       => Tag::getTopTags(10),
 		));
 	}

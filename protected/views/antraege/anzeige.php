@@ -208,8 +208,8 @@ $name = $antrag->getName(true);
 				$docs = $antrag->dokumente;
 				usort($docs, function ($dok1, $dok2) {
 					/**
-					 * @var AntragDokument $dok1
-					 * @var AntragDokument $dok2
+					 * @var Dokument $dok1
+					 * @var Dokument $dok2
 					 */
 					$ts1 = RISTools::date_iso2timestamp($dok1->getDate());
 					$ts2 = RISTools::date_iso2timestamp($dok2->getDate());
@@ -218,7 +218,7 @@ $name = $antrag->getName(true);
 					return 0;
 				});
 				zeile_anzeigen($docs, "Dokumente:", function ($dok) {
-					/** @var AntragDokument $dok */
+					/** @var Dokument $dok */
 					echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->name, $dok->getLinkZumDokument());
 				});
 

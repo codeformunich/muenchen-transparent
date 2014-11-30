@@ -30,8 +30,8 @@
  *
  * The followings are the available model relations:
  * @property Bezirksausschuss $ba
- * @property AntragDokument[] $dokumente
- * @property AntragErgebnis[] $ergebnisse
+ * @property Dokument[] $dokumente
+ * @property Tagesordnungspunkt[] $ergebnisse
  * @property AntragOrt[] $orte
  * @property AntragPerson[] $antraegePersonen
  * @property StadtraetIn[] $stadtraetInnen
@@ -107,8 +107,8 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 		// class name for the relations automatically generated below.
 		return array(
 			'ba'               => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-			'dokumente'        => array(self::HAS_MANY, 'AntragDokument', 'antrag_id'),
-			'ergebnisse'       => array(self::HAS_MANY, 'AntragErgebnis', 'antrag_id'),
+			'dokumente'        => array(self::HAS_MANY, 'Dokument', 'antrag_id'),
+			'ergebnisse'       => array(self::HAS_MANY, 'Tagesordnungspunkt', 'antrag_id'),
 			//'antraege_links_in' => array(self::HAS_MANY, 'Antrag', 'antrag1'),
 			//'antraege_links_out' => array(self::HAS_MANY, 'AntraegeLinks', 'antrag2'),
 			'orte'             => array(self::HAS_MANY, 'AntragOrt', 'antrag_id'),
@@ -420,7 +420,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 	}
 
 	/**
-	 * @return AntragDokument[]
+	 * @return Dokument[]
 	 */
 	public function getDokumente()
 	{
@@ -429,11 +429,11 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
 	/**
 	 * @param int $anz
-	 * @return AntragDokument[]
+	 * @return Dokument[]
 	 */
 	public function errateThemenverwandteDokumente($anz)
 	{
-		/** @var AntragDokument[] $dokumente */
+		/** @var Dokument[] $dokumente */
 		$dokumente = array();
 		/** @var int[] $dokumente_count */
 		$dokumente_count = array();
@@ -493,12 +493,12 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 	/**
 	 * @param Antrag $curr_antrag
 	 * @param Antrag[] $gefundene_antraege
-	 * @param AntragErgebnis[] $gefundene_ergebnisse
-	 * @param AntragDokument[] $gefundene_dokumente
+	 * @param Tagesordnungspunkt[] $gefundene_ergebnisse
+	 * @param Dokument[] $gefundene_dokumente
 	 * @param int $vorgang_id
 	 * @throws Exception
 	 */
-	private static function rebuildVorgaengeCache_rek($curr_antrag, &$gefundene_antraege, &$gefundene_ergebnisse, &$gefundene_dokumente, &$vorgang_id)
+	private static function rebuildVorgaengeCache_rek($curr_antrag, &$gefundene_antraege, &$gefundene_tops, &$gefundene_dokumente, &$vorgang_id)
 	{
 		/** @var Antrag $antrag */
 		foreach ($curr_antrag->vorlage2antraege as $ant) if (!isset($gefundene_antraege[$ant->id])) {
@@ -509,7 +509,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 			}
 			if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
 			$gefundene_antraege[$ant->id] = $ant;
-			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
+			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_tops, $gefundene_dokumente, $vorgang_id);
 		}
 		foreach ($curr_antrag->antrag2vorlagen as $ant) if (!isset($gefundene_antraege[$ant->id])) {
 			if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) {
@@ -519,7 +519,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 			}
 			if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
 			$gefundene_antraege[$ant->id] = $ant;
-			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
+			static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_tops, $gefundene_dokumente, $vorgang_id);
 		}
 		foreach ($curr_antrag->ergebnisse as $ergebnis) {
 			$gefundene_ergebnisse[$ergebnis->id] = $ergebnis;
@@ -537,9 +537,9 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 		$vorgang_id = 0;
 		/** @var Antrag[] $gefundene_antraege */
 		$gefundene_antraege = array();
-		/** @var AntragErgebnis[] $gefundene_ergebnisse */
+		/** @var Tagesordnungspunkt[] $gefundene_ergebnisse */
 		$gefundene_ergebnisse = array();
-		/** @var AntragDokument[] $gefundene_dokumente */
+		/** @var Dokument[] $gefundene_dokumente */
 		$gefundene_dokumente = array();
 		try {
 			static::rebuildVorgaengeCache_rek($this, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);

@@ -58,7 +58,7 @@ $geodata         = array();
 		</tbody>
 	</table>
 
-	<? if (count($termin->antraegeErgebnisse) > 0) { ?>
+	<? if (count($termin->tagesordnungspunkte) > 0) { ?>
 		<section id="mapsection">
 			<h3>Tagesordnung auf der Karte</h3>
 
@@ -74,7 +74,7 @@ $geodata         = array();
 		<ol style="list-style-type: none;">
 			<?
 			$geheimer_teil = false;
-			$tops          = $termin->ergebnisseSortiert();
+			$tops          = $termin->tagesordnungspunkteSortiert();
 			foreach ($tops as $ergebnis) {
 				if ($ergebnis->status == "geheim" && !$geheimer_teil) {
 					$geheimer_teil = true;

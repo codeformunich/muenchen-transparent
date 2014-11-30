@@ -1,6 +1,6 @@
 <?php
 /**
- * @var AntragDokument[] $dokumente
+ * @var Dokument[] $dokumente
  */
 
 echo '<ul>';

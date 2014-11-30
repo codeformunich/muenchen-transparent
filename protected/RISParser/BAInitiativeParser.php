@@ -143,7 +143,7 @@ class BAInitiativeParser extends RISParser
 		}
 
 		foreach ($dokumente as $dok) {
-			$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_INITIATIVE, $daten, $dok);
+			$aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_INITIATIVE, $daten, $dok);
 		}
 
 		if ($aenderungen != "") {

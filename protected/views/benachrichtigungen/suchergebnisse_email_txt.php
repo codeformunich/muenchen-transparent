@@ -31,7 +31,7 @@ if (count($data["antraege"]) > 0) {
 		$dokumente_strs = array();
 		$queries        = array();
 		foreach ($dat["dokumente"] as $dok) {
-			/** @var AntragDokument $dokument */
+			/** @var Dokument $dokument */
 			$dokument         = $dok["dokument"];
 			$dokumente_strs[] = "    - " . $dokument->name . " (http://www.ris-muenchen.de" . $dokument->url . ")";
 			foreach ($dok["queries"] as $qu) {
@@ -66,7 +66,7 @@ foreach ($data["termine"] as $dat) {
 	$dokumente_strs = array();
 	$queries        = array();
 	foreach ($dat["dokumente"] as $dok) {
-		/** @var AntragDokument $dokument */
+		/** @var Dokument $dokument */
 		$dokument         = $dok["dokument"];
 		$dokumente_strs[] = "    - " . $dokument->name . " (http://www.ris-muenchen.de" . $dokument->url . ")";
 		foreach ($dok["queries"] as $qu) {

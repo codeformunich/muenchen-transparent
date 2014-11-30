@@ -115,7 +115,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 		<div class="well">
 			<?
 			if (count($termin_dokumente) > 0) {
-				/** @var AntragDokument[] $dokumente */
+				/** @var Dokument[] $dokumente */
 				$dokumente = array();
 				foreach ($termin_dokumente as $termin) {
 					foreach ($termin->antraegeDokumente as $dokument) {
@@ -123,8 +123,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 					}
 				}
 				usort($dokumente, function ($dok1, $dok2) {
-					/** @var AntragDokument $dok1 */
-					/** @var AntragDokument $dok2 */
+					/** @var Dokument $dok1 */
+					/** @var Dokument $dok2 */
 					$ts1 = RISTools::date_iso2timestamp($dok1->getDate());
 					$ts2 = RISTools::date_iso2timestamp($dok2->getDate());
 					if ($ts1 > $ts2) return -1;

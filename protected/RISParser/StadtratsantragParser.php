@@ -153,7 +153,7 @@ class StadtratsantragParser extends RISParser
 		}
 
 		foreach ($dokumente as $dok) {
-			$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_STADTRAT_ANTRAG, $daten, $dok);
+			$aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_ANTRAG, $daten, $dok);
 		}
 
 		if ($aenderungen != "") {

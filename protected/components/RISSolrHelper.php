@@ -49,7 +49,7 @@ class RISSolrHelper
 		$dokumente    = $ergebnisse->getDocuments();
 		$highlighting = $ergebnisse->getHighlighting();
 		foreach ($dokumente as $dokument) {
-			$model          = AntragDokument::getDocumentBySolrId($dokument->id);
+			$model          = Dokument::getDocumentBySolrId($dokument->id);
 			$risitem        = $model->getRISItem();
 			if (!$risitem) continue;
 

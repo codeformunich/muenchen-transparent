@@ -4,8 +4,8 @@ class BATerminParser extends RISParser
 {
 
 	/**
-	 * @param AntragErgebnis[] $ergebnisse
-	 * @return AntragErgebnis
+	 * @param Tagesordnungspunkt[] $ergebnisse
+	 * @return Tagesordnungspunkt
 	 */
 	private function loescheDoppelteErgebnisse($ergebnisse) {
 		if (count($ergebnisse) == 0) return null;
@@ -18,7 +18,7 @@ class BATerminParser extends RISParser
 		foreach ($ergebnisse as $ergebnis) {
 			if ($ergebnis->id == $behalten->id) continue;
 			foreach ($ergebnis->dokumente as $dok) {
-				$dok->ergebnis_id = null;
+				$dok->tagesordnungspunkt_id = null;
 				$dok->save(false);
 			}
 			$ergebnis->delete();
@@ -126,7 +126,8 @@ class BATerminParser extends RISParser
 		foreach ($matches["betreff"] as $i => $val) $matches["betreff"][$i] = static::text_clean_spaces($matches["betreff"][$i]);
 		$matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
 
-		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->antraegeErgebnisse : array());
+		/** @var Tagesordnungspunkt[] $bisherige_tops */
+		$bisherige_tops          = ($alter_eintrag ? $alter_eintrag->tagesordnungspunkte : array());
 		$aenderungen_tops        = "";
 		$abschnitt_nr            = "";
 		$verwendete_top_betreffs = array();
@@ -174,7 +175,7 @@ class BATerminParser extends RISParser
 				}
 			}
 
-			$ergebnis = new AntragErgebnis();
+			$ergebnis = new Tagesordnungspunkt();
 
 			if ($vorlage_id) {
 				$ergebnis->antrag_id = $vorlage_id;
@@ -197,13 +198,13 @@ class BATerminParser extends RISParser
 			$ergebnis->gremium_id             = $daten->gremium_id;
 			$ergebnis->gremium_name           = $daten->gremium->name;
 
-			/** @var AntragErgebnis $altes_ergebnis */
+			/** @var Tagesordnungspunkt $altes_ergebnis */
 			if ($vorlage_id) {
-				$alte_ergebnisse = AntragErgebnis::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
+				$alte_ergebnisse = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
 			} elseif ($baantrag_id) {
-				$alte_ergebnisse = AntragErgebnis::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
+				$alte_ergebnisse = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
 			} else {
-				$alte_ergebnisse = AntragErgebnis::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
+				$alte_ergebnisse = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
 			}
 			$altes_ergebnis = $this->loescheDoppelteErgebnisse($alte_ergebnisse);
 
@@ -264,14 +265,14 @@ class BATerminParser extends RISParser
 
 			preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
 			if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII/RII/DOK/TOP/") {
-				$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_BESCHLUSS, $ergebnis, array("url" => $matches2["url"], "name" => $matches2["title"]));
+				$aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $ergebnis, array("url" => $matches2["url"], "name" => $matches2["title"]));
 			}
 		}
 
 		foreach ($bisherige_tops as $top) if (!in_array($top->top_betreff, $verwendete_top_betreffs)) {
 			$aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ": " . $top->top_betreff . "\n";
 			foreach ($top->dokumente as $dok) {
-				$dok->ergebnis_id = null;
+				$dok->tagesordnungspunkt_id = null;
 				$dok->save(false);
 			}
 			$top->delete();
@@ -305,7 +306,7 @@ class BATerminParser extends RISParser
 		}
 
 		foreach ($dokumente as $dok) {
-			$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_BA_TERMIN, $daten, $dok);
+			$aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_TERMIN, $daten, $dok);
 		}
 
 		if ($aenderungen != "") {

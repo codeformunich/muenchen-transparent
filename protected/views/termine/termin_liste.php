@@ -29,7 +29,7 @@
 		if (count($termin["dokumente"]) > 0) {
 			echo '<ul class="dokumentenliste_small">';
 			foreach ($termin["dokumente"] as $dokument) {
-				/** @var AntragDokument $dokument */
+				/** @var Dokument $dokument */
 				echo '<li>' . CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $dokument->name, $dokument->getLinkZumDokument()) . '</li>';
 			}
 			echo "</ul>";

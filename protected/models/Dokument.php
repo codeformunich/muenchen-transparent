@@ -9,7 +9,7 @@
  * @property string $typ
  * @property integer $antrag_id
  * @property integer $termin_id
- * @property integer $ergebnis_id
+ * @property integer $tagesordnungspunkt_id
  * @property string $url
  * @property string $name
  * @property string $datum
@@ -25,11 +25,11 @@
  * The followings are the available model relations:
  * @property Antrag $antrag
  * @property Termin $termin
- * @property AntragErgebnis $ergebnis
+ * @property Tagesordnungspunkt $tagesordnungspunkt
  * @property AntragOrt[] $orte
  * @property Vorgang $vorgang
  */
-class AntragDokument extends CActiveRecord implements IRISItem
+class Dokument extends CActiveRecord implements IRISItem
 {
 
 	public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
@@ -61,7 +61,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return AntragDokument the static model class
+	 * @return Dokument the static model class
 	 */
 	public static function model($className = __CLASS__)
 	{
@@ -73,7 +73,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	 */
 	public function tableName()
 	{
-		return 'antraege_dokumente';
+		return 'dokumente';
 	}
 
 	/**
@@ -85,7 +85,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, url, name, datum', 'required'),
-			array('id, antrag_id, termin_id, ergebnis_id, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
+			array('id, antrag_id, termin_id, tagesordnungspunkt_id, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 200),
@@ -101,11 +101,11 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'vorgang_id' => array(self::BELONGS_TO, 'Vorgang', 'id'),
-			'antrag'     => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-			'termin'     => array(self::BELONGS_TO, 'Termin', 'termin_id'),
-			'ergebnis'   => array(self::BELONGS_TO, 'AntragErgebnis', 'ergebnis_id'),
-			'orte'       => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
+			'vorgang_id'         => array(self::BELONGS_TO, 'Vorgang', 'id'),
+			'antrag'             => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'termin'             => array(self::BELONGS_TO, 'Termin', 'termin_id'),
+			'tagesordnungspunkt' => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'tagesordnungspunkt_id'),
+			'orte'               => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
 		);
 	}
 
@@ -120,7 +120,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 			'typ'                     => 'Typ',
 			'antrag_id'               => 'Antrag',
 			'termin_id'               => 'Termin',
-			'ergebnis_id'             => 'Ergebnis',
+			'tagesordnungspunkt_id'   => 'Tagesordnungspunkt',
 			'url'                     => 'Url',
 			'name'                    => 'Name',
 			'datum'                   => 'Datum',
@@ -136,11 +136,11 @@ class AntragDokument extends CActiveRecord implements IRISItem
 
 	/**
 	 * @param int $dokument_id
-	 * @return AntragDokument|null
+	 * @return Dokument|null
 	 */
 	public static function getCachedByID($dokument_id)
 	{
-		if (!isset(static::$_cache[$dokument_id])) static::$_cache[$dokument_id] = AntragDokument::model()->findByPk($dokument_id);
+		if (!isset(static::$_cache[$dokument_id])) static::$_cache[$dokument_id] = Dokument::model()->findByPk($dokument_id);
 		return static::$_cache[$dokument_id];
 	}
 
@@ -157,7 +157,6 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		));
 		return $this;
 	}
-
 
 
 	/**
@@ -187,7 +186,8 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	/**
 	 * @return string
 	 */
-	public function getDate() {
+	public function getDate()
+	{
 		$ts = RISTools::date_iso2timestamp($this->datum);
 		if ($ts > DOCUMENT_DATE_ACCURATE_SINCE || $this->datum_dokument == 0) return $this->datum;
 		return $this->datum_dokument;
@@ -197,7 +197,8 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	 * @param string $fallback
 	 * @return string
 	 */
-	public function getDisplayDate($fallback = "") {
+	public function getDisplayDate($fallback = "")
+	{
 		if ($fallback == "") $fallback = "Vor 2008";
 
 		$ts = RISTools::date_iso2timestamp($this->datum);
@@ -211,11 +212,12 @@ class AntragDokument extends CActiveRecord implements IRISItem
 
 	/**
 	 */
-	public function download_if_necessary() {
+	public function download_if_necessary()
+	{
 		$filename = $this->getLocalPath();
 		if (file_exists($filename)) return;
 
-		$url      = "http://www.ris-muenchen.de" . $this->url;
+		$url = "http://www.ris-muenchen.de" . $this->url;
 		RISTools::download_file($url, $filename);
 	}
 
@@ -226,11 +228,11 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		$this->download_if_necessary();
 		$absolute_filename = $this->getLocalPath();
 
-		$y                   = explode(".", $this->url);
-		$endung              = mb_strtolower($y[count($y) - 1]);
+		$y      = explode(".", $this->url);
+		$endung = mb_strtolower($y[count($y) - 1]);
 
-		$metadata = RISPDF2Text::document_pdf_metadata($absolute_filename);
-		$this->seiten_anzahl = $metadata["seiten"];
+		$metadata             = RISPDF2Text::document_pdf_metadata($absolute_filename);
+		$this->seiten_anzahl  = $metadata["seiten"];
 		$this->datum_dokument = $metadata["datum"];
 
 		if ($endung == "pdf") $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
@@ -238,7 +240,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 
 		$this->text_ocr_raw       = RISPDF2Text::document_text_ocr($absolute_filename, $this->seiten_anzahl);
 		$this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
-		$this->ocr_von            = AntragDokument::$OCR_VON_TESSERACT;
+		$this->ocr_von            = Dokument::$OCR_VON_TESSERACT;
 
 		copy($absolute_filename, OMNIPAGE_PDF_DIR . $this->id . "." . $endung);
 	}
@@ -276,7 +278,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 				$antragort->source      = "text_parse";
 				$antragort->datum       = date("Y-m-d H:i:s");
 				if (!$antragort->save()) {
-					RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:geo_extract Error", print_r($antragort->getErrors(), true));
+					RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true));
 					throw new Exception("Fehler beim Speichern: geo_extract");
 				}
 				echo "Neu angelegt: " . $antragort->ort_id . " - " . $antragort->ort_name . "\n";
@@ -305,26 +307,26 @@ class AntragDokument extends CActiveRecord implements IRISItem
 
 	/**
 	 * @param string $typ
-	 * @param Antrag|Termin|AntragErgebnis $antrag_termin_ergebnis
+	 * @param Antrag|Termin|Tagesordnungspunkt $antrag_termin_tagesordnungspunkt
 	 * @param array $dok
 	 * @throws Exception
 	 * @return string
 	 */
-	public static function create_if_necessary($typ, $antrag_termin_ergebnis, $dok)
+	public static function create_if_necessary($typ, $antrag_termin_tagesordnungspunkt, $dok)
 	{
 		$x           = explode("/", $dok["url"]);
 		$dokument_id = IntVal($x[count($x) - 1]);
 
-		/** @var AntragDokument|null $dokument */
-		$dokument = AntragDokument::model()->findByPk($dokument_id);
+		/** @var Dokument|null $dokument */
+		$dokument = Dokument::model()->findByPk($dokument_id);
 		if ($dokument) return "";
 
-		$dokument      = new AntragDokument();
+		$dokument      = new Dokument();
 		$dokument->id  = $dokument_id;
 		$dokument->typ = $typ;
-		if (is_a($antrag_termin_ergebnis, "Antrag")) $dokument->antrag_id = $antrag_termin_ergebnis->id;
-		if (is_a($antrag_termin_ergebnis, "Termin")) $dokument->termin_id = $antrag_termin_ergebnis->id;
-		if (is_a($antrag_termin_ergebnis, "AntragErgebnis")) $dokument->ergebnis_id = $antrag_termin_ergebnis->id;
+		if (is_a($antrag_termin_tagesordnungspunkt, "Antrag")) $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
+		if (is_a($antrag_termin_tagesordnungspunkt, "Termin")) $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
+		if (is_a($antrag_termin_tagesordnungspunkt, "Tagesordnungspunkt")) $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
 		$dokument->url   = $dok["url"];
 		$dokument->name  = $dok["name"];
 		$dokument->datum = date("Y-m-d H:i:s");
@@ -335,7 +337,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		}
 
 		if (!$dokument->save()) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "AntragDokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
 			throw new Exception("Fehler");
 		}
 
@@ -359,8 +361,9 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	/**
 	 * @return string
 	 */
-	public function getLocalPath() {
-		$x        = explode(".", $this->url);
+	public function getLocalPath()
+	{
+		$x         = explode(".", $this->url);
 		$extension = $x[count($x) - 1];
 		return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
 	}
@@ -381,17 +384,17 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	/**
 	 * @param string $id
 	 * @param bool $cached
-	 * @return AntragDokument
+	 * @return Dokument
 	 */
 	public static function getDocumentBySolrId($id, $cached = false)
 	{
 		$x  = explode(":", $id);
 		$id = IntVal($x[1]);
 		if ($cached) {
-			if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = AntragDokument::model()->with("antrag")->findByPk($id);
+			if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = Dokument::model()->with("antrag")->findByPk($id);
 			return static::$dokumente_cache[$id];
 		}
-		return AntragDokument::model()->with(array("antrag", "ergebnis"))->findByPk($id);
+		return Dokument::model()->with(array("antrag", "tagesordnungspunkt"))->findByPk($id);
 	}
 
 	/**
@@ -399,18 +402,19 @@ class AntragDokument extends CActiveRecord implements IRISItem
 	 */
 	public function getRISItem()
 	{
-		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) return $this->ergebnis;
+		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) return $this->tagesordnungspunkt;
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
 		return $this->antrag;
 	}
 
-	public function getDokumente() {
+	public function getDokumente()
+	{
 		return $this->dokumente;
 	}
 
 	/**
 	 * @param int $limit
-	 * @return array|AntragDokument[]
+	 * @return array|Dokument[]
 	 */
 	public function solrMoreLikeThis($limit = 10)
 	{
@@ -425,7 +429,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		foreach ($ergebnisse as $document) {
 			$mltResult = $mlt->getResult($document->id);
 			if ($mltResult) foreach ($mltResult as $mltDoc) {
-				$mod = AntragDokument::model()->findByPk(str_replace("Document:", "", $mltDoc->id));
+				$mod = Dokument::model()->findByPk(str_replace("Document:", "", $mltDoc->id));
 				if ($mod) $ret[] = $mod;
 			}
 		}
@@ -551,7 +555,7 @@ class AntragDokument extends CActiveRecord implements IRISItem
 		if (is_null($this->ergebnis)) return; // Kann vorkommen, wenn ein TOP nachträglich gelöscht wurde
 
 		$doc->id            = "Ergebnis:" . $this->id;
-		$doc->text          = RISSolrHelper::string_cleanup($this->ergebnis->top_betreff . " " . $this->ergebnis->beschluss_text . " " . $this->ergebnis->entscheidung . " " . $this->text_pdf);
+		$doc->text          = RISSolrHelper::string_cleanup($this->tagesordnungspunkt->top_betreff . " " . $this->tagesordnungspunkt->beschluss_text . " " . $this->tagesordnungspunkt->entscheidung . " " . $this->text_pdf);
 		$doc->text_ocr      = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
 		$doc->dokument_name = RISSolrHelper::string_cleanup($this->name);
 		$doc->dokument_url  = $this->url;
@@ -598,16 +602,17 @@ class AntragDokument extends CActiveRecord implements IRISItem
 
 	/**
 	 * @param int $limit
-	 * @return AntragDokument[]
+	 * @return Dokument[]
 	 */
 	public static function getHighlightDokumente($limit = 3)
 	{
-		return AntragDokument::model()->findAll(array("condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit));
+		return Dokument::model()->findAll(array("condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit));
 	}
 
 	/**
 	 */
-	public function highlightBenachrichtigung() {
+	public function highlightBenachrichtigung()
+	{
 		if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::app()->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink());
 	}
 

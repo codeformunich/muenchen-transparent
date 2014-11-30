@@ -35,7 +35,7 @@ $this->pageTitle = "Suche";
 			<div class="col-sm-9">
 				<select id="suche_typ" name="typ" size="1" class="form-control">
 					<option value="">- egal -</option>
-					<? foreach (AntragDokument::$TYPEN_ALLE as $typ_id => $typ_name) { ?>
+					<? foreach (Dokument::$TYPEN_ALLE as $typ_id => $typ_name) { ?>
 						<option value="<?= $typ_id ?>"><?= CHtml::encode($typ_name) ?></option>
 					<? } ?>
 				</select>

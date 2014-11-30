@@ -215,7 +215,7 @@ class StadtratsvorlageParser extends RISParser
 		}
 
 		foreach ($dokumente as $dok) {
-			$aenderungen .= AntragDokument::create_if_necessary(AntragDokument::$TYP_STADTRAT_VORLAGE, $daten, $dok);
+			$aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_VORLAGE, $daten, $dok);
 		}
 
 		foreach ($antrag_links as $link) {

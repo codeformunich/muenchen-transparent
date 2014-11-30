@@ -14,7 +14,7 @@
  * @property string $datum
  *
  * The followings are the available model relations:
- * @property AntragDokument $dokument
+ * @property Dokument $dokument
  * @property Antrag $antrag
  * @property Termin $termin
  * @property OrtGeo $ort
@@ -62,9 +62,9 @@ class AntragOrt extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'dokument' => array(self::BELONGS_TO, 'AntragDokument', 'dokument_id'),
+			'dokument' => array(self::BELONGS_TO, 'Dokument', 'dokument_id'),
 			'antrag'   => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-			'termin'   => array(self::BELONGS_TO, 'Dokument', 'termin_id'),
+			'termin'   => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'termin_id'),
 			'ort'      => array(self::BELONGS_TO, 'OrtGeo', 'ort_id'),
 		);
 	}

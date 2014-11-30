@@ -186,7 +186,7 @@ class IndexController extends RISBaseController
 
 
 	/**
-	 * @param AntragDokument[] $dokumente
+	 * @param Dokument[] $dokumente
 	 * @param null|RISSucheKrits $filter_krits
 	 * @return array
 	 */
@@ -244,8 +244,8 @@ class IndexController extends RISBaseController
 			$SQL        = "select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (" . implode(", ", $dokument_ids) . ") AND b.to_hide = 0 AND $dist_field";
 			$result     = Yii::app()->db->createCommand($SQL)->queryAll();
 			foreach ($result as $geo) {
-				/** @var AntragDokument $dokument */
-				$dokument = AntragDokument::model()->findByPk($geo["dokument_id"]);
+				/** @var Dokument $dokument */
+				$dokument = Dokument::model()->findByPk($geo["dokument_id"]);
 
 				if ($dokument->antrag) {
 					$link = $dokument->antrag->getLink();
@@ -362,8 +362,8 @@ class IndexController extends RISBaseController
 			$dokument_ids[] = IntVal($x[1]);
 		}
 		foreach ($dokument_ids as $dok_id) {
-			/** @var AntragDokument $ant */
-			$ant = AntragDokument::model()->with(array(
+			/** @var Dokument $ant */
+			$ant = Dokument::model()->with(array(
 				"antrag"           => array(),
 				"antrag.dokumente" => array(
 					"alias"     => "dokumente_2",
@@ -485,8 +485,8 @@ class IndexController extends RISBaseController
 	 */
 	public function actionDocumentProxy($id)
 	{
-		/** @var AntragDokument $dokument */
-		$dokument = AntragDokument::model()->findByPk($id);
+		/** @var Dokument $dokument */
+		$dokument = Dokument::model()->findByPk($id);
         try {
             $data = ris_download_string("http://www.ris-muenchen.de" . $dokument->url);
 
@@ -812,7 +812,7 @@ class IndexController extends RISBaseController
 
 	public function actionHighlights()
 	{
-		$dokumente = AntragDokument::model()->with("antrag")->findAll(array("condition" => "highlight IS NOT NULL", "order" => "highlight DESC"));
+		$dokumente = Dokument::model()->with("antrag")->findAll(array("condition" => "highlight IS NOT NULL", "order" => "highlight DESC"));
 		$this->render("dokumentenliste", array("dokumente" => $dokumente));
 	}
 
@@ -849,7 +849,7 @@ class IndexController extends RISBaseController
 		$this->load_pdf_js = true;
 		$this->render('dokumentenanzeige', array(
 			"id"       => $id,
-			"dokument" => AntragDokument::getCachedByID($id)
+			"dokument" => Dokument::getCachedByID($id)
 		));
 	}
 }

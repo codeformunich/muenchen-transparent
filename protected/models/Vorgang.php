@@ -10,8 +10,8 @@
  *
  * The followings are the available model relations:
  * @property Antrag[] $antraege
- * @property AntragErgebnis[] $ergebnisse
- * @property AntragDokument[] $dokumente
+ * @property Tagesordnungspunkt[] $ergebnisse
+ * @property Dokument[] $dokumente
  */
 class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 {
@@ -55,8 +55,8 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 		// class name for the relations automatically generated below.
 		return array(
 			'antraege'   => array(self::HAS_MANY, 'Antrag', 'vorgang_id'),
-			'ergebnisse' => array(self::HAS_MANY, 'AntragErgebnis', 'vorgang_id'),
-			'dokumente'  => array(self::HAS_MANY, 'AntragDokument', 'vorgang_id'),
+			'ergebnisse' => array(self::HAS_MANY, 'Tagesordnungspunkt', 'vorgang_id'),
+			'dokumente'  => array(self::HAS_MANY, 'Dokument', 'vorgang_id'),
 		);
 	}
 
@@ -97,7 +97,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 	}
 
 	/**
-	 * @return AntragDokument[]
+	 * @return Dokument[]
 	 */
 	public function getDokumente()
 	{

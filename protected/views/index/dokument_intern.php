@@ -1,8 +1,8 @@
 <?php
 /**
  * @var IndexController $this
- * @var AntragDokument $dokument
- * @var null|AntragDokument[] $morelikethis
+ * @var Dokument $dokument
+ * @var null|Dokument[] $morelikethis
  */
 
 

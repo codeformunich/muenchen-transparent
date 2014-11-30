@@ -13,7 +13,7 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
 			$sql = Yii::app()->db->createCommand();
 			$sql->select("id")->from("antraege_dokumente")->where("id >= 0")->order("id");
 			$data = $sql->queryColumn(array("id"));
-		} elseif (isset(AntragDokument::$TYPEN_ALLE[$args[0]])) {
+		} elseif (isset(Dokument::$TYPEN_ALLE[$args[0]])) {
 			$sql = Yii::app()->db->createCommand();
 			$sql->select("id")->from("antraege_dokumente")->where("typ = '" . addslashes($args[0]) . "'")->order("id");
 			$data = $sql->queryColumn(array("id"));
@@ -27,8 +27,8 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
 		for ($i = $offset; $i < $anz; $i++) {
 			$dok_id = $data[$i];
 			echo "$i / $anz => $dok_id\n";
-			/** @var AntragDokument $dokument */
-			$dokument = AntragDokument::model()->findByPk($dok_id);
+			/** @var Dokument $dokument */
+			$dokument = Dokument::model()->findByPk($dok_id);
 			$dokument->solrIndex();
 		}
 	}

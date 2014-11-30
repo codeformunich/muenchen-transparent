@@ -153,8 +153,8 @@ class BAAntragParser extends RISParser
 		}
 
 		foreach ($dokumente as $dok) {
-			$dok_typ = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? AntragDokument::$TYP_BA_ANTRAG : AntragDokument::$TYP_BV_EMPFEHLUNG);
-			$aenderungen .= AntragDokument::create_if_necessary($dok_typ, $daten, $dok);
+			$dok_typ = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? Dokument::$TYP_BA_ANTRAG : Dokument::$TYP_BV_EMPFEHLUNG);
+			$aenderungen .= Dokument::create_if_necessary($dok_typ, $daten, $dok);
 		}
 
 		if ($aenderungen != "") {

@@ -20,7 +20,7 @@ if (count($dokumente) == 0) {
 		//$ergebnisse->getMoreLikeThis();
 		$highlighting = $ergebnisse->getHighlighting();
 		foreach ($dokumente as $dokument) {
-			$dok = AntragDokument::getDocumentBySolrId($dokument->id, true);
+			$dok = Dokument::getDocumentBySolrId($dokument->id, true);
 			if (!$dok) {
 				if ($this->binContentAdmin()) {
 					echo "<li class='list-group-item'>Dokument nicht gefunden: " . $dokument->id . "</li>";

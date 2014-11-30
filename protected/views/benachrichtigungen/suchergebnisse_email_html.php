@@ -58,7 +58,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.c
 						$max_date       = 0;
 						$doklist        = "";
 						foreach ($dat["dokumente"] as $dok) {
-							/** @var AntragDokument $dokument */
+							/** @var Dokument $dokument */
 							$dokument = $dok["dokument"];
 							$dokurl   = $dokument->getLinkZumDokument();
 							$doklist .= '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dokument->name) . '</a><br>';
@@ -128,7 +128,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.c
 							$max_date       = 0;
 							$doklist        = "";
 							foreach ($dat["dokumente"] as $dok) {
-								/** @var AntragDokument $dokument */
+								/** @var Dokument $dokument */
 								$dokument = $dok["dokument"];
 								$dokurl   = $dokument->getLinkZumDokument();
 								$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";

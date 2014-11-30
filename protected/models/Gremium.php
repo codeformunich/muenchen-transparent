@@ -13,7 +13,7 @@
  * @property string $referat
  *
  * The followings are the available model relations:
- * @property AntragErgebnis[] $antraegeErgebnisse
+ * @property Tagesordnungspunkt[] $tagesordnungspunkte
  * @property Bezirksausschuss $ba
  * @property Termin[] $termine
  * @property StadtraetInGremium[] $mitgliedschaften
@@ -61,7 +61,7 @@ class Gremium extends CActiveRecord implements IRISItem
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antraegeErgebnisse' => array(self::HAS_MANY, 'AntragErgebnis', 'gremium_id'),
+			'tagesordnungspunkte' => array(self::HAS_MANY, 'Tagesordnungspunkt', 'gremium_id'),
 			'ba'                 => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
 			'termine'            => array(self::HAS_MANY, 'Termin', 'gremium_id'),
 			'mitgliedschaften'   => array(self::HAS_MANY, 'StadtraetInGremium', 'gremium_id'),

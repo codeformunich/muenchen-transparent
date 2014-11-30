@@ -28,14 +28,14 @@ class Import_Omnipage_OCRCommand extends CConsoleCommand
 		}
 		*/
 
-		/** @var AntragDokument $dokument */
-		$dokument = AntragDokument::model()->findByPk(IntVal($filename));
+		/** @var Dokument $dokument */
+		$dokument = Dokument::model()->findByPk(IntVal($filename));
 		if (!$dokument) return;
 
 		$dokument->text_ocr_raw = $txt;
 		$dokument->text_ocr_corrected = $txt;
 		$dokument->text_ocr_garbage_seiten = NULL;
-		$dokument->ocr_von = AntragDokument::$OCR_VON_OMNIPAGE;
+		$dokument->ocr_von = Dokument::$OCR_VON_OMNIPAGE;
 		$dokument->save();
 
 		$dokument->geo_extract();

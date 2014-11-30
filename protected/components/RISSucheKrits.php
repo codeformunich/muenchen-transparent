@@ -287,7 +287,7 @@ class RISSucheKrits
 			case "betreff":
 				return "Dokumente mit \"" . $this->krits[0]["suchbegriff"] . "\" im Betreff";
 			case "antrag_typ":
-				return "Dokumente des Typs \"" . AntragDokument::$TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
+				return "Dokumente des Typs \"" . Dokument::$TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
 			case "volltext":
 				return "Volltextsuche nach \"" . $this->krits[0]["suchbegriff"] . "\"";
 			case "ba":
@@ -312,7 +312,7 @@ class RISSucheKrits
 					$krits[] = "mit \"" . $cr["suchbegriff"] . "\" im Betreff";
 					break;
 				case "antrag_typ":
-					$krits[] = "vom Typ \"" . AntragDokument::$TYPEN_ALLE[$cr["suchbegriff"]] . "\"";
+					$krits[] = "vom Typ \"" . Dokument::$TYPEN_ALLE[$cr["suchbegriff"]] . "\"";
 					break;
 				case "volltext":
 					$krits[] = "mit dem Suchausdruck \"" . $cr["suchbegriff"] . "\"";

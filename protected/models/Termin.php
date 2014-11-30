@@ -20,8 +20,8 @@
  * @property string $status
  *
  * The followings are the available model relations:
- * @property AntragDokument[] $antraegeDokumente
- * @property AntragErgebnis[] $antraegeErgebnisse
+ * @property Dokument[] $antraegeDokumente
+ * @property Tagesordnungspunkt[] $tagesordnungspunkte
  * @property AntragOrt[] $antraegeOrte
  * @property Gremium $gremium
  */
@@ -70,10 +70,10 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antraegeDokumente'  => array(self::HAS_MANY, 'AntragDokument', 'termin_id'),
-			'antraegeErgebnisse' => array(self::HAS_MANY, 'AntragErgebnis', 'sitzungstermin_id'),
-			'antraegeOrte'       => array(self::HAS_MANY, 'AntragOrt', 'termin_id'),
-			'gremium'            => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
+			'antraegeDokumente'   => array(self::HAS_MANY, 'Dokument', 'termin_id'),
+			'tagesordnungspunkte' => array(self::HAS_MANY, 'Tagesordnungspunkt', 'sitzungstermin_id'),
+			'antraegeOrte'        => array(self::HAS_MANY, 'AntragOrt', 'termin_id'),
+			'gremium'             => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
 		);
 	}
 
@@ -189,9 +189,10 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 	}
 
 	/**
-	 * @return AntragDokument[]
+	 * @return Dokument[]
 	 */
-	public function getDokumente() {
+	public function getDokumente()
+	{
 		return $this->antraegeDokumente;
 	}
 
@@ -244,14 +245,14 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 	}
 
 	/**
-	 * @return AntragErgebnis[]
+	 * @return Tagesordnungspunkt[]
 	 */
-	public function ergebnisseSortiert()
+	public function tagesordnungspunkteSortiert()
 	{
-		$ergebnisse = $this->antraegeErgebnisse;
-		usort($ergebnisse, function ($ergebnis1, $ergebnis2) {
-			/** @var AntragErgebnis $ergebnis1 */
-			/** @var AntragErgebnis $ergebnis2 */
+		$tagesordnungspunkte = $this->tagesordnungspunkte;
+		usort($tagesordnungspunkte, function ($ergebnis1, $ergebnis2) {
+			/** @var Tagesordnungspunkt $ergebnis1 */
+			/** @var Tagesordnungspunkt $ergebnis2 */
 
 			if ($ergebnis1->status == "geheim" && $ergebnis2->status != "geheim") return 1;
 			if ($ergebnis1->status != "geheim" && $ergebnis2->status == "geheim") return -1;
@@ -272,7 +273,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 			if ($nr1[2] < $nr2[2]) return -1;
 			return 0;
 		});
-		return $ergebnisse;
+		return $tagesordnungspunkte;
 	}
 
 

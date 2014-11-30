@@ -110,7 +110,7 @@ $this->pageTitle = $stadtraetIn->getName();
 						echo '<tr><th>Namentlich erwähnt in:</th><td><ul>';
 						$highlighting = $ergebnisse->getHighlighting();
 						foreach ($dokumente as $dokument) {
-							$dok = AntragDokument::getDocumentBySolrId($dokument->id, true);
+							$dok = Dokument::getDocumentBySolrId($dokument->id, true);
 							if (!$dok) {
 								if ($this->binContentAdmin()) {
 									echo "<li>Dokument nicht gefunden: " . $dokument->id . "</li>";

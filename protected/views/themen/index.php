@@ -1,6 +1,6 @@
 <?php
 /**
- * @var AntragDokument[] $highlights
+ * @var Dokument[] $highlights
  * @var Referat[] $referate
  * @var Tag[] $tags
  */

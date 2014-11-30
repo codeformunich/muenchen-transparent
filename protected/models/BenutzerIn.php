@@ -367,7 +367,7 @@ class BenutzerIn extends CActiveRecord
 				foreach ($e as $f) {
 					$d           = explode(":", $f["id"]);
 					$dokument_id = IntVal($d[1]);
-					$dokument    = AntragDokument::getCachedByID($dokument_id);
+					$dokument    = Dokument::getCachedByID($dokument_id);
 					if (!$dokument) continue;
 					if ($dokument->antrag_id > 0) {
 						if (!isset($ergebnisse["antraege"][$dokument->antrag_id])) $ergebnisse["antraege"][$dokument->antrag_id] = array(
@@ -375,7 +375,7 @@ class BenutzerIn extends CActiveRecord
 							"dokumente" => array()
 						);
 						if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = array(
-							"dokument" => AntragDokument::model()->findByPk($dokument_id),
+							"dokument" => Dokument::model()->findByPk($dokument_id),
 							"queries"  => array()
 						);
 						$ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
@@ -385,7 +385,7 @@ class BenutzerIn extends CActiveRecord
 							"dokumente" => array()
 						);
 						if (!isset($ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id])) $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id] = array(
-							"dokument" => AntragDokument::model()->findByPk($dokument_id),
+							"dokument" => Dokument::model()->findByPk($dokument_id),
 							"queries"  => array()
 						);
 						$ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
