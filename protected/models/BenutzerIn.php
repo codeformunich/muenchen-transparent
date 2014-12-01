@@ -355,7 +355,7 @@ class BenutzerIn extends CActiveRecord
 		);
 
 		$sql = Yii::app()->db->createCommand();
-		$sql->select("id")->from("antraege_dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
+		$sql->select("id")->from("dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
 		$data = $sql->queryColumn(array("id"));
 		if (count($data) > 0) {
 

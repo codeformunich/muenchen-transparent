@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "antraege_dokumente".
+ * This is the model class for table "dokumente".
  *
- * The followings are the available columns in table 'antraege_dokumente':
+ * The followings are the available columns in table 'dokumente':
  * @property integer $id
  * @property integer $vorgang_id
  * @property string $typ

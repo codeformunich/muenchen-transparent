@@ -9,7 +9,7 @@ class Recalc_DocumentsCommand extends CConsoleCommand {
 
 		if ($args[0] == "alle") {
 			$sql = Yii::app()->db->createCommand();
-			$sql->select("id")->from("antraege_dokumente")->where("id >= 579866")->order("id");
+			$sql->select("id")->from("dokumente")->where("id >= 579866")->order("id");
 			$data = $sql->queryColumn(array("id"));
 		} else {
 			$data = array(IntVal($args[0]));

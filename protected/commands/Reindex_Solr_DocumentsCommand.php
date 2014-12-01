@@ -11,11 +11,11 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
 			$data = array($args[0]);
 		} elseif ($args[0] == "alle") {
 			$sql = Yii::app()->db->createCommand();
-			$sql->select("id")->from("antraege_dokumente")->where("id >= 0")->order("id");
+			$sql->select("id")->from("dokumente")->where("id >= 0")->order("id");
 			$data = $sql->queryColumn(array("id"));
 		} elseif (isset(Dokument::$TYPEN_ALLE[$args[0]])) {
 			$sql = Yii::app()->db->createCommand();
-			$sql->select("id")->from("antraege_dokumente")->where("typ = '" . addslashes($args[0]) . "'")->order("id");
+			$sql->select("id")->from("dokumente")->where("typ = '" . addslashes($args[0]) . "'")->order("id");
 			$data = $sql->queryColumn(array("id"));
 		} else {
 			die("./yiic reindexsolr_documents [id]|stadtrat_beschluss|ba_beschluss|alle\n");

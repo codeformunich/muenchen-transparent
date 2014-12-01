@@ -32,11 +32,11 @@ class RISMetadaten {
 	/**
 	 */
 	public static function recalcStats() {
-		$result = Yii::app()->db->createCommand("SELECT COUNT(*) anzahl_dokumente, SUM(seiten_anzahl) anzahl_seiten FROM antraege_dokumente")->queryAll();
+		$result = Yii::app()->db->createCommand("SELECT COUNT(*) anzahl_dokumente, SUM(seiten_anzahl) anzahl_seiten FROM dokumente")->queryAll();
 		Yii::app()->db->createCommand("REPLACE INTO metadaten (meta_key, meta_val) VALUES ('anzahl_dokumente', '" . IntVal($result[0]["anzahl_dokumente"]) . "')")->query();
 		Yii::app()->db->createCommand("REPLACE INTO metadaten (meta_key, meta_val) VALUES ('anzahl_seiten', '" . IntVal($result[0]["anzahl_seiten"]) . "')")->query();
 
-		$result = Yii::app()->db->createCommand("SELECT COUNT(*) anzahl_dokumente, SUM(seiten_anzahl) anzahl_seiten FROM antraege_dokumente WHERE datum > NOW() - INTERVAL 1 WEEK")->queryAll();
+		$result = Yii::app()->db->createCommand("SELECT COUNT(*) anzahl_dokumente, SUM(seiten_anzahl) anzahl_seiten FROM dokumente WHERE datum > NOW() - INTERVAL 1 WEEK")->queryAll();
 		Yii::app()->db->createCommand("REPLACE INTO metadaten (meta_key, meta_val) VALUES ('anzahl_dokumente_1w', '" . IntVal($result[0]["anzahl_dokumente"]) . "')")->query();
 		Yii::app()->db->createCommand("REPLACE INTO metadaten (meta_key, meta_val) VALUES ('anzahl_seiten_1w', '" . IntVal($result[0]["anzahl_seiten"]) . "')")->query();
 	}
