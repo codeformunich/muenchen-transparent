@@ -185,7 +185,31 @@ class Dokument extends CActiveRecord implements IRISItem
 	 */
 	public function getName($langfassung = false)
 	{
-		return $this->name;
+		$name = str_replace("_", " ", $this->name);
+		if ($langfassung) {
+			if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
+			if ($name == "Niederschrift (oeff)") return "Niederschrift (öffentlich)";
+
+			return trim($name);
+		} else {
+			if ($name == "Deckblatt VV") return "Deckblatt";
+			if ($name == "Niederschrift (oeff)") return "Niederschrift";
+
+			$name = preg_replace("/^V [0-9]+ /", "", $name);
+			$name = preg_replace("/^[0-9]{2}\-[0-9]{2}\-[0-9]{2} +/", "", $name);
+			$name = preg_replace("/ vom [0-9]{2}\.[0-9]{2}\.[0-9]{4}/", "", $name);
+
+			// Der Name der Anfrage/des Antrags steht schon im Titel des Antrags => Redundant
+			if (preg_match("/^Antrag[ \.]/", $name)) $name = "Antrag";
+			if (preg_match("/^Anfrage[ \.]/", $name)) $name = "Anfrage";
+
+			$name = preg_replace_callback("/^(?<anfang>Anlage [0-9]+ )(?<name>.+)$/", function($matches) {
+				$name = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $matches["name"]); // @TODO: False positives filtern? Geht das überhaupt?
+				return $matches["anfang"] . " (" . trim($name) . ")";
+			}, $name);
+
+			return trim($name);
+		}
 	}
 
 	/**
@@ -502,7 +526,7 @@ class Dokument extends CActiveRecord implements IRISItem
 		$doc = $update->createDocument();
 
 		$doc->id                 = "Document:" . $this->id;
-		$doc->text               = RISSolrHelper::string_cleanup($this->antrag->betreff . " " . $this->text_pdf);
+		$doc->text               = RISSolrHelper::string_cleanup(RISTools::korrigiereTitelZeichen($this->antrag->betreff) . " " . $this->text_pdf);
 		$doc->text_ocr           = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
 		$doc->dokument_name      = RISSolrHelper::string_cleanup($this->name);
 		$doc->dokument_url       = $this->url;

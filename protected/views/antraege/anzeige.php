@@ -219,7 +219,7 @@ $name = $antrag->getName(true);
 				});
 				zeile_anzeigen($docs, "Dokumente:", function ($dok) {
 					/** @var Dokument $dok */
-					echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->name, $dok->getLinkZumDokument());
+					echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
 				});
 
 				if (count($antrag->ergebnisse) > 0) {

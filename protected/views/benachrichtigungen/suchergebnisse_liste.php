@@ -49,7 +49,7 @@ if (count($dokumente) == 0) {
 
 						<p class="list-group-item-text">
 							<?
-							echo '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dok->name) . '</a><br>';
+							echo '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dok->getName(false)) . '</a><br>';
 							$highlightedDoc = $highlighting->getResult($dokument->id);
 							if ($highlightedDoc && count($highlightedDoc) > 0) {
 								foreach ($highlightedDoc as $field => $highlight) {
