@@ -493,7 +493,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 	/**
 	 * @param Antrag $curr_antrag
 	 * @param Antrag[] $gefundene_antraege
-	 * @param Tagesordnungspunkt[] $gefundene_ergebnisse
+	 * @param Tagesordnungspunkt[] $gefundene_tops
 	 * @param Dokument[] $gefundene_dokumente
 	 * @param int $vorgang_id
 	 * @throws Exception
@@ -552,6 +552,8 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 			$vorgang->typ = 0;
 			$vorgang->save(false);
 			$vorgang_id = $vorgang->id;
+
+			$gefundene_antraege[] = $this;
 		}
 		//echo "Gefundene Anträge:\n";
 		foreach ($gefundene_antraege as $ant) {
@@ -563,12 +565,21 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 			$erg->vorgang_id = $vorgang_id;
 			$erg->save();
 		}
-		echo "Gefundene Dokumente:\n";
+		if (RATSINFORMANT_CALL_MODE == "shell") echo "Gefundene Dokumente:\n";
 		foreach ($gefundene_dokumente as $dok) {
 			$dok->vorgang_id = $vorgang_id;
 			$dok->save();
 		}
-		echo "Fertig";
+		if (RATSINFORMANT_CALL_MODE == "shell") echo "Fertig";
+	}
+
+	/**
+	 * @return Vorgang
+	 */
+	public function getVorgang() {
+		if ($this->vorgang === null) $this->rebuildVorgaengeCache();
+		$this->refresh();
+		return $this->vorgang;
 	}
 
 	/**
