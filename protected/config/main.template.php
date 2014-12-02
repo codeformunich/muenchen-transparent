@@ -66,6 +66,7 @@ function ris_intern_address2geo($land, $plz, $ort, $strasse)
  * @param string $password
  * @param int $timeout
  * @return string
+ * @throws Exception
  */
 function ris_download_string($url_to_read, $username = "", $password = "", $timeout = 30)
 {
@@ -81,8 +82,12 @@ function ris_download_string($url_to_read, $username = "", $password = "", $time
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-	curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
+	//curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
 	$data = curl_exec($ch);
+
+	$info = curl_getinfo($ch);
+	if ($info["http_code"] != 200) throw new Exception("Not Found");
+
 	curl_close($ch);
 
 	return $data;
