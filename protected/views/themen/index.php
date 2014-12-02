@@ -20,7 +20,7 @@ $this->pageTitle = "Themen";
 	<div class="row" id="listen_holder">
 		<div class="col col-md-6">
 			<section class="start_berichte well">
-				<h3>Städtische Referate</h3>
+				<h3 id="staedtische_referate">Städtische Referate</h3>
 				<ul><?
 					foreach ($referate as $ref) {
 						echo "<li>";
