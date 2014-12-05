@@ -297,7 +297,7 @@ class RISTools
 	 */
 	public static function send_email($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
 	{
-		if (defined("MANDRILL_API_KEY") && strlen(MANDRILL_API_KEY) > 0) {
+		if (defined("MANDRILL_API_KEY") && strlen(MANDRILL_API_KEY) > 0 && $mail_tag != "system") {
 			static::send_email_mandrill($email, $betreff, $text_plain, $text_html, $mail_tag);
 		} else {
 			static::send_email_zend($email, $betreff, $text_plain, $text_html, $mail_tag);

@@ -132,7 +132,7 @@ class RISPDF2Text
 			$text = file_get_contents($tmp_file_name);
 			unlink($tmp_file_name);
 		} else {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "PDFParse Error", $pdf . "\n" . print_r($ret, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "PDFParse Error", $pdf . "\n" . print_r($ret, true), null, "system");
 			$text = "";
 		}
 		return $text;

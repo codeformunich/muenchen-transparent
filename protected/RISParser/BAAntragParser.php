@@ -41,7 +41,7 @@ class BAAntragParser extends RISParser
 		}
 
 		if (!$betreff_gefunden) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Kein Betreff\n" . $html_details);
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Kein Betreff\n" . $html_details, null, "system");
 			throw new Exception("Betreff nicht gefunden");
 		}
 
@@ -59,11 +59,11 @@ class BAAntragParser extends RISParser
 					$daten->typ = Antrag::$TYP_BV_EMPFEHLUNG;
 					break;
 				default:
-					RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $matches[1]);
+					RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $matches[1], null, "system");
 					die();
 			}
 		} else {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $dat_details[0]);
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $dat_details[0], null, "system");
 			die();
 		}
 
@@ -185,7 +185,7 @@ class BAAntragParser extends RISParser
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ba_antraege_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Anträge VOLL", "Erste Seite voll: $seite");
+		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Anträge VOLL", "Erste Seite voll: $seite", null, "system");
 
 		for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
 			$this->parse($matches[1][$i]);

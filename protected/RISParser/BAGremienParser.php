@@ -83,7 +83,7 @@ class BAGremienParser extends RISParser
 						$name = trim(str_replace(array("&nbsp;", "Herr", "Frau"), array(" ", " ", " "), $match2["name"]));
 						$stadtraetIn = StadtraetIn::model()->findByAttributes(array("name" => $name));
 						if (!$stadtraetIn) {
-							RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremium nicht zuordbar", "Gremium: $gremien_id\nMitglieds-ID: " . $match2["id"]);
+							RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremium nicht zuordbar", "Gremium: $gremien_id\nMitglieds-ID: " . $match2["id"], null, "system");
 							return;
 						}
 					}
@@ -151,7 +151,7 @@ class BAGremienParser extends RISParser
 		$txt = explode("<!-- tabellenkopf -->", $text);
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ba_gremien_details\.jsp\?Id=(?<id>[0-9]+)[\"'& ]/siU", $txt[0], $matches);
-		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremien VOLL", "Erste Seite voll: $seite");
+		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremien VOLL", "Erste Seite voll: $seite", null, "system");
 		for ($i = count($matches[1]) - 1; $i >= 0; $i--) $this->parse($matches[1][$i], static::$WAHLPERIODE_ID);
 		return $matches[1];
 	}

@@ -112,7 +112,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 		if ($history->sitzungsort == "") $history->sitzungsort = "?";
 		try {
 			if (!$history->save()) {
-				RISTools::send_email(Yii::app()->params['adminEmail'], "Termin:moveToHistory Error", print_r($history->getErrors(), true));
+				RISTools::send_email(Yii::app()->params['adminEmail'], "Termin:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
 				throw new Exception("Fehler");
 			}
 		} catch (CDbException $e) {

@@ -14,7 +14,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done Rathausumschau: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Rathausumschau", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Rathausumschau", print_r($e, true), null, "system");
 		}
 
 		try {
@@ -23,7 +23,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done Termine: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Stadtrattermin", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Stadtrattermin", print_r($e, true), null, "system");
 		}
 
 		try {
@@ -32,7 +32,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done Vorlagen: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Vorlagen", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Vorlagen", print_r($e, true), null, "system");
 		}
 
 		try {
@@ -41,7 +41,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done Stadtratsanträge: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StR-Anträge", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StR-Anträge", print_r($e, true), null, "system");
 		}
 
 		try {
@@ -51,7 +51,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done StadträtInnen: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StadträtInnen", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StadträtInnen", print_r($e, true), null, "system");
 		}
 
 
@@ -62,7 +62,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done BA Termine: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Termine", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Termine", print_r($e, true), null, "system");
 		}
 
 
@@ -72,7 +72,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done BA Initiative: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Initiative", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Initiative", print_r($e, true), null, "system");
 		}
 
 
@@ -82,7 +82,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 			echo "Done BA Anträge: " . date("Y-m-d H:i:s");
 		} catch (Exception $e) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Anträge", print_r($e, true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Anträge", print_r($e, true), null, "system");
 		}
 
 

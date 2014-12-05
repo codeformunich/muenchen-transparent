@@ -318,7 +318,7 @@ class Dokument extends CActiveRecord implements IRISItem
 				$antragort->datum             = date("Y-m-d H:i:s");
 				try {
 					if (!$antragort->save()) {
-						RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true));
+						RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true), null, "system");
 						throw new Exception("Fehler beim Speichern: geo_extract");
 					}
 				} catch (Exception $e) {
@@ -380,7 +380,7 @@ class Dokument extends CActiveRecord implements IRISItem
 		}
 
 		if (!$dokument->save()) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true), null, "system");
 			throw new Exception("Fehler");
 		}
 
@@ -676,7 +676,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			$tries--;
 			sleep(15);
 		}
-		RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes(), true));
+		RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes(), true), null, "system");
 	}
 
 	/**
@@ -692,7 +692,7 @@ class Dokument extends CActiveRecord implements IRISItem
 	 */
 	public function highlightBenachrichtigung()
 	{
-		if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::app()->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink());
+		if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::app()->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink(), null, "system");
 	}
 
 }

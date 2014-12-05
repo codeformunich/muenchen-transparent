@@ -22,14 +22,14 @@ class StadtratsvorlageParser extends RISParser
 		if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
 			$html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
 			$txt           = explode("introtext_border\">", $html_kurzinfo);
-			if (count($txt) < 2) RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo);
+			if (count($txt) < 2) RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo, null, "system");
 			$txt             = explode("</div>", $txt[1]);
 			$daten->kurzinfo = trim(str_replace(array("<br />", "<p>", "</p>"), array("", "", ""), $txt[0]));
 		}
 
 		$dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
 		if (count($dat_details) == 1) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: Keine Details", $html_details);
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: Keine Details", $html_details, null, "system");
 			return;
 		}
 
@@ -54,7 +54,7 @@ class StadtratsvorlageParser extends RISParser
 		}
 
 		if (!$betreff_gefunden) {
-			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsvorlageParser", "Kein Betreff\n" . $html_details);
+			RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsvorlageParser", "Kein Betreff\n" . $html_details, null, "system");
 			throw new Exception("Betreff nicht gefunden");
 		}
 
@@ -190,7 +190,7 @@ class StadtratsvorlageParser extends RISParser
 					Yii::app()->db->createCommand("DELETE FROM antraege_vorlagen WHERE antrag1 = " . IntVal($vorlage_id))->execute();
 
 					if (!$daten->delete()) {
-						RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: Nicht gelöscht", "VorlageParser 2\n" . print_r($daten->getErrors(), true));
+						RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: Nicht gelöscht", "VorlageParser 2\n" . print_r($daten->getErrors(), true), null, "system");
 						die("Fehler");
 					}
 					$aend              = new RISAenderung();
@@ -227,7 +227,7 @@ class StadtratsvorlageParser extends RISParser
 
 				$antrag = Antrag::model()->findByPk(IntVal($link));
 			}
-			if (!$antrag) if (Yii::app()->params['adminEmail'] != "") RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsvorlage - Zugordnungs Error", $vorlage_id . " - " . $link);
+			if (!$antrag) if (Yii::app()->params['adminEmail'] != "") RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsvorlage - Zugordnungs Error", $vorlage_id . " - " . $link, null, "system");
 
 			$sql = Yii::app()->db->createCommand();
 			$sql->select("antrag2")->from("antraege_vorlagen")->where("antrag1 = " . IntVal($vorlage_id) . " AND antrag2 = " . IntVal($antrag->id));
@@ -265,7 +265,7 @@ class StadtratsvorlageParser extends RISParser
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 		preg_match_all("/ris_vorlagen_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsvorlagen VOLL", "Erste Seite voll: $seite");
+		if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsvorlagen VOLL", "Erste Seite voll: $seite", null, "system");
 
 		for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
 			$this->parse($matches[1][$i]);

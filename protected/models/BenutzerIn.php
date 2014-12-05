@@ -166,7 +166,7 @@ class BenutzerIn extends CActiveRecord
 		$best_code = $this->createEmailBestaetigungsCode();
 		$link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", array("code" => $best_code));
 		RISTools::send_email($this->email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen vom Ratsinformanten zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
-			. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
+			. "Liebe Grüße,\n\tDas Ratsinformanten-Team.", "email");
 	}
 
 	/**
@@ -205,7 +205,7 @@ class BenutzerIn extends CActiveRecord
 		if ($this->save()) {
 			$link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/resetPassword", array("id" => $this->id, "code" => $this->pwd_change_code));
 			RISTools::send_email($this->email, "Ratsinformant-Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
-				. "Liebe Grüße,\n\tDas Ratsinformanten-Team.");
+				. "Liebe Grüße,\n\tDas Ratsinformanten-Team.", null, "password");
 			return true;
 		}
 		return "Ein (ungewöhnlicher) Fehler ist aufgetreten.";
