@@ -115,7 +115,7 @@ class RISGeo
 		foreach (static::$STREETS as $street) {
 			$offset = -1;
 			$last_offset = -1;
-			while (($offset = mb_strpos($antragtext, $street->name_normalized, $offset + 1)) !== false) {
+			while (($offset + 3 < mb_strlen($antragtext)) && ($offset = mb_strpos($antragtext, $street->name_normalized, $offset + 1)) !== false) {
 				if ($offset == $last_offset) {
 					// Kommt anscheinend bei "kaputten" Strings manchmal vor und führt zu einer Endlosschleife
 					$fp = fopen(TMP_PATH. "strassen-problem.log", "a"); fwrite($fp, "WIEDERHOLUNG! $offset / " . $antragtext . "\n" . $street->name_normalized . "\n"); fclose($fp);

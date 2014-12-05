@@ -44,7 +44,7 @@
 	}
 	?>
 
-	<div style="float: right"><a href=<?= "/dokumente/" . $id . ".pdf" ?>>Dokument mit eigenem Programm ansehen</a></div>
+	<div style="float: right"><a href="<?= CHtml::encode($dokument->getLink()) ?>">Dokument mit eigenem Programm ansehen</a></div>
 </ul>
 
 <p id="filename_store" class="hidden">/dokumente/<?= $id ?>.pdf</p>

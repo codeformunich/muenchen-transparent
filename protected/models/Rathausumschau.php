@@ -10,9 +10,9 @@
  * @property integer $jahr
  * @property integer $nr
  *
- * @property Dokument $dokument
+ * @property Dokument[] $dokumente
  */
-class Rathausumschau extends CActiveRecord
+class Rathausumschau extends CActiveRecord  implements IRISItem
 {
 
 	/**
@@ -71,4 +71,38 @@ class Rathausumschau extends CActiveRecord
 		);
 	}
 
+	/**
+	 * @param array $add_params
+	 * @return string
+	 */
+	public function getLink($add_params = array())
+	{
+		if (count($this->dokumente) > 0) {
+			return $this->dokumente[0]->getLink();
+		} else {
+			return "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html";
+		}
+	}
+
+	/** @return string */
+	public function getTypName()
+	{
+		return "Rathausumschau";
+	}
+
+	/** @return string */
+	public function getDate()
+	{
+		return $this->datum;
+	}
+
+	/**
+	 * @param bool $kurzfassung
+	 * @return string
+	 */
+	public function getName($kurzfassung = false)
+	{
+		if ($kurzfassung) return "Rathausumschau " . $this->nr . "/" . substr($this->datum, 0, 4);
+		else return "Rathausumschau " . $this->nr . " (" . $this->datum . ")";
+	}
 }

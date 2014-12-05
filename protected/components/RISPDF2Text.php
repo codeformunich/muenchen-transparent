@@ -93,6 +93,8 @@ class RISPDF2Text
 	 */
 	public static function document_text_ocr($filename, $seiten_anzahl)
 	{
+		return "";
+
 		$depth = "-depth 8";
 		$text = "";
 

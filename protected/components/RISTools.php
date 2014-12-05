@@ -78,6 +78,7 @@ class RISTools
 	 */
 	public static function download_file($url_to_read, $filename, $username = "", $password = "", $timeout = 30)
 	{
+		echo $url_to_read;
 		$ch = curl_init();
 
 		if ($username != "" || $password != "") curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
@@ -92,7 +93,7 @@ class RISTools
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
+		//curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
 		curl_exec($ch);
 		//$info = curl_getinfo($ch);
 		curl_close($ch);

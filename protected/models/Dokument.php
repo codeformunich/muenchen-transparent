@@ -10,6 +10,7 @@
  * @property integer $antrag_id
  * @property integer $termin_id
  * @property integer $tagesordnungspunkt_id
+ * @property integer $rathausumschau_id
  * @property string $url
  * @property string $name
  * @property string $datum
@@ -170,7 +171,10 @@ class Dokument extends CActiveRecord implements IRISItem
 	 */
 	public function getLink($add_params = array())
 	{
-		return "http://www.ris-muenchen.de" . $this->url;
+		if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
+			if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
+			else return "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html";
+		} else return "http://www.ris-muenchen.de" . $this->url;
 	}
 
 	/** @return string */
@@ -203,7 +207,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			if (preg_match("/^Antrag[ \.]/", $name)) $name = "Antrag";
 			if (preg_match("/^Anfrage[ \.]/", $name)) $name = "Anfrage";
 
-			$name = preg_replace_callback("/^(?<anfang>Anlage [0-9]+ )(?<name>.+)$/", function($matches) {
+			$name = preg_replace_callback("/^(?<anfang>Anlage [0-9]+ )(?<name>.+)$/", function ($matches) {
 				$name = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $matches["name"]); // @TODO: False positives filtern? Geht das überhaupt?
 				return $matches["anfang"] . " (" . trim($name) . ")";
 			}, $name);
@@ -246,8 +250,13 @@ class Dokument extends CActiveRecord implements IRISItem
 		$filename = $this->getLocalPath();
 		if (file_exists($filename)) return;
 
-		$url = "http://www.ris-muenchen.de" . $this->url;
-		RISTools::download_file($url, $filename);
+		if (substr($this->url, 0, 7) == "http://") {
+			RISTools::download_file($this->url, $filename);
+		} elseif ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
+			RISTools::download_file("http://www.muenchen.de" . $this->url, $filename);
+		} else {
+			RISTools::download_file("http://www.ris-muenchen.de" . $this->url, $filename);
+		}
 	}
 
 	/**
@@ -298,19 +307,24 @@ class Dokument extends CActiveRecord implements IRISItem
 			$neue_ids[] = $geo->id;
 
 			if (!in_array($geo->id, $bisherige_ids)) {
-				$antragort              = new AntragOrt();
-				$antragort->antrag_id   = $this->antrag_id;
-				$antragort->termin_id   = $this->termin_id;
-				$antragort->dokument_id = $this->id;
-				$antragort->ort_name    = $strasse_name;
-				$antragort->ort_id      = $geo->id;
-				$antragort->source      = "text_parse";
-				$antragort->datum       = date("Y-m-d H:i:s");
-				if (!$antragort->save()) {
-					RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true));
-					throw new Exception("Fehler beim Speichern: geo_extract");
+				$antragort                    = new AntragOrt();
+				$antragort->antrag_id         = $this->antrag_id;
+				$antragort->termin_id         = $this->termin_id;
+				$antragort->rathausumschau_id = $this->rathausumschau_id;
+				$antragort->dokument_id       = $this->id;
+				$antragort->ort_name          = $strasse_name;
+				$antragort->ort_id            = $geo->id;
+				$antragort->source            = "text_parse";
+				$antragort->datum             = date("Y-m-d H:i:s");
+				try {
+					if (!$antragort->save()) {
+						RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true));
+						throw new Exception("Fehler beim Speichern: geo_extract");
+					}
+				} catch (Exception $e) {
+					var_dump($antragort->getAttributes());
+					die();
 				}
-				echo "Neu angelegt: " . $antragort->ort_id . " - " . $antragort->ort_name . "\n";
 			}
 		}
 
@@ -392,9 +406,13 @@ class Dokument extends CActiveRecord implements IRISItem
 	 */
 	public function getLocalPath()
 	{
-		$x         = explode(".", $this->url);
-		$extension = $x[count($x) - 1];
-		return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
+		if ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
+			return PATH_PDF_RU . substr($this->rathausumschau->datum, 0, 4) . "/" . IntVal($this->rathausumschau->nr) . ".pdf";
+		} else {
+			$x         = explode(".", $this->url);
+			$extension = $x[count($x) - 1];
+			return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
+		}
 	}
 
 
@@ -403,8 +421,7 @@ class Dokument extends CActiveRecord implements IRISItem
 	 */
 	public function getLinkZumDokument()
 	{
-		$id = preg_replace("/[\d\D]+\/(\d+)\.pdf/", "$1", $this->url);
-		return Yii::app()->createUrl("dokumente") . "/" . $id;
+		return Yii::app()->createUrl("index/dokumente", array("id" => $this->id));
 	}
 
 
@@ -423,7 +440,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = Dokument::model()->with("antrag")->findByPk($id);
 			return static::$dokumente_cache[$id];
 		}
-		return Dokument::model()->with(array("antrag", "tagesordnungspunkt"))->findByPk($id);
+		return Dokument::model()->with(array("antrag", "tagesordnungspunkt", "rathausumschau"))->findByPk($id);
 	}
 
 	/**
@@ -433,6 +450,7 @@ class Dokument extends CActiveRecord implements IRISItem
 	{
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) return $this->tagesordnungspunkt;
 		if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
+		if (in_array($this->typ, array(static::$TYP_RATHAUSUMSCHAU))) return $this->rathausumschau;
 		return $this->antrag;
 	}
 
@@ -576,12 +594,43 @@ class Dokument extends CActiveRecord implements IRISItem
 	/**
 	 * @param Solarium\QueryType\Update\Query\Query $update
 	 */
+	private function solrIndex_rathausumschau_do($update)
+	{
+		if (!$this->rathausumschau) return;
+
+		/** @var RISSolrDocument $doc */
+		$doc = $update->createDocument();
+
+		$doc->id                 = "Rathausumschau:" . $this->id;
+		$doc->text               = RISSolrHelper::string_cleanup($this->text_pdf);
+		$doc->text_ocr           = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
+		$doc->dokument_name      = RISSolrHelper::string_cleanup($this->name);
+		$doc->dokument_url       = $this->url;
+		$doc->antrag_id          = $this->rathausumschau->nr;
+
+		$geo            = array();
+		$dokument_bas   = array();
+		foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
+			$geo[] = $ort->ort->lat . "," . $ort->ort->lon;
+			if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
+		}
+		$doc->geo          = $geo;
+		$doc->dokument_bas = $dokument_bas;
+
+		$doc->sort_datum = RISSolrHelper::mysql2solrDate($this->rathausumschau->datum . " 13:00:00");
+		$update->addDocuments(array($doc));
+	}
+
+
+	/**
+	 * @param Solarium\QueryType\Update\Query\Query $update
+	 */
 	private function solrIndex_beschluss_do($update)
 	{
 		/** @var RISSolrDocument $doc */
 		$doc = $update->createDocument();
 
-		if (is_null($this->ergebnis)) return; // Kann vorkommen, wenn ein TOP nachträglich gelöscht wurde
+		if (is_null($this->tagesordnungspunkt)) return; // Kann vorkommen, wenn ein TOP nachträglich gelöscht wurde
 
 		$doc->id            = "Ergebnis:" . $this->id;
 		$doc->text          = RISSolrHelper::string_cleanup($this->tagesordnungspunkt->top_betreff . " " . $this->tagesordnungspunkt->beschluss_text . " " . $this->tagesordnungspunkt->entscheidung . " " . $this->text_pdf);
@@ -616,6 +665,7 @@ class Dokument extends CActiveRecord implements IRISItem
 
 			if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
 			elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
+			elseif ($this->typ == static::$TYP_RATHAUSUMSCHAU) $this->solrIndex_rathausumschau_do($update);
 			else $this->solrIndex_antrag_do($update);
 
 
@@ -626,7 +676,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			$tries--;
 			sleep(15);
 		}
-		RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes()));
+		RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes(), true));
 	}
 
 	/**

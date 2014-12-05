@@ -352,6 +352,7 @@ CREATE TABLE IF NOT EXISTS `antraege_orte` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `antrag_id` INT(11) NULL DEFAULT NULL,
   `termin_id` INT(11) NULL DEFAULT NULL,
+  `rathausumschau_id` MEDIUMINT(11) NULL DEFAULT NULL,
   `dokument_id` INT(11) NOT NULL,
   `ort_name` VARCHAR(100) NOT NULL,
   `ort_id` SMALLINT(5) UNSIGNED NOT NULL,

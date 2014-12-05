@@ -83,6 +83,7 @@ if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
 					<?
 					foreach ($abo_vorgaenge as $vorgang) {
 						$item          = $vorgang->wichtigstesRisItem();
+						if (!$item) continue;
 						$del_form_name = AntiXSS::createToken("del_vorgang_abo") . "[" . $vorgang->id . "]";
 						?>
 						<li>

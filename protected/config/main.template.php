@@ -12,6 +12,7 @@ define("PATH_PDFINFO", "/usr/bin/pdfinfo");
 define("PATH_PDFTOHTML", "/usr/bin/pdftohtml");
 
 define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");
+define("PATH_PDF_RU", RIS_DATA_DIR . "data/ru-pdf/");
 define("TMP_PATH", "/tmp/");
 define("LOG_PATH", RIS_DATA_DIR . "logs/");
 define("RU_PDF_PATH", RIS_DATA_DIR . "data/ru-pdf/");

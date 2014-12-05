@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $antrag_id
  * @property integer $termin_id
+ * @property integer $rathausumschau_id
  * @property integer $dokument_id
  * @property string $ort_name
  * @property integer $ort_id
@@ -17,6 +18,7 @@
  * @property Dokument $dokument
  * @property Antrag $antrag
  * @property Termin $termin
+ * @property Rathausumschau $rathausumschau
  * @property OrtGeo $ort
  */
 class AntragOrt extends CActiveRecord
@@ -48,7 +50,7 @@ class AntragOrt extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('dokument_id, ort_name, ort_id, source, datum', 'required'),
-			array('antrag_id, termin_id, dokument_id, ort_id', 'numerical', 'integerOnly' => true),
+			array('antrag_id, termin_id, rathausumschau_id, dokument_id, ort_id', 'numerical', 'integerOnly' => true),
 			array('ort_name', 'length', 'max' => 100),
 			array('source', 'length', 'max' => 10),
 		);
@@ -62,10 +64,11 @@ class AntragOrt extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'dokument' => array(self::BELONGS_TO, 'Dokument', 'dokument_id'),
-			'antrag'   => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-			'termin'   => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'termin_id'),
-			'ort'      => array(self::BELONGS_TO, 'OrtGeo', 'ort_id'),
+			'dokument'       => array(self::BELONGS_TO, 'Dokument', 'dokument_id'),
+			'antrag'         => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+			'termin'         => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'termin_id'),
+			'rathausumschau' => array(self::BELONGS_TO, 'Rathausumschau', 'rathausumschau_id'),
+			'ort'            => array(self::BELONGS_TO, 'OrtGeo', 'ort_id'),
 		);
 	}
 
@@ -75,14 +78,15 @@ class AntragOrt extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id'          => 'ID',
-			'antrag_id'   => 'Antrag',
-			'termin_id'   => 'Termin',
-			'dokument_id' => 'Dokument',
-			'ort_name'    => 'Ort Name',
-			'ort_id'      => 'Ort',
-			'source'      => 'Source',
-			'datum'       => 'Datum',
+			'id'                => 'ID',
+			'antrag_id'         => 'Antrag',
+			'termin_id'         => 'Termin',
+			'rathausumschau_id' => 'Rathausumschau',
+			'dokument_id'       => 'Dokument',
+			'ort_name'          => 'Ort Name',
+			'ort_id'            => 'Ort',
+			'source'            => 'Source',
+			'datum'             => 'Datum',
 		);
 	}
 }
