@@ -5,7 +5,7 @@ class StadtrechtParser extends RISParser
 {
     public function parseIndex() {
         $all_docs = [];
-        $index    = ris_download_string("http://www.muenchen.info/dir/recht/num_portal.html");
+        $index    = ris_download_string("http://www.muenchen.info/dir/recht/alpha_portal.html");
         $lines    = explode("\n", $index);
         foreach ($lines as $line) {
             if(preg_match("/<td\><a href=\"(\S+)\.htm\" target=\"_blank\">([\S ]+)<\/a><\/td>/i", $line, $matches)) {
@@ -69,7 +69,7 @@ class StadtrechtParser extends RISParser
         if (!$rechtsdokument) $rechtsdokument = new Rechtsdokument();
 
         $rechtsdokument->url_base = $url_base;
-        $rechtsdokument->url_html = $url_base . ".htm";
+        $rechtsdokument->url_html = $url_base . "/css/" . $id . ".htm";
         $rechtsdokument->url_pdf  = $url_base . ".pdf";
         $rechtsdokument->id       = $id;    // Intern
         $rechtsdokument->titel    = $titel; // Zum Anzeigen

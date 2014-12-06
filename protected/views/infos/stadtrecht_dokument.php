@@ -13,11 +13,22 @@ $this->inline_css .= $dokument->css;
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
         <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("infos/stadtrecht")) ?>">Stadtrecht</a><br></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtrecht<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <!--li><input class="search" placeholder="Suche" /></li-->
+                <?
+                $dokumente = Rechtsdokument::model()->findAll();
+                foreach ($dokumente as $dok) {
+                     echo '<li><!--span class="list-name"-->' . CHtml::link($dok->titel, Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '<!--/span--></li>'. "\n";
+                }
+                ?>
+            </ul>
+        </li>
         <li class="active"><?= $dokument->titel ?></li>
     </ul>
 
-    <h1><?= CHtml::encode($dokument->titel)?> <span style="float: right"><a href="<?= $dokument->url_pdf ?>"</a>als pdf</span></h1>
+    <h1><?= CHtml::encode($dokument->titel)?> <span style="float: right"><a href="<?= $dokument->url_pdf ?>">als pdf</a></span></h1>
 </section>
 
 
@@ -41,3 +52,12 @@ $this->inline_css .= $dokument->css;
         </section>
     </div>
 </div>
+
+<script src="/js/list.js"></script>
+<script>
+var options = {
+  valueNames: [ 'list-name' ]
+};
+
+var userList = new List('auswahl', options);
+</script>
