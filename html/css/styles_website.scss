@@ -4,9 +4,15 @@ $pics-path: "/images/";
 
 
 @import "bootstrap-sass-3.3.1/assets/stylesheets/bootstrap";
+
+// From less/_variables.less
+$darkbg-text: rgba(255,255,255,0.84);
+$lightbg-text: rgba(0,0,0,0.84);
+$navbar-color: $darkbg-text;
+
+@import "ripples";
 @import "material-wfont";
-// The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
-@import "material/variables";
+
 @import "fontello";
 @import "roboto-font";
 

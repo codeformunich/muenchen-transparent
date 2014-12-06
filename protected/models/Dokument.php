@@ -92,7 +92,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			array('id, antrag_id, termin_id, tagesordnungspunkt_id, rathausumschau_id, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
-			array('name', 'length', 'max' => 200),
+			array('name', 'length', 'max' => 300),
 			array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight', 'safe'),
 		);
 	}
@@ -407,6 +407,7 @@ class Dokument extends CActiveRecord implements IRISItem
 	public function getLocalPath()
 	{
 		if ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
+			if (substr($this->rathausumschau->datum, 0, 4) <= 2008) return PATH_PDF_RU . substr($this->rathausumschau->datum, 0, 4) . "/" . $this->url;
 			return PATH_PDF_RU . substr($this->rathausumschau->datum, 0, 4) . "/" . IntVal($this->rathausumschau->nr) . ".pdf";
 		} else {
 			$x         = explode(".", $this->url);

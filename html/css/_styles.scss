@@ -261,7 +261,7 @@ body {
   }
 }
 
-a.teaser_button {
+.teaser_buttons a {
   text-align: left;
   display: block;
   overflow: auto;
@@ -1092,9 +1092,10 @@ body, html {
   margin: 0 auto (-1 * $footer_height);
 }
 
+
 body > footer {
   height: $footer_height;
-  background-color: $navbar-default-bg;
+  background-color: #009587;
   a {
     &:link, &:visited {
       color: $navbar-color;
@@ -1126,7 +1127,7 @@ section.impressum {
     float: left;
   }
   button {
-    margin-top: -6px;
+    margin-top: -27px;
     margin-bottom: 0;
     margin-left: 3px;
   }
