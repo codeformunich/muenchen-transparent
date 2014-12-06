@@ -18,7 +18,7 @@ $this->pageTitle = "Stadtrecht";
             /** @var Rechtsdokument[] $dokumente */
             $dokumente = Rechtsdokument::model()->findAll();
             foreach ($dokumente as $dok) {
-                echo '<li><span class="list-name">' . CHtml::link($dok->name, Yii::app()->createUrl("infos/stadtrechtDokument", array("doknr" => $dok->nr))) . '</span></li>';
+                echo '<li><span class="list-name">' . CHtml::link($dok->titel, Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</span></li>';
             }
             ?>
             </ul>
