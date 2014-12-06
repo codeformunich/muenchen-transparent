@@ -20,9 +20,18 @@
   }
 
   .panel-primary {
+    border: solid 1px #4285f4;
+    .panel-heading {
+      background-color: #428bca;
+    }
+  }
+  .panel-success {
+    border: solid 1px #3c763d;
+  }
+
+  .panel {
     margin-left: 3px;
     margin-right: 3px;
-    border: solid 1px #4285f4;
     border-radius: 3px;
 
     -webkit-column-break-inside:avoid;
@@ -40,7 +49,6 @@
       margin-left: -1px;
       margin-right: -1px;
       margin-top: -1px;
-      background-color: #428bca;
     }
     .panel-heading a {
       &:link, &:visited {
@@ -94,6 +102,16 @@
 
   ul.dokumente {
     font-size: 12px;
+  }
+
+  ul.toc {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
   }
 }
 

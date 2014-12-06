@@ -630,13 +630,21 @@ class IndexController extends RISBaseController
 		if ($heute) $i = 1;
 		else        $i = 0;
 
+		$rus = array();
+
 		do {
 			if ($heute) {
 				$datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
 				$datum_bis = date("Y-m-d H:i:s");
+				$ru = Rathausumschau::model()->findByAttributes(array("datum" => $datum_von));
+				if ($ru) $rus[] = $ru;
+				$ru = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d")));
+				if ($ru) $rus[] = $ru;
 			} else {
 				$datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
 				$datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
+				$ru = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)));
+				if ($ru) $rus[] = $ru;
 			}
 			/** @var array|Antrag[] $antraege */
 			$antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
@@ -647,7 +655,7 @@ class IndexController extends RISBaseController
 			}
 			$i++;
 		} while (count($antraege) == 0 && $i < 10);
-		return array($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis);
+		return array($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis);
 	}
 
 
@@ -657,7 +665,7 @@ class IndexController extends RISBaseController
 	public function actionStadtratAntraegeAjaxDatum($datum_max)
 	{
 		$time = RISTools::date_iso2timestamp($datum_max);
-		list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($time);
+		list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($time);
 		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
 		$gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von . " 00:00:00") - 1);
@@ -698,9 +706,9 @@ class IndexController extends RISBaseController
 
 		if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
 			$ts = RISTools::date_iso2timestamp($datum_max);
-			list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($ts);
+			list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($ts);
 		} else {
-			list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate(time());
+			list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate(time());
 		}
 
 		list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
@@ -718,6 +726,7 @@ class IndexController extends RISBaseController
 			"datum"             => $datum_von,
 			"explizites_datum"  => ($datum_max != ""),
 			"statistiken"       => RISMetadaten::getStats(),
+			"rathausumschauen"  => $rus,
 		));
 	}
 

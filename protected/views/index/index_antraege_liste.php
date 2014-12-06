@@ -14,6 +14,7 @@
  * @var float $geo_lat
  * @var float $radius
  * @var OrtGeo $naechster_ort
+ * @var Rathausumschau[] $rathausumschauen
  */
 
 if (isset($title) && $title !== null) {
@@ -31,6 +32,11 @@ if (isset($title) && $title !== null) {
 } else {
 	$erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
 }
+
+if (!isset($rathausumschauen)) $rathausumschauen = array();
+/** @var Rathausumschau[] $rus_by_date */
+$rus_by_date = array();
+foreach ($rathausumschauen as $ru) $rus_by_date[$ru->datum] = $ru;
 
 $datum_nav = ((isset($neuere_url_ajax) && $neuere_url_ajax !== null) || (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null));
 if (count($antraege) > 0) {
@@ -61,19 +67,13 @@ if (count($antraege) > 0) {
 	<?
 	}
 	echo '<ul class="antragsliste2">';
+	$akt_datum = null;
+
 	foreach ($antraege as $ant) {
 		if (!method_exists($ant, "getName")) {
 			echo '<li class="panel panel-danger">
 			<div class="panel-heading">Fehler</div><div class="panel-body">' . get_class($ant) . "</div></li>";
 		} else {
-			$titel = $ant->getName(true);
-			echo '<li class="panel panel-primary">
-			<div class="panel-heading"><a href="' . CHtml::encode($ant->getLink()) . '"';
-			if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
-			echo '><span>';
-			echo CHtml::encode($titel) . '</a></span></div>';
-			echo '<div class="panel-body">';
-
 			$max_date = 0;
 			$doklist  = "";
 			foreach ($ant->dokumente as $dokument) {
@@ -85,6 +85,42 @@ if (count($antraege) > 0) {
 				$dat = RISTools::date_iso2timestamp($dokument->getDate());
 				if ($dat > $max_date) $max_date = $dat;
 			}
+
+			$datum = date("Y-m-d", $max_date);
+			if ($datum != $akt_datum) {
+				$akt_datum = $datum;
+				if (isset($rus_by_date[$akt_datum])) {
+					$ru = $rus_by_date[$akt_datum];
+
+					echo '<li class="panel panel-success">
+			<div class="panel-heading"><a href="' . CHtml::encode($ru->getLink()) . '"><span>';
+					echo CHtml::encode($ru->getName(true)) . '</a></span></div>';
+					echo '<div class="panel-body">';
+
+					echo "<div class='add_meta'>";
+					echo date("d.m.", RISTools::date_iso2timestamp($ru->datum));
+					echo "</div>";
+
+					$inhalt = $ru->inhaltsverzeichnis();
+					if (count($inhalt) > 0) echo '<ul class="toc">';
+					foreach ($inhalt as $inh)  {
+						echo "<li>" . CHtml::encode($inh["titel"]) . "</li>";
+					}
+					if (count($inhalt) > 0) echo '</ul>';
+
+					echo '</div>';
+					echo '</li>';
+				}
+			}
+
+			$titel = $ant->getName(true);
+			echo '<li class="panel panel-primary">
+			<div class="panel-heading"><a href="' . CHtml::encode($ant->getLink()) . '"';
+			if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
+			echo '><span>';
+			echo CHtml::encode($titel) . '</a></span></div>';
+			echo '<div class="panel-body">';
+
 
 			echo "<div class='add_meta'>";
 			$parteien = array();

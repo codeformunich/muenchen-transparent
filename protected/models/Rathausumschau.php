@@ -105,4 +105,23 @@ class Rathausumschau extends CActiveRecord  implements IRISItem
 		if ($kurzfassung) return "Rathausumschau " . $this->nr . "/" . substr($this->datum, 0, 4);
 		else return "Rathausumschau " . $this->nr . " (" . $this->datum . ")";
 	}
+
+	/**
+	 * @return string[]
+	 */
+	public function inhaltsverzeichnis() {
+		if (count($this->dokumente) == 0) return array();
+		$dok = $this->dokumente[0]->text_pdf;
+		$x = explode("Inhaltsverzeichnis", $dok);
+		$x = explode("Antworten auf Stadtratsanfragen", $x[1]);
+		$text = $x[0];
+		$tops_in = explode("\n", $text);
+		$tops_out = array();
+		foreach ($tops_in as $top) if (mb_strlen($top) > 0 && mb_substr($top, 0, 1) == "›") {
+			preg_match("/^(?<titel>.*)(?<seite> [0-9]+)$/", $top, $matches);
+			if (isset($matches["seite"])) $tops_out[] = array("titel" => $matches["titel"], "seite" => IntVal($matches["seite"]));
+			else $tops_out[] = array("titel" => $matches["titel"], "seite" => null);
+		}
+		return $tops_out;
+	}
 }

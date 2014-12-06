@@ -12,6 +12,7 @@
  * @var string $aeltere_url_ajax
  * @var string $aeltere_url_std
  * @var array $statistiken
+ * @var Rathausumschau[] $rathausumschauen
  */
 
 $this->pageTitle = Yii::app()->name;
@@ -178,6 +179,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<div id="stadtratsdokumente_holder">
 		<?
+
 		$this->renderPartial("index_antraege_liste", array(
 			"antraege"          => $antraege_stadtrat,
 			"datum"             => $datum,
@@ -186,6 +188,7 @@ $this->pageTitle = Yii::app()->name;
 			"aeltere_url_ajax"  => null,
 			"aeltere_url_std"   => null,
 			"weiter_links_oben" => $explizites_datum,
+			"rathausumschauen"  => $rathausumschauen,
 		));
 		$this->renderPartial("index_antraege_liste", array(
 			"title"             => "Sonstige neue Dokumente",
