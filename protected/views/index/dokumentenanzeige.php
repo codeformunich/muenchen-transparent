@@ -47,7 +47,7 @@
 		}
 		?>
 
-		<div style="float: right"><a href="<?= CHtml::encode($dokument->getLink()) ?>">Dokument mit eigenem Programm ansehen</a></div>
+		<div style="float: right"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download><span class="fontello-download"></span> Dokument herunterladen</a></div>
 	</ul>
 
 	<p id="filename_store" class="hidden">/dokumente/<?= $id ?>.pdf</p>
@@ -202,7 +202,7 @@
 								<span data-l10n-id="print_label">Print</span>
 							</button>
 
-							<button id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" data-l10n-id="download">
+							<button id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" data-l10n-id="download" style="display: none;">
 								<span data-l10n-id="download_label">Download</span>
 							</button>
 							<!-- <div class="toolbarButtonSpacer"></div> -->
@@ -470,5 +470,7 @@
 		$(window).resize(pdf_resize);
 	</script>
 
-
+	<div id="pdf_rechtsvermerk">
+		Originaldokument von <a href="http://www.ris-muenchen.de/">www.ris-muenchen.de</a>. München Transparent ist nicht für den Inhalt dieses Dokuments verantwortlich.
+	</div>
 </section>

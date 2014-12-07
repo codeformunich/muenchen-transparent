@@ -91,6 +91,14 @@ h1.small {
   }
 }
 
+#pdf_rechtsvermerk {
+  position: absolute;
+  bottom: -22px;
+  left: 21px;
+  font-size: 11px;
+  color: gray;
+}
+
 .modal-backdrop {
   display: inherit;
 }
