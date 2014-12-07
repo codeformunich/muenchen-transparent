@@ -460,8 +460,8 @@
 	<script>
 		// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
 		function pdf_resize() {
-			var $container = $("#mainContainer"),
-				container_height = $(window).height() - $("body > footer").height() - $("#main_navbar").height() - 85;
+			var $container = $("#mainContainer");
+			var container_height = $(window).height() - $("body > footer").height() - $("#main_navbar").height() - 95;
 			$container.height(container_height);
 			$container.parents(".well").height(container_height + 22);
 		}
