@@ -1,68 +1,68 @@
-15a16,40
-> * {
->   padding: 0;
->   margin: 0;
-> }
-> 
-> html {
->   height: 100%;
->   /* Font size is needed to make the activity bar the correct size. */
->   font-size: 10px;
-> }
-> 
-> body {
->   height: 100%;
->   background-color: #404040;
->   background-image: url(images/texture.png);
-> }
-> 
-> body,
-> input,
-> button,
-> select {
->   font: message-box;
->   outline: none;
-> }
-> 
-69,70d93
-<   margin-left: auto;
-<   margin-right: auto;
-249c272
-<   z-index: 99;
----
->   z-index: 9999;
-281,282c304,305
-<   background-image: url("images/texture.png"),
-<                     linear-gradient(rgba(105, 105, 105, 0.99), rgba(90, 90, 90, 0.95));
----
->   background-image: url(images/texture.png),
->                     linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
-1007c1030
-<   display: block;
----
->   display: block; 
-1469c1492
-<   display: block;
----
->   display: block; 
-1652c1675
-< 
----
->   
-1941,1956d1963
+16,40d15
+< * {
+<   padding: 0;
+<   margin: 0;
 < }
 < 
-< 
-< 
-< 
-< html[dir='ltr'] #toolbarViewerLeft > *, html[dir='ltr'] #toolbarViewerMiddle > *, html[dir='ltr'] #toolbarViewerRight > *, html[dir='ltr'] .findbar > * {
-<     display: inline-block;
-<     vertical-align: top;
-<     float:none;
+< html {
+<   height: 100%;
+<   /* Font size is needed to make the activity bar the correct size. */
+<   font-size: 10px;
 < }
 < 
+< body {
+<   height: 100%;
+<   background-color: #404040;
+<   background-image: url(images/texture.png);
+< }
 < 
-< .page {
-<     border: none;
-<     background-clip: padding-box;
-<     margin: 0;
+< body,
+< input,
+< button,
+< select {
+<   font: message-box;
+<   outline: none;
+< }
+< 
+93a69,70
+>   margin-left: auto;
+>   margin-right: auto;
+272c249
+<   z-index: 9999;
+---
+>   z-index: 99;
+304,305c281,282
+<   background-image: url(images/texture.png),
+<                     linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+---
+>   background-image: url("images/texture.png"),
+>                     linear-gradient(rgba(105, 105, 105, 0.99), rgba(90, 90, 90, 0.95));
+1030c1007
+<   display: block; 
+---
+>   display: block;
+1492c1469
+<   display: block; 
+---
+>   display: block;
+1675c1652
+<   
+---
+> 
+1963a1941,1956
+> }
+> 
+> 
+> 
+> 
+> html[dir='ltr'] #toolbarViewerLeft > *, html[dir='ltr'] #toolbarViewerMiddle > *, html[dir='ltr'] #toolbarViewerRight > *, html[dir='ltr'] .findbar > * {
+>     display: inline-block;
+>     vertical-align: top;
+>     float:none;
+> }
+> 
+> 
+> .page {
+>     border: none;
+>     background-clip: padding-box;
+>     margin: 0;
