@@ -285,11 +285,15 @@ class RISSucheKrits
 	{
 		if (count($this->krits) == 1) switch ($this->krits[0]["typ"]) {
 			case "betreff":
-				return "Dokumente mit \"" . $this->krits[0]["suchbegriff"] . "\" im Betreff";
+				$such = $this->krits[0]["suchbegriff"];
+				if ($such[0] == "\"" && $such[strlen($such) - 1] == "\"") return "Dokumente mit " . $this->krits[0]["suchbegriff"] . " im Betreff";
+				return "Dokumente mit \"" . $such . "\" im Betreff";
 			case "antrag_typ":
 				return "Dokumente des Typs \"" . Dokument::$TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
 			case "volltext":
-				return "Volltextsuche nach \"" . $this->krits[0]["suchbegriff"] . "\"";
+				$such = $this->krits[0]["suchbegriff"];
+				if ($such[0] == "\"" && $such[strlen($such) - 1] == "\"") return "Volltextsuche nach " . $this->krits[0]["suchbegriff"];
+				return "Volltextsuche nach \"" . $such . "\"";
 			case "ba":
 				/** @var Bezirksausschuss $ba */
 				$ba = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $this->krits[0]["ba_nr"]));
