@@ -831,9 +831,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `rechtsdokument` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(200) NOT NULL,
-  `url_base` VARCHAR(100) NOT NULL,
-  `url_pdf` VARCHAR(100) NULL,
+  `titel` VARCHAR(200) NOT NULL,
+  `url_base` VARCHAR(200) NOT NULL,
+  `url_pdf` VARCHAR(200) NULL,
+  `url_html` VARCHAR(200) NULL,
   `str_beschluss` DATE NULL,
   `bekanntmachung` DATE NULL,
   `nr` VARCHAR(45) NULL,

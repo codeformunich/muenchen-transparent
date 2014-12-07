@@ -5,7 +5,7 @@ class StadtrechtParser extends RISParser
 {
     public function parseIndex() {
         $all_docs = [];
-        $index    = ris_download_string("http://www.muenchen.info/dir/recht/alpha_portal.html");
+        $index    = ris_download_string("http://www.muenchen.info/dir/recht/alph_portal.html");
         $lines    = explode("\n", $index);
         foreach ($lines as $line) {
             if(preg_match("/<td\><a href=\"(\S+)\.htm\" target=\"_blank\">([\S ]+)<\/a><\/td>/i", $line, $matches)) {
@@ -24,8 +24,9 @@ class StadtrechtParser extends RISParser
 
     // http://www.muenchen.info/dir/recht/23/23_20100525/css/23_20100525
     public function parseByURL($url_base, $titel, $id) {
+        echo "Lese ein: " . $titel . "\n";
+
         $index  = ris_download_string($url_base . "/css/" . $id . "_index.htm");
-        echo $index;
 
         preg_match("/gLastPage = (?<seiten>[0-9]+);/siu", $index, $matches);
         $seiten = $matches["seiten"];
@@ -72,12 +73,11 @@ class StadtrechtParser extends RISParser
         $rechtsdokument->url_html = $url_base . "/css/" . $id . ".htm";
         $rechtsdokument->url_pdf  = $url_base . ".pdf";
         $rechtsdokument->id       = $id;    // Intern
-        $rechtsdokument->titel    = $titel; // Zum Anzeigen
+        $rechtsdokument->titel    = html_entity_decode($titel, ENT_COMPAT, "UTF-8"); // Zum Anzeigen
         $rechtsdokument->html     = $texte;
         $rechtsdokument->css      = $css;
 
         $rechtsdokument->save();
-        var_dump($rechtsdokument->getErrors());
     }
 
     public function parseSeite($seite, $first) {

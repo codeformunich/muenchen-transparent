@@ -19,10 +19,10 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
 </section>
 
 <div class="well">
-    <section class="row teaser">
+    <section class="row teaser_buttons">
         <div class="col col-md-6">
             <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/glossar")) ?>"
-               class="btn btn-success teaser_button">
+               class="btn btn-success">
                 <h2><span class="glyphicon glyphicon-info-sign"></span>Glossar</h2>
 
                 <div class="description">
@@ -33,7 +33,7 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
 
         <div class="col col-md-6">
             <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/stadtrecht")) ?>"
-               class="btn btn-success teaser_button">
+               class="btn btn-success">
                 <h2><span class="glyphicon paragraph">§</span> Stadtrecht</h2>
 
                 <div class="description">

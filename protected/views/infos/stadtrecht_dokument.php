@@ -32,7 +32,7 @@ $this->inline_css .= $dokument->css;
 </section>
 
 
-<div class="row">
+<div class="row" style="overflow:hidden;">
     <!--<div class="col col-md-3">
         <section class="well" style="margin-top: 50px;">
             <ul>
