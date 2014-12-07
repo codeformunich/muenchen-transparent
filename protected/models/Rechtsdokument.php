@@ -5,12 +5,12 @@
  *
  * The followings are the available columns in table 'texte':
  * @property integer $id
- * @property string $name
+ * @property string $titel
  * @property string $url_base
+ * @property string $url_html
  * @property string $url_pdf
  * @property string $str_beschluss
  * @property string $bekanntmachung
- * @property string $nr
  * @property string $html
  * @property string $css
  *
@@ -43,12 +43,10 @@ class Rechtsdokument extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('url_base, name, nr', 'required'),
-            array('id', 'numerical', 'integerOnly' => true),
-            array('name', 'length', 'max' => 200),
-            array('url_base, url_base', 'length', 'max' => 100),
+            array('id', 'length', 'max' => 200),
+            array('titel', 'length', 'max' => 200),
+            array('url_base, url_html, url_pdf', 'length', 'max' => 200),
             array('str_beschluss, bekanntmachung', 'length', 'max' => 10),
-            array('nr', 'length', 'max' => 45),
         );
     }
 
@@ -66,13 +64,13 @@ class Rechtsdokument extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'             => 'ID',
-            'name'           => 'Name',
-            'url_base'       => 'URL-Base',
-            'url_pdf'        => 'PDF-URL',
+            'id'             => 'id',
+            'titel'          => 'titel',
+            'url_base'       => 'url-base',
+            'url_html'       => 'url-html',
+            'url_pdf'        => 'url-pdf',
             'str_beschluss'  => 'Stadtratsbeschluss',
             'bekanntmachung' => 'Bekanntmachung',
-            'nr'             => 'Dokumentennummer',
             'html'           => 'HTML',
             'css'            => 'CSS'
         );
