@@ -1,0 +1,4 @@
+33c33
+< var SCROLLBAR_PADDING = 40;
+---
+> var SCROLLBAR_PADDING = 0;

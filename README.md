@@ -49,6 +49,11 @@ MariaDB/MySQL-Konfiguration
 PHP-Konfiguration:
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
 
+PDF.JS Updaten:
+* Ggf. uglify-js installieren (npm install -g uglify-js)
+* /docs/viewer.js.diff und /docs/viewer.css.diff anwenden
+* uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js
+
 Code-Organisation
 -----------------
 

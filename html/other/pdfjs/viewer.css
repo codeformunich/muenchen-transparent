@@ -13,31 +13,6 @@
  * limitations under the License.
  */
 
-* {
-  padding: 0;
-  margin: 0;
-}
-
-html {
-  height: 100%;
-  /* Font size is needed to make the activity bar the correct size. */
-  font-size: 10px;
-}
-
-body {
-  height: 100%;
-  background-color: #404040;
-  background-image: url(images/texture.png);
-}
-
-body,
-input,
-button,
-select {
-  font: message-box;
-  outline: none;
-}
-
 .hidden {
   display: none !important;
 }
@@ -91,6 +66,8 @@ select {
 :-webkit-full-screen .page {
   margin-bottom: 100%;
   border: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 :-moz-full-screen .page {
@@ -1961,5 +1938,21 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   #scaleSelectContainer, #pageNumberLabel {
     display: none;
   }
+}
+
+
+
+
+html[dir='ltr'] #toolbarViewerLeft > *, html[dir='ltr'] #toolbarViewerMiddle > *, html[dir='ltr'] #toolbarViewerRight > *, html[dir='ltr'] .findbar > * {
+    display: inline-block;
+    vertical-align: top;
+    float:none;
+}
+
+
+.page {
+    border: none;
+    background-clip: padding-box;
+    margin: 0;
 }
 

@@ -79,6 +79,17 @@ h1.small {
     }
   }
 }
+#content > section.well.pdfjs {
+  padding-bottom: 0;
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
+  #outerContainer {
+    margin-left: -19px;
+    margin-right: -19px;
+    width: auto;
+  }
+}
 
 .modal-backdrop {
   display: inherit;
