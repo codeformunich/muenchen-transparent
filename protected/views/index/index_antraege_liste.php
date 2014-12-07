@@ -104,7 +104,8 @@ if (count($antraege) > 0) {
 					$inhalt = $ru->inhaltsverzeichnis();
 					if (count($inhalt) > 0) echo '<ul class="toc">';
 					foreach ($inhalt as $inh)  {
-						echo "<li>" . CHtml::encode($inh["titel"]) . "</li>";
+						if ($inh["link"]) echo '<li>' . CHtml::link($inh["titel"], $inh["link"]) . '</li>';
+						else echo '<li>' . CHtml::encode($inh["titel"]) . '</li>';
 					}
 					if (count($inhalt) > 0) echo '</ul>';
 

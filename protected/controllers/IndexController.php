@@ -488,7 +488,7 @@ class IndexController extends RISBaseController
 		/** @var Dokument $dokument */
 		$dokument = Dokument::model()->findByPk($id);
         try {
-            $data = ris_download_string("http://www.ris-muenchen.de" . $dokument->url);
+            $data = ris_download_string($dokument->getLink());
 
             Header("Content-Type: application/pdf; charset=UTF-8");
             echo $data;
@@ -679,6 +679,7 @@ class IndexController extends RISBaseController
 			"antraege"          => $antraege,
 			"datum"             => $datum_von,
 			"weiter_links_oben" => true,
+			"rathausumschauen"  => $rus,
 		));
 
 		Header("Content-Type: application/json; charset=UTF-8");
