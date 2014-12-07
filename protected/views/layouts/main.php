@@ -34,7 +34,7 @@
     if ($this->load_pdf_js) { ?>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta name="google" content="notranslate">
-        <link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
+        <link rel="stylesheet" href="/other/pdfjs/viewer_ris.css"/>
 
     <? } ?>
 
