@@ -184,8 +184,8 @@ class StadtratsvorlageParser extends RISParser
 						$erg->antrag_id = null;
 						$erg->save();
 					}
-					Yii::app()->db->createCommand("UPDATE antraege_ergebnisse_history SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
-					Yii::app()->db->createCommand("UPDATE antraege_ergebnisse SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
+					Yii::app()->db->createCommand("UPDATE tagesordnungspunkte_history SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
+					Yii::app()->db->createCommand("UPDATE tagesordnungspunkte SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
 					Yii::app()->db->createCommand("DELETE FROM antraege_orte WHERE antrag_id = " . IntVal($vorlage_id))->execute();
 					Yii::app()->db->createCommand("DELETE FROM antraege_vorlagen WHERE antrag1 = " . IntVal($vorlage_id))->execute();
 

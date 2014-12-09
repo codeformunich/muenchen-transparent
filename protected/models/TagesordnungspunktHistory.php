@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "antraege_ergebnisse".
+ * This is the model class for table "tagesordnungspunkte_history".
  *
- * The followings are the available columns in table 'antraege_ergebnisse':
+ * The followings are the available columns in table 'tagesordnungspunkte_history':
  * @property integer $id
  * @property integer $vorgang_id
  * @property string $datum_letzte_aenderung
