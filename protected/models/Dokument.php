@@ -190,6 +190,7 @@ class Dokument extends CActiveRecord implements IRISItem
 	public function getName($langfassung = false)
 	{
 		$name = str_replace("_", " ", $this->name);
+
 		if ($langfassung) {
 			if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
 			if ($name == "Niederschrift (oeff)") return "Niederschrift (öffentlich)";
@@ -200,6 +201,8 @@ class Dokument extends CActiveRecord implements IRISItem
 			if ($name == "Niederschrift (oeff)") return "Niederschrift";
 
 			$name = preg_replace("/^V [0-9]+ /", "", $name);
+			$name = preg_replace("/^(VV|VPA) [0-9 \-]+ /", "", $name);
+			$name = preg_replace("/^OE V[0-9]+ /", "", $name);
 			$name = preg_replace("/^[0-9]{2}\-[0-9]{2}\-[0-9]{2} +/", "", $name);
 			$name = preg_replace("/ vom [0-9]{2}\.[0-9]{2}\.[0-9]{4}/", "", $name);
 
@@ -211,6 +214,10 @@ class Dokument extends CActiveRecord implements IRISItem
 				$name = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $matches["name"]); // @TODO: False positives filtern? Geht das überhaupt?
 				return $matches["anfang"] . " (" . trim($name) . ")";
 			}, $name);
+
+			if (strpos($name, "Aend") !== false || strpos($name, "Ergae") !== false) {
+				$name = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $name);
+			}
 
 			return trim($name);
 		}
