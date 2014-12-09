@@ -915,6 +915,10 @@ ul.terminliste > li > .termindetails {
   }
   td {
     width: 420px;
+
+    >ul {
+      padding-left: 20px;
+    }
   }
   #tag_add_form {
     .selectizejs-control {

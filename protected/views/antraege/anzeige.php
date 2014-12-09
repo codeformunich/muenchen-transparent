@@ -171,11 +171,11 @@ $name = $antrag->getName(true);
 					<th>Gremium:</th>
 					<td><?
 						if ($antrag->ba_nr > 0) {
-							echo CHtml::link("Bezirksausschuss " . $antrag->ba_nr, $antrag->ba->getLink()) . " (" . CHtml::encode($antrag->ba->name) . ")<br>";
+							echo CHtml::link("Bezirksausschuss " . $antrag->ba_nr, $antrag->ba->getLink()) . " (" . CHtml::encode($antrag->ba->name) . ")";
 						} else {
-							echo "Stadtrat<br>";
+							echo "Stadtrat";
 						}
-						echo CHtml::encode(strip_tags($antrag->referat));
+						if ($antrag->referat != "") echo " / " . CHtml::encode(strip_tags($antrag->referat));
 						?></td>
 				</tr>
 				<tr>
@@ -229,31 +229,32 @@ $name = $antrag->getName(true);
 					<tr>
 						<th>Behandelt:</th>
 						<td>
-							<table>
-								<thead>
-								<tr>
-									<th>Termin</th>
-									<th>Gremium</th>
-									<th>Beschluss</th>
-									<th>Entscheidung</th>
-								</tr>
-								</thead>
-								<?
+							<?
+							if (count($antrag->ergebnisse) > 0) {
+								echo '<ul>';
 								foreach ($antrag->ergebnisse as $ergebnis) {
 									$termin = $ergebnis->sitzungstermin;
-									echo '<tr><td>';
-									if ($termin) echo CHtml::link($termin->termin, $termin->getLink());
-									if ($ergebnis->status != "") echo " (" . CHtml::encode($ergebnis->status) . ")";
-									echo '</td><td>';
-									if ($termin) echo CHtml::link($termin->gremium->getName(), $termin->getLink());
-									echo '</td><td>';
-									echo CHtml::encode($ergebnis->beschluss_text);
-									echo '</td><td>';
-									echo CHtml::encode($ergebnis->entscheidung);
-									echo '</td></tr>';
+									echo '<li>';
+									echo CHtml::link(RISTools::datumstring($termin->termin) . ', ' . $termin->gremium->getName(), $termin->getLink());
+									if ($ergebnis->beschluss_text != '' || $ergebnis->entscheidung != '') {
+										echo '<br>';
+										$text = $ergebnis->beschluss_text;
+										if ($ergebnis->beschluss_text != '' && $ergebnis->entscheidung != "") $text .= ', ';
+										$text .= $ergebnis->entscheidung;
+										if (count($ergebnis->dokumente) == 1) {
+											echo "Ergebnis: " . CHtml::link($text, $ergebnis->dokumente[0]->getLink());
+										} else {
+											echo "Ergebnis: " . CHtml::encode($text);
+											foreach ($ergebnis->dokumente as $dok) {
+												echo '<br>' . CHtml::link($dok->getName(), $dok->getLink());
+											}
+										}
+									}
+									echo '</li>';
 								}
-								?>
-							</table>
+								echo '</ul>';
+							}
+							?>
 						</td>
 					</tr>
 				<?
