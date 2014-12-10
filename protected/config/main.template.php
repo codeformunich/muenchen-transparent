@@ -37,6 +37,7 @@ mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");
 ini_set('mbstring.substitute_character', "none");
 setlocale(LC_TIME, "de_DE.UTF-8");
+setlocale(LC_NUMERIC, "C"); // Scheint in manchen Umgebungen (HHVM?) sonst bei de_DE Probleme mit FloatVal zu machen
 
 require_once(__DIR__ . "/urls.php");
 
