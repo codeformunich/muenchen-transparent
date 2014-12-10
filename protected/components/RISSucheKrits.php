@@ -306,6 +306,8 @@ class RISSucheKrits
 				$ref = Referat::model()->findByPk($this->krits[0]["referat_id"]);
 				return $ref->name;
 				break;
+			case "antrag_wahlperiode":
+				return "Dokumente der Wahlperiode " . $this->krits[0]["suchbegriff"];
 			case "antrag_nr":
 				return "Antrag Nr. " . str_replace("*", " ", $this->krits[0]["suchbegriff"]);
 		}
@@ -327,7 +329,7 @@ class RISSucheKrits
 					$krits[] = "aus dem Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
 					break;
 				case "geo":
-					$ort     = OrtGeo::findClosest($this->krits[0]["lng"], $cr["lat"]);
+					$ort     = OrtGeo::findClosest($cr["lng"], $cr["lat"]);
 					$krits[] = "mit einem Ortsbezug (ungefähr: " . IntVal($cr["radius"]) . "m um \"" . $ort->ort . "\")";
 					break;
 				case "antrag_nr":
@@ -335,8 +337,11 @@ class RISSucheKrits
 					break;
 				case "referat":
 					/** @var Referat $ref */
-					$ref = Referat::model()->findByPk($this->krits[0]["referat_id"]);
+					$ref = Referat::model()->findByPk($cr["referat_id"]);
 					$krits[] = "im Zuständigkeitsbereich des " . $ref->name;
+					break;
+				case "antrag_wahlperiode":
+					$krits[] = "aus der Wahlperiode " . CHtml::encode($cr["suchbegriff"]);
 					break;
 				default:
 					$krits[] = json_encode($cr);
