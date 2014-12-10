@@ -291,6 +291,16 @@ class BenutzerIn extends CActiveRecord
 		return false;
 	}
 
+
+	/**
+	 * @return BenutzerIn[]
+	 */
+	public static function heuteZuBenachrichtigendeBenutzerInnen() {
+		/** @var BenutzerIn[] $benutzerInnen */
+		$benutzerInnen = BenutzerIn::model()->findAllByAttributes(array("email_bestaetigt" => 1));
+		return $benutzerInnen;
+	}
+
 	/**
 	 * @param int[] $document_ids
 	 * @param RISSucheKrits $benachrichtigung

@@ -68,8 +68,7 @@ class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
 			/** @var BenutzerIn $benutzerIn */
 			$this->benachrichtigeBenutzerIn($benutzerIn, $args[1]);
 		} else {
-			/** @var BenutzerIn[] $benutzerInnen */
-			$benutzerInnen = BenutzerIn::model()->findAll();
+			$benutzerInnen = BenutzerIn::heuteZuBenachrichtigendeBenutzerInnen();
 			foreach ($benutzerInnen as $benutzerIn) try {
 				$this->benachrichtigeBenutzerIn($benutzerIn);
 			} catch (Exception $e) {
