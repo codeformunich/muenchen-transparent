@@ -8,6 +8,17 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 	{
 		echo "Gestartet: " . date("Y-m-d H:i:s");
 
+
+		try {
+			$parser = new ReferentInnenParser();
+			$parser->parseUpdate();
+
+			echo "Done ReferentInnen: " . date("Y-m-d H:i:s");
+		} catch (Exception $e) {
+			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception ReferentIn", print_r($e, true), null, "system");
+		}
+
+
 		try {
 			$parser = new StadtratTerminParser();
 			$parser->parseUpdate();
@@ -16,6 +27,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Stadtrattermin", print_r($e, true), null, "system");
 		}
+
 
 		try {
 			$parser = new StadtratsvorlageParser();
@@ -26,6 +38,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception Vorlagen", print_r($e, true), null, "system");
 		}
 
+
 		try {
 			$parser = new StadtratsantragParser();
 			$parser->parseUpdate();
@@ -34,6 +47,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StR-Anträge", print_r($e, true), null, "system");
 		}
+
 
 		try {
 			$parser = new StadtraetInnenParser();
@@ -44,7 +58,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 		} catch (Exception $e) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception StadträtInnen", print_r($e, true), null, "system");
 		}
-
 
 
 		try {

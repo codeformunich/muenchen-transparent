@@ -34,8 +34,9 @@ class StadtraetInnenParser extends RISParser
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
 
-		$daten     = new StadtraetIn();
-		$daten->id = $stadtraetIn_id;
+		$daten             = new StadtraetIn();
+		$daten->id         = $stadtraetIn_id;
+		$daten->referentIn = 0;
 
 		if (preg_match("/introheadline\">(.*)<\/h3/siU", $html_details, $matches)) {
 			$daten->name = trim(str_replace("&nbsp;", " ", $matches[1]));
@@ -193,7 +194,7 @@ class StadtraetInnenParser extends RISParser
 	{
 		$anz                              = 350;
 		$this->bearbeitete_stadtraetInnen = array();
-		$first = true;
+		$first                            = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
 			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, $first);

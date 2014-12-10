@@ -33,9 +33,10 @@ class BAMitgliederParser extends RISParser
 			if (!$strIn) {
 				echo "Neu anlegen: " . $matches["mitglied_id"][$i] . " - " . $name . " (" . $fraktion_name . ")\n";
 
-				$strIn       = new StadtraetIn();
-				$strIn->name = $name;
-				$strIn->id   = $matches["mitglied_id"][$i];
+				$strIn             = new StadtraetIn();
+				$strIn->name       = $name;
+				$strIn->id         = $matches["mitglied_id"][$i];
+				$strIn->referentIn = 0;
 
 				$x                  = explode(".", $matches["mitgliedschaft"][$i]);
 				$strIn->gewaehlt_am = $x[2] . "-" . $x[1] . "-" . $x[0];

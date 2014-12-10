@@ -2,6 +2,7 @@
 
 /**
  * @property integer $id
+ * @property integer $referentIn
  * @property string $gewaehlt_am
  * @property string $bio
  * @property string $web
@@ -15,6 +16,7 @@
  * @property Person[] $personen
  * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
  * @property StadtraetInGremium[] $mitgliedschaften
+ * @property StadtraetInReferat[] $stadtraetInnenReferate
  */
 class StadtraetIn extends CActiveRecord implements IRISItem
 {
@@ -44,8 +46,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, name', 'required'),
-			array('id', 'numerical', 'integerOnly' => true),
+			array('id, name, referentIn', 'required'),
+			array('id, referentIn', 'numerical', 'integerOnly' => true),
 			array('web', 'length', 'max' => 250),
 			array('name', 'length', 'max' => 100),
 			array('twitter', 'length', 'max' => 45),
@@ -66,6 +68,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			'personen'                 => array(self::HAS_MANY, 'Person', 'ris_stadtraetIn'),
 			'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'),
 			'mitgliedschaften'         => array(self::HAS_MANY, 'StadtraetInGremium', 'stadtraetIn_id'),
+			'stadtraetInnenReferate'   => array(self::HAS_MANY, 'StadtraetInReferat', 'stadtraetIn_id'),
 		);
 	}
 

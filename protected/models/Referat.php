@@ -15,6 +15,7 @@
  *
  * The followings are the available model relations:
  * @property Antrag[] $antraege
+ * @property StadtraetInReferat[] $stadtraetInnenReferate
  */
 class Referat extends CActiveRecord implements IRISItem
 {
@@ -62,7 +63,8 @@ class Referat extends CActiveRecord implements IRISItem
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'antraege' => array(self::HAS_MANY, 'Antrag', 'referat_id'),
+			'antraege'               => array(self::HAS_MANY, 'Antrag', 'referat_id'),
+			'stadtraetInnenReferate' => array(self::HAS_MANY, 'StadtraetInReferat', 'referat_id'),
 		);
 	}
 
@@ -113,10 +115,10 @@ class Referat extends CActiveRecord implements IRISItem
 	/**
 	 * @return string
 	 */
-	public function getDate() {
+	public function getDate()
+	{
 		return "0000-00-00 00:00:00";
 	}
-
 
 
 	/**
