@@ -420,6 +420,18 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getDokumentenMaxTS() {
+		$max_date = 0;
+		foreach ($this->dokumente as $dokument) {
+			$dat = RISTools::date_iso2timestamp($dokument->getDate());
+			if ($dat > $max_date) $max_date = $dat;
+		}
+		return $max_date;
+	}
+
+	/**
 	 * @return Dokument[]
 	 */
 	public function getDokumente()

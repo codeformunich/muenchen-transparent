@@ -34,9 +34,6 @@ if (isset($title) && $title !== null) {
 }
 
 if (!isset($rathausumschauen)) $rathausumschauen = array();
-/** @var Rathausumschau[] $rus_by_date */
-$rus_by_date = array();
-foreach ($rathausumschauen as $ru) $rus_by_date[$ru->datum] = $ru;
 
 $datum_nav = ((isset($neuere_url_ajax) && $neuere_url_ajax !== null) || (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null));
 if (count($antraege) > 0) {
@@ -69,54 +66,59 @@ if (count($antraege) > 0) {
 	echo '<ul class="antragsliste2">';
 	$akt_datum = null;
 
+	$by_date = array();
+	foreach ($rathausumschauen as $ru) {
+		if (!isset($by_date[$ru->datum])) $by_date[$ru->datum] = array();
+		$by_date[$ru->datum][] = $ru;
+	}
 	foreach ($antraege as $ant) {
 		if (!method_exists($ant, "getName")) {
 			echo '<li class="panel panel-danger">
 			<div class="panel-heading">Fehler</div><div class="panel-body">' . get_class($ant) . "</div></li>";
 		} else {
-			$max_date = 0;
+			$datum = date("Y-m-d", $ant->getDokumentenMaxTS());
+			if (!isset($by_date[$datum])) $by_date[$datum] = array();
+			$by_date[$datum][] = $ant;
+		}
+	}
+	krsort($by_date);
+
+	foreach ($by_date as $date => $entries) foreach ($entries as $entry) {
+		if (is_a($entry, "Rathausumschau")) {
+			/** @var Rathausumschau $entry */
+			echo '<li class="panel panel-success">
+			<div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"><span>';
+			echo CHtml::encode($entry->getName(true)) . '</a></span></div>';
+			echo '<div class="panel-body">';
+
+			echo "<div class='add_meta'>";
+			echo date("d.m.", RISTools::date_iso2timestamp($entry->datum));
+			echo "</div>";
+
+			$inhalt = $entry->inhaltsverzeichnis();
+			if (count($inhalt) > 0) echo '<ul class="toc">';
+			foreach ($inhalt as $inh)  {
+				if ($inh["link"]) echo '<li>' . CHtml::link($inh["titel"], $inh["link"]) . '</li>';
+				else echo '<li>' . CHtml::encode($inh["titel"]) . '</li>';
+			}
+			if (count($inhalt) > 0) echo '</ul>';
+
+			echo '</div>';
+			echo '</li>';
+		} else {
+			/** @var Antrag $entry */
 			$doklist  = "";
-			foreach ($ant->dokumente as $dokument) {
-				//$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
+			foreach ($entry->dokumente as $dokument) {
 				$dokurl = $dokument->getLinkZumDokument();
 				$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
 				if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
 				$doklist .= ">" . CHtml::encode($dokument->getName(false)) . "</a></li>";
 				$dat = RISTools::date_iso2timestamp($dokument->getDate());
-				if ($dat > $max_date) $max_date = $dat;
 			}
 
-			$datum = date("Y-m-d", $max_date);
-			if ($datum != $akt_datum) {
-				$akt_datum = $datum;
-				if (isset($rus_by_date[$akt_datum])) {
-					$ru = $rus_by_date[$akt_datum];
-
-					echo '<li class="panel panel-success">
-			<div class="panel-heading"><a href="' . CHtml::encode($ru->getLink()) . '"><span>';
-					echo CHtml::encode($ru->getName(true)) . '</a></span></div>';
-					echo '<div class="panel-body">';
-
-					echo "<div class='add_meta'>";
-					echo date("d.m.", RISTools::date_iso2timestamp($ru->datum));
-					echo "</div>";
-
-					$inhalt = $ru->inhaltsverzeichnis();
-					if (count($inhalt) > 0) echo '<ul class="toc">';
-					foreach ($inhalt as $inh)  {
-						if ($inh["link"]) echo '<li>' . CHtml::link($inh["titel"], $inh["link"]) . '</li>';
-						else echo '<li>' . CHtml::encode($inh["titel"]) . '</li>';
-					}
-					if (count($inhalt) > 0) echo '</ul>';
-
-					echo '</div>';
-					echo '</li>';
-				}
-			}
-
-			$titel = $ant->getName(true);
+			$titel = $entry->getName(true);
 			echo '<li class="panel panel-primary">
-			<div class="panel-heading"><a href="' . CHtml::encode($ant->getLink()) . '"';
+			<div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"';
 			if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
 			echo '><span>';
 			echo CHtml::encode($titel) . '</a></span></div>';
@@ -125,9 +127,9 @@ if (count($antraege) > 0) {
 
 			echo "<div class='add_meta'>";
 			$parteien = array();
-			foreach ($ant->antraegePersonen as $person) {
+			foreach ($entry->antraegePersonen as $person) {
 				$name   = $person->person->getName(true);
-				$partei = $person->person->ratePartei($ant->gestellt_am);
+				$partei = $person->person->ratePartei($entry->gestellt_am);
 				$key    = ($partei ? $partei : $name);
 				if (!isset($parteien[$key])) $parteien[$key] = array();
 				$parteien[$key][] = $name;
@@ -144,9 +146,9 @@ if (count($antraege) > 0) {
 			}
 			if (count($p_strs) > 0) echo implode(", ", $p_strs) . ", ";
 
-			if ($ant->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $ant->ba_nr . " (" . $ant->ba->name . ")") . "' class='ba'>BA " . $ant->ba_nr . "</span>, ";
+			if ($entry->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $entry->ba_nr . " (" . $entry->ba->name . ")") . "' class='ba'>BA " . $entry->ba_nr . "</span>, ";
 
-			echo date("d.m.", $max_date);
+			echo date("d.m.", $entry->getDokumentenMaxTS());
 			echo "</div>";
 
 			echo "<ul class='dokumente'>";
