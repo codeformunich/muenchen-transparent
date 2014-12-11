@@ -10,6 +10,7 @@
  * @property string $plz
  * @property string $email
  * @property string $telefon
+ * @property string $website
  * @property string $kurzbeschreibung
  * @property integer $aktiv
  *
@@ -48,7 +49,7 @@ class Referat extends CActiveRecord implements IRISItem
 			array('id, name, urlpart', 'required'),
 			array('id, aktiv', 'numerical', 'integerOnly' => true),
 			array('name, email, telefon', 'length', 'max' => 100),
-			array('kurzbeschreibung', 'length', 'max' => 200),
+			array('kurzbeschreibung, website', 'length', 'max' => 200),
 			array('strasse, urlpart', 'length', 'max' => 45),
 			array('plz', 'length', 'max' => 10),
 			array('ort', 'length', 'max' => 30),
@@ -82,6 +83,7 @@ class Referat extends CActiveRecord implements IRISItem
 			'strasse'          => 'Straße',
 			'email'            => 'E-Mail',
 			'telefon'          => 'Telefonnummer',
+			'website'          => 'Website',
 			'kurzbeschreibung' => 'Kurzbeschreibung',
 			'aktiv'            => 'Aktiv',
 		);

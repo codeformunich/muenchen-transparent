@@ -30,8 +30,20 @@ $this->pageTitle = $referat->getName();
 		</div>
 		<div class="col col-md-5">
 			<section class="well">
-				<h2>Informationen</h2>
-				<h3>Kontakt</h3>
+				<h2>Anschrift</h2>
+				<?
+				echo CHtml::encode($referat->strasse) . "<br>";
+				echo CHtml::encode($referat->plz . " " . $referat->ort) . "<br><br>";
+				if ($referat->email != "") echo CHtml::link($referat->email, "mailto:" . $referat->email) . "<br>";
+				if ($referat->telefon != "") echo CHtml::encode($referat->telefon) . "<br>";
+				if ($referat->website != "") echo '<br><a href="' . CHtml::encode($referat->website) . '" class="btn btn-success">Zur Website <span class="mdi-navigation-chevron-right" style="font-size: 200%; font-weight: bold; float: right; position: absolute; right: 0; top: 5px;"></span></a>';
+				?>
+				<br><br><br>
+				<h2>ReferentIn</h2>
+				<?
+				foreach ($referat->stadtraetInnenReferate as $str) echo CHtml::encode($str->stadtraetIn->name) . "<br>";
+				?>
+				<br><br>
 
 			</section>
 		</div>

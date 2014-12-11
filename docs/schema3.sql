@@ -351,6 +351,7 @@ CREATE TABLE `referate` (
   `ort` varchar(30) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `telefon` varchar(100) DEFAULT NULL,
+  `website` VARCHAR(200) DEFAULT NULL,
   `kurzbebeschreibung` varchar(200) DEFAULT NULL,
   `aktiv` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
