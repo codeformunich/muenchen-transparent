@@ -310,6 +310,13 @@ class RISTools
 		$mandrill = new Mandrill(MANDRILL_API_KEY);
 		$tags     = array();
 		if ($mail_tag !== null) $tags[] = $mail_tag;
+
+		$headers = array();
+		if ($mail_tag == 'newsletter') {
+			if ($precedence) $headers['Precedence'] = 'bulk';
+			if ($auto_submitted) $headers['Auto-Submitted'] = 'auto-generated';
+		}
+
 		$message = array(
 			'html'              => $text_html,
 			'text'              => $text_plain,
@@ -328,6 +335,7 @@ class RISTools
 			'track_clicks'      => false,
 			'track_opens'       => false,
 			'inline_css'        => true,
+			'headers'           => $headers,
 		);
 		$mandrill->messages->send($message, false);
 	}
