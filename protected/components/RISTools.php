@@ -313,8 +313,8 @@ class RISTools
 
 		$headers = array();
 		if ($mail_tag == 'newsletter') {
-			if ($precedence) $headers['Precedence'] = 'bulk';
-			if ($auto_submitted) $headers['Auto-Submitted'] = 'auto-generated';
+			$headers['Precedence'] = 'bulk';
+			$headers['Auto-Submitted'] = 'auto-generated';
 		}
 
 		$message = array(
