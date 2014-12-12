@@ -10,13 +10,13 @@ $this->pageTitle = "Stadtrecht";
 ?>
 
 <div class="row">
-    <div class="col col-md-3">
+    <div class="col col-md-4">
         <section class="well" id="auswahl" style="margin-top: 50px;">
-            <input class="search" placeholder="Suche" />
+            <input class="search" placeholder="Suche" style="width: 100%;"/>
             <ul class="list">
             <?
             /** @var Rechtsdokument[] $dokumente */
-            $dokumente = Rechtsdokument::model()->findAll();
+            $dokumente = Rechtsdokument::model()->alle_sortiert();
             foreach ($dokumente as $dok) {
                 echo '<li><span class="list-name">' . CHtml::link($dok->titel, Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</span></li>';
             }
@@ -24,7 +24,7 @@ $this->pageTitle = "Stadtrecht";
             </ul>
         </section>
     </div>
-    <div class="col col-md-9">
+    <div class="col col-md-8">
         <section class="well"  style="margin-top: 50px;">
             <ul class="breadcrumb">
                 <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>

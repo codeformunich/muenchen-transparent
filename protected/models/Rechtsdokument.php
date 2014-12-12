@@ -76,4 +76,21 @@ class Rechtsdokument extends CActiveRecord
         );
     }
 
+    public function alle_sortiert()
+    {
+        $dokumente = $this->findAll();
+        usort($dokumente, function ($dok1, $dok2) {
+            /**
+             * @var Rechtsdokument $dok1
+             * @var Rechtsdokument $dok2
+             */
+            $name1 = strtolower($dok1->titel);
+            $name2 = strtolower($dok2->titel);
+            if ($name1 == $name2) {
+                return 0;
+            }
+            return ($name1 > $name2) ? +1 : -1;
+        });
+        return $dokumente;
+    }
 }
