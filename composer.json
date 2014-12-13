@@ -38,6 +38,7 @@
         "zendframework/zend-mail": "2.3.*",
         "zendframework/zend-mime": "2.3.*",
         "tijsverkoyen/css-to-inline-styles": "1.3.*@dev",
-        "mandrill/mandrill": "dev-master"
+        "mandrill/mandrill": "dev-master",
+        "heise/shariff": "dev-master"
     }
 }

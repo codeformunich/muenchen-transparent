@@ -862,4 +862,22 @@ class IndexController extends RISBaseController
 			"dokument" => Dokument::getCachedByID($id)
 		));
 	}
+
+
+	/**
+	 * @param string $url
+	 */
+	public function actionShariffData($url) {
+		Header("Content-Type: application/json; charset=UTF-8");
+		$shariff = new \Heise\Shariff\Backend(array(
+			"domain" => $_SERVER["HTTP_HOST"],
+			"services" => array("Facebook", "Twitter", "GooglePlus"),
+			"cache" => array(
+				"ttl" => 60,
+				"cacheDir" => TMP_PATH,
+			)
+		));
+		echo json_encode($shariff->get($url));
+		Yii::app()->end();
+	}
 }
