@@ -15,14 +15,17 @@ $this->inline_css .= $dokument->css;
         <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtrecht<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <!--li><input class="search" placeholder="Suche" /></li-->
-                <?
-                $dokumente = Rechtsdokument::model()->findAll();
-                foreach ($dokumente as $dok) {
-                     echo '<li><!--span class="list-name"-->' . CHtml::link($dok->titel, Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '<!--/span--></li>'. "\n";
-                }
-                ?>
+            <ul class="dropdown-menu" id="auswahl" style="padding: 5px 10px;">
+                <li><input class="search" placeholder="Suche" style="width: 100%" /></li>
+                <li><ul class="list" style="padding: 0;">
+                    <?
+                    /** @var Rechtsdokument[] $dokumente */
+                    $dokumente = Rechtsdokument::model()->alle_sortiert();
+                    foreach ($dokumente as $dok) {
+                        echo '<li><span class="list-name">' . CHtml::link($dok->titel, Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</span></li>' . "\n";
+                    }
+                    ?>
+                </ul></li>
             </ul>
         </li>
         <li class="active"><?= $dokument->titel ?></li>
@@ -60,4 +63,10 @@ var options = {
 };
 
 var userList = new List('auswahl', options);
+</script>
+<script>
+// http://stackoverflow.com/questions/10863821/bootstrap-dropdown-closing-when-clicked
+$('.dropdown-menu input, .dropdown-menu label').click(function(e) {
+    e.stopPropagation();
+});
 </script>
