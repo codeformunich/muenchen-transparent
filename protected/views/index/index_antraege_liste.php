@@ -88,7 +88,7 @@ if (count($antraege) > 0) {
 			/** @var Rathausumschau $entry */
 			echo '<li class="panel panel-success">
 			<div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"><span>';
-			echo CHtml::encode($entry->getName(true)) . '</a></span></div>';
+			echo CHtml::encode($entry->getName(true)) . '</span></a></div>';
 			echo '<div class="panel-body">';
 
 			echo "<div class='add_meta'>";
@@ -121,7 +121,7 @@ if (count($antraege) > 0) {
 			<div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"';
 			if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
 			echo '><span>';
-			echo CHtml::encode($titel) . '</a></span></div>';
+			echo CHtml::encode($titel) . '</span></a></div>';
 			echo '<div class="panel-body">';
 
 
