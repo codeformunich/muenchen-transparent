@@ -197,37 +197,7 @@ class Dokument extends CActiveRecord implements IRISItem
 
 			return trim($name);
 		} else {
-			if ($name == "Deckblatt VV") return "Deckblatt";
-			if ($name == "Niederschrift (oeff)") return "Niederschrift";
-
-			$name = preg_replace("/^V [0-9]+ /", "", $name);
-			$name = preg_replace("/^(VV|VPA|KVA) ?[0-9 \.\-]+ (TOP)?/", "", $name);
-			$name = preg_replace("/^OE V[0-9]+ /", "", $name);
-			$name = preg_replace("/^[0-9]{2}\-[0-9]{2}\-[0-9]{2} +/", "", $name);
-			$name = preg_replace("/ vom [0-9]{2}\.[0-9]{2}\.[0-9]{4}/", "", $name);
-			$name = preg_replace("/^(CSU|SPD|B90GrueneRL|OeDP|DIE LINKE) \-? ?Antrag/siU", "Antrag", $name);
-
-			$name = preg_replace_callback("/(?<jahr>20[0-9]{2})(?<monat>[0-1][0-9])(?<tag>[0-9]{2})/siu", function($matches) {
-				return $matches['tag'] . '.' . $matches['monat'] . '.' . $matches['jahr'];
-			}, $name);
-			$name = preg_replace_callback("/(?<jahr>20[0-9]{2})\-(?<monat>[0-1][0-9])\-(?<tag>[0-9]{2})/siu", function($matches) {
-				return $matches['tag'] . '.' . $matches['monat'] . '.' . $matches['jahr'];
-			}, $name);
-			$name = preg_replace_callback("/(?<tag>[0-9]{2})(?<monat>[0-1][0-9])(?<jahr>20[0-9]{2})/siu", function($matches) {
-                                return $matches['tag'] . '.' . $matches['monat'] . '.' . $matches['jahr'];
-                        }, $name);
-
-			// Der Name der Anfrage/des Antrags steht schon im Titel des Antrags => Redundant
-			if (preg_match("/^Antrag[ \.]/", $name)) $name = "Antrag";
-			if (preg_match("/^Anfrage[ \.]/", $name)) $name = "Anfrage";
-
-			$name = preg_replace_callback("/^(?<anfang>Anlage [0-9]+ )(?<name>.+)$/", function ($matches) {
-				return $matches["anfang"] . " (" . trim($matches["name"]) . ")";
-			}, $name);
-
-			$name = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $name); // @TODO: False positives filtern? Geht das überhaupt?
-
-			return trim($name);
+			return RISTools::korrigiereDokumentenTitel($name);
 		}
 	}
 

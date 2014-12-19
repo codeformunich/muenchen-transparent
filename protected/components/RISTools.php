@@ -169,6 +169,46 @@ class RISTools
 
 
 	/**
+	 * @param string $titel
+	 * @return string
+	 */
+	public static function korrigiereDokumentenTitel($titel) {
+		$titel = preg_replace("/^V [0-9]+ /", "", $titel);
+		$titel = preg_replace("/^(VV|VPA|KVA) ?[0-9 \.\-]+ (TOP)?/", "", $titel);
+		$titel = preg_replace("/^OE V[0-9]+ /", "", $titel);
+		$titel = preg_replace("/^[0-9]{2}\-[0-9]{2}\-[0-9]{2} +/", "", $titel);
+		$titel = preg_replace("/ vom [0-9]{2}\.[0-9]{2}\.[0-9]{4}/", "", $titel);
+		$titel = preg_replace("/^(CSU|SPD|B90GrueneRL|OeDP|DIE LINKE) \-? ?Antrag/siU", "Antrag", $titel);
+
+		$titel = preg_replace_callback("/(?<jahr>20[0-9]{2})(?<monat>[0-1][0-9])(?<tag>[0-9]{2})/siu", function($matches) {
+			return $matches['tag'] . '.' . $matches['monat'] . '.' . $matches['jahr'];
+		}, $titel);
+		$titel = preg_replace_callback("/(?<jahr>20[0-9]{2})\-(?<monat>[0-1][0-9])\-(?<tag>[0-9]{2})/siu", function($matches) {
+			return $matches['tag'] . '.' . $matches['monat'] . '.' . $matches['jahr'];
+		}, $titel);
+		$titel = preg_replace_callback("/(?<tag>[0-9]{2})(?<monat>[0-1][0-9])(?<jahr>20[0-9]{2})/siu", function($matches) {
+			return $matches['tag'] . '.' . $matches['monat'] . '.' . $matches['jahr'];
+		}, $titel);
+
+		// Der Name der Anfrage/des Antrags steht schon im Titel des Antrags => Redundant
+		if (preg_match("/^Antrag[ \.]/", $titel)) $titel = "Antrag";
+		if (preg_match("/^Anfrage[ \.]/", $titel)) $titel = "Anfrage";
+
+		$titel = preg_replace_callback("/^(?<anfang>Anlage [0-9]+ )(?<name>.+)$/", function ($matches) {
+			return $matches["anfang"] . " (" . trim($matches["name"]) . ")";
+		}, $titel);
+
+		$titel = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $titel); // @TODO: False positives filtern? Geht das überhaupt?
+		$titel = preg_replace("/(n)eü/siu", "$1eue", $titel);
+
+		if ($titel == "Deckblatt VV") return "Deckblatt";
+		if ($titel == "Niederschrift (oeff)") return "Niederschrift";
+
+		return trim($titel);
+	}
+
+
+	/**
 	 * @param string $str
 	 * @return array
 	 */
