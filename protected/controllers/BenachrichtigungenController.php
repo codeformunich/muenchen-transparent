@@ -16,6 +16,17 @@ class BenachrichtigungenController extends RISBaseController
 		$this->load_leaflet_css      = true;
 		$this->load_leaflet_draw_css = true;
 
+		if (AntiXSS::isTokenSet("einstellungen_speichern")) {
+			$einstellungen = $ich->getEinstellungen();
+			if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "tag") $einstellungen->benachrichtigungstag = null;
+			if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "woche")  {
+				if (isset($_REQUEST["wochentag"])) $einstellungen->benachrichtigungstag = IntVal($_REQUEST["wochentag"]);
+			}
+			$ich->setEinstellungen($einstellungen);
+			$ich->save();
+			$msg_ok = "Die Einstellung wurde gespeichert.";
+		}
+
 		if (AntiXSS::isTokenSet("del_ben")) {
 			foreach ($_REQUEST[AntiXSS::createToken("del_ben")] as $ben => $_val) {
 				$bena = json_decode(rawurldecode($ben), true);

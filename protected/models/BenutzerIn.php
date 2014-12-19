@@ -298,7 +298,12 @@ class BenutzerIn extends CActiveRecord
 	public static function heuteZuBenachrichtigendeBenutzerInnen() {
 		/** @var BenutzerIn[] $benutzerInnen */
 		$benutzerInnen = BenutzerIn::model()->findAllByAttributes(array("email_bestaetigt" => 1));
-		return $benutzerInnen;
+		$todo = array();
+		foreach ($benutzerInnen as $benutzerIn) {
+			$wochentag = $benutzerIn->getEinstellungen()->benachrichtigungstag;
+			if ($wochentag === null || $wochentag == date("w")) $todo[] = $benutzerIn;
+		}
+		return $todo;
 	}
 
 	/**

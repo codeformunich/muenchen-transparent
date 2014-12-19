@@ -6,6 +6,9 @@ class BenutzerInnenEinstellungen
 	/** @var array */
 	public $benachrichtigungen = array();
 
+	/** @var null|int */
+	public $benachrichtigungstag = null;
+
 	/**
 	 * @param string|null $data
 	 */
