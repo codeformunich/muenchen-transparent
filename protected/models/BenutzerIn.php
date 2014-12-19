@@ -166,7 +166,7 @@ class BenutzerIn extends CActiveRecord
 		$best_code = $this->createEmailBestaetigungsCode();
 		$link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", array("code" => $best_code));
 		RISTools::send_email($this->email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen vom Ratsinformanten zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
-			. "Liebe Grüße,\n\tDas Ratsinformanten-Team.", "email");
+			. "Liebe Grüße,\n\tDas Ratsinformanten-Team.", null, "email");
 	}
 
 	/**
