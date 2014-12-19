@@ -154,6 +154,12 @@ class RISBaseController extends CController
 				"msg_ok"      => $msg_ok,
 			));
 			Yii::app()->end();
+		} else {
+			$benutzerIn = $this->aktuelleBenutzerIn();
+			if (!$benutzerIn) {
+				Yii::app()->getUser()->logout();
+				$this->redirect("/");
+			}
 		}
 
 		return array($msg_ok, $msg_err);
