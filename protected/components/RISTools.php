@@ -178,7 +178,7 @@ class RISTools
 		$titel = preg_replace("/^OE V[0-9]+ /", "", $titel);
 		$titel = preg_replace("/^[0-9]{2}\-[0-9]{2}\-[0-9]{2} +/", "", $titel);
 		$titel = preg_replace("/ vom [0-9]{2}\.[0-9]{2}\.[0-9]{4}/", "", $titel);
-		$titel = preg_replace("/^(CSU|SPD|B90GrueneRL|OeDP|DIE LINKE) \-? ?Antrag/siU", "Antrag", $titel);
+		$titel = preg_replace("/^(CSU|SPD|B90GrueneRL|OeDP|DIE LINKE|AfD) \-? ?Antrag/siU", "Antrag", $titel);
 
 		$titel = preg_replace_callback("/(?<jahr>20[0-9]{2})(?<monat>[0-1][0-9])(?<tag>[0-9]{2})/siu", function($matches) {
 			return $matches['tag'] . '.' . $matches['monat'] . '.' . $matches['jahr'];
@@ -378,6 +378,9 @@ class RISTools
 			'inline_css'        => true,
 			'headers'           => $headers,
 		);
+
+		if (in_array($mail_tag, array("email", "password"))) $message["view_content_link"] = false;
+
 		$mandrill->messages->send($message, false);
 	}
 
