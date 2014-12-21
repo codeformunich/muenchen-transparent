@@ -1,6 +1,8 @@
 /*
 Error: File to import not found or unreadable: bootstrap-compass.
-       Load path: /var/www/ris3/html/css
+       Load paths:
+         /var/www/ris3/html/css
+         /var/www/ris3/html/other/shariff
         on line 1 of ./bootstrap-sass-3.3.1/templates/project/styles.sass
 
 1: @import "bootstrap-compass"
@@ -51,4 +53,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: bootstrap-compass.\A        Load path: /var/www/ris3/html/css\A         on line 1 of ./bootstrap-sass-3.3.1/templates/project/styles.sass\A \A 1: @import \"bootstrap-compass\"\A 2: @import \"bootstrap-variables\"\A 3: @import \"bootstrap\""; }
+  content: "Error: File to import not found or unreadable: bootstrap-compass.\A        Load paths:\A          /var/www/ris3/html/css\A          /var/www/ris3/html/other/shariff\A         on line 1 of ./bootstrap-sass-3.3.1/templates/project/styles.sass\A \A 1: @import \"bootstrap-compass\"\A 2: @import \"bootstrap-variables\"\A 3: @import \"bootstrap\""; }
