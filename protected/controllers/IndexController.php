@@ -463,17 +463,21 @@ class IndexController extends RISBaseController
 			$facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
 			$facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
 
-			$ergebnisse = $solr->select($select);
+			try {
+				$ergebnisse = $solr->select($select);
 
-			if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
-			else $geodata = null;
+				if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
+				else $geodata = null;
 
-			$this->render("suchergebnisse", array_merge(array(
-				"krits"      => $krits,
-				"ergebnisse" => $ergebnisse,
-				"geodata"    => $geodata,
-			), $benachrichtigungen_optionen));
-
+				$this->render("suchergebnisse", array_merge(array(
+					"krits"      => $krits,
+					"ergebnisse" => $ergebnisse,
+					"geodata"    => $geodata,
+				), $benachrichtigungen_optionen));
+			} catch (Exception $e) {
+				$this->render('error', array("code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"));
+				Yii::app()->end(500);
+			}
 		} else {
 			$this->render("suche");
 		}

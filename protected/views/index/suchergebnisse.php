@@ -106,6 +106,7 @@ $this->pageTitle = "Suchergebnisse";
 	$wahlperiode = array();
 	$facet       = $ergebnisse->getFacetSet()->getFacet('antrag_wahlperiode');
 	foreach ($facet as $value => $count) if ($count > 0) {
+		if (in_array($value, array("", "?"))) continue;
 		$str = "<li><a href='" . RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addWahlperiodeKrit($value)->getUrl())) . "'>";
 		$str .= $value . ' (' . $count . ')';
 		$str .= "</a></li>";
