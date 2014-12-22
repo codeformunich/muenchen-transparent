@@ -65,10 +65,10 @@
     ?>
 
     <!--[if lt IE 9]>
-    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script src="/js/jquery-1.11.2.min.js"></script>
     <![endif]-->
 	<!--[if gte IE 9]><!-->
-	<script src="/js/jquery-2.1.1.min.js"></script>
+	<script src="/js/jquery-2.1.3.min.js"></script>
 	<!--<![endif]-->
 
 	<!--[if lt IE 9]>
