@@ -34,15 +34,21 @@ $this->pageTitle = "Themen";
 		<div class="col col-md-6">
 			<section class="well">
 				<h3>Schlagworte</h3>
-				<br>
-				<ul>
-					<?
-					foreach ($tags as $tag) {
-						echo '<li>' . $tag->getNameLink() . ' (' . count($tag->antraege) . ')</li>';
-					}
-					?>
-
-				</ul>
+				<div id="auswahl">
+					<input class="search" placeholder="Suche" style="margin-left: 10px; margin-bottom: 5px"/>
+					<ul class="list">
+						<?
+						usort($tags, function ($a, $b) {
+							if (count($a->antraege) == count($b->antraege))
+								return 0;
+							return (count($a->antraege) > count($b->antraege)) ? -1 : 1;
+						});
+						foreach ($tags as $tag) {
+							echo '<li><span class="list-name">' . $tag->getNameLink() . ' (' . count($tag->antraege) . ')</span></li>';
+						}
+						?>
+					</ul>
+				</div>
 			</section>
 
 			<section class="start_berichte well">
@@ -60,4 +66,12 @@ $this->pageTitle = "Themen";
 			</section>
 		</div>
 	</div>
-<?
+
+<script src="/js/list.js"></script>
+<script>
+var options = {
+  valueNames: [ 'list-name' ]
+};
+
+var userList = new List('auswahl', options);
+</script>
