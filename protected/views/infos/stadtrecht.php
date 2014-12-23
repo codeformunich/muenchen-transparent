@@ -12,8 +12,8 @@ $this->pageTitle = "Stadtrecht";
 <div class="row">
     <div class="col col-md-4">
         <section class="well" id="auswahl" style="margin-top: 50px;">
-            <input class="search" placeholder="Suche" style="width: 100%;"/>
-            <ul class="list">
+            <input class="search" placeholder="Satzung und Verordnungen" style="width: 100%;"/>
+            <ul class="list" style="padding-left: 20px">
             <?
             /** @var Rechtsdokument[] $dokumente */
             $dokumente = Rechtsdokument::model()->alle_sortiert();

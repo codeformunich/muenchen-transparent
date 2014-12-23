@@ -6,6 +6,10 @@
  */
 $this->pageTitle = "Feedback an uns";
 
+if (Yii::app()->user)
+	$email_default = 'value = "' . Yii::app()->user->id . '"';
+else
+	$email_default = 'placeholder="meine@email.de"';
 ?>
 
 <section class="col-md-6 col-md-offset-3">
@@ -31,7 +35,7 @@ $this->pageTitle = "Feedback an uns";
 
 				<div class="form_row" id="email_row" style="margin-bottom: 10px; display: none;">
 					<label for="email" class="control-label" style="margin-bottom: 5px;">Ihre E-Mail-Adresse</label>
-					<input id="email" type="email" name="email" class="form-control" placeholder="meine@email.de">
+					<input id="email" type="email" name="email" class="form-control"  <?= $email_default ?> >
 				</div>
 
 				<label for="message">Ihre Nachricht:</label><br>
