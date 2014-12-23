@@ -6,7 +6,7 @@
 
 
 
-$this->pageTitle = $dokument->titel;
+$this->pageTitle = $dokument->titel_lang();
 $this->inline_css .= $dokument->css;
 
 ?>
@@ -22,16 +22,16 @@ $this->inline_css .= $dokument->css;
                     /** @var Rechtsdokument[] $dokumente */
                     $dokumente = Rechtsdokument::model()->alle_sortiert();
                     foreach ($dokumente as $dok) {
-                        echo '<li><span class="list-name">' . CHtml::link($dok->titel, Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</span></li>' . "\n";
+                        echo '<li><span class="list-name">' . CHtml::link($dok->titel_lang(), Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</span></li>' . "\n";
                     }
                     ?>
                 </ul></li>
             </ul>
         </li>
-        <li class="active"><?= $dokument->titel ?></li>
+        <li class="active"><?= $dokument->titel_lang() ?></li>
     </ul>
 
-    <h1><?= CHtml::encode($dokument->titel)?> <span style="float: right"><a href="<?= $dokument->url_pdf ?>">als pdf</a></span></h1>
+    <h1><?= CHtml::encode($dokument->titel_lang())?> <span style="float: right"><a href="<?= $dokument->url_pdf ?>">als pdf</a></span></h1>
 </section>
 
 
@@ -43,7 +43,7 @@ $this->inline_css .= $dokument->css;
                 /** @var Rechtsdokument[] $dokumente */
                 $dokumente = Rechtsdokument::model()->findAll();
                 foreach ($dokumente as $dok) {
-                    echo '<li>' . CHtml::link($dok->titel, Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</li>';
+                    echo '<li>' . CHtml::link($dok->titel_lang(), Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</li>';
                 }
                 ?>
             </ul>

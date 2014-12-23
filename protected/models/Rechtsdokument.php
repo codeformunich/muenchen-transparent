@@ -93,4 +93,14 @@ class Rechtsdokument extends CActiveRecord
         });
         return $dokumente;
     }
+
+    public function titel_lang()
+    {
+        $titel = $this->titel;
+        $titel = preg_replace("/(VO|V)$/",   "verordnung",   $titel);
+        $titel = preg_replace("/(VO|V) \(/", "verordnung (", $titel);
+        $titel = preg_replace("/S$/",        "satzung",      $titel);
+        $titel = preg_replace("/S \(/",      "satzung (",    $titel);
+        return $titel;
+    }
 }
