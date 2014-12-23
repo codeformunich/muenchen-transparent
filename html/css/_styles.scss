@@ -291,16 +291,16 @@ body {
   display: block;
   color: #FFF;
   position: absolute;
-  right: -35px;
-  top: 19px;
+  right: 0;
+  top: 10px;
   background-color: #333;
   width: 150px;
   height: 40px;
   padding: 0px;
   text-align: center;
-  transform: scale(1) rotate(45deg) translate(0px, 0px) skew(0deg, 0deg);
   border-top: 1px solid #FFF;
   border-bottom: 1px solid #FFF;
+  border-left: 1px solid #FFF;
   text-decoration: none;
 
   &:link, &:visited {
@@ -319,6 +319,19 @@ body {
     font-size: 12px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  html.csstransforms.csstransforms3d & {
+    left: -35px;
+    top: 19px;
+    transform: scale(1) rotate(-45deg) translate(0px, 0px) skew(0deg, 0deg);
+
+    @media screen and (min-width: $screen-sm) {
+      left: auto;
+      right: -35px;
+      top: 19px;
+      transform: scale(1) rotate(45deg) translate(0px, 0px) skew(0deg, 0deg);
+    }
   }
 }
 
@@ -1206,6 +1219,7 @@ section.impressum {
     margin-top: -27px;
     margin-bottom: 0;
     margin-left: 3px;
+    margin-right: 50px; // Wg. #ris_beta_badge
   }
 
   span.twitter-typeahead {
