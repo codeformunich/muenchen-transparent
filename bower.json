@@ -1,0 +1,6 @@
+{
+  "name": "Ratsinformant",
+  "dependencies": {
+    "list.js": "*"
+  }
+}
