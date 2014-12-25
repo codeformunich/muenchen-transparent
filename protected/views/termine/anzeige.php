@@ -9,7 +9,7 @@ $geodata         = array();
 
 ?>
 <section class="well">
-	<div style="float: right;"><?
+	<div class="original_ris_link"><?
 		echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $termin->getSourceLink());
 		?></div>
 	<h1><?= CHtml::encode($termin->gremium->name) ?></h1>

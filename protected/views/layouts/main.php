@@ -151,6 +151,8 @@ echo ris_intern_html_extra_headers();
 		</a>
 	</div>
 
+	<div id="print_header">München Transparent - www.muenchen-transparent.de</div>
+
 	<main class="container center-block row" id="page_main_content">
 		<?php echo $content; ?>
 	</main>

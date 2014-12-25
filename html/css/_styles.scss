@@ -27,6 +27,11 @@ a:focus {
   color: #337ab7;
 }
 
+
+a[href]:after {
+  content: "";
+}
+
 h1.small {
   font-size: 24px;
 }
@@ -34,6 +39,11 @@ h1.small {
 #content {
   > section {
     margin-top: 50px;
+    @media print {
+      &:first-child {
+        margin-top: 0;
+      }
+    }
   }
 }
 
@@ -42,6 +52,20 @@ h1.small {
   @media screen and (max-width: 600px) {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+#print_header {
+  display: none;
+  @media print {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    body[data-mozPrintCallback] & {
+      display: none;
+    }
   }
 }
 
@@ -56,6 +80,12 @@ h1.small {
     }
   }
 
+}
+
+.breadcrumb {
+  @media print {
+    display: none;
+  }
 }
 
 .well {
@@ -89,6 +119,20 @@ h1.small {
     margin-right: -19px;
     width: auto;
   }
+
+  @media print {
+    height: auto !important;
+    overflow: visible;
+
+    #mainContainer {
+      height: auto !important;
+      width: auto;
+    }
+
+    body[data-mozPrintCallback] & #outerContainer {
+      display: block;
+    }
+  }
 }
 
 #pdf_rechtsvermerk {
@@ -97,6 +141,9 @@ h1.small {
   left: 21px;
   font-size: 11px;
   color: gray;
+  body[data-mozPrintCallback] & {
+    display: none;
+  }
 }
 
 .modal-backdrop {
@@ -135,6 +182,9 @@ body.modal-open {
 body {
   padding-top: 60px;
   background-image: url(#{$pics-path}pattern-7nl1.png);
+  @media print {
+    padding-top: 0;
+  }
 }
 
 /* Set widths on the navbar form inputs since otherwise they're 100% wide */
@@ -210,6 +260,9 @@ body {
   border-radius: 10px;
   overflow: hidden;
   padding: 6px;
+  @media print {
+    max-width: 600px;
+  }
 }
 
 #map {
@@ -286,6 +339,7 @@ body {
     display: inline-block;
   }
 }
+
 
 #ris_beta_badge {
   display: block;
@@ -452,11 +506,17 @@ body {
     font-size: 1.5em;
     margin-top: 1.5em;
     float: right;
+    @media print {
+      display: none;
+    }
   }
   .neuere_caller {
     font-size: 1.5em;
     margin-top: 1.5em;
     float: left;
+    @media print {
+      display: none;
+    }
   }
 
 }
@@ -969,6 +1029,17 @@ ul.terminliste > li > .termindetails {
 
 }
 
+.original_ris_link {
+  float: right;
+  @media print {
+    font-size: 12px;
+    float: none;
+    a[href]:after {
+      content: ": " attr(href);
+    }
+  }
+}
+
 .antragsdaten {
   th {
     text-align: center;
@@ -978,6 +1049,17 @@ ul.terminliste > li > .termindetails {
 
     > ul {
       padding-left: 20px;
+    }
+  }
+  .login_modal_form {
+    display: inline;
+    @media print {
+      display: none;
+    }
+  }
+  .tag_add_opener {
+    @media print {
+      display: none;
     }
   }
   #tag_add_form {
@@ -1012,6 +1094,12 @@ ul.terminliste > li > .termindetails {
         content: '';
       }
     }
+  }
+}
+
+.antrag_sidebar {
+  @media print {
+    display: none;
   }
 }
 
@@ -1196,6 +1284,9 @@ body > footer {
     margin-bottom: 0;
     margin-top: 0;
     white-space: nowrap;
+  }
+  @media print {
+    display: none;
   }
 }
 

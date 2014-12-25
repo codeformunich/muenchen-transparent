@@ -52,7 +52,7 @@ $name = $antrag->getName(true);
 <section class="row">
     <div class="col-md-8">
         <section class="well">
-            <div style="float: right;"><?
+            <div class="original_ris_link"><?
                 echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $antrag->getSourceLink());
                 ?></div>
             <h1 class="small"><? echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
@@ -98,7 +98,7 @@ $name = $antrag->getName(true);
                         } else {
                             ?>
                             <form method="POST" action="<?= CHtml::encode($antrag->getLink(array("tag_mode" => 1))) ?>"
-                                  style="display: inline;">
+                                  class="login_modal_form">
                                 <?
                                 $this->renderPartial("../index/login_modal");
                                 ?>
@@ -316,7 +316,7 @@ $name = $antrag->getName(true);
             </table>
         </section>
     </div>
-    <section class="col-md-4">
+    <section class="col-md-4 antrag_sidebar">
 
         <?
         $related = $antrag->errateThemenverwandteAntraege(7);
