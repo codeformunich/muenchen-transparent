@@ -338,6 +338,12 @@ body {
     width: 49%;
     display: inline-block;
   }
+  
+
+  h2 {
+    font-size: 24px;
+  }
+
 }
 
 
@@ -590,6 +596,36 @@ ul.terminliste {
     margin-top: -3px;
     margin-right: 5px;
   }
+}
+
+
+.abgeordnetenwatch_link {
+  float: right;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 3px;
+  background-image: url(#{$pics-path}abgeordneten_16.png);
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    background-image: url(#{$pics-path}abgeordneten_32.png);
+    background-size: 16px 16px;
+  }
+
+}
+
+.twitter_link, .fb_link, .web_link {
+  float: right;
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  font-size: 13px;
+  font-family: fontello;
+}
+
+.twitter_link {
+  font-size: 10px;
+  padding-top: 2px;
 }
 
 .themenverwandt_liste {
@@ -941,35 +977,6 @@ ul.terminliste > li > .termindetails {
 
       > li {
         padding: 2px;
-      }
-
-      .abgeordnetenwatch_link {
-        float: right;
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        margin-left: 3px;
-        background-image: url(#{$pics-path}abgeordneten_16.png);
-
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-          background-image: url(#{$pics-path}abgeordneten_32.png);
-          background-size: 16px 16px;
-        }
-
-      }
-
-      .twitter_link, .fb_link, .web_link {
-        float: right;
-        display: inline-block;
-        width: 17px;
-        height: 17px;
-        font-size: 13px;
-        font-family: fontello;
-      }
-
-      .twitter_link {
-        font-size: 10px;
-        padding-top: 2px;
       }
     }
 
@@ -1409,25 +1416,83 @@ section.impressum {
   }
 }
 
-.personen_holder {
+
+
+.personen_liste {
+  .filter_sorter_holder {
+    display: inline-block;
+    margin-bottom: 10px;
+    &.extrabreit {
+      margin-left: -15px;
+      margin-right: -5px;
+    }
+  }
+  .filter_widget {
+    .btn {
+      padding-left: 8px;
+      padding-right: 8px;
+      text-transform: none;
+    }
+    .btn-separator-left {
+      border-left: solid 1px black;
+    }
+    .btn-separator-right {
+      border-right: solid 1px black;
+    }
+  }
+  .sort_widget {
+    text-align: left;
+    margin-left: 3px;
+    a.active:link, a.active:visited {
+      color: black;
+    }
+  }
+  .strIn_liste {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    > li {
+      display: inline-block;
+      width: 180px;
+      height: 65px;
+      margin: 5px;
+      padding: 5px;
+      background-color: #ccc;
+      border: solid 1px #555;
+    }
+    .partei {
+      color: #555;
+      font-size: 11px;
+    }
+    .name {
+      font-weight: bold;
+    }
+    .sm_links {
+      float: right;
+      white-space: nowrap;
+    }
+  }
   @media (min-width: 768px) {
-    .sidebar-nav .navbar .navbar-collapse {
-      padding: 0;
-      max-height: none;
-    }
-    .sidebar-nav .navbar ul {
-      float: none;
-    }
-    .sidebar-nav .navbar ul:not {
-      display: block;
-    }
-    .sidebar-nav .navbar li {
-      float: none;
-      display: block;
-    }
-    .sidebar-nav .navbar li a {
-      padding-top: 12px;
-      padding-bottom: 12px;
+    .navbar-side .navbar {
+      .navbar-collapse {
+        padding: 0;
+        max-height: none;
+      }
+      ul {
+        float: none;
+      }
+      ul:not {
+        display: block;
+      }
+      li {
+        float: none;
+        display: block;
+      }
+      li a {
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
+
     }
   }
 }
