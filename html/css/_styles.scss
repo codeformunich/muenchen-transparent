@@ -1419,12 +1419,24 @@ section.impressum {
 
 
 .personen_liste {
+  .ba_selector {
+    padding-left: 0;
+    padding-top: 10px;
+    margin-left: -4px;
+    margin-right: 4px;
+  }
   .filter_sorter_holder {
-    display: inline-block;
     margin-bottom: 10px;
+    @media screen and (min-width: $screen-md-min) {
+      width: 575px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     &.extrabreit {
+      width: auto;
       margin-left: -15px;
-      margin-right: -5px;
+      margin-right: -10px;
     }
   }
   .filter_widget {
@@ -1434,31 +1446,35 @@ section.impressum {
       text-transform: none;
     }
     .btn-separator-left {
-      border-left: solid 1px black;
+      border-left: solid 1px white;
     }
     .btn-separator-right {
-      border-right: solid 1px black;
+      border-right: solid 1px white;
     }
   }
   .sort_widget {
     text-align: left;
     margin-left: 3px;
+    display: inline-block;
     a.active:link, a.active:visited {
       color: black;
+      font-weight: bold;
     }
   }
   .strIn_liste {
     list-style-type: none;
-    margin: 0;
     padding: 0;
+    max-width: 575px;
+    margin: 0 auto;
+
     > li {
       display: inline-block;
       width: 180px;
-      height: 65px;
+      height: 55px;
       margin: 5px;
       padding: 5px;
-      background-color: #ccc;
-      border: solid 1px #555;
+      background: #e0e0e0;
+      border-radius: 3px;
     }
     .partei {
       color: #555;
@@ -1466,13 +1482,19 @@ section.impressum {
     }
     .name {
       font-weight: bold;
+      &:link, &:visited {
+        color: black;
+      }
     }
     .sm_links {
       float: right;
       white-space: nowrap;
+      a:link, a:visited {
+        color: #777;
+      }
     }
   }
-  @media (min-width: 768px) {
+  @media (min-width: $screen-sm-min) {
     .navbar-side .navbar {
       .navbar-collapse {
         padding: 0;
@@ -1487,10 +1509,13 @@ section.impressum {
       li {
         float: none;
         display: block;
+        &.stadtrat {
+          font-weight: bold;
+        }
       }
       li a {
-        padding-top: 12px;
-        padding-bottom: 12px;
+        padding-top: 8px;
+        padding-bottom: 8px;
       }
 
     }

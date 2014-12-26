@@ -106,23 +106,45 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return "Stadtratsmitglied";
     }
 
+    private $titel_erraten = null;
+    private $vorname_erraten = null;
+    private $nachname_erraten = null;
+
+    protected function errateNamen()
+    {
+        if ($this->vorname_erraten !== null) return;
+
+        preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
+        if (mb_strpos($this->name, ",") > 0) {
+            $x = explode(",", $matches["name"]);
+            if (count($x) == 2) {
+                $this->vorname_erraten  = trim($x[1]);
+                $this->nachname_erraten = trim($x[0]);
+                $this->titel_erraten    = trim($matches["titel"]);
+            } else {
+                $this->vorname_erraten  = $this->name;
+                $this->nachname_erraten = $this->titel_erraten = "";
+            }
+        } else {
+            $x = explode(" ", $matches["name"]);
+            if (count($x) > 1) {
+                $this->nachname_erraten = array_pop($x);
+                $this->vorname_erraten  = trim(implode(" ", $x));
+                $this->titel_erraten    = trim($matches["titel"]);
+            } else {
+                $this->vorname_erraten  = $this->name;
+                $this->nachname_erraten = $this->titel_erraten = "";
+            }
+        }
+    }
+
     /**
      * @return string
      */
     public function errateVorname()
     {
-        if (mb_strpos($this->name, ",") > 0) {
-            preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
-            $titel = trim($matches["titel"]);
-            if (strlen($titel) > 0) $titel .= " ";
-
-            $x = explode(",", $matches["name"]);
-            if (count($x) == 2) {
-                return trim($x[1]);
-            } else {
-                return $this->name;
-            }
-        } else return $this->name;
+        $this->errateNamen();
+        return $this->vorname_erraten;
     }
 
     /**
@@ -130,18 +152,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
      */
     public function errateNachname()
     {
-        if (mb_strpos($this->name, ",") > 0) {
-            preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
-            $titel = trim($matches["titel"]);
-            if (strlen($titel) > 0) $titel .= " ";
-
-            $x = explode(",", $matches["name"]);
-            if (count($x) == 2) {
-                return trim($x[0]);
-            } else {
-                return $this->name;
-            }
-        } else return $this->name;
+        $this->errateNamen();
+        return $this->nachname_erraten;
     }
 
     /**
@@ -210,7 +222,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         if ($ba_nr === null) $ba_where = "c.ba_nr IS NULL";
         else $ba_where = "c.ba_nr = " . IntVal($ba_nr);
 
-        $strs_in = StadtraetIn::model()->findAll(array(
+        $strs_in  = StadtraetIn::model()->findAll(array(
             'alias' => 'a',
             'order' => 'a.name ASC',
             'with'  => array(

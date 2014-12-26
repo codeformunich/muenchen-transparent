@@ -735,26 +735,16 @@ class IndexController extends RISBaseController
         ));
     }
 
-    public function actionPersonen()
+    public function actionPersonen($ba = null)
     {
         $this->top_menu = "personen";
 
         $this->render('personen', array(
-            "fraktionen" => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null),
-        ));
-    }
-
-    public function actionPersonen2($ba = null)
-    {
-        $this->top_menu = "personen";
-
-        $this->render('personen2', array(
             "stadtraetInnen"   => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
             "personen_typ" => ($ba > 0 ? "ba" : "str"),
             "ba_nr"        => $ba
         ));
     }
-
 
     /**
      * @param int $id

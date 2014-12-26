@@ -97,6 +97,7 @@ class Fraktion extends CActiveRecord implements IRISItem
 	 */
 	public function getName($kurzfassung = false)
 	{
+		if ($this->name == "&nbsp;") return "fraktionslos";
 		if ($kurzfassung) {
 			if (in_array($this->id, array(3339564, 2988265, 3312425))) return "Bürgerliche Mitte";
 			if ($this->id == 3312427) return "Freiheitsrechte Transparenz Bürgerbeteiligung";

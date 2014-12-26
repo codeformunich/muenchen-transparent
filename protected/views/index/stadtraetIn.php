@@ -31,7 +31,7 @@ $this->pageTitle = $stadtraetIn->getName();
 					<td>
 						<ul>
 							<? foreach ($stadtraetIn->stadtraetInnenFraktionen as $frakts) {
-								echo "<li>" . CHtml::encode($frakts->fraktion->name);
+								echo "<li>" . CHtml::encode($frakts->fraktion->getName());
 								if ($frakts->fraktion->ba_nr > 0) {
 									echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . CHtml::encode($frakts->fraktion->bezirksausschuss->name) . ")";
 									// @Wird noch nicht zuverlässig erkannt; siehe https://github.com/codeformunich/Ratsinformant/issues/38
