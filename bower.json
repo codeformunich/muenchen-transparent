@@ -1,6 +1,7 @@
 {
   "name": "Ratsinformant",
   "dependencies": {
-    "list.js": "*"
+    "list.js": "*",
+    "isotope": "*"
   }
 }

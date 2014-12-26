@@ -15,3 +15,13 @@ html/sitemap-*
 
 # Bower
 html/js/list.js/
+html/js/doc-ready/
+html/js/eventEmitter/
+html/js/eventie/
+html/js/get-size/
+html/js/get-style-property/
+html/js/isotope/
+html/js/masonry/
+html/js/matches-selector/
+html/js/outlayer/
+
