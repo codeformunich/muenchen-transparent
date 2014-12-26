@@ -3,7 +3,7 @@
   <ShortName>Ratsinformant</ShortName>
   <Description>Ratsinformant ist eine Plattform, um sich über die Stadtpolitik zu informieren</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <!--Image width="16" height="16" type="image/x-icon">data:image/x-icon;base64,https://www.ratsinformant.de/images/icon.png</Image-->
+  <Image height="48" width="48">https://www.ratsinformant.de/favicon.ico</Image>
   <Url type="text/html" method="post" template="https://www.ratsinformant.de/suche">
     <Param name="suchbegriff" value="{searchTerms}"/>
   </Url>
