@@ -70,6 +70,12 @@ h1.small {
 }
 
 #main_navbar {
+
+  .container {
+    width: auto;
+    max-width: $container-lg;
+  }
+
   .navbar-nav > li.so_funktioniert > a {
     /*
       padding-top: 5px;
@@ -199,7 +205,7 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: $screen-sm-min) {
     padding: 0;
   }
 }
@@ -1313,6 +1319,14 @@ section.impressum {
   .form-control-wrapper {
     float: left;
   }
+  @media screen and (max-width: 1100px) {
+    .navbar-form input[type="text"], .navbar-form input[type="password"] {
+      width: 110px;
+    }
+    .bt {
+      padding: 8px;
+    }
+  }
   button {
     margin-top: -27px;
     margin-bottom: 0;
@@ -1424,6 +1438,16 @@ section.impressum {
     padding-top: 10px;
     margin-left: -4px;
     margin-right: 4px;
+
+    .navbar {
+      background-color: #e6e6e6;
+      .navbar-nav > li {
+        >a:hover, >a:focus, >a:link, >a:visited,
+        &.active>a, &.active>a:hover, &.active>a:focus, &.active>a:visited {
+          color: black;
+        }
+      }
+    }
   }
   .filter_sorter_holder {
     margin-bottom: 10px;
@@ -1473,7 +1497,7 @@ section.impressum {
       height: 55px;
       margin: 5px;
       padding: 5px;
-      background: #e0e0e0;
+      background: #eaeaea url(/images/noisy-texture-100x50-o8-d10-c-dddddd-t1.png);
       border-radius: 3px;
     }
     .partei {
