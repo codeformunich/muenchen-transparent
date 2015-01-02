@@ -9,7 +9,7 @@ class BAAntragParser extends RISParser
 	{
 		$antrag_id = IntVal($antrag_id);
 
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
 		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
@@ -176,7 +176,7 @@ class BAAntragParser extends RISParser
 
 	public function parseSeite($seite, $first)
 	{
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
+		if (SITE_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege.jsp?Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
@@ -201,7 +201,7 @@ class BAAntragParser extends RISParser
 		$first = true;
 		//$anz = 800;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+			if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, $first);
 			$first = false;
 		}

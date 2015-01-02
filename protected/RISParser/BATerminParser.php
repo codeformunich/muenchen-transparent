@@ -30,7 +30,7 @@ class BATerminParser extends RISParser
 	public function parse($termin_id)
 	{
 		$termin_id = IntVal($termin_id);
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Termin $termin_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
 		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=$termin_id");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=$termin_id");
@@ -291,14 +291,14 @@ class BATerminParser extends RISParser
 				$alter_eintrag->copyToHistory();
 				$alter_eintrag->setAttributes($daten->getAttributes());
 				if (!$alter_eintrag->save()) {
-					if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin 1\n";
+					if (SITE_CALL_MODE != "cron") echo "BA-Termin 1\n";
 					var_dump($alter_eintrag->getErrors());
 					die("Fehler");
 				}
 				$daten = $alter_eintrag;
 			} else {
 				if (!$daten->save()) {
-					if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin 2\n";
+					if (SITE_CALL_MODE != "cron") echo "BA-Termin 2\n";
 					var_dump($daten->getErrors());
 					die("Fehler");
 				}
@@ -328,7 +328,7 @@ class BATerminParser extends RISParser
 
 	public function parseSeite($seite, $alle = false)
 	{
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Termin Seite $seite\n";
+		if (SITE_CALL_MODE != "cron") echo "BA-Termin Seite $seite\n";
 		$add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
 		$txt  = explode("<table class=\"ergebnistab\" ", $text);
@@ -347,7 +347,7 @@ class BATerminParser extends RISParser
 		//$anz = 4850;
 		$anz = 2600;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+			if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, true);
 		}
 	}

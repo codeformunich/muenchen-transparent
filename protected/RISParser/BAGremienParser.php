@@ -10,7 +10,7 @@ class BAGremienParser extends RISParser
 	{
 		$wahlperiode_id = IntVal($wahlperiode_id > 0 ? $wahlperiode_id : static::$WAHLPERIODE_ID);
 		$gremien_id     = IntVal($gremien_id);
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Gremium $gremien_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- Gremium $gremien_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_gremien_details.jsp?Id=" . $gremien_id . "&Wahlperiode=" . $wahlperiode_id);
 
@@ -145,7 +145,7 @@ class BAGremienParser extends RISParser
 
 	public function parseSeite($seite, $first)
 	{
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
+		if (SITE_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_gremien.jsp?selWahlperiode=" . static::$WAHLPERIODE_ID . "&Trf=n&Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
@@ -161,7 +161,7 @@ class BAGremienParser extends RISParser
 		$anz   = BAGremienParser::$MAX_OFFSET;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+			if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, $first);
 			$first = false;
 		}

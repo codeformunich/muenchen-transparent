@@ -84,7 +84,7 @@ class IndexController extends RISBaseController
     {
         if (isset($_REQUEST["krit_typ"])) {
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
-            $titel = "Ratsinformant: " . $krits->getTitle();
+            $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getTitle();
 
             $solr   = RISSolrHelper::getSolrClient("ris");
             $select = $solr->createSelect();
@@ -108,7 +108,7 @@ class IndexController extends RISBaseController
             /** @var array|RISAenderung[] $aenderungen */
             $aenderungen = RISAenderung::model()->findAll(array("order" => "id DESC", "limit" => 100));
             foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
-            $titel = "Ratsinformant Änderungen";
+            $titel = Yii::app()->params['projectTitle'] . ' Änderungen';
         }
 
         $this->render("feed", array(

@@ -165,8 +165,8 @@ class BenutzerIn extends CActiveRecord
 	{
 		$best_code = $this->createEmailBestaetigungsCode();
 		$link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", array("code" => $best_code));
-		RISTools::send_email($this->email, "Anmeldung beim Ratsinformant", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen vom Ratsinformanten zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
-			. "Liebe Grüße,\n\tDas Ratsinformanten-Team.", null, "email");
+		RISTools::send_email($this->email, "Anmeldung bei München Transparent", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von München Transparent zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
+			. "Liebe Grüße,\n\tDas München Transparent-Team.", null, "email");
 	}
 
 	/**
@@ -204,8 +204,8 @@ class BenutzerIn extends CActiveRecord
 		$this->pwd_change_date = new CDbExpression("NOW()");
 		if ($this->save()) {
 			$link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/resetPassword", array("id" => $this->id, "code" => $this->pwd_change_code));
-			RISTools::send_email($this->email, "Ratsinformant-Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
-				. "Liebe Grüße,\n\tDas Ratsinformanten-Team.", null, "password");
+			RISTools::send_email($this->email, "München Transparent-Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
+				. "Liebe Grüße,\n\tDas München Transparent-Team.", null, "password");
 			return true;
 		}
 		return "Ein (ungewöhnlicher) Fehler ist aufgetreten.";
@@ -233,7 +233,7 @@ class BenutzerIn extends CActiveRecord
 	 * @throws Exception
 	 */
 	public function setPassword($new_pw) {
-		if (!defined("RATSINFORMANT_CALL_MODE") || RATSINFORMANT_CALL_MODE !== "shell") {
+		if (!defined("SITE_CALL_MODE") || SITE_CALL_MODE !== "shell") {
 			throw new Exception("Diese Funktion kann nur über die Kommandozeile aufgerufen werden.");
 		}
 		$this->pwd_enc = BenutzerIn::create_hash($new_pw);

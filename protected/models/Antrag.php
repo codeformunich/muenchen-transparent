@@ -577,12 +577,12 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 			$erg->vorgang_id = $vorgang_id;
 			$erg->save();
 		}
-		if (RATSINFORMANT_CALL_MODE == "shell") echo "Gefundene Dokumente:\n";
+		if (SITE_CALL_MODE == "shell") echo "Gefundene Dokumente:\n";
 		foreach ($gefundene_dokumente as $dok) {
 			$dok->vorgang_id = $vorgang_id;
 			$dok->save();
 		}
-		if (RATSINFORMANT_CALL_MODE == "shell") echo "Fertig";
+		if (SITE_CALL_MODE == "shell") echo "Fertig";
 	}
 
 	/**

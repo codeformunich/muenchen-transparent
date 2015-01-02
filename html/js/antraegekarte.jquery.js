@@ -79,7 +79,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 		]);
 
 		$widget.map.addControl(fullScreen);
-		L.tileLayer('https://www.ratsinformant.de/tiles/' + (L.Browser.retina ? "512" : "256") + '/{z}/{x}/{y}.png', {
+		L.tileLayer('https://www.muenchen-transparent.de/tiles/' + (L.Browser.retina ? "512" : "256") + '/{z}/{x}/{y}.png', {
 			"attribution": attrib,
 			"maxZoom": 18,
 			"minZoom": min_zoom

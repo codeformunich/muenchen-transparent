@@ -7,7 +7,7 @@ class BAMitgliederParser extends RISParser
 	{
 		$ba_nr = IntVal($ba_nr);
 
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- BA $ba_nr\n";
+		if (SITE_CALL_MODE != "cron") echo "- BA $ba_nr\n";
 		/** @var Bezirksausschuss $ba */
 		$ba = Bezirksausschuss::model()->findByPk($ba_nr);
 

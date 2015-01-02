@@ -5,7 +5,7 @@ class StadtratsvorlageParser extends RISParser
 
 	public function parse($vorlage_id)
 	{
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Beschlussvorlage $vorlage_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- Beschlussvorlage $vorlage_id\n";
 
 		$html_details    = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $vorlage_id);
 		$html_dokumente  = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_dokumente.jsp?risid=" . $vorlage_id);
@@ -257,7 +257,7 @@ class StadtratsvorlageParser extends RISParser
 
 	public function parseSeite($seite, $first)
 	{
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "Seite: $seite\n";
+		if (SITE_CALL_MODE != "cron") echo "Seite: $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
 		$txt  = explode("<!-- ergebnisreihen -->", $text);
 		if (count($txt) == 1) return array();
@@ -281,7 +281,7 @@ class StadtratsvorlageParser extends RISParser
 		$anz   = 27800;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+			if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, $first);
 			$first = false;
 		}

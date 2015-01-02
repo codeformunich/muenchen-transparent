@@ -36,7 +36,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 
 			for ($i = $sm_page * 30000; $i < ($sm_page + 1) * 30000 && $i < count($dokumente); $i++) {
 				$dok = $dokumente[$i];
-				fwrite($fp, "<url>\n<loc>" . RATSINFORMANT_BASE_URL . "/dokumente/" . $dok["id"] . "/</loc>\n");
+				fwrite($fp, "<url>\n<loc>" . SITE_BASE_URL . "/dokumente/" . $dok["id"] . "/</loc>\n");
 				fwrite($fp, "<changefreq>monthly</changefreq>\n");
 				fwrite($fp, "<lastmod>" . $datumformat($dok["datum"]) . "</lastmod>\n");
 				fwrite($fp, "</url>\n");
@@ -45,7 +45,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 			fwrite($fp, "</urlset>\n");
 			fclose($fp);
 
-			$sitemap_files[] = RATSINFORMANT_BASE_URL . "/" . $sitemap_file;
+			$sitemap_files[] = SITE_BASE_URL . "/" . $sitemap_file;
 		}
 
 
@@ -65,7 +65,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 
 			for ($i = $sm_page * 30000; $i < ($sm_page + 1) * 30000 && $i < count($antraege); $i++) {
 				$dok = $antraege[$i];
-				fwrite($fp, "<url>\n<loc>" . RATSINFORMANT_BASE_URL . "/antraege/" . $dok["id"] . "/</loc>\n");
+				fwrite($fp, "<url>\n<loc>" . SITE_BASE_URL . "/antraege/" . $dok["id"] . "/</loc>\n");
 				fwrite($fp, "<changefreq>weekly</changefreq>\n");
 				fwrite($fp, "<lastmod>" . $datumformat($dok["datum_letzte_aenderung"]) . "</lastmod>\n");
 				fwrite($fp, "</url>\n");
@@ -74,7 +74,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 			fwrite($fp, "</urlset>\n");
 			fclose($fp);
 
-			$sitemap_files[] = RATSINFORMANT_BASE_URL . "/" . $sitemap_file;
+			$sitemap_files[] = SITE_BASE_URL . "/" . $sitemap_file;
 		}
 
 
@@ -95,7 +95,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 
 			for ($i = $sm_page * 30000; $i < ($sm_page + 1) * 30000 && $i < count($termine); $i++) {
 				$dok = $termine[$i];
-				fwrite($fp, "<url>\n<loc>" . RATSINFORMANT_BASE_URL . "/termine/" . $dok["id"] . "/</loc>\n");
+				fwrite($fp, "<url>\n<loc>" . SITE_BASE_URL . "/termine/" . $dok["id"] . "/</loc>\n");
 				fwrite($fp, "<changefreq>weekly</changefreq>\n");
 				fwrite($fp, "<lastmod>" . $datumformat($dok["datum_letzte_aenderung"]) . "</lastmod>\n");
 				fwrite($fp, "</url>\n");
@@ -104,7 +104,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 			fwrite($fp, "</urlset>\n");
 			fclose($fp);
 
-			$sitemap_files[] = RATSINFORMANT_BASE_URL . "/" . $sitemap_file;
+			$sitemap_files[] = SITE_BASE_URL . "/" . $sitemap_file;
 		}
 
 
@@ -129,7 +129,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 		fwrite($fp, "</urlset>\n");
 		fclose($fp);
 
-		$sitemap_files[] = RATSINFORMANT_BASE_URL . "/" . $sitemap_file;
+		$sitemap_files[] = SITE_BASE_URL . "/" . $sitemap_file;
 
 
 

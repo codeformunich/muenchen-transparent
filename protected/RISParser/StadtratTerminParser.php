@@ -8,7 +8,7 @@ class StadtratTerminParser extends RISParser
 	public function parse($termin_id)
 	{
 		$termin_id = IntVal($termin_id);
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Termin $termin_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
 		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=$termin_id");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_dokumente.jsp?risid=$termin_id");
@@ -395,7 +395,7 @@ class StadtratTerminParser extends RISParser
 		$anz   = StadtratTerminParser::$MAX_OFFSET;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+			if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, $first, true);
 			$first = false;
 		}

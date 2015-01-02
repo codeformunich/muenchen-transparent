@@ -30,7 +30,7 @@ class StadtraetInnenParser extends RISParser
 
 		$stadtraetIn_id = IntVal($stadtraetIn_id);
 
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- StadträtIn $stadtraetIn_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- StadträtIn $stadtraetIn_id\n";
 
 		$html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
 
@@ -158,7 +158,7 @@ class StadtraetInnenParser extends RISParser
 			if (preg_match("/Suchergebnisse:.* ([0-9]+)<\/p>/siU", $text, $matches)) {
 				$seiten = Ceil($matches[1] / 10);
 				for ($i = 0; $i < $seiten; $i++) $this->parse_antraege($stadtraetIn_id, $i);
-			} else if (RATSINFORMANT_CALL_MODE != "cron") echo "Keine Anträge gefunden\n";
+			} else if (SITE_CALL_MODE != "cron") echo "Keine Anträge gefunden\n";
 		} else for ($i = 0; $i < 2; $i++) {
 			$this->parse_antraege($stadtraetIn_id, $i);
 		}
@@ -170,7 +170,7 @@ class StadtraetInnenParser extends RISParser
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
 		$txt  = explode("<!-- tabellenkopf -->", $text);
 		if (!isset($txt[1])) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo "- leer\n";
+			if (SITE_CALL_MODE != "cron") echo "- leer\n";
 			return array();
 		} elseif ($first) {
 			RISTools::send_email(Yii::app()->params['adminEmail'], "StadträTinnenUpdate VOLL", "Erste Seite voll: $seite", null, "system");
@@ -196,7 +196,7 @@ class StadtraetInnenParser extends RISParser
 		$this->bearbeitete_stadtraetInnen = array();
 		$first                            = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+			if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, $first);
 			$first = false;
 		}

@@ -9,7 +9,7 @@ class BAInitiativeParser extends RISParser
 	{
 		$antrag_id = IntVal($antrag_id);
 
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
 		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=$antrag_id");
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_dokumente.jsp?Id=$antrag_id");
@@ -165,7 +165,7 @@ class BAInitiativeParser extends RISParser
 
 	public function parseSeite($seite, $first)
 	{
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "BA-Initiativen Seite $seite\n";
+		if (SITE_CALL_MODE != "cron") echo "BA-Initiativen Seite $seite\n";
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen.jsp?Trf=n&Start=$seite");
 
 		$txt = explode("<!-- tabellenkopf -->", $text);
@@ -187,7 +187,7 @@ class BAInitiativeParser extends RISParser
 		$anz   = static::$MAX_OFFSET;
 		$first = true;
 		for ($i = $anz; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+			if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
 			$this->parseSeite($i, $first);
 			$first = false;
 		}

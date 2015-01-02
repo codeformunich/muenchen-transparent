@@ -3,8 +3,8 @@
   <ShortName>Ratsinformant</ShortName>
   <Description>Ratsinformant ist eine Plattform, um sich über die Stadtpolitik zu informieren</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image height="48" width="48">https://www.ratsinformant.de/favicon.ico</Image>
-  <Url type="text/html" method="post" template="https://www.ratsinformant.de/suche">
+  <Image height="48" width="48">https://www.muenchen-transparent.de/favicon.ico</Image>
+  <Url type="text/html" method="post" template="https://www.muenchen-transparent.de/suche">
     <Param name="suchbegriff" value="{searchTerms}"/>
   </Url>
 </OpenSearchDescription>

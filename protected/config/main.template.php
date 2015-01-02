@@ -23,8 +23,8 @@ define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
 
 
-define("RATSINFORMANT_BASE_URL", "https://www.muenchen-transparent.de");
-if (!defined("RATSINFORMANT_CALL_MODE")) define("RATSINFORMANT_CALL_MODE", "web");
+define("SITE_BASE_URL", "https://www.muenchen-transparent.de");
+if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 define("DOCUMENT_DATE_ACCURATE_SINCE", 1388530800); // 1. Januar 2014
 define("DOCUMENT_DATE_UNKNOWN_BEFORE", 1212271200); // 1. Juni 2008
 
@@ -115,7 +115,7 @@ function ris_intern_html_extra_headers() {
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-	'name'           => 'München Transparent: Ratsinformant',
+	'name'           => 'München Transparent',
 
 	// preloading 'log' component
 	'preload'        => array('log'),
@@ -127,8 +127,8 @@ return array(
 		'application.RISParser.*',
 	),
 
-	'onBeginRequest' => create_function('$event', 'if (RATSINFORMANT_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
-	'onEndRequest'   => create_function('$event', 'if (RATSINFORMANT_CALL_MODE == "web") return ob_end_flush();'),
+	'onBeginRequest' => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
+	'onEndRequest'   => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_end_flush();'),
 
 	'modules'        => array(
 		// uncomment the following to enable the Gii tool
@@ -183,10 +183,10 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'         => array(
 		// this is used in contact page
-		'adminEmail'      => 'info@ratsinformant.de',
-		'adminEmailName'  => "Ratsinformant",
+		'adminEmail'      => 'info@muenchen-transparent.de',
+		'adminEmailName'  => "München Transparent",
 		'skobblerKey'     => 'KEY',
-		'baseURL'         => RATSINFORMANT_BASE_URL,
+		'baseURL'         => SITE_BASE_URL,
 		'debug_log'       => true,
 		'contentAdminIds' => array(),
 		'projectTitle'    => 'München Transparent',

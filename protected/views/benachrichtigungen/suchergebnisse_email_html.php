@@ -169,7 +169,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.c
 
 			Liebe Grüße,<br>
 			&nbsp;
-			Das Ratsinformanten-Team
+			Das München Transparent-Team
 			<br><br>
 			PS: Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href="<?php echo CHtml::encode($url); ?>">hier abbestellen</a>.
 

@@ -30,7 +30,7 @@ scss --style compressed --cache-location /tmp/ --watch . ../other/shariff/
 Webserver-Konfiguration:
 * DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
 * Bei Apache regelt die html/.htaccess alles weitere. Bei nginx gibt es unter docs/nginx.conf eine Beispiel-Konfigurationsdatei
-* Der Hostname des Webservers muss auch als RATSINFORMANT_BASE_URL bei protected/config/main.php gesetzt werden.
+* Der Hostname des Webservers muss auch als SITE_BASE_URL bei protected/config/main.php gesetzt werden.
 
 MariaDB/MySQL-Konfiguration
 * Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "ratsinformant", Benutzer "ris", Passwort "sec"

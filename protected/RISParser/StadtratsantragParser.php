@@ -11,7 +11,7 @@ class StadtratsantragParser extends RISParser
 
 		if (in_array($antrag_id, array(3258272))) return;
 
-		if (RATSINFORMANT_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
+		if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
 		$html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id);
 		$html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_dokumente.jsp?risid=" . $antrag_id);
@@ -179,7 +179,7 @@ class StadtratsantragParser extends RISParser
 		$text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_trefferliste.jsp?txtPosition=$seite");
 		$txt  = explode("<!-- ergebnisreihen -->", $text);
 		if (!isset($txt[1])) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo "- nichts\n";
+			if (SITE_CALL_MODE != "cron") echo "- nichts\n";
 			return array();
 		}
 		$txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
@@ -199,7 +199,7 @@ class StadtratsantragParser extends RISParser
 	{
 		$first = true;
 		for ($i = static::$MAX_OFFSET; $i >= 0; $i -= 10) {
-			if (RATSINFORMANT_CALL_MODE != "cron") echo (static::$MAX_OFFSET - $i) . " / " . static::$MAX_OFFSET . "\n";
+			if (SITE_CALL_MODE != "cron") echo (static::$MAX_OFFSET - $i) . " / " . static::$MAX_OFFSET . "\n";
 			$this->parseSeite($i, $first);
 			$first = false;
 		}

@@ -1,17 +1,18 @@
 {
-    "name": "catoth/ris",
-    "description": "Ratsinformationssystem",
+    "name": "codeformunich/Ratsinformant",
+    "description": "München Transparent",
     "type": "library",
     "license": "AGPL-3.0",
     "keywords": [
         "ris",
         "münchen",
+        "transparent",
         "politik",
         "anträge",
         "ratsinformationssystem"
     ],
     "minimum-stability": "dev",
-    "homepage": "https://www.ratsinformant.de/",
+    "homepage": "https://www.muenchen-transparent.de/",
     "repositories": [
         {
             "type": "composer",
