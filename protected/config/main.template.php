@@ -23,7 +23,7 @@ define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
 
 
-define("RATSINFORMANT_BASE_URL", "https://www.ratsinformant.de");
+define("RATSINFORMANT_BASE_URL", "https://www.muenchen-transparent.de");
 if (!defined("RATSINFORMANT_CALL_MODE")) define("RATSINFORMANT_CALL_MODE", "web");
 define("DOCUMENT_DATE_ACCURATE_SINCE", 1388530800); // 1. Januar 2014
 define("DOCUMENT_DATE_UNKNOWN_BEFORE", 1212271200); // 1. Juni 2008
