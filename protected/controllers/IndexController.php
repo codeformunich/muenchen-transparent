@@ -640,16 +640,16 @@ class IndexController extends RISBaseController
             if ($heute) {
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d H:i:s");
-                $ru        = Rathausumschau::model()->findByAttributes(array("datum" => $datum_von));
-                if ($ru) $rus[] = $ru;
-                $ru = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d")));
-                if ($ru) $rus[] = $ru;
+                if ($i == 1) {
+                    $ru = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d")));
+                    if ($ru) $rus[] = $ru;
+                }
             } else {
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
-                $ru        = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)));
-                if ($ru) $rus[] = $ru;
             }
+            $ru        = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)));
+            if ($ru) $rus[] = $ru;
             /** @var array|Antrag[] $antraege */
             $antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
             $antraege_stadtrat = $antraege_sonstige = array();
