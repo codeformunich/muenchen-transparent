@@ -65,15 +65,18 @@ class StadtrechtParser extends RISParser
 
         }
 
+        $titel = html_entity_decode($titel, ENT_COMPAT, "UTF-8");;
+
         /** @var Rechtsdokument $rechtsdokument */
-        $rechtsdokument = Rechtsdokument::model()->findByAttributes(array("id" => $id));
+        if ($id > 0) $rechtsdokument = Rechtsdokument::model()->findByAttributes(array("id" => $id));
+        else $rechtsdokument = Rechtsdokument::model()->findByAttributes(array("titel" => $titel));
         if (!$rechtsdokument) $rechtsdokument = new Rechtsdokument();
 
         $rechtsdokument->url_base = $url_base;
         $rechtsdokument->url_html = $url_base . "/css/" . $id . ".htm";
         $rechtsdokument->url_pdf  = $url_base . ".pdf";
-        $rechtsdokument->id       = $id;    // Intern
-        $rechtsdokument->titel    = html_entity_decode($titel, ENT_COMPAT, "UTF-8"); // Zum Anzeigen
+        $rechtsdokument->id       = ($id > 0 ? $id : rand(100000, 999999));
+        $rechtsdokument->titel    = $titel;
         $rechtsdokument->html     = $texte;
         $rechtsdokument->css      = $css;
 
