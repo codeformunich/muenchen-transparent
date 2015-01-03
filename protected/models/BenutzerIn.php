@@ -12,6 +12,7 @@
  * @property string $datum_letzte_benachrichtigung
  *
  * @property Vorgang[] $abonnierte_vorgaenge
+ * @property StadtraetIn[] $stadtraetInnen
  */
 class BenutzerIn extends CActiveRecord
 {
@@ -91,6 +92,7 @@ class BenutzerIn extends CActiveRecord
 	{
 		return array(
 			'abonnierte_vorgaenge' => array(self::MANY_MANY, 'Vorgang', 'benutzerInnen_vorgaenge_abos(benutzerInnen_id, vorgaenge_id)'),
+			'stadtraetInnen' => array(self::HAS_MANY, 'StadtraetIn', 'benutzerIn_id'),
 		);
 	}
 

@@ -351,7 +351,7 @@ CREATE TABLE `referate` (
   `ort` varchar(30) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `telefon` varchar(100) DEFAULT NULL,
-  `website` VARCHAR(200) DEFAULT NULL,
+  `website` varchar(200) DEFAULT NULL,
   `kurzbebeschreibung` varchar(200) DEFAULT NULL,
   `aktiv` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -379,6 +379,7 @@ CREATE TABLE `ris_aenderungen` (
 
 CREATE TABLE `stadtraetInnen` (
   `id` int(11) NOT NULL,
+  `benutzerIn_id` int(11) DEFAULT NULL,
   `referentIn` tinyint(4) NOT NULL DEFAULT '0',
   `gewaehlt_am` date DEFAULT NULL,
   `bio` mediumtext NOT NULL,
@@ -386,7 +387,13 @@ CREATE TABLE `stadtraetInnen` (
   `name` varchar(100) NOT NULL,
   `twitter` varchar(45) DEFAULT NULL,
   `facebook` varchar(200) DEFAULT NULL,
-  `abgeordnetenwatch` varchar(200) DEFAULT NULL
+  `abgeordnetenwatch` varchar(200) DEFAULT NULL,
+  `geschlecht` enum('weiblich','maennlich','sonstiges') DEFAULT NULL,
+  `kontaktdaten` text,
+  `geburtstag` date DEFAULT NULL,
+  `beruf` text NOT NULL,
+  `beschreibung` text NOT NULL,
+  `quellen` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -722,7 +729,7 @@ ADD PRIMARY KEY (`id`), ADD KEY `datum` (`datum`), ADD KEY `antrag_id` (`ris_id`
 -- Indexes for table `stadtraetInnen`
 --
 ALTER TABLE `stadtraetInnen`
-ADD PRIMARY KEY (`id`);
+ADD PRIMARY KEY (`id`), ADD KEY `id` (`benutzerIn_id`);
 
 --
 -- Indexes for table `stadtraetInnen_fraktionen`
@@ -983,6 +990,12 @@ ADD CONSTRAINT `fk_personen_stadtraete1` FOREIGN KEY (`ris_stadtraetIn`) REFEREN
 --
 ALTER TABLE `ris_aenderungen`
 ADD CONSTRAINT `fk_ris_aenderungen_bezirksausschuesse1` FOREIGN KEY (`ba_nr`) REFERENCES `bezirksausschuesse` (`ba_nr`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `stadtraetInnen`
+--
+ALTER TABLE `stadtraetInnen`
+ADD CONSTRAINT `fr_stadtraetIn_benutzerIn` FOREIGN KEY (`benutzerIn_id`) REFERENCES `ris_aenderungen` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `stadtraetInnen_fraktionen`

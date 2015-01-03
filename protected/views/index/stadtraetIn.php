@@ -138,11 +138,10 @@ $this->pageTitle = $stadtraetIn->getName();
 		</section>
 	</div>
 	<section class="col-md-4">
-		<div class="well">
+		<div class="well personendaten_sidebar">
 			<h2>Weitere Infos</h2>
-			<?
-			if ($stadtraetIn->web || $stadtraetIn->twitter || $stadtraetIn->facebook || $stadtraetIn->abgeordnetenwatch) {
-				echo '<dl>';
+			<dl>
+				<?
 				if ($stadtraetIn->web != "") {
 					echo '<dt>Homepage:</dt>';
 					echo '<dd><a href="' . CHtml::encode($stadtraetIn->web) . '">' . CHtml::encode($stadtraetIn->web) . '</a></dd>' . "\n";
@@ -159,9 +158,24 @@ $this->pageTitle = $stadtraetIn->getName();
 					echo '<dt>Abgeordnetenwatch:</dt>';
 					echo '<dd><a href="' . CHtml::encode($stadtraetIn->abgeordnetenwatch) . '">Abgeordnetenwatch-Profil</a></dd>' . "\n";
 				}
-				echo "</dl>";
-			}
-			?>
+				if ($stadtraetIn->geburtstag != "") {
+					$datum = explode("-", $stadtraetIn->geburtstag);
+					if ($datum[1] > 0) {
+						echo '<dt>Geburtstag:</dt>';
+						echo '<dd>' . RISTools::datumstring($stadtraetIn->geburtstag) . '</dd>' . "\n";
+					} else {
+						echo '<dt>Geburtsjahr:</dt>';
+						echo '<dd>' . CHtml::encode($datum[0]) . '</dd>' . "\n";
+					}
+				}
+				if ($stadtraetIn->beschreibung != "") {
+					echo '<dt>Beschreibung</dt>';
+					echo '<dd>' . nl2br(CHtml::encode($stadtraetIn->beschreibung));
+					if ($stadtraetIn->quellen != "") echo '<div class="quelle">Quelle: ' . CHtml::encode($stadtraetIn->quellen) . '</div>';
+					echo '</dd>' . "\n";
+				}
+				?>
+			</dl>
 			@TODO
 		</div>
 	</section>

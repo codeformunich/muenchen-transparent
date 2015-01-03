@@ -129,6 +129,7 @@ echo ris_intern_html_extra_headers();
 							<ul class="dropdown-menu">
 								<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
 								<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+								<li><?= CHtml::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
 							</ul>
 						</li>
 					<? } ?>

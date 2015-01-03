@@ -1545,3 +1545,17 @@ section.impressum {
     }
   }
 }
+
+
+.personendaten_sidebar {
+  dt {
+    margin-top: 10px;
+  }
+  dd {
+    margin-bottom: 15px;
+  }
+  .quelle {
+    color: gray;
+    font-style: italic;
+  }
+}
