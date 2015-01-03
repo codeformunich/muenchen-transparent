@@ -155,7 +155,7 @@ return array(
 			'emulatePrepare'        => true,
 			'username'              => 'ris',
 			'password'              => 'PASSWORD',
-			'charset'               => 'utf8',
+			'charset'               => 'utf8mb4',
 			'queryCacheID'          => 'apcCache',
 			'schemaCachingDuration' => 3600,
 		),
