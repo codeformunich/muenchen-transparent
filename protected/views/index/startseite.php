@@ -20,7 +20,8 @@ $this->pageTitle = Yii::app()->name;
 ?>
 
 <section class="well">
-	<h1 class="sr-only"><?=CHtml::encode($this->pageTitle)?></h1>
+	<h1 class="sr-only"><?= CHtml::encode($this->pageTitle) ?></h1>
+
 	<div id="mapholder">
 		<div id="map"></div>
 	</div>
@@ -148,8 +149,7 @@ $this->pageTitle = Yii::app()->name;
 
 					<div class="description">
 						Durchsuche <?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> Dokumente
-						/ <?= number_format($statistiken["anzahl_seiten"], 0, ",", ".") ?>
-						Seiten.
+						/ <?= number_format($statistiken["anzahl_seiten"], 0, ",", ".") ?> Seiten
 					</div>
 				</a>
 			</div>
