@@ -27,6 +27,12 @@ scss --style compressed --cache-location /tmp/ html/css/styles.scss > html/css/s
 scss --style compressed --cache-location /tmp/ --watch . ../other/shariff/
 ```
 
+JS-Bibliotheken installieren:
+```bash
+npm install -h bower
+bower install
+```
+
 Webserver-Konfiguration:
 * DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
 * Bei Apache regelt die html/.htaccess alles weitere. Bei nginx gibt es unter docs/nginx.conf eine Beispiel-Konfigurationsdatei
@@ -34,7 +40,7 @@ Webserver-Konfiguration:
 
 MariaDB/MySQL-Konfiguration
 * Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "ratsinformant", Benutzer "ris", Passwort "sec"
-* `cat docs/schema3.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec ratsinformant`
+* `cat docs/schema.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec ratsinformant`
 * Der zugehörige Abschnitt in der protected/config/main.php wäre dann:
 ```php
 'db'           => array(
@@ -42,7 +48,7 @@ MariaDB/MySQL-Konfiguration
 			'emulatePrepare'        => true,
 			'username'              => 'ris',
 			'password'              => 'sec',
-			'charset'               => 'utf8',
+			'charset'               => 'utf8mb4',
 			'queryCacheID'          => 'apcCache',
 			'schemaCachingDuration' => 3600,
 		),

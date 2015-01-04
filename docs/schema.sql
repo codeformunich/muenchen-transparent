@@ -139,12 +139,13 @@ CREATE TABLE `benutzerInnen` (
   `id` int(11) NOT NULL,
   `email` varchar(45) DEFAULT NULL,
   `email_bestaetigt` tinyint(4) DEFAULT '0',
-  `datum_angelegt` datetime DEFAULT NULL,
+  `datum_angelegt` timestamp NULL DEFAULT NULL,
+  `berechtigungen_flags` smallint(6) NOT NULL DEFAULT '0',
   `pwd_enc` varchar(100) DEFAULT NULL,
   `pwd_change_date` timestamp NULL DEFAULT NULL,
   `pwd_change_code` varchar(100) DEFAULT NULL,
   `einstellungen` blob,
-  `datum_letzte_benachrichtigung` datetime DEFAULT NULL
+  `datum_letzte_benachrichtigung` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
