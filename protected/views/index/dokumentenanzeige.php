@@ -46,9 +46,9 @@
 			else     echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
 		}
 		?>
-
-		<div style="float: right"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download><span class="fontello-download"></span> Dokument herunterladen</a></div>
 	</ul>
+	<div style="position: absolute; top: 10px; right: 14px;"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download><span class="fontello-download"></span> Dokument herunterladen</a></div>
+
 
 	<p id="filename_store" class="hidden">/dokumente/<?= $id ?>.pdf</p>
 
@@ -189,7 +189,7 @@
 								</button>
 							</div>
 							<label id="pageNumberLabel" class="toolbarLabel" for="pageNumber" data-l10n-id="page_label">Page: </label>
-							<input type="number" id="pageNumber" class="toolbarField pageNumber" value="1" size="4" min="1" tabindex="15">
+							<input type="number" id="pageNumber" class="toolbarField pageNumber" value="1" min="1" tabindex="15">
 							<span id="numPages" class="toolbarLabel"></span>
 						</div>
 						<div id="toolbarViewerRight">
@@ -268,13 +268,13 @@
 				<div id="viewer"></div>
 			</div>
 
-			<div id="errorWrapper" hidden='true'>
+			<div id="errorWrapper" hidden='hidden'>
 				<div id="errorMessageLeft">
 					<span id="errorMessage"></span>
 					<button id="errorShowMore" data-l10n-id="error_more_info">
 						More Information
 					</button>
-					<button id="errorShowLess" data-l10n-id="error_less_info" hidden='true'>
+					<button id="errorShowLess" data-l10n-id="error_less_info" hidden='hidden'>
 						Less Information
 					</button>
 				</div>

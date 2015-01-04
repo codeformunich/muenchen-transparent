@@ -7,7 +7,7 @@
 $this->pageTitle = "Passwort zurückgesetzt";
 ?>
 
-<section class="col-md-4 col-md-offset-4">
+<section class="col-md-6 col-md-offset-3">
 	<div class="well">
 		<h1 class="form-signin-heading">Passwort zurücksetzen</h1>
 		<div class="alert alert-success">
