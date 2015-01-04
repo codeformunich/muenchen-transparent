@@ -67,6 +67,12 @@ class StadtraetInnenParser extends RISParser
 			$daten->twitter           = $alter_eintrag->twitter;
 			$daten->facebook          = $alter_eintrag->facebook;
 			$daten->abgeordnetenwatch = $alter_eintrag->abgeordnetenwatch;
+			$daten->quellen           = $alter_eintrag->quellen;
+			$daten->geburtstag        = $alter_eintrag->geburtstag;
+			$daten->geschlecht        = $alter_eintrag->geschlecht;
+			$daten->beschreibung      = $alter_eintrag->beschreibung;
+			$daten->beruf             = $alter_eintrag->beruf;
+			$daten->kontaktdaten      = $alter_eintrag->kontaktdaten;
 		}
 
 		if ($changed) {
