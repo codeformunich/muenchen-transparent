@@ -17,9 +17,9 @@ $this->pageTitle = "Termine";
 	</ul>
 	<h1 class="sr-only">Termine</h1>
 
-	<script src="/js/moment-with-locales.js"></script>
-	<script src="/js/fullcalendar-2.1.1/fullcalendar.min.js"></script>
-	<script src="/js/fullcalendar-2.1.1/lang/de.js"></script>
+	<script src="/js/moment/min/moment-with-locales.min.js"></script>
+	<script src="/js/fullcalendar/dist/fullcalendar.min.js"></script>
+	<script src="/js/fullcalendar/dist/lang/de.js"></script>
 	<div id='calendar'></div>
 	<script>
 		$(function () {

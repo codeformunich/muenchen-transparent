@@ -1,7 +1,8 @@
 {
-  "name": "Ratsinformant",
+  "name": "München Transparent",
   "dependencies": {
     "list.js": "*",
-    "isotope": "*"
+    "isotope": "*",
+    "fullcalendar": "*"
   }
 }

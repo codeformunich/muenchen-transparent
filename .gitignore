@@ -12,6 +12,8 @@ html/css/.sass-cache/
 .idea
 html/piwik/
 html/sitemap-*
+html/google*
+html/BingSiteAuth.xml
 
 # Bower
 html/js/list.js/
@@ -24,4 +26,7 @@ html/js/isotope/
 html/js/masonry/
 html/js/matches-selector/
 html/js/outlayer/
+html/js/jquery/
+html/js/fullcalendar/
+html/js/moment/
 

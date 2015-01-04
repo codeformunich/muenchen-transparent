@@ -45,7 +45,7 @@
     <?
     if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
     if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
-    if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar-2.1.1/fullcalendar.min.css"/>';
+    if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css"/>';
     if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
 
     if ($this->load_pdf_js) { ?>
