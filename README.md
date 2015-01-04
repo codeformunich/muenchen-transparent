@@ -29,7 +29,7 @@ scss --style compressed --cache-location /tmp/ --watch . ../other/shariff/
 
 JS-Bibliotheken installieren:
 ```bash
-npm install -h bower
+npm install -g bower
 bower install
 ```
 
