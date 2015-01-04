@@ -83,7 +83,6 @@ class AdminController extends RISBaseController
 				/** @var StadtraetIn $str */
 				$str               = StadtraetIn::model()->findByPk($str_id);
 				$str->geburtstag   = ($geburtstag != "" ? $geburtstag : null);
-				$str->beruf        = $_REQUEST["beruf"][$str_id];
 				$str->beschreibung = $_REQUEST["beschreibung"][$str_id];
 				$str->quellen      = $_REQUEST["quellen"][$str_id];
 				$str->geschlecht   = (isset($_REQUEST["geschlecht"][$str_id]) ? $_REQUEST["geschlecht"][$str_id] : null);
@@ -98,6 +97,39 @@ class AdminController extends RISBaseController
 		$this->render("stadtraetInnenBeschreibungen", array(
 			"msg_ok"     => $msg_ok,
 			"fraktionen" => $fraktionen,
+		));
+	}
+
+	public function actionStadtraetInnenBenutzerInnen()
+	{
+		$ich = $this->aktuelleBenutzerIn();
+		if (!$ich) $this->errorMessageAndDie(403, "");
+		if (!$ich->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) $this->errorMessageAndDie(403, "");
+
+		$this->top_menu = "admin";
+		$msg_ok         = null;
+
+		if (AntiXSS::isTokenSet("save") && isset($_REQUEST["BenutzerIn"])) {
+
+			foreach ($_REQUEST["BenutzerIn"] as $strIn_id => $benutzerIn_id) {
+
+				if ($benutzerIn_id > 0) var_dump($benutzerIn_id);
+				/** @var StadtraetIn $strIn */
+				$strIn = StadtraetIn::model()->findByPk($strIn_id);
+				if ($benutzerIn_id > 0) $strIn->benutzerIn_id = IntVal($benutzerIn_id);
+				else $strIn->benutzerIn_id = null;
+				$strIn->save();
+			}
+			$msg_ok = "Gespeichert";
+		}
+
+		/** @var StadtraetIn[] $stadtraetInnen */
+		$stadtraetInnen = StadtraetIn::model()->findAll();
+		$stadtraetInnen = StadtraetIn::sortByName($stadtraetInnen);
+
+		$this->render("stadtraetInnenBenutzerInnen", array(
+			"msg_ok"         => $msg_ok,
+			"stadtraetInnen" => $stadtraetInnen,
 		));
 	}
 

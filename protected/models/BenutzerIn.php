@@ -29,6 +29,14 @@ class BenutzerIn extends CActiveRecord
 	/** @var null|BenutzerInnenEinstellungen */
 	private $einstellungen_object = null;
 
+
+	/**
+	 * @return BenutzerIn[]
+	 */
+	public static function alleAktiveAccounts() {
+		return BenutzerIn::model()->findAllByAttributes(array("email_bestaetigt" => "1"), array("order" => "email"));
+	}
+
 	/**
 	 * @param string $email
 	 * @param string $password
@@ -216,7 +224,7 @@ class BenutzerIn extends CActiveRecord
 		$this->pwd_change_date = new CDbExpression("NOW()");
 		if ($this->save()) {
 			$link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/resetPassword", array("id" => $this->id, "code" => $this->pwd_change_code));
-			RISTools::send_email($this->email, "München Transparent-Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
+			RISTools::send_email($this->email, "Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
 				. "Liebe Grüße,\n\tDas München Transparent-Team.", null, "password");
 			return true;
 		}

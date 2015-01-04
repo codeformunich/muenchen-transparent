@@ -33,7 +33,7 @@
 	<meta name="msapplication-TileColor" content="#0f9d58">
 	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
 
-	<link rel="search" type="application/opensearchdescription+xml" title="<?=CHtml::encode(Yii::app()->params['projectTitle'])?>" href="/other/OpenSearch.xml">
+	<link rel="search" type="application/opensearchdescription+xml" title="<?= CHtml::encode(Yii::app()->params['projectTitle']) ?>" href="/other/OpenSearch.xml">
 	<link rel="icon" type="image/png" href="/css/img/logo.png">
 
 	<title><?php
@@ -42,31 +42,31 @@
 		?></title>
 
 
-    <?
-    if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
-    if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
-    if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css"/>';
-    if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
+	<?
+	if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
+	if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
+	if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css"/>';
+	if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
 
-    if ($this->load_pdf_js) { ?>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <meta name="google" content="notranslate">
-        <link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
+	if ($this->load_pdf_js) { ?>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="google" content="notranslate">
+		<link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
 
-    <? } ?>
+	<? } ?>
 
-    <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
-    <link rel="stylesheet" href="/css/styles_website.css">
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
+	<link rel="stylesheet" href="/css/styles_website.css">
 
-    <?
-    if ($this->inline_css != "") {
-        echo '<style>' . $this->inline_css . '</style>';
-    }
-    ?>
+	<?
+	if ($this->inline_css != "") {
+		echo '<style>' . $this->inline_css . '</style>';
+	}
+	?>
 
-    <!--[if lt IE 9]>
-    <script src="/js/jquery-1.11.2.min.js"></script>
-    <![endif]-->
+	<!--[if lt IE 9]>
+	<script src="/js/jquery-1.11.2.min.js"></script>
+	<![endif]-->
 	<!--[if gte IE 9]><!-->
 	<script src="/js/jquery-2.1.3.min.js"></script>
 	<!--<![endif]-->
@@ -122,14 +122,22 @@ echo ris_intern_html_extra_headers();
 					<li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
 					<li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("index/personen")) ?></li>
 					<?
-					if ($this->binContentAdmin()) {
+					$user = $this->aktuelleBenutzerIn();
+					if ($user && ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER))) {
 						?>
 						<li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
-								<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
-								<li><?= CHtml::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
+								<?
+								if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
+									<li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
+									<li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+									<li><?= CHtml::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
+								<? }
+								if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) { ?>
+									<li><?= CHtml::link("StadträtInnen: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
+								<? }
+								?>
 							</ul>
 						</li>
 					<? } ?>
@@ -146,8 +154,9 @@ echo ris_intern_html_extra_headers();
 				</form>
 			</div>
 		</div>
-		<a href="<?=CHtml::encode(Yii::app()->createUrl("infos/feedback"))?>" id="ris_beta_badge">
+		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/feedback")) ?>" id="ris_beta_badge">
 			<h2>Beta</h2>
+
 			<p>Fehler gefunden?</p>
 		</a>
 	</div>
@@ -161,7 +170,8 @@ echo ris_intern_html_extra_headers();
 
 	<!-- Needed to keep the footer at the bottom -->
 	<div class="footer_spacer"></div>
-</div><!-- /over_footer_wrapper -->
+</div>
+<!-- /over_footer_wrapper -->
 
 <footer>
 	<p class="container">

@@ -22,7 +22,6 @@
 				<th>Name</th>
 				<th>Geschlecht</th>
 				<th>Geburtstag</th>
-				<th>Beruf</th>
 				<th>Beschreibung</th>
 				<th>Quellen</th>
 			</tr>
@@ -41,8 +40,7 @@
 						} ?>
 					</td>
 					<td style="padding-top: 20px;"><input type="text" name="geburtstag[<?= $str->id ?>]" placeholder="YYYY-MM-DD" title="Geburtstag" value="<?= CHtml::encode($str->geburtstag) ?>" maxlength="15"></td>
-					<td style="padding-top: 20px;"><textarea name="beruf[<?=$str->id?>]" title="Beruf" rows="3"><?=CHtml::encode($str->beruf)?></textarea></td>
-					<td style="padding-top: 20px;"><textarea name="beschreibung[<?=$str->id?>]" title="Beschreibung" rows="3"><?=CHtml::encode($str->beschreibung)?></textarea></td>
+					<td style="padding-top: 20px;"><textarea name="beschreibung[<?=$str->id?>]" title="Beschreibung" rows="3" style="width: 230px;"><?=CHtml::encode($str->beschreibung)?></textarea></td>
 					<td style="padding-top: 20px;"><textarea name="quellen[<?=$str->id?>]" title="Quellen" rows="3"><?=CHtml::encode($str->quellen)?></textarea></td>
 				</tr>
 			<? } ?>
