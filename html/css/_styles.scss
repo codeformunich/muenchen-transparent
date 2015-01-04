@@ -396,13 +396,23 @@ body {
   html.csstransforms.csstransforms3d & {
     left: -35px;
     top: 19px;
-    transform: scale(1) rotate(-45deg) translate(0px, 0px) skew(0deg, 0deg);
+
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
 
     @media screen and (min-width: $screen-sm) {
       left: auto;
       right: -35px;
       top: 19px;
-      transform: scale(1) rotate(45deg) translate(0px, 0px) skew(0deg, 0deg);
+
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
     }
   }
 }
