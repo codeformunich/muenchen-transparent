@@ -110,10 +110,7 @@ class AdminController extends RISBaseController
 		$msg_ok         = null;
 
 		if (AntiXSS::isTokenSet("save") && isset($_REQUEST["BenutzerIn"])) {
-
 			foreach ($_REQUEST["BenutzerIn"] as $strIn_id => $benutzerIn_id) {
-
-				if ($benutzerIn_id > 0) var_dump($benutzerIn_id);
 				/** @var StadtraetIn $strIn */
 				$strIn = StadtraetIn::model()->findByPk($strIn_id);
 				if ($benutzerIn_id > 0) $strIn->benutzerIn_id = IntVal($benutzerIn_id);
