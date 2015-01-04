@@ -1,4 +1,4 @@
-[Ratsinformant](https://ratsinformant.de)
+[München Transparent](https://www.muenchen-transparent.de)
 =========================================
 
 
@@ -39,12 +39,12 @@ Webserver-Konfiguration:
 * Der Hostname des Webservers muss auch als SITE_BASE_URL bei protected/config/main.php gesetzt werden.
 
 MariaDB/MySQL-Konfiguration
-* Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "ratsinformant", Benutzer "ris", Passwort "sec"
-* `cat docs/schema.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec ratsinformant`
+* Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "muenchen_transparent", Benutzer "ris", Passwort "sec"
+* `cat docs/schema.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec muenchen_transparent`
 * Der zugehörige Abschnitt in der protected/config/main.php wäre dann:
 ```php
 'db'           => array(
-			'connectionString'      => 'mysql:host=127.0.0.1;dbname=ratsinformant',
+			'connectionString'      => 'mysql:host=127.0.0.1;dbname=muenchen_transparent',
 			'emulatePrepare'        => true,
 			'username'              => 'ris',
 			'password'              => 'sec',
