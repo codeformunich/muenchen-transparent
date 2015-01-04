@@ -20,7 +20,7 @@ foreach ($stadtraetInnen as $str) {
 	} // @TODO
 
 	$output_data[] = array(
-		"value" => $str->name,
+		"value" => $str->getName(),
 		"fraktionen" => $fraktion,
 		"gremien" => implode(", ", $gremien),
 		"url" => $str->getLink()

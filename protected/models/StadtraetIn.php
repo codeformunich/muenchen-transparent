@@ -7,6 +7,7 @@
  * @property string $gewaehlt_am
  * @property string $bio
  * @property string $web
+ * @property string $email
  * @property string $name
  * @property string $twitter
  * @property string $facebook
@@ -62,7 +63,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			array('id, name, referentIn', 'required'),
 			array('id, referentIn, benutzerIn_id', 'numerical', 'integerOnly' => true),
 			array('web', 'length', 'max' => 250),
-			array('name', 'length', 'max' => 100),
+			array('name, email', 'length', 'max' => 100),
 			array('twitter', 'length', 'max' => 45),
 			array('facebook, abgeordnetenwatch', 'length', 'max' => 200),
 		);
@@ -96,6 +97,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 			'gewaehlt_am'       => 'Gewaehlt Am',
 			'bio'               => 'Bio',
 			'web'               => 'Web',
+			'email'             => 'E-Mail-Adresse',
 			'name'              => 'Name',
 			'twitter'           => 'Twitter',
 			'facebook'          => 'Facebook',
@@ -115,7 +117,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 	public function getLink($add_params = array())
 	{
 		$name = $this->getName();
-		return Yii::app()->createUrl("index/stadtraetIn", array_merge(array("id" => $this->id, "name" => $name), $add_params));
+		return Yii::app()->createUrl("personen/person", array_merge(array("id" => $this->id, "name" => $name), $add_params));
 	}
 
 

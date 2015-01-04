@@ -160,11 +160,11 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 	</div>
 
 	<div class="col col-md-3 keine_dokumente"><?
-		$this->renderPartial("fraktionen", array(
+		$this->renderPartial("../personen/fraktionen", array(
 			"fraktionen" => $fraktionen,
 			"title"      => "BA-Mitglieder",
 		));
-		$this->renderPartial("ausschuss_mitglieder", array(
+		$this->renderPartial("../personen/ausschuss_mitglieder", array(
 			"gremien" => $gremien,
 			"title"      => "Unterausschüsse",
 		));

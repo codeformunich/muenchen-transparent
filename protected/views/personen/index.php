@@ -3,7 +3,7 @@
  * @var InfosController $this
  * @var string $personen_typ
  * @var int|null $ba_nr
- * @var StadtraetIn[] $stadtraetInnen
+ * @var StadtraetIn[] $personen
  */
 
 /** @var Bezirksausschuss[] $bas */
@@ -18,7 +18,7 @@ $this->pageTitle   = $personen_typ_name;
 <section class="well personen_liste">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
         <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li class="active"><?= CHtml::encode($personen_typ_name) ?></li>
+        <li class="active">Personen</li>
     </ul>
 
     <div class="row">
@@ -38,12 +38,12 @@ $this->pageTitle   = $personen_typ_name;
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <?
-                            $str_link = Yii::app()->createUrl("index/personen");
+                            $str_link = Yii::app()->createUrl("personen/index");
                             if ($ba_nr === null) echo '<li class="stadtrat active"><a href="' . CHtml::encode($str_link) . '">Stadtrat <span class="sr-only">(aktuell)</span></a></li>';
                             else echo '<li class="stadtrat"><a href="' . CHtml::encode($str_link) . '">Stadtrat</a></li>';
 
                             foreach ($bas as $ba) {
-                                $str_link = Yii::app()->createUrl("index/personen", array("ba" => $ba->ba_nr));
+                                $str_link = Yii::app()->createUrl("personen/index", array("ba" => $ba->ba_nr));
                                 $name     = "BA " . $ba->ba_nr . " <small>(" . $ba->name . ")</small>";
                                 if ($ba_nr === $ba->ba_nr) echo '<li class="active"><a href="' . CHtml::encode($str_link) . '">' . $name . ' <span class="sr-only">(aktuell)</span></a></li>';
                                 else echo '<li><a href="' . CHtml::encode($str_link) . '">' . $name . '</a></li>';
@@ -60,7 +60,7 @@ $this->pageTitle   = $personen_typ_name;
 
             $fraktionen = array();
             $twitter    = $facebook = $website = false;
-            foreach ($stadtraetInnen as $strIn) {
+            foreach ($personen as $strIn) {
                 $frakt = $strIn->stadtraetInnenFraktionen[0]->fraktion;
                 if (!isset($fraktionen[$frakt->id])) $fraktionen[$frakt->id] = $frakt->getName(true);
                 if ($strIn->twitter != "") $twitter = true;
@@ -113,12 +113,8 @@ $this->pageTitle   = $personen_typ_name;
 
             <ul class="strIn_liste">
                 <?
-                usort($stadtraetInnen, function($strIn1, $strIn2) {
-                    /** @var StadtraetIn $strIn1 */
-                    /** @var StadtraetIn $strIn2 */
-                    return strnatcasecmp($strIn1->errateVorname(), $strIn2->errateVorname());
-                });
-                foreach ($stadtraetInnen as $strIn) {
+                $personen = StadtraetIn::sortByName($personen);
+                foreach ($personen as $strIn) {
                     echo '<li class="strIn fraktion_';
                     echo $strIn->stadtraetInnenFraktionen[0]->fraktion_id;
                     if ($strIn->twitter != "") echo " twitter";

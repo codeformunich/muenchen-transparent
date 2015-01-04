@@ -384,6 +384,7 @@ CREATE TABLE `stadtraetInnen` (
   `referentIn` tinyint(4) NOT NULL DEFAULT '0',
   `gewaehlt_am` date DEFAULT NULL,
   `bio` mediumtext NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
   `web` varchar(250) NOT NULL,
   `name` varchar(100) NOT NULL,
   `twitter` varchar(45) DEFAULT NULL,
@@ -996,7 +997,7 @@ ADD CONSTRAINT `fk_ris_aenderungen_bezirksausschuesse1` FOREIGN KEY (`ba_nr`) RE
 -- Constraints for table `stadtraetInnen`
 --
 ALTER TABLE `stadtraetInnen`
-ADD CONSTRAINT `fr_stadtraetIn_benutzerIn` FOREIGN KEY (`benutzerIn_id`) REFERENCES `ris_aenderungen` (`id`) ON DELETE SET NULL;
+ADD CONSTRAINT `fr_stadtraetIn_benutzerIn` FOREIGN KEY (`benutzerIn_id`) REFERENCES `benutzerInnen` (`id`);
 
 --
 -- Constraints for table `stadtraetInnen_fraktionen`

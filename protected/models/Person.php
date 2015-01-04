@@ -29,7 +29,6 @@ class Person extends CActiveRecord implements IRISItem
 	);
 
 	/**
-	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Person the static model class
 	 */
@@ -51,8 +50,6 @@ class Person extends CActiveRecord implements IRISItem
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
 			array('name_normalized, typ, name', 'required'),
 			array('ris_stadtraetIn, ris_fraktion', 'numerical', 'integerOnly' => true),
@@ -66,8 +63,6 @@ class Person extends CActiveRecord implements IRISItem
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
 			'antraegePersonen' => array(self::HAS_MANY, 'AntragPerson', 'person_id'),
 			'stadtraetIn'      => array(self::BELONGS_TO, 'StadtraetIn', 'ris_stadtraetIn'),
@@ -135,7 +130,7 @@ class Person extends CActiveRecord implements IRISItem
 	 */
 	public function getLink($add_params = array())
 	{
-		return Yii::app()->createUrl("index/stadtraetIn", array_merge(array("id" => $this->id, "name" => $this->name), $add_params));
+		return Yii::app()->createUrl("personen/person", array_merge(array("id" => $this->id, "name" => $this->name), $add_params));
 	}
 
 	/** @return string */

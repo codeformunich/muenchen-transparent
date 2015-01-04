@@ -110,7 +110,7 @@ $this->pageTitle = Yii::app()->name;
 			</div>
 
 			<div class="col-md-6">
-				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/personen")) ?>" class="btn btn-info">
+				<a href="<?= CHtml::encode(Yii::app()->createUrl("personen/index")) ?>" class="btn btn-info">
 					<h2><span class="glyphicon glyphicon-user"></span>Personen</h2>
 
 					<div class="description">
