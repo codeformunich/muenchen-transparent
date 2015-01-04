@@ -71,16 +71,16 @@ $this->pageTitle = "Suchergebnisse";
 					class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen</label></div>
 
 		<script>
-			yepnope({
-				load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js"],
-				complete: function () {
-					var $map = $("#map").AntraegeKarte({
-						lat: <?=$geokrit["lat"]?>,
-						lng: <?=$geokrit["lng"]?>,
-						size: 14
-					});
-					$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
-				}
+			$(function () {
+				var $map = $("#map").AntraegeKarte({
+					assetsBase: <?=json_encode($this->getAssetsBase())?>,
+					lat: <?=$geokrit["lat"]?>,
+					lng: <?=$geokrit["lng"]?>,
+					size: 14,
+					onInit: function () {
+						$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
+					}
+				});
 			});
 		</script>
 	<?
@@ -117,23 +117,23 @@ $this->pageTitle = "Suchergebnisse";
 	$has_facets = false;
 	foreach ($facet_groups as $name => $facets) if (count($facets) > 1) $has_facets = true;
 	if ($has_facets) {
-	?>
-	<section class="suchergebnis_eingrenzen">
-		<div class="opener"><a href="#suchergebnis_eingrenzen_holder" onclick="$(this).parents('.suchergebnis_eingrenzen').toggleClass('visible'); return false;">
-				<span class="glyphicon glyphicon-chevron-down open_icon"></span>
-				<span class="glyphicon glyphicon-chevron-up close_icon"></span>
-				Suchergebnisse einschränken
-			</a></div>
-		<div id="suchergebnis_eingrenzen_holder">
-			<?
-			foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
-				echo '<div class="eingrenzen_row"><h3>' . CHtml::encode($name) . '</h3><ul>';
-				echo implode("", $facets);
-				echo '</ul></div>';
-			}
-			?>
-		</div>
-	</section>
+		?>
+		<section class="suchergebnis_eingrenzen">
+			<div class="opener"><a href="#suchergebnis_eingrenzen_holder" onclick="$(this).parents('.suchergebnis_eingrenzen').toggleClass('visible'); return false;">
+					<span class="glyphicon glyphicon-chevron-down open_icon"></span>
+					<span class="glyphicon glyphicon-chevron-up close_icon"></span>
+					Suchergebnisse einschränken
+				</a></div>
+			<div id="suchergebnis_eingrenzen_holder">
+				<?
+				foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
+					echo '<div class="eingrenzen_row"><h3>' . CHtml::encode($name) . '</h3><ul>';
+					echo implode("", $facets);
+					echo '</ul></div>';
+				}
+				?>
+			</div>
+		</section>
 	<? }
 
 	echo '<br style="clear: both;">';

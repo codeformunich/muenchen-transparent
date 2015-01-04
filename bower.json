@@ -3,6 +3,7 @@
   "dependencies": {
     "list.js": "*",
     "isotope": "*",
-    "fullcalendar": "*"
+    "fullcalendar": "*",
+    "leaflet.locatecontrol": "*"
   }
 }

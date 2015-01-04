@@ -271,6 +271,10 @@ body {
   @media print {
     max-width: 600px;
   }
+
+  .leaflet-control-locate .glyphicon {
+    margin-top: 4px;
+  }
 }
 
 #map {

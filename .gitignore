@@ -29,4 +29,6 @@ html/js/outlayer/
 html/js/jquery/
 html/js/fullcalendar/
 html/js/moment/
-
+html/js/leaflet/
+html/js/leaflet.locatecontrol/
+html/js/fontawesome/

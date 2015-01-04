@@ -43,10 +43,14 @@
 
 
 	<?
-	if ($this->load_leaflet_css) echo '<link rel="stylesheet" href="/js/Leaflet/leaflet.css"/>';
-	if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css"/>';
-	if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css"/>';
-	if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css"/>';
+	if ($this->load_leaflet_css) {
+		echo '<link rel="stylesheet" href="/js/leaflet/dist/leaflet.css">';
+		echo '<link rel="stylesheet" href="/js/Leaflet.Control.Geocoder/Control.Geocoder.css">';
+		echo '<link rel="stylesheet" href="/js/leaflet.locatecontrol/dist/L.Control.Locate.min.css">';
+	}
+	if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css">';
+	if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css">';
+	if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
 
 	if ($this->load_pdf_js) { ?>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -55,7 +59,7 @@
 
 	<? } ?>
 
-	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css"/>
+	<link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css">
 	<link rel="stylesheet" href="/css/styles_website.css">
 
 	<?

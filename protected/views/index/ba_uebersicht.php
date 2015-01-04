@@ -70,25 +70,21 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 	</div>
 
 	<script>
-		yepnope({
-			load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", <?=json_encode($this->getAssetsBase())?> +"/ba_features.js",
-				"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
-				"/js/leaflet.spiderfy.js",
-				"/js/leaflet.textmarkers.js"
-			],
-			complete: function () {
-				var $map = $("#map").AntraegeKarte({
-					benachrichtigungen_widget: "benachrichtigung_hinweis",
-					benachrichtigungen_widget_zoom: 15,
-					outlineBA: <?=$ba->ba_nr?>,
-					onSelect: function (latlng, rad, zoom) {
-						if (zoom >= 15) {
-							index_geo_dokumente_load("", latlng.lng, latlng.lat, rad);
-						}
+		$(function () {
+			var $map = $("#map").AntraegeKarte({
+				benachrichtigungen_widget: "benachrichtigung_hinweis",
+				benachrichtigungen_widget_zoom: 15,
+				outlineBA: <?=$ba->ba_nr?>,
+				assetsBase: <?=json_encode($this->getAssetsBase())?>,
+				onSelect: function (latlng, rad, zoom) {
+					if (zoom >= 15) {
+						index_geo_dokumente_load("", latlng.lng, latlng.lat, rad);
 					}
-				});
-				$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
-			}
+				},
+				onInit: function () {
+					$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
+				}
+			});
 		});
 	</script>
 </section>
@@ -166,7 +162,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 		));
 		$this->renderPartial("../personen/ausschuss_mitglieder", array(
 			"gremien" => $gremien,
-			"title"      => "Unterausschüsse",
+			"title"   => "Unterausschüsse",
 		));
 		?>
 	</div>

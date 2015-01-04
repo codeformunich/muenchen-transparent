@@ -53,9 +53,10 @@ foreach ($termin->tagesordnungspunkte as $ergebnis) {
 
 	</style>
 
-	<script src="/js/jquery-2.1.1.min.js"></script>
-	<script src="/js/jquery-ui-1.11.0.custom.min.js"></script>
+	<script src="/js/jquery-2.1.3.min.js"></script>
+	<script src="/js/jquery-ui-1.11.2.custom.min.js"></script>
 	<script src="/js/Leaflet/leaflet.js"></script>
+	<script src="/js/Leaflet.Control.Geocoder/Control.Geocoder.js"></script>
 	<script src="/js/html2canvas.min.js"></script>
 	<script src="<?= CHtml::encode($assets_base) ?>/ba_features.js"></script>
 	<script src="/js/leaflet.spiderfy.js"></script>

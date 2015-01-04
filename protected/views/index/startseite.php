@@ -56,32 +56,27 @@ $this->pageTitle = Yii::app()->name;
 	</div>
 
 	<script>
-		yepnope({
-			load: ["/js/Leaflet/leaflet.js",
-				"/js/Leaflet.Fullscreen/Control.FullScreen.js",
-				<?=json_encode($this->getAssetsBase())?> +"/ba_features.js",
-				"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
-				"/js/leaflet.spiderfy.js",
-				"/js/leaflet.textmarkers.js"
-			],
-			complete: function () {
-				var $map = $("#map").AntraegeKarte({
-					benachrichtigungen_widget: "benachrichtigung_hinweis",
-					show_BAs: true,
-					benachrichtigungen_widget_zoom: 14,
-					ba_link: "<?=CHtml::encode($this->createUrl("index/ba", array("ba_nr" => "12345")))?>",
-					onSelect: function (latlng, rad, zoom) {
-						if (zoom >= 14) {
-							index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
-							$("section.teaser_holder").hide();
-						} else {
-							$("section.teaser_holder").show();
-						}
+		$(function () {
+			var $map = $("#map").AntraegeKarte({
+				benachrichtigungen_widget: "benachrichtigung_hinweis",
+				show_BAs: true,
+				benachrichtigungen_widget_zoom: 14,
+				ba_link: "<?=CHtml::encode($this->createUrl("index/ba", array("ba_nr" => "12345")))?>",
+				assetsBase: <?=json_encode($this->getAssetsBase())?>,
+				onSelect: function (latlng, rad, zoom) {
+					if (zoom >= 14) {
+						index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
+						$("section.teaser_holder").hide();
+					} else {
+						$("section.teaser_holder").show();
 					}
-				});
-				$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
-			}
-		})
+				},
+				onInit: function() {
+					$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
+				}
+			});
+
+		});
 	</script>
 
 	<section class="teaser_buttons">

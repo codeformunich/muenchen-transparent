@@ -11,7 +11,6 @@
 
 $this->pageTitle = "Benachrichtigungen";
 
-$assets_base   = $this->getAssetsBase();
 $bens          = $ich->getBenachrichtigungen();
 $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 ?>
@@ -45,56 +44,56 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 			<div>
 				<div class="radio radio-success">
 					<label>
-						<input type="radio" name="intervall" value="tag" <? if ($benachrichtigungstag === null) echo "checked";?>>
+						<input type="radio" name="intervall" value="tag" <? if ($benachrichtigungstag === null) echo "checked"; ?>>
 						Täglich
 					</label>
 				</div>
 				<div class="radio radio-success">
 					<label>
-						<input type="radio" name="intervall" value="woche" <? if ($benachrichtigungstag !== null) echo "checked";?>>
+						<input type="radio" name="intervall" value="woche" <? if ($benachrichtigungstag !== null) echo "checked"; ?>>
 						Wöchentlich
 					</label>
 				</div>
 				<div class="tage_auswahl" style="margin-left: 40px;">
 					<div class="radio radio-info">
 						<label>
-							<input type="radio" name="wochentag" value="1" <? if ($benachrichtigungstag === 1) echo "checked";?>>
+							<input type="radio" name="wochentag" value="1" <? if ($benachrichtigungstag === 1) echo "checked"; ?>>
 							Montags
 						</label>
 					</div>
 					<div class="radio radio-info">
 						<label>
-							<input type="radio" name="wochentag" value="2" <? if ($benachrichtigungstag === 2) echo "checked";?>>
+							<input type="radio" name="wochentag" value="2" <? if ($benachrichtigungstag === 2) echo "checked"; ?>>
 							Dienstags
 						</label>
 					</div>
 					<div class="radio radio-info">
 						<label>
-							<input type="radio" name="wochentag" value="3" <? if ($benachrichtigungstag === 3) echo "checked";?>>
+							<input type="radio" name="wochentag" value="3" <? if ($benachrichtigungstag === 3) echo "checked"; ?>>
 							Mittwochs
 						</label>
 					</div>
 					<div class="radio radio-info">
 						<label>
-							<input type="radio" name="wochentag" value="4" <? if ($benachrichtigungstag === 4) echo "checked";?>>
+							<input type="radio" name="wochentag" value="4" <? if ($benachrichtigungstag === 4) echo "checked"; ?>>
 							Donnerstags
 						</label>
 					</div>
 					<div class="radio radio-info">
 						<label>
-							<input type="radio" name="wochentag" value="5" <? if ($benachrichtigungstag === 5) echo "checked";?>>
+							<input type="radio" name="wochentag" value="5" <? if ($benachrichtigungstag === 5) echo "checked"; ?>>
 							Freitags
 						</label>
 					</div>
 					<div class="radio radio-info">
 						<label>
-							<input type="radio" name="wochentag" value="6" <? if ($benachrichtigungstag === 6) echo "checked";?>>
+							<input type="radio" name="wochentag" value="6" <? if ($benachrichtigungstag === 6) echo "checked"; ?>>
 							Samstags
 						</label>
 					</div>
 					<div class="radio radio-info">
 						<label>
-							<input type="radio" name="wochentag" value="0" <? if ($benachrichtigungstag === 0) echo "checked";?>>
+							<input type="radio" name="wochentag" value="0" <? if ($benachrichtigungstag === 0) echo "checked"; ?>>
 							Sonntags
 						</label>
 					</div>
@@ -276,27 +275,28 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 		</fieldset>
 
 		<script>
-			ASSETS_BASE = <?=json_encode($assets_base)?>;
-			yepnope({
-				load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", "/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js"],
-				complete: function () {
-					var $ben_holder = $("#ben_map_infos");
-					$("#ben_map").AntraegeKarte({
-						benachrichtigungen_widget: true, show_BAs: false, benachrichtigungen_widget_zoom: 9, size: 11, onSelect: function (latlng, rad) {
-							$.ajax({
-								"url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
-								"success": function (ret) {
-									$("#ben_map_infos").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
-									$(".ben_add_geo").prop("disabled", false);
+			$(function () {
+				var $ben_holder = $("#ben_map_infos");
+				$("#ben_map").AntraegeKarte({
+					benachrichtigungen_widget: true,
+					show_BAs: false,
+					assetsBase: <?=json_encode($this->getAssetsBase())?>,
+					benachrichtigungen_widget_zoom: 9,
+					size: 11,
+					onSelect: function (latlng, rad) {
+						$.ajax({
+							"url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
+							"success": function (ret) {
+								$("#ben_map_infos").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
+								$(".ben_add_geo").prop("disabled", false);
 
-								}
-							});
-							$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
-							$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
-							$ben_holder.find("input[name=geo_radius]").val(rad);
-						}
-					});
-				}
+							}
+						});
+						$ben_holder.find("input[name=geo_lng]").val(latlng.lng);
+						$ben_holder.find("input[name=geo_lat]").val(latlng.lat);
+						$ben_holder.find("input[name=geo_radius]").val(rad);
+					}
+				});
 			});
 		</script>
 

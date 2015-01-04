@@ -123,18 +123,14 @@ $geodata         = array();
 	<script>
 		$(function () {
 			var geodata = <?=json_encode($geodata)?>;
-			if (geodata.length > 0) yepnope({
-				load: ["/js/Leaflet/leaflet.js", "/js/Leaflet.Fullscreen/Control.FullScreen.js", <?=json_encode($assets_base)?> +"/ba_features.js",
-					"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
-					"/js/leaflet.spiderfy.js",
-					"/js/leaflet.textmarkers.js"
-				],
-				complete: function () {
-					var $map = $("#map").AntraegeKarte({
-						outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>
-					});
-					$map.AntraegeKarte("setAntraegeData", geodata, null);
-				}
+			if (geodata.length > 0) $(function () {
+				var $map = $("#map").AntraegeKarte({
+					assetsBase: <?=json_encode($this->getAssetsBase())?>,
+					outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
+					onInit: function() {
+						$map.AntraegeKarte("setAntraegeData", geodata, null);
+					}
+				});
 			});
 			else $("#mapsection").hide();
 		});
