@@ -10,12 +10,21 @@
  * @property string $pwd_change_code
  * @property string $einstellungen
  * @property string $datum_letzte_benachrichtigung
+ * @property int $berechtigungen_flags
  *
  * @property Vorgang[] $abonnierte_vorgaenge
  * @property StadtraetIn[] $stadtraetInnen
  */
 class BenutzerIn extends CActiveRecord
 {
+
+	// Hinweis: Müssen 2er-Potenzen sein, also 32, 64, 128, ...
+	public static $BERECHTIGUNG_USER = 1;
+	public static $BERECHTIGUNG_CONTENT = 2;
+	public static $BERECHTIGUNGEN = array(
+		1 => "User-Admin",
+		2 => "Content-Admin",
+	);
 
 	/** @var null|BenutzerInnenEinstellungen */
 	private $einstellungen_object = null;
@@ -79,7 +88,7 @@ class BenutzerIn extends CActiveRecord
 	{
 		$rules = array(
 			array('email, datum_angelegt', 'required'),
-			array('id, email_bestaetigt', 'numerical', 'integerOnly' => true),
+			array('id, email_bestaetigt, berechtigungen_flags', 'numerical', 'integerOnly' => true),
 			array('datum_letzte_benachrichtigung', 'default', 'setOnEmpty' => true, 'value' => null),
 		);
 		return $rules;
@@ -112,6 +121,7 @@ class BenutzerIn extends CActiveRecord
 			'datum_letzte_benachrichtigung' => Yii::t('app', 'Datum der letzten Benachrichtigung'),
 			'einstellungen'                 => null,
 			'abonnierte_vorgaenge'          => Yii::t('app', 'Abonnierte Vorgänge'),
+			'berechtigungen_flags'          => 'Berechtigungen',
 		);
 	}
 
@@ -476,6 +486,30 @@ class BenutzerIn extends CActiveRecord
 	public function validate_password($password)
 	{
 		return password_verify($password, $this->pwd_enc);
+	}
+
+	/**
+	 * @param int $berechtigung
+	 */
+	public function setzeBerechtigung($berechtigung) {
+		$this->berechtigungen_flags = $this->berechtigungen_flags | $berechtigung;
+		$this->save();
+	}
+
+	/**
+	 * @param int $berechtigung
+	 */
+	public function entferneBerechtigung($berechtigung) {
+		$this->berechtigungen_flags = $this->berechtigungen_flags & ~$berechtigung;
+		$this->save();
+	}
+
+	/**
+	 * @param int $berechtigung
+	 * @return bool
+	 */
+	public function hatBerechtigung($berechtigung) {
+		return (($this->berechtigungen_flags & $berechtigung) == $berechtigung);
 	}
 
 }

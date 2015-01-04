@@ -188,7 +188,6 @@ return array(
 		'skobblerKey'     => 'KEY',
 		'baseURL'         => SITE_BASE_URL,
 		'debug_log'       => true,
-		'contentAdminIds' => array(),
 		'projectTitle'    => 'München Transparent',
 	),
 );

@@ -184,7 +184,7 @@ class RISBaseController extends CController
 	{
 		$curr = $this->aktuelleBenutzerIn();
 		if ($curr === null) return false;
-		return in_array($curr->id, Yii::app()->params["contentAdminIds"]);
+		return $curr->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT);
 	}
 
 	/**
