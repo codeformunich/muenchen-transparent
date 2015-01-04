@@ -66,12 +66,9 @@ $this->pageTitle = Yii::app()->name;
 				onSelect: function (latlng, rad, zoom) {
 					if (zoom >= 14) {
 						index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
-						$("section.teaser_holder").hide();
-					} else {
-						$("section.teaser_holder").show();
 					}
 				},
-				onInit: function() {
+				onInit: function () {
 					$map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
 				}
 			});
@@ -83,7 +80,9 @@ $this->pageTitle = Yii::app()->name;
 		<div class="row">
 			<div class="col-md-12">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>" class="btn btn-success">
-					<h2><span class="glyphicon glyphicon-info-sign"></span>So funktioniert Stadtpolitik</h2>
+					<span class="glyphicon glyphicon-info-sign"></span>
+
+					<h2>So funktioniert Stadtpolitik</h2>
 
 					<div class="description">
 						Kommunalpolitik in München einfach erklärt
@@ -96,7 +95,9 @@ $this->pageTitle = Yii::app()->name;
 		<div class="row">
 			<div class="col-md-6">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>" class="btn btn-info">
-					<h2><span class="glyphicon glyphicon-calendar"></span>Termine</h2>
+					<span class="glyphicon glyphicon-calendar"></span>
+
+					<h2>Termine</h2>
 
 					<div class="description">
 						Wann finden Stadtrats- / Ausschusssitzungen statt?
@@ -106,7 +107,9 @@ $this->pageTitle = Yii::app()->name;
 
 			<div class="col-md-6">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("personen/index")) ?>" class="btn btn-info">
-					<h2><span class="glyphicon glyphicon-user"></span>Personen</h2>
+					<span class="glyphicon glyphicon-user"></span>
+
+					<h2>Personen</h2>
 
 					<div class="description">
 						Wer sitzt im Stadtrat / in den Bezirksausschüssen?
@@ -118,7 +121,9 @@ $this->pageTitle = Yii::app()->name;
 		<div class="row">
 			<div class="col-md-6">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>" class="btn btn-info">
-					<h2><span class="glyphicon glyphicon-chevron-right"></span>Themen</h2>
+					<span class="glyphicon glyphicon-chevron-right"></span>
+
+					<h2>Themen</h2>
 
 					<div class="description">
 						Dokumente, gegliedert nach Thema und Referat
@@ -128,7 +133,9 @@ $this->pageTitle = Yii::app()->name;
 
 			<div class="col-md-6">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("benachrichtigungen/index")) ?>" class="btn btn-info">
-					<h2><span class="glyphicon" style="height: 37px; font-weight: bold;">@</span> E-Mail-Benachrichtigung</h2>
+					<span class="glyphicon" style="height: 37px; font-weight: bold;">@</span>
+
+					<h2>E-Mail-Benachrichtigung</h2>
 
 					<div class="description">
 						Per Mail über neue Dokumente informiert werden
@@ -140,7 +147,9 @@ $this->pageTitle = Yii::app()->name;
 		<div class="row">
 			<div class="col-md-6">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" class="btn btn-info">
-					<h2><span class="glyphicon glyphicon-search"></span> Dokumentensuche</h2>
+					<span class="glyphicon glyphicon-search"></span>
+
+					<h2>Dokumentensuche</h2>
 
 					<div class="description">
 						Durchsuche <?= number_format($statistiken["anzahl_dokumente"], 0, ",", ".") ?> Dokumente
@@ -151,7 +160,9 @@ $this->pageTitle = Yii::app()->name;
 
 			<div class="col-md-6">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/ueber")) ?>" class="btn btn-info">
-					<h2><span class="glyphicon glyphicon-question-sign"></span>Über München-Transparent</h2>
+					<span class="glyphicon glyphicon-question-sign"></span>
+
+					<h2>Über München-Transparent</h2>
 
 					<div class="description">
 						Über diese Seite
