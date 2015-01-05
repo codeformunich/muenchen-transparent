@@ -1,0 +1,98 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4 {
+  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+h5,
+h6 {
+  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+a,
+a:hover,
+a:focus {
+  color: #337ab7;
+}
+
+
+a[href]:after {
+  content: "";
+}
+
+h1.small {
+  font-size: 24px;
+}
+
+
+.well {
+  > h1, > h2, > h3 {
+    margin-top: 0;
+  }
+  > .breadcrumb:first-child {
+    margin-bottom: 5px;
+    margin-left: -18px;
+    margin-right: -18px;
+    margin-top: -18px;
+  }
+  > .alert {
+    max-width: 600px;
+    margin: 30px auto;
+    .fontello-ok {
+      float: left;
+      font-size: 200%;
+      margin-right: 10px;
+    }
+  }
+}
+.form-control {
+  font-size: 16px; // Insb. wg. iOS
+}
+@media screen and (max-width: $screen-xs-max) {
+  .btn {
+    text-transform: none;
+    white-space: normal;
+    padding-right: 10px;
+  }
+}
+.list-group {
+  .list-group-item {
+    padding: 0;
+  }
+}
+
+
+.modal-backdrop {
+  display: inherit;
+}
+
+body.modal-open {
+  overflow: auto;
+  padding-right: 0 !important;
+}
+
+
+body {
+  padding-top: 60px;
+  background-image: url(#{$pics-path}pattern-7nl1.png);
+  @media print {
+    padding-top: 0;
+  }
+}
+
+
+body, html {
+  height: 100%;
+}

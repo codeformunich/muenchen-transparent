@@ -1,40 +1,4 @@
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4 {
-  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-}
 
-h5,
-h6 {
-  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-}
-
-a,
-a:hover,
-a:focus {
-  color: #337ab7;
-}
-
-
-a[href]:after {
-  content: "";
-}
-
-h1.small {
-  font-size: 24px;
-}
 
 #content {
   > section {
@@ -97,42 +61,6 @@ h1.small {
   }
 }
 
-.well {
-  > h1, > h2, > h3 {
-    margin-top: 0;
-  }
-  > .breadcrumb:first-child {
-    margin-bottom: 5px;
-    margin-left: -18px;
-    margin-right: -18px;
-    margin-top: -18px;
-  }
-  > .alert {
-    max-width: 600px;
-    margin: 30px auto;
-    .fontello-ok {
-      float: left;
-      font-size: 200%;
-      margin-right: 10px;
-    }
-  }
-}
-.form-control {
-  font-size: 16px; // Insb. wg. iOS
-}
-@media screen and (max-width: $screen-xs-max) {
- .btn {
-    text-transform: none;
-    white-space: normal;
-    padding-right: 10px;
-  }
-}
-.list-group {
-  .list-group-item {
-    padding: 0;
-  }
-}
-
 #content > section.well.pdfjs {
   padding-bottom: 0;
   overflow: hidden;
@@ -172,14 +100,6 @@ h1.small {
   }
 }
 
-.modal-backdrop {
-  display: inherit;
-}
-
-body.modal-open {
-  overflow: auto;
-  padding-right: 0 !important;
-}
 
 #ba_nav_list {
   min-width: 270px;
@@ -202,14 +122,6 @@ body.modal-open {
 
   .stadtrat > a {
     font-weight: bold;
-  }
-}
-
-body {
-  padding-top: 60px;
-  background-image: url(#{$pics-path}pattern-7nl1.png);
-  @media print {
-    padding-top: 0;
   }
 }
 
@@ -747,39 +659,6 @@ ul.terminliste {
   }
 }
 
-.suchergebnisse_holder2 {
-  .suchkrit_beschreibung {
-    @extend blockquote;
-  }
-
-  .list-group .list-group-item {
-    a.overflow-fadeout-white {
-      max-height: 66px;
-    }
-    .border {
-      display: block;
-      margin: 10px auto;
-      border-top: 1px solid rgba(0, 0, 0, .1);
-    }
-    .dokument {
-      display: inline-block;
-      margin-bottom: 7px;
-    }
-    .row-content {
-      .least-content {
-        font-size: 12px;
-        position: relative;
-        float: right;
-        padding-left: 20px;
-      }
-    }
-    .gefunden_ueber {
-      color: gray;
-      font-size: 12px;
-    }
-  }
-}
-
 .themenverwandt_liste, .suchergebnisse_holder2 {
   a.overflow-fadeout-white {
     font-size: 17px;
@@ -1298,10 +1177,6 @@ textarea {
 /* keep the footer at the bottom of the page */
 $footer_height: 3.1em;
 $footer_line_height: 3em;
-
-body, html {
-  height: 100%;
-}
 
 .over_footer_wrapper {
   min-height: 100%;

@@ -242,3 +242,37 @@ ul.dokumente {
     }
   }
 }
+
+
+.suchergebnisse_holder2 {
+  .suchkrit_beschreibung {
+    @extend blockquote;
+  }
+
+  .list-group .list-group-item {
+    a.overflow-fadeout-white {
+      max-height: 66px;
+    }
+    .border {
+      display: block;
+      margin: 10px auto;
+      border-top: 1px solid rgba(0, 0, 0, .1);
+    }
+    .dokument {
+      display: inline-block;
+      margin-bottom: 7px;
+    }
+    .row-content {
+      .least-content {
+        font-size: 12px;
+        position: relative;
+        float: right;
+        padding-left: 20px;
+      }
+    }
+    .gefunden_ueber {
+      color: gray;
+      font-size: 12px;
+    }
+  }
+}

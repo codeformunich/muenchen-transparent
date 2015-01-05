@@ -21,9 +21,9 @@ $pics-path: "https://www.muenchen-transparent.de/images/";
 
 // The SASS-Version of Material seems to be broken (Variants of Checkboxes are not included, for example, therfore we include the compiled LESS-Version instead)
 @import "material/variables";
-@import "antragsliste";
 @import "roboto-font";
-@import "styles";
+@import "default_styles";
+@import "antragsliste";
 
 .fontello-download {
   color: transparent;
@@ -32,7 +32,8 @@ $pics-path: "https://www.muenchen-transparent.de/images/";
   height: 15px;
   background-image: url(#{$pics-path}mail-download.png);
 }
-.glyphicon-file {
+
+.list-group .list-group-item .row-picture i.glyphicon-file, .list-group .list-group-item .row-action-primary i.glyphicon-file {
   color: transparent;
   display: inline-block;
   width: 58px;
