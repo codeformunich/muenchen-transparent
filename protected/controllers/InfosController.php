@@ -5,7 +5,23 @@ class InfosController extends RISBaseController
     public function actionSoFunktioniertStadtpolitik()
     {
         $this->top_menu = "so_funktioniert";
-        $this->render("stadtpolitik");
+
+        /** @var Text $text */
+        $text = Text::model()->findByPk(25);
+
+        $msg_ok = "";
+        if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
+            if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
+            $text->text = $_REQUEST["text"];
+            $text->save();
+            $msg_ok = "Gespeichert.";
+        }
+
+        $this->render("stadtpolitik", array(
+            "text"    => $text,
+            "my_url"  => $this->createUrl("infos/soFunktioniertStadtpolitik"),
+            "msg_ok"  => $msg_ok,
+        ));
     }
 
     public function actionImpressum()

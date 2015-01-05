@@ -14,7 +14,7 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
 }, $text->text);
 ?>
 
-<section class="well">
+<section class="well std_fliesstext">
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
 		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active"><?=CHtml::encode($text->titel)?></li>
@@ -28,11 +28,10 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
 	</a>
 	<? }
 
-    if (!$notitle) echo '<h1>' . CHtml::encode($text->titel) . '</h1><br>';
+    if (!$notitle) echo '<h1>' . CHtml::encode($text->titel) . '</h1>';
 
-	if ($msg_ok != "") echo '<div class="alert alert-dismissable alert-success">
+	if ($msg_ok != "") echo '<br><div class="alert alert-dismissable alert-success">
     <button type="button" class="close" data-dismiss="alert">×</button>' . $msg_ok . '</div>';
-	echo '<br>';
 
 	if ($this->binContentAdmin()) { ?>
 		<script src="/js/ckeditor/ckeditor.js"></script>
