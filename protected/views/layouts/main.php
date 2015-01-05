@@ -109,6 +109,16 @@ echo ris_intern_html_extra_headers();
 				</button>
 			</div>
 			<div class="navbar-collapse collapse">
+				<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
+					<label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
+					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
+						   id="quicksearch_form_input"
+						   data-prefetch-url="<?= CHtml::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
+						   data-search-url="<?= CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF"))) ?>">
+					<button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span>
+					</button>
+				</form>
+
 				<ul class="nav navbar-nav">
 					<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
 					<li class="dropdown">
@@ -146,16 +156,6 @@ echo ris_intern_html_extra_headers();
 						</li>
 					<? } ?>
 				</ul>
-
-				<form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
-					<label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
-					<input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
-						   id="quicksearch_form_input"
-						   data-prefetch-url="<?= CHtml::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
-						   data-search-url="<?= CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF"))) ?>">
-					<button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span>
-					</button>
-				</form>
 			</div>
 		</div>
 		<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/feedback")) ?>" id="ris_beta_badge">
@@ -184,7 +184,7 @@ echo ris_intern_html_extra_headers();
 			<?= CHtml::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
 		</span>
 		<span class="pull-right">
-			<?= CHtml::link("Open-Source-Projekt (Github)", "https://github.com/codeformunich/Ratsinformant") ?> /
+			<?= CHtml::link("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Ratsinformant") ?> /
 			<?= CHtml::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
 			<?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
 		</span>

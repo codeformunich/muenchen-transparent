@@ -44,6 +44,9 @@ h1.small {
         margin-top: 0;
       }
     }
+    @media screen and (max-width: $screen-xs-max) {
+      margin-top: 25px;
+    }
   }
 }
 
@@ -112,6 +115,21 @@ h1.small {
       font-size: 200%;
       margin-right: 10px;
     }
+  }
+}
+.form-control {
+  font-size: 16px; // Insb. wg. iOS
+}
+@media screen and (max-width: $screen-xs-max) {
+ .btn {
+    text-transform: none;
+    white-space: normal;
+    padding-right: 10px;
+  }
+}
+.list-group {
+  .list-group-item {
+    padding: 0;
   }
 }
 
@@ -271,6 +289,10 @@ body {
   @media print {
     max-width: 600px;
   }
+  @media screen and (max-width: $screen-xs-max) {
+    margin-left: -7px;
+    margin-right: -7px;
+  }
 
   .leaflet-control-locate .glyphicon {
     margin-top: 4px;
@@ -279,11 +301,17 @@ body {
 
 #map {
   height: 420px;
+  @media screen and (max-width: $screen-xs-max) {
+    height: 270px;
+  }
 }
 
 #overflow_hinweis {
   padding-left: 5px;
   margin-bottom: 20px;
+  @media screen and (max-width: $screen-xs-max) {
+    margin-bottom: 5px;
+  }
 }
 
 #benachrichtigung_hinweis {
@@ -432,11 +460,6 @@ body {
       color: white;
     }
 
-    @media screen and (max-width: $screen-xs-max) {
-      text-transform: none;
-      white-space: normal;
-    }
-
     .glyphicon {
       position: absolute;
       left: 10px;
@@ -472,10 +495,24 @@ body {
       float: left;
     }
   }
+
   @media screen and (max-width: $screen-md-max) {
     .row:before, .row:after {
       content: '';
       display: none;
+    }
+  }
+
+
+  @media screen and (max-width: $screen-xs-max) {
+    overflow: visible;
+
+    a {
+      text-transform: none;
+      white-space: normal;
+      margin-left: -7px;
+      margin-right: -7px;
+      padding-right: 5px;
     }
   }
 }
@@ -803,6 +840,7 @@ ul.terminliste {
       -moz-break-inside: avoid;
       break-inside: avoid;
       page-break-inside: avoid;
+      padding: 0 16px;
     }
   }
 }
@@ -1270,6 +1308,9 @@ body, html {
   height: auto !important;
   height: 100%;
   margin: 0 auto (-1 * $footer_height);
+  @media screen and (max-width: $screen-xs-max) {
+    margin: 0 auto (-1.5 * $footer_height);
+  }
 }
 
 body > footer {
@@ -1290,10 +1331,20 @@ body > footer {
   @media print {
     display: none;
   }
+  @media screen and (max-width: $screen-xs-max) {
+    height: 1.5 * $footer_height;
+    p {
+      line-height: 0.7 * $footer_line_height;
+      height: 1.5 * $footer_height;
+    }
+  }
 }
 
 .footer_spacer {
   height: $footer_height;
+  @media screen and (max-width: $screen-xs-max) {
+    height: (-1.5 * $footer_height);
+  }
 }
 
 /* /footer */
@@ -1320,7 +1371,9 @@ section.impressum {
     margin-top: -27px;
     margin-bottom: 0;
     margin-left: 3px;
-    margin-right: 50px; // Wg. #ris_beta_badge
+    @media screen and (min-width: $screen-sm) {
+      margin-right: 50px; // Wg. #ris_beta_badge
+    }
   }
 
   span.twitter-typeahead {
@@ -1388,6 +1441,7 @@ section.impressum {
     padding: 3px 0;
     border-bottom: 1px solid #ccc;
     font-size: 13px;
+    color: #333333;
   }
 }
 

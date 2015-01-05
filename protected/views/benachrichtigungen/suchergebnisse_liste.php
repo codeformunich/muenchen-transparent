@@ -37,7 +37,7 @@ if (count($dokumente) == 0) {
 				?>
 				<li class='list-group-item'>
 					<div class="row-action-primary">
-						<span class="glyphicon glyphicon-file"></span>
+						<i class="glyphicon glyphicon-file"></i>
 					</div>
 					<div class="row-content">
 						<h4 class="list-group-item-heading">

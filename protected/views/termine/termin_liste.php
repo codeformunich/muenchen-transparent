@@ -9,7 +9,7 @@
 	foreach ($termine as $termin) {
 
 		$termine_ids[] = $termin["id"];
-		echo '<li class="list-group-item"><div class="row-action-primary"><span class="glyphicon glyphicon-calendar" title="Termin"></span></div>';
+		echo '<li class="list-group-item"><div class="row-action-primary"><i class="glyphicon glyphicon-calendar" title="Termin"></i></div>';
 		echo '<div class="row-content"><h4 class="list-group-item-heading">';
 		echo CHtml::link($termin["datum_long"], $termin["link"]);
 		echo '</h4>';
