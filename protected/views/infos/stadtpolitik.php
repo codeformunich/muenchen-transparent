@@ -19,12 +19,8 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
         <li class="active">Stadtpolitik</li>
     </ul>
 
-    <h1>Über Stadtpolitik</h1>
 
-</section>
-
-<div class="well">
-    <section class="row teaser_buttons">
+    <div class="row teaser_buttons">
         <div class="col col-md-6">
             <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/glossar")) ?>"
                class="btn btn-success">
@@ -46,9 +42,9 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
                 </div>
             </a>
         </div>
-    </section>
+    </div>
 
-</div>
+</section>
 
 
 <div class="row" id="listen_holder">
@@ -64,7 +60,7 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
                 </a>
             <? }
             ?>
-            <h3>So entsteht Stadtpolitik</h3>
+            <h1>So entsteht Stadtpolitik</h1>
 
             <?
             if ($msg_ok != "") echo '<div class="alert alert-dismissable alert-success">
@@ -117,6 +113,11 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
         <section class="well">
             <h3>Informative Seiten</h3>
 
+            <ul>
+                <li><a href="http://www.opengov-muenchen.de/">Das OpenGovernment-Portal der Stadt München</a></li>
+                <li><a href="http://codefor.de/muenchen/">OK Lab München</a></li>
+                <li>@TODO: Layout + mehr Links</li>
+            </ul>
         </section>
     </div>
 </div>
