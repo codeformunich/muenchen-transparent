@@ -197,6 +197,8 @@ class Dokument extends CActiveRecord implements IRISItem
 
 			return trim($name);
 		} else {
+			if (strlen($name) > 255) return "Dokument";
+			if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
 			return RISTools::korrigiereDokumentenTitel($name);
 		}
 	}
