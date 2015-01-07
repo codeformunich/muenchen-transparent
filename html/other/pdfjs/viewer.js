@@ -3039,11 +3039,11 @@ var PDFView = {
   setTitleUsingUrl: function pdfViewSetTitleUsingUrl(url) {
     this.url = url;
     try {
-      this.setTitle( (decodeURIComponent(getFileName(url)) || url) + " (Ratsinformant)");
+      this.setTitle( (decodeURIComponent(getFileName(url)) || url) + " (München Transparent)");
     } catch (e) {
       // decodeURIComponent may throw URIError,
       // fall back to using the unprocessed url in that case
-      this.setTitle("Dokumentenanzeige (Ratsinformant)");
+      this.setTitle("Dokumentenanzeige (München Transparent)");
     }
   },
 
@@ -5453,7 +5453,7 @@ function webViewerInitialized() {
   document.body.appendChild(fileInput);
 
   if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-    /* removed for ratsinformant */
+    /* removed for München Transparent */
   } else {
     document.getElementById('fileInput').value = null;
   }
