@@ -16,6 +16,11 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 ?>
 
 <section class="well">
+
+	<form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/startseite")) ?>">
+		<button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
+	</form>
+
 	<h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= CHtml::encode($ich->email) ?>:</h1>
 
 
@@ -301,8 +306,26 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 		</script>
 
 	</form>
-</section>
 
-<form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/startseite")) ?>">
-	<button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
-</form>
+	<br><br>
+	<h3>Andere Aktionen</h3>
+	<button class="btn btn-danger" data-toggle="modal" data-target="#accountloeschenmodal">Account Löschen</button>
+
+	<div class="modal fade" id="accountloeschenmodal" tabindex="-1" role="dialog" aria-labelledby="accountloeschenmodal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Account Löschen</h4>
+				</div>
+				<div class="modal-body">
+					<p>Willst du deinen Account wirklich unwiederruflich löschen?</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default btn-raised" data-dismiss="modal">Abrrechen</button>
+					<button class="btn btn-danger" type="button" onclick="location.href='/accountloeschen'">Account Löschen</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
