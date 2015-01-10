@@ -12,6 +12,7 @@
  * @property integer $tagesordnungspunkt_id
  * @property integer $rathausumschau_id
  * @property string $url
+ * @property integer $deleted
  * @property string $name
  * @property string $datum
  * @property string $datum_dokument
@@ -30,6 +31,11 @@
  * @property AntragOrt[] $orte
  * @property Vorgang $vorgang
  * @property Rathausumschau $rathausumschau
+ *
+ * Scope methods
+ * @method Dokument file_check()
+ * @method boolean getDefaultScopeDisabled()
+ * @method Dokument disableDefaultScope()
  */
 class Dokument extends CActiveRecord implements IRISItem
 {
@@ -89,7 +95,7 @@ class Dokument extends CActiveRecord implements IRISItem
 		// will receive user inputs.
 		return array(
 			array('id, url, name, datum', 'required'),
-			array('id, antrag_id, termin_id, tagesordnungspunkt_id, rathausumschau_id, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
+			array('id, antrag_id, termin_id, tagesordnungspunkt_id, rathausumschau_id, deleted, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
 			array('typ', 'length', 'max' => 25),
 			array('url', 'length', 'max' => 500),
 			array('name', 'length', 'max' => 300),
@@ -128,6 +134,7 @@ class Dokument extends CActiveRecord implements IRISItem
 			'tagesordnungspunkt_id'   => 'Tagesordnungspunkt',
 			'rathausumschau_id'       => 'Rathausumschau',
 			'url'                     => 'Url',
+			'deleted'                 => 'Gelöscht',
 			'name'                    => 'Name',
 			'datum'                   => 'Datum',
 			'datum_dokument'          => 'Dokumentendatum',
@@ -136,6 +143,31 @@ class Dokument extends CActiveRecord implements IRISItem
 			'text_ocr_garbage_seiten' => 'Text Ocr Garbage Seiten',
 			'text_pdf'                => 'Text Pdf',
 			'seiten_anzahl'           => 'Seitenanzahl',
+		);
+	}
+
+	public function behaviors(){
+		return array(
+			'CTimestampBehavior' => array(
+				'class' => 'DisableDefaultScopeBehavior',
+			)
+		);
+	}
+
+	public function defaultScope()
+	{
+		$alias = $this->getTableAlias(false,false);
+		return $this->getDefaultScopeDisabled() ? array() : array(
+			'condition' => $alias . ".deleted = 0",
+		);
+
+	}
+
+	public function scopes()
+	{
+		return array(
+			'file_check'=>array(
+			),
 		);
 	}
 
@@ -651,12 +683,19 @@ class Dokument extends CActiveRecord implements IRISItem
 			$solr   = RISSolrHelper::getSolrClient("ris");
 			$update = $solr->createUpdate();
 
-			if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
-			elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
-			elseif ($this->typ == static::$TYP_RATHAUSUMSCHAU) $this->solrIndex_rathausumschau_do($update);
-			else $this->solrIndex_antrag_do($update);
+			if ($this->deleted == 1) {
+				if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
+					$update->addDeleteQuery("id:\"Rathausumschau:" . $this->id . "\"");
+				} else {
+					$update->addDeleteQuery("id:\"Document:" . $this->id . "\"");
+				}
 
-
+			} else {
+				if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
+				elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
+				elseif ($this->typ == static::$TYP_RATHAUSUMSCHAU) $this->solrIndex_rathausumschau_do($update);
+				else $this->solrIndex_antrag_do($update);
+			}
 			$update->addCommit();
 			$solr->update($update);
 			return;
@@ -681,6 +720,17 @@ class Dokument extends CActiveRecord implements IRISItem
 	public function highlightBenachrichtigung()
 	{
 		if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::app()->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink(), null, "system");
+	}
+
+	/**
+	 * @throws CDbException
+	 */
+	public function loeschen() {
+		$this->deleted = 1;
+		$this->save();
+
+		$this->solrIndex();
+		foreach ($this->orte as $ort) $ort->delete();
 	}
 
 }

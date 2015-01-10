@@ -202,6 +202,7 @@ CREATE TABLE `dokumente` (
   `tagesordnungspunkt_id` int(11) DEFAULT NULL,
   `vorgang_id` int(11) DEFAULT NULL,
   `rathausumschau_id` mediumint(11) DEFAULT NULL,
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
   `url` varchar(500) NOT NULL,
   `name` varchar(300) NOT NULL,
   `datum` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
