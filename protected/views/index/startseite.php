@@ -176,6 +176,13 @@ $this->pageTitle = Yii::app()->name;
 
 <section class="well two_cols" id="listen_holder">
 
+	<? if (isset(Yii::app()->params['startseiten_warnung']) && Yii::app()->params['startseiten_warnung'] != '') { ?>
+	<div class="alert alert-dismissable alert-warning">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		<?=Yii::app()->params['startseiten_warnung']?>
+	</div>
+	<? } ?>
+
 	<!--
 <small>Neu in den letzten 7 Tagen: <?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> Dokumente
 					(<?= number_format($statistiken["anzahl_seiten_1w"], 0, ",", ".") ?> Seiten)
