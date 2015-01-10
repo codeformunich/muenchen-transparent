@@ -3,7 +3,16 @@
  * @var Gremium[] $gremien
  * @var string $title
  */
+
+$gremienzahl = 0;
+foreach ($gremien as $gremium) {
+	if (count($gremium->mitgliedschaften) == 0) continue;
+	if (mb_strpos($gremium->name, "Vollgremium") !== false) continue;
+	$count++;
+}
+if ($gremienzahl > 0) {
 ?>
+
 <section class="well"><?
 	?>
 
@@ -56,3 +65,5 @@
 		})
 	</script>
 </section>
+
+<? } // gremienzahl > 0 ?>
