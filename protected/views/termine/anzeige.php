@@ -7,6 +7,36 @@ $this->pageTitle = $termin->getName(true);
 $assets_base     = $this->getAssetsBase();
 $geodata         = array();
 
+function zeile_anzeigen($feld, $name, $callback)
+{
+	if (count($feld) == 0) {
+		return;
+	} else if (count($feld) == 1) {
+		?>
+		<tr>
+			<th><? echo $name ?></th>
+			<td>
+				<? $callback($feld[0]); ?>
+			</td>
+		</tr> <?
+	} else {
+		?>
+		<tr>
+			<th><? echo $name ?></th>
+			<td>
+				<ul>
+					<? foreach ($feld as $element) {
+						?>
+						<li> <?
+							$callback($element);
+							?> </li> <?
+					} ?>
+				</ul>
+			</td>
+		</tr> <?
+	}
+}
+
 ?>
 <section class="well">
 	<div class="original_ris_link"><?
@@ -45,16 +75,12 @@ $geodata         = array();
 				<?= CHtml::encode($termin->gremium->name) ?>
 			</td>
 		</tr>
-		<tr>
-			<th>Dokumente:</th>
-			<td>
-				<ul>
-					<? foreach ($termin->antraegeDokumente as $dok) {
-						echo "<li>" . CHtml::link($dok->name, $dok->getLinkZumDokument()) . " (" . CHtml::encode($dok->getDisplayDate()) . ")</li>";
-					} ?>
-				</ul>
-			</td>
-		</tr>
+		<?
+		zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", function ($dok) {
+			/** @var Dokument $dok */
+			echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
+		});
+		?>
 		</tbody>
 	</table>
 
