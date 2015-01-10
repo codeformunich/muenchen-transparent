@@ -1,6 +1,9 @@
 <?php
 /**
+ * @var TermineController $this
  * @var Termin $termin
+ * @var null|Dokument $to_pdf
+ * @var null|Tagesordnungspunkt[] $to_db
  */
 
 $this->pageTitle = $termin->getName(true);
@@ -38,7 +41,7 @@ function zeile_anzeigen($feld, $name, $callback)
 }
 
 ?>
-<section class="well">
+<section class="well pdfjs_long">
 	<div class="original_ris_link"><?
 		echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $termin->getSourceLink());
 		?></div>
@@ -84,7 +87,7 @@ function zeile_anzeigen($feld, $name, $callback)
 		</tbody>
 	</table>
 
-	<? if (count($termin->tagesordnungspunkte) > 0) { ?>
+	<? if ($to_db) { ?>
 		<section id="mapsection">
 			<h3>Tagesordnung auf der Karte</h3>
 
@@ -142,24 +145,28 @@ function zeile_anzeigen($feld, $name, $callback)
 			}
 			?>
 		</ol>
-	<? } else { ?>
-		<div class="keine_tops">(Noch) Keine Tagesordnung veröffentlicht</div>
-	<? } ?>
-
-	<script>
-		$(function () {
-			var geodata = <?=json_encode($geodata)?>;
-			if (geodata.length > 0) $(function () {
-				var $map = $("#map").AntraegeKarte({
-					assetsBase: <?=json_encode($this->getAssetsBase())?>,
-					outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
-					onInit: function() {
-						$map.AntraegeKarte("setAntraegeData", geodata, null);
-					}
+		<script>
+			$(function () {
+				var geodata = <?=json_encode($geodata)?>;
+				if (geodata.length > 0) $(function () {
+					var $map = $("#map").AntraegeKarte({
+						assetsBase: <?=json_encode($this->getAssetsBase())?>,
+						outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
+						onInit: function () {
+							$map.AntraegeKarte("setAntraegeData", geodata, null);
+						}
+					});
 				});
+				else $("#mapsection").hide();
 			});
-			else $("#mapsection").hide();
-		});
-	</script>
+		</script>
+	<? } elseif ($to_pdf) {
+		$this->renderPartial("../index/pdf_embed", array(
+			"url" => '/dokumente/' . $to_pdf->id . '.pdf',
+		));
+	} else {
+		echo '<div class="keine_tops">(Noch) Keine Tagesordnung veröffentlicht</div>';
+	}
+	?>
 
 </section>

@@ -223,12 +223,17 @@ class Dokument extends CActiveRecord implements IRISItem
 	{
 		$name = trim(str_replace("_", " ", $this->name));
 
+		if (preg_match("/^[0-9]+to[0-9]+$/siu", $name)) return "Tagesordnung"; // 25to13012015
+		if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Tagesordnung"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
+		if (preg_match("/^[0-9]+prot[0-9]+$/siu", $name)) return "Protokoll";  // 25prot13012015
+		if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Protokoll"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
+
+		$name = preg_replace("/^(.*) \\d\\d\.\\d\\d\.\\d{4}$/siu", "\\1", $name);
+
 		if ($langfassung) {
 			if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
 			if ($name == "Niederschrift (oeff)") return "Niederschrift";
 			if ($name == "Einladung (oeff)") return "Einladung";
-			if (preg_match("/^[0-9]+to[0-9]+$/siu", $name)) return "Tagesordnung";
-			if (preg_match("/^[0-9]+prot[0-9]+$/siu", $name)) return "Protokoll";
 
 			return $name;
 		} else {
@@ -238,8 +243,6 @@ class Dokument extends CActiveRecord implements IRISItem
 			if ($name == "Deckblatt VV") return "Deckblatt";
 			if ($name == "Niederschrift (oeff)") return "Niederschrift";
 			if ($name == "Einladung (oeff)") return "Einladung";
-			if (preg_match("/^[0-9]+to[0-9]+$/siu", $name)) return "Tagesordnung";
-			if (preg_match("/^[0-9]+prot[0-9]+$/siu", $name)) return "Protokoll";
 
 			return RISTools::korrigiereDokumentenTitel($name);
 		}

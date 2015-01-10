@@ -37,15 +37,15 @@ class TermineController extends RISBaseController
 	 */
 	private function getFullCalendarStructByMonth($year, $month, $margin_days = 7)
 	{
-		$ts_start = mktime(0, 0, 0, $month, 1, $year);
-		$monat_tage      = date("t", $ts_start);
-		$ts_end = mktime(0, 0, 0, $month, $monat_tage, $year);
+		$ts_start   = mktime(0, 0, 0, $month, 1, $year);
+		$monat_tage = date("t", $ts_start);
+		$ts_end     = mktime(0, 0, 0, $month, $monat_tage, $year);
 
 		$margin_start = date("Y-m-d", $ts_start - $margin_days * 24 * 3600);
-		$margin_end = date("Y-m-d", $ts_end + $margin_days * 24 * 3600);
+		$margin_end   = date("Y-m-d", $ts_end + $margin_days * 24 * 3600);
 
 		/** @var Termin[] $termine_monat */
-		$termine_monat   = Termin::model()->termine_stadtrat_zeitraum(null, $margin_start, $margin_end, true)->findAll();
+		$termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $margin_start, $margin_end, true)->findAll();
 		$fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
 		return $fullcalendar_struct;
 	}
@@ -54,9 +54,10 @@ class TermineController extends RISBaseController
 	 * @param string $start
 	 * @param string $end
 	 */
-	public function actionFullCalendarFeed($start, $end) {
+	public function actionFullCalendarFeed($start, $end)
+	{
 		/** @var Termin[] $termine_monat */
-		$termine_monat   = Termin::model()->termine_stadtrat_zeitraum(null, $start, $end, true)->findAll();
+		$termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $start, $end, true)->findAll();
 		$fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
 		Header("Content-Type: application/json; charset=UTF-8");
 		echo json_encode($fullcalendar_struct["data"]);
@@ -105,17 +106,33 @@ class TermineController extends RISBaseController
 
 		$this->top_menu = "termine";
 
-		/** @var Termin $antrag */
+		/** @var Termin $termin */
 		$termin = Termin::model()->findByPk($termin_id);
 		if (!$termin) {
 			$this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
 			return;
 		}
 
-		$this->load_leaflet_css = true;
+		if (count($termin->tagesordnungspunkte) > 0) {
+			$this->load_leaflet_css = true;
+			$to_pdf                 = null;
+			$to_db                  = $termin->tagesordnungspunkte;
+		} else {
+			$to = $termin->errateAktuellsteTagesordnung();
+			if ($to) {
+				$this->load_pdf_js = true;
+				$to_pdf            = $to;
+				$to_db             = null;
+			} else {
+				$to_pdf = null;
+				$to_db  = null;
+			}
+		}
 
 		$this->render("anzeige", array(
-			"termin" => $termin
+			"termin" => $termin,
+			"to_pdf" => $to_pdf,
+			"to_db"  => $to_db,
 		));
 	}
 
