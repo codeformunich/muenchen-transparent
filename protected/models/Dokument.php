@@ -221,16 +221,26 @@ class Dokument extends CActiveRecord implements IRISItem
 	 */
 	public function getName($langfassung = false)
 	{
-		$name = str_replace("_", " ", $this->name);
+		$name = trim(str_replace("_", " ", $this->name));
 
 		if ($langfassung) {
 			if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
-			if ($name == "Niederschrift (oeff)") return "Niederschrift (öffentlich)";
+			if ($name == "Niederschrift (oeff)") return "Niederschrift";
+			if ($name == "Einladung (oeff)") return "Einladung";
+			if (preg_match("/^[0-9]+to[0-9]+$/siu", $name)) return "Tagesordnung";
+			if (preg_match("/^[0-9]+prot[0-9]+$/siu", $name)) return "Protokoll";
 
-			return trim($name);
+			return $name;
 		} else {
 			if (strlen($name) > 255) return "Dokument";
 			if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
+
+			if ($name == "Deckblatt VV") return "Deckblatt";
+			if ($name == "Niederschrift (oeff)") return "Niederschrift";
+			if ($name == "Einladung (oeff)") return "Einladung";
+			if (preg_match("/^[0-9]+to[0-9]+$/siu", $name)) return "Tagesordnung";
+			if (preg_match("/^[0-9]+prot[0-9]+$/siu", $name)) return "Protokoll";
+
 			return RISTools::korrigiereDokumentenTitel($name);
 		}
 	}

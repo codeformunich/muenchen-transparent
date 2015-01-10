@@ -132,7 +132,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 				<br>
 				<ul class="dokumentenliste_small">
 					<? foreach ($dokumente as $dokument) {
-						$name = str_replace(" (oeff)", "", $dokument->name);
+						$name = str_replace(" (oeff)", "", $dokument->getName(true));
 						$name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
 						echo '<li>';
 						echo "<div class='add_meta'>" . CHtml::encode($dokument->getDisplayDate()) . "</div>";
