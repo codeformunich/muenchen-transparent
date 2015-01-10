@@ -136,6 +136,26 @@ class TermineController extends RISBaseController
 		));
 	}
 
+
+	/**
+	 * @param int $termin_id
+	 */
+	public function actionIcsExport($termin_id)
+	{
+		$termin_id = IntVal($termin_id);
+
+		/** @var Termin $termin */
+		$termin = Termin::model()->findByPk($termin_id);
+		if (!$termin) {
+			$this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
+			return;
+		}
+
+		$this->renderPartial("ics", array(
+			"termin" => $termin,
+		));
+	}
+
 	/**
 	 * @param int $termin_id
 	 */

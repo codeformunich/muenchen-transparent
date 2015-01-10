@@ -144,7 +144,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 	 */
 	public function getName($kurzfassung = false)
 	{
-		return $this->gremium->name . " (" . $this->termin . ")";
+		if ($kurzfassung) return $this->gremium->name;
+		else return $this->gremium->name . " (" . $this->termin . ")";
 	}
 
 	/**
@@ -329,5 +330,23 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 			return 0;
 		});
 		return $tos[0];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getVEventParams() {
+		$description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeige", array("termin_id" => $this->id));
+		foreach ($this->antraegeDokumente as $dok) {
+			$description .= "\n" . $dok->getName() . ": " . $dok->getLink();
+		}
+		$ende = date("Y-m-d H:i:s", RISTools::date_iso2timestamp($this->termin) + 3600);
+		return array(
+			'SUMMARY'     => $this->getName(true),
+			'DTSTART'     => new \DateTime($this->termin, new DateTimeZone("Europe/Berlin")),
+			'DTEND'     => new \DateTime($ende, new DateTimeZone("Europe/Berlin")),
+			'LOCATION'    => $this->sitzungsort,
+			'DESCRIPTION' => $description,
+		);
 	}
 }
