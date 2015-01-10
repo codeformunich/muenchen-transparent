@@ -8,7 +8,7 @@ $gremienzahl = 0;
 foreach ($gremien as $gremium) {
 	if (count($gremium->mitgliedschaften) == 0) continue;
 	if (mb_strpos($gremium->name, "Vollgremium") !== false) continue;
-	$count++;
+	$gremienzahl++;
 }
 if ($gremienzahl > 0) {
 ?>
