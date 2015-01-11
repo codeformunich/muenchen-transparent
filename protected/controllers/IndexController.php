@@ -766,7 +766,7 @@ class IndexController extends RISBaseController
     public function actionResetPassword($id = "", $code = "")
     {
         $my_url = $this->createUrl("index/resetPassword", array("id" => $id, "code" => $code));
-        if (AntiXSS::isTokenSet("set")) {
+        if (AntiXSS::isTokenSet("reset_password")) {
             /** @var null|BenutzerIn $benutzerIn */
             $benutzerIn = BenutzerIn::model()->findByPk($id);
             if ($benutzerIn) {

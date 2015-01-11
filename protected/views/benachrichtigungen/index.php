@@ -309,7 +309,10 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 
 	<br><br>
 	<h3>Andere Aktionen</h3>
+	<button class="btn btn-danger" onclick="location.href='/ResetPassword'"               >Passwort Ändern</button>
 	<button class="btn btn-danger" data-toggle="modal" data-target="#accountloeschenmodal">Account Löschen</button>
+
+
 
 	<div class="modal fade" id="accountloeschenmodal" tabindex="-1" role="dialog" aria-labelledby="accountloeschenmodal" aria-hidden="true">
 		<div class="modal-dialog">

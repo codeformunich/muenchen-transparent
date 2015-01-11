@@ -34,7 +34,7 @@ $this->pageTitle = "Passwort zurücksetzen";
 					<input id="password2" name="password2" type="password" class="form-control" placeholder="Passwort bestätigen" required>
 				</div>
 
-				<button class="btn btn-lg btn-primary btn-block" type="submit" name="<?php echo AntiXSS::createToken("set"); ?>">Setzen</button>
+				<button class="btn btn-lg btn-primary btn-block" type="submit" name="<?php echo AntiXSS::createToken("reset_password"); ?>">Setzen</button>
 			</fieldset>
 		</form>
 	</div>
