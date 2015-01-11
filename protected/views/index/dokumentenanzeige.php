@@ -20,7 +20,7 @@
 		 */
 		function dokumentenliste($uebergruppe, $name, $dokument, $link)
 		{
-			if ($link) {
+			if ($link && $uebergruppe) {
 				echo "<li>" . CHtml::link($name, $uebergruppe->getLink()) . "<br></li>";
 			} else {
 				echo "<li class=\"active\">" . CHtml::encode($name) . "<br></li>";

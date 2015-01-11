@@ -152,7 +152,7 @@ class TermineController extends RISBaseController
 		}
 
 		$this->renderPartial("ics", array(
-			"termin" => $termin,
+			"alle_termine" => $termin->alleTermineDerReihe(),
 		));
 	}
 
@@ -172,6 +172,32 @@ class TermineController extends RISBaseController
 		$this->renderPartial("top_geo_export", array(
 			"termin" => $termin
 		));
+	}
+
+
+
+	public function actionDav($termin_id)
+	{
+		$principalBackend = new TermineCalDAVPrincipalBackend($termin_id);
+		$calendarBackend = new TermineCalDAVCalendarBackend($termin_id);
+
+		$tree = array(
+			new Sabre\CalDAV\Principal\Collection($principalBackend),
+			new Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend),
+		);
+
+		$server = new \Sabre\DAV\Server($tree);
+		$server->setBaseUri(Yii::app()->createUrl("termine/dav", array("termin_id" => $termin_id)));
+
+		$authBackend = new TermineCalDAVAuthBackend();
+		$authPlugin = new \Sabre\DAV\Auth\Plugin($authBackend,'SabreDAV');
+		$server->addPlugin($authPlugin);
+
+		$server->addPlugin(new Sabre\CalDAV\Plugin());
+		$server->addPlugin(new Sabre\DAV\Browser\Plugin());
+		$server->addPlugin(new Sabre\DAVACL\Plugin());
+
+		$server->exec();
 	}
 
 
