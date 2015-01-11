@@ -2,7 +2,6 @@
 
 class IndexController extends RISBaseController
 {
-
     public static $BA_DOKUMENTE_TAGE_PRO_SEITE = 14;
 
     /**

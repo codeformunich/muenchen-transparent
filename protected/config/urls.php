@@ -16,6 +16,7 @@ $GLOBALS["RIS_URL_RULES"] = array(
 	SITE_BASE_URL . '/benachrichtigungen/alleFeed/<code:[0-9\-a-z]+>'   => 'benachrichtigungen/alleFeed',
 	SITE_BASE_URL . '/termine/<termin_id:\d+>'                          => 'termine/anzeigen',
 	SITE_BASE_URL . '/termine/<termin_id:\d+>/geoExport'                => 'termine/topGeoExport',
+	SITE_BASE_URL . '/termine/<termin_id:\d+>/ics'                      => 'termine/icsExport',
 	SITE_BASE_URL . '/themen/referat/<referat_url:[a-z0-9_-]+>'         => 'themen/referat',
 	SITE_BASE_URL . '/themen/schlagwort/<tag_id:\d+>_<tag_name:[^\/]+>' => 'themen/tag',
 	SITE_BASE_URL . '/infos/stadtrechtDokument/<id:\w+>'                => 'infos/stadtrechtDokument',

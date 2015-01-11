@@ -82,7 +82,7 @@ class BATerminParser extends RISParser
 			$daten->termin = "${jahr}-${monat}-${tag} ${zeit}:00";
 		}
 
-		if (preg_match("/Sitzungsort:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) $daten->sitzungsort = $matches[1];
+		if (preg_match("/Sitzungsort:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) $daten->sitzungsort = html_entity_decode($matches[1], ENT_COMPAT, "UTF-8");
 		if (preg_match("/Bezirksausschuss:.*link_bold_noimg\">([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->ba_nr = IntVal($matches[1]);
 		if (preg_match("/chste Sitzung:.*ba_sitzungen_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_next_id = $matches[1];
 		if (preg_match("/Letzte Sitzung:.*ba_sitzungen_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = $matches[1];

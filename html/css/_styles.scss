@@ -61,6 +61,49 @@
   }
 }
 
+#content > section.well.pdfjs_long {
+  #outerContainer {
+    margin-left: -19px;
+    margin-right: -19px;
+    width: auto;
+  }
+
+  #viewerContainer {
+    height: auto !important;
+    position: relative;
+  }
+
+  #mainContainer {
+    overflow: visible;
+    position: relative;
+    height: auto;
+
+    /*
+    > .toolbar {
+      opacity: 0;
+      -webkit-transition: opacity 300ms ease;
+      -moz-transition: opacity 300ms ease;
+      -ms-transition: opacity 300ms ease;
+      -o-transition: opacity 300ms ease;
+      transition: opacity 300ms ease;
+    }
+    &:hover {
+      > .toolbar {
+        opacity: 1;
+        -webkit-transition: opacity 300ms ease;
+        -moz-transition: opacity 300ms ease;
+        -ms-transition: opacity 300ms ease;
+        -o-transition: opacity 300ms ease;
+        transition: opacity 300ms ease;
+      }
+    }
+    */
+    > .toolbar {
+      display: none;
+    }
+  }
+}
+
 #content > section.well.pdfjs {
   padding-bottom: 0;
   overflow: hidden;
@@ -233,7 +276,7 @@
   border-radius: 5px;
   padding: 0.5em;
   margin: 0.4em;
-  margin-top: -2em;
+  //margin-top: -2em;
   text-align: center;
   opacity: 0;
   height: 0;

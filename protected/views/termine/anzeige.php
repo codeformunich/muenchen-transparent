@@ -1,14 +1,47 @@
 <?php
 /**
+ * @var TermineController $this
  * @var Termin $termin
+ * @var null|Dokument $to_pdf
+ * @var null|Tagesordnungspunkt[] $to_db
  */
 
 $this->pageTitle = $termin->getName(true);
 $assets_base     = $this->getAssetsBase();
 $geodata         = array();
 
+function zeile_anzeigen($feld, $name, $callback)
+{
+	if (count($feld) == 0) {
+		return;
+	} else if (count($feld) == 1) {
+		?>
+		<tr>
+			<th><? echo $name ?></th>
+			<td>
+				<? $callback($feld[0]); ?>
+			</td>
+		</tr> <?
+	} else {
+		?>
+		<tr>
+			<th><? echo $name ?></th>
+			<td>
+				<ul>
+					<? foreach ($feld as $element) {
+						?>
+						<li> <?
+							$callback($element);
+							?> </li> <?
+					} ?>
+				</ul>
+			</td>
+		</tr> <?
+	}
+}
+
 ?>
-<section class="well">
+<section class="well pdfjs_long">
 	<div class="original_ris_link"><?
 		echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $termin->getSourceLink());
 		?></div>
@@ -16,13 +49,18 @@ $geodata         = array();
 	<br>
 
 	<?
-	if ($termin->termin_next_id > 0) {
-		$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
-		echo '<a href="' . CHtml::encode($url) . '" style="float: right;">Nächster Termin <span class="fontello-right-open"></span></a>';
-	}
-	if ($termin->termin_prev_id > 0) {
-		$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
-		echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
+	if ($termin->termin_next_id > 0 || $termin->termin_prev_id > 0) {
+		echo '<div style="text-align: center; overflow: auto;">';
+		if ($termin->termin_next_id > 0) {
+			$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
+			echo '<a href="' . CHtml::encode($url) . '" style="float: right;">Nächster Termin <span class="fontello-right-open"></span></a>';
+		}
+		if ($termin->termin_prev_id > 0) {
+			$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
+			echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
+		}
+		echo '<a href="' . CHtml::encode(Yii::app()->createUrl("termine/icsExport", array("termin_id" => $termin->id))) . '">Terminreihe: Export in Kalender</a>';
+		echo '</div>';
 	}
 	?>
 	<table class="table">
@@ -45,20 +83,16 @@ $geodata         = array();
 				<?= CHtml::encode($termin->gremium->name) ?>
 			</td>
 		</tr>
-		<tr>
-			<th>Dokumente:</th>
-			<td>
-				<ul>
-					<? foreach ($termin->antraegeDokumente as $dok) {
-						echo "<li>" . CHtml::link($dok->name, $dok->getLinkZumDokument()) . " (" . CHtml::encode($dok->getDisplayDate()) . ")</li>";
-					} ?>
-				</ul>
-			</td>
-		</tr>
+		<?
+		zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", function ($dok) {
+			/** @var Dokument $dok */
+			echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
+		});
+		?>
 		</tbody>
 	</table>
 
-	<? if (count($termin->tagesordnungspunkte) > 0) { ?>
+	<? if ($to_db) { ?>
 		<section id="mapsection">
 			<h3>Tagesordnung auf der Karte</h3>
 
@@ -116,24 +150,28 @@ $geodata         = array();
 			}
 			?>
 		</ol>
-	<? } else { ?>
-		<div class="keine_tops">(Noch) Keine Tagesordnung veröffentlicht</div>
-	<? } ?>
-
-	<script>
-		$(function () {
-			var geodata = <?=json_encode($geodata)?>;
-			if (geodata.length > 0) $(function () {
-				var $map = $("#map").AntraegeKarte({
-					assetsBase: <?=json_encode($this->getAssetsBase())?>,
-					outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
-					onInit: function() {
-						$map.AntraegeKarte("setAntraegeData", geodata, null);
-					}
+		<script>
+			$(function () {
+				var geodata = <?=json_encode($geodata)?>;
+				if (geodata.length > 0) $(function () {
+					var $map = $("#map").AntraegeKarte({
+						assetsBase: <?=json_encode($this->getAssetsBase())?>,
+						outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
+						onInit: function () {
+							$map.AntraegeKarte("setAntraegeData", geodata, null);
+						}
+					});
 				});
+				else $("#mapsection").hide();
 			});
-			else $("#mapsection").hide();
-		});
-	</script>
+		</script>
+	<? } elseif ($to_pdf) {
+		$this->renderPartial("../index/pdf_embed", array(
+			"url" => '/dokumente/' . $to_pdf->id . '.pdf',
+		));
+	} else {
+		echo '<div class="keine_tops">(Noch) Keine Tagesordnung veröffentlicht</div>';
+	}
+	?>
 
 </section>

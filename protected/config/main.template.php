@@ -61,7 +61,6 @@ function ris_intern_address2geo($land, $plz, $ort, $strasse)
 }
 
 
-
 /**
  * @param string $url_to_read
  * @param string $username
@@ -106,8 +105,9 @@ function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
 	return true;
 }
 
-function ris_intern_html_extra_headers() {
-    return '';
+function ris_intern_html_extra_headers()
+{
+	return '';
 }
 
 
@@ -183,11 +183,12 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'         => array(
 		// this is used in contact page
-		'adminEmail'      => 'info@muenchen-transparent.de',
-		'adminEmailName'  => "München Transparent",
-		'skobblerKey'     => 'KEY',
-		'baseURL'         => SITE_BASE_URL,
-		'debug_log'       => true,
-		'projectTitle'    => 'München Transparent',
+		'adminEmail'          => 'info@muenchen-transparent.de',
+		'adminEmailName'      => "München Transparent",
+		'skobblerKey'         => 'KEY',
+		'baseURL'             => SITE_BASE_URL,
+		'debug_log'           => true,
+		'projectTitle'        => 'München Transparent',
+		'startseiten_warnung' => '',
 	),
 );

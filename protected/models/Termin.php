@@ -144,7 +144,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 	 */
 	public function getName($kurzfassung = false)
 	{
-		return $this->gremium->name . " (" . $this->termin . ")";
+		if ($kurzfassung) return $this->gremium->name;
+		else return $this->gremium->name . " (" . $this->termin . ")";
 	}
 
 	/**
@@ -307,5 +308,45 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 		}
 		foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
 		return $data;
+	}
+
+	/**
+	 * @return null|Dokument
+	 */
+	public function errateAktuellsteTagesordnung() {
+		$tos = array();
+		foreach ($this->antraegeDokumente as $dok) {
+			$name = $dok->getName(true);
+			if (stripos($name, "tagesordnung") !== false || stripos($name, "einladung") !== false) $tos[] = $dok;
+		}
+		if (count($tos) == 0) return null;
+		usort($tos, function($to1, $to2) {
+			/** @var Dokument $to1 */
+			/** @var Dokument $to2 */
+			$ts1 = RISTools::date_iso2timestamp($to1->datum);
+			$ts2 = RISTools::date_iso2timestamp($to2->datum);
+			if ($ts1 < $ts2) return 1;
+			if ($ts1 > $ts2) return -1;
+			return 0;
+		});
+		return $tos[0];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getVEventParams() {
+		$description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeige", array("termin_id" => $this->id));
+		foreach ($this->antraegeDokumente as $dok) {
+			$description .= "\n" . $dok->getName() . ": " . $dok->getLink();
+		}
+		$ende = date("Y-m-d H:i:s", RISTools::date_iso2timestamp($this->termin) + 3600);
+		return array(
+			'SUMMARY'     => $this->getName(true),
+			'DTSTART'     => new \DateTime($this->termin, new DateTimeZone("Europe/Berlin")),
+			'DTEND'     => new \DateTime($ende, new DateTimeZone("Europe/Berlin")),
+			'LOCATION'    => $this->sitzungsort,
+			'DESCRIPTION' => $description,
+		);
 	}
 }
