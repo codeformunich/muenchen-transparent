@@ -228,7 +228,7 @@ class Dokument extends CActiveRecord implements IRISItem
 		if (preg_match("/^[0-9]+prot[0-9]+$/siu", $name)) return "Protokoll";  // 25prot13012015
 		if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Protokoll"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
 
-		$name = preg_replace("/^(.*) \\d\\d\.\\d\\d\.\\d{4}$/siu", "\\1", $name);
+		$name = preg_replace("/^( vom)? \\d\\d\.\\d\\d\.\\d{4}$/siu", "", $name);
 
 		if ($langfassung) {
 			if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
