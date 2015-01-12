@@ -3,7 +3,7 @@
 use Sabre\DAV;
 use Sabre\DAVACL;
 
-class TermineCalDAVCalendarBackend implements  Sabre\CalDAV\Backend\BackendInterface
+class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterface
 {
 
 	/**
@@ -34,7 +34,8 @@ class TermineCalDAVCalendarBackend implements  Sabre\CalDAV\Backend\BackendInter
 
 	private $termin_id;
 
-	public function __construct($termin_id) {
+	public function __construct($termin_id)
+	{
 		$this->termin_id = $termin_id;
 	}
 
@@ -44,20 +45,20 @@ class TermineCalDAVCalendarBackend implements  Sabre\CalDAV\Backend\BackendInter
 		$termin = Termin::model()->findByPk($this->termin_id);
 		if (!$termin) return array();
 
-		list(,$name) = \Sabre\HTTP\URLUtil::splitPath($principalUri);
+		list(, $name) = \Sabre\HTTP\URLUtil::splitPath($principalUri);
 		if ($name !== 'guest') return array();
 
 		return array(
 			array(
-				'id' => $this->termin_id,
-				'uri' => $this->termin_id,
-				'principaluri' => $principalUri,
-				'{DAV:}displayname' => $termin->gremium->getName(),
-				'{' . \Sabre\CalDAV\Plugin::NS_CALENDARSERVER . '}getctag' => 'http://sabre.io/ns/sync/0',
-				'{http://sabredav.org/ns}sync-token' => '0',
+				'id'                                                                        => $this->termin_id,
+				'uri'                                                                       => $this->termin_id,
+				'principaluri'                                                              => $principalUri,
+				'{DAV:}displayname'                                                         => $termin->gremium->getName(),
+				'{' . \Sabre\CalDAV\Plugin::NS_CALENDARSERVER . '}getctag'                  => 'http://sabre.io/ns/sync/0',
+				'{http://sabredav.org/ns}sync-token'                                        => '0',
 				'{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}supported-calendar-component-set' => new \Sabre\CalDAV\Property\SupportedCalendarComponentSet(array("VEVENT")),
-				'{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}schedule-calendar-transp' => new \Sabre\CalDAV\Property\ScheduleCalendarTransp('opaque'),
-				'{http://sabredav.org/ns}read-only' => '1',
+				'{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}schedule-calendar-transp'         => new \Sabre\CalDAV\Property\ScheduleCalendarTransp('opaque'),
+				'{http://sabredav.org/ns}read-only'                                         => '1',
 			)
 		);
 	}

@@ -4,6 +4,13 @@
  * @var IndexController $this
  * @var Dokument|null $dokument
  */
+
+$risitem = $dokument->getRISItem();
+if ($risitem) {
+	$this->pageTitle = $risitem->getName(true) . ": " . $dokument->getName();
+} else {
+	$this->pageTitle = $dokument->getName();
+}
 ?>
 
 
