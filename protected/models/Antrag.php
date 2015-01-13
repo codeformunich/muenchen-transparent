@@ -402,6 +402,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 		if ($kurzfassung) {
 			$betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->betreff);
 			$x       = explode(" Antrag Nr.", $betreff);
+			$x       = explode(" Änderungsantrag ", $x[0]);
 			$x       = explode("<strong>Antrag: </strong>", $x[0]);
 			$x       = explode(" Empfehlung Nr.", $x[0]);
 			$x       = explode(" BA-Antrags-", $x[0]);

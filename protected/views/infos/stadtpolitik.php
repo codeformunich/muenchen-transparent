@@ -1,6 +1,9 @@
 <?
 /**
  * @var InfosController $this
+ * @var Text $text
+ * @var string $msg_ok
+ * @var string $my_url
  */
 
 $this->pageTitle = "So funktioniert Stadtpolitik";
@@ -8,7 +11,7 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
 $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
     return CHtml::encode(Yii::app()->createUrl($matches["url"]));
 }, $text->text);
-
+$html_text = RISTools::insertTooltips($html_text);
 
 ?>
 
@@ -105,6 +108,11 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
                 echo $html_text;
             }
             ?>
+            <script>
+                $(function() {
+                    $('[data-toggle="tooltip"]').tooltip({animation: true, delay:500});
+                });
+            </script>
         </section>
     </div>
 

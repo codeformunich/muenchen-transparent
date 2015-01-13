@@ -1323,7 +1323,7 @@ section.impressum {
       clear: both;
       font-weight: normal;
       line-height: 1.42857143;
-      color: #333333;
+      color: $text-color;
       white-space: nowrap;
       font-size: 14px;
     }
@@ -1359,7 +1359,7 @@ section.impressum {
     padding: 3px 0;
     border-bottom: 1px solid #ccc;
     font-size: 13px;
-    color: #333333;
+    color: $text-color;
   }
 }
 
@@ -1525,5 +1525,20 @@ section.impressum {
 .std_fliesstext {
   h3 {
     margin-top: 40px;
+  }
+}
+
+a.tooltip_link:link, a.tooltip_link:visited {
+  color: $text-color;
+  border-bottom: dotted 1px gray;
+}
+
+
+.glossar {
+  .dl-horizontal dt {
+    white-space: normal;
+  }
+  .tooltip-inner {
+    max-width: 270px;
   }
 }

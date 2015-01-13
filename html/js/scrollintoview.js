@@ -1,4 +1,3 @@
-
 /*!
  * jQuery scrollintoview() plugin and :scrollable selector filter
  *
@@ -111,11 +110,15 @@
 
 				// vertical scroll
 				if (options.direction.y === true) {
-					if (rel.top < 0) {
-						animOptions.scrollTop = dim.s.scroll.top + rel.top;
-					}
-					else if (rel.top > 0 && rel.bottom < 0) {
-						animOptions.scrollTop = dim.s.scroll.top + Math.min(rel.top, -rel.bottom);
+					if (typeof(options["top_offset"]) != "undefined") {
+						animOptions.scrollTop = dim.s.scroll.top + rel.top + options["top_offset"];
+					} else {
+						if (rel.top < 0) {
+							animOptions.scrollTop = dim.s.scroll.top + rel.top;
+						}
+						else if (rel.top > 0 && rel.bottom < 0) {
+							animOptions.scrollTop = dim.s.scroll.top + Math.min(rel.top, -rel.bottom);
+						}
 					}
 				}
 

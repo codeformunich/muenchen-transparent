@@ -4,6 +4,13 @@
  * @var IndexController $this
  * @var Dokument|null $dokument
  */
+
+$risitem = $dokument->getRISItem();
+if ($risitem) {
+	$this->pageTitle = $risitem->getName(true) . ": " . $dokument->getName();
+} else {
+	$this->pageTitle = $dokument->getName();
+}
 ?>
 
 
@@ -20,7 +27,7 @@
 		 */
 		function dokumentenliste($uebergruppe, $name, $dokument, $link)
 		{
-			if ($link) {
+			if ($link && $uebergruppe) {
 				echo "<li>" . CHtml::link($name, $uebergruppe->getLink()) . "<br></li>";
 			} else {
 				echo "<li class=\"active\">" . CHtml::encode($name) . "<br></li>";

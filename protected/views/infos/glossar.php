@@ -72,4 +72,12 @@ $this->pageTitle = "Glossar";
 	<?
 	}
 	?>
+	<script>
+		$(function() {
+			if (location.hash) {
+				var x = location.hash.split("#");
+				if ($("#eintrag_" + x[1]).length > 0) $("#eintrag_" + x[1]).scrollintoview({top_offset: -250});
+			}
+		});
+	</script>
 </section>

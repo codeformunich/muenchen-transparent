@@ -445,4 +445,43 @@ class RISTools
 		}
 		return $arr;
 	}
+
+	/**
+	 * @param string $text_html
+	 * @return string
+	 */
+	public static function insertTooltips($text_html) {
+		/** @var Text[] $eintraege */
+		$eintraege = Text::model()->findAllByAttributes(array(
+			"typ" => Text::$TYP_GLOSSAR,
+		));
+		$regexp_parts = array();
+		/** @var Text[] $tooltip_replaces */
+		$tooltip_replaces = array();
+		foreach ($eintraege as $ein) {
+			$aliases = array(strtolower($ein->titel));
+			if ($ein->titel == "Fraktion") $aliases[] = "fraktionen";
+			if ($ein->titel == "Ausschuss") $aliases[] = "aussch&uuml;ssen";
+
+			foreach ($aliases as $alias) {
+				$regexp_parts[] = preg_quote($alias);
+				$tooltip_replaces[$alias] = $ein;
+			}
+		}
+		$text_html = preg_replace_callback("/(?<pre>[^\\w])(?<word>" . implode("|", $regexp_parts) . ")(?<post>[^\\w])/siu", function($matches) use ($tooltip_replaces) {
+			$eintrag = $tooltip_replaces[strtolower($matches["word"])];
+			$text = strip_tags(html_entity_decode($eintrag->text, ENT_COMPAT, "UTF-8"));
+			if (strlen($text) > 200) $text = substr($text, 0, 198) . "... [weiter]";
+			$link = CHtml::encode(Yii::app()->createUrl("infos/glossar") . "#" . $eintrag->titel);
+			$replace_html = '<a href="' . $link . '" class="tooltip_link" data-toggle="tooltip" data-placement="top" title="" data-original-title="' . CHtml::encode($text) . '">' . $matches["word"] . '</a>';
+			return $matches["pre"] . $replace_html . $matches["post"];
+
+		}, $text_html);
+		/*
+		foreach ($eintraege as $eintrag) if ($eintrag->titel == "Stadtrat") {
+
+		}
+		*/
+		return $text_html;
+	}
 }
