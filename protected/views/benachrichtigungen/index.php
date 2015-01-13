@@ -313,20 +313,25 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 	<button class="btn btn-danger" data-toggle="modal" data-target="#accountloeschenmodal">Account Löschen</button>
 
 
-
+	<!-- Dialog zum accountloeschen -->
 	<div class="modal fade" id="accountloeschenmodal" tabindex="-1" role="dialog" aria-labelledby="accountloeschenmodal" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Account Löschen</h4>
+					<h3 class="modal-title">Account Löschen</h3>
 				</div>
 				<div class="modal-body">
-					<p>Willst du deinen Account wirklich unwiederruflich löschen?</p>
+					<p class="benachrichtigung_keine" >Willst du deinen Account wirklich unwiederruflich löschen?</p>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-default btn-raised" data-dismiss="modal">Abrrechen</button>
-					<button class="btn btn-danger" type="button" onclick="location.href='/accountloeschen'">Account Löschen</button>
+
+					<form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>">
+						<button class="btn btn-danger" style="float: right" name="<?= AntiXSS::createToken("delete_account") ?>" type="submit">Account Löschen!</button>
+					</form>
+
+					<button class="btn btn-default btn-raised" style="margin-right: 5px" data-dismiss="modal">Abrrechen</button>
+
 				</div>
 			</div>
 		</div>

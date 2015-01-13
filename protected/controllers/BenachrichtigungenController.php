@@ -76,6 +76,40 @@ class BenachrichtigungenController extends RISBaseController
 		}
 
 
+		if (AntiXSS::isTokenSet("delete_account")) {
+			$this->top_menu = "Accountlöschung";
+			list($msg_ok, $msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"));
+			$ich = $this->aktuelleBenutzerIn();
+			$id  = $ich->id;
+
+			if ($ich != NULL) {
+
+				$ich->email                         = NULL;
+				$ich->email_bestaetigt              = 0;
+				$ich->pwd_enc                       = NULL;
+				$ich->datum_angelegt                = NULL;
+				$ich->datum_letzte_benachrichtigung = NULL;
+				$ich->berechtigungen_flags          = 0;
+				$ich->einstellungen_object          = NULL;
+				$ich->einstellungen                 = NULL;
+				$ich->save(false);
+
+				Yii::app()->db
+					->createCommand("DELETE FROM `benutzerInnen_vorgaenge_abos` WHERE `benutzerInnen_id` = :BenutzerInId")
+					->bindValues(array(':BenutzerInId' => $ich->id))
+					->execute();
+
+				$msg_ok = "Account gelöscht";
+			} else {
+				$msg_err = "Sie sind nicht angemeldet";
+			}
+
+			$this->redirect(Yii::app()->createUrl("index/startseite"));
+
+			Yii::app()->end();
+		}
+
+
 		$this->render("index", array(
 			"ich"     => $ich,
 			"msg_err" => $msg_err,
