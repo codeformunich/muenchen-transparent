@@ -35,7 +35,7 @@ bower install
 
 Webserver-Konfiguration:
 * DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
-* Bei Apache regelt die html/.htaccess alles weitere. Bei nginx gibt es unter docs/nginx.conf eine Beispiel-Konfigurationsdatei
+* Bei Apache regelt die html/.htaccess alles weitere. Für nginx gibt es eine [Beispiel-Konfiguration](docs/nginx.conf)
 * Der Hostname des Webservers muss auch als SITE_BASE_URL bei protected/config/main.php gesetzt werden.
 
 MariaDB/MySQL-Konfiguration
@@ -58,7 +58,7 @@ PHP-Konfiguration:
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
 
 PDF.JS Updaten:
-* Ggf. uglify-js installieren (npm install -g uglify-js)
+* Ggf. uglify-js installieren (`npm install -g uglify-js`)
 * /docs/viewer.js.diff und /docs/viewer.css.diff anwenden
 * uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js
 
@@ -81,6 +81,7 @@ Weitere Dokumentation
 
 * [nginx.conf](docs/nginx.conf) und [lighttpd.conf](docs/lighttpd.conf) zeigen Beispiel-Konfigurationen für nginx und Lighttpd. Von der Verwendung von lighttpd ist aber abzuraten, da einige Funktionen, wie z.B. Kalender oder der "Ältere Dokumente"-Knopf, wegen eines Problems mit dem url-Handlings nicht funktionieren. Wenn es jemanden weiß, wie man das Problem löst, möge er sich bitte in https://github.com/codeformunich/Ratsinformant/issues/10 melden
 * [Icon-Font bearbeiten](docs/fontello/updating.txt)
+* Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
 
 Eingesetzte Shell-Programme
 ---------------------------
@@ -88,6 +89,7 @@ Eingesetzte Shell-Programme
 * [Imagemagick](http://www.imagemagick.org/) zur Vorbereitung des OCRs.
 * [Solr](http://lucene.apache.org/solr/) für die Volltextsuche.
 * [PDFbox](pdfbox.apache.org) zur Text-Extraktion aus den PDFs.
+* [sass](http://sass-lang.com/)
 
 Eingesetzte PHP-Bibliotheken
 ----------------------------
@@ -98,7 +100,7 @@ Eingesetzte PHP-Bibliotheken
 
 Eingesetzte JS/CSS-Bibliotheken
 -------------------------------
-* [jQuery / jQueryUI](http://www.jquery.com/)
+* [jQuery](http://www.jquery.com/)
 * [Leaflet](http://leafletjs.com/) für die Karten (mit dem Kartenmaterial von [Skobbler](http://www.skobbler.com/))
 * [Modernizr](http://modernizr.com/)
 * [Bootstrap](http://getbootstrap.com/)
@@ -106,4 +108,8 @@ Eingesetzte JS/CSS-Bibliotheken
 * [Fontello](http://fontello.com/)
 * [Moment.js](momentjs.com)
 * [FullCalendar](http://fullcalendar.io/)
-* ... To be continued
+* [List.js](http://www.listjs.com/)
+* [Bower](http://bower.io/)
+* [Isotope](http://isotope.metafizzy.co/)
+* [Shariff](http://www.heise.de/ct/artikel/Shariff-Social-Media-Buttons-mit-Datenschutz-2467514.html)
+* [CKEditor](http://ckeditor.com/)
