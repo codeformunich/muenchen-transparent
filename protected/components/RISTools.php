@@ -200,6 +200,7 @@ class RISTools
 
 		$titel = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $titel); // @TODO: False positives filtern? Geht das überhaupt?
 		$titel = preg_replace("/(n)eü/siu", "$1eue", $titel);
+		$titel = preg_replace("/aü/siu", "aue", $titel);
 
 		if ($titel == "Deckblatt VV") return "Deckblatt";
 		if ($titel == "Niederschrift (oeff)") return "Niederschrift";
