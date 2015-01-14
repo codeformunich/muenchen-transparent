@@ -322,7 +322,7 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 					<h3 class="modal-title">Account Löschen</h3>
 				</div>
 				<div class="modal-body">
-					<p class="benachrichtigung_keine" >Willst du deinen Account wirklich unwiederruflich löschen?</p>
+					<p class="benachrichtigung_keine" >Willst du deinen Account wirklich unwiderruflich löschen?</p>
 				</div>
 				<div class="modal-footer">
 

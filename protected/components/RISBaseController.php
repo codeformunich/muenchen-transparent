@@ -68,6 +68,7 @@ class RISBaseController extends CController
 
 	protected function performLoginActions($code = "")
 	{
+		/** @var CWebUser $user */
 		$user = Yii::app()->getUser();
 
 		$msg_err = "";

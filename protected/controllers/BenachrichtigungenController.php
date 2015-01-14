@@ -100,6 +100,10 @@ class BenachrichtigungenController extends RISBaseController
 					->execute();
 
 				$msg_ok = "Account gelöscht";
+
+				/** @var CWebUser $user */
+				$user = Yii::app()->getUser();
+				if ($user) $user->logout();
 			} else {
 				$msg_err = "Sie sind nicht angemeldet";
 			}
