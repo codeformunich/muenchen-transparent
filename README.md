@@ -97,6 +97,8 @@ Eingesetzte PHP-Bibliotheken
 * [Zend Framework 2](http://framework.zend.com/)
 * [Solarium](http://www.solarium-project.org/) Zur Anbindung von SolR.
 * [CSS2InlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles) für die HTML-formatierten E-Mails.
+* [sabre/dav](http://sabre.io/) für die Kalender-Synchronisation
+* [Composer](https://getcomposer.org/)
 
 Eingesetzte JS/CSS-Bibliotheken
 -------------------------------
