@@ -23,70 +23,70 @@
  */
 class AntragOrt extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return AntragOrt the static model class
-	 */
-	public static function model($className = __CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * @param string $className active record class name.
+     * @return AntragOrt the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'antraege_orte';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'antraege_orte';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('dokument_id, ort_name, ort_id, source, datum', 'required'),
-			array('antrag_id, termin_id, rathausumschau_id, dokument_id, ort_id', 'numerical', 'integerOnly' => true),
-			array('ort_name', 'length', 'max' => 100),
-			array('source', 'length', 'max' => 10),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('dokument_id, ort_name, ort_id, source, datum', 'required'),
+            array('antrag_id, termin_id, rathausumschau_id, dokument_id, ort_id', 'numerical', 'integerOnly' => true),
+            array('ort_name', 'length', 'max' => 100),
+            array('source', 'length', 'max' => 10),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'dokument'       => array(self::BELONGS_TO, 'Dokument', 'dokument_id'),
-			'antrag'         => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-			'termin'         => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'termin_id'),
-			'rathausumschau' => array(self::BELONGS_TO, 'Rathausumschau', 'rathausumschau_id'),
-			'ort'            => array(self::BELONGS_TO, 'OrtGeo', 'ort_id'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'dokument'       => array(self::BELONGS_TO, 'Dokument', 'dokument_id'),
+            'antrag'         => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
+            'termin'         => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'termin_id'),
+            'rathausumschau' => array(self::BELONGS_TO, 'Rathausumschau', 'rathausumschau_id'),
+            'ort'            => array(self::BELONGS_TO, 'OrtGeo', 'ort_id'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id'                => 'ID',
-			'antrag_id'         => 'Antrag',
-			'termin_id'         => 'Termin',
-			'rathausumschau_id' => 'Rathausumschau',
-			'dokument_id'       => 'Dokument',
-			'ort_name'          => 'Ort Name',
-			'ort_id'            => 'Ort',
-			'source'            => 'Source',
-			'datum'             => 'Datum',
-		);
-	}
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id'                => 'ID',
+            'antrag_id'         => 'Antrag',
+            'termin_id'         => 'Termin',
+            'rathausumschau_id' => 'Rathausumschau',
+            'dokument_id'       => 'Dokument',
+            'ort_name'          => 'Ort Name',
+            'ort_id'            => 'Ort',
+            'source'            => 'Source',
+            'datum'             => 'Datum',
+        );
+    }
 }

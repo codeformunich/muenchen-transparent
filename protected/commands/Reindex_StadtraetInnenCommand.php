@@ -1,10 +1,12 @@
 <?php
 
-class Reindex_StadtraetInnenCommand extends CConsoleCommand {
-	public function run($args) {
+class Reindex_StadtraetInnenCommand extends CConsoleCommand
+{
+    public function run($args)
+    {
 
-		$parser = new StadtraetInnenParser();
-		$parser->parseUpdate();
+        $parser = new StadtraetInnenParser();
+        $parser->parseUpdate();
 
-	}
+    }
 }

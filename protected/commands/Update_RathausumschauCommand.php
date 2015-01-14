@@ -2,11 +2,11 @@
 
 class Update_RathausumschauCommand extends CConsoleCommand
 {
-	public function run($args)
-	{
+    public function run($args)
+    {
 
-		$parser = new RathausumschauParser();
-		$parser->parseAlle();
+        $parser = new RathausumschauParser();
+        $parser->parseAlle();
 
-	}
+    }
 }

@@ -3,37 +3,37 @@
 interface HistorienEintrag
 {
 
-	public function getLink();
+    public function getLink();
 
-	public function getDatum();
+    public function getDatum();
 
-	public function getFormattedDiff();
+    public function getFormattedDiff();
 
 }
 
 class HistorienEintragFeld
 {
-	private $feld, $alt, $neu;
+    private $feld, $alt, $neu;
 
-	public function __construct($feld, $alt, $neu)
-	{
-		$this->feld = $feld;
-		$this->alt  = $alt;
-		$this->neu  = $neu;
-	}
+    public function __construct($feld, $alt, $neu)
+    {
+        $this->feld = $feld;
+        $this->alt  = $alt;
+        $this->neu  = $neu;
+    }
 
-	public function getFeld()
-	{
-		return $this->feld;
-	}
+    public function getFeld()
+    {
+        return $this->feld;
+    }
 
-	public function getAlt()
-	{
-		return $this->alt;
-	}
+    public function getAlt()
+    {
+        return $this->alt;
+    }
 
-	public function getNeu()
-	{
-		return $this->neu;
-	}
+    public function getNeu()
+    {
+        return $this->neu;
+    }
 }

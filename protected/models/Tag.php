@@ -17,86 +17,88 @@
 class Tag extends CActiveRecord
 {
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Text the static model class
-	 */
-	public static function model($className = __CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * @param string $className active record class name.
+     * @return Text the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'tags';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'tags';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('name', 'required'),
-			array('id, angelegt_benutzerIn_id, reviewed', 'numerical', 'integerOnly' => true),
-			array('name', 'length', 'max' => 100),
-			array('angelegt_datum', 'length', 'max' => 20),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('name', 'required'),
+            array('id, angelegt_benutzerIn_id, reviewed', 'numerical', 'integerOnly' => true),
+            array('name', 'length', 'max' => 100),
+            array('angelegt_datum', 'length', 'max' => 20),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		return array(
-			'angelegt_benutzerIn' => array(self::BELONGS_TO, 'BenutzerIn', 'angelegt_benutzerIn_id'),
-			'antraege'            => array(self::MANY_MANY, 'Antrag', 'antraege_tags(tag_id, antrag_id)'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        return array(
+            'angelegt_benutzerIn' => array(self::BELONGS_TO, 'BenutzerIn', 'angelegt_benutzerIn_id'),
+            'antraege'            => array(self::MANY_MANY, 'Antrag', 'antraege_tags(tag_id, antrag_id)'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id'                     => 'ID',
-			'name'                   => 'Name',
-			'reviewed'               => 'Geprüft',
-			'angelegt_datum'         => 'Angelegt: Datum',
-			'angelegt_benutzerIn_id' => 'Anegelegt: BenutzerIn-ID',
-			'angelegt_benutzerIn'    => 'Anegelegt: BenutzerIn',
-			'antraege'               => 'Anträge',
-		);
-	}
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id'                     => 'ID',
+            'name'                   => 'Name',
+            'reviewed'               => 'Geprüft',
+            'angelegt_datum'         => 'Angelegt: Datum',
+            'angelegt_benutzerIn_id' => 'Anegelegt: BenutzerIn-ID',
+            'angelegt_benutzerIn'    => 'Anegelegt: BenutzerIn',
+            'antraege'               => 'Anträge',
+        );
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getNameLink() {
-		$link_name = $this->name;
-		return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", array("tag_id" => $this->id, "tag_name" => $link_name)));
-	}
+    /**
+     * @return string
+     */
+    public function getNameLink()
+    {
+        $link_name = $this->name;
+        return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", array("tag_id" => $this->id, "tag_name" => $link_name)));
+    }
 
-	/**
-	 * @param int $num
-	 * @return Tag[]
-	 */
-	public static function getTopTags($num) {
-		// @TODO
+    /**
+     * @param int $num
+     * @return Tag[]
+     */
+    public static function getTopTags($num)
+    {
+        // @TODO
 
-		/** @var Tag[] $tags */
-		$tags = Tag::model()->findAll();
-		$tags_out = array();
-		foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
-		return $tags_out;
-	}
+        /** @var Tag[] $tags */
+        $tags     = Tag::model()->findAll();
+        $tags_out = array();
+        foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
+        return $tags_out;
+    }
 
 }

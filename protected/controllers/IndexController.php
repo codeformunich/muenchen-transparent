@@ -647,7 +647,7 @@ class IndexController extends RISBaseController
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
             }
-            $ru        = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)));
+            $ru = Rathausumschau::model()->findByAttributes(array("datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)));
             if ($ru) $rus[] = $ru;
             /** @var array|Antrag[] $antraege */
             $antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
@@ -739,9 +739,9 @@ class IndexController extends RISBaseController
         $this->top_menu = "personen";
 
         $this->render('personen', array(
-            "stadtraetInnen"   => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
-            "personen_typ" => ($ba > 0 ? "ba" : "str"),
-            "ba_nr"        => $ba
+            "stadtraetInnen" => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
+            "personen_typ"   => ($ba > 0 ? "ba" : "str"),
+            "ba_nr"          => $ba
         ));
     }
 

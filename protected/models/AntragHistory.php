@@ -33,86 +33,86 @@
  */
 class AntragHistory extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return AntragHistory the static model class
-	 */
-	public static function model($className = __CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * @param string $className active record class name.
+     * @return AntragHistory the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'antraege_history';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'antraege_history';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('id, typ, datum_letzte_aenderung', 'required'),
-			array('id, ba_nr, vorgang_id, referat_id', 'numerical', 'integerOnly' => true),
-			array('typ', 'length', 'max' => 16),
-			array('antrags_nr', 'length', 'max' => 20),
-			array('referat', 'length', 'max' => 500),
-			array('referent', 'length', 'max' => 200),
-			array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
-			array('bearbeitung', 'length', 'max' => 100),
-			array('gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
-			array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('id, typ, datum_letzte_aenderung', 'required'),
+            array('id, ba_nr, vorgang_id, referat_id', 'numerical', 'integerOnly' => true),
+            array('typ', 'length', 'max' => 16),
+            array('antrags_nr', 'length', 'max' => 20),
+            array('referat', 'length', 'max' => 500),
+            array('referent', 'length', 'max' => 200),
+            array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
+            array('bearbeitung', 'length', 'max' => 100),
+            array('gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
+            array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'ba' => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'ba' => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id'                        => 'ID',
-			'vorgang_id'                => 'Vorgangs-ID',
-			'typ'                       => 'Typ',
-			'datum_letzte_aenderung'    => 'Datum Letzte Aenderung',
-			'ba_nr'                     => 'Ba Nr',
-			'gestellt_am'               => 'Gestellt Am',
-			'gestellt_von'              => 'Gestellt Von',
-			'antrags_nr'                => 'Antrags Nr',
-			'bearbeitungsfrist'         => 'Bearbeitungsfrist',
-			'registriert_am'            => 'Registriert Am',
-			'erledigt_am'               => 'Erledigt Am',
-			'referat'                   => 'Referat',
-			'referent'                  => 'Referent',
-			'referat_id'                => 'Referat-ID',
-			'wahlperiode'               => 'Wahlperiode',
-			'antrag_typ'                => 'Antrag Typ',
-			'betreff'                   => 'Betreff',
-			'kurzinfo'                  => 'Kurzinfo',
-			'status'                    => 'Status',
-			'bearbeitung'               => 'Bearbeitung',
-			'fristverlaengerung'        => 'Fristverlaengerung',
-			'initiatorInnen'            => 'InitiatorInnen',
-			'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
-		);
-	}
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id'                        => 'ID',
+            'vorgang_id'                => 'Vorgangs-ID',
+            'typ'                       => 'Typ',
+            'datum_letzte_aenderung'    => 'Datum Letzte Aenderung',
+            'ba_nr'                     => 'Ba Nr',
+            'gestellt_am'               => 'Gestellt Am',
+            'gestellt_von'              => 'Gestellt Von',
+            'antrags_nr'                => 'Antrags Nr',
+            'bearbeitungsfrist'         => 'Bearbeitungsfrist',
+            'registriert_am'            => 'Registriert Am',
+            'erledigt_am'               => 'Erledigt Am',
+            'referat'                   => 'Referat',
+            'referent'                  => 'Referent',
+            'referat_id'                => 'Referat-ID',
+            'wahlperiode'               => 'Wahlperiode',
+            'antrag_typ'                => 'Antrag Typ',
+            'betreff'                   => 'Betreff',
+            'kurzinfo'                  => 'Kurzinfo',
+            'status'                    => 'Status',
+            'bearbeitung'               => 'Bearbeitung',
+            'fristverlaengerung'        => 'Fristverlaengerung',
+            'initiatorInnen'            => 'InitiatorInnen',
+            'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
+        );
+    }
 }

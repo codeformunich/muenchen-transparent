@@ -18,67 +18,67 @@
 class Text extends CActiveRecord
 {
 
-	public static $TYP_STD = 0;
-	public static $TYP_GLOSSAR = 1;
+    public static $TYP_STD = 0;
+    public static $TYP_GLOSSAR = 1;
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Text the static model class
-	 */
-	public static function model($className = __CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * @param string $className active record class name.
+     * @return Text the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'texte';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'texte';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('typ, titel', 'required'),
-			array('id, typ, pos, edit_benutzerIn_id', 'numerical', 'integerOnly' => true),
-			array('titel', 'length', 'max' => 180),
-			array('typ, pos, text, titel', 'safe'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('typ, titel', 'required'),
+            array('id, typ, pos, edit_benutzerIn_id', 'numerical', 'integerOnly' => true),
+            array('titel', 'length', 'max' => 180),
+            array('typ, pos, text, titel', 'safe'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		return array(
-			'edit_benutzerIn' => array(self::BELONGS_TO, 'Person', 'edit_benutzerIn_id'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        return array(
+            'edit_benutzerIn' => array(self::BELONGS_TO, 'Person', 'edit_benutzerIn_id'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id'              => 'ID',
-			'typ' => 'Typ',
-			'pos' => 'Position',
-			'text' => 'Text',
-			'titel' => 'Titel',
-			'edit_datum' => 'Zuletzt bearbeitet: Datum',
-			'edit_benutzerIn' => 'Zuletzt bearbeitet: BenutzerIn',
-			'edit_benutzerIn_id' => 'Zuletzt bearbeitet: BenutzerIn-ID',
-		);
-	}
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id'                 => 'ID',
+            'typ'                => 'Typ',
+            'pos'                => 'Position',
+            'text'               => 'Text',
+            'titel'              => 'Titel',
+            'edit_datum'         => 'Zuletzt bearbeitet: Datum',
+            'edit_benutzerIn'    => 'Zuletzt bearbeitet: BenutzerIn',
+            'edit_benutzerIn_id' => 'Zuletzt bearbeitet: BenutzerIn-ID',
+        );
+    }
 
 }

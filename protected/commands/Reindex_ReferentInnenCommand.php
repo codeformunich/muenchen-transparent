@@ -1,10 +1,12 @@
 <?php
 
-class Reindex_ReferentInnenCommand extends CConsoleCommand {
-	public function run($args) {
+class Reindex_ReferentInnenCommand extends CConsoleCommand
+{
+    public function run($args)
+    {
 
-		$parser = new ReferentInnenParser();
-		$parser->parseAlle();
+        $parser = new ReferentInnenParser();
+        $parser->parseAlle();
 
-	}
+    }
 }

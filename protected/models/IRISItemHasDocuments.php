@@ -2,6 +2,6 @@
 
 interface IRISItemHasDocuments extends IRISItem
 {
-	/** @return Dokument[] */
-	public function getDokumente();
+    /** @return Dokument[] */
+    public function getDokumente();
 }

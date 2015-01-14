@@ -3,21 +3,21 @@
 interface IRISItem
 {
 
-	/**
-	 * @param array $add_params
-	 * @return string
-	 */
-	public function getLink($add_params = array());
+    /**
+     * @param array $add_params
+     * @return string
+     */
+    public function getLink($add_params = array());
 
-	/** @return string */
-	public function getTypName();
+    /** @return string */
+    public function getTypName();
 
-	/** @return string */
-	public function getDate();
+    /** @return string */
+    public function getDate();
 
-	/**
-	 * @param bool $kurzfassung
-	 * @return string
-	 */
-	public function getName($kurzfassung = false);
+    /**
+     * @param bool $kurzfassung
+     * @return string
+     */
+    public function getName($kurzfassung = false);
 }

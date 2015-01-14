@@ -18,9 +18,9 @@ class InfosController extends RISBaseController
         }
 
         $this->render("stadtpolitik", array(
-            "text"    => $text,
-            "my_url"  => $this->createUrl("infos/soFunktioniertStadtpolitik"),
-            "msg_ok"  => $msg_ok,
+            "text"   => $text,
+            "my_url" => $this->createUrl("infos/soFunktioniertStadtpolitik"),
+            "msg_ok" => $msg_ok,
         ));
     }
 
@@ -48,12 +48,14 @@ class InfosController extends RISBaseController
         $this->std_content_page(21, $this->createUrl("infos/ueber"));
     }
 
-    public function actionStadtrecht() {
+    public function actionStadtrecht()
+    {
         $this->top_menu = "so_funktioniert";
         $this->render("stadtrecht");
     }
 
-    public function actionStadtrechtDokument($id) {
+    public function actionStadtrechtDokument($id)
+    {
         /** @var Rechtsdokument $dok */
         $dok = Rechtsdokument::model()->findByPk($id);
         if (!$dok) {

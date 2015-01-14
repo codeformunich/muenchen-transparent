@@ -57,7 +57,7 @@ $GLOBALS["SOLR_CONFIG"] = array(
 
 function ris_intern_address2geo($land, $plz, $ort, $strasse)
 {
-	return array("lon" => 0, "lat" => 0);
+    return array("lon" => 0, "lat" => 0);
 }
 
 
@@ -71,27 +71,27 @@ function ris_intern_address2geo($land, $plz, $ort, $strasse)
  */
 function ris_download_string($url_to_read, $username = "", $password = "", $timeout = 30)
 {
-	$ch = curl_init();
+    $ch = curl_init();
 
-	if ($username != "" || $password != "") curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+    if ($username != "" || $password != "") curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 
-	curl_setopt($ch, CURLOPT_URL, $url_to_read);
-	curl_setopt($ch, CURLOPT_HEADER, 0);
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-	curl_setopt($ch, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-	//curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
-	$data = curl_exec($ch);
+    curl_setopt($ch, CURLOPT_URL, $url_to_read);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    //curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
+    $data = curl_exec($ch);
 
-	$info = curl_getinfo($ch);
-	if ($info["http_code"] != 200) throw new Exception("Not Found");
+    $info = curl_getinfo($ch);
+    if ($info["http_code"] != 200) throw new Exception("Not Found");
 
-	curl_close($ch);
+    curl_close($ch);
 
-	return $data;
+    return $data;
 }
 
 
@@ -102,93 +102,93 @@ function ris_download_string($url_to_read, $username = "", $password = "", $time
  */
 function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
 {
-	return true;
+    return true;
 }
 
 function ris_intern_html_extra_headers()
 {
-	return '';
+    return '';
 }
 
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-	'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-	'name'           => 'München Transparent',
+    'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
+    'name'           => 'München Transparent',
 
-	// preloading 'log' component
-	'preload'        => array('log'),
+    // preloading 'log' component
+    'preload'        => array('log'),
 
-	// autoloading model and component classes
-	'import'         => array(
-		'application.models.*',
-		'application.components.*',
-		'application.RISParser.*',
-	),
+    // autoloading model and component classes
+    'import'         => array(
+        'application.models.*',
+        'application.components.*',
+        'application.RISParser.*',
+    ),
 
-	'onBeginRequest' => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
-	'onEndRequest'   => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_end_flush();'),
+    'onBeginRequest' => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
+    'onEndRequest'   => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_end_flush();'),
 
-	'modules'        => array(
-		// uncomment the following to enable the Gii tool
-		'gii' => array(
-			'class'    => 'system.gii.GiiModule',
-			'password' => 'RANDOMKEY',
-			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-			//'ipFilters' => array('*', '::1'),
-		),
-	),
+    'modules'        => array(
+        // uncomment the following to enable the Gii tool
+        'gii' => array(
+            'class'    => 'system.gii.GiiModule',
+            'password' => 'RANDOMKEY',
+            // If removed, Gii defaults to localhost only. Edit carefully to taste.
+            //'ipFilters' => array('*', '::1'),
+        ),
+    ),
 
-	// application components
-	'components'     => array(
-		'cache'        => array(
-			'class' => 'system.caching.CFileCache',
-		),
-		'urlManager'   => array(
-			'urlFormat'      => 'path',
-			'showScriptName' => false,
-			'rules'          => $GLOBALS["RIS_URL_RULES"],
-		),
-		'db'           => array(
-			'connectionString'      => 'mysql:host=127.0.0.1;dbname=DB',
-			'emulatePrepare'        => true,
-			'username'              => 'ris',
-			'password'              => 'PASSWORD',
-			'charset'               => 'utf8mb4',
-			'queryCacheID'          => 'apcCache',
-			'schemaCachingDuration' => 3600,
-		),
-		'errorHandler' => array(
-			// use 'site/error' action to display errors
-			'errorAction' => 'index/error',
-		),
-		'log'          => array(
-			'class'  => 'CLogRouter',
-			'routes' => array(
-				array(
-					'class'  => 'CFileLogRoute',
-					'levels' => 'error, warning',
-				),
-				/*
-				array(
-					'class' => 'CWebLogRoute',
-				),
-				*/
-			),
-		),
-	),
+    // application components
+    'components'     => array(
+        'cache'        => array(
+            'class' => 'system.caching.CFileCache',
+        ),
+        'urlManager'   => array(
+            'urlFormat'      => 'path',
+            'showScriptName' => false,
+            'rules'          => $GLOBALS["RIS_URL_RULES"],
+        ),
+        'db'           => array(
+            'connectionString'      => 'mysql:host=127.0.0.1;dbname=DB',
+            'emulatePrepare'        => true,
+            'username'              => 'ris',
+            'password'              => 'PASSWORD',
+            'charset'               => 'utf8mb4',
+            'queryCacheID'          => 'apcCache',
+            'schemaCachingDuration' => 3600,
+        ),
+        'errorHandler' => array(
+            // use 'site/error' action to display errors
+            'errorAction' => 'index/error',
+        ),
+        'log'          => array(
+            'class'  => 'CLogRouter',
+            'routes' => array(
+                array(
+                    'class'  => 'CFileLogRoute',
+                    'levels' => 'error, warning',
+                ),
+                /*
+                array(
+                    'class' => 'CWebLogRoute',
+                ),
+                */
+            ),
+        ),
+    ),
 
-	// application-level parameters that can be accessed
-	// using Yii::app()->params['paramName']
-	'params'         => array(
-		// this is used in contact page
-		'adminEmail'          => 'info@muenchen-transparent.de',
-		'adminEmailName'      => "München Transparent",
-		'skobblerKey'         => 'KEY',
-		'baseURL'             => SITE_BASE_URL,
-		'debug_log'           => true,
-		'projectTitle'        => 'München Transparent',
-		'startseiten_warnung' => '',
-	),
+    // application-level parameters that can be accessed
+    // using Yii::app()->params['paramName']
+    'params'         => array(
+        // this is used in contact page
+        'adminEmail'          => 'info@muenchen-transparent.de',
+        'adminEmailName'      => "München Transparent",
+        'skobblerKey'         => 'KEY',
+        'baseURL'             => SITE_BASE_URL,
+        'debug_log'           => true,
+        'projectTitle'        => 'München Transparent',
+        'startseiten_warnung' => '',
+    ),
 );

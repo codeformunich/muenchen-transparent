@@ -1,11 +1,13 @@
 <?php
 
-class Update_StadtratsvorlageCommand extends CConsoleCommand {
-	public function run($args) {
+class Update_StadtratsvorlageCommand extends CConsoleCommand
+{
+    public function run($args)
+    {
 
-		if (!isset($args[0])) die("./yii update_stadtratsvorlage [id]\n");
+        if (!isset($args[0])) die("./yii update_stadtratsvorlage [id]\n");
 
-		$parser = new StadtratsvorlageParser();
-		$parser->parse($args[0]);
-	}
+        $parser = new StadtratsvorlageParser();
+        $parser->parse($args[0]);
+    }
 }
