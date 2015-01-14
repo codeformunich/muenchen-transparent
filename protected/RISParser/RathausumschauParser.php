@@ -52,9 +52,10 @@ class RathausumschauParser extends RISParser
 	/* 2012, 2013, 2014 */
 	public function parseArchive3($jahr)
 	{
-		$url = ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/" . $jahr . ".html");
+		$url = ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/" . $jahr . ".html");
 		if ($jahr == 2012) $url .= ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/2012/2012--Jan-bis-Juni.html");
 		if ($jahr == 2013) $url .= ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/2013/2013--Jan-bis-Juni.html");
+		if ($jahr == 2014) $url = ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/" . $jahr . ".html");
 		//preg_match_all("/Rathaus Umschau (?<nr>[0-9]+) vom (?<datum>[0-9\.]+)&nbsp[^<]+<a href=\"(?<url>[^\"]+)\"/siu", $url, $matches);
 		preg_match_all("/<a href=\"(?<url>[^\"]+\.pdf)\"[^>]*>(Rathaus Umschau )?(?<nr>[0-9]+)[^0-9].+vom (?<datum>[0-9\.]+)&/siuU", $url, $matches);
 
