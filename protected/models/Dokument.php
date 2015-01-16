@@ -249,6 +249,7 @@ class Dokument extends CActiveRecord implements IRISItem
             if ($name == "Deckblatt VV") return "Deckblatt";
             if ($name == "Niederschrift (oeff)") return "Niederschrift";
             if ($name == "Einladung (oeff)") return "Einladung";
+            if (preg_match("/^Antwortschreiben vom [0-9\.]+$/siu", $name)) return "Antwortschreiben";
 
             return RISTools::korrigiereDokumentenTitel($name);
         }
