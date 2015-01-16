@@ -4,7 +4,7 @@ class RISTools
 {
 
     const STD_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17";
-    const STD_PROXY = "http://127.0.0.1:8118/";
+    const STD_PROXY      = "http://127.0.0.1:8118/";
 
 
     /**
@@ -78,10 +78,24 @@ class RISTools
      */
     public static function download_file($url_to_read, $filename, $username = "", $password = "", $timeout = 30)
     {
-        echo $url_to_read;
         $ch = curl_init();
 
         if ($username != "" || $password != "") curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url_to_read);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_NOBODY, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD'); // here HTTP request is 'HEAD'
+
+        curl_exec($ch);
+        $info = curl_getinfo($ch);
+        if ($info["http_code"] != 200) {
+            echo "Not found: $url_to_read\n";
+            return;
+        }
 
         $fp = fopen($filename, "w");
         curl_setopt($ch, CURLOPT_URL, $url_to_read);

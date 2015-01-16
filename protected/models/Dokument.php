@@ -40,15 +40,15 @@
 class Dokument extends CActiveRecord implements IRISItem
 {
 
-    public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
-    public static $TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
-    public static $TYP_STADTRAT_TERMIN = "stadtrat_termin";
+    public static $TYP_STADTRAT_ANTRAG    = "stadtrat_antrag";
+    public static $TYP_STADTRAT_VORLAGE   = "stadtrat_vorlage";
+    public static $TYP_STADTRAT_TERMIN    = "stadtrat_termin";
     public static $TYP_STADTRAT_BESCHLUSS = "stadtrat_beschluss";
-    public static $TYP_BA_ANTRAG = "ba_antrag";
-    public static $TYP_BA_INITIATIVE = "ba_initiative";
-    public static $TYP_BA_TERMIN = "ba_termin";
-    public static $TYP_BA_BESCHLUSS = "ba_beschluss";
-    public static $TYP_RATHAUSUMSCHAU = "rathausumschau";
+    public static $TYP_BA_ANTRAG          = "ba_antrag";
+    public static $TYP_BA_INITIATIVE      = "ba_initiative";
+    public static $TYP_BA_TERMIN          = "ba_termin";
+    public static $TYP_BA_BESCHLUSS       = "ba_beschluss";
+    public static $TYP_RATHAUSUMSCHAU     = "rathausumschau";
     //public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung"; @TODO
     public static $TYPEN_ALLE = array(
         "stadtrat_antrag"    => "Stadtratsantrag",
@@ -64,7 +64,7 @@ class Dokument extends CActiveRecord implements IRISItem
     );
 
     public static $OCR_VON_TESSERACT = "tesseract";
-    public static $OCR_VON_OMNIPAGE = "omnipage";
+    public static $OCR_VON_OMNIPAGE  = "omnipage";
 
     private static $_cache = array();
 
@@ -303,6 +303,10 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         $this->download_if_necessary();
         $absolute_filename = $this->getLocalPath();
+        if (!file_exists($absolute_filename)) {
+            echo "Not Found: " . $this->id . "\n";
+            return;
+        }
 
         $y      = explode(".", $this->url);
         $endung = mb_strtolower($y[count($y) - 1]);
