@@ -1,9 +1,6 @@
 <?php
 
 /**
- * This is the model class for table "rechtsdokument".
- *
- * The followings are the available columns in table 'texte':
  * @property integer $id
  * @property string $titel
  * @property string $url_base
