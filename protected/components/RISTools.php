@@ -4,8 +4,6 @@ class RISTools
 {
 
     const STD_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17";
-    const STD_PROXY      = "http://127.0.0.1:8118/";
-
 
     /**
      * @param string $text
@@ -54,7 +52,6 @@ class RISTools
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
             $text = curl_exec($ch);
             $text = str_replace(chr(13), "\n", $text);
             //$info = curl_getinfo($ch);
@@ -92,25 +89,27 @@ class RISTools
 
         curl_exec($ch);
         $info = curl_getinfo($ch);
-        if ($info["http_code"] != 200) {
+        curl_close($ch);
+
+        if ($info["http_code"] != 200 && $info["http_code"] != 403) {
             echo "Not found: $url_to_read\n";
             return;
         }
 
         $fp = fopen($filename, "w");
-        curl_setopt($ch, CURLOPT_URL, $url_to_read);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
-        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        //curl_setopt($ch, CURLOPT_PROXY, RISTools::STD_PROXY);
-        curl_exec($ch);
-        //$info = curl_getinfo($ch);
-        curl_close($ch);
+        $ch2 = curl_init();
+        curl_setopt($ch2, CURLOPT_URL, $url_to_read);
+        curl_setopt($ch2, CURLOPT_HEADER, 0);
+        curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch2, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch2, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
+        //curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch2, CURLOPT_FILE, $fp);
+        curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch2, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_exec($ch2);
+        $info = curl_getinfo($ch2);
+        curl_close($ch2);
         //file_put_contents($filename, $text);
         fclose($fp);
 

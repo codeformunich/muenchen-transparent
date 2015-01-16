@@ -1,9 +1,6 @@
 <?php
 
 /**
- * This is the model class for table "rechtsdokument".
- *
- * The followings are the available columns in table 'texte':
  * @property integer $id
  * @property string $datum
  * @property string $url
@@ -114,6 +111,8 @@ class Rathausumschau extends CActiveRecord implements IRISItem
         if (count($this->dokumente) == 0) return array();
         $dok      = $this->dokumente[0]->text_pdf;
         $x        = explode("Inhaltsverzeichnis", $dok);
+        if (count($x) == 1) return array();
+
         $x        = explode("Antworten auf Stadtratsanfragen", $x[1]);
         $text     = $x[0];
         $tops_in  = explode("\n", $text);
