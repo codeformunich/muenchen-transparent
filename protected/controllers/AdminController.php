@@ -140,4 +140,50 @@ class AdminController extends RISBaseController
         $this->render("index");
     }
 
+    public function actionTags()
+    {
+        $ich = $this->aktuelleBenutzerIn();
+        if (!$ich || !$ich->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) $this->errorMessageAndDie(403, "");
+
+        $this->top_menu = "admin";
+
+        if (AntiXSS::isTokenSet("tag_umbennen")) {
+            $tag_alt = Tag::model()->findByAttributes(array("id" => $_REQUEST["tag_id"]));
+            $gleichnamig = Tag::model()->findByAttributes(array("name" => $_REQUEST["neuer_name"]));
+
+            if($gleichnamig != null) { // Tag mit neuem Namen existiert bereits-> merge
+                // Zuerst bei allen Anträgen mit beiden tags den Eintrag für den alten tag löschen
+                Yii::app()->db->createCommand('DELETE t1 FROM antraege_tags t1 INNER JOIN antraege_tags t2 ON t1.antrag_id=t2.antrag_id WHERE t1.tag_id=:tag_id_alt AND t2.tag_id=:tag_id_neu')
+                              ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
+                              ->execute();
+
+                Yii::app()->db->createCommand('UPDATE antraege_tags SET tag_id=:tag_id_neu WHERE tag_id=:tag_id_alt')
+                              ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
+                              ->execute();
+
+                $tag_alt->delete();
+
+                $msg_ok = "Tags zusammengeführt";
+            } else {
+                $tag_alt->name = $_REQUEST["neuer_name"];
+                $tag_alt->save();
+
+                $msg_ok = "Tag umbenannt";
+            }
+        }
+
+        if (AntiXSS::isTokenSet("tag_loeschen")) {
+            $tag = Tag::model()->findByAttributes(array("id" => $_REQUEST["tag_id"]));
+
+            Yii::app()->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id')
+                          ->bindValues(array(':tag_id' => $tag->id))
+                          ->execute();
+
+            $tag->delete();
+
+            $msg_ok = "Tag gelöscht";
+        }
+
+        $this->render("tags");
+    }
 }

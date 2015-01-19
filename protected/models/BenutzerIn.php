@@ -19,11 +19,13 @@ class BenutzerIn extends CActiveRecord
 {
 
     // Hinweis: Müssen 2er-Potenzen sein, also 32, 64, 128, ...
-    public static $BERECHTIGUNG_USER = 1;
+    public static $BERECHTIGUNG_USER    = 1;
     public static $BERECHTIGUNG_CONTENT = 2;
+    public static $BERECHTIGUNG_TAG     = 4;
     public static $BERECHTIGUNGEN = array(
         1 => "User-Admin",
         2 => "Content-Admin",
+        4 => "Tag-Admin",
     );
 
     /** @var null|BenutzerInnenEinstellungen */
