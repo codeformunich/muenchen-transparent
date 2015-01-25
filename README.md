@@ -60,7 +60,7 @@ PHP-Konfiguration:
 PDF.JS Updaten:
 * Ggf. uglify-js installieren (`npm install -g uglify-js`)
 * Entweder mit `diff` `docs/pdfjs_v[version].diff` oder mit `git patch apply` `pdfjs_v[version].patch` anwenden
-* Im Ordner `html/other/pdfjs/`: `uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js`
+* Im Ordner `html/pdfjs/`: `uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js`
 
 Code-Organisation
 -----------------

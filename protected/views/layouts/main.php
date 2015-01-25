@@ -33,7 +33,7 @@
     <meta name="msapplication-TileColor" content="#0f9d58">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
 
-    <link rel="search" type="application/opensearchdescription+xml" title="<?= CHtml::encode(Yii::app()->params['projectTitle']) ?>" href="/other/OpenSearch.xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="<?= CHtml::encode(Yii::app()->params['projectTitle']) ?>" href="/OpenSearch.xml">
     <link rel="icon" type="image/png" href="/css/img/logo.png">
 
     <title><?php
