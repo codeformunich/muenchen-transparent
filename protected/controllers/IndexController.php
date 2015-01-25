@@ -434,7 +434,6 @@ class IndexController extends RISBaseController
             $krits->addVolltextsucheKrit($suchbegriff);
         } else {
             $krits       = RISSucheKrits::createFromUrl($_REQUEST);
-            $suchbegriff = $krits->getTitle();
         }
 
         $this->load_leaflet_css = true;
