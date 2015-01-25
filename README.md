@@ -44,14 +44,14 @@ MariaDB/MySQL-Konfiguration
 * Der zugehörige Abschnitt in der protected/config/main.php wäre dann:
 ```php
 'db'           => array(
-			'connectionString'      => 'mysql:host=127.0.0.1;dbname=muenchen_transparent',
-			'emulatePrepare'        => true,
-			'username'              => 'ris',
-			'password'              => 'sec',
-			'charset'               => 'utf8mb4',
-			'queryCacheID'          => 'apcCache',
-			'schemaCachingDuration' => 3600,
-		),
+            'connectionString'      => 'mysql:host=127.0.0.1;dbname=muenchen_transparent',
+            'emulatePrepare'        => true,
+            'username'              => 'ris',
+            'password'              => 'sec',
+            'charset'               => 'utf8mb4',
+            'queryCacheID'          => 'apcCache',
+            'schemaCachingDuration' => 3600,
+        ),
 ```
 
 PHP-Konfiguration:
@@ -59,8 +59,8 @@ PHP-Konfiguration:
 
 PDF.JS Updaten:
 * Ggf. uglify-js installieren (`npm install -g uglify-js`)
-* /docs/viewer.js.diff und /docs/viewer.css.diff anwenden
-* uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js
+* Entweder mit `diff` `docs/pdfjs_v[version].diff` oder mit `git patch apply` `pdfjs_v[version].patch` anwenden
+* Im Ordner `html/other/pdfjs/`: `uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js`
 
 Code-Organisation
 -----------------

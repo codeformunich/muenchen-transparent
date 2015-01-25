@@ -1542,3 +1542,7 @@ a.tooltip_link:link, a.tooltip_link:visited {
     max-width: 270px;
   }
 }
+
+.dropdown-menu {
+  z-index: 10000;
+}
