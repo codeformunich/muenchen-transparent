@@ -55,8 +55,7 @@
     if ($this->load_pdf_js) { ?>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta name="google" content="notranslate">
-        <link rel="stylesheet" href="/other/pdfjs/viewer.css"/>
-
+        <link rel="stylesheet" href="/pdfjs/viewer.css"/>
     <? } ?>
 
     <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css">
@@ -81,10 +80,9 @@
     <![endif]-->
 
     <? if ($this->load_pdf_js) { ?>
-        <!-- This snippet is used in production (included from viewer.html) -->
-        <link rel="resource" type="application/l10n" href="/other/pdfjs/locale/locale.properties"/>
-        <script src="/other/pdfjs/viewer.min.js"></script>
-    <? } // end pdf.js ?>
+        <link rel="resource" type="application/l10n" href="/pdfjs/locale/locale.properties"/>
+        <script src="/pdfjs/viewer.min.js"></script>
+    <? } ?>
 </head>
 
 <body>
