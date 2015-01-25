@@ -428,12 +428,12 @@ class IndexController extends RISBaseController
 
         } elseif (isset($_REQUEST["suchbegriff"])) {
             $suchbegriff     = $_REQUEST["suchbegriff"];
+            if ($_SERVER["REQUEST_METHOD"] == 'POST') $this->redirect($this->createUrl("index/suche", array("suchbegriff" => $suchbegriff)));
             $this->suche_pre = $suchbegriff;
             $krits           = new RISSucheKrits();
             $krits->addVolltextsucheKrit($suchbegriff);
         } else {
             $krits       = RISSucheKrits::createFromUrl($_REQUEST);
-            $suchbegriff = $krits->getTitle();
         }
 
         $this->load_leaflet_css = true;

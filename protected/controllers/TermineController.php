@@ -140,7 +140,7 @@ class TermineController extends RISBaseController
     /**
      * @param int $termin_id
      */
-    public function actionIcsExport($termin_id)
+    public function actionIcsExportAll($termin_id)
     {
         $termin_id = IntVal($termin_id);
 
@@ -151,8 +151,27 @@ class TermineController extends RISBaseController
             return;
         }
 
-        $this->renderPartial("ics", array(
+        $this->renderPartial("ics_all", array(
             "alle_termine" => $termin->alleTermineDerReihe(),
+        ));
+    }
+
+    /**
+     * @param int $termin_id
+     */
+    public function actionIcsExportSingle($termin_id)
+    {
+        $termin_id = IntVal($termin_id);
+
+        /** @var Termin $termin */
+        $termin = Termin::model()->findByPk($termin_id);
+        if (!$termin) {
+            $this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
+            return;
+        }
+
+        $this->renderPartial("ics_single", array(
+            "termin" => $termin,
         ));
     }
 
@@ -174,9 +193,31 @@ class TermineController extends RISBaseController
         ));
     }
 
+    /**
+     * @param int $termin_id
+     */
+    public function actionAboInfo($termin_id)
+    {
+        /** @var Termin $sitzung */
+        $termin = Termin::model()->findByPk($termin_id);
+        if (!$termin) {
+            $this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
+            return;
+        }
 
+        $this->render("abo_info", array(
+            "termin" => $termin,
+        ));
+    }
+
+
+    /**
+     * @param int $termin_id
+     */
     public function actionDav($termin_id)
     {
+        $DEBUG = false;
+
         $principalBackend = new TermineCalDAVPrincipalBackend($termin_id);
         $calendarBackend  = new TermineCalDAVCalendarBackend($termin_id);
 
@@ -185,7 +226,7 @@ class TermineController extends RISBaseController
             new Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend),
         );
 
-        $server = new \Sabre\DAV\Server($tree);
+        $server = new TermineCalDAVServerBugfix($tree);
         $server->setBaseUri(Yii::app()->createUrl("termine/dav", array("termin_id" => $termin_id)));
 
         $authBackend = new TermineCalDAVAuthBackend();
@@ -196,7 +237,18 @@ class TermineController extends RISBaseController
         $server->addPlugin(new Sabre\DAV\Browser\Plugin());
         $server->addPlugin(new Sabre\DAVACL\Plugin());
 
-        $server->exec();
+        if ($DEBUG) {
+            $server->addPlugin(new TermineCalDAVDebug(TMP_PATH . "sabredav.log"));
+
+            ob_start();
+            $server->exec();
+            $txt = ob_get_flush();
+            $fp  = fopen(TMP_PATH . "sabredav.log", "a");
+            fwrite($fp, "RESPONSE:\n\n" . $txt . "\n\n=============================\n\n");
+            fclose($fp);
+        } else {
+            $server->exec();
+        }
     }
 
 

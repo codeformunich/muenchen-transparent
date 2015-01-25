@@ -379,7 +379,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getVEventParams()
     {
-        $description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeige", array("termin_id" => $this->id));
+        $description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $this->id));
         foreach ($this->antraegeDokumente as $dok) {
             $description .= "\n" . $dok->getName() . ": " . $dok->getLink();
         }

@@ -32,14 +32,13 @@ $this->pageTitle = "Termine";
 				eventLimit: true,
 				lang: $("html").attr("lang"),
 				weekNumbers: true,
+				timeFormat: 'H:mm',
 				weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
 				eventSources: [
 					"<?=CHtml::encode(Yii::app()->createUrl("termine/fullCalendarFeed"))?>"
 				],
 				eventRender: function (event, element) {
 					element.attr("title", event["title"]);
-					console.log(event);
-					console.log(element);
 				}
 			})
 		})
