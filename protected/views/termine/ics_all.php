@@ -4,6 +4,8 @@
  */
 
 
+Header("Content-Type: text/calendar");
+
 $vcalendar = new \Sabre\VObject\Component\VCalendar();
 
 foreach ($alle_termine as $curr_termin) {

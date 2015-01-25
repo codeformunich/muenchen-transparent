@@ -54,9 +54,9 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
                 'uri'                                                                       => $this->termin_id,
                 'principaluri'                                                              => $principalUri,
                 '{DAV:}displayname'                                                         => $termin->gremium->getName(),
-                '{' . \Sabre\CalDAV\Plugin::NS_CALENDARSERVER . '}getctag'                  => 'http://sabre.io/ns/sync/0',
+                '{' . \Sabre\CalDAV\Plugin::NS_CALENDARSERVER . '}getctag'                  => rand(0, 100000000),
                 '{http://sabredav.org/ns}sync-token'                                        => '0',
-                '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}supported-calendar-component-set' => new \Sabre\CalDAV\Property\SupportedCalendarComponentSet(array("VEVENT")),
+                '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}supported-calendar-component-set' => new \Sabre\CalDAV\Property\SupportedCalendarComponentSet(array("VEVENT", "VJOURNAL", "VTODO")),
                 '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}schedule-calendar-transp'         => new \Sabre\CalDAV\Property\ScheduleCalendarTransp('opaque'),
                 '{http://sabredav.org/ns}read-only'                                         => '1',
             )
@@ -216,7 +216,8 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
             'id'           => $termin->id,
             'uri'          => $termin->id,
             'lastmodified' => $termin->datum_letzte_aenderung,
-            'etag'         => '"' . addslashes($termin->datum_letzte_aenderung) . '"',
+            //'etag'         => '"' . addslashes($termin->datum_letzte_aenderung) . '"',
+            'etag'         => rand(0, 999999999999),
             'calendarid'   => $calendarId,
             'calendardata' => $calendardata,
             'size'         => strlen($calendardata),
@@ -235,11 +236,33 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      * @param mixed $calendarId
      * @param array $uris
      * @return array
+     * @throws DAV\Exception\NotFound
      */
     function getMultipleCalendarObjects($calendarId, array $uris)
     {
-        die("3");
-        // TODO: Implement getMultipleCalendarObjects() method.
+        $return = array();
+        foreach ($uris as $uri) {
+            /** @var Termin $termin */
+            $termin = Termin::model()->findByPk($uri);
+            if (!$termin) throw new \Sabre\DAV\Exception\NotFound('Calendar not found');
+
+            $vcalendar = new \Sabre\VObject\Component\VCalendar();
+            $vcalendar->add('VEVENT', $termin->getVEventParams());
+            $calendardata = $vcalendar->serialize();
+
+            $return[] = array(
+                'id'           => $termin->id,
+                'uri'          => $termin->id,
+                'lastmodified' => $termin->datum_letzte_aenderung,
+                //'etag'         => '"' . addslashes($termin->datum_letzte_aenderung) . '"',
+                'etag'         => rand(0, 999999999999),
+                'calendarid'   => $calendarId,
+                'calendardata' => $calendardata,
+                'size'         => strlen($calendardata),
+                'component'    => 'VEVENT',
+            );
+        }
+        return $return;
     }
 
     /**
@@ -350,10 +373,22 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      * @param mixed $calendarId
      * @param array $filters
      * @return array
+     * @throws DAV\Exception\NotFound
      */
     function calendarQuery($calendarId, array $filters)
     {
-        // TODO: Implement calendarQuery() method.
+        /** @var Termin $termin */
+        $termin = Termin::model()->findByPk($this->termin_id);
+        if (!$termin) throw new \Sabre\DAV\Exception\NotFound('Calendar not found');
+
+        $alle_termine = $termin->alleTermineDerReihe();
+        $return       = array();
+        foreach ($alle_termine as $termin) {
+            // @TODO Filtern
+            $return[] = $termin->id;
+        }
+
+        return $return;
     }
 
     /**
@@ -377,6 +412,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      */
     function getCalendarObjectByUID($principalUri, $uid)
     {
+        die("8");
         // TODO: Implement getCalendarObjectByUID() method.
     }
 }

@@ -59,8 +59,7 @@ function zeile_anzeigen($feld, $name, $callback)
 			$url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
 			echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
 		}
-		echo '<a href="' . CHtml::encode(Yii::app()->createUrl("termine/icsExport", array("termin_id" => $termin->id))) . '">ICS-Export</a> / ';
-		echo '<a href="' . CHtml::encode(Yii::app()->createUrl("termine/dav", array("termin_id" => $termin->id))) . '">CalDAV</a>';
+		echo '<a href="' . CHtml::encode(Yii::app()->createUrl("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
 		echo '</div>';
 	}
 	?>
