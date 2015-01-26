@@ -42,7 +42,17 @@ if ($gremienzahl > 0) {
                     $mitglied = $mitgliedschaft->stadtraetIn;
                     echo "<li>";
                     echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>" . CHtml::encode($mitglied->getName()) . "</a>";
-                    if ($mitgliedschaft->funktion != "" && $mitgliedschaft->funktion != "Mitglied") echo ' <span class="funktion">(' . CHtml::encode($mitgliedschaft->funktion) . ')';
+                    if ($mitgliedschaft->funktion != "" && !preg_match("/^mitglied/siu", $mitgliedschaft->funktion)) echo ' <span class="zusatzdaten">(' . CHtml::encode($mitgliedschaft->funktion) . ')';
+                    /*
+                    if ($mitgliedschaft->datum_bis !== null || $mitgliedschaft->datum_von != "2014-05-01") {
+                        // @TODO Datum der Legislaturperiode flexibilisieren
+                        echo ' <span class="zusatzdaten">';
+                        if ($mitgliedschaft->datum_von != "2014-05-01") echo "seit " . RISTools::datumstring($mitgliedschaft->datum_von);
+                        if ($mitgliedschaft->datum_von != "2014-05-01" && $mitgliedschaft->datum_bis !== null) echo ", ";
+                        if ($mitgliedschaft->datum_bis !== null) echo "bis " . RISTools::datumstring($mitgliedschaft->datum_bis);
+                        echo '</span>';
+                    }
+                    */
                     if ($mitglied->abgeordnetenwatch != "") echo "<a href='" . CHtml::encode($mitglied->abgeordnetenwatch) . "' title='Abgeordnetenwatch' class='abgeordnetenwatch_link'></a>";
                     if ($mitglied->web != "") echo "<a href='" . CHtml::encode($mitglied->web) . "' title='Homepage'          class='web_link'>             </a>";
                     if ($mitglied->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($mitglied->twitter) . "' title='Twitter'           class='twitter_link'>T         </a>";

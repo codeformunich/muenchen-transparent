@@ -57,7 +57,22 @@ class BAMitgliederParser extends RISParser
             }
 
             $gefunden = false;
-            foreach ($strIn->stadtraetInnenFraktionen as $strfrakt) if ($strfrakt->fraktion_id == $fraktion->id) $gefunden = true;
+            foreach ($strIn->stadtraetInnenFraktionen as $strfrakt) if ($strfrakt->fraktion_id == $fraktion->id) {
+                $gefunden = true;
+                $von_pre = $strfrakt->datum_von;
+                $bis_pre = $strfrakt->datum_bis;
+                if (preg_match("/^von (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+) bis (?<bis_tag>[0-9]+)\\.(?<bis_monat>[0-9]+)\\.(?<bis_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
+                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+                    $strfrakt->datum_bis = $mitgliedschaft_matches["bis_jahr"] . "-" . $mitgliedschaft_matches["bis_monat"] . "-" . $mitgliedschaft_matches["bis_tag"];
+                } elseif (preg_match("/^seit (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
+                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+                    $strfrakt->datum_bis = null;
+                }
+                if ($von_pre != $strfrakt->datum_von || $bis_pre != $strfrakt->datum_bis) {
+                    $strfrakt->save();
+                    echo $strIn->getName() . ": " . $von_pre . "/" . $bis_pre . " => " . $strfrakt->datum_von . "/" . $strfrakt->datum_bis . "\n";
+                }
+            }
             if (!$gefunden) {
                 $strfrakt                 = new StadtraetInFraktion();
                 $strfrakt->fraktion_id    = $fraktion->id;

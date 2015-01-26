@@ -17,9 +17,9 @@ class BAGremienParser extends RISParser
         $daten->id                     = $gremien_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
 
-        if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = $matches[1];
-        if (preg_match("/<a href=\"ba_bezirksausschuesse_details[^>]+>(?<ba>[0-9]+ )/siU", $html_details, $matches)) $daten->ba_nr = $matches["ba"];
-        if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = $matches[1];
+        if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = trim($matches[1]);
+        if (preg_match("/<a href=\"ba_bezirksausschuesse_details[^>]+>(?<ba>[0-9]+ )/siU", $html_details, $matches)) $daten->ba_nr = trim($matches["ba"]);
+        if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = trim($matches[1]);
         if (preg_match("/Gremiumtyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
 
         $aenderungen = "";
@@ -61,10 +61,9 @@ class BAGremienParser extends RISParser
 
         /** @var StadtraetInGremium[] $mitglieder_pre */
         $mitglieder_pre = array();
-
-        $mitglieder_post = array();
         if ($alter_eintrag) foreach ($alter_eintrag->mitgliedschaften as $mitgliedschaft) $mitglieder_pre[$mitgliedschaft->stadtraetIn_id] = $mitgliedschaft;
 
+        $mitglieder_post = array();
         preg_match_all("/ergebnistab_tr.*<\/tr/siU", $html_details, $matches);
         foreach ($matches[0] as $str) {
             preg_match("/<a[^>]*Id=(?<id>[0-9]+)&[^>]*>(?<name>[^<]*)<\/a>.*<td[^>]*>(?<partei>[^<]*)<\/td.*<td[^>]*>(?<datum>[^<]*)<\/td.*<td[^>]*>(?<funktion>[^<]*)<\/td/siU", $str, $match2);
@@ -73,8 +72,7 @@ class BAGremienParser extends RISParser
                 $stadtraetIn = StadtraetIn::model()->findByPk($match2["id"]);
                 if (!$stadtraetIn) {
                     $par = new BAMitgliederParser();
-                    echo "Neu beim BA " . IntVal($daten->kuerzel) . "\n";
-                    $kuerzel = str_replace("ua", "", $daten->kuerzel);
+                    $kuerzel = preg_replace("/^ua ?/siu", "", $daten->kuerzel);
                     $par->parse(IntVal($kuerzel));
 
                     $stadtraetIn = StadtraetIn::model()->findByPk($match2["id"]);
@@ -125,7 +123,14 @@ class BAGremienParser extends RISParser
                     $mitgliedschaft->refresh();;
                     $aenderungen .= "Neues Mitglied: " . $mitgliedschaft->stadtraetIn->name . "\n";
                 }
+
+                $mitglieder_post[$stadtraetIn->id] = $mitgliedschaft;
             }
+        }
+
+        foreach ($mitglieder_pre as $strIn_id => $mitgliedschaft_pre) if (!isset($mitglieder_post[$strIn_id])) {
+            $aenderungen .= "Mitglied nicht mehr dabei: " . $strIn_id . " - " . $mitgliedschaft_pre->stadtraetIn->getName() . "\n";
+            $mitgliedschaft_pre->delete();
         }
 
 
@@ -144,7 +149,7 @@ class BAGremienParser extends RISParser
 
     public function parseSeite($seite, $first)
     {
-        if (SITE_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
+        if (SITE_CALL_MODE != "cron") echo "BA-Gremien Seite $seite\n";
         $text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_gremien.jsp?selWahlperiode=" . static::$WAHLPERIODE_ID . "&Trf=n&Start=$seite");
 
         $txt = explode("<!-- tabellenkopf -->", $text);
