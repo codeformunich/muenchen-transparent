@@ -11,6 +11,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Modifications for München-Transparent:
+ * - Remove styles for *, html, body, input, button, select (from line 170) to avoid collission with bootstrap's layout
+ * - Add the styles at the bottom of this stylesheet
  */
 
 .textLayer {
@@ -69,7 +73,9 @@
   margin: 1px auto -8px auto;
   position: relative;
   overflow: visible;
+  border: 9px solid transparent;
   background-clip: content-box;
+  border-image: url(images/shadow.png) 9 9 repeat;
   background-color: white;
 }
 
@@ -162,31 +168,6 @@
 .pdfViewer .page .annotLink > a /* -ms-a */  {
   background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAA\
                    LAAAAAABAAEAAAIBRAA7") 0 0 repeat;
-}
-
-* {
-  padding: 0;
-  margin: 0;
-}
-
-html {
-  height: 100%;
-  /* Font size is needed to make the activity bar the correct size. */
-  font-size: 10px;
-}
-
-body {
-  height: 100%;
-  background-color: #404040;
-  background-image: url(images/texture.png);
-}
-
-body,
-input,
-button,
-select {
-  font: message-box;
-  outline: none;
 }
 
 .hidden {
@@ -400,7 +381,7 @@ html[dir='rtl'] #viewerContainer {
   position: relative;
   left: 0;
   right: 0;
-  z-index: 99;
+  z-index: 9999;
   cursor: default;
 }
 
@@ -1985,4 +1966,10 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   #scaleSelectContainer, #pageNumberLabel {
     display: none;
   }
+}
+
+html[dir='ltr'] #toolbarViewerLeft > *, html[dir='ltr'] #toolbarViewerMiddle > *, html[dir='ltr'] #toolbarViewerRight > *, html[dir='ltr'] .findbar > * {
+ display: inline-block;
+ vertical-align: top;
+ float:none;
 }
