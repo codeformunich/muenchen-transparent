@@ -231,8 +231,9 @@ class Dokument extends CActiveRecord implements IRISItem
             if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
             if ($name == "Niederschrift (oeff)") return "Niederschrift";
             if ($name == "Einladung (oeff)") return "Einladung";
+            if ($name == "Einladung oeffentlich") return "Einladung";
 
-            return $name;
+            return RISTools::korrigiereDokumentenTitel($name);
         } else {
             if (strlen($name) > 255) return "Dokument";
             if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
