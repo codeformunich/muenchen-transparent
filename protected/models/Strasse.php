@@ -41,9 +41,9 @@ class Strasse extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, plz, osm_ref', 'required'),
+            array('name', 'required'),
             array('name', 'length', 'max' => 100),
-            array('plz, osm_ref', 'length', 'max' => 10),
+            array('plz', 'length', 'max' => 20),
         );
     }
 
