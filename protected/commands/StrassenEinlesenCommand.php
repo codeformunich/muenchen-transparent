@@ -13,7 +13,7 @@ class StrassenEinlesenCommand extends CConsoleCommand
             preg_match_all("/<tr><td>(.*)<\/tr>/siuU", $txt[0], $matches);
             foreach ($matches[1] as $match) {
                 $y            = explode('</a></td><td>', $match);
-                $strassenname = preg_replace("/(s)traße$/siu", "\\1tr.", trim(strip_tags($y[0])));
+                $strassenname = preg_replace("/(s)tra(ß|ss)e$/siu", "\\1tr.", trim(strip_tags($y[0])));
                 $plz          = trim(strip_tags($y[1]));
 
                 $str = Strasse::model()->findByAttributes(array("name" => $strassenname));
