@@ -191,6 +191,8 @@ class Gremium extends CActiveRecord implements IRISItem
         $name = $this->name;
         if ($kurzfassung) {
             $name = preg_replace("/UA *[0-9]+/", "", $name);
+            $name = preg_replace("/^[0-9]+[ _]/", "", $name);
+            $name = preg_replace("/^UA /", "", $name);
             $name = trim($name, " \n\t-");
         }
         return $name;

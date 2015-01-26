@@ -201,6 +201,19 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     }
 
     /**
+     * @param string $name1
+     * @param string $name2
+     * @return int
+     */
+    public static function sortByNameCmp($name1, $name2) {
+        $name1 = preg_replace("/^([a-z]+\. )*/siu", "", $name1);
+        $name2 = preg_replace("/^([a-z]+\. )*/siu", "", $name2);
+        $name1 = str_replace(array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß"), array("A", "O", "U", "a", "o", "u", "s"), $name1);
+        $name2 = str_replace(array("Ä", "Ö", "Ü", "ä", "Ö", "ü", "ß"), array("A", "O", "U", "a", "o", "u", "s"), $name2);
+        return strnatcasecmp($name1, $name2);
+    }
+
+    /**
      * @param StadtraetIn[] $personen
      * @return StadtraetIn[];
      */
@@ -209,11 +222,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         usort($personen, function ($str1, $str2) {
             /** @var StadtraetIn $str1 */
             /** @var StadtraetIn $str2 */
-            $name1 = preg_replace("/^([a-z]+\. )*/siu", "", $str1->getName());
-            $name2 = preg_replace("/^([a-z]+\. )*/siu", "", $str2->getName());
-            $name1 = str_replace(array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß"), array("A", "O", "U", "a", "o", "u", "s"), $name1);
-            $name2 = str_replace(array("Ä", "Ö", "Ü", "ä", "Ö", "ü", "ß"), array("A", "O", "U", "a", "o", "u", "s"), $name2);
-            return strnatcasecmp($name1, $name2);
+            return StadtraetIn::sortByNameCmp($str1->getName(), $str2->getName());
         });
         return $personen;
     }

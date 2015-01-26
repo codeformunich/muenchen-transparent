@@ -18,7 +18,7 @@ class BAGremienParser extends RISParser
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
 
         if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = $matches[1];
-        if (preg_match("/introheadline\">(?:BA|UA) ([0-9]+) /siU", $html_details, $matches)) $daten->ba_nr = $matches[1];
+        if (preg_match("/<a href=\"ba_bezirksausschuesse_details[^>]+>(?<ba>[0-9]+ )/siU", $html_details, $matches)) $daten->ba_nr = $matches["ba"];
         if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = $matches[1];
         if (preg_match("/Gremiumtyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
 
