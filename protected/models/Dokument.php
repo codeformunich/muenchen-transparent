@@ -33,7 +33,6 @@
  * @property Rathausumschau $rathausumschau
  *
  * Scope methods
- * @method Dokument file_check()
  * @method boolean getDefaultScopeDisabled()
  * @method Dokument disableDefaultScope()
  */
@@ -164,14 +163,6 @@ class Dokument extends CActiveRecord implements IRISItem
 
     }
 
-    public function scopes()
-    {
-        return array(
-            'file_check' => array(),
-        );
-    }
-
-
     /**
      * @param int $dokument_id
      * @return Dokument|null
@@ -223,16 +214,16 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         $name = trim(str_replace("_", " ", $this->name));
 
-        if (preg_match("/^[0-9]+to[0-9]+$/siu",                $name)) return "Tagesordnung"; // 25to13012015
-        if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu",  $name)) return "Tagesordnung"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
-        if (preg_match("/^to [0-9\. ]+$/siu",                  $name)) return "Tagesordnung"; // 2014 01 to
-        if (preg_match("/^[0-9\. ]+ to$/siu",                  $name)) return "Tagesordnung"; // to 150108
+        if (preg_match("/^[0-9]+to[0-9]+$/siu", $name)) return "Tagesordnung"; // 25to13012015
+        if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Tagesordnung"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
+        if (preg_match("/^to [0-9\. ]+$/siu", $name)) return "Tagesordnung"; // 2014 01 to
+        if (preg_match("/^[0-9\. ]+ to$/siu", $name)) return "Tagesordnung"; // to 150108
         if (preg_match("/^(?<name>Einladung.*) [0-9\.]+( \(oeff\))?$/siu", $name, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
-        if (preg_match("/^(?<name>Nachtrag.*) [0-9\.]+( \(oeff\))?$/siu",  $name, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
-        if (preg_match("/^[0-9]+prot[0-9]+$/siu",              $name)) return "Protokoll";  // 25prot13012015
-        if (preg_match("/^[0-9]+n?v?to[0-9]+oeff$/siu",        $name)) return "Tagesordnung";  // 21vto0115oeff
+        if (preg_match("/^(?<name>Nachtrag.*) [0-9\.]+( \(oeff\))?$/siu", $name, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
+        if (preg_match("/^[0-9]+prot[0-9]+$/siu", $name)) return "Protokoll";  // 25prot13012015
+        if (preg_match("/^[0-9]+n?v?to[0-9]+oeff$/siu", $name)) return "Tagesordnung";  // 21vto0115oeff
         if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Protokoll"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
-        if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu",          $name)) return "Protokoll"; // pro140918 oeff
+        if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $name)) return "Protokoll"; // pro140918 oeff
 
         $name = preg_replace("/^( vom)? \\d\\d\.\\d\\d\.\\d{4}$/siu", "", $name);
 
@@ -404,7 +395,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $dokument_id = IntVal($x[count($x) - 1]);
 
         /** @var Dokument|null $dokument */
-        $dokument = Dokument::model()->findByPk($dokument_id);
+        $dokument = Dokument::model()->disableDefaultScope()->findByPk($dokument_id);
         if ($dokument) return "";
 
         $dokument      = new Dokument();
@@ -413,9 +404,10 @@ class Dokument extends CActiveRecord implements IRISItem
         if (is_a($antrag_termin_tagesordnungspunkt, "Antrag")) $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
         if (is_a($antrag_termin_tagesordnungspunkt, "Termin")) $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
         if (is_a($antrag_termin_tagesordnungspunkt, "Tagesordnungspunkt")) $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
-        $dokument->url   = $dok["url"];
-        $dokument->name  = $dok["name"];
-        $dokument->datum = date("Y-m-d H:i:s");
+        $dokument->url     = $dok["url"];
+        $dokument->name    = $dok["name"];
+        $dokument->datum   = date("Y-m-d H:i:s");
+        $dokument->deleted = 0;
         if (defined("NO_TEXT")) {
             throw new Exception("Noch nicht implementiert");
         } else {
