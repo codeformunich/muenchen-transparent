@@ -106,7 +106,7 @@
 
 #content > section.well.pdfjs {
   padding-bottom: 0;
-  overflow: hidden;
+  //overflow: hidden; // Sonst verschiebt sich das Breadcrumb, wenn das PDF auf Seite 2 runtergescrollt wird. Logik?
   margin-top: 0;
   margin-bottom: 0;
   position: relative;
