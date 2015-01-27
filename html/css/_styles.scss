@@ -168,6 +168,15 @@
   }
 }
 
+.ba_funktionen {
+  dt {
+    font-weight: normal;
+  }
+  dd {
+    margin-bottom: 10px;
+  }
+}
+
 /* Set widths on the navbar form inputs since otherwise they're 100% wide */
 .navbar-form input[type="text"],
 .navbar-form input[type="password"] {

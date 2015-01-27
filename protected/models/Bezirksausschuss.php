@@ -18,6 +18,7 @@
  * @property GremiumHistory[] $gremienHistories
  * @property RISAenderung[] $RISAenderungen
  * @property StadtraetIn[] $stadtraetInnen
+ * @property Fraktion[] $fraktionen
  * @property BezirksausschussBudget[] $budgets
  */
 class Bezirksausschuss extends CActiveRecord
@@ -67,6 +68,7 @@ class Bezirksausschuss extends CActiveRecord
             'gremienHistories'  => array(self::HAS_MANY, 'GremiumHistory', 'ba_nr'),
             'RISAenderungen'    => array(self::HAS_MANY, 'RisAenderung', 'ba_nr'),
             'stadtraetInnen'    => array(self::HAS_MANY, 'StadtraetIn', 'ba_nr'),
+            'fraktionen'        => array(self::HAS_MANY, 'Fraktion', 'ba_nr'),
             'budgets'           => array(self::HAS_MANY, 'BezirksausschussBudget', 'ba_nr'),
         );
     }
@@ -142,6 +144,38 @@ class Bezirksausschuss extends CActiveRecord
         } else {
             return false;
         }
+    }
+
+    /**
+     * @return StadtraetInGremium[]
+     */
+    public function mitgliederMitFunktionen() {
+        $vollgremium = null;
+        foreach ($this->gremien as $gremium) if ($gremium->gremientyp == "BA-Vollgremium") $vollgremium = $gremium;
+        if (!$vollgremium) return array();
+        $funktionen = array();
+        foreach ($vollgremium->mitgliedschaften as $mitgliedschaft) {
+            if (mb_stripos($mitgliedschaft->funktion, "Mitgl") === 0) continue;
+            if ($mitgliedschaft->funktion == "BA-Mitglied") continue;
+            $funktionen[] = $mitgliedschaft;
+        }
+
+        $funktion2weight = function($funktion) {
+            $funktion = trim($funktion);
+            if (in_array($funktion, array("Vorsitz", "BA-Vorsitz", "BA-Vorsitzender", "BA-Vorsitzende", "Vorsitzender", "Vorsitzende", "Sitzungsleitung"))) return 1;
+            if (mb_stripos($funktion, "1. stell") === 0 || mb_stripos($funktion, "1. stv") === 0 || in_array($funktion, array("stellv. Vorsitz"))) return 2;
+            if (mb_stripos($funktion, "2. stell") === 0 || mb_stripos($funktion, "2. stv") === 0) return 3;
+
+            return 10;
+        };
+        usort($funktionen, function($funk1, $funk2) use ($funktion2weight) {
+            /** @var StadtraetInGremium $funk1 */
+            /** @var StadtraetInGremium $funk2 */
+            if ($funktion2weight($funk1->funktion) < $funktion2weight($funk2->funktion)) return -1;
+            if ($funktion2weight($funk1->funktion) > $funktion2weight($funk2->funktion)) return 1;
+            return 0;
+        });
+        return $funktionen;
     }
 
     /** @return string */

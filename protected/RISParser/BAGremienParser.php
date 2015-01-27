@@ -116,7 +116,7 @@ class BAGremienParser extends RISParser
                     $mitgliedschaft                 = new StadtraetInGremium();
                     $mitgliedschaft->datum_von      = $datum_von;
                     $mitgliedschaft->datum_bis      = $datum_bis;
-                    $mitgliedschaft->funktion       = $match2["funktion"];
+                    $mitgliedschaft->funktion       = trim($match2["funktion"]);
                     $mitgliedschaft->gremium_id     = $gremien_id;
                     $mitgliedschaft->stadtraetIn_id = $stadtraetIn->id;
                     $mitgliedschaft->save();
