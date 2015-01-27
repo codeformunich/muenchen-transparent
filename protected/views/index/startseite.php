@@ -16,6 +16,10 @@
  */
 
 $this->pageTitle = Yii::app()->name;
+$ba_links = array();
+/** @var Bezirksausschuss[] $bas */
+$bas = Bezirksausschuss::model()->findAll();
+foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
 ?>
 
@@ -61,7 +65,7 @@ $this->pageTitle = Yii::app()->name;
 				benachrichtigungen_widget: "benachrichtigung_hinweis",
 				show_BAs: true,
 				benachrichtigungen_widget_zoom: 14,
-				ba_link: "<?=CHtml::encode($this->createUrl("index/ba", array("ba_nr" => "12345")))?>",
+				ba_links: <?=json_encode($ba_links)?>,
 				assetsBase: <?=json_encode($this->getAssetsBase())?>,
 				onSelect: function (latlng, rad, zoom) {
 					if (zoom >= 14) {

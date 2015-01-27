@@ -8,7 +8,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 		benachrichtigungen_widget: false,
 		benachrichtigungen_widget_zoom: 14,
 		show_BAs: false,
-		ba_link: "#ba#",
+		ba_links: {},
 		onSelect: null,
 		onInit: null,
 		outlineBA: 0,
@@ -33,7 +33,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 				"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
 				"/js/leaflet.spiderfy.js",
 				"/js/leaflet.textmarkers.js",
-				"/js/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
+				"/js/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
 			],
 			complete: function () {
 				var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>',
@@ -414,7 +414,8 @@ $.widget("ratsinformant.AntraegeKarte", {
 							geojson_hide(e);
 						},
 						click: function (e) {
-							window.location.href = $widget.options.ba_link.replace("12345", e.target.feature.id);
+							if (typeof($widget.options.ba_links["ba_" + e.target.feature.id]) == "undefined") return;
+							window.location.href = $widget.options.ba_links["ba_" + e.target.feature.id];
 							/*
 							if (geojson_clicked) {
 								geojson_clicked = false;
