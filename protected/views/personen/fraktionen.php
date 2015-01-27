@@ -23,7 +23,7 @@
             $fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
             echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
             echo "<span class='count'>" . count($fraktion) . "</span>";
-            echo CHtml::encode($fr->name) . "</a><ul class='mitglieder'>";
+            echo CHtml::encode($fr->getName()) . "</a><ul class='mitglieder'>";
             $mitglieder = StadtraetIn::sortByName($fraktion);
             foreach ($mitglieder as $mitglied) {
                 echo "<li>";

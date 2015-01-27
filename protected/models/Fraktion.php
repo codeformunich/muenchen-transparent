@@ -97,13 +97,14 @@ class Fraktion extends CActiveRecord implements IRISItem
      */
     public function getName($kurzfassung = false)
     {
-        if ($this->name == "&nbsp;") return "fraktionslos";
+        $name = RISTools::korrigiereTitelZeichen($this->name);
+        if ($name == "&nbsp;" || trim($name) == "") return "fraktionslos";
         if ($kurzfassung) {
             if (in_array($this->id, array(3339564, 2988265, 3312425))) return "Bürgerliche Mitte";
             if ($this->id == 3312427) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
             if (in_array($this->id, array(3312426, 1431959, 33))) return "Die Grünen / RL";
         }
-        return $this->name;
+        return $name;
     }
 
     /**

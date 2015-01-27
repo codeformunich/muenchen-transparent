@@ -168,6 +168,7 @@ class RISTools
     public static function korrigiereTitelZeichen($titel)
     {
         $titel = trim($titel);
+        $titel = str_replace(chr(194) . chr(160), " ", $titel);
         $titel = preg_replace("/([\\s-\(])\?(\\w[^\\?]*[\\w\.\!])\?/siu", "\\1„\\2“", $titel);
         $titel = preg_replace("/([\\s-\(])\"(\\w[^\\?]*[\\w\.\!])\"/siu", "\\1„\\2“", $titel);
         $titel = str_replace(" ?", " —", $titel);
