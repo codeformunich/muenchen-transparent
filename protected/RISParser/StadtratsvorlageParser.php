@@ -22,7 +22,10 @@ class StadtratsvorlageParser extends RISParser
         if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
             $html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
             $txt           = explode("introtext_border\">", $html_kurzinfo);
-            if (count($txt) < 2) RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo, null, "system");
+            if (count($txt) < 2) {
+                RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo, null, "system");
+                return;
+            }
             $txt             = explode("</div>", $txt[1]);
             $daten->kurzinfo = trim(str_replace(array("<br />", "<p>", "</p>"), array("", "", ""), $txt[0]));
         }
@@ -278,7 +281,7 @@ class StadtratsvorlageParser extends RISParser
 
     public function parseAlle()
     {
-        $anz   = 27800;
+        $anz   = 30000;
         $first = true;
         for ($i = $anz; $i >= 0; $i -= 10) {
             if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
