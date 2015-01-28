@@ -19,7 +19,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link><?php echo RISTools::bracketEscape(CHtml::encode(Yii::app()->getBaseUrl(true))); ?></link>
 			<description><![CDATA[<?php echo $feed_description; ?>]]></description>
 			<image>
-				<url><?php echo CHtml::encode(Yii::app()->getBaseUrl(true)); ?>/css/img/logo.png</url>
+				<url><?php echo CHtml::encode(Yii::app()->getBaseUrl(true)); ?>/favicon-192x192.png</url>
 				<title><?php echo CHtml::encode($feed_title); ?></title>
 				<link><?php echo CHtml::encode(Yii::app()->getBaseUrl(true)); ?></link>
 			</image>

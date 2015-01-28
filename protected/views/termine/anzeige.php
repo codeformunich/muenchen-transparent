@@ -99,8 +99,9 @@ function zeile_anzeigen($feld, $name, $callback)
 			<div id="mapholder">
 				<div id="map"></div>
 			</div>
-			<a href="<?= Yii::app()->createUrl("termine/topGeoExport", array("termin_id" => $termin->id)) ?>" style="float: right;">Großversion der Karte exportieren
-				<span class="fontello-right-open"></span></a>
+			<!--
+			<a href="<?= Yii::app()->createUrl("termine/topGeoExport", array("termin_id" => $termin->id)) ?>" style="float: right;" rel="nofollow">Großversion der Karte exportieren
+				<span class="fontello-right-open"></span></a>-->
 		</section>
 		<br>
 

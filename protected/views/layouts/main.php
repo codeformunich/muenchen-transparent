@@ -32,9 +32,10 @@
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <meta name="msapplication-TileColor" content="#0f9d58">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta property="og:image" content="/images/fb-img2.png">
 
     <link rel="search" type="application/opensearchdescription+xml" title="<?= CHtml::encode(Yii::app()->params['projectTitle']) ?>" href="/OpenSearch.xml">
-    <link rel="icon" type="image/png" href="/css/img/logo.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png">
 
     <title><?php
         echo CHtml::encode($this->pageTitle);
@@ -97,7 +98,7 @@
 <?
 echo ris_intern_html_extra_headers();
 ?>
-
+<img src="/images/fb-img2.png" alt="München Transparent" style="position: absolute; top: -1000px; left: -1000px;">
 <a href="#page_main_content" class="sr-only">Zum Seiteninhalt</a>
 
 <div class="over_footer_wrapper">
