@@ -7,6 +7,7 @@
  */
 
 $this->pageTitle = "So funktioniert Stadtpolitik";
+$this->load_mediaelement = true;
 
 $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
     return CHtml::encode(Yii::app()->createUrl($matches["url"]));
@@ -68,7 +69,20 @@ $html_text = RISTools::insertTooltips($html_text);
             <?
             if ($msg_ok != "") echo '<div class="alert alert-dismissable alert-success">
     <button type="button" class="close" data-dismiss="alert">×</button>' . $msg_ok . '</div>';
-            echo '<br>';
+            ?>
+            <br>
+            <video width="560" height="306" poster="/media/v1.jpg" controls="controls" preload="none">
+                <source type="video/mp4" src="/media/v1.aac.mp4">
+                <source type="video/ogg" src="/media/v1.ogv">
+                <object width="560" height="306" type="application/x-shockwave-flash" data="/js/mediaelement/build/flashmediaelement.swf">
+                    <param name="movie" value="/js/mediaelement/build/flashmediaelement.swf" />
+                    <param name="flashvars" value="controls=true&file=/media/v1.mp4" />
+                    <!-- Image as a last resort -->
+                    <img src="/media/v1.jpg" width="560" height="305" title="No video playback capabilities" />
+                </object>
+            </video>
+            <br><br>
+            <?
 
             if ($this->binContentAdmin()) { ?>
                 <script src="/js/ckeditor/ckeditor.js"></script>
@@ -111,6 +125,9 @@ $html_text = RISTools::insertTooltips($html_text);
             <script>
                 $(function() {
                     $('[data-toggle="tooltip"]').tooltip({animation: true, delay:500});
+                    $('video,audio').mediaelementplayer({
+
+                    });
                 });
             </script>
         </section>

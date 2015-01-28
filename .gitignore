@@ -14,21 +14,3 @@ html/piwik/
 html/sitemap-*
 html/google*
 html/BingSiteAuth.xml
-
-# Bower
-html/js/list.js/
-html/js/doc-ready/
-html/js/eventEmitter/
-html/js/eventie/
-html/js/get-size/
-html/js/get-style-property/
-html/js/isotope/
-html/js/masonry/
-html/js/matches-selector/
-html/js/outlayer/
-html/js/jquery/
-html/js/fullcalendar/
-html/js/moment/
-html/js/leaflet/
-html/js/leaflet.locatecontrol/
-html/js/fontawesome/

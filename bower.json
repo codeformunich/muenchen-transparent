@@ -4,6 +4,7 @@
     "list.js": "*",
     "isotope": "*",
     "fullcalendar": "*",
-    "leaflet.locatecontrol": "*"
+    "leaflet.locatecontrol": "*",
+    "mediaelement": "*"
   }
 }
