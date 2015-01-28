@@ -81,8 +81,8 @@ class Rechtsdokument extends CActiveRecord
              * @var Rechtsdokument $dok1
              * @var Rechtsdokument $dok2
              */
-            $name1 = strtolower($dok1->titel);
-            $name2 = strtolower($dok2->titel);
+            $name1 = strtolower($dok1->titel_lang());
+            $name2 = strtolower($dok2->titel_lang());
             if ($name1 == $name2) {
                 return 0;
             }
