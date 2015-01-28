@@ -7,6 +7,7 @@ $GLOBALS["RIS_URL_RULES"] = array(
     SITE_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>'                     => 'index/ba',
     SITE_BASE_URL . '/dokumente/<id:[0-9-]+>'                           => 'index/dokumente',
     SITE_BASE_URL . '/dokumente/<id:[0-9-]+>.pdf'                       => 'index/documentProxy',
+    SITE_BASE_URL . '/stadtraetIn/<id:\d+>_<name:[^\/]*>'               => 'personen/personAlt',
     SITE_BASE_URL . '/personen/<id:\d+>_<name:[^\/]*>'                  => 'personen/person',
     SITE_BASE_URL . '/personen/<id:\d+>'                                => 'personen/person',
     SITE_BASE_URL . '/personen/'                                        => 'personen/index',

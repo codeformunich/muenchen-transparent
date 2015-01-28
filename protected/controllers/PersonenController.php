@@ -35,6 +35,18 @@ class PersonenController extends RISBaseController
     /**
      * @param int $id
      */
+    public function actionPersonAlt($id)
+    {
+        /** @var StadtraetIn $person */
+        $person = StadtraetIn::model()->findByPk($id);
+        $this->redirect($person->getLink());
+    }
+
+
+
+    /**
+     * @param int $id
+     */
     public function actionPersonBearbeiten($id)
     {
         $this->top_menu = "personen";

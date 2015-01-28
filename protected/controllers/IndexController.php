@@ -65,9 +65,9 @@ class IndexController extends RISBaseController
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($status == 200 && $string != "") {
-            if (!file_exists(TILE_CACHE_DIR . "$width")) mkdir(TILE_CACHE_DIR . "$width", 0775);
-            if (!file_exists(TILE_CACHE_DIR . "$width/$zoom")) mkdir(TILE_CACHE_DIR . "$width/$zoom", 0775);
-            if (!file_exists(TILE_CACHE_DIR . "$width/$zoom/$x")) mkdir(TILE_CACHE_DIR . "$width/$zoom/$x", 0775);
+            if (!file_exists(TILE_CACHE_DIR . "$width")) @mkdir(TILE_CACHE_DIR . "$width", 0775);
+            if (!file_exists(TILE_CACHE_DIR . "$width/$zoom")) @mkdir(TILE_CACHE_DIR . "$width/$zoom", 0775);
+            if (!file_exists(TILE_CACHE_DIR . "$width/$zoom/$x")) @mkdir(TILE_CACHE_DIR . "$width/$zoom/$x", 0775);
             file_put_contents(TILE_CACHE_DIR . "$width/$zoom/$x/$y.png", $string);
             Header("Content-Type: image/png");
             echo $string;

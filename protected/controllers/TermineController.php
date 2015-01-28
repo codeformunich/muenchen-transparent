@@ -180,6 +180,9 @@ class TermineController extends RISBaseController
      */
     public function actionTopGeoExport($termin_id)
     {
+        $this->render('/index/error', array("code" => 404, "message" => "Diese Seite gibt es (noch) nicht."));
+        return;
+
         $termin_id = IntVal($termin_id);
 
         $this->top_menu         = "termine";
