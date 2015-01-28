@@ -36,6 +36,12 @@ class InfosController extends RISBaseController
         $this->std_content_page(26, $this->createUrl("infos/datenschutz"));
     }
 
+    public function actionNews()
+    {
+        $this->top_menu = "";
+        $this->std_content_page(28, $this->createUrl("infos/news"));
+    }
+
     public function actionAPI()
     {
         $this->top_menu = "api";
