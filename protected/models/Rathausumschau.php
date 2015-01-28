@@ -109,17 +109,20 @@ class Rathausumschau extends CActiveRecord implements IRISItem
     public function inhaltsverzeichnis()
     {
         if (count($this->dokumente) == 0) return array();
-        $dok      = $this->dokumente[0]->text_pdf;
-        $x        = explode("Inhaltsverzeichnis", $dok);
+        $dok = $this->dokumente[0]->text_pdf;
+        $x   = explode("Inhaltsverzeichnis", $dok);
         if (count($x) == 1) return array();
 
         $x        = explode("Antworten auf Stadtratsanfragen", $x[1]);
         $text     = $x[0];
-        $tops_in  = explode("\n", $text);
         $tops_out = array();
         $link     = $this->dokumente[0]->getLinkZumDokument();
-        foreach ($tops_in as $top) if (mb_strlen($top) > 0 && mb_substr($top, 0, 1) == "›") {
-            preg_match("/^(?<titel>.*)(?<seite> [0-9]+)$/", $top, $matches);
+
+        $tops_in = explode("›", $text);
+        if (count($tops_in) <= 1) return $tops_out;
+        for ($i = 1; $i < count($tops_in); $i++) {
+            $top = trim(str_replace("\n", " ", $tops_in[$i]));
+            preg_match("/^(?<titel>.*)(?<seite> [0-9]+)$/siu", $top, $matches);
             if (isset($matches["seite"])) $tops_out[] = array("titel" => $matches["titel"], "seite" => IntVal($matches["seite"]), "link" => $link . "#page=" . IntVal($matches["seite"]));
             elseif (isset($matches["titel"])) $tops_out[] = array("titel" => $matches["titel"], "seite" => null, "link" => null);
         }
