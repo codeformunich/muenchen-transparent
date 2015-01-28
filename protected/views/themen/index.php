@@ -50,7 +50,7 @@ $this->pageTitle = "Themen";
 					</ul>
 				</div>
 			</section>
-
+			<!--
 			<section class="start_berichte well">
 				<a href="<?= CHtml::encode(Yii::app()->createUrl("index/highlights")) ?>" class="weitere">Weitere</a>
 
@@ -64,6 +64,7 @@ $this->pageTitle = "Themen";
 					?>
 				</ul>
 			</section>
+			-->
 		</div>
 	</div>
 
