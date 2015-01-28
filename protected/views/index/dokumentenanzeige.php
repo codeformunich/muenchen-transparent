@@ -33,7 +33,7 @@ if ($risitem) {
 				echo "<li class=\"active\">" . CHtml::encode($name) . "<br></li>";
 			}
 
-			if (count($uebergruppe->getDokumente()) > 1) {
+			if ($uebergruppe && count($uebergruppe->getDokumente()) > 1) {
 				?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= CHtml::encode($dokument->getName()) ?><span class="caret"></span></a>
