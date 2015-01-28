@@ -178,6 +178,12 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
 </section>
 
+<section class="well">
+	<h3>Aktuelles</h3>
+
+	28. Januar 2015: <a href="<?=CHtml::encode(Yii::app()->createUrl("infos/news"))?>">Start der offenen Beta-Phase von „München Transparent“</a>
+</section>
+
 <section class="well two_cols" id="listen_holder">
 
 	<? if (isset(Yii::app()->params['startseiten_warnung']) && Yii::app()->params['startseiten_warnung'] != '') { ?>
@@ -186,13 +192,6 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 		<?=Yii::app()->params['startseiten_warnung']?>
 	</div>
 	<? } ?>
-
-	<!--
-<small>Neu in den letzten 7 Tagen: <?= number_format($statistiken["anzahl_dokumente_1w"], 0, ",", ".") ?> Dokumente
-					(<?= number_format($statistiken["anzahl_seiten_1w"], 0, ",", ".") ?> Seiten)
-				</small>
-				-->
-
 
 	<div id="stadtratsdokumente_holder">
 		<?
