@@ -81,6 +81,9 @@ $html_text = RISTools::insertTooltips($html_text);
                     <img src="/media/v1.jpg" width="560" height="305" title="No video playback capabilities" />
                 </object>
             </video>
+            <div style="color: gray; text-align: center;">
+                Video: Lionel Koch; Skript u. Ton: Bernd Oswald
+            </div>
             <br><br>
             <?
 
@@ -141,7 +144,7 @@ $html_text = RISTools::insertTooltips($html_text);
             <ul>
                 <li><a href="http://www.opengov-muenchen.de/">Das OpenGovernment-Portal der Stadt München</a></li>
                 <li><a href="http://codefor.de/muenchen/">OK Lab München</a></li>
-                <li>@TODO: Layout + mehr Links</li>
+                <li>...weitere Links über München und Open Data? <a href="<?=CHtml::encode(Yii::app()->createUrl("infos/feedback"))?>">Schreib uns!</a></li>
             </ul>
         </section>
     </div>
