@@ -71,7 +71,7 @@ function index_geo_dokumente_load(url, lng, lat, radius) {
 function ckeditor_init($element, mode) {
     var options = {
         removePlugins: 'save,backup,about,pastefromword,pastetext,print,preview,templates,newpage',
-        extraPlugins: 'a11yhelp,codemirror,enterkey,font,format,justify,basicstyles,blockquote,colorbutton,colordialog,elementspath,filebrowser,horizontalrule,htmlwriter,image,indent,indentblock,indentlist,link,list,listblock,pastefromword,resize,showborders,specialchar,stylescombo,tab,table,tabletools,magicline,floatingspace,removeformat,flash,tableresize,maximize',
+        extraPlugins: 'a11yhelp,codemirror,enterkey,font,format,justify,basicstyles,blockquote,colorbutton,colordialog,elementspath,filebrowser,horizontalrule,htmlwriter,image,indent,indentblock,indentlist,link,list,listblock,pastefromword,resize,showborders,specialchar,stylescombo,tab,table,tabletools,magicline,floatingspace,removeformat,flash,tableresize,maximize,sourcedialog',
         // wordcount,
         docType: '<!DOCTYPE HTML>',
         removeButtons: 'Anchor,Redo',
