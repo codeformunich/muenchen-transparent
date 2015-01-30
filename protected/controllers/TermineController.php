@@ -16,8 +16,8 @@ class TermineController extends RISBaseController
             $d = array(
                 "title" => str_replace("Ausschuss für ", "", implode(", ", array_keys($appointment["gremien"]))),
                 "start" => str_replace(" ", "T", $appointment["datum_iso"]),
+                "url"   => $appointment["link"],
             );
-            foreach ($appointment["gremien"] as $g) if (!isset($d["url"])) $d["url"] = $g;
             $jsdata[] = $d;
             $weekday  = date("N", $appointment["datum_ts"]);
             if ($weekday == 6 || $weekday == 7) $has_weekend = true;
