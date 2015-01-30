@@ -16,26 +16,24 @@
     ?>">
     <meta name="author" content="Tobias Hößl, Konstantin Schütze">
 
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png?1">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png?1">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png?1">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png?1">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png?1">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png?1">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png?1">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png?1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png?1">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png?1" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png?1" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png?1" sizes="32x32">
     <meta name="msapplication-TileColor" content="#0f9d58">
-    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png?1">
     <meta property="og:image" content="/images/fb-img2.png">
 
     <link rel="search" type="application/opensearchdescription+xml" title="<?= CHtml::encode(Yii::app()->params['projectTitle']) ?>" href="/OpenSearch.xml">
-    <link rel="icon" type="image/png" href="/favicon-192x192.png">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png?1">
 
     <title><?php
         echo CHtml::encode($this->pageTitle);
