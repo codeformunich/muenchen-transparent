@@ -179,6 +179,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 </section>
 
 <section class="well">
+	<a href="https://twitter.com/MUCTransparent" class="btn btn-fab btn-raised btn-primary btn-twitter-link pull-right"><span class="fontello-twitter"></span></a>
 	<h3>Aktuelles</h3>
 
 	28. Januar 2015: <a href="<?=CHtml::encode(Yii::app()->createUrl("infos/news"))?>">Start der offenen Beta-Phase von „München Transparent“</a>
