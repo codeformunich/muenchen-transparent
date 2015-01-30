@@ -3,24 +3,13 @@
 /**
  * @var IndexController $this
  * @var string $current_url
- * @var string $msg_ok
- * @var string $msg_err
+ * @var string $this->msg_ok
+ * @var string $this->msg_err
  */
 
 ?>
 
 <section class="col-md-4 col-md-offset-4">
-    <? if ($msg_ok != "") { ?>
-    <div class="alert alert-success">
-        <?php echo $msg_ok; ?>
-    </div>
-    <? } ?>
-    <? if ($msg_err != "") { ?>
-    <div class="alert alert-danger">
-        <?php echo $msg_err; ?>
-    </div>
-    <? } ?>
-
     <div class="well">
         <script>
             $(function () {

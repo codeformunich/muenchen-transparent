@@ -2,7 +2,7 @@
 /**
  * @var AntraegeController $this
  * @var StadtraetIn $stadtraetInnen
- * @var string|null $msg_ok
+ * @var string|null $this->msg_ok
  */
 
 
@@ -13,7 +13,7 @@ $benutzerInnen = BenutzerIn::alleAktiveAccounts();
 	<h1>StadträtInnen: Accounts</h1>
 
 	<?
-	if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</div>';
+	if (!is_null($this->msg_ok)) echo '<div class="alert alert-success">' . $this->msg_ok . '</div>';
 	?>
 
 	<form method="POST">

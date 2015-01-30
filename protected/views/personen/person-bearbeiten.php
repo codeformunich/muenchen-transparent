@@ -2,7 +2,7 @@
 /**
  * @var StadtraetIn $person
  * @var IndexController $this
- * @var null|string $msg_ok
+ * @var null|string $this->msg_ok
  */
 
 $this->pageTitle = "Bearbeiten: " . $person->getName();
@@ -23,7 +23,7 @@ else $geburtstag = $x[2];
 	<h1>Bearbeiten: <?= CHtml::encode($person->getName()) ?></h1>
 
 	<?
-	if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</div>';
+	if (!is_null($this->msg_ok)) echo '<div class="alert alert-success">' . $this->msg_ok . '</div>';
 	?>
 
 	<form method="post" style="max-width: 500px; margin-left: auto; margin-right: auto; margin-top: 40px;">

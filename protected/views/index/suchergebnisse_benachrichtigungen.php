@@ -3,8 +3,8 @@
 /**
  * @var RISBaseController $this
  * @var RISSucheKrits $krits
- * @var string $msg_ok
- * @var string $msg_err
+ * @var string $this->msg_ok
+ * @var string $this->msg_err
  * @var bool $email_bestaetigt
  * @var bool $email_angegeben
  * @var bool $eingeloggt

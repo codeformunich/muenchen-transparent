@@ -3,8 +3,8 @@
  * @var IndexController $this
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
  * @var RISSucheKrits $krits
- * @var string $msg_ok
- * @var string $msg_err
+ * @var string $this->msg_ok
+ * @var string $this->msg_err
  * @var bool $email_bestaetigt
  * @var bool $email_angegeben
  * @var bool $eingeloggt
@@ -45,17 +45,17 @@ $this->pageTitle = "Suchergebnisse";
 	}
 	echo '<br style="clear: both;">';
 
-	if ($msg_ok != "") {
+	if ($this->msg_ok != "") {
 		?>
 		<div class="alert alert-success">
-			<?php echo $msg_ok; ?>
+			<?php echo $this->msg_ok; ?>
 		</div>
 	<?
 	}
-	if ($msg_err != "") {
+	if ($this->msg_err != "") {
 		?>
 		<div class="alert alert-danger">
-			<?php echo $msg_err; ?>
+			<?php echo $this->msg_err; ?>
 		</div>
 	<?
 	}

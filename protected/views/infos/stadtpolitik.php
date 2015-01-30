@@ -2,7 +2,7 @@
 /**
  * @var InfosController $this
  * @var Text $text
- * @var string $msg_ok
+ * @var string $this->msg_ok
  * @var string $my_url
  */
 
@@ -67,8 +67,8 @@ $html_text = RISTools::insertTooltips($html_text);
             <h1>So entsteht Stadtpolitik</h1>
 
             <?
-            if ($msg_ok != "") echo '<div class="alert alert-dismissable alert-success">
-    <button type="button" class="close" data-dismiss="alert">×</button>' . $msg_ok . '</div>';
+            if ($this->msg_ok != "") echo '<div class="alert alert-dismissable alert-success">
+    <button type="button" class="close" data-dismiss="alert">×</button>' . $this->msg_ok . '</div>';
             ?>
             <br>
             <video width="560" height="306" poster="/media/v1.jpg" controls="controls" preload="none">

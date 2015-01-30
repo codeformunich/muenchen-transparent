@@ -5,8 +5,8 @@
  * @var string $code
  * @var string $message
  * @var BenutzerIn $ich
- * @var string $msg_ok
- * @var string $msg_err
+ * @var string $this->msg_ok
+ * @var string $this->msg_err
  */
 
 $this->pageTitle = "Benachrichtigungen";

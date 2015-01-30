@@ -2,7 +2,7 @@
 /**
  * @var AntraegeController $this
  * @var array[] $fraktionen
- * @var string|null $msg_ok
+ * @var string|null $this->msg_ok
  */
 
 
@@ -12,7 +12,7 @@
 	<h1>StadträtInnen: Beschreibungen</h1>
 
 	<?
-	if (!is_null($msg_ok)) echo '<div class="alert alert-success">' . $msg_ok . '</div>';
+	if (!is_null($this->msg_ok)) echo '<div class="alert alert-success">' . $this->msg_ok . '</div>';
 	?>
 
 	<form method="POST" style="overflow: auto; font-size: 12px;">

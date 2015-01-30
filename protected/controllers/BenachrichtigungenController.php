@@ -6,7 +6,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         $this->top_menu = "benachrichtigungen";
 
-        list($this->msg_ok, $this->msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"), $code);
+        $this->requireLogin($this->createUrl("index/benachrichtigungen"), $code);
 
         /** @var BenutzerIn $ich */
         $ich = $this->aktuelleBenutzerIn();
@@ -75,7 +75,7 @@ class BenachrichtigungenController extends RISBaseController
 
         if (AntiXSS::isTokenSet("account_loeschen")) {
             $this->top_menu = "Accountlöschung";
-            list($msg_ok, $msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"));
+            $this->requireLogin($this->createUrl("index/benachrichtigungen"));
             $ich = $this->aktuelleBenutzerIn();
             $id  = $ich->id;
 

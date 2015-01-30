@@ -3,7 +3,7 @@
  * @var string $my_url
  * @var InfosController $this
  * @var Text $text
- * @var string $msg_ok
+ * @var string $this->msg_ok
  * @var bool $notitle
  */
 
@@ -30,8 +30,8 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
 
     if (!$notitle) echo '<h1>' . CHtml::encode($text->titel) . '</h1>';
 
-	if ($msg_ok != "") echo '<br><div class="alert alert-dismissable alert-success">
-    <button type="button" class="close" data-dismiss="alert">×</button>' . $msg_ok . '</div>';
+	if ($this->msg_ok != "") echo '<br><div class="alert alert-dismissable alert-success">
+    <button type="button" class="close" data-dismiss="alert">×</button>' . $this->msg_ok . '</div>';
 
 	if ($this->binContentAdmin()) { ?>
 		<script src="/js/ckeditor/ckeditor.js"></script>

@@ -2,7 +2,7 @@
 /**
  * @var InfosController $this
  * @var string $current_url
- * @var string $msg_err
+ * @var string $this->msg_err
  */
 $this->pageTitle = "Feedback an uns";
 
@@ -14,10 +14,10 @@ else
 
 <section class="col-md-6 col-md-offset-3">
     <?
-    if ($msg_err != "") {
+    if ($this->msg_err != "") {
         ?>
         <div class="alert alert-danger">
-            <?php echo $msg_err; ?>
+            <?php echo $this->msg_err; ?>
         </div>
     <?
     }

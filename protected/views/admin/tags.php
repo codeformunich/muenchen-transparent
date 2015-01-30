@@ -1,7 +1,7 @@
 <?php
 /**
  * @var AdminController $this
- * @var string $msg_ok
+ * @var string $this->msg_ok
  */
 
 $user = $this->aktuelleBenutzerIn();

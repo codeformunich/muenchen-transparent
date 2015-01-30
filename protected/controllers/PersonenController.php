@@ -58,7 +58,7 @@ class PersonenController extends RISBaseController
         $person = StadtraetIn::model()->findByPk($id);
         if ($person->benutzerIn_id != $ich->id) $this->errorMessageAndDie(403, "Du kannst nur deinen eigenen Eintrag bearbeiten.");
 
-        $msg_ok = null;
+        $this->msg_ok = null;
         if (AntiXSS::isTokenSet("save")) {
             $person->web          = $_REQUEST["web"];
             $person->twitter      = trim($_REQUEST["twitter"], "\t\n\r@");
@@ -74,12 +74,12 @@ class PersonenController extends RISBaseController
                 else $person->geburtstag = null;
             }
             $person->save();
-            $msg_ok = "Gespeichert";
+            $this->msg_ok = "Gespeichert";
         }
 
         $this->render("person-bearbeiten", array(
             "person" => $person,
-            "msg_ok" => $msg_ok,
+            "msg_ok" => $this->msg_ok,
         ));
     }
 
@@ -97,11 +97,11 @@ class PersonenController extends RISBaseController
         $person = StadtraetIn::model()->findByPk($id);
         if ($person->benutzerIn_id !== null) $this->errorMessageAndDie(403, "Diese Person ist schon einem Account zugeordnet. Falls das ein Fehler ist, schreiben Sie uns bitte per Mail (" . Yii::app()->params["adminEmail"] . ")");
 
-        $msg_ok = null;
+        $this->msg_ok = null;
 
         $this->render("person-binich", array(
             "person" => $person,
-            "msg_ok" => $msg_ok,
+            "msg_ok" => $this->msg_ok,
         ));
     }
 

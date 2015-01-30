@@ -2,7 +2,7 @@
 /**
  * @var StadtraetIn $person
  * @var IndexController $this
- * @var null|string $msg_ok
+ * @var null|string $this->msg_ok
  */
 
 $this->pageTitle = "Ich bin: " . $person->getName();
