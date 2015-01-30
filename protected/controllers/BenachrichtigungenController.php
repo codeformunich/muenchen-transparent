@@ -2,7 +2,6 @@
 
 class BenachrichtigungenController extends RISBaseController
 {
-
     public function actionIndex($code = "")
     {
         $this->top_menu = "benachrichtigungen";
@@ -11,7 +10,7 @@ class BenachrichtigungenController extends RISBaseController
 
 
         /** @var BenutzerIn $ich */
-        $ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+        $ich = $this->aktuelleBenutzerIn();
 
         $this->load_leaflet_css      = true;
         $this->load_leaflet_draw_css = true;
@@ -75,15 +74,13 @@ class BenachrichtigungenController extends RISBaseController
             }
         }
 
-
-        if (AntiXSS::isTokenSet("delete_account")) {
+        if (AntiXSS::isTokenSet("account_loeschen")) {
             $this->top_menu = "Accountlöschung";
             list($msg_ok, $msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"));
             $ich = $this->aktuelleBenutzerIn();
             $id  = $ich->id;
 
             if ($ich != NULL) {
-
                 $ich->email                         = NULL;
                 $ich->email_bestaetigt              = 0;
                 $ich->pwd_enc                       = NULL;
@@ -113,6 +110,21 @@ class BenachrichtigungenController extends RISBaseController
             Yii::app()->end();
         }
 
+        if (AntiXSS::isTokenSet("passwort_aendern")) {
+            /** @var null|BenutzerIn $ich  */
+            $ich = $this->aktuelleBenutzerIn();
+            if ($ich) {
+              if ($_REQUEST["password"] == $_REQUEST["password2"]) {
+                    $ich->pwd_enc = BenutzerIn::create_hash($_REQUEST["password"]);
+                    $ich->save();
+                    $msg_ok = "Passwort geändert";
+                } else {
+                    $msg_err = "Die beiden Passwörter stimmen nicht überein";
+                }
+            } else {
+                $this->render('/index/error', array("code" => 403, "message" => "Sie sind nicht angemeldet."));
+            }
+        }
 
         $this->render("index", array(
             "ich"     => $ich,
@@ -190,7 +202,7 @@ class BenachrichtigungenController extends RISBaseController
         $this->requireLogin($this->createUrl("index/benachrichtigungen"));
 
         /** @var BenutzerIn $ich */
-        $ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+        $ich = $this->aktuelleBenutzerIn();
 
         $solr   = RISSolrHelper::getSolrClient("ris");
         $select = $this->getAlleSuchergebnisse($solr, $ich);
@@ -205,7 +217,6 @@ class BenachrichtigungenController extends RISBaseController
         $this->render("alle_suchergebnisse", array(
             "ergebnisse" => $ergebnisse,
         ));
-
     }
 
 
@@ -220,4 +231,29 @@ class BenachrichtigungenController extends RISBaseController
         Yii::app()->end();
     }
 
+    public function actionPasswortZuruecksetzen()
+    {
+        if (AntiXSS::isTokenSet("reset_password")) {
+            /** @var null|BenutzerIn $benutzerIn */
+            $benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
+            if ($benutzerIn) {
+                $ret = $benutzerIn->resetPasswordStart();
+                if ($ret == "") {
+                    $this->render('reset_password_sent');
+                } else {
+                    $this->render('reset_password_form', array(
+                        "msg_err" => $ret
+                    ));
+                }
+            } else {
+                $this->render('reset_password_form', array(
+                  "msg_err" => "Es gibt keinen Zugang mit dieser E-Mail-Adresse"
+                ));
+            }
+        } else {
+            $this->render('reset_password_form', array(
+                "msg_err" => ""
+            ));
+        }
+    }
 }
