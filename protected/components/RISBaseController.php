@@ -39,6 +39,9 @@ class RISBaseController extends CController
     public $load_mediaelement     = false;
     public $suche_pre             = "";
 
+    public $msg_ok                = "";
+    public $msg_err               = "";
+
     private $_assetsBase = null;
 
     public function getAssetsBase()

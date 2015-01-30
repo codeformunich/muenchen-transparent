@@ -11,8 +11,9 @@
 
 $this->pageTitle = "Benachrichtigungen";
 
-$bens          = $ich->getBenachrichtigungen();
-$abo_vorgaenge = $ich->abonnierte_vorgaenge;
+$bens                 = $ich->getBenachrichtigungen();
+$abo_vorgaenge        = $ich->abonnierte_vorgaenge;
+$benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 ?>
 
 <section class="well">
@@ -23,25 +24,6 @@ $abo_vorgaenge = $ich->abonnierte_vorgaenge;
 
     <h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= CHtml::encode($ich->email) ?>:</h1>
 
-
-    <?
-    if ($msg_ok != "") {
-        ?>
-        <div class="alert alert-success">
-            <?php echo $msg_ok; ?>
-        </div>
-    <?
-    }
-    if ($msg_err != "") {
-        ?>
-        <div class="alert alert-danger">
-            <?php echo $msg_err; ?>
-        </div>
-    <?
-    }
-
-    $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
-    ?>
     <div class="row">
         <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-7 einstellungen_form" style="margin-left: 23px;">
             <h3>Ich möchte benachrichtigt werden...</h3>

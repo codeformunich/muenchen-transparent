@@ -6,8 +6,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         $this->top_menu = "benachrichtigungen";
 
-        list($msg_ok, $msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"), $code);
-
+        list($this->msg_ok, $this->msg_err) = $this->requireLogin($this->createUrl("index/benachrichtigungen"), $code);
 
         /** @var BenutzerIn $ich */
         $ich = $this->aktuelleBenutzerIn();
@@ -23,7 +22,7 @@ class BenachrichtigungenController extends RISBaseController
             }
             $ich->setEinstellungen($einstellungen);
             $ich->save();
-            $msg_ok = "Die Einstellung wurde gespeichert.";
+            $this->msg_ok = "Die Einstellung wurde gespeichert.";
         }
 
         if (AntiXSS::isTokenSet("del_ben")) {
@@ -31,19 +30,19 @@ class BenachrichtigungenController extends RISBaseController
                 $bena = json_decode(rawurldecode($ben), true);
                 $krit = new RISSucheKrits($bena);
                 $ich->delBenachrichtigung($krit);
-                $msg_ok = "Die Benachrichtigung wurde entfernt.";
+                $this->msg_ok = "Die Benachrichtigung wurde entfernt.";
             }
         }
 
         if (AntiXSS::isTokenSet("ben_add_text")) {
             $suchbegriff = trim($_REQUEST["suchbegriff"]);
             if ($suchbegriff == "") {
-                $msg_err = "Bitte gib einen Suchausdruck an.";
+                $this->msg_err = "Bitte gib einen Suchausdruck an.";
             } else {
                 $ben = new RISSucheKrits();
                 $ben->addVolltextsucheKrit($suchbegriff);
                 $ich->addBenachrichtigung($ben);
-                $msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
+                $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
             }
         }
 
@@ -51,17 +50,17 @@ class BenachrichtigungenController extends RISBaseController
             $ben = new RISSucheKrits();
             $ben->addBAKrit($_REQUEST["ba"]);
             $ich->addBenachrichtigung($ben);
-            $msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
+            $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
         }
 
         if (AntiXSS::isTokenSet("ben_add_geo")) {
             if ($_REQUEST["geo_lng"] == 0 || $_REQUEST["geo_lat"] == 0 || $_REQUEST["geo_radius"] <= 0) {
-                $msg_err = "Ungültige Eingabe.";
+                $this->msg_err = "Ungültige Eingabe.";
             } else {
                 $ben = new RISSucheKrits();
                 $ben->addGeoKrit($_REQUEST["geo_lng"], $_REQUEST["geo_lat"], $_REQUEST["geo_radius"]);
                 $ich->addBenachrichtigung($ben);
-                $msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
+                $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
             }
         }
 
@@ -70,7 +69,7 @@ class BenachrichtigungenController extends RISBaseController
                 /** @var Vorgang $vorgang */
                 $vorgang = Vorgang::model()->findByPk($vorgang_id);
                 $vorgang->deabonnieren($ich);
-                $msg_ok = "Der Vorgang wurde entfernt.";
+                $this->msg_ok = "Der Vorgang wurde entfernt.";
             }
         }
 
@@ -96,13 +95,13 @@ class BenachrichtigungenController extends RISBaseController
                     ->bindValues(array(':BenutzerInId' => $ich->id))
                     ->execute();
 
-                $msg_ok = "Account gelöscht";
+                $this->msg_ok = "Account gelöscht";
 
                 /** @var CWebUser $user */
                 $user = Yii::app()->getUser();
                 if ($user) $user->logout();
             } else {
-                $msg_err = "Sie sind nicht angemeldet";
+                $this->msg_err = "Sie sind nicht angemeldet";
             }
 
             $this->redirect(Yii::app()->createUrl("index/startseite"));
@@ -117,9 +116,9 @@ class BenachrichtigungenController extends RISBaseController
               if ($_REQUEST["password"] == $_REQUEST["password2"]) {
                     $ich->pwd_enc = BenutzerIn::create_hash($_REQUEST["password"]);
                     $ich->save();
-                    $msg_ok = "Passwort geändert";
+                    $this->msg_ok = "Passwort geändert";
                 } else {
-                    $msg_err = "Die beiden Passwörter stimmen nicht überein";
+                    $this->msg_err = "Die beiden Passwörter stimmen nicht überein";
                 }
             } else {
                 $this->render('/index/error', array("code" => 403, "message" => "Sie sind nicht angemeldet."));
@@ -127,9 +126,7 @@ class BenachrichtigungenController extends RISBaseController
         }
 
         $this->render("index", array(
-            "ich"     => $ich,
-            "msg_err" => $msg_err,
-            "msg_ok"  => $msg_ok,
+            "ich" => $ich,
         ));
     }
 
@@ -241,19 +238,15 @@ class BenachrichtigungenController extends RISBaseController
                 if ($ret == "") {
                     $this->render('reset_password_sent');
                 } else {
-                    $this->render('reset_password_form', array(
-                        "msg_err" => $ret
-                    ));
+                    $this->msg_err = $ret;
+                    $this->render('reset_password_form');
                 }
             } else {
-                $this->render('reset_password_form', array(
-                  "msg_err" => "Es gibt keinen Zugang mit dieser E-Mail-Adresse"
-                ));
+                $this->msg_err = "Es gibt keinen Zugang mit dieser E-Mail-Adresse";
+                $this->render('reset_password_form');
             }
         } else {
-            $this->render('reset_password_form', array(
-                "msg_err" => ""
-            ));
+            $this->render('reset_password_form');
         }
     }
 }

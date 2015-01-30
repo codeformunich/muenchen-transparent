@@ -8,15 +8,6 @@
 
 ?>
 <section class="col-md-4 col-md-offset-4">
-  <?
-  if ($msg_err != "") {
-    ?>
-    <div class="alert alert-danger">
-      <?php echo $msg_err; ?>
-    </div>
-  <?
-  }
-  ?>
   <div class="well">
     <form class="form-horizontal form-signin" method="POST" action="<?= $this->createUrl("benachrichtigungen/PasswortZuruecksetzen") ?>">
       <fieldset>
