@@ -2,8 +2,6 @@
 
 class AdminController extends RISBaseController
 {
-
-
     public function actionStadtraetInnenPersonen()
     {
         if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
