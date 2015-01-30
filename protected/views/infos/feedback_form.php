@@ -2,7 +2,6 @@
 /**
  * @var InfosController $this
  * @var string $current_url
- * @var string $this->msg_err
  */
 $this->pageTitle = "Feedback an uns";
 
@@ -13,15 +12,6 @@ else
 ?>
 
 <section class="col-md-6 col-md-offset-3">
-    <?
-    if ($this->msg_err != "") {
-        ?>
-        <div class="alert alert-danger">
-            <?php echo $this->msg_err; ?>
-        </div>
-    <?
-    }
-    ?>
     <div class="well">
         <form class="form-horizontal form-signin" method="POST" action="<?= CHtml::encode($current_url) ?>" id="feedback_form">
             <fieldset>

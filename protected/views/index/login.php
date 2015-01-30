@@ -3,8 +3,6 @@
 /**
  * @var IndexController $this
  * @var string $current_url
- * @var string $this->msg_ok
- * @var string $this->msg_err
  */
 
 ?>

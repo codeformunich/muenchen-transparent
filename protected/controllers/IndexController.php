@@ -178,8 +178,6 @@ class IndexController extends RISBaseController
             "email_bestaetigt"    => $email_bestaetigt,
             "wird_benachrichtigt" => $wird_benachrichtigt,
             "ich"                 => $ich,
-            "msg_err"             => $this->msg_err,
-            "msg_ok"              => $this->msg_ok,
         );
     }
 

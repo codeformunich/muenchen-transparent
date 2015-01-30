@@ -8,7 +8,6 @@ class AdminController extends RISBaseController
 
         $this->top_menu = "admin";
 
-        $this->msg_ok = null;
         if (AntiXSS::isTokenSet("save")) {
             /** @var Person $person */
             $person = Person::model()->findByPk($_REQUEST["person"]);
@@ -32,7 +31,6 @@ class AdminController extends RISBaseController
         $stadtraetInnen = StadtraetIn::model()->findAll(array("order" => "name"));
 
         $this->render("stadtraetInnenPersonen", array(
-            "msg_ok"         => $this->msg_ok,
             "personen"       => $personen,
             "stadtraetInnen" => $stadtraetInnen,
         ));
@@ -45,7 +43,6 @@ class AdminController extends RISBaseController
 
         $this->top_menu = "admin";
 
-        $this->msg_ok = null;
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["twitter"])) {
             foreach ($_REQUEST["twitter"] as $str_id => $twitter) {
                 /** @var StadtraetIn $str */
@@ -63,7 +60,6 @@ class AdminController extends RISBaseController
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
         $this->render("stadtraetInnenSocialMedia", array(
-            "msg_ok"     => $this->msg_ok,
             "fraktionen" => $fraktionen,
         ));
     }
@@ -74,7 +70,6 @@ class AdminController extends RISBaseController
         if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
 
         $this->top_menu = "admin";
-        $this->msg_ok         = null;
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["geburtstag"])) {
 
             foreach ($_REQUEST["geburtstag"] as $str_id => $geburtstag) {
@@ -93,7 +88,6 @@ class AdminController extends RISBaseController
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
         $this->render("stadtraetInnenBeschreibungen", array(
-            "msg_ok"     => $this->msg_ok,
             "fraktionen" => $fraktionen,
         ));
     }
@@ -105,7 +99,6 @@ class AdminController extends RISBaseController
         if (!$ich->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) $this->errorMessageAndDie(403, "");
 
         $this->top_menu = "admin";
-        $this->msg_ok         = null;
 
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["BenutzerIn"])) {
             foreach ($_REQUEST["BenutzerIn"] as $strIn_id => $benutzerIn_id) {
@@ -123,7 +116,6 @@ class AdminController extends RISBaseController
         $stadtraetInnen = StadtraetIn::sortByName($stadtraetInnen);
 
         $this->render("stadtraetInnenBenutzerInnen", array(
-            "msg_ok"         => $this->msg_ok,
             "stadtraetInnen" => $stadtraetInnen,
         ));
     }
