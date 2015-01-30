@@ -74,21 +74,6 @@ $name = $antrag->getName(true);
                             foreach ($antrag->tags as $tag) echo '<li>' . $tag->getNameLink() . '</li>';
                             echo '</ul>';
                         }
-                        /*
-                        if ($this->binContentAdmin() && false) {
-                            $pre = array();
-                            foreach ($antrag->tags as $tag) $pre[] = $tag->name;
-                            ?>
-                            <form method="post" id="tag_add_form">
-                                <input name="tags_set" type="text" id="antrag_tags"
-                                       value="<?= CHtml::encode(implode(", ", $pre)) ?>">
-                                <button class="btn btn-primary" type="submit"
-                                        name="<?= AntiXSS::createToken("tag_set") ?>">Speichern
-                                </button>
-                            </form>
-                        <?
-                        } else
-                        */
                         if ($this->aktuelleBenutzerIn()) {
                             ?>
                             &nbsp; &nbsp;
