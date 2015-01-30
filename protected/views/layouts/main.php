@@ -173,13 +173,15 @@ echo ris_intern_html_extra_headers();
     </div>
 
     <? if ($this->msg_ok != "") { ?>
-    <div class="alert alert-success" style="text-align: center">
+    <div class="alert alert-success alert-dismissable " style="text-align: center">
         <?php echo $this->msg_ok; ?>
+        <button type="button" class="close" data-dismiss="alert">×</button>
     </div>
     <? } ?>
     <? if ($this->msg_err != "") { ?>
-    <div class="alert alert-danger" style="text-align: center">
+    <div class="alert alert-danger alert-dismissable " style="text-align: center">
         <?php echo $this->msg_err; ?>
+        <button type="button" class="close" data-dismiss="alert">×</button>
     </div>
     <? } ?>
 
