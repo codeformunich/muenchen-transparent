@@ -235,13 +235,15 @@ class Dokument extends CActiveRecord implements IRISItem
 
             return RISTools::korrigiereDokumentenTitel($name);
         } else {
+            $name = preg_replace("/^[ 0-9\.]{6,8}/siu", "", $name);
             if (strlen($name) > 255) return "Dokument";
             if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
 
             if ($name == "Deckblatt VV") return "Deckblatt";
             if ($name == "Niederschrift (oeff)") return "Niederschrift";
             if ($name == "Einladung (oeff)") return "Einladung";
-            if (preg_match("/^Antwortschreiben vom [0-9\.]+$/siu", $name)) return "Antwortschreiben";
+            if (preg_match("/^Antwortschreiben .*/siu", $name)) return "Antwortschreiben";
+            if (preg_match("/^Antwort \\d{2}\-/siu", $name)) return "Antwortschreiben";
 
             return RISTools::korrigiereDokumentenTitel($name);
         }
