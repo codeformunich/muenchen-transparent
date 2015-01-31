@@ -104,6 +104,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                 "title"             => ($explizites_datum ? null : "Dokumente der letzten $tage_vergangenheit_dokumente Tage"),
                 "weitere_url"       => null,
                 "weiter_links_oben" => $explizites_datum,
+                "zeige_ba_orte"     => $ba->ba_nr,
             )); ?>
         </div>
     </div>
