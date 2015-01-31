@@ -139,9 +139,13 @@ class RISGeo
 
         $streets_found_consolidated = array();
         foreach ($streets_found as $street) {
+            $street_short = str_replace(" str", "str", mb_strtolower($street));
             $laengeres_gefunden = false;
             foreach ($streets_found as $street_cmp) {
-                if (mb_stripos($street_cmp, $street) !== false && mb_strlen($street) < mb_strlen($street_cmp)) $laengeres_gefunden = true;
+                $street_cmp_short = str_replace(" str", "str", mb_strtolower($street_cmp));
+                if (mb_strpos($street_cmp_short, $street_short) !== false && mb_strlen($street_short) < mb_strlen($street_cmp_short)) {
+                    $laengeres_gefunden = true;
+                }
             }
             if ($laengeres_gefunden) continue;
             if (preg_match("/[0-9]/siu", $street)) $streets_found_consolidated[] = $street;
