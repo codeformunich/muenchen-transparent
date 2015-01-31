@@ -105,6 +105,7 @@ function ckeditor_init($element, mode) {
         indentClasses: ['indent1', 'indent2', 'indent3', 'indent4', 'indent5', 'indent6', 'indent7', 'indent8', 'indent9', 'indent10', 'indent11', 'indent12', 'indent13', 'indent14', 'indent15']
 
     };
+    CKEDITOR.dtd.$removeEmpty.span = 0;
     if (mode == "inline") {
         $element.attr("contenteditable", true);
         CKEDITOR.inline($element[0], options);
