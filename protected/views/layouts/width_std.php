@@ -6,7 +6,7 @@
 
 $this->beginContent('//layouts/main');
 ?>
-	<div id="content" class="col-lg-10 col-lg-offset-1 col-md-12">
-		<?php echo $content; ?>
-	</div>
+    <div id="content" class="col-lg-10 col-lg-offset-1 col-md-12">
+        <?php echo $content; ?>
+    </div>
 <?php $this->endContent(); ?>
