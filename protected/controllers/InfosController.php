@@ -9,18 +9,16 @@ class InfosController extends RISBaseController
         /** @var Text $text */
         $text = Text::model()->findByPk(25);
 
-        $msg_ok = "";
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
             if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
             $text->text = $_REQUEST["text"];
             $text->save();
-            $msg_ok = "Gespeichert.";
+            $this->msg_ok = "Gespeichert.";
         }
 
         $this->render("stadtpolitik", array(
             "text"   => $text,
             "my_url" => $this->createUrl("infos/soFunktioniertStadtpolitik"),
-            "msg_ok" => $msg_ok,
         ));
     }
 
@@ -81,18 +79,16 @@ class InfosController extends RISBaseController
         /** @var Text $text */
         $text = Text::model()->findByPk($id);
 
-        $msg_ok = "";
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
             if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
             $text->text = $_REQUEST["text"];
             $text->save();
-            $msg_ok = "Gespeichert.";
+            $this->msg_ok = "Gespeichert.";
         }
 
         $this->render("std", array(
             "text"    => $text,
             "my_url"  => $my_url,
-            "msg_ok"  => $msg_ok,
             "notitle" => $notitle,
         ));
 
@@ -120,7 +116,6 @@ class InfosController extends RISBaseController
         } else {
             $this->render('feedback_form', array(
                 "current_url" => Yii::app()->createUrl("infos/feedback"),
-                "msg_err"     => "",
             ));
         }
     }

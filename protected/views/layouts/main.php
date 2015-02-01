@@ -172,6 +172,19 @@ echo ris_intern_html_extra_headers();
         </a>
     </div>
 
+    <? if ($this->msg_ok != "") { ?>
+    <div class="alert alert-success alert-dismissable " style="text-align: center">
+        <?php echo $this->msg_ok; ?>
+        <button type="button" class="close" data-dismiss="alert">×</button>
+    </div>
+    <? } ?>
+    <? if ($this->msg_err != "") { ?>
+    <div class="alert alert-danger alert-dismissable " style="text-align: center">
+        <?php echo $this->msg_err; ?>
+        <button type="button" class="close" data-dismiss="alert">×</button>
+    </div>
+    <? } ?>
+
     <div id="print_header">München Transparent - www.muenchen-transparent.de</div>
 
     <main class="container center-block row" id="page_main_content">

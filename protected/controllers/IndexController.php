@@ -132,7 +132,7 @@ class IndexController extends RISBaseController
         $do_benachrichtigung_add = AntiXSS::isTokenSet("benachrichtigung_add"); // Token ändert sich möglicherweise beim Login
         $do_benachrichtigung_del = AntiXSS::isTokenSet("benachrichtigung_del");
 
-        list($msg_ok, $msg_err) = $this->performLoginActions();
+        $this->performLoginActions();
 
         if (!$user->isGuest) {
             /** @var BenutzerIn $ich */
@@ -140,11 +140,11 @@ class IndexController extends RISBaseController
 
             if ($do_benachrichtigung_add) {
                 $ich->addBenachrichtigung($curr_krits);
-                $msg_ok .= 'Die Benachrichtigung wurde hinzugefügt.';
+                $this->msg_ok .= 'Die Benachrichtigung wurde hinzugefügt.';
             }
             if ($do_benachrichtigung_del) {
                 $ich->delBenachrichtigung($curr_krits);
-                $msg_ok .= 'Die Benachrichtigung wurde entfernt.';
+                $this->msg_ok .= 'Die Benachrichtigung wurde entfernt.';
             }
 
             $wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);
@@ -178,8 +178,6 @@ class IndexController extends RISBaseController
             "email_bestaetigt"    => $email_bestaetigt,
             "wird_benachrichtigt" => $wird_benachrichtigt,
             "ich"                 => $ich,
-            "msg_err"             => $msg_err,
-            "msg_ok"              => $msg_ok,
         );
     }
 

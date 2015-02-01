@@ -8,7 +8,6 @@ class AdminController extends RISBaseController
 
         $this->top_menu = "admin";
 
-        $msg_ok = null;
         if (AntiXSS::isTokenSet("save")) {
             /** @var Person $person */
             $person = Person::model()->findByPk($_REQUEST["person"]);
@@ -22,7 +21,7 @@ class AdminController extends RISBaseController
                 }
                 $person->save();
             }
-            $msg_ok = "Gespeichert";
+            $this->msg_ok = "Gespeichert";
         }
 
         /** @var Person[] $personen */
@@ -32,7 +31,6 @@ class AdminController extends RISBaseController
         $stadtraetInnen = StadtraetIn::model()->findAll(array("order" => "name"));
 
         $this->render("stadtraetInnenPersonen", array(
-            "msg_ok"         => $msg_ok,
             "personen"       => $personen,
             "stadtraetInnen" => $stadtraetInnen,
         ));
@@ -45,7 +43,6 @@ class AdminController extends RISBaseController
 
         $this->top_menu = "admin";
 
-        $msg_ok = null;
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["twitter"])) {
             foreach ($_REQUEST["twitter"] as $str_id => $twitter) {
                 /** @var StadtraetIn $str */
@@ -56,14 +53,13 @@ class AdminController extends RISBaseController
                 $str->web               = (trim($_REQUEST["web"][$str_id]) == "" ? null : trim($_REQUEST["web"][$str_id]));
                 $str->save();
             }
-            $msg_ok = "Gespeichert";
+            $this->msg_ok = "Gespeichert";
         }
 
         /** @var array[] $fraktionen */
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
         $this->render("stadtraetInnenSocialMedia", array(
-            "msg_ok"     => $msg_ok,
             "fraktionen" => $fraktionen,
         ));
     }
@@ -74,7 +70,6 @@ class AdminController extends RISBaseController
         if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
 
         $this->top_menu = "admin";
-        $msg_ok         = null;
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["geburtstag"])) {
 
             foreach ($_REQUEST["geburtstag"] as $str_id => $geburtstag) {
@@ -86,14 +81,13 @@ class AdminController extends RISBaseController
                 $str->geschlecht   = (isset($_REQUEST["geschlecht"][$str_id]) ? $_REQUEST["geschlecht"][$str_id] : null);
                 $str->save();
             }
-            $msg_ok = "Gespeichert";
+            $this->msg_ok = "Gespeichert";
         }
 
         /** @var array[] $fraktionen */
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
         $this->render("stadtraetInnenBeschreibungen", array(
-            "msg_ok"     => $msg_ok,
             "fraktionen" => $fraktionen,
         ));
     }
@@ -105,7 +99,6 @@ class AdminController extends RISBaseController
         if (!$ich->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) $this->errorMessageAndDie(403, "");
 
         $this->top_menu = "admin";
-        $msg_ok         = null;
 
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["BenutzerIn"])) {
             foreach ($_REQUEST["BenutzerIn"] as $strIn_id => $benutzerIn_id) {
@@ -115,7 +108,7 @@ class AdminController extends RISBaseController
                 else $strIn->benutzerIn_id = null;
                 $strIn->save();
             }
-            $msg_ok = "Gespeichert";
+            $this->msg_ok = "Gespeichert";
         }
 
         /** @var StadtraetIn[] $stadtraetInnen */
@@ -123,7 +116,6 @@ class AdminController extends RISBaseController
         $stadtraetInnen = StadtraetIn::sortByName($stadtraetInnen);
 
         $this->render("stadtraetInnenBenutzerInnen", array(
-            "msg_ok"         => $msg_ok,
             "stadtraetInnen" => $stadtraetInnen,
         ));
     }
@@ -161,12 +153,12 @@ class AdminController extends RISBaseController
 
                 $tag_alt->delete();
 
-                $msg_ok = "Tags zusammengeführt";
+                $this->msg_ok = "Tags zusammengeführt";
             } else {
                 $tag_alt->name = $_REQUEST["neuer_name"];
                 $tag_alt->save();
 
-                $msg_ok = "Tag umbenannt";
+                $this->msg_ok = "Tag umbenannt";
             }
         }
 
@@ -179,7 +171,7 @@ class AdminController extends RISBaseController
 
             $tag->delete();
 
-            $msg_ok = "Tag gelöscht";
+            $this->msg_ok = "Tag gelöscht";
         }
 
         $this->render("tags");

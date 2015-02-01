@@ -39,6 +39,9 @@ class RISBaseController extends CController
     public $load_mediaelement     = false;
     public $suche_pre             = "";
 
+    public $msg_ok                = "";
+    public $msg_err               = "";
+
     private $_assetsBase = null;
 
     public function getAssetsBase()
@@ -72,18 +75,18 @@ class RISBaseController extends CController
         /** @var CWebUser $user */
         $user = Yii::app()->getUser();
 
-        $msg_err = "";
-        $msg_ok  = "";
+        $this->msg_err = "";
+        $this->msg_ok  = "";
 
         if ($code != "") {
             $x = explode("-", $code);
             /** @var BenutzerIn $benutzerIn */
             $benutzerIn = BenutzerIn::model()->findByPk($x[0]);
-            if (!$benutzerIn) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
-            elseif ($benutzerIn->email_bestaetigt) $msg_err = "Dieser Zugang wurde bereits bestätigt.";
-            elseif (!$benutzerIn->emailBestaetigen($code)) $msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist.";
+            if (!$benutzerIn) $this->msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
+            elseif ($benutzerIn->email_bestaetigt) $this->msg_err = "Dieser Zugang wurde bereits bestätigt.";
+            elseif (!$benutzerIn->emailBestaetigen($code)) $this->msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist.";
             else {
-                $msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
+                $this->msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
                 $identity = new RISUserIdentity($benutzerIn);
                 Yii::app()->user->login($identity);
             }
@@ -102,10 +105,10 @@ class RISBaseController extends CController
                     $identity = new RISUserIdentity($benutzerIn);
                     Yii::app()->user->login($identity);
                 } else {
-                    $msg_err = "Das angegebene Passwort ist falsch.";
+                    $this->msg_err = "Das angegebene Passwort ist falsch.";
                 }
             } else {
-                $msg_err = "Für die angegebene E-Mail-Adresse existiert noch kein Zugang.";
+                $this->msg_err = "Für die angegebene E-Mail-Adresse existiert noch kein Zugang.";
             }
         }
 
@@ -115,11 +118,11 @@ class RISBaseController extends CController
                 "condition" => "email='" . addslashes($_REQUEST["email"]) . "'"
             ));
             if (count($gefundene_benutzerInnen) > 0) {
-                $msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
+                $this->msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
             } elseif (trim($_REQUEST["password"]) == "") {
-                $msg_err = "Bitte gib ein Passwort an";
+                $this->msg_err = "Bitte gib ein Passwort an";
             } elseif ($_REQUEST["password"] != $_REQUEST["password2"]) {
-                $msg_err = "Die beiden angegebenen Passwörter stimmen nicht überein.";
+                $this->msg_err = "Die beiden angegebenen Passwörter stimmen nicht überein.";
             } else {
 
                 $benutzerIn = BenutzerIn::createBenutzerIn(trim($_REQUEST["email"]), $_REQUEST["password"]);
@@ -128,16 +131,14 @@ class RISBaseController extends CController
                     $identity = new RISUserIdentity($benutzerIn);
                     Yii::app()->user->login($identity);
 
-                    $msg_ok = "Der Zugang wurde angelegt. Es wurde eine Bestätigungs-Mail an die angegebene Adresse geschickt. Bitte klicke auf den Link in dieser Mail an, um E-Mail-Benachrichtigungen zu erhalten.";
+                    $this->msg_ok = "Der Zugang wurde angelegt. Es wurde eine Bestätigungs-Mail an die angegebene Adresse geschickt. Bitte klicke auf den Link in dieser Mail an, um E-Mail-Benachrichtigungen zu erhalten.";
                 } else {
-                    $msg_err = "Leider ist ein (ungewöhnlicher) Fehler aufgetreten.";
+                    $this->msg_err = "Leider ist ein (ungewöhnlicher) Fehler aufgetreten.";
                     $errs    = $benutzerIn->getErrors();
-                    foreach ($errs as $err) foreach ($err as $e) $msg_err .= $e;
+                    foreach ($errs as $err) foreach ($err as $e) $this->msg_err .= $e;
                 }
             }
         }
-
-        return array($msg_ok, $msg_err);
     }
 
     /**
@@ -147,13 +148,11 @@ class RISBaseController extends CController
      */
     protected function requireLogin($target_url, $code = "")
     {
-        list($msg_ok, $msg_err) = $this->performLoginActions($code);
+        $this->performLoginActions($code);
 
         if (Yii::app()->getUser()->isGuest) {
             $this->render("../index/login", array(
                 "current_url" => $target_url,
-                "msg_err"     => $msg_err,
-                "msg_ok"      => $msg_ok,
             ));
             Yii::app()->end();
         } else {
@@ -163,8 +162,6 @@ class RISBaseController extends CController
                 $this->redirect("/");
             }
         }
-
-        return array($msg_ok, $msg_err);
     }
 
     /**
