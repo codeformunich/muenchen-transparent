@@ -15,7 +15,11 @@ class Reindex_DocumentCommand extends CConsoleCommand
             echo "$nr / $anz => $dok_id\n";
             /** @var Dokument $dokument */
             $dokument = Dokument::model()->findByPk($dok_id);
-            $dokument->reDownloadIndex();
+            if (!$dokument) continue;
+
+            //$dokument->reDownloadIndex();
+            $dokument->geo_extract();
+            $dokument->solrIndex();
         }
     }
 }

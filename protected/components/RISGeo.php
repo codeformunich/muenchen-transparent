@@ -139,6 +139,15 @@ class RISGeo
 
         $streets_found_consolidated = array();
         foreach ($streets_found as $street) {
+            $street_short       = str_replace(" str", "str", mb_strtolower($street));
+            $laengeres_gefunden = false;
+            foreach ($streets_found as $street_cmp) {
+                $street_cmp_short = str_replace(" str", "str", mb_strtolower($street_cmp));
+                if (mb_strpos($street_cmp_short, $street_short) !== false && mb_strlen($street_short) < mb_strlen($street_cmp_short)) {
+                    $laengeres_gefunden = true;
+                }
+            }
+            if ($laengeres_gefunden) continue;
             if (preg_match("/[0-9]/siu", $street)) $streets_found_consolidated[] = $street;
             else {
                 $mit_hausnummer_gefunden = false;
@@ -160,6 +169,23 @@ class RISGeo
         $formula .= "(COS($brad)*COS(RADIANS($feldb))*COS(RADIANS($feldl)-$lrad))) * 6371)";
         $formula .= ',0)';
         return $formula;
+    }
+
+    /**
+     * @param float $lat1
+     * @param float $lon1
+     * @param float $lat2
+     * @param float $lon2
+     * @return float
+     */
+    public static function getDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $dist  = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+        $dist  = acos($dist);
+        $dist  = rad2deg($dist);
+        $km = $dist * 60 * 1.1515 * 1.609344;
+        return $km;
     }
 
 }

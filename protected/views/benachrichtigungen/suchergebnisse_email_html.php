@@ -67,7 +67,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.c
 
 							foreach ($dok["queries"] as $qu) {
 								/** @var RISSucheKrits $qu */
-								$name = $qu->getTitle();
+								$name = $qu->getTitle($dokument);
 								if (!in_array($name, $queries)) $queries[] = $name;
 							}
 						}
@@ -139,7 +139,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.c
 
 								foreach ($dok["queries"] as $qu) {
 									/** @var RISSucheKrits $qu */
-									$name = $qu->getTitle();
+									$name = $qu->getTitle($dokument);
 									if (!in_array($name, $queries)) $queries[] = $name;
 								}
 							}

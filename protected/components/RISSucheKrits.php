@@ -279,9 +279,10 @@ class RISSucheKrits
 
 
     /**
+     * @param Dokument|null $dokument
      * @return string
      */
-    public function getTitle()
+    public function getTitle($dokument = null)
     {
         if (count($this->krits) == 1) switch ($this->krits[0]["typ"]) {
             case "betreff":
@@ -300,7 +301,22 @@ class RISSucheKrits
                 return "Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
             case "geo":
                 $ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
-                return "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
+                $title = "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
+                if ($dokument) {
+                    /** @var OrtGeo[] $gefundene_orte */
+                    $gefundene_orte = array();
+                    foreach ($dokument->orte as $dok_ort_ort) {
+                        $dok_ort = $dok_ort_ort->ort;
+                        $distance = RISGeo::getDistance($dok_ort->lat, $dok_ort->lon, $this->krits[0]["lat"], $this->krits[0]["lng"]);
+                        if (($distance * 1000) <= $this->krits[0]["radius"]) $gefundene_orte[] = $dok_ort;
+                    }
+                    if (count($gefundene_orte) > 0) {
+                        $namen = array();
+                        foreach ($gefundene_orte as $gef_ort) $namen[] = $gef_ort->ort;
+                        $title .= ": " . implode(", ", $namen);
+                    }
+                }
+                return $title;
             case "referat":
                 /** @var Referat $ref */
                 $ref = Referat::model()->findByPk($this->krits[0]["referat_id"]);

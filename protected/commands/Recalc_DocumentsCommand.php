@@ -22,10 +22,12 @@ class Recalc_DocumentsCommand extends CConsoleCommand
             echo "$nr / $anz => $dok_id\n";
             /** @var Dokument $dokument */
             $dokument = Dokument::model()->findByPk($dok_id);
+            if (!$dokument) continue;
 
             $dokument->download_if_necessary();
+            $dokument->geo_extract(true);
+
             $absolute_filename = $dokument->getLocalPath();
-            echo $absolute_filename . "\n";
             $metadata                 = RISPDF2Text::document_pdf_metadata($absolute_filename);
             $dokument->seiten_anzahl  = $metadata["seiten"];
             $dokument->datum_dokument = $metadata["datum"];
