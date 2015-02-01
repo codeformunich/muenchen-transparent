@@ -615,6 +615,8 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     {
         /** @var RISAenderung[] $aenderungen */
         $aenderungen = RISAenderung::model()->findAllByAttributes(array("typ" => $this->typ, "ris_id" => $this->id));
-        foreach ($aenderungen as $ae) var_dump($ae->getAttributes());
+        foreach ($aenderungen as $ae) {
+            // @TODO var_dump($ae->getAttributes());
+        }
     }
 }

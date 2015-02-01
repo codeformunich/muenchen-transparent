@@ -129,8 +129,6 @@ class RISTools
         if (count($x) == 2) $time = explode(":", $x[1]);
         else $time = array(0, 0, 0);
 
-        if ($date[0] == "NOW()") var_dump(debug_backtrace());
-
         return mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
     }
 

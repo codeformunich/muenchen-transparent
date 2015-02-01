@@ -411,24 +411,32 @@ class BenutzerIn extends CActiveRecord
                     $dokument    = Dokument::getCachedByID($dokument_id);
                     if (!$dokument) continue;
                     if ($dokument->antrag_id > 0) {
-                        if (!isset($ergebnisse["antraege"][$dokument->antrag_id])) $ergebnisse["antraege"][$dokument->antrag_id] = array(
-                            "antrag"    => $dokument->antrag,
-                            "dokumente" => array()
-                        );
-                        if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = array(
-                            "dokument" => Dokument::model()->findByPk($dokument_id),
-                            "queries"  => array()
-                        );
+                        if (!isset($ergebnisse["antraege"][$dokument->antrag_id])) {
+                            $ergebnisse["antraege"][$dokument->antrag_id] = array(
+                                "antrag"    => $dokument->antrag,
+                                "dokumente" => array()
+                            );
+                        }
+                        if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) {
+                            $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = array(
+                                "dokument" => Dokument::model()->findByPk($dokument_id),
+                                "queries"  => array()
+                            );
+                        }
                         $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
                     } elseif ($dokument->termin_id > 0) {
-                        if (!isset($ergebnisse["termine"][$dokument->termin_id])) $ergebnisse["termine"][$dokument->termin_id] = array(
-                            "termin"    => $dokument->termin,
-                            "dokumente" => array()
-                        );
-                        if (!isset($ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id])) $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id] = array(
-                            "dokument" => Dokument::model()->findByPk($dokument_id),
-                            "queries"  => array()
-                        );
+                        if (!isset($ergebnisse["termine"][$dokument->termin_id])) {
+                            $ergebnisse["termine"][$dokument->termin_id] = array(
+                                "termin"    => $dokument->termin,
+                                "dokumente" => array()
+                            );
+                        }
+                        if (!isset($ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id])) {
+                            $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id] = array(
+                                "dokument" => Dokument::model()->findByPk($dokument_id),
+                                "queries"  => array()
+                            );
+                        }
                         $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
                     }
                 }
