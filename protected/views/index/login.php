@@ -8,26 +8,6 @@
 ?>
 
 <section class="col-md-4 col-md-offset-4">
-    <?
-
-    if ($msg_ok != "") {
-        ?>
-        <section
-        <div class="alert alert-success">
-            <?php echo $msg_ok; ?>
-        </div>
-        <?
-    }
-    if ($msg_err != "") {
-        ?>
-        <div class="alert alert-danger">
-            <?php echo $msg_err; ?>
-        </div>
-        <?
-    }
-
-
-    ?>
     <div class="well">
     <script>
     $(function () {
