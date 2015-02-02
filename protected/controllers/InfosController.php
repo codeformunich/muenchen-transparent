@@ -105,8 +105,7 @@ class InfosController extends RISBaseController
             fwrite($fp, print_r($_REQUEST, true));
             fclose($fp);
 
-            $text = "Antwort erwünscht: " . (isset($_REQUEST["answer_wanted"]) ? "Ja" : "Nein") . "\n";
-            $text .= "E-Mail: " . $_REQUEST["email"] . "\n";
+            $text = "E-Mail: " . $_REQUEST["email"] . "\n";
             $text .= "\n\n";
             $text .= $_REQUEST["message"];
 

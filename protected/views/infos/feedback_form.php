@@ -17,12 +17,6 @@ else
             <fieldset>
                 <legend class="form_row">Verbesserungsvorschläge? Fehler gefunden?</legend>
 
-                <div class="checkbox form_row" style="margin-bottom: 10px;">
-                    <label>
-                        <input type="checkbox" name="answer_wanted"> Ist eine Antwort gewünscht?
-                    </label>
-                </div>
-
                 <div class="form_row" id="email_row" style="margin-bottom: 10px;">
                     <label for="email" class="control-label" style="margin-bottom: 5px;">Ihre E-Mail-Adresse</label>
                     <input id="email" type="email" name="email" class="form-control"  <?= $email_default ?> >
@@ -35,20 +29,6 @@ else
                     Abschicken
                 </button>
         </form>
-        <script>
-            $(function () {
-                var $form = $("#feedback_form");
-                $form.find("input[name=answer_wanted]").change(function () {
-                    if ($(this).prop("checked")) {
-                        $("#email_row").show();
-                        $("#email").prop("required", true);
-                    } else {
-                        $("#email_row").hide();
-                        $("#email").prop("required", false);
-                    }
-                }).trigger("change");
-            });
-        </script>
     </div>
 
 </section>
