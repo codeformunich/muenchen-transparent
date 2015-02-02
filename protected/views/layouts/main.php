@@ -96,7 +96,6 @@
 <?
 echo ris_intern_html_extra_headers();
 ?>
-<img src="/images/fb-img2.png" alt="München Transparent" style="position: absolute; top: -1000px; left: -1000px;">
 <a href="#page_main_content" class="sr-only">Zum Seiteninhalt</a>
 
 <div class="over_footer_wrapper">
