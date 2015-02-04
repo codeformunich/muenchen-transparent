@@ -411,4 +411,9 @@ class StadtratTerminParser extends RISParser
             $first = false;
         }
     }
+
+    public function parseQuickUpdate()
+    {
+
+    }
 }

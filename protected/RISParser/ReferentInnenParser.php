@@ -74,4 +74,9 @@ class ReferentInnenParser extends RISParser
         echo "Updates: ReferentInnen\n";
         $this->parseAlle();
     }
+
+    public function parseQuickUpdate()
+    {
+
+    }
 }

@@ -2,6 +2,8 @@
 
 class BATerminParser extends RISParser
 {
+    private static $MAX_OFFSET        = 2600;
+    private static $MAX_OFFSET_UPDATE = 300;
 
     /**
      * @param Tagesordnungspunkt[] $tops
@@ -345,8 +347,7 @@ class BATerminParser extends RISParser
 
     public function parseAlle()
     {
-        //$anz = 4850;
-        $anz = 2600;
+        $anz = static::$MAX_OFFSET;
         for ($i = $anz; $i >= 0; $i -= 10) {
             if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
             $this->parseSeite($i, true);
@@ -357,9 +358,16 @@ class BATerminParser extends RISParser
     public function parseUpdate()
     {
         echo "Updates: BA-Termine\n";
-        for ($i = 300; $i >= 0; $i -= 10) {
+        for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
             $this->parseSeite($i);
         }
     }
 
+    public function parseQuickUpdate()
+    {
+        echo "Updates: BA-Termine\n";
+        for ($i = 0; $i <= 3; $i++) {
+            $this->parseSeite($i * 10);
+        }
+    }
 }

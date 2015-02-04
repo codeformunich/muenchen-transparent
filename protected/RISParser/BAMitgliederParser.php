@@ -108,4 +108,9 @@ class BAMitgliederParser extends RISParser
     {
         $this->parseAlle();
     }
+
+    public function parseQuickUpdate()
+    {
+
+    }
 }

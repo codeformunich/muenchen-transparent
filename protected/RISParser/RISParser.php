@@ -10,6 +10,8 @@ abstract class RISParser
 
     public abstract function parseUpdate();
 
+    public abstract function parseQuickUpdate();
+
     /**
      * @param string $text
      * @return string

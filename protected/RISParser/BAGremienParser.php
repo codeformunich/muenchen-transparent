@@ -175,5 +175,10 @@ class BAGremienParser extends RISParser
     {
         $this->parseAlle();
     }
+
+    public function parseQuickUpdate()
+    {
+
+    }
 }
 

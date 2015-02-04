@@ -205,5 +205,9 @@ class BAInitiativeParser extends RISParser
         }
     }
 
+    public function parseQuickUpdate()
+    {
+
+    }
 
 }

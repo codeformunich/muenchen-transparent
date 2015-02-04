@@ -105,4 +105,8 @@ class StadtrechtParser extends RISParser
 
     }
 
+    public function parseQuickUpdate()
+    {
+
+    }
 }

@@ -161,4 +161,9 @@ class RathausumschauParser extends RISParser
     {
         $this->parseAlle();
     }
+
+    public function parseQuickUpdate()
+    {
+        $this->parseAlle();
+    }
 }

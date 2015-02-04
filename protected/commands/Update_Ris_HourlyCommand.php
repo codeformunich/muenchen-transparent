@@ -1,17 +1,17 @@
 <?php
 
-//define("VERYFAST", true);
+define("VERYFAST", true);
 
-class Update_Ris_DailyCommand extends CConsoleCommand
+class Update_Ris_HourlyCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        echo "Gestartet: " . date("Y-m-d H:i:s");
+        echo "Gestartet: " . date("Y-m-d H:i:s") . "\n";
 
 
         try {
             $parser = new ReferentInnenParser();
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
             echo "Done ReferentInnen: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
@@ -21,7 +21,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
         try {
             $parser = new StadtratTerminParser();
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
             echo "Done Termine: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
@@ -31,7 +31,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
         try {
             $parser = new StadtratsvorlageParser();
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
             echo "Done Vorlagen: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
@@ -41,7 +41,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
         try {
             $parser = new StadtratsantragParser();
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
             echo "Done Stadtratsanträge: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
@@ -52,7 +52,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
         try {
             $parser = new StadtraetInnenParser();
             //$parser->setParseAlleAntraege(true);
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
             echo "Done StadträtInnen: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
@@ -62,7 +62,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
         try {
             $parser = new BATerminParser();
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
             echo "Done BA Termine: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
@@ -72,9 +72,9 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
         try {
             $parser = new BAInitiativeParser();
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
-            echo "Done BA Initiative: " . date("Y-m-d H:i:s");
+            echo "Done BA Initiative: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
             RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Initiative", print_r($e, true), null, "system");
         }
@@ -82,9 +82,9 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
         try {
             $parser = new BAAntragParser();
-            $parser->parseUpdate();
+            $parser->parseQuickUpdate();
 
-            echo "Done BA Anträge: " . date("Y-m-d H:i:s");
+            echo "Done BA Anträge: " . date("Y-m-d H:i:s") . "\n";
         } catch (Exception $e) {
             RISTools::send_email(Yii::app()->params['adminEmail'], "RIS Exception BA-Anträge", print_r($e, true), null, "system");
         }

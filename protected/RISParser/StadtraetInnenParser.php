@@ -213,4 +213,9 @@ class StadtraetInnenParser extends RISParser
         echo "Updates: StadträtInnen\n";
         $this->parseAlle();
     }
+
+    public function parseQuickUpdate()
+    {
+
+    }
 }

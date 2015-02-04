@@ -223,4 +223,15 @@ class StadtratsantragParser extends RISParser
         $antraege = Antrag::model()->findAll($crit);
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
+
+    public function parseQuickUpdate()
+    {
+        $loaded_ids = array();
+        echo "Updates (quick): Stadtratsanträge\n";
+
+        for ($i = 0; $i <= 3; $i++) {
+            $ids        = $this->parseSeite($i * 10, false);
+            $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
+        }
+    }
 }

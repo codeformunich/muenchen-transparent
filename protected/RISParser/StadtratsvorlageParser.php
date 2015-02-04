@@ -309,5 +309,9 @@ class StadtratsvorlageParser extends RISParser
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
 
+    public function parseQuickUpdate()
+    {
+
+    }
 
 }
