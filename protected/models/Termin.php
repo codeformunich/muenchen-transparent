@@ -320,8 +320,10 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             $key = $appointment->termin . $appointment->sitzungsort;
             if (!isset($data[$key])) $data[$key] = $appointment->toArr();
             $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $appointment->id));
-            if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = array();
-            $data[$key]["gremien"][$appointment->gremium->name][] = $url;
+            if ($appointment->gremium) {
+                if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = array();
+                $data[$key]["gremien"][$appointment->gremium->name][] = $url;
+            }
         }
         foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
         return $data;
