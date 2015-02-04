@@ -224,6 +224,7 @@ class Dokument extends CActiveRecord implements IRISItem
         if (preg_match("/^[0-9]+n?v?to[0-9]+oeff$/siu", $name)) return "Tagesordnung";  // 21vto0115oeff
         if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Protokoll"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
         if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $name)) return "Protokoll"; // pro140918 oeff
+        if (preg_match("/^Einladung [0-9-]+$/siu", $name)) return "Einladung"; // Einladung 02-15
 
         $name = preg_replace("/^( vom)? \\d\\d\.\\d\\d\.\\d{4}$/siu", "", $name);
 
