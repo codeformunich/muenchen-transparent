@@ -14,6 +14,7 @@
  * @var string $datum_von
  * @var string $datum_bis
  * @var array $termine
+ * @var array $bvs
  * @var Termin[] $termin_dokumente
  * @var Fraktion $fraktionen
  * @var int $tage_zukunft
@@ -144,6 +145,17 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             <? } ?>
 
             <br>
+
+            <?
+            if (count($bvs) > 0) {
+                echo '<h3>BürgerInnenversammlung</h3><br>';
+                $this->renderPartial("../termine/termin_liste", array(
+                    "termine"     => $bvs,
+                    "gremienname" => false,
+                ));
+                echo '<br>';
+            }
+            ?>
 
             <h3><abbr title="Bezirksausschuss - Stadtteil-&quot;Parlament&quot;">BA</abbr>-Termine</h3>
             <br>

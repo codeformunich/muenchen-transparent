@@ -40,6 +40,7 @@ class BATerminParser extends RISParser
         $html_to        = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
 
         $daten                         = new Termin();
+        $daten->typ                    = Termin::$TYP_AUTO;
         $daten->id                     = $termin_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id             = NULL;

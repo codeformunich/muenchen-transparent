@@ -16,6 +16,7 @@ class StadtratTerminParser extends RISParser
         $html_to_geheim = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_nto.jsp?risid=$termin_id");
 
         $daten                         = new Termin();
+        $daten->typ                    = Termin::$TYP_AUTO;
         $daten->id                     = $termin_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id             = NULL;

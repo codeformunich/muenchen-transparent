@@ -1,5 +1,3 @@
--- --------------------------------------------------------
-
 --
 -- Table structure for table `antraege`
 --
@@ -202,8 +200,8 @@ CREATE TABLE `dokumente` (
   `tagesordnungspunkt_id` int(11) DEFAULT NULL,
   `vorgang_id` int(11) DEFAULT NULL,
   `rathausumschau_id` mediumint(11) DEFAULT NULL,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0',
   `url` varchar(500) NOT NULL,
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
   `name` varchar(300) NOT NULL,
   `datum` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `datum_dokument` timestamp NULL DEFAULT NULL,
@@ -453,7 +451,7 @@ CREATE TABLE `stadtraetInnen_referate` (
 CREATE TABLE `strassen` (
   `id` smallint(5) unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
-  `plz` varchar(10) NOT NULL,
+  `plz` varchar(20) NOT NULL,
   `osm_ref` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -525,6 +523,7 @@ CREATE TABLE `tags` (
 
 CREATE TABLE `termine` (
   `id` int(11) NOT NULL,
+  `typ` smallint(5) unsigned NOT NULL DEFAULT '0',
   `datum_letzte_aenderung` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `termin_reihe` int(11) NOT NULL DEFAULT '0',
   `gremium_id` int(11) DEFAULT NULL,
@@ -549,6 +548,7 @@ CREATE TABLE `termine` (
 
 CREATE TABLE `termine_history` (
   `id` int(11) NOT NULL,
+  `typ` smallint(5) unsigned NOT NULL DEFAULT '0',
   `datum_letzte_aenderung` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `termin_reihe` int(11) NOT NULL DEFAULT '0',
   `gremium_id` int(11) NOT NULL,
@@ -780,13 +780,13 @@ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `name_UNIQUE` (`name`);
 -- Indexes for table `termine`
 --
 ALTER TABLE `termine`
-ADD PRIMARY KEY (`id`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_gremien1_idx` (`gremium_id`);
+ADD PRIMARY KEY (`id`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_gremien1_idx` (`gremium_id`), ADD KEY `ba_nr` (`ba_nr`,`typ`);
 
 --
 -- Indexes for table `termine_history`
 --
 ALTER TABLE `termine_history`
-ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_history_bezirksausschuesse1_idx` (`ba_nr`);
+ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_history_bezirksausschuesse1_idx` (`ba_nr`), ADD KEY `ba_nr` (`ba_nr`,`typ`);
 
 --
 -- Indexes for table `texte`

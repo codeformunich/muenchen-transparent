@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'termine':
  * @property integer $id
+ * @property integer $typ
  * @property string $datum_letzte_aenderung
  * @property integer $termin_reihe
  * @property integer $gremium_id
@@ -24,9 +25,18 @@
  * @property Tagesordnungspunkt[] $tagesordnungspunkte
  * @property AntragOrt[] $antraegeOrte
  * @property Gremium $gremium
+ * @property Bezirksausschuss $ba
  */
 class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
+    public static $TYP_AUTO   = 0;
+    public static $TYP_BV     = 1;
+    public static $TYPEN_ALLE = array(
+        0 => "Automatgisch vom RIS",
+        1 => "BürgerInnenversammlung",
+    );
+
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -53,12 +63,12 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('id, datum_letzte_aenderung, wahlperiode, status', 'required'),
-            array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true),
+            array('id, typ, datum_letzte_aenderung', 'required'),
+            array('id, typ, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true),
             array('referat, referent, vorsitz', 'length', 'max' => 200),
             array('wahlperiode', 'length', 'max' => 20),
             array('status', 'length', 'max' => 100),
-            array('termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, status', 'safe'),
+            array('termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode', 'safe'),
         );
     }
 
@@ -74,6 +84,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             'tagesordnungspunkte' => array(self::HAS_MANY, 'Tagesordnungspunkt', 'sitzungstermin_id'),
             'antraegeOrte'        => array(self::HAS_MANY, 'AntragOrt', 'termin_id'),
             'gremium'             => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
+            'ba'                  => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
         );
     }
 
@@ -84,6 +95,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     {
         return array(
             'id'                     => 'ID',
+            'typ'                    => 'Typ',
             'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
             'termin_reihe'           => 'Termin Reihe',
             'gremium_id'             => 'Gremium',
@@ -278,6 +290,25 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     }
 
 
+    public function toArr()
+    {
+        $ts = RISTools::date_iso2timestamp($this->termin);
+        return array(
+            "id"         => $this->id,
+            "typ"        => $this->typ,
+            "link"       => $this->getLink(),
+            "datum"      => strftime("%e. %b., %H:%M", $ts),
+            "datum_long" => strftime("%e. %B, %H:%M Uhr", $ts),
+            "datum_iso"  => $this->termin,
+            "datum_ts"   => $ts,
+            "gremien"    => array(),
+            "ort"        => $this->sitzungsort,
+            "tos"        => array(),
+            "dokumente"  => $this->antraegeDokumente,
+        );
+    }
+
+
     /**
      * @var Termin[] $appointments
      * @return array[]
@@ -287,21 +318,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         $data = array();
         foreach ($appointments as $appointment) {
             $key = $appointment->termin . $appointment->sitzungsort;
-            if (!isset($data[$key])) {
-                $ts         = RISTools::date_iso2timestamp($appointment->termin);
-                $data[$key] = array(
-                    "id"         => $appointment->id,
-                    "link"       => $appointment->getLink(),
-                    "datum"      => strftime("%e. %b., %H:%M", $ts),
-                    "datum_long" => strftime("%e. %B, %H:%M Uhr", $ts),
-                    "datum_iso"  => $appointment->termin,
-                    "datum_ts"   => $ts,
-                    "gremien"    => array(),
-                    "ort"        => $appointment->sitzungsort,
-                    "tos"        => array(),
-                    "dokumente"  => $appointment->antraegeDokumente,
-                );
-            }
+            if (!isset($data[$key])) $data[$key] = $appointment->toArr();
             $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $appointment->id));
             if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = array();
             $data[$key]["gremien"][$appointment->gremium->name][] = $url;

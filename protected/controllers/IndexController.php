@@ -425,13 +425,13 @@ class IndexController extends RISBaseController
             */
 
         } elseif (isset($_REQUEST["suchbegriff"]) && $_REQUEST["suchbegriff"] != "") {
-            $suchbegriff     = $_REQUEST["suchbegriff"];
+            $suchbegriff = $_REQUEST["suchbegriff"];
             if ($_SERVER["REQUEST_METHOD"] == 'POST') $this->redirect($this->createUrl("index/suche", array("suchbegriff" => $suchbegriff)));
             $this->suche_pre = $suchbegriff;
             $krits           = new RISSucheKrits();
             $krits->addVolltextsucheKrit($suchbegriff);
         } else {
-            $krits       = RISSucheKrits::createFromUrl($_REQUEST);
+            $krits = RISSucheKrits::createFromUrl($_REQUEST);
         }
 
         $this->load_leaflet_css = true;
@@ -604,6 +604,12 @@ class IndexController extends RISBaseController
         $termin_dokumente = Termin::model()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
         $termine          = Termin::groupAppointments($termine);
 
+        /** @var Termin[] $bvs */
+        $bvs     = Termin::model()->findAllByAttributes(array("ba_nr" => $ba_nr, "typ" => Termin::$TYP_BV), array("order" => "termin DESC"));
+        $bvs_arr = array();
+        foreach ($bvs as $bv) $bvs_arr[] = $bv->toArr();
+
+
         /** @var Bezirksausschuss $ba */
         $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
         $gremien = $ba->gremien;
@@ -613,6 +619,7 @@ class IndexController extends RISBaseController
             "gremien"                      => $gremien,
             "termine"                      => $termine,
             "termin_dokumente"             => $termin_dokumente,
+            "bvs"                          => $bvs_arr,
             "tage_vergangenheit"           => $tage_vergangenheit,
             "tage_zukunft"                 => $tage_zukunft,
             "tage_vergangenheit_dokumente" => static::$BA_DOKUMENTE_TAGE_PRO_SEITE,

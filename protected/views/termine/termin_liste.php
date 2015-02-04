@@ -11,7 +11,11 @@
 		$termine_ids[] = $termin["id"];
 		echo '<li class="list-group-item"><div class="row-action-primary"><i class="glyphicon glyphicon-calendar" title="Termin"></i></div>';
 		echo '<div class="row-content"><h4 class="list-group-item-heading">';
-		echo CHtml::link($termin["datum_long"], $termin["link"]);
+		if ($termin["typ"] == Termin::$TYP_BV) {
+			echo CHtml::encode($termin["datum_long"]);
+		} else {
+			echo CHtml::link($termin["datum_long"], $termin["link"]);
+		}
 		echo '</h4>';
 
 		if ($gremienname) {
@@ -24,7 +28,7 @@
 			echo '</div>';
 		}
 
-		echo '<address>' . str_replace(", ", "<br>", CHtml::encode($termin["ort"])) . '</address>';
+		echo '<address>' . str_replace(", ", "<br>", nl2br(CHtml::encode($termin["ort"]))) . '</address>';
 
 		if (count($termin["dokumente"]) > 0) {
 			echo '<ul class="dokumentenliste_small">';

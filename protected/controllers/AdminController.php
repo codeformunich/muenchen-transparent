@@ -138,18 +138,18 @@ class AdminController extends RISBaseController
         $this->top_menu = "admin";
 
         if (AntiXSS::isTokenSet("tag_umbennen")) {
-            $tag_alt = Tag::model()->findByAttributes(array("id" => $_REQUEST["tag_id"]));
+            $tag_alt     = Tag::model()->findByAttributes(array("id" => $_REQUEST["tag_id"]));
             $gleichnamig = Tag::model()->findByAttributes(array("name" => $_REQUEST["neuer_name"]));
 
-            if($gleichnamig != null) { // Tag mit neuem Namen existiert bereits-> merge
+            if ($gleichnamig != null) { // Tag mit neuem Namen existiert bereits-> merge
                 // Zuerst bei allen Anträgen mit beiden tags den Eintrag für den alten tag löschen
                 Yii::app()->db->createCommand('DELETE t1 FROM antraege_tags t1 INNER JOIN antraege_tags t2 ON t1.antrag_id=t2.antrag_id WHERE t1.tag_id=:tag_id_alt AND t2.tag_id=:tag_id_neu')
-                              ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
-                              ->execute();
+                    ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
+                    ->execute();
 
                 Yii::app()->db->createCommand('UPDATE antraege_tags SET tag_id=:tag_id_neu WHERE tag_id=:tag_id_alt')
-                              ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
-                              ->execute();
+                    ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
+                    ->execute();
 
                 $tag_alt->delete();
 
@@ -166,8 +166,8 @@ class AdminController extends RISBaseController
             $tag = Tag::model()->findByAttributes(array("id" => $_REQUEST["tag_id"]));
 
             Yii::app()->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id')
-                          ->bindValues(array(':tag_id' => $tag->id))
-                          ->execute();
+                ->bindValues(array(':tag_id' => $tag->id))
+                ->execute();
 
             $tag->delete();
 
@@ -175,5 +175,53 @@ class AdminController extends RISBaseController
         }
 
         $this->render("tags");
+    }
+
+    public function actionBuergerInnenversammlungen()
+    {
+        if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
+
+        $this->top_menu = "admin";
+
+        if (AntiXSS::isTokenSet("delete")) {
+            /** @var Termin $termin */
+            $termin = Termin::model()->findByPk(AntiXSS::getTokenVal("delete"));
+            $termin->delete();
+            $this->msg_ok = "Gelöscht.";
+        }
+
+        if (AntiXSS::isTokenSet("save")) {
+            if (isset($_REQUEST["neu"]) && $_REQUEST["neu"]["datum"] != "" && $_REQUEST["neu"]["ba_nr"] > 0) {
+                $result = Yii::app()->db->createCommand("SELECT MIN(id) minid FROM termine")->queryAll();
+                $id     = $result[0]["minid"];
+                if ($id >= 0) $id = 0;
+                $id--;
+
+                $termin                         = new Termin();
+                $termin->id                     = $id;
+                $termin->ba_nr                  = IntVal($_REQUEST["neu"]["ba_nr"]);
+                $termin->typ                    = Termin::$TYP_BV;
+                $termin->sitzungsort            = $_REQUEST["neu"]["ort"];
+                $termin->termin                 = $_REQUEST["neu"]["datum"];
+                $termin->datum_letzte_aenderung = new CDbExpression('NOW()');
+                if (!$termin->save()) {
+                    $this->msg_err = print_r($termin->getErrors(), true);
+                }
+            }
+            if (isset($_REQUEST["termin"])) foreach ($_REQUEST["termin"] as $id => $save) {
+                /** @var Termin $termin */
+                $termin              = Termin::model()->findByPk($id);
+                $termin->sitzungsort = $save["ort"];
+                $termin->termin      = $save["datum"];
+                $termin->save();
+            }
+            $this->msg_ok = "Gespeichert";
+        }
+
+        $termine = Termin::model()->findAllByAttributes(array("typ" => Termin::$TYP_BV), array("order" => "termin DESC"));
+        $this->render("buergerInnenversammlungen", array(
+            "termine" => $termine,
+        ));
+
     }
 }

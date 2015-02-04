@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'termine_history':
  * @property integer $id
+ * @property integer $typ
  * @property string $datum_letzte_aenderung
  * @property integer $termin_reihe
  * @property integer $gremium_id
@@ -47,8 +48,8 @@ class TerminHistory extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('id, datum_letzte_aenderung', 'required'),
-            array('id, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true),
+            array('id, typ, datum_letzte_aenderung', 'required'),
+            array('id, typ, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true),
             array('referat, referent, vorsitz', 'length', 'max' => 200),
             array('wahlperiode', 'length', 'max' => 20),
             array('status', 'length', 'max' => 100),
@@ -73,6 +74,7 @@ class TerminHistory extends CActiveRecord
     {
         return array(
             'id'                     => 'ID',
+            'typ'                    => 'Typ',
             'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
             'termin_reihe'           => 'Termin Reihe',
             'gremium_id'             => 'Gremium',

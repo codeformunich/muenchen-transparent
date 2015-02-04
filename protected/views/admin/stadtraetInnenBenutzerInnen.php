@@ -1,6 +1,6 @@
 <?php
 /**
- * @var AntraegeController $this
+ * @var AdminController $this
  * @var StadtraetIn $stadtraetInnen
  */
 
