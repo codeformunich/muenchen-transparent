@@ -191,7 +191,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     {
         $ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
         $params = array(
-            'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
+            'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin.typ = ' . IntVal(Termin::$TYP_AUTO) .
+                ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
             'order'     => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
             'with'      => array("gremium"),
             'alias'     => 'termin'
