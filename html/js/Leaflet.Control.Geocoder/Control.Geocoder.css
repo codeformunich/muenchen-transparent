@@ -37,7 +37,7 @@
 .leaflet-control-geocoder-icon {
 	width: 26px;
 	height: 26px;
-	background-image: url(images/geocoder.png);
+	background-image: url(/js/Leaflet.Control.Geocoder/images/geocoder.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	float: right;

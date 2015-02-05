@@ -42,11 +42,16 @@
 
 
     <?
-    if ($this->load_leaflet_css) {
-        echo '<link rel="stylesheet" href="/js/leaflet/dist/leaflet.css">';
-        echo '<link rel="stylesheet" href="/js/Leaflet.Control.Geocoder/Control.Geocoder.css">';
-        echo '<link rel="stylesheet" href="/js/leaflet.locatecontrol/dist/L.Control.Locate.min.css">';
-    }
+    if (Yii::app()->params["concatScripts"]) { ?>
+        <link rel="stylesheet" href="/css/build/std.css">
+    <? } else { ?>
+        <link rel="stylesheet" href="/js/leaflet/dist/leaflet.css">
+        <link rel="stylesheet" href="/js/Leaflet.Control.Geocoder/Control.Geocoder.css">
+        <link rel="stylesheet" href="/js/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css">
+        <link rel="stylesheet" href="/css/styles_website.css">
+    <? }
+
     if ($this->load_mediaelement) {
         echo '<link rel="stylesheet" href="/js/mediaelement/build/mediaelementplayer.min.css">';
     }
@@ -60,8 +65,6 @@
         <link rel="stylesheet" href="/pdfjs/viewer.css"/>
     <? } ?>
 
-    <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css">
-    <link rel="stylesheet" href="/css/styles_website.css">
 
     <?
     if ($this->inline_css != "") {
@@ -213,15 +216,20 @@ echo ris_intern_html_extra_headers();
     </p>
 </footer>
 
-<script src="/js/jquery-ui-1.11.2.custom.min.js"></script>
-<script src="/js/scrollintoview.js"></script>
-<script src="/js/antraegekarte.jquery.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/material/ripples.min.js"></script>
-<script src="/js/material/material.min.js"></script>
-<script src="/js/typeahead.js/typeahead.bundle.min.js"></script>
-<script src="/js/index.js"></script>
 <?
+if (Yii::app()->params["concatScripts"]) { ?>
+    <script src="/js/build/std.js"></script>
+<? } else { ?>
+    <script src="/js/jquery-ui-1.11.2.custom.min.js"></script>
+    <script src="/js/scrollintoview.js"></script>
+    <script src="/js/antraegekarte.jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/material/ripples.min.js"></script>
+    <script src="/js/material/material.min.js"></script>
+    <script src="/js/typeahead.js/typeahead.bundle.min.js"></script>
+    <script src="/js/index.js"></script>
+<? }
+
 if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js"></script>';
 ?>
 </body>

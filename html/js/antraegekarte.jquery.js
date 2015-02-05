@@ -26,14 +26,8 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 		yepnope({
 			load: [
-				"/js/leaflet/dist/leaflet.js",
-				"/js/Leaflet.Fullscreen/Control.FullScreen.js",
-				"/js/Leaflet.Control.Geocoder/Control.Geocoder.js",
-				this.options["assetsBase"] + "/ba_features.js",
-				"/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
-				"/js/leaflet.spiderfy.js",
-				"/js/leaflet.textmarkers.js",
-				"/js/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
+				"/js/build/leaflet.js",
+				this.options["assetsBase"] + "/ba_features.js"
 			],
 			complete: function () {
 				var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>',
@@ -41,6 +35,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 
 				if (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1) attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://cloudmade.com">CloudMade</a>';
 
+				L.Icon.Default.imagePath = '/js/leaflet/dist/images';
 				$widget.map = L.map($widget.element.attr("id"), {
 					inertia: false
 				});

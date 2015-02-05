@@ -33,6 +33,12 @@ npm install -g bower
 bower install
 ```
 
+JS- & CSS-Dateien zusammenfügen und minimieren:
+```bash
+npm install gulp gulp-concat gulp-uglifyjs gulp-concat-css gulp-minify-css
+gulp
+```
+
 Webserver-Konfiguration:
 * DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
 * Bei Apache regelt die html/.htaccess alles weitere. Für nginx gibt es eine [Beispiel-Konfiguration](docs/nginx.conf)

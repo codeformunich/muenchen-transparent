@@ -14,3 +14,4 @@ html/piwik/
 html/sitemap-*
 html/google*
 html/BingSiteAuth.xml
+node_modules

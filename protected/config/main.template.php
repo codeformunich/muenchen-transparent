@@ -190,5 +190,6 @@ return array(
         'debug_log'           => true,
         'projectTitle'        => 'München Transparent',
         'startseiten_warnung' => '',
+        'concatScripts'       => false,
     ),
 );
