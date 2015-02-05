@@ -33,7 +33,7 @@ npm install -g bower
 bower install
 ```
 
-JS- & CSS-Dateien zusammenfügen und minimieren:
+JS- & CSS-Dateien zusammenfügen und minimieren (werden nur ausgeliefert, wenn in config/main.php: params[concatScripts] = true):
 ```bash
 npm install gulp gulp-concat gulp-uglifyjs gulp-concat-css gulp-minify-css
 gulp
