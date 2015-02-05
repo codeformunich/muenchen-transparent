@@ -45,7 +45,7 @@ function zeile_anzeigen($feld, $name, $callback)
 	<div class="original_ris_link"><?
 		echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $termin->getSourceLink());
 		?></div>
-	<h1 itemprop="name"><?= CHtml::encode($termin->gremium->name) ?></h1>
+	<h1 itemprop="name"><?= CHtml::encode($termin->getName()) ?></h1>
 	<br>
 
 	<?

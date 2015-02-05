@@ -81,7 +81,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
         // Termine
 
         $sql     = Yii::app()->db->createCommand();
-        $termine = $sql->select("id, datum_letzte_aenderung")->from("termine")->order("id")->queryAll();
+        $termine = $sql->select("id, datum_letzte_aenderung")->from("termine")->where("typ = " . Termin::$TYP_AUTO)->order("id")->queryAll();
 
         $sm_num = Ceil(count($termine) / 30000);
         for ($sm_page = 0; $sm_page < $sm_num; $sm_page++) {

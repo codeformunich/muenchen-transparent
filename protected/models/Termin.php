@@ -156,6 +156,10 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getName($kurzfassung = false)
     {
+        if ($this->typ == static::$TYP_BV) return "BürgerInnenversammlung";
+
+        if (!$this->gremium) return "Unbekanntes Gremium";
+
         if ($kurzfassung) return $this->gremium->name;
         else return $this->gremium->name . " (" . $this->termin . ")";
     }
