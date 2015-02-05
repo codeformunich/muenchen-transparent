@@ -801,10 +801,16 @@ class IndexController extends RISBaseController
     public function actionDokumente($id)
     {
         $this->load_pdf_js = true;
-        $this->render('dokumentenanzeige', array(
-            "id"       => $id,
-            "dokument" => Dokument::getCachedByID($id)
-        ));
+        /** @var Dokument $dokument */
+        $dokument = Dokument::getCachedByID($id);
+        if (!$dokument) {
+            $this->render('error', array("code" => 404, "message" => "Das Dokument wurde leider nicht gefunden."));
+        } else {
+            $this->render('dokumentenanzeige', array(
+                "id"       => $id,
+                "dokument" => $dokument
+            ));
+        }
     }
 
 
