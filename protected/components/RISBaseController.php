@@ -11,6 +11,7 @@ class RISBaseController extends CController
      * @var string
      */
     public $html_description = "";
+    public $html_itemprop = "";
 
     /**
      * @var string

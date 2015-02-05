@@ -41,11 +41,11 @@ function zeile_anzeigen($feld, $name, $callback)
 }
 
 ?>
-<section class="well pdfjs_long">
+<section class="well pdfjs_long" itemscope itemtype="http://schema.org/Event">
 	<div class="original_ris_link"><?
 		echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $termin->getSourceLink());
 		?></div>
-	<h1><?= CHtml::encode($termin->gremium->name) ?></h1>
+	<h1 itemprop="name"><?= CHtml::encode($termin->gremium->name) ?></h1>
 	<br>
 
 	<?
@@ -69,11 +69,12 @@ function zeile_anzeigen($feld, $name, $callback)
 			<th>Datum:</th>
 			<td>
 				<?= RISTools::datumstring($termin->termin) . ", " . substr($termin->termin, 11, 5) ?>
+				<meta itemprop="startdate" content="<?=CHtml::encode($termin->termin)?>">
 			</td>
 		</tr>
 		<tr>
 			<th>Ort:</th>
-			<td>
+			<td itemprop="location">
 				<?= CHtml::encode($termin->sitzungsort) ?>
 			</td>
 		</tr>

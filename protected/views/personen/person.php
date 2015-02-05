@@ -5,7 +5,7 @@
  */
 
 $this->pageTitle = $person->getName();
-
+$this->html_itemprop = "http://schema.org/Person";
 
 ?>
 <section class="well">
@@ -18,7 +18,7 @@ $this->pageTitle = $person->getName();
 	<div style="float: right;"><?
 		echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $person->getSourceLink());
 		?></div>
-	<h1><?= CHtml::encode($person->getName()) ?></h1>
+	<h1 itemprop="name"><?= CHtml::encode($person->getName()) ?></h1>
 </section>
 
 <div class="row">
@@ -138,7 +138,7 @@ $this->pageTitle = $person->getName();
 		</section>
 	</div>
 	<section class="col-md-4">
-		<div class="well personendaten_sidebar">
+		<div class="well personendaten_sidebar" itemprop="description">
 			<h2>Weitere Infos</h2>
 			<dl>
 				<?

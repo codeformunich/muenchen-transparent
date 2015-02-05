@@ -42,7 +42,7 @@ if ($gremienzahl > 0) {
                     $mitglied = $mitgliedschaft->stadtraetIn;
                     echo "<li>";
                     echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>" . CHtml::encode($mitglied->getName()) . "</a>";
-                    if ($mitgliedschaft->funktion != "" && !preg_match("/^mitglied/siu", $mitgliedschaft->funktion)) echo ' <span class="zusatzdaten">(' . CHtml::encode($mitgliedschaft->funktion) . ')';
+                    if ($mitgliedschaft->funktion != "" && !preg_match("/^mitglied/siu", $mitgliedschaft->funktion)) echo ' <span class="zusatzdaten">(' . CHtml::encode($mitgliedschaft->funktion) . ')</span>';
                     /*
                     if ($mitgliedschaft->datum_bis !== null || $mitgliedschaft->datum_von != "2014-05-01") {
                         // @TODO Datum der Legislaturperiode flexibilisieren

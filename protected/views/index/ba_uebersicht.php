@@ -30,7 +30,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 ?>
 
 
-<section class="well" xmlns="http://www.w3.org/1999/html">
+<section class="well">
     <h1><?= CHtml::encode($ba->name) ?>
         <small>(Bezirksausschuss <?= $ba->ba_nr ?>)</small>
     </h1>

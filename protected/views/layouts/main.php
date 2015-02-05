@@ -187,7 +187,9 @@ echo ris_intern_html_extra_headers();
 
     <div id="print_header">München Transparent - www.muenchen-transparent.de</div>
 
-    <main class="container center-block row" id="page_main_content">
+    <main class="container center-block row" id="page_main_content" <?
+    if ($this->html_itemprop != "") echo 'itemscope itemtype="' . CHtml::encode($this->html_itemprop) . '"';
+    ?>>
         <?php echo $content; ?>
     </main>
     <!-- /container -->

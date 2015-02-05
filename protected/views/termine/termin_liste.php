@@ -9,13 +9,19 @@
 	foreach ($termine as $termin) {
 
 		$termine_ids[] = $termin["id"];
-		echo '<li class="list-group-item"><div class="row-action-primary"><i class="glyphicon glyphicon-calendar" title="Termin"></i></div>';
+		echo '<li class="list-group-item" itemscope itemtype="http://schema.org/Event"><div class="row-action-primary"><i class="glyphicon glyphicon-calendar" title="Termin"></i></div>';
 		echo '<div class="row-content"><h4 class="list-group-item-heading">';
 		if ($termin["typ"] == Termin::$TYP_BV) {
 			echo CHtml::encode($termin["datum_long"]);
+			echo '<meta itemprop="name" content="BürgerInnenversammlung">';
 		} else {
-			echo CHtml::link($termin["datum_long"], $termin["link"]);
+			echo '<a href="' . CHtml::encode($termin["link"]) . '" itemprop="url">';
+			echo CHtml::encode($termin["datum_long"]);
+			echo '</a>';
+			$gremien = array_keys($termin["gremien"]);
+			echo '<meta itemprop="name" content="Bezirksausschuss ' . CHtml::encode(implode(", ", $gremien)) . '">';
 		}
+		echo '<meta itemprop="startDate" content="' . CHtml::encode($termin["datum_iso"]) . '">';
 		echo '</h4>';
 
 		if ($gremienname) {
@@ -28,7 +34,7 @@
 			echo '</div>';
 		}
 
-		echo '<address>' . str_replace(", ", "<br>", nl2br(CHtml::encode($termin["ort"]))) . '</address>';
+		echo '<address itemprop="location">' . str_replace(", ", "<br>", nl2br(CHtml::encode($termin["ort"]))) . '</address>';
 
 		if (count($termin["dokumente"]) > 0) {
 			echo '<ul class="dokumentenliste_small">';
