@@ -32,7 +32,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     public static $TYP_AUTO   = 0;
     public static $TYP_BV     = 1;
     public static $TYPEN_ALLE = array(
-        0 => "Automatgisch vom RIS",
+        0 => "Automatisch vom RIS",
         1 => "BürgerInnenversammlung",
     );
 
