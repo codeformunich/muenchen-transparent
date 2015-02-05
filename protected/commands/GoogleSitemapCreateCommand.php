@@ -23,7 +23,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
         // Dokumente
 
         $sql       = Yii::app()->db->createCommand();
-        $dokumente = $sql->select("id, datum")->from("dokumente")->order("id")->queryAll();
+        $dokumente = $sql->select("id, datum")->from("dokumente")->where("deleted = 0")->order("id")->queryAll();
 
         $sm_num = Ceil(count($dokumente) / 30000);
         for ($sm_page = 0; $sm_page < $sm_num; $sm_page++) {
