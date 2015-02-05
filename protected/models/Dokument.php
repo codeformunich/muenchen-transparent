@@ -243,6 +243,7 @@ class Dokument extends CActiveRecord implements IRISItem
             if ($name == "Deckblatt VV") return "Deckblatt";
             if ($name == "Niederschrift (oeff)") return "Niederschrift";
             if ($name == "Einladung (oeff)") return "Einladung";
+            $name = preg_replace("/ Nr\. [0-9-]{5} \/ [A-Z] [0-9]+$/siu", "", $name);
             if (preg_match("/^Antwortschreiben .*/siu", $name)) return "Antwortschreiben";
             if (preg_match("/^Antwort \\d{2}\-/siu", $name)) return "Antwortschreiben";
 
