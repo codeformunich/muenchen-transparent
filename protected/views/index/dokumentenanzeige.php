@@ -55,7 +55,7 @@ if ($risitem) {
 		}
 		?>
 	</ul>
-	<div style="position: absolute; top: 10px; right: 14px;"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download><span class="fontello-download"></span> Dokument herunterladen</a></div>
+	<div class="pdf_download_holder"><a href="<?= CHtml::encode($dokument->getLink()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></div>
 
 	<?
 	$this->renderPartial("pdf_embed", array(
@@ -70,8 +70,10 @@ if ($risitem) {
 	<script>
 		// Fix the problem that pdf js doesn't get the height automatically (maybe because of the footer)
 		function pdf_resize() {
-			var $container = $("#mainContainer");
-			var container_height = $(window).height() - $("body > footer").height() - $("#main_navbar").height() - 95;
+			var $container = $("#mainContainer"),
+				border = 95;
+			if (!$("#pdf_rechtsvermerk").is(":visible")) border -= 10;
+			var container_height = $(window).height() - $("body > footer").height() - $("#main_navbar").height() - border;
 			$container.height(container_height);
 			$container.parents(".well").height(container_height + 22);
 		}

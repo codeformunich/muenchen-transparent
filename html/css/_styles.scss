@@ -117,17 +117,40 @@
     width: auto;
   }
 
+  .pdf_download_holder {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+  }
+
+  #print {
+    display: none;
+  }
+
+
   @media print {
     height: auto !important;
     overflow: visible;
 
+    .pdf_download_holder {
+      display: none;
+    }
     #mainContainer {
       height: auto !important;
       width: auto;
     }
+    #viewerContextMenu {
+      display: none;
+    }
 
     body[data-mozPrintCallback] & #outerContainer {
       display: block;
+    }
+
+    .pdfViewer .page {
+      page-break-after: always;
+      page-break-inside: avoid;
+      overflow: hidden;
     }
   }
 }
@@ -139,6 +162,9 @@
   font-size: 11px;
   color: gray;
   body[data-mozPrintCallback] & {
+    display: none;
+  }
+  @media screen and (max-height: 620px) {
     display: none;
   }
 }
