@@ -773,6 +773,8 @@ class IndexController extends RISBaseController
 
     public function actionQuickSearchPrefetch()
     {
+        header( 'Cache-Control: max-age=' . 7 * 24 * 3600);
+
         /** @var StadtraetIn[] $stadtraetInnen */
         $stadtraetInnen = StadtraetIn::model()->findAll();
 
