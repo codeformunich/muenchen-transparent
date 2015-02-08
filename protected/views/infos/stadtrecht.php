@@ -20,7 +20,7 @@ $this->pageTitle = "Stadtrecht";
         <a href="http://www.muenchen.info/dir/recht/num_portal.html">Portal für Stadtrecht</a>
         der Stadt München übersichtlich aufbereitet.</p>
     <input class="search" placeholder="Filtern" style="margin-bottom: 10px;"/>
-    <ul class="list" style="padding-left: 0px; list-style-type: none;">
+    <ul class="list list-unstyled">
     <?
     /** @var Rechtsdokument[] $dokumente */
     $dokumente = Rechtsdokument::model()->alle_sortiert();
