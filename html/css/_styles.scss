@@ -569,6 +569,14 @@ ul.terminliste2 {
     padding: 0;
     margin-bottom: 20px;
   }
+  &.termine_twocols.list-group .list-group-item {
+    float: left;
+    width: 50%;
+    min-height: 155px;
+  }
+  &.termine_twocols {
+    overflow: auto;
+  }
   address {
     margin-top: 5px;
     margin-bottom: 5px;

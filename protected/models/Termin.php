@@ -298,12 +298,17 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     public function toArr()
     {
         $ts = RISTools::date_iso2timestamp($this->termin);
+        if (date("Y", $ts) == date("Y")) {
+            $datum_long = strftime("%e. %B, %H:%M Uhr", $ts);
+        } else {
+            $datum_long = strftime("%e. %B %Y, %H:%M Uhr", $ts);
+        }
         return array(
             "id"         => $this->id,
             "typ"        => $this->typ,
             "link"       => $this->getLink(),
             "datum"      => strftime("%e. %b., %H:%M", $ts),
-            "datum_long" => strftime("%e. %B, %H:%M Uhr", $ts),
+            "datum_long" => $datum_long,
             "datum_iso"  => $this->termin,
             "datum_ts"   => $ts,
             "gremien"    => array(),

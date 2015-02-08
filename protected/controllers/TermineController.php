@@ -13,14 +13,16 @@ class TermineController extends RISBaseController
         $jsdata            = array();
         $has_weekend       = false;
         foreach ($appointments_data as $appointment) {
-            $d = array(
+            $d        = array(
                 "title" => str_replace("Ausschuss für ", "", implode(", ", array_keys($appointment["gremien"]))),
                 "start" => str_replace(" ", "T", $appointment["datum_iso"]),
                 "url"   => $appointment["link"],
             );
             $jsdata[] = $d;
             $weekday  = date("N", $appointment["datum_ts"]);
-            if ($weekday == 6 || $weekday == 7) $has_weekend = true;
+            if ($weekday == 6 || $weekday == 7) {
+                $has_weekend = true;
+            }
         }
         return array(
             "has_weekend" => $has_weekend,
@@ -252,6 +254,22 @@ class TermineController extends RISBaseController
         } else {
             $server->exec();
         }
+    }
+
+    public function actionBaTermineAlle($ba_nr)
+    {
+        /** @var Termin[] $termine */
+        $termine = Termin::model()->findAllByAttributes(array("ba_nr" => $ba_nr), array("order" => "termin DESC"));
+        $termin_arr = array();
+        foreach ($termine as $t) $termin_arr[] = $t->toArr();
+
+        /** @var Bezirksausschuss $ba */
+        $ba = Bezirksausschuss::model()->findByPk($ba_nr);
+
+        $this->render("ba_termine_alle", array(
+            "ba"      => $ba,
+            "termine" => $termin_arr,
+        ));
     }
 
 

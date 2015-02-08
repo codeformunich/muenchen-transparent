@@ -165,6 +165,11 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                 "gremienname" => false,
             ));
             ?>
+            <div style="text-align: right; font-size: 1.5em;">
+                <a href="<?=CHtml::encode($this->createUrl("termine/baTermineAlle", array("ba_nr" => $ba->ba_nr)))?>">
+                    Alle Termine <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
         </div>
     </div>
 
