@@ -124,8 +124,10 @@ function zeile_anzeigen($feld, $name, $callback)
 				$antraege = $ergebnis->zugeordneteAntraegeHeuristisch();
 				if (count($ergebnis->dokumente) > 0 || is_object($ergebnis->antrag) || count($antraege) > 0) {
 					echo "<ul class='doks'>";
+					$antrag_ids = array();
 					if (is_object($ergebnis->antrag)) {
 						echo "<li>" . CHtml::link("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
+						$antrag_ids[] = $ergebnis->antrag->id;
 					}
 					foreach ($ergebnis->dokumente as $dokument) {
 						echo "<li>" . CHtml::link($dokument->name, $dokument->getLinkZumDokument());
@@ -135,6 +137,8 @@ function zeile_anzeigen($feld, $name, $callback)
 					}
 					foreach ($antraege as $ant) if (is_object($ant)) {
 						/** @var Antrag $ant */
+						if (in_array($ant->id, $antrag_ids)) continue;
+						$antrag_ids[] = $ant->id;
 						echo "<li>Verwandter Antrag: " . CHtml::link($ant->getName(true), $ant->getLink()) . "</li>\n";
 					} else {
 						echo "<li>Verwandter Antrag: " . CHtml::encode(RISTools::korrigiereTitelZeichen($ant)) . "</li>\n";
