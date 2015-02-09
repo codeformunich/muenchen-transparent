@@ -7,8 +7,13 @@
 $this->pageTitle = "Bearbeiten: " . $person->getName();
 
 $x = explode("-", $person->geburtstag);
-if (count($x) == 3 && $x[1] > 0) $geburtstag = $x[2] . "." . $x[1] . "." . $x[0];
-else $geburtstag = $x[2];
+if (count($x) == 3 && $x[1] > 0) {
+    $geburtstag = $x[2] . "." . $x[1] . "." . $x[0];
+} elseif (count($x) == 3) {
+    $geburtstag = $x[2];
+} else {
+    $geburtstag = "";
+}
 
 ?>
 <section class="well">
