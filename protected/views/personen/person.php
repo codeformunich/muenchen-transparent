@@ -30,7 +30,9 @@ $this->html_itemprop = "http://schema.org/Person";
 					<th>Fraktion(en):</th>
 					<td>
 						<ul>
-							<? foreach ($person->stadtraetInnenFraktionen as $frakts) {
+							<?
+							$mitgliedschaften = $person->getFraktionsMitgliedschaften();
+							foreach ($mitgliedschaften as $frakts) {
 								echo "<li>" . CHtml::encode($frakts->fraktion->getName());
 								if ($frakts->fraktion->ba_nr > 0) {
 									echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . CHtml::encode($frakts->fraktion->bezirksausschuss->name) . ")";

@@ -127,13 +127,15 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return "Stadtratsmitglied";
     }
 
-    private $titel_erraten = null;
-    private $vorname_erraten = null;
+    private $titel_erraten    = null;
+    private $vorname_erraten  = null;
     private $nachname_erraten = null;
 
     protected function errateNamen()
     {
-        if ($this->vorname_erraten !== null) return;
+        if ($this->vorname_erraten !== null) {
+            return;
+        }
 
         preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
         if (mb_strpos($this->name, ",") > 0) {
@@ -186,7 +188,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         if (mb_strpos($this->name, ",") > 0) {
             preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
             $titel = trim($matches["titel"]);
-            if (strlen($titel) > 0) $titel .= " ";
+            if (strlen($titel) > 0) {
+                $titel .= " ";
+            }
 
             $x = explode(",", $matches["name"]);
             if (count($x) == 2) {
@@ -205,7 +209,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
      * @param string $name2
      * @return int
      */
-    public static function sortByNameCmp($name1, $name2) {
+    public static function sortByNameCmp($name1, $name2)
+    {
         $name1 = preg_replace("/^([a-z]+\. )*/siu", "", $name1);
         $name2 = preg_replace("/^([a-z]+\. )*/siu", "", $name2);
         $name1 = str_replace(array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß"), array("A", "O", "U", "a", "o", "u", "s"), $name1);
@@ -245,17 +250,53 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     }
 
     /**
+     *
+     */
+    private function overrideFraktionsMitgliedschaften()
+    {
+        if (isset(StadtraetInFraktionOverrides::$FRAKTION_ADD[$this->id])) {
+            foreach (StadtraetInFraktionOverrides::$FRAKTION_ADD[$this->id] as $override) {
+                $mitgliedschaft                  = new StadtraetInFraktion();
+                $mitgliedschaft->stadtraetIn_id  = $this->id;
+                $mitgliedschaft->fraktion_id     = $override["fraktion_id"];
+                $mitgliedschaft->datum_von       = $override["datum_von"];
+                $mitgliedschaft->datum_bis       = $override["datum_bis"];
+                $mitgliedschaft->wahlperiode     = $override["wahlperiode"];
+                $this->stadtraetInnenFraktionen = array_merge(array($mitgliedschaft), $this->stadtraetInnenFraktionen);
+            }
+        }
+        if (isset(StadtraetInFraktionOverrides::$FRAKTION_DEL[$this->id])) {
+            $fraktionen_neu = array();
+            foreach ($this->stadtraetInnenFraktionen as $mitgliedschaft) {
+                $todel = false;
+                foreach (StadtraetInFraktionOverrides::$FRAKTION_DEL[$this->id] as $override) {
+                    if ($override["datum_von"] == $mitgliedschaft->datum_von && $override["fraktion_id"] == $mitgliedschaft->fraktion_id) {
+                        $todel = true;
+                    }
+                }
+                if (!$todel) {
+                    $fraktionen_neu[] = $mitgliedschaft;
+                }
+            }
+            $this->stadtraetInnenFraktionen = $fraktionen_neu;
+        }
+    }
+
+    /**
      * @param string $datum
      * @param int|null $ba_nr
      * @return StadtraetIn[]
      */
     public static function getByFraktion($datum, $ba_nr)
     {
-        if ($ba_nr === null) $ba_where = "c.ba_nr IS NULL";
-        else $ba_where = "c.ba_nr = " . IntVal($ba_nr);
+        if ($ba_nr === null) {
+            $ba_where = "c.ba_nr IS NULL";
+        } else {
+            $ba_where = "c.ba_nr = " . IntVal($ba_nr);
+        }
 
         /** @var StadtraetIn[] $strs_in */
-        $strs_in  = StadtraetIn::model()->findAll(array(
+        $strs_in = StadtraetIn::model()->findAll(array(
             'alias' => 'a',
             'order' => 'a.name ASC',
             'with'  => array(
@@ -268,9 +309,15 @@ class StadtraetIn extends CActiveRecord implements IRISItem
                     'condition' => $ba_where,
                 )
             )));
+
+        foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
+
+        /** @var StadtraetIn[] $strs_out */
         $strs_out = array();
         foreach ($strs_in as $strs) {
-            if ($strs->id == 3425214) continue; // Seltsamer RIS-Testuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
+            if ($strs->id == 3425214) {
+                continue;
+            } // Seltsamer RIS-Testuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
             $strs_out[] = $strs;
         }
         return $strs_out;
@@ -286,9 +333,23 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $strs       = static::getByFraktion($datum, $ba_nr);
         $fraktionen = array();
         foreach ($strs as $str) {
-            if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = array();
+            if (count($str->stadtraetInnenFraktionen) == 0) {
+                continue;
+            }
+            if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) {
+                $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = array();
+            }
             $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
         }
         return $fraktionen;
+    }
+
+    /**
+     * @return StadtraetInFraktion[]
+     */
+    public function getFraktionsMitgliedschaften()
+    {
+        $this->overrideFraktionsMitgliedschaften();
+        return $this->stadtraetInnenFraktionen;
     }
 }
