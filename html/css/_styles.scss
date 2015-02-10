@@ -127,6 +127,9 @@
     display: none;
   }
 
+  .toolbar {
+    z-index: 999;
+  }
 
   @media print {
     height: auto !important;
