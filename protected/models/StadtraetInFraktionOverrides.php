@@ -10,6 +10,9 @@ class StadtraetInFraktionOverrides
         -126, // AGS BA9
         -38, // Grüne BA9
         -37, // SPD BA9
+        -40, // FDP BA9
+        -39, // FW BA9
+        -36, // CSU BA9
     ];
 
 
@@ -56,14 +59,42 @@ class StadtraetInFraktionOverrides
                 "wahlperiode" => "2014-2020",
             ]
         ],
+        1431198 => [
+            [
+                "fraktion_id" => -39,
+                "datum_von"   => "2014-05-01",
+                "datum_bis"   => null,
+                "wahlperiode" => "2014-2020",
+            ]
+        ],
+        1431229 => [
+            [
+                "fraktion_id" => -36,
+                "datum_von"   => "2014-05-01",
+                "datum_bis"   => null,
+                "wahlperiode" => "2014-2020",
+            ]
+
+        ],
     ];
 
     public static $FRAKTION_DEL = [
-        // Grüne
         // Hinweis von von Anna Hanusch (BA-Vorsitzende) per Feedback-Formular am 4.2.2015
         1431217 => [
             [
                 "fraktion_id" => -38,
+                "datum_von"   => "2014-05-01",
+            ]
+        ],
+        1431198 => [
+            [
+                "fraktion_id" => -40,
+                "datum_von"   => "2014-05-01",
+            ]
+        ],
+        1431229 => [
+            [
+                "fraktion_id" => -37,
                 "datum_von"   => "2014-05-01",
             ]
         ],
