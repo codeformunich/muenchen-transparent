@@ -48,6 +48,13 @@ class RISSolrHelper
 
         $dokumente    = $ergebnisse->getDocuments();
         $highlighting = $ergebnisse->getHighlighting();
+
+        $purifier = new CHtmlPurifier();
+        $purifier->options = array('URI.AllowedSchemes'=>array(
+            'http' => true,
+            'https' => true,
+        ));
+
         foreach ($dokumente as $dokument) {
             $model   = Dokument::getDocumentBySolrId($dokument->id);
             $risitem = $model->getRISItem();
@@ -64,7 +71,7 @@ class RISSolrHelper
             );
             if ($highlightedDoc && count($highlightedDoc) > 0) {
                 foreach ($highlightedDoc as $highlight) {
-                    $item["content"] .= nl2br(CHtml::encode(implode(' (...) ', $highlight))) . '<br/>';
+                    $item["content"] .= $purifier->purify(implode(' (...) ', $highlight)) . '<br/>';
                 }
             }
             $data[] = $item;
