@@ -185,6 +185,27 @@ class RISTools
      */
     public static function korrigiereDokumentenTitel($titel)
     {
+        $titel = trim(str_replace("_", " ", $titel));
+
+        if (preg_match("/^[0-9]+to[0-9]+$/siu", $titel)) return "Tagesordnung"; // 25to13012015
+        if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) return "Tagesordnung"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
+        if (preg_match("/^to [0-9\. ]+$/siu", $titel)) return "Tagesordnung"; // 2014 01 to
+        if (preg_match("/^[0-9\. ]+ to$/siu", $titel)) return "Tagesordnung"; // to 150108
+        if (preg_match("/^(?<name>Einladung.*) [0-9\.]+( \(oeff\))?$/siu", $titel, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
+        if (preg_match("/^(?<name>Nachtrag.*) [0-9\.]+( \(oeff\))?$/siu", $titel, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
+        if (preg_match("/^[0-9]+(sondersitzung )?prot[0-9]+(oeff)?$/siu", $titel)) return "Protokoll";  // 25prot13012015, 23sondersitzung prot1114öff,  23prot1114öff
+        if (preg_match("/^[0-9]+n?v?to[0-9]+oeff$/siu", $titel)) return "Tagesordnung";  // 21vto0115oeff
+        if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) return "Protokoll"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
+        if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $titel)) return "Protokoll"; // pro140918 oeff
+        if (preg_match("/^Einladung [0-9-]+$/siu", $titel)) return "Einladung"; // Einladung 02-15
+
+        $titel = preg_replace("/^( vom)? \\d\\d\.\\d\\d\.\\d{4}$/siu", "", $titel);
+        $titel = preg_replace("/ \(oeff\)$/", "", $titel);
+
+        if ($titel == "to") return "Tagesordnung";
+        if ($titel == "Einladung oeffentlich") return "Einladung";
+        if (preg_match("/^to [0-9\-]+ nachtrag/siu", $titel)) return "Nachtrag";
+
         $titel = preg_replace("/^V [0-9]+ /",                        "", $titel);
         $titel = preg_replace("/^(VV|VPA|KVA) ?[0-9 \.\-]+ (TOP)?/", "", $titel);
         $titel = preg_replace("/^OE V[0-9]+ /",                      "", $titel);

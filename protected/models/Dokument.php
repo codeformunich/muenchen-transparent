@@ -212,43 +212,19 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getName($langfassung = false)
     {
-        $name = trim(str_replace("_", " ", $this->name));
-
-        if (preg_match("/^[0-9]+to[0-9]+$/siu", $name)) return "Tagesordnung"; // 25to13012015
-        if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Tagesordnung"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
-        if (preg_match("/^to [0-9\. ]+$/siu", $name)) return "Tagesordnung"; // 2014 01 to
-        if (preg_match("/^[0-9\. ]+ to$/siu", $name)) return "Tagesordnung"; // to 150108
-        if (preg_match("/^(?<name>Einladung.*) [0-9\.]+( \(oeff\))?$/siu", $name, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
-        if (preg_match("/^(?<name>Nachtrag.*) [0-9\.]+( \(oeff\))?$/siu", $name, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
-        if (preg_match("/^[0-9]+(sondersitzung )?prot[0-9]+(oeff)?$/siu", $name)) return "Protokoll";  // 25prot13012015, 23sondersitzung prot1114öff,  23prot1114öff
-        if (preg_match("/^[0-9]+n?v?to[0-9]+oeff$/siu", $name)) return "Tagesordnung";  // 21vto0115oeff
-        if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $name)) return "Protokoll"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
-        if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $name)) return "Protokoll"; // pro140918 oeff
-        if (preg_match("/^Einladung [0-9-]+$/siu", $name)) return "Einladung"; // Einladung 02-15
-
-        $name = preg_replace("/^( vom)? \\d\\d\.\\d\\d\.\\d{4}$/siu", "", $name);
-
+        $name = RISTools::korrigiereDokumentenTitel($this->name);
         if ($langfassung) {
             if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
-            if ($name == "Niederschrift (oeff)") return "Niederschrift";
-            if ($name == "Einladung (oeff)") return "Einladung";
-            if ($name == "Einladung oeffentlich") return "Einladung";
-
-            return RISTools::korrigiereDokumentenTitel($name);
         } else {
             $name = preg_replace("/^[ 0-9\.]{6,8}/siu", "", $name);
             if (strlen($name) > 255) return "Dokument";
             if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
 
-            if ($name == "Deckblatt VV") return "Deckblatt";
-            if ($name == "Niederschrift (oeff)") return "Niederschrift";
-            if ($name == "Einladung (oeff)") return "Einladung";
             $name = preg_replace("/ Nr\. [0-9-]{5} \/ [A-Z] [0-9]+$/siu", "", $name);
             if (preg_match("/^Antwortschreiben .*/siu", $name)) return "Antwortschreiben";
             if (preg_match("/^Antwort \\d{2}\-/siu", $name)) return "Antwortschreiben";
-
-            return RISTools::korrigiereDokumentenTitel($name);
         }
+        return $name;
     }
 
     /**
