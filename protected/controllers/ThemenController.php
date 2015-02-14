@@ -13,9 +13,21 @@ class ThemenController extends RISBaseController
         $bis              = date("Y-m-d H:i:s", time());
         $antraege_referat = Antrag::model()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
 
+        $text = Text::model()->findByAttributes(array("typ" => 2, "titel" => $ref->name));
+        $my_url = Yii::app()->createUrl("/themen/referat/" . $referat_url);
+
+        if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
+            if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
+            $text->text = $_REQUEST["text"];
+            $text->save();
+            $this->msg_ok = "Gespeichert.";
+        }
+
         $this->render("referat", array(
             "referat"          => $ref,
             "antraege_referat" => $antraege_referat,
+            "text"             => $text,
+            "my_url"           => $my_url,
         ));
     }
 

@@ -14,6 +14,13 @@ $this->pageTitle = $referat->getName();
         <li class="active">Referat</li>
     </ul>
     <h1><?= CHtml::encode($referat->getName()) ?></h1>
+
+    <?
+    $this->renderPartial("/index/ckeditable_text", array(
+           "text"   => $text,
+           "my_url" => $my_url,
+    ));
+    ?>
 </section>
 
 <div class="row" id="listen_holder">
