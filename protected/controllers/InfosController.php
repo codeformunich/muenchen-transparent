@@ -91,7 +91,6 @@ class InfosController extends RISBaseController
             "my_url"  => $my_url,
             "notitle" => $notitle,
         ));
-
     }
 
 
