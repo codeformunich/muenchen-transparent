@@ -1,11 +1,15 @@
 <?
 /**
+ * @var string $my_url
  * @var Text $text
+ * @var bool $show_title
+ * @var bool $insert_tooltips
  */
 
 $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
     return CHtml::encode(Yii::app()->createUrl($matches["url"]));
 }, $text->text);
+if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);
 ?>
 
 <? if ($this->binContentAdmin()) { ?>
@@ -16,6 +20,8 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
         <span class="mdi-content-clear"></span> Abbrechen
     </a>
 <? }
+
+if ($show_title) echo '<h1>' . CHtml::encode($text->titel) . '</h1>';
 
 if ($this->binContentAdmin()) { ?>
     <script src="/js/ckeditor/ckeditor.js"></script>

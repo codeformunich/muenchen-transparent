@@ -17,8 +17,10 @@ $this->pageTitle = $referat->getName();
 
     <?
     $this->renderPartial("/index/ckeditable_text", array(
-           "text"   => $text,
-           "my_url" => $my_url,
+        "text"            => $text,
+        "my_url"          => $my_url,
+        "show_title"      => false,
+        "insert_tooltips" => false,
     ));
     ?>
 </section>
