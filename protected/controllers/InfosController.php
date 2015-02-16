@@ -72,9 +72,9 @@ class InfosController extends RISBaseController
     /**
      * @param int $id
      * @param string $my_url
-     * @param bool $notitle
+     * @param bool $show_titles
      */
-    public function std_content_page($id, $my_url, $notitle = false)
+    public function std_content_page($id, $my_url, $show_title = true, $insert_tooltips = false)
     {
         /** @var Text $text */
         $text = Text::model()->findByPk($id);
@@ -87,11 +87,11 @@ class InfosController extends RISBaseController
         }
 
         $this->render("std", array(
-            "text"    => $text,
-            "my_url"  => $my_url,
-            "notitle" => $notitle,
+            "text"            => $text,
+            "my_url"          => $my_url,
+            "show_title"      => $show_title,
+            "insert_tooltips" => $insert_tooltips,
         ));
-
     }
 
 
