@@ -16,7 +16,18 @@ $user = $this->aktuelleBenutzerIn();
                 <div class="col col-md-4"><select name="tag_id">
                 <?
                 $tags = Tag::model()->findAll();
-                sort($tags);
+                usort($tags, function ($tag1, $tag2) {
+                    /**
+                    * @var Tag $dok1
+                    * @var Tag $dok2
+                    */
+                    $name1 = strtolower($tag1->name);
+                    $name2 = strtolower($tag2->name);
+                    if ($name1 == $name2) {
+                        return 0;
+                    }
+                    return ($name1 > $name2) ? +1 : -1;
+                });
                 foreach($tags as $tag)
                     echo "<option value=" . $tag->id . ">" . $tag->name . "</option>";
                 ?>
@@ -36,7 +47,18 @@ $user = $this->aktuelleBenutzerIn();
                 <div class="col col-md-6"><select name="tag_id">
                 <?
                 $tags = Tag::model()->findAll();
-                sort($tags);
+                usort($tags, function ($tag1, $tag2) {
+                    /**
+                    * @var Tag $dok1
+                    * @var Tag $dok2
+                    */
+                    $name1 = strtolower($tag1->name);
+                    $name2 = strtolower($tag2->name);
+                    if ($name1 == $name2) {
+                        return 0;
+                    }
+                    return ($name1 > $name2) ? +1 : -1;
+                });
                 foreach($tags as $tag)
                     echo "<option value=" . $tag->id . ">" . $tag->name . "</option>";
                 ?>
