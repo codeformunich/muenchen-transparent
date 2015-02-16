@@ -73,6 +73,7 @@ class InfosController extends RISBaseController
      * @param int $id
      * @param string $my_url
      * @param bool $show_titles
+     * @param bool $insert_tooltips
      */
     public function std_content_page($id, $my_url, $show_title = true, $insert_tooltips = false)
     {
@@ -144,6 +145,10 @@ class InfosController extends RISBaseController
     }
 
 
+    /**
+     * @param int $id
+     * @throws Exception
+     */
     public function actionGlossarBearbeiten($id)
     {
         if (!$this->binContentAdmin()) throw new Exception("Kein Zugriff");
