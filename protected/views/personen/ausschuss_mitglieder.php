@@ -28,17 +28,27 @@ if ($gremienzahl > 0) {
                 if (count($gremium->mitgliedschaften) == 0) continue;
                 if (mb_strpos($gremium->name, "Vollgremium") !== false) continue;
 
+                $aktiveMitgliedschaften = array();
+                foreach ($gremium->mitgliedschaften as $mitgliedschaft) {
+                    if ($mitgliedschaft->mitgliedschaftAktiv()) {
+                        $aktiveMitgliedschaften[] = $mitgliedschaft;
+                        $mitgliedschaft->stadtraetIn->getName(); // Laden erzwingen, ansonsten liefert usort eine Fehlermeldung
+                    }
+                }
+
                 echo "<li><a href='#' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
-                echo "<span class='count'>" . count($gremium->mitgliedschaften) . "</span>";
+                echo "<span class='count'>" . count($aktiveMitgliedschaften) . "</span>";
                 echo CHtml::encode($gremium->getName(true)) . "</a><ul class='mitglieder'>";
-                $mitgliedschaften = $gremium->mitgliedschaften;
-                foreach ($mitgliedschaften as $mitgliedschaft) $mitgliedschaft->stadtraetIn->getName(); // Laden erzwingen, ansonsten liefert usort eine Fehlermeldung
-                usort($mitgliedschaften, function ($mitgliedschaft1, $mitgliedschaft2) {
+
+                usort($aktiveMitgliedschaften, function ($mitgliedschaft1, $mitgliedschaft2) {
                     /** @var StadtraetInGremium $mitgliedschaft1 */
                     /** @var StadtraetInGremium $mitgliedschaft2 */
                     return StadtraetIn::sortByNameCmp($mitgliedschaft1->stadtraetIn->getName(), $mitgliedschaft2->stadtraetIn->getName());
                 });
-                foreach ($mitgliedschaften as $mitgliedschaft) {
+
+                foreach ($aktiveMitgliedschaften as $mitgliedschaft) {
+                    if (!$mitgliedschaft->mitgliedschaftAktiv()) continue;
+
                     $mitglied = $mitgliedschaft->stadtraetIn;
                     echo "<li>";
                     echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>" . CHtml::encode($mitglied->getName()) . "</a>";

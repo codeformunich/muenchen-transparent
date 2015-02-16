@@ -72,4 +72,18 @@ class StadtraetInGremium extends CActiveRecord
             'datum_bis'      => 'Bis',
         );
     }
+
+    /**
+     * @param string $datum
+     * @return bool
+     */
+    public function mitgliedschaftAktiv($datum = "") {
+        if ($datum == "") $datum = date("Y-m-d");
+        $datum = str_replace("-", "", $datum);
+
+        if (is_null($this->datum_bis)) return true;
+        $bis = str_replace("-", "", $this->datum_bis);
+
+        return ($bis >= $datum);
+    }
 }

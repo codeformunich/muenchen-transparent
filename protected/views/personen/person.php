@@ -21,7 +21,7 @@ $this->html_itemprop = "http://schema.org/Person";
 	<h1 itemprop="name"><?= CHtml::encode($person->getName()) ?></h1>
 </section>
 
-<div class="row">
+<div class="row personentable">
 	<div class="col-md-8">
 		<section class="well">
 			<table class="table">
@@ -29,7 +29,7 @@ $this->html_itemprop = "http://schema.org/Person";
 				<tr>
 					<th>Fraktion(en):</th>
 					<td>
-						<ul>
+						<ul class="mitgliedschaften">
 							<?
 							$mitgliedschaften = $person->getFraktionsMitgliedschaften();
 							foreach ($mitgliedschaften as $frakts) {
@@ -54,15 +54,19 @@ $this->html_itemprop = "http://schema.org/Person";
 					<tr>
 						<th>Mitgliedschaften:</th>
 						<td>
-							<ul>
+							<ul class="mitgliedschaften">
 								<?
 								foreach ($person->mitgliedschaften as $mitgliedschaft) {
 									$gremium = $mitgliedschaft->gremium;
-									echo "<li>";
+									echo "<li class='" . ($mitgliedschaft->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>";
 									echo CHtml::encode($gremium->getName(true));
 									if ($gremium->ba_nr > 0) {
 										echo " (Bezirksausschuss " . CHtml::link($gremium->ba->name, $gremium->ba->getLink()) . ")";
 									}
+                                    if ($mitgliedschaft->datum_bis != "") {
+                                        echo '<br><small>(' . RISTools::datumstring($mitgliedschaft->datum_von);
+                                        echo ' bis ' . RISTools::datumstring($mitgliedschaft->datum_bis) . ')</small>';
+                                    }
 									echo "</li>\n";
 								}
 								?>

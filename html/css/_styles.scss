@@ -1579,7 +1579,13 @@ section.impressum {
     font-style: italic;
   }
 }
-
+.personentable {
+  .mitgliedschaften {
+    .inaktiv {
+      color: #aaa;
+    }
+  }
+}
 
 .std_fliesstext {
   h3 {
@@ -1612,3 +1618,5 @@ a.tooltip_link:link, a.tooltip_link:visited {
     margin-bottom: 5px;
   }
 }
+
+
