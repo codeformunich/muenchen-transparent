@@ -9,6 +9,8 @@ class ThemenController extends RISBaseController
         $ref = Referat::model()->findByAttributes(array("urlpart" => $referat_url));
         if (!$ref) die("Nicht gefunden");
 
+        $this->top_menu = "themen";
+
         $von              = date("Y-m-d H:i:s", time() - 3600 * 24 * 30);
         $bis              = date("Y-m-d H:i:s", time());
         $antraege_referat = Antrag::model()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
@@ -51,6 +53,8 @@ class ThemenController extends RISBaseController
     public function actionTag($tag_id, $tag_name = "")
     {
         $tag_id = IntVal($tag_id);
+
+        $this->top_menu = "themen";
 
         /** @var Tag $tag */
         $tag = Tag::model()->findByPk($tag_id);
