@@ -33,6 +33,7 @@ $this->pageTitle = $referat->getName();
                 "title"             => "Aktuelle Dokumente",
                 "antraege"          => $antraege_referat,
                 "weiter_links_oben" => false,
+                "zeige_jahr"        => true,
             ));
             ?>
         </section>

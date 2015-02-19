@@ -387,6 +387,7 @@ class IndexController extends RISBaseController
             "radius"            => $radius,
             "naechster_ort"     => $naechster_ort,
             "weiter_links_oben" => true,
+            "zeige_jahr"        => true,
         ));
 
         Header("Content-Type: application/json; charset=UTF-8");

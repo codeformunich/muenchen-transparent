@@ -19,6 +19,7 @@ $this->pageTitle = $tag->name;
 			"title"             => "",
 			"antraege"          => $antraege_tag,
 			"weiter_links_oben" => false,
+            "zeige_jahr"        => true,
 		));
 		?>
 	</section>

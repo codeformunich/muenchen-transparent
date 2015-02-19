@@ -16,6 +16,7 @@
  * @var OrtGeo $naechster_ort
  * @var Rathausumschau[] $rathausumschauen
  * @var int $zeige_ba_orte
+ * @var bool $zeige_jahr
  */
 
 if (isset($title) && $title !== null) {
@@ -150,7 +151,12 @@ if (count($antraege) > 0) {
 
             if ($entry->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $entry->ba_nr . " (" . $entry->ba->name . ")") . "' class='ba'>BA " . $entry->ba_nr . "</span>, ";
 
-            echo date("d.m.", $entry->getDokumentenMaxTS());
+            $ts = $entry->getDokumentenMaxTS();
+            if (isset($zeige_jahr) && $zeige_jahr) {
+                echo date("d.m.Y", $ts);
+            } else {
+                echo date("d.m.", $ts);
+            }
 
             if ($zeige_ba_orte > 0 && $entry->ba_nr != $zeige_ba_orte) {
                 /** @var string[] $orte */
