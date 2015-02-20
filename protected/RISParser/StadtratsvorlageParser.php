@@ -2,6 +2,8 @@
 
 class StadtratsvorlageParser extends RISParser
 {
+    private static $MAX_OFFSET        = 30000;
+    private static $MAX_OFFSET_UPDATE = 400;
 
     public function parse($vorlage_id)
     {
@@ -103,11 +105,12 @@ class StadtratsvorlageParser extends RISParser
 
         $geloescht = ($betreff_gefunden && $daten->wahlperiode == "" && $daten->status == "" && $daten->betreff == "");
 
-        preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
+        preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]+)\"[^>]*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = array(
-                "url"  => $matches[1][$i],
-                "name" => $matches[2][$i],
+                "url"        => $matches[2][$i],
+                "name"       => $matches[3][$i],
+                "name_title" => $matches[1][$i],
             );
         }
 
@@ -281,7 +284,7 @@ class StadtratsvorlageParser extends RISParser
 
     public function parseAlle()
     {
-        $anz   = 30000;
+        $anz   = static::$MAX_OFFSET;
         $first = true;
         for ($i = $anz; $i >= 0; $i -= 10) {
             if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
@@ -295,7 +298,7 @@ class StadtratsvorlageParser extends RISParser
     {
         echo "Updates: Stadtratsvorlagen\n";
         $loaded_ids = array();
-        for ($i = 400; $i >= 0; $i -= 10) {
+        for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
             $ids        = $this->parseSeite($i, false);
             $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
         }

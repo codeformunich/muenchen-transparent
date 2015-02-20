@@ -14,6 +14,7 @@
  * @property string $url
  * @property integer $deleted
  * @property string $name
+ * @property string $name_title
  * @property string $datum
  * @property string $datum_dokument
  * @property string $text_ocr_raw
@@ -97,8 +98,8 @@ class Dokument extends CActiveRecord implements IRISItem
             array('id, antrag_id, termin_id, tagesordnungspunkt_id, rathausumschau_id, deleted, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
             array('typ', 'length', 'max' => 25),
             array('url', 'length', 'max' => 500),
-            array('name', 'length', 'max' => 300),
-            array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight', 'safe'),
+            array('name, name_title', 'length', 'max' => 300),
+            array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight, name, name_title', 'safe'),
         );
     }
 
@@ -135,6 +136,7 @@ class Dokument extends CActiveRecord implements IRISItem
             'url'                     => 'Url',
             'deleted'                 => 'Gelöscht',
             'name'                    => 'Name',
+            'name_title'              => 'Name (Title)',
             'datum'                   => 'Datum',
             'datum_dokument'          => 'Dokumentendatum',
             'text_ocr_raw'            => 'Text Ocr Raw',
@@ -377,7 +379,16 @@ class Dokument extends CActiveRecord implements IRISItem
 
         /** @var Dokument|null $dokument */
         $dokument = Dokument::model()->disableDefaultScope()->findByPk($dokument_id);
-        if ($dokument) return "";
+        if ($dokument) {
+            if ($dokument->name != $dok["name"] || $dokument->name_title != $dok["name_title"]) {
+                echo "- Dokumententitel geändert: " . $dokument->name . " (" . $dokument->name_title . ")";
+                echo "=> " . $dok["name"] . " (" . $dok["name_title"] . ")\n";
+                $dokument->name       = $dok["name"];
+                $dokument->name_title = $dok["name_title"];
+                $dokument->save();
+            }
+            return "";
+        }
 
         $dokument      = new Dokument();
         $dokument->id  = $dokument_id;

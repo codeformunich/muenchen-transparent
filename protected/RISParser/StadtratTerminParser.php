@@ -86,8 +86,9 @@ class StadtratTerminParser extends RISParser
         preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = array(
-                "url"  => $matches[1][$i],
-                "name" => $matches[2][$i],
+                "url"        => $matches[1][$i],
+                "name"       => $matches[2][$i],
+                "name_title" => "",
             );
         }
 
@@ -239,7 +240,7 @@ class StadtratTerminParser extends RISParser
 
             preg_match_all("/<a href=(?<url>[^ ]+) title=\"(?<title>[^\"]*)\"/siU", $entscheidung_original, $matches2);
             if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
-                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_BESCHLUSS, $top, array("url" => $matches2["url"][0], "name" => $matches2["title"][0]));
+                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_BESCHLUSS, $top, array("url" => $matches2["url"][0], "name" => $matches2["title"][0], "name_title" => ""));
                 /** @var Dokument $dok */
                 $dok = Dokument::model()->findByAttributes(array("tagesordnungspunkt_id" => $top->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]));
                 if ($dok && $dok->tagesordnungspunkt_id != $top->id) {
@@ -349,6 +350,7 @@ class StadtratTerminParser extends RISParser
 
 
         foreach ($dokumente as $dok) {
+            /** @var array $dok */
             $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_TERMIN, $daten, $dok);
         }
 

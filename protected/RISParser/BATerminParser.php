@@ -2,7 +2,7 @@
 
 class BATerminParser extends RISParser
 {
-    private static $MAX_OFFSET        = 2600;
+    private static $MAX_OFFSET        = 5200;
     private static $MAX_OFFSET_UPDATE = 300;
 
     /**
@@ -94,11 +94,12 @@ class BATerminParser extends RISParser
         if (preg_match("/Status:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->status = $matches[1];
         if (trim($daten->wahlperiode) == "") $daten->wahlperiode = "?";
 
-        preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
+        preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]+)\"[^>]*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = array(
-                "url"  => $matches[1][$i],
-                "name" => $matches[2][$i],
+                "url"        => $matches[2][$i],
+                "name"       => $matches[3][$i],
+                "name_title" => $matches[1][$i],
             );
         }
 
@@ -269,7 +270,7 @@ class BATerminParser extends RISParser
 
             preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
             if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII/RII/DOK/TOP/") {
-                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $tagesordnungspunkt, array("url" => $matches2["url"], "name" => $matches2["title"]));
+                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $tagesordnungspunkt, array("url" => $matches2["url"], "name" => $matches2["title"], "name_title" => ""));
             }
         }
 

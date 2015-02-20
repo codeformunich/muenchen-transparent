@@ -203,6 +203,7 @@ CREATE TABLE `dokumente` (
   `url` varchar(500) NOT NULL,
   `deleted` tinyint(4) NOT NULL DEFAULT '0',
   `name` varchar(300) NOT NULL,
+  `name_title` varchar(300) NOT NULL,
   `datum` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `datum_dokument` timestamp NULL DEFAULT NULL,
   `text_ocr_raw` longtext,

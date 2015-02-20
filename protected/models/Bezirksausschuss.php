@@ -119,6 +119,9 @@ class Bezirksausschuss extends CActiveRecord
     {
         // Check if the point is inside the polygon or on the boundary
         if ($this->kontur_cache === null) $this->kontur_cache = json_decode($this->osm_shape);
+
+        if ($this->ba_nr == 5) echo json_encode($this->kontur_cache);
+
         $intersections  = 0;
         $vertices_count = count($this->kontur_cache);
 

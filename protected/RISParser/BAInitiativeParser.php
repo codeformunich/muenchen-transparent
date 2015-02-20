@@ -2,7 +2,7 @@
 
 class BAInitiativeParser extends RISParser
 {
-    private static $MAX_OFFSET        = 4700;
+    private static $MAX_OFFSET        = 4800;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
@@ -82,11 +82,12 @@ class BAInitiativeParser extends RISParser
         }
         if ($daten->wahlperiode == "") $daten->wahlperiode = "?";
 
-        preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
+        preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]+)\"[^>]+href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = array(
-                "url"  => $matches[1][$i],
-                "name" => $matches[2][$i],
+                "url"        => $matches[2][$i],
+                "name"       => $matches[3][$i],
+                "name_title" => $matches[1][$i],
             );
         }
 

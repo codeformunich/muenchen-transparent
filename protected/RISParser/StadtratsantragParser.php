@@ -94,11 +94,12 @@ class StadtratsantragParser extends RISParser
                 break;
         }
 
-        preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
+        preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]*)\"[^>]*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = array(
-                "url"  => $matches[1][$i],
-                "name" => $matches[2][$i],
+                "url"        => $matches[2][$i],
+                "name"       => $matches[3][$i],
+                "name_title" => $matches[1][$i],
             );
         }
         /*

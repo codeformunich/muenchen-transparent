@@ -2,7 +2,7 @@
 
 class BAAntragParser extends RISParser
 {
-    private static $MAX_OFFSET        = 12500;
+    private static $MAX_OFFSET        = 13500;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
@@ -91,11 +91,12 @@ class BAAntragParser extends RISParser
                 break;
         }
 
-        preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
+        preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\"[^>]*title=\"([^\"]*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = array(
-                "url"  => $matches[1][$i],
-                "name" => $matches[2][$i],
+                "url"        => $matches[1][$i],
+                "name"       => $matches[3][$i],
+                "name_title" => $matches[2][$i],
             );
         }
 
