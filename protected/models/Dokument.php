@@ -215,11 +215,22 @@ class Dokument extends CActiveRecord implements IRISItem
     public function getName($langfassung = false)
     {
         $name = RISTools::korrigiereDokumentenTitel($this->name);
+        $name_titel = RISTools::korrigiereDokumentenTitel($this->name_title);
         if ($langfassung) {
             if ($name == "Deckblatt VV") return "Deckblatt (Vollversammlung)";
         } else {
             $name = preg_replace("/^[ 0-9\.]{6,8}/siu", "", $name);
-            if (strlen($name) > 255) return "Dokument";
+
+            if ($name_titel == "Antwortschreiben") return "Antwortschreiben";
+            if (preg_match("/^Antwortschreiben .*/siu", $name_titel)) return "Antwortschreiben";
+            if (preg_match("/^Antwort \\d{2}\-/siu", $name_titel)) return "Antwortschreiben";
+
+            if (strlen($name) > 255) {
+                if ($name_titel == "Antwortschreiben") return "Antwortschreiben";
+                if (preg_match("/^Antwortschreiben .*/siu", $name_titel)) return "Antwortschreiben";
+                if (preg_match("/^Antwort \\d{2}\-/siu", $name_titel)) return "Antwortschreiben";
+                return "Dokument";
+            }
             if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
 
             $name = preg_replace("/ Nr\. [0-9-]{5} \/ [A-Z] [0-9]+$/siu", "", $name);
