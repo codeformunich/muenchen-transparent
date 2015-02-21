@@ -337,6 +337,7 @@ class BATerminParser extends RISParser
         $add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
         $text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
         $txt  = explode("<table class=\"ergebnistab\" ", $text);
+        if (count($txt) == 1) return;
         $txt  = explode("<!-- tabellenfuss", $txt[1]);
 
         preg_match_all("/ba_sitzungen_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
