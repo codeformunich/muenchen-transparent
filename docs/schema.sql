@@ -446,6 +446,35 @@ CREATE TABLE `stadtraetInnen_referate` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `statistik_datensaetze`
+--
+
+CREATE TABLE `statistik_datensaetze` (
+  `id` mediumint(9) NOT NULL,
+  `quelle` tinyint(4) NOT NULL,
+  `indikator_gruppe` varchar(50) NOT NULL,
+  `indikator_bezeichnung` varchar(100) NOT NULL,
+  `indikator_auspraegung` varchar(100) NOT NULL,
+  `indikator_wert` float DEFAULT NULL,
+  `basiswert_1` float DEFAULT NULL,
+  `basiswert_1_name` varchar(50) NOT NULL,
+  `basiswert_2` float NOT NULL,
+  `basiswert_2_name` varchar(50) NOT NULL,
+  `basiswert_3` float DEFAULT NULL,
+  `basiswert_3_name` varchar(50) NOT NULL,
+  `basiswert_4` float DEFAULT NULL,
+  `basiswert_4_name` varchar(50) NOT NULL,
+  `basiswert_5` float DEFAULT NULL,
+  `basiswert_5_name` varchar(50) NOT NULL,
+  `jahr` smallint(6) NOT NULL,
+  `gliederung` varchar(50) NOT NULL,
+  `gliederung_nummer` mediumint(9) NOT NULL,
+  `gliederung_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `strassen`
 --
 
@@ -601,205 +630,211 @@ CREATE TABLE `vorgaenge` (
 -- Indexes for table `antraege`
 --
 ALTER TABLE `antraege`
-ADD PRIMARY KEY (`id`), ADD KEY `registriert_am` (`registriert_am`), ADD KEY `datum_letzte_aenderung` (`datum_letzte_aenderung`), ADD KEY `fk_antraege_bezirksausschuesse1_idx` (`ba_nr`), ADD KEY `ba_datum` (`ba_nr`,`datum_letzte_aenderung`), ADD KEY `antrags_nr` (`antrags_nr`), ADD KEY `fk_antraege_vorgaenge1_idx` (`vorgang_id`), ADD KEY `fk_antraege_referate1_idx` (`referat_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `registriert_am` (`registriert_am`), ADD KEY `datum_letzte_aenderung` (`datum_letzte_aenderung`), ADD KEY `fk_antraege_bezirksausschuesse1_idx` (`ba_nr`), ADD KEY `ba_datum` (`ba_nr`,`datum_letzte_aenderung`), ADD KEY `antrags_nr` (`antrags_nr`), ADD KEY `fk_antraege_vorgaenge1_idx` (`vorgang_id`), ADD KEY `fk_antraege_referate1_idx` (`referat_id`);
 
 --
 -- Indexes for table `antraege_history`
 --
 ALTER TABLE `antraege_history`
-ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `registriert_am` (`registriert_am`), ADD KEY `datum_letzte_aenderung` (`datum_letzte_aenderung`), ADD KEY `fk_antraege_history_bezirksausschuesse1_idx` (`ba_nr`), ADD KEY `fk_antraege_history_vorgaenge1_idx` (`vorgang_id`), ADD KEY `fk_antraege_history_referate1_idx` (`referat_id`);
+  ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `registriert_am` (`registriert_am`), ADD KEY `datum_letzte_aenderung` (`datum_letzte_aenderung`), ADD KEY `fk_antraege_history_bezirksausschuesse1_idx` (`ba_nr`), ADD KEY `fk_antraege_history_vorgaenge1_idx` (`vorgang_id`), ADD KEY `fk_antraege_history_referate1_idx` (`referat_id`);
 
 --
 -- Indexes for table `antraege_orte`
 --
 ALTER TABLE `antraege_orte`
-ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `dokument` (`dokument_id`,`ort_id`), ADD KEY `antrag` (`antrag_id`), ADD KEY `ort_id` (`ort_id`), ADD KEY `fk_antraege_orte_antraege_dokumente1_idx` (`dokument_id`), ADD KEY `fk_antraege_orte_termine1_idx` (`termin_id`), ADD KEY `rathausumschau_id` (`rathausumschau_id`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `dokument` (`dokument_id`,`ort_id`), ADD KEY `antrag` (`antrag_id`), ADD KEY `ort_id` (`ort_id`), ADD KEY `fk_antraege_orte_antraege_dokumente1_idx` (`dokument_id`), ADD KEY `fk_antraege_orte_termine1_idx` (`termin_id`), ADD KEY `rathausumschau_id` (`rathausumschau_id`);
 
 --
 -- Indexes for table `antraege_personen`
 --
 ALTER TABLE `antraege_personen`
-ADD PRIMARY KEY (`antrag_id`,`person_id`), ADD KEY `person` (`person_id`), ADD KEY `fk_antraege_personen_antraege1_idx` (`antrag_id`);
+  ADD PRIMARY KEY (`antrag_id`,`person_id`), ADD KEY `person` (`person_id`), ADD KEY `fk_antraege_personen_antraege1_idx` (`antrag_id`);
 
 --
 -- Indexes for table `antraege_stadtraetInnen`
 --
 ALTER TABLE `antraege_stadtraetInnen`
-ADD PRIMARY KEY (`antrag_id`,`stadtraetIn_id`), ADD KEY `fk_table1_antraege1_idx` (`antrag_id`), ADD KEY `fk_antraege_stadtraetInnen_stadtraetInnen1_idx` (`stadtraetIn_id`);
+  ADD PRIMARY KEY (`antrag_id`,`stadtraetIn_id`), ADD KEY `fk_table1_antraege1_idx` (`antrag_id`), ADD KEY `fk_antraege_stadtraetInnen_stadtraetInnen1_idx` (`stadtraetIn_id`);
 
 --
 -- Indexes for table `antraege_tags`
 --
 ALTER TABLE `antraege_tags`
-ADD PRIMARY KEY (`antrag_id`,`tag_id`), ADD KEY `fk_antraege_tags_tags1_idx` (`tag_id`);
+  ADD PRIMARY KEY (`antrag_id`,`tag_id`), ADD KEY `fk_antraege_tags_tags1_idx` (`tag_id`);
 
 --
 -- Indexes for table `antraege_vorlagen`
 --
 ALTER TABLE `antraege_vorlagen`
-ADD PRIMARY KEY (`antrag1`,`antrag2`), ADD KEY `fk_antraege_links_antraege1_idx` (`antrag1`), ADD KEY `fk_antraege_links_antraege2_idx` (`antrag2`);
+  ADD PRIMARY KEY (`antrag1`,`antrag2`), ADD KEY `fk_antraege_links_antraege1_idx` (`antrag1`), ADD KEY `fk_antraege_links_antraege2_idx` (`antrag2`);
 
 --
 -- Indexes for table `benutzerInnen`
 --
 ALTER TABLE `benutzerInnen`
-ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `benutzerInnen_vorgaenge_abos`
 --
 ALTER TABLE `benutzerInnen_vorgaenge_abos`
-ADD PRIMARY KEY (`benutzerInnen_id`,`vorgaenge_id`), ADD KEY `fk_benutzerInnen_has_vorgaenge_vorgaenge1_idx` (`vorgaenge_id`), ADD KEY `fk_benutzerInnen_has_vorgaenge_benutzerInnen1_idx` (`benutzerInnen_id`);
+  ADD PRIMARY KEY (`benutzerInnen_id`,`vorgaenge_id`), ADD KEY `fk_benutzerInnen_has_vorgaenge_vorgaenge1_idx` (`vorgaenge_id`), ADD KEY `fk_benutzerInnen_has_vorgaenge_benutzerInnen1_idx` (`benutzerInnen_id`);
 
 --
 -- Indexes for table `bezirksausschuesse`
 --
 ALTER TABLE `bezirksausschuesse`
-ADD PRIMARY KEY (`ba_nr`);
+  ADD PRIMARY KEY (`ba_nr`);
 
 --
 -- Indexes for table `bezirksausschuss_budget`
 --
 ALTER TABLE `bezirksausschuss_budget`
-ADD PRIMARY KEY (`ba_nr`,`jahr`);
+  ADD PRIMARY KEY (`ba_nr`,`jahr`);
 
 --
 -- Indexes for table `dokumente`
 --
 ALTER TABLE `dokumente`
-ADD PRIMARY KEY (`id`), ADD KEY `antrag_id` (`antrag_id`), ADD KEY `typ` (`typ`), ADD KEY `fk_antraege_dokumente_termine1_idx` (`termin_id`), ADD KEY `fk_antraege_dokumente_antraege_ergebnisse1_idx` (`tagesordnungspunkt_id`), ADD KEY `datum` (`datum`), ADD KEY `fk_antraege_dokumente_vorgaenge1_idx` (`vorgang_id`), ADD KEY `highlight_dokument` (`highlight`), ADD KEY `url` (`url`(60)), ADD KEY `rathausumschau_id` (`rathausumschau_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `antrag_id` (`antrag_id`), ADD KEY `typ` (`typ`), ADD KEY `fk_antraege_dokumente_termine1_idx` (`termin_id`), ADD KEY `fk_antraege_dokumente_antraege_ergebnisse1_idx` (`tagesordnungspunkt_id`), ADD KEY `datum` (`datum`), ADD KEY `fk_antraege_dokumente_vorgaenge1_idx` (`vorgang_id`), ADD KEY `highlight_dokument` (`highlight`), ADD KEY `url` (`url`(60)), ADD KEY `rathausumschau_id` (`rathausumschau_id`);
 
 --
 -- Indexes for table `fraktionen`
 --
 ALTER TABLE `fraktionen`
-ADD PRIMARY KEY (`id`), ADD KEY `fk_fraktionen_bezirksausschuesse1_idx` (`ba_nr`);
+  ADD PRIMARY KEY (`id`), ADD KEY `fk_fraktionen_bezirksausschuesse1_idx` (`ba_nr`);
 
 --
 -- Indexes for table `gremien`
 --
 ALTER TABLE `gremien`
-ADD PRIMARY KEY (`id`), ADD KEY `fk_gremien_bezirksausschuesse1_idx` (`ba_nr`);
+  ADD PRIMARY KEY (`id`), ADD KEY `fk_gremien_bezirksausschuesse1_idx` (`ba_nr`);
 
 --
 -- Indexes for table `gremien_history`
 --
 ALTER TABLE `gremien_history`
-ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `fk_gremien_bezirksausschuesse1_idx` (`ba_nr`);
+  ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `fk_gremien_bezirksausschuesse1_idx` (`ba_nr`);
 
 --
 -- Indexes for table `metadaten`
 --
 ALTER TABLE `metadaten`
-ADD PRIMARY KEY (`meta_key`);
+  ADD PRIMARY KEY (`meta_key`);
 
 --
 -- Indexes for table `orte_geo`
 --
 ALTER TABLE `orte_geo`
-ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `ort` (`ort`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `ort` (`ort`);
 
 --
 -- Indexes for table `personen`
 --
 ALTER TABLE `personen`
-ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `name_normalized` (`name_normalized`), ADD KEY `fk_personen_stadtraete1_idx` (`ris_stadtraetIn`), ADD KEY `fk_personen_fraktionen1_idx` (`ris_fraktion`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `name_normalized` (`name_normalized`), ADD KEY `fk_personen_stadtraete1_idx` (`ris_stadtraetIn`), ADD KEY `fk_personen_fraktionen1_idx` (`ris_fraktion`);
 
 --
 -- Indexes for table `rathausumschau`
 --
 ALTER TABLE `rathausumschau`
-ADD PRIMARY KEY (`id`), ADD KEY `datum` (`datum`);
+  ADD PRIMARY KEY (`id`), ADD KEY `datum` (`datum`);
 
 --
 -- Indexes for table `rechtsdokument`
 --
 ALTER TABLE `rechtsdokument`
-ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `nr_UNIQUE` (`nr`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `nr_UNIQUE` (`nr`);
 
 --
 -- Indexes for table `referate`
 --
 ALTER TABLE `referate`
-ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `urlpart_UNIQUE` (`urlpart`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `urlpart_UNIQUE` (`urlpart`);
 
 --
 -- Indexes for table `ris_aenderungen`
 --
 ALTER TABLE `ris_aenderungen`
-ADD PRIMARY KEY (`id`), ADD KEY `datum` (`datum`), ADD KEY `antrag_id` (`ris_id`), ADD KEY `ba_nr` (`ba_nr`,`datum`), ADD KEY `fk_ris_aenderungen_bezirksausschuesse1_idx` (`ba_nr`);
+  ADD PRIMARY KEY (`id`), ADD KEY `datum` (`datum`), ADD KEY `antrag_id` (`ris_id`), ADD KEY `ba_nr` (`ba_nr`,`datum`), ADD KEY `fk_ris_aenderungen_bezirksausschuesse1_idx` (`ba_nr`);
 
 --
 -- Indexes for table `stadtraetInnen`
 --
 ALTER TABLE `stadtraetInnen`
-ADD PRIMARY KEY (`id`), ADD KEY `id` (`benutzerIn_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `id` (`benutzerIn_id`);
 
 --
 -- Indexes for table `stadtraetInnen_fraktionen`
 --
 ALTER TABLE `stadtraetInnen_fraktionen`
-ADD PRIMARY KEY (`id`), ADD KEY `fk_ris_stadtraete_fraktionen_ris_personen1_idx` (`stadtraetIn_id`), ADD KEY `fk_stadtraete_fraktionen_fraktionen1_idx` (`fraktion_id`), ADD KEY `uq` (`stadtraetIn_id`,`fraktion_id`,`wahlperiode`);
+  ADD PRIMARY KEY (`id`), ADD KEY `fk_ris_stadtraete_fraktionen_ris_personen1_idx` (`stadtraetIn_id`), ADD KEY `fk_stadtraete_fraktionen_fraktionen1_idx` (`fraktion_id`), ADD KEY `uq` (`stadtraetIn_id`,`fraktion_id`,`wahlperiode`);
 
 --
 -- Indexes for table `stadtraetInnen_gremien`
 --
 ALTER TABLE `stadtraetInnen_gremien`
-ADD PRIMARY KEY (`stadtraetIn_id`,`gremium_id`,`datum_von`), ADD KEY `fk_stadtraetIn_gremien_mitgliedschaft_stadtraetInnen1_idx` (`stadtraetIn_id`), ADD KEY `fk_stadtraetIn_gremien_mitgliedschaft_gremien1_idx` (`gremium_id`);
+  ADD PRIMARY KEY (`stadtraetIn_id`,`gremium_id`,`datum_von`), ADD KEY `fk_stadtraetIn_gremien_mitgliedschaft_stadtraetInnen1_idx` (`stadtraetIn_id`), ADD KEY `fk_stadtraetIn_gremien_mitgliedschaft_gremien1_idx` (`gremium_id`);
 
 --
 -- Indexes for table `stadtraetInnen_referate`
 --
 ALTER TABLE `stadtraetInnen_referate`
-ADD PRIMARY KEY (`id`), ADD KEY `stadtraetIn_id` (`stadtraetIn_id`), ADD KEY `fraktion_id` (`referat_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `stadtraetIn_id` (`stadtraetIn_id`), ADD KEY `fraktion_id` (`referat_id`);
+
+--
+-- Indexes for table `statistik_datensaetze`
+--
+ALTER TABLE `statistik_datensaetze`
+  ADD PRIMARY KEY (`id`), ADD KEY `jahr` (`jahr`), ADD KEY `gliederung_nummer` (`gliederung_nummer`,`jahr`);
 
 --
 -- Indexes for table `strassen`
 --
 ALTER TABLE `strassen`
-ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tagesordnungspunkte`
 --
 ALTER TABLE `tagesordnungspunkte`
-ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `ix_sitzung_antrag` (`antrag_id`,`sitzungstermin_id`), ADD KEY `fk_antraege_ergebnisse_antraege1_idx` (`antrag_id`), ADD KEY `fk_antraege_ergebnisse_termine1_idx` (`sitzungstermin_id`), ADD KEY `fk_antraege_ergebnisse_gremien1_idx` (`gremium_id`), ADD KEY `fk_antraege_ergebnisse_vorgaenge1_idx` (`vorgang_id`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `ix_sitzung_antrag` (`antrag_id`,`sitzungstermin_id`), ADD KEY `fk_antraege_ergebnisse_antraege1_idx` (`antrag_id`), ADD KEY `fk_antraege_ergebnisse_termine1_idx` (`sitzungstermin_id`), ADD KEY `fk_antraege_ergebnisse_gremien1_idx` (`gremium_id`), ADD KEY `fk_antraege_ergebnisse_vorgaenge1_idx` (`vorgang_id`);
 
 --
 -- Indexes for table `tagesordnungspunkte_history`
 --
 ALTER TABLE `tagesordnungspunkte_history`
-ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `fk_antraege_ergebnisse_antraege1_idx` (`antrag_id`), ADD KEY `fk_antraege_ergebnisse_termine1_idx` (`sitzungstermin_id`), ADD KEY `fk_antraege_ergebnisse_gremien1_idx` (`gremium_id`), ADD KEY `fk_antraege_ergebnisse_history_vorgaenge1_idx` (`vorgang_id`);
+  ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `fk_antraege_ergebnisse_antraege1_idx` (`antrag_id`), ADD KEY `fk_antraege_ergebnisse_termine1_idx` (`sitzungstermin_id`), ADD KEY `fk_antraege_ergebnisse_gremien1_idx` (`gremium_id`), ADD KEY `fk_antraege_ergebnisse_history_vorgaenge1_idx` (`vorgang_id`);
 
 --
 -- Indexes for table `tags`
 --
 ALTER TABLE `tags`
-ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `name_UNIQUE` (`name`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `name_UNIQUE` (`name`);
 
 --
 -- Indexes for table `termine`
 --
 ALTER TABLE `termine`
-ADD PRIMARY KEY (`id`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_gremien1_idx` (`gremium_id`), ADD KEY `ba_nr` (`ba_nr`,`typ`);
+  ADD PRIMARY KEY (`id`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_gremien1_idx` (`gremium_id`), ADD KEY `ba_nr` (`ba_nr`,`typ`);
 
 --
 -- Indexes for table `termine_history`
 --
 ALTER TABLE `termine_history`
-ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_history_bezirksausschuesse1_idx` (`ba_nr`), ADD KEY `ba_nr` (`ba_nr`,`typ`);
+  ADD PRIMARY KEY (`id`,`datum_letzte_aenderung`), ADD KEY `termin` (`termin`), ADD KEY `termin_reihe` (`termin_reihe`), ADD KEY `fk_termine_history_bezirksausschuesse1_idx` (`ba_nr`), ADD KEY `ba_nr` (`ba_nr`,`typ`);
 
 --
 -- Indexes for table `texte`
 --
 ALTER TABLE `texte`
-ADD PRIMARY KEY (`id`), ADD KEY `pos` (`typ`,`pos`), ADD KEY `fk_texte_benutzerInnen1_idx` (`edit_benutzerIn_id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `pos` (`typ`,`pos`), ADD KEY `fk_texte_benutzerInnen1_idx` (`edit_benutzerIn_id`);
 
 --
 -- Indexes for table `vorgaenge`
 --
 ALTER TABLE `vorgaenge`
-ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -809,82 +844,87 @@ ADD PRIMARY KEY (`id`);
 -- AUTO_INCREMENT for table `antraege_orte`
 --
 ALTER TABLE `antraege_orte`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `benutzerInnen`
 --
 ALTER TABLE `benutzerInnen`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `orte_geo`
 --
 ALTER TABLE `orte_geo`
-MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `personen`
 --
 ALTER TABLE `personen`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rathausumschau`
 --
 ALTER TABLE `rathausumschau`
-MODIFY `id` mediumint(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` mediumint(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rechtsdokument`
 --
 ALTER TABLE `rechtsdokument`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `referate`
 --
 ALTER TABLE `referate`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ris_aenderungen`
 --
 ALTER TABLE `ris_aenderungen`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `stadtraetInnen_fraktionen`
 --
 ALTER TABLE `stadtraetInnen_fraktionen`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `stadtraetInnen_referate`
 --
 ALTER TABLE `stadtraetInnen_referate`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `statistik_datensaetze`
+--
+ALTER TABLE `statistik_datensaetze`
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `strassen`
 --
 ALTER TABLE `strassen`
-MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tagesordnungspunkte`
 --
 ALTER TABLE `tagesordnungspunkte`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tagesordnungspunkte_history`
 --
 ALTER TABLE `tagesordnungspunkte_history`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `texte`
 --
 ALTER TABLE `texte`
-MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `vorgaenge`
 --
 ALTER TABLE `vorgaenge`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
