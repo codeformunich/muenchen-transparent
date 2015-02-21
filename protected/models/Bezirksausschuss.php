@@ -118,16 +118,23 @@ class Bezirksausschuss extends CActiveRecord
     public function pointInBA($point_lon, $point_lat)
     {
         // Check if the point is inside the polygon or on the boundary
-        if ($this->kontur_cache === null) $this->kontur_cache = json_decode($this->osm_shape);
+        if ($this->kontur_cache === null) {
+            $this->kontur_cache = json_decode($this->osm_shape);
+        }
 
-        if ($this->ba_nr == 5) echo json_encode($this->kontur_cache);
+        $kontur = $this->kontur_cache;
+        $first  = $kontur[0];
+        $last   = $kontur[count($kontur) - 1];
+        if ($first[0] != $last[0] || $first[1] != $last[1]) {
+            $kontur[] = $first;
+        }
 
         $intersections  = 0;
-        $vertices_count = count($this->kontur_cache);
+        $vertices_count = count($kontur);
 
         for ($i = 1; $i < $vertices_count; $i++) {
-            $vertex1 = $this->kontur_cache[$i - 1];
-            $vertex2 = $this->kontur_cache[$i];
+            $vertex1 = $kontur[$i - 1];
+            $vertex2 = $kontur[$i];
             if ($vertex1[1] == $vertex2[1] and $vertex1[1] == $point_lat and $point_lon > min($vertex1[0], $vertex2[0]) and $point_lon < max($vertex1[0], $vertex2[0])) { // Check if point is on an horizontal polygon boundary
                 return true;
             }
@@ -152,30 +159,51 @@ class Bezirksausschuss extends CActiveRecord
     /**
      * @return StadtraetInGremium[]
      */
-    public function mitgliederMitFunktionen() {
+    public function mitgliederMitFunktionen()
+    {
         $vollgremium = null;
-        foreach ($this->gremien as $gremium) if ($gremium->gremientyp == "BA-Vollgremium") $vollgremium = $gremium;
-        if (!$vollgremium) return array();
+        foreach ($this->gremien as $gremium) {
+            if ($gremium->gremientyp == "BA-Vollgremium") {
+                $vollgremium = $gremium;
+            }
+        }
+        if (!$vollgremium) {
+            return array();
+        }
         $funktionen = array();
         foreach ($vollgremium->mitgliedschaften as $mitgliedschaft) {
-            if (mb_stripos($mitgliedschaft->funktion, "Mitgl") === 0) continue;
-            if ($mitgliedschaft->funktion == "BA-Mitglied") continue;
+            if (mb_stripos($mitgliedschaft->funktion, "Mitgl") === 0) {
+                continue;
+            }
+            if ($mitgliedschaft->funktion == "BA-Mitglied") {
+                continue;
+            }
             $funktionen[] = $mitgliedschaft;
         }
 
-        $funktion2weight = function($funktion) {
+        $funktion2weight = function ($funktion) {
             $funktion = trim($funktion);
-            if (in_array($funktion, array("Vorsitz", "BA-Vorsitz", "BA-Vorsitzender", "BA-Vorsitzende", "Vorsitzender", "Vorsitzende", "Sitzungsleitung"))) return 1;
-            if (mb_stripos($funktion, "1. stell") === 0 || mb_stripos($funktion, "1. stv") === 0 || in_array($funktion, array("stellv. Vorsitz"))) return 2;
-            if (mb_stripos($funktion, "2. stell") === 0 || mb_stripos($funktion, "2. stv") === 0) return 3;
+            if (in_array($funktion, array("Vorsitz", "BA-Vorsitz", "BA-Vorsitzender", "BA-Vorsitzende", "Vorsitzender", "Vorsitzende", "Sitzungsleitung"))) {
+                return 1;
+            }
+            if (mb_stripos($funktion, "1. stell") === 0 || mb_stripos($funktion, "1. stv") === 0 || in_array($funktion, array("stellv. Vorsitz"))) {
+                return 2;
+            }
+            if (mb_stripos($funktion, "2. stell") === 0 || mb_stripos($funktion, "2. stv") === 0) {
+                return 3;
+            }
 
             return 10;
         };
-        usort($funktionen, function($funk1, $funk2) use ($funktion2weight) {
+        usort($funktionen, function ($funk1, $funk2) use ($funktion2weight) {
             /** @var StadtraetInGremium $funk1 */
             /** @var StadtraetInGremium $funk2 */
-            if ($funktion2weight($funk1->funktion) < $funktion2weight($funk2->funktion)) return -1;
-            if ($funktion2weight($funk1->funktion) > $funktion2weight($funk2->funktion)) return 1;
+            if ($funktion2weight($funk1->funktion) < $funktion2weight($funk2->funktion)) {
+                return -1;
+            }
+            if ($funktion2weight($funk1->funktion) > $funktion2weight($funk2->funktion)) {
+                return 1;
+            }
             return 0;
         });
         return $funktionen;
@@ -185,6 +213,28 @@ class Bezirksausschuss extends CActiveRecord
     public function getLink()
     {
         return Yii::app()->createUrl("index/ba", array("ba_nr" => $this->ba_nr, "ba_name" => $this->name));
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getInteressanteStatistik()
+    {
+        //return array(); // @TODO
+
+        $statistiken = array();
+
+        $daten = StatistikDatensatz::model()->findByAttributes(array("gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"), array("order" => "jahr DESC"));
+        if ($daten) {
+            $statistiken[] = array(
+                "name" => "EinwohnerInnen",
+                "wert" => $daten->basiswert_2,
+            );
+        }
+
+        return $statistiken;
+
     }
 
 }
