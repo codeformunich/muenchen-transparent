@@ -13,6 +13,7 @@ class StadtraetInFraktionOverrides
         -40, // FDP BA9
         -39, // FW BA9
         -36, // CSU BA9
+        -102, // Fraktionslos, BA21
     ];
 
 
@@ -95,6 +96,12 @@ class StadtraetInFraktionOverrides
         1431229 => [
             [
                 "fraktion_id" => -37,
+                "datum_von"   => "2014-05-01",
+            ]
+        ],
+        3310431 => [
+            [
+                "fraktion_id" => -102,
                 "datum_von"   => "2014-05-01",
             ]
         ],
