@@ -33,15 +33,16 @@ $this->html_itemprop = "http://schema.org/Person";
 							<?
 							$mitgliedschaften = $person->getFraktionsMitgliedschaften();
 							foreach ($mitgliedschaften as $frakts) {
-								echo "<li>" . CHtml::encode($frakts->fraktion->getName());
+								echo "<li class='" . ($frakts->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>" . CHtml::encode($frakts->fraktion->getName());
 								if ($frakts->fraktion->ba_nr > 0) {
 									echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . CHtml::encode($frakts->fraktion->bezirksausschuss->name) . ")";
 									// @Wird noch nicht zuverlässig erkannt; siehe https://github.com/codeformunich/Ratsinformant/issues/38
-								} elseif ($frakts->datum_von > 0 && $frakts->datum_bis > 0) {
-									echo " (von " . RISTools::datumstring($frakts->datum_von);
-									echo " bis " . RISTools::datumstring($frakts->datum_bis) . ")";
+								}
+                                if ($frakts->datum_von > 0 && $frakts->datum_bis > 0) {
+									echo "<br><small>(von " . RISTools::datumstring($frakts->datum_von);
+									echo " bis " . RISTools::datumstring($frakts->datum_bis) . ")</small>";
 								} elseif ($frakts->datum_von > 0) {
-									echo " (seit " . RISTools::datumstring($frakts->datum_von) . ")";
+									echo "<br>(seit " . RISTools::datumstring($frakts->datum_von) . ")";
 								}
 								echo "</li>";
 							} ?>

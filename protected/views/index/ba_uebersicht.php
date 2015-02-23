@@ -175,6 +175,22 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
     <div class="col col-md-3 keine_dokumente">
         <?
+        $statistiken = $ba->getInteressanteStatistik();
+        if (count($statistiken) > 0) {
+            ?>
+        <section class="well">
+            <h2>Statistik</h2>
+            <dl class="ba_funktionen">
+                <? foreach ($statistiken as $statistik) {
+                    echo '<dt>' . CHtml::encode($statistik["name"]) . '</dt>';
+                    echo '<dd>' . CHtml::encode($statistik["wert"]) . '</dd>';
+                }
+                ?>
+                </dl>
+                </section>
+            <?
+        }
+
         $this->renderPartial("../personen/fraktionen", array(
             "fraktionen" => $fraktionen,
             "title"      => "BA-Mitglieder",
@@ -188,6 +204,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                 <dl class="ba_funktionen">
                     <?
                     foreach ($funktionen as $funktion) {
+                        if (!$funktion->mitgliedschaftAktiv()) continue;
                         $strIn = $funktion->stadtraetIn;
                         echo '<dt>' . CHtml::encode($funktion->funktion) . '</dt>';
                         echo '<dd><a href="' . CHtml::encode($strIn->getLink()) . '">' . CHtml::encode($strIn->getName()) . '</a></dd>';
