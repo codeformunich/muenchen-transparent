@@ -105,6 +105,8 @@ class BAGremienParser extends RISParser
                         $aenderungen .= "Mitgliedschaft von " . $mitgliedschaft->stadtraetIn->name . ": ";
                         $aenderungen .= $mitgliedschaft->datum_von . "/" . $mitgliedschaft->datum_bis . " => ";
                         $aenderungen .= $datum_von . "/" . $datum_bis . "\n";
+                        $mitgliedschaft->datum_von = $datum_von;
+                        $mitgliedschaft->datum_bis = $datum_bis;
                         $mitgliedschaft->save();
                     }
                     if ($mitgliedschaft->funktion != $match2["funktion"]) {
