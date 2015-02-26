@@ -48,7 +48,7 @@ class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
 
         $mail_txt  = $this->verschickeNeueBenachrichtigungen_txt($benutzerIn, $ergebnisse);
         $mail_html = $this->verschickeNeueBenachrichtigungen_html($benutzerIn, $ergebnisse);
-        RISTools::send_email($benutzerIn->email, "Neues im Münchner RIS", $mail_txt, $mail_html, "newsletter");
+        RISTools::send_email($benutzerIn->email, "Neues auf München Transparent", $mail_txt, $mail_html, "newsletter");
 
         $benutzerIn->datum_letzte_benachrichtigung = new CDbExpression("NOW()");
         $benutzerIn->save();

@@ -50,7 +50,7 @@ if (count($antraege) > 0) {
                 ?>
                 <div class="neuere_caller">
                     <a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
-                            class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
+                            class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
                 </div>
             <?
             }
@@ -58,7 +58,7 @@ if (count($antraege) > 0) {
                 ?>
                 <div class="aeltere_caller">
                     <a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
-                        Dokmente <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
             <?
             }
@@ -183,7 +183,7 @@ if ($datum_nav) {
             ?>
             <div class="neuere_caller">
                 <a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
-                        class="glyphicon glyphicon-chevron-left"></span> Neuere Dokmente</a>
+                        class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
             </div>
         <?
         }
@@ -191,7 +191,7 @@ if ($datum_nav) {
             ?>
             <div class="aeltere_caller">
                 <a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
-                    Dokmente
+                    Dokumente
                     <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         <?
