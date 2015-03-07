@@ -507,16 +507,19 @@ class IndexController extends RISBaseController
     /**
      * @param int $ba_nr
      * @param string $datum_max
+     * @param int|null $tage
      * @return array
      */
-    private function ba_dokumente_nach_datum($ba_nr, $datum_max)
+    private function ba_dokumente_nach_datum($ba_nr, $datum_max, $tage = null)
     {
+        if ($tage === null) $tage = static::$BA_DOKUMENTE_TAGE_PRO_SEITE;
+
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
             $datum_bis = $datum_max;
-            $datum_von = date("Y-m-d", RISTools::date_iso2timestamp($datum_max) - static::$BA_DOKUMENTE_TAGE_PRO_SEITE * 24 * 3600);
+            $datum_von = date("Y-m-d", RISTools::date_iso2timestamp($datum_max) - $tage * 24 * 3600);
         } else {
             $datum_bis = date("Y-m-d");
-            $datum_von = date("Y-m-d", time() - static::$BA_DOKUMENTE_TAGE_PRO_SEITE * 24 * 3600);
+            $datum_von = date("Y-m-d", time() - $tage * 24 * 3600);
         }
 
         /** @var array|Antrag[] $antraege1 */
@@ -543,16 +546,12 @@ class IndexController extends RISBaseController
         $geodata          = array_merge($geodata1, $geodata2);
         $geodata_overflow = array_merge($geodata_overflow1, $geodata_overflow2);
 
-        $aeltere_url_ajax = $this->createUrl("index/baAntraegeAjaxDatum", array("ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) - 14 * 24 * 3600)));
-        $aeltere_url_std  = $this->createUrl("index/ba", array("ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) - 14 * 24 * 3600)));
-        $neuere_url_ajax  = ($datum_bis != date("Y-m-d") ? $this->createUrl("index/baAntraegeAjaxDatum", array("ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) + 14 * 24 * 3600))) : null);
-        $neuere_url_std   = ($datum_bis != date("Y-m-d") ? $this->createUrl("index/ba", array("ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) + 14 * 24 * 3600))) : null);
+        $aeltere_url_std  = $this->createUrl("index/baDokumente", array("ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) - $tage * 24 * 3600)));
+        $neuere_url_std   = (str_replace("-", "", $datum_bis) < date("Ymd") ? $this->createUrl("index/baDokumente", array("ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) + $tage * 24 * 3600))) : null);
         return array(
             "datum_von"        => $datum_von,
             "datum_bis"        => $datum_bis,
-            "aeltere_url_ajax" => $aeltere_url_ajax,
             "aeltere_url_std"  => $aeltere_url_std,
-            "neuere_url_ajax"  => $neuere_url_ajax,
             "neuere_url_std"   => $neuere_url_std,
             "antraege"         => $antraege,
             "geodata"          => $geodata,
@@ -625,6 +624,24 @@ class IndexController extends RISBaseController
             "tage_zukunft"                 => $tage_zukunft,
             "tage_vergangenheit_dokumente" => static::$BA_DOKUMENTE_TAGE_PRO_SEITE,
             "fraktionen"                   => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), $ba_nr),
+            "explizites_datum"             => ($datum_max != ""),
+        ), $antraege_data));
+    }
+
+    /**
+     * @param int $ba_nr
+     * @param string $datum_max
+     */
+    public function actionBaDokumente($ba_nr, $datum_max = "") {
+        $this->top_menu = "ba";
+
+        /** @var Bezirksausschuss $ba */
+        $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
+
+        $antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max, static::$BA_DOKUMENTE_TAGE_PRO_SEITE * 2);
+        $this->render("ba_dokumente", array_merge(array(
+            "ba"                           => $ba,
+            "tage_vergangenheit_dokumente" => static::$BA_DOKUMENTE_TAGE_PRO_SEITE * 2,
             "explizites_datum"             => ($datum_max != ""),
         ), $antraege_data));
     }

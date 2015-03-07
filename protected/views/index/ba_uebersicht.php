@@ -95,9 +95,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
     <div class="col col-md-5" id="stadtratsdokumente_holder">
         <div class="well" style="overflow: auto;">
             <? $this->renderPartial("index_antraege_liste", array(
-                "aeltere_url_ajax"  => $aeltere_url_ajax,
                 "aeltere_url_std"   => $aeltere_url_std,
-                "neuere_url_ajax"   => $neuere_url_ajax,
                 "neuere_url_std"    => $neuere_url_std,
                 "antraege"          => $antraege,
                 "datum_von"         => $datum_von,

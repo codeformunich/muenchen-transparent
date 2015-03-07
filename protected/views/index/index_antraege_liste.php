@@ -38,7 +38,9 @@ if (isset($title) && $title !== null) {
 if (!isset($rathausumschauen)) $rathausumschauen = array();
 if (!isset($zeige_ba_orte)) $zeige_ba_orte = 0;
 
-$datum_nav = ((isset($neuere_url_ajax) && $neuere_url_ajax !== null) || (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null));
+$datum_nav = ((isset($neuere_url_std) && $neuere_url_std !== null) || (isset($aeltere_url_std) && $aeltere_url_std !== null));
+
+
 if (count($antraege) > 0) {
     echo '<h3>' . $erkl_str . '</h3><br>';
 
@@ -53,12 +55,25 @@ if (count($antraege) > 0) {
                             class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
                 </div>
             <?
+            } elseif (isset($neuere_url_std) && $neuere_url_std !== null) {
+                ?>
+                <div class="neuere_caller">
+                    <a href="<?= CHtml::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
+                </div>
+            <?
             }
+
             if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
                 ?>
                 <div class="aeltere_caller">
                     <a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
                         Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
+                </div>
+            <?
+            } elseif (isset($aeltere_url_std) && $aeltere_url_std !== null) {
+                ?>
+                <div class="aeltere_caller">
+                    <a href="<?= CHtml::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
             <?
             }
@@ -95,7 +110,12 @@ if (count($antraege) > 0) {
             echo '<div class="panel-body">';
 
             echo "<div class='add_meta'>";
-            echo date("d.m.", RISTools::date_iso2timestamp($entry->datum));
+            $ts = RISTools::date_iso2timestamp($entry->datum);
+            if (date("Y") == date("Y", $ts)) {
+                echo date("d.m.", $ts);
+            } else {
+                echo date("d.m.Y", $ts);
+            }
             echo "</div>";
 
             $inhalt = $entry->inhaltsverzeichnis();
@@ -152,7 +172,7 @@ if (count($antraege) > 0) {
             if ($entry->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $entry->ba_nr . " (" . $entry->ba->name . ")") . "' class='ba'>BA " . $entry->ba_nr . "</span>, ";
 
             $ts = $entry->getDokumentenMaxTS();
-            if (isset($zeige_jahr) && $zeige_jahr) {
+            if ((isset($zeige_jahr) && $zeige_jahr) || (date("Y") != date("Y", $ts))) {
                 echo date("d.m.Y", $ts);
             } else {
                 echo date("d.m.", $ts);
@@ -186,13 +206,26 @@ if ($datum_nav) {
                         class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
             </div>
         <?
+        } elseif (isset($neuere_url_std) && $neuere_url_std !== null) {
+            ?>
+            <div class="neuere_caller">
+                <a href="<?= CHtml::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
+            </div>
+        <?
         }
+
         if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
             ?>
             <div class="aeltere_caller">
                 <a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
                     Dokumente
                     <span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        <?
+        } else if (isset($aeltere_url_std) && $aeltere_url_std !== null) {
+            ?>
+            <div class="aeltere_caller">
+                <a href="<?= CHtml::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         <?
         }
