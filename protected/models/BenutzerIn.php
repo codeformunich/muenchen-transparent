@@ -226,8 +226,8 @@ class BenutzerIn extends CActiveRecord
         $this->pwd_change_code = sha1(uniqid() . $this->pwd_enc);
         $this->pwd_change_date = new CDbExpression("NOW()");
         if ($this->save()) {
-            $link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/resetPassword", array("id" => $this->id, "code" => $this->pwd_change_code));
-            RISTools::send_email($this->email, "Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang beim Ratsinformanten zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
+            $link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("benachrichtigungen/NeuesPasswortSetzen", array("id" => $this->id, "code" => $this->pwd_change_code));
+            RISTools::send_email($this->email, "Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang bei München Transparent zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
                 . "Liebe Grüße,\n\tDas München Transparent-Team.", null, "password");
             return true;
         }
@@ -244,7 +244,7 @@ class BenutzerIn extends CActiveRecord
         if ($this->pwd_change_date === null) return "Es wurde keine Passwortänderung beantragt.";
         $ts = RISTools::date_iso2timestamp($this->pwd_change_date);
         if (time() - $ts > 3600 * 24) return "Der Antrag liegt bereits mehr als 24 Stunden zurück. Bitte stelle einen neuen Passwort-Änderungs-Antrag.";
-        if ($this->pwd_change_code != $code) return "Ein ungültiger Link bzw. Code.";
+        if ($this->pwd_change_code != $code) return "Der Link bzw. Code ist ungültig.";
         $this->pwd_enc         = BenutzerIn::create_hash($new_pw);
         $this->pwd_change_code = null;
         $this->save();

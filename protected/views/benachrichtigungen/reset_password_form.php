@@ -2,7 +2,6 @@
 
 /**
  * @var IndexController $this
- * @var string $current_url
  */
 
 ?>

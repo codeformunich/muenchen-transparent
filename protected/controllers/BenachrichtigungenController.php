@@ -235,7 +235,7 @@ class BenachrichtigungenController extends RISBaseController
             $benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
             if ($benutzerIn) {
                 $ret = $benutzerIn->resetPasswordStart();
-                if ($ret == "") {
+                if ($ret === true) {
                     $this->render('reset_password_sent');
                 } else {
                     $this->msg_err = $ret;
@@ -249,4 +249,50 @@ class BenachrichtigungenController extends RISBaseController
             $this->render('reset_password_form');
         }
     }
+
+    /**
+    * @param string $id
+    * @param string $code
+    */
+    public function actionNeuesPasswortSetzen($id = "", $code = "")
+    {
+        $my_url = $this->createUrl("benachrichtigungen/NeuesPasswortSetzen", array("id" => $id, "code" => $code));
+        if (AntiXSS::isTokenSet("reset_password")) {
+            /** @var null|BenutzerIn $benutzerIn */
+            $benutzerIn = BenutzerIn::model()->findByPk($id);
+
+            if (!$benutzerIn) {
+                $this->msg_err = "BenutzerIn nicht gefunden";
+                $this->render('reset_password_form', array(
+                    "current_url" => $this->createUrl("benachrichtigungen/PasswortZuruecksetzen"),
+                ));
+                return;
+            }
+
+            if ($_REQUEST["password"] != $_REQUEST["password2"]) {
+                $this->msg_err = "Die beiden Passwörter stimmen nicht überein";
+                $this->render('reset_password_set_form', array(
+                    "current_url" => $my_url,
+                ));
+                return;
+            }
+
+            $ret = $benutzerIn->resetPasswordDo($code, $_REQUEST["password"]);
+            if ($ret === true) {
+                $this->render('reset_password_done');
+            } else {
+                $this->msg_err = $ret;
+                $this->render('reset_password_set_form', array(
+                    "current_url" => $my_url,
+                ));
+            }
+        } else {
+            $this->render('reset_password_set_form', array(
+                "current_url" => $my_url,
+            ));
+        }
+    }
+
+
+
 }
