@@ -61,7 +61,13 @@ $this->pageTitle   = $personen_typ_name;
             $fraktionen = array();
             $twitter    = $facebook = $website = false;
             foreach ($personen as $strIn) {
-                $frakt = $strIn->stadtraetInnenFraktionen[0]->fraktion;
+                if (count($strIn->stadtraetInnenFraktionen) > 0) {
+                    $frakt = $strIn->stadtraetInnenFraktionen[0]->fraktion;
+                } else {
+                    $frakt = new Fraktion();
+                    $frakt->id = "0";
+                    $frakt->name = "Fraktionslos";
+                }
                 if (!isset($fraktionen[$frakt->id])) $fraktionen[$frakt->id] = $frakt->getName(true);
                 if ($strIn->twitter != "") $twitter = true;
                 if ($strIn->facebook != "") $facebook = true;
@@ -116,7 +122,11 @@ $this->pageTitle   = $personen_typ_name;
                 $personen = StadtraetIn::sortByName($personen);
                 foreach ($personen as $strIn) {
                     echo '<li class="strIn fraktion_';
-                    echo $strIn->stadtraetInnenFraktionen[0]->fraktion_id;
+                    if (count($strIn->stadtraetInnenFraktionen) > 0) {
+                        echo $strIn->stadtraetInnenFraktionen[0]->fraktion_id;
+                    } else {
+                        echo "0";
+                    }
                     if ($strIn->twitter != "") echo " twitter";
                     if ($strIn->facebook != "") echo " facebook";
                     if ($strIn->web != "") echo " homepage";
@@ -127,7 +137,13 @@ $this->pageTitle   = $personen_typ_name;
                     echo '</div>';
                     echo '<a href="' . CHtml::encode($strIn->getLink()) . '" class="name" data-vorname="' . CHtml::encode($strIn->errateVorname()) . '"';
                     echo ' data-nachname="' . CHtml::encode($strIn->errateNachname()) . '">' . CHtml::encode($strIn->getName()) . '</a>';
-                    echo '<div class="partei">' . CHtml::encode($strIn->stadtraetInnenFraktionen[0]->fraktion->getName(true)) . '</div>';
+                    echo '<div class="partei">';
+                    if (count($strIn->stadtraetInnenFraktionen) > 0) {
+                        echo CHtml::encode($strIn->stadtraetInnenFraktionen[0]->fraktion->getName(true));
+                    } else {
+                        echo "Fraktionslos";
+                    }
+                    echo '</div>';
                     echo '</li>';
                 }
                 ?>
@@ -153,7 +169,7 @@ $this->pageTitle   = $personen_typ_name;
                     });
                     $filter.find("input").change(function () {
                         var val = $filter.find("input:checked").val();
-                        if (val > 0 || val < 0)  $liste.isotope({filter: ".fraktion_" + val});
+                        if (val > 0 || val < 0 || val === "0")  $liste.isotope({filter: ".fraktion_" + val});
                         else if (val == "twitter" || val == "facebook" || val == "homepage") $liste.isotope({filter: "." + val});
                         else $liste.isotope({filter: null});
                     });
