@@ -19,6 +19,8 @@ class BAMitgliederParser extends RISParser
         $x = explode('<!-- tabellenkopf -->', $ba_details);
         $x = explode('<!-- seitenfuss -->', $x[1]);
 
+        $gefundene_fraktionen = array();
+
         preg_match_all("/ba_mitglieder_details_mitgliedschaft\.jsp\?Id=(?<mitglied_id>[0-9]+)&amp;Wahlperiode=(?<wahlperiode>[0-9]+)[\"'& ]>(?<name>[^<]*)<.*tdborder\">(?<mitgliedschaft>[^<]*)<\/td>.*tdborder[^>]*>(?<fraktion>[^<]*) *<\/td>.*notdborder[^>]*>(?<funktion>[^<]*) *<\/td.*<\/tr/siU", $x[0], $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $fraktion_name = trim(html_entity_decode($matches["fraktion"][$i]));
@@ -88,6 +90,18 @@ class BAMitgliederParser extends RISParser
                     $strfrakt->datum_bis = null;
                 }
                 $strfrakt->save();
+            }
+            if (!isset($gefundene_fraktionen[$matches["mitglied_id"][$i]])) $gefundene_fraktionen[$matches["mitglied_id"][$i]] = array();
+            $gefundene_fraktionen[$matches["mitglied_id"][$i]][] = $fraktion->id;
+        }
+
+        foreach ($gefundene_fraktionen as $strIn => $fraktionen) {
+            //SELECT a.* FROM `fraktionen` a JOIN stadtraetInnen_fraktionen b ON a.id = b.fraktion_id WHERE b.stadtraetIn_id = 3314069 AND a.ba_nr = 18 AND b.fraktion_id NOT IN (-88)
+            $sql = 'DELETE FROM b USING `fraktionen` a JOIN `stadtraetInnen_fraktionen` b ON a.id = b.fraktion_id WHERE ';
+            $frakts = implode(", ", array_map('IntVal', $fraktionen));
+            $sql .= 'b.stadtraetIn_id = ' . IntVal($strIn) . ' AND a.ba_nr = ' . IntVal($ba_nr) . ' AND b.fraktion_id NOT IN (' . $frakts . ')';
+            if (Yii::app()->db->createCommand($sql)->execute() > 0) {
+                echo 'Fraktionen gelöscht bei: ' . $strIn . "\n";
             }
         }
     }
