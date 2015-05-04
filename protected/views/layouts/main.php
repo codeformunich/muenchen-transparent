@@ -168,11 +168,6 @@ echo ris_intern_html_extra_headers();
                 </ul>
             </div>
         </div>
-        <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/feedback")) ?>" id="ris_beta_badge">
-            <h2>Beta</h2>
-
-            <p>Fehler gefunden?</p>
-        </a>
     </div>
 
     <? if ($this->msg_ok != "") { ?>
