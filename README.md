@@ -5,6 +5,8 @@
 Entwicklungs-Setup
 ------------------
 
+Vorausgesetzt wird ein funktionierender Webserver (nginx oder apache) mit PHP und MySQL/MariaDB
+
 Berechtigungen setzen und Abhängigkeiten installieren: (www-data muss durch den passenden Nutzer ersetzt werden, bei MacOSX z.B. "_www" benutzen)
 ```bash
 curl -sS https://getcomposer.org/installer | php
@@ -61,6 +63,7 @@ MariaDB/MySQL-Konfiguration
 
 PHP-Konfiguration:
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
+* Das Modul für curl muss installiert sein (`php5-curl`)
 
 PDF.JS Updaten:
 * Ggf. uglify-js installieren (`npm install -g uglify-js`)
