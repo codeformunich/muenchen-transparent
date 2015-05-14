@@ -619,4 +619,25 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             // @TODO var_dump($ae->getAttributes());
         }
     }
+
+    public function findeFraktionen()
+    {
+        $parteien = array();
+        foreach ($this->antraegePersonen as $person) {
+            $name   = $person->person->getName(true);
+            $partei = $person->person->ratePartei($this->gestellt_am);
+            $key    = ($partei ? $partei : $name);
+            if (!isset($parteien[$key])) $parteien[$key] = array();
+            $parteien[$key][] = $name;
+        }
+
+        $ergebniss = array();
+        foreach ($parteien as $partei => $personen) {
+            $personen_net = array();
+            foreach ($personen as $p) if ($p != $partei) $personen_net[] = $p;
+            $ergebniss[] = array("name" => $partei, "mitglieder" => $personen_net);
+        }
+
+        return $ergebniss;
+    }
 }

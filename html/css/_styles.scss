@@ -715,7 +715,7 @@ ul.terminliste {
         }
       }
 
-      .add_meta {
+      .metainformationen_antraege {
         float: right;
         color: gray;
         font-size: 12px;
@@ -747,7 +747,7 @@ ul.terminliste {
     padding: 0;
     line-height: 30px;
 
-    > .add_meta {
+    > .metainformationen_antraege {
       float: right;
       color: gray;
       font-size: 12px;
@@ -1618,5 +1618,3 @@ a.tooltip_link:link, a.tooltip_link:visited {
     margin-bottom: 5px;
   }
 }
-
-

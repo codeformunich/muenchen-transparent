@@ -92,7 +92,7 @@ if (count($antraege) > 0) {
     foreach ($antraege as $ant) {
         if (!method_exists($ant, "getName")) {
             echo '<li class="panel panel-danger">
-			<div class="panel-heading">Fehler</div><div class="panel-body">' . get_class($ant) . "</div></li>";
+            <div class="panel-heading">Fehler</div><div class="panel-body">' . get_class($ant) . "</div></li>";
         } else {
             $datum = date("Y-m-d", $ant->getDokumentenMaxTS());
             if (!isset($by_date[$datum])) $by_date[$datum] = array();
@@ -105,11 +105,11 @@ if (count($antraege) > 0) {
         if (is_a($entry, "Rathausumschau")) {
             /** @var Rathausumschau $entry */
             echo '<li class="panel panel-success">
-			<div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"><span>';
+            <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"><span>';
             echo CHtml::encode($entry->getName(true)) . '</span></a></div>';
             echo '<div class="panel-body">';
 
-            echo "<div class='add_meta'>";
+            echo "<div class='metainformationen_antraege'>";
             $ts = RISTools::date_iso2timestamp($entry->datum);
             if (date("Y") == date("Y", $ts)) {
                 echo date("d.m.", $ts);
@@ -141,51 +141,16 @@ if (count($antraege) > 0) {
 
             $titel = $entry->getName(true);
             echo '<li class="panel panel-primary">
-			<div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"';
+            <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"';
             if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
             echo '><span>';
             echo CHtml::encode($titel) . '</span></a></div>';
             echo '<div class="panel-body">';
 
-
-            echo "<div class='add_meta'>";
-            $parteien = array();
-            foreach ($entry->antraegePersonen as $person) {
-                $name   = $person->person->getName(true);
-                $partei = $person->person->ratePartei($entry->gestellt_am);
-                $key    = ($partei ? $partei : $name);
-                if (!isset($parteien[$key])) $parteien[$key] = array();
-                $parteien[$key][] = $name;
-            }
-
-            $p_strs = array();
-            foreach ($parteien as $partei => $personen) {
-                $personen_net = array();
-                foreach ($personen as $p) if ($p != $partei) $personen_net[] = $p;
-                $str = "<span class='partei' title='" . CHtml::encode(implode(", ", $personen_net)) . "'>";
-                $str .= CHtml::encode($partei);
-                $str .= "</span>";
-                $p_strs[] = $str;
-            }
-            if (count($p_strs) > 0) echo implode(", ", $p_strs) . ", ";
-
-            if ($entry->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $entry->ba_nr . " (" . $entry->ba->name . ")") . "' class='ba'>BA " . $entry->ba_nr . "</span>, ";
-
-            $ts = $entry->getDokumentenMaxTS();
-            if ((isset($zeige_jahr) && $zeige_jahr) || (date("Y") != date("Y", $ts))) {
-                echo date("d.m.Y", $ts);
-            } else {
-                echo date("d.m.", $ts);
-            }
-
-            if ($zeige_ba_orte > 0 && $entry->ba_nr != $zeige_ba_orte) {
-                /** @var string[] $orte */
-                $orte = array();
-                foreach ($entry->orte as $ort) if ($ort->ort->ba_nr == $zeige_ba_orte) $orte[] = $ort->ort->ort;
-                if (count($orte) > 0) echo '<span class="glyphicon glyphicon-map-marker" title="' . implode(", ", $orte) . '"></span>';
-            }
-
-            echo "</div>";
+            $this->renderPartial("/antraege/metainformationen", array(
+                "antrag" => $entry,
+                "zeige_ba_orte" => $zeige_ba_orte
+            ));
 
             echo "<ul class='dokumente'>";
             echo $doklist;

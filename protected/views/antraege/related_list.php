@@ -43,7 +43,7 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
 				echo (count($verw->dokumente) == 1 ? "1 Dokument" : count($verw->dokumente) . " Dokumente");
 				?>
 			</p>
-			<div class="add_meta"><?
+			<div class="metainformationen_antraege"><?
 				$parteien = array();
 				foreach ($verw->antraegePersonen as $person) {
 					$name   = $person->person->name;
