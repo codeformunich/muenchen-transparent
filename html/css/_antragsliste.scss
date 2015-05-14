@@ -95,13 +95,6 @@
     }
   }
 
-  .metainformationen_antraege {
-    float: right;
-    color: gray;
-    font-size: 12px;
-    font-weight: normal;
-  }
-
   ul.dokumente {
     font-size: 12px;
   }
@@ -115,6 +108,13 @@
       margin-bottom: 5px;
     }
   }
+}
+
+.metainformationen_antraege {
+  float: right;
+  color: gray;
+  font-size: 12px;
+  font-weight: normal;
 }
 
 ul.antragsliste {
@@ -275,4 +275,8 @@ ul.dokumente {
       font-size: 12px;
     }
   }
+}
+
+.metainformationen_verbundene {
+    color: gray;
 }

@@ -16,6 +16,8 @@ foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 
 $historie = $antrag->getHistoryDiffs();
 
+$name = $antrag->getName(true);
+
 function zeile_anzeigen($feld, $name, $callback)
 {
     if (count($feld) == 0) {
@@ -46,7 +48,21 @@ function zeile_anzeigen($feld, $name, $callback)
     }
 }
 
-$name = $antrag->getName(true);
+function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
+    zeile_anzeigen($antraege, $ueberschrift, function ($element) use (&$this2){
+        /** @var Antrag $element */
+        echo CHtml::link($element->getName(true), $this2->createUrl("antraege/anzeigen", array("id" => $element->id)));
+        echo '<div class="metainformationen_verbundene">';
+        if ($element->antrag_typ != "" && $element->antrag_typ != "Antrag")
+            echo "<span>" . CHtml::encode($element->antrag_typ) . "</span>";
+        $this2->renderPartial("/antraege/metainformationen", array(
+            "antrag" => $element,
+            "zeige_ba_orte" => true
+        ));
+        echo "</div>";
+    });
+}
+
 ?>
 
 <section class="row">
@@ -242,15 +258,8 @@ $name = $antrag->getName(true);
                     }
                 });
 
-                zeile_anzeigen($antrag->antrag2vorlagen, "Verbundene Stadtratsvorlagen:", function ($element) {
-                    /** @var Antrag $element */
-                    echo CHtml::link($element->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $element->id)));
-                });
-
-                zeile_anzeigen($antrag->vorlage2antraege, "Verbundene Stadtratsanträge:", function ($element) {
-                    /** @var Antrag $element */
-                    echo CHtml::link($element->getName(true), $this->createUrl("antraege/anzeigen", array("id" => $element->id)));
-                });
+                verbundene_anzeigen($antrag->antrag2vorlagen,  "Verbundene Stadtratsvorlagen:", $this);
+                verbundene_anzeigen($antrag->vorlage2antraege, "Verbundene Stadtratsanträge:" , $this);
 
                 if (count($historie) > 0) {
                     ?>
