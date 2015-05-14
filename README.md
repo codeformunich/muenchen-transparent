@@ -25,7 +25,7 @@ SASS-Dateien kompilieren:
 apt-get install rubygems
 gem install sass
 
-scss --style compressed --cache-location /tmp/ --watch . ../other/shariff/
+scss --style compressed --cache-location /tmp/ --watch html/css html/other/shariff/
 ```
 
 JS-Bibliotheken installieren:
