@@ -63,7 +63,7 @@ function zeile_anzeigen($feld, $name, $callback)
 		echo '</div>';
 	}
 	?>
-	<table class="table">
+	<table class="table termindaten">
 		<tbody>
 		<tr>
 			<th>Datum:</th>
@@ -72,6 +72,12 @@ function zeile_anzeigen($feld, $name, $callback)
 				<meta itemprop="startdate" content="<?=CHtml::encode($termin->termin)?>">
 			</td>
 		</tr>
+		<? if ($termin->sitzungsstand != "") { ?>
+			<tr>
+				<th>Sitzungsstand:</th>
+				<td <? if ($termin->istAbgesagt()) echo ' class="abgesagt"';?>> <?=CHtml::encode($termin->sitzungsstand)?></td>
+			</tr>
+		<? } ?>
 		<tr>
 			<th>Ort:</th>
 			<td itemprop="location">

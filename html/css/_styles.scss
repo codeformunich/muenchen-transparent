@@ -981,6 +981,13 @@ ul.terminliste > li > .termindetails {
   }
 }
 
+.termindaten {
+  .abgesagt {
+    font-weight: bold;
+    color: red;
+  }
+}
+
 .antrag_sidebar {
   @media print {
     display: none;
@@ -1479,5 +1486,12 @@ a.tooltip_link:link, a.tooltip_link:visited {
   margin: 0 5px;
   input {
     margin-bottom: 5px;
+  }
+}
+
+
+#calendar {
+  .abgesagt {
+    text-decoration: line-through;
   }
 }

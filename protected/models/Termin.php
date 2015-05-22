@@ -19,6 +19,7 @@
  * @property string $vorsitz
  * @property string $wahlperiode
  * @property string $status
+ * @property string $sitzungsstand
  *
  * The followings are the available model relations:
  * @property Dokument[] $antraegeDokumente
@@ -67,8 +68,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             array('id, typ, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true),
             array('referat, referent, vorsitz', 'length', 'max' => 200),
             array('wahlperiode', 'length', 'max' => 20),
-            array('status', 'length', 'max' => 100),
-            array('termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode', 'safe'),
+            array('status, sitzungsstand', 'length', 'max' => 100),
+            array('termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, sitzungsstand', 'safe'),
         );
     }
 
@@ -109,6 +110,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             'vorsitz'                => 'Vorsitz',
             'wahlperiode'            => 'Wahlperiode',
             'status'                 => 'Status',
+            'sitzungsstand'          => 'Sitzungsstand',
         );
     }
 
@@ -311,6 +313,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             "datum_long" => $datum_long,
             "datum_iso"  => $this->termin,
             "datum_ts"   => $ts,
+            "abgesagt"   => $this->istAbgesagt(),
             "gremien"    => array(),
             "ort"        => $this->sitzungsort,
             "tos"        => array(),
@@ -401,6 +404,14 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         });
 
         return $alle_termine;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function istAbgesagt() {
+        return ($this->sitzungsstand == "Entfällt");
     }
 
     /**

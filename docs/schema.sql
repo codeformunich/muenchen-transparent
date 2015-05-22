@@ -567,6 +567,7 @@ CREATE TABLE `termine` (
   `vorsitz` varchar(200) NOT NULL,
   `wahlperiode` varchar(20) NOT NULL,
   `status` varchar(100) NOT NULL,
+  `sitzungsstand` varchar(100) NOT NULL,
   `abgesetzt` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

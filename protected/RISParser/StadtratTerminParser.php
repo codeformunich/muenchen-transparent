@@ -2,7 +2,7 @@
 
 class StadtratTerminParser extends RISParser
 {
-    private static $MAX_OFFSET        = 5200;
+    private static $MAX_OFFSET        = 5400;
     private static $MAX_OFFSET_UPDATE = 500;
 
     public function parse($termin_id)
@@ -37,6 +37,10 @@ class StadtratTerminParser extends RISParser
         if (preg_match("/Sitzungsort:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) {
             $sitzungsort_gefunden = true;
             $daten->sitzungsort   = trim(str_replace("&nbsp;", "", $matches[1]));
+        }
+        if (preg_match("/Sitzungsstand:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) {
+            $sitzungsort_gefunden   = true;
+            $daten->sitzungsstand   = trim(str_replace("&nbsp;", "", $matches[1]));
         }
         if (preg_match("/chste Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_next_id = trim(str_replace("&nbsp;", "", $matches[1]));
         if (preg_match("/Letzte Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = trim(str_replace("&nbsp;", "", $matches[1]));
@@ -112,6 +116,7 @@ class StadtratTerminParser extends RISParser
                 if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
                 if ($alter_eintrag->referent != $daten->referent) $aenderungen .= "Referent: " . $alter_eintrag->referent . " => " . $daten->referent . "\n";
                 if ($alter_eintrag->vorsitz != $daten->vorsitz) $aenderungen .= "Vorsitz: " . $alter_eintrag->vorsitz . " => " . $daten->vorsitz . "\n";
+                if ($alter_eintrag->sitzungsstand != $daten->sitzungsstand) $aenderungen .= "Sitzungsstand: " . $alter_eintrag->sitzungsstand . " => " . $daten->sitzungsstand . "\n";
                 if ($aenderungen != "") $changed = true;
             }
         }

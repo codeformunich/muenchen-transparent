@@ -39,6 +39,9 @@ $this->pageTitle = "Termine";
 				],
 				eventRender: function (event, element) {
 					element.attr("title", event["title"]);
+					if (event["abgesagt"]) {
+						element.addClass("abgesagt");
+					}
 				}
 			})
 		})
