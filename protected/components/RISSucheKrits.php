@@ -248,7 +248,7 @@ class RISSucheKrits
                 return "antrag_wahlperiode:" . $krit["suchbegriff"];
                 break;
             case "ba":
-                return "ba:" . $krit["ba_nr"];
+                return "dokument_bas:" . $krit["ba_nr"];
                 break;
             case "volltext":
                 return $krit["suchbegriff"];
