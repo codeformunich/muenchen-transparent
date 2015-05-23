@@ -18,3 +18,7 @@ test/dummy_rails/log/*.log
 test/dummy_rails/public/assets/
 .DS_Store
 node_modules
+
+bootstrap-sass-3.3.4/test/
+bootstrap-sass-3.3.4/templates/
+bootstrap-sass-3.3.4/tasks/
