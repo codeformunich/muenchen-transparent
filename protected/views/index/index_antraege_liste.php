@@ -141,7 +141,7 @@ if (count($antraege) > 0) {
 
             $titel = $entry->getName(true);
             echo '<li>
-            <div><a href="' . CHtml::encode($entry->getLink()) . '"';
+            <div><a class="antragstitel" href="' . CHtml::encode($entry->getLink()) . '"';
             if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
             echo '><span>';
             echo CHtml::encode($titel) . '</span></a></div>';
