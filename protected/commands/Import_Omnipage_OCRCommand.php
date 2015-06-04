@@ -30,7 +30,11 @@ class Import_Omnipage_OCRCommand extends CConsoleCommand
 
         /** @var Dokument $dokument */
         $dokument = Dokument::model()->findByPk(IntVal($filename));
-        if (!$dokument) return;
+        if (!$dokument)  {
+            rename(OMNIPAGE_DST_DIR . $filename, OMNIPAGE_IMPORTED_DIR . $filename);
+            if (file_exists(OMNIPAGE_PDF_DIR . IntVal($filename) . ".pdf")) unlink(OMNIPAGE_PDF_DIR . IntVal($filename) . ".pdf");
+            return;
+        }
 
         $dokument->text_ocr_raw            = $txt;
         $dokument->text_ocr_corrected      = $txt;
