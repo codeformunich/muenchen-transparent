@@ -104,10 +104,9 @@ if (count($antraege) > 0) {
     foreach ($by_date as $date => $entries) foreach ($entries as $entry) {
         if (is_a($entry, "Rathausumschau")) {
             /** @var Rathausumschau $entry */
-            echo '<li class="panel panel-success">
-            <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"><span>';
-            echo CHtml::encode($entry->getName(true)) . '</span></a></div>';
-            echo '<div class="panel-body">';
+            echo '<li>
+            <div class="rathausumschau-titel"><a class="antragstitel" href="' . CHtml::encode($entry->getLink()) . '"><span>';
+            echo CHtml::encode($entry->getName(true)) . '</span></a>';
 
             echo "<div class='metainformationen_antraege'>";
             $ts = RISTools::date_iso2timestamp($entry->datum);
@@ -116,15 +115,18 @@ if (count($antraege) > 0) {
             } else {
                 echo date("d.m.Y", $ts);
             }
-            echo "</div>";
+            echo '</div></div>';
+            echo '<div>';
 
             $inhalt = $entry->inhaltsverzeichnis();
-            if (count($inhalt) > 0) echo '<ul class="toc">';
-            foreach ($inhalt as $inh) {
-                if ($inh["link"]) echo '<li>' . CHtml::link($inh["titel"], $inh["link"]) . '</li>';
-                else echo '<li>' . CHtml::encode($inh["titel"]) . '</li>';
+            if (count($inhalt) > 0) {
+                echo '<ul class="toc rathausumschau-inhaltsangabe">';
+                foreach ($inhalt as $inh) {
+                    if ($inh["link"]) echo '<li>' . CHtml::link($inh["titel"], $inh["link"]) . '</li>';
+                    else echo '<li>' . CHtml::encode($inh["titel"]) . '</li>';
+                }
+                echo '</ul>';
             }
-            if (count($inhalt) > 0) echo '</ul>';
 
             echo '</div>';
             echo '</li>';

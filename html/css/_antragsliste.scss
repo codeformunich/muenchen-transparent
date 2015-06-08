@@ -2,21 +2,6 @@
   Hinweis: kein > benutzen, wg. CssToInlineStyles
 */
 
-.antragsliste2 > li {
-  border-top: 1px solid #DDD;
-  padding: 10px;
-
-  &:first-child {
-    border-top: none;
-    margin-top: 0px;
-  }
-
-  div:first-child {
-      max-width: 800px;
-  }
-}
-
-
 .antragsliste2 {
   overflow: hidden;
   padding: 0;
@@ -28,8 +13,6 @@
 
   ul.toc {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
     li {
       margin-top: 5px;
       margin-bottom: 5px;
@@ -39,6 +22,28 @@
   .antragstitel {
     font-size: 16px;
   }
+
+  > li {
+    border-top: 1px solid #DDD;
+    padding: 10px;
+
+    &:first-child {
+      border-top: none;
+      margin-top: 0px;
+    }
+
+    div:first-child {
+      max-width: 800px;
+    }
+  }
+
+  .rathausumschau-inhaltsangabe {
+    padding-left: 5px;
+  }
+
+  .rathausumschau-titel {
+    max-width: 100% !important; // Damit das Datum ganz rechts ist
+  }
 }
 
 .metainformationen_antraege {
@@ -46,6 +51,10 @@
   color: gray;
   font-size: 12px;
   font-weight: normal;
+}
+
+.metainformationen_verbundene {
+    color: gray;
 }
 
 ul.antragsliste {
@@ -207,8 +216,4 @@ ul.dokumente {
       font-size: 12px;
     }
   }
-}
-
-.metainformationen_verbundene {
-    color: gray;
 }
