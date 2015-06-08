@@ -81,7 +81,7 @@ if (count($antraege) > 0) {
         </div>
     <?
     }
-    echo '<ul class="antragsliste2">';
+    echo '<ul class="antragsliste-web">';
     $akt_datum = null;
 
     $by_date = array();
