@@ -18,9 +18,11 @@
   border-radius: 10px;
   overflow: hidden;
   padding: 6px;
+
   @media print {
     max-width: 600px;
   }
+
   @media screen and (max-width: $screen-xs-max) {
     margin-left: -7px;
     margin-right: -7px;
@@ -51,17 +53,12 @@
     vertical-align: middle;
     margin-top: 0;
   }
+  @media screen and (max-width: $screen-xs-max) {
+    margin-bottom: 5px;
+  }
 }
 
 #benachrichtigung_hinweis {
-  border: solid 1px #ccc;
-  background-color: #eee;
-  font-size: 0.9em;
-  border-radius: 5px;
-  padding: 0.5em;
-  margin: 0.4em;
-  //margin-top: -2em;
-  text-align: center;
   opacity: 0;
   height: 0;
   overflow: hidden;
@@ -97,12 +94,20 @@
   &.visible {
     height: auto;
     min-height: 6em;
+    padding: 0.5em;
+    margin: 0.4em;
     opacity: 1;
     -webkit-transition: opacity 0.35s ease;
     -moz-transition: opacity 0.35s ease;
     -ms-transition: opacity 0.35s ease;
     -o-transition: opacity 0.35s ease;
     transition: opacity 0.35s ease;
+
+    border: solid 1px #ccc;
+    background-color: #eee;
+    font-size: 0.9em;
+    border-radius: 5px;
+    text-align: center;
   }
 }
 
