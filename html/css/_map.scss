@@ -19,13 +19,12 @@
   overflow: hidden;
   padding: 6px;
 
-  @media print {
-    max-width: 600px;
+  @media screen and (max-width: $screen-xs-max) {
+    display: none;
   }
 
-  @media screen and (max-width: $screen-xs-max) {
-    margin-left: -7px;
-    margin-right: -7px;
+  @media print {
+    max-width: 600px;
   }
 
   .leaflet-control-locate .glyphicon {
@@ -35,9 +34,6 @@
 
 #map {
   height: 420px;
-  @media screen and (max-width: $screen-xs-max) {
-    height: 270px;
-  }
 }
 
 #overflow_hinweis {
@@ -54,7 +50,7 @@
     margin-top: 0;
   }
   @media screen and (max-width: $screen-xs-max) {
-    margin-bottom: 5px;
+    display: none;
   }
 }
 

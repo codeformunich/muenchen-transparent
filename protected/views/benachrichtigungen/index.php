@@ -246,7 +246,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
                 <hr style="margin-top: 10px; margin-bottom: 10px;">
 
-                <div id="ben_map_infos" class="input-group">
+                <div id="benachrichtigung_hinweis_text" class="input-group">
                     <input type="hidden" name="geo_lng" value="">
                     <input type="hidden" name="geo_lat" value="">
                     <input type="hidden" name="geo_radius" value="">
@@ -261,7 +261,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
         <script>
             $(function () {
-                var $ben_holder = $("#ben_map_infos");
+                var $ben_holder = $("#benachrichtigung_hinweis_text");
                 $("#ben_map").AntraegeKarte({
                     benachrichtigungen_widget: true,
                     show_BAs: false,
@@ -272,7 +272,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                         $.ajax({
                             "url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
                             "success": function (ret) {
-                                $("#ben_map_infos").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
+                                $("#benachrichtigung_hinweis_text").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
                                 $(".ben_add_geo").prop("disabled", false);
 
                             }

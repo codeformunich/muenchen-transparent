@@ -1489,9 +1489,14 @@ a.tooltip_link:link, a.tooltip_link:visited {
   }
 }
 
-
 #calendar {
   .abgesagt {
     text-decoration: line-through;
   }
+}
+
+ul.baliste {
+  list-style: none;
+  font-size: 16px;
+  line-height: 1.5;
 }

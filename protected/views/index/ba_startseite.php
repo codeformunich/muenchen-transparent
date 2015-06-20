@@ -35,41 +35,12 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
         <small>(Bezirksausschuss <?= $ba->ba_nr ?>)</small>
     </h1>
 
-
-    <div id="mapholder">
-        <div id="map"></div>
-    </div>
-    <div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>>
-        <label><input type="checkbox" name="zeige_overflow">
-            Zeige <span class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen
-        </label>
-    </div>
-
-    <div id="benachrichtigung_hinweis">
-        <div id="ben_map_infos">
-            <div class="nichts" style="font-style: italic;">
-                <strong>Hinweis:</strong><br>
-                Du kannst dich bei <strong>neuen Dokumenten mit Bezug zu einem bestimmten Ort</strong> per E-Mail benachrichtigen lassen.<br>
-                Klicke dazu auf den Ort, bestimme dann den relevanten Radius.<br>
-                <br>
-            </div>
-            <div class="infos" style="display: none;">
-                <strong>Ausgewählt:</strong> <span class="radius_m"></span> Meter um "<span class="zentrum_ort"></span>" (ungefähr)<br>
-                <br>Willst du per E-Mail benachrichtigt werden, wenn neue Dokumente mit diesem Ortsbezug erscheinen?
-            </div>
-            <form method="POST" action="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>">
-                <input type="hidden" name="geo_lng" value="">
-                <input type="hidden" name="geo_lat" value="">
-                <input type="hidden" name="geo_radius" id="geo_radius" value="">
-                <input type="hidden" name="krit_str" value="">
-
-                <div>
-                    <button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    <?
+    $this->renderPartial("/index/map", array(
+        "ortsbezugszahlgrenze" => 20,
+        "geodata_overflow"     => $geodata_overflow
+    ));
+    ?>
     <script>
         $(function () {
             var $map = $("#map").AntraegeKarte({
