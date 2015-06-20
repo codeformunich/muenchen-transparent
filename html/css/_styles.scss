@@ -1,5 +1,4 @@
 
-
 #content {
   > section {
     margin-top: 50px;
@@ -1103,10 +1102,6 @@ ul.terminliste > li > .termindetails {
   }
 }
 
-#ben_map {
-  height: 400px;
-}
-
 .form-signin {
   text-align: left;
 
@@ -1499,4 +1494,16 @@ ul.baliste {
   list-style: none;
   font-size: 16px;
   line-height: 1.5;
+}
+
+.ba-wahl-dropdown {
+  @media screen and (max-width: $screen-xs-max) {
+    display: none !important;
+  }
+}
+
+.ba-wahl-link {
+  @media screen and (min-width: $screen-sm-min) {
+    display: none !important;
+  }
 }
