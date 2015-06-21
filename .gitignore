@@ -10,6 +10,7 @@ protected/runtime/
 protected/config/main.php
 
 html/assets/
+html/js/fizzy-ui-utils/
 html/js/OverlappingMarkerSpiderfier-Leaflet/
 html/js/Leaflet/
 html/js/Leaflet.draw/
