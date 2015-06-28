@@ -199,6 +199,30 @@ class TermineController extends RISBaseController
         ));
     }
 
+
+    /**
+     */
+    public function actionBaZukunft()
+    {
+        $sql = Yii::app()->db->createCommand();
+        $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
+        $termine = $sql->queryAll();
+        $this->render("ba_zukunft_html", array(
+            "termine" => $termine
+        ));
+    }
+    /**
+     */
+    public function actionBaZukunftCsv()
+    {
+        $sql = Yii::app()->db->createCommand();
+        $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
+        $termine = $sql->queryAll();
+        $this->renderPartial("ba_zukunft_csv", array(
+            "termine" => $termine
+        ));
+    }
+
     /**
      * @param int $termin_id
      */
