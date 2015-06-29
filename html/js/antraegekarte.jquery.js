@@ -120,8 +120,8 @@ $.widget("ratsinformant.AntraegeKarte", {
                 if ($widget.options["benachrichtigungen_widget"] !== false) $widget.initBenachrichtigungsWidget();
                 if ($widget.options["show_BAs"]) $widget.initBAsWidget();
 
-                $("#overflow_hinweis").find("input").on("click", function() {
-                    $widget.rebuildMarkers($($widget).prop("checked"));
+                $("#overflow_hinweis").find("input").change(function() {
+                    $widget.rebuildMarkers($(this).prop("checked"));
                 });
 
                 if (typeof($widget.options["onInit"]) == "function") {

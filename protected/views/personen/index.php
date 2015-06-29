@@ -79,7 +79,7 @@ $this->pageTitle   = $personen_typ_name;
             <div class="filter_sorter_holder<? if (count($fraktionen) > 7) echo " extrabreit"; ?>">
                 <div class="btn-group filter_widget" data-toggle="buttons">
                     <label class="btn btn-warning btn-separator-right active">
-                        <input type="radio" name="options" value="0" autocomplete="off" checked> Alle
+                        <input type="radio" name="options" value="" autocomplete="off" checked> Alle
                     </label>
                     <?
                     foreach ($fraktionen as $fr_id => $fr_name) {

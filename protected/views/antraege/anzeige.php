@@ -328,7 +328,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
 
             <div class="shariff" data-backend-url="<?= CHtml::encode($this->createUrl("/index/shariffData")) ?>"
                  data-url="<?= CHtml::encode(Yii::app()->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
-            <script src="/other/shariff/shariff.min.js"></script>
+            <script src="/js/shariff/build/shariff.min.js"></script>
         </div>
         <div class="well themenverwandt_liste">
             <?

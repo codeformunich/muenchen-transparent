@@ -5,6 +5,7 @@
     "isotope": "*",
     "fullcalendar": "*",
     "leaflet.locatecontrol": "*",
-    "mediaelement": "*"
+    "mediaelement": "*",
+    "shariff": "*"
   }
 }

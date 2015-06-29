@@ -25,7 +25,7 @@ class Recalc_DocumentsCommand extends CConsoleCommand
             if (!$dokument) continue;
 
             $dokument->download_if_necessary();
-            $dokument->geo_extract(true);
+            $dokument->geo_extract();
 
             $absolute_filename = $dokument->getLocalPath();
             $metadata                 = RISPDF2Text::document_pdf_metadata($absolute_filename);
