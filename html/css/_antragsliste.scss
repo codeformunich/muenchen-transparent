@@ -2,6 +2,9 @@
   Hinweis: kein > benutzen, wg. CssToInlineStyles
 */
 
+$antragsliste-web-schriftgroesse: 16px;
+$antragsliste-web-zeilenhoehe: 1.375;
+
 .antragsliste-web {
   overflow: hidden;
   padding: 0;
@@ -19,10 +22,6 @@
     }
   }
 
-  .antragstitel {
-    font-size: 16px;
-  }
-
   > li {
     border-top: 1px solid #DDD;
     padding: 10px;
@@ -32,17 +31,21 @@
       margin-top: 0px;
     }
 
-    div:first-child {
+    .antragstitel {
       max-width: 800px;
+      font-size: $antragsliste-web-schriftgroesse;
+      line-height: $antragsliste-web-zeilenhoehe;
+      max-height: $antragsliste-web-schriftgroesse * $antragsliste-web-zeilenhoehe * 3;
+      overflow: hidden;
     }
-  }
 
-  .rathausumschau-inhaltsangabe {
-    padding-left: 5px;
-  }
+    .rathausumschau-inhaltsangabe {
+      padding-left: 5px;
+    }
 
-  .rathausumschau-titel {
-    max-width: 100% !important; // Damit das Datum ganz rechts ist
+    .rathausumschau-titel {
+      max-width: 100%; // Damit das Datum ganz rechts ist
+    }
   }
 }
 
