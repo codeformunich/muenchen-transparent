@@ -8,6 +8,10 @@ html/js/Leaflet/
 html/js/Leaflet.draw/
 *.log
 *.bak
+html/css/styles_website.css
+html/css/styles_website.css.map
+html/css/styles_mail.css
+html/css/styles_mail.css.map
 html/css/.sass-cache/
 .idea
 html/piwik/
