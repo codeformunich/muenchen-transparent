@@ -13,15 +13,17 @@
   }
 }
 
+.map-container {
+  @media screen and (max-width: $screen-xs-max) {
+    display: none;
+  }
+}
+
 #mapholder {
   margin: 0;
   border-radius: 10px;
   overflow: hidden;
   padding: 6px;
-
-  @media screen and (max-width: $screen-xs-max) {
-    display: none;
-  }
 
   @media print {
     max-width: 600px;
