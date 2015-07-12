@@ -127,8 +127,9 @@ echo ris_intern_html_extra_headers();
 
                 <ul class="nav navbar-nav">
                     <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtteile / BAs <span class="caret"></span></a>
+                    <!-- Desktop BA-wähler-->
+                    <li class="dropdown ba-wahl-dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="ba_nav_list">
                             <?
                             /** @var Bezirksausschuss[] $bas */
@@ -137,6 +138,8 @@ echo ris_intern_html_extra_headers();
                             ?>
                         </ul>
                     </li>
+                    <!-- Mobiler BA-wähler-->
+                    <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= CHtml::link("Bezirksausschüsse", $this->createUrl("bezirksausschuss")) ?></li>
                     <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
                     <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
                     <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>

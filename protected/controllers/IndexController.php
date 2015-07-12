@@ -614,7 +614,7 @@ class IndexController extends RISBaseController
         $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
         $gremien = $ba->gremien;
 
-        $this->render("ba_uebersicht", array_merge(array(
+        $this->render("ba_startseite", array_merge(array(
             "ba"                           => $ba,
             "gremien"                      => $gremien,
             "termine"                      => $termine,
@@ -850,5 +850,10 @@ class IndexController extends RISBaseController
         ));
         echo json_encode($shariff->get($url));
         Yii::app()->end();
+    }
+
+    public function actionBaListe()
+    {
+        $this->render('ba_liste', array("bas" => Bezirksausschuss::model()->findAll()));
     }
 }
