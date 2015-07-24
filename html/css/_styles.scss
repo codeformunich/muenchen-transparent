@@ -927,6 +927,7 @@ ul.terminliste > li > .termindetails {
   th {
     text-align: center;
   }
+
   td {
     width: 420px;
 
@@ -934,22 +935,26 @@ ul.terminliste > li > .termindetails {
       padding-left: 20px;
     }
   }
+
   .login_modal_form {
     display: inline;
     @media print {
       display: none;
     }
   }
+
   .tag_add_opener {
     @media print {
       display: none;
     }
   }
+
   #tag_add_form {
     .selectizejs-control {
       display: inline-block;
       width: 300px;
     }
+
     .btn {
       display: inline-block;
       margin: 0;
@@ -958,24 +963,37 @@ ul.terminliste > li > .termindetails {
       vertical-align: top;
     }
   }
+
   .selectizejs-input {
     height: 36px;
     padding-top: 6px;
   }
+
   .antrags_tags {
     display: inline-block;
     margin: 0;
     padding: 0;
+
     li {
       display: inline-block;
       margin: 0;
       padding: 0;
+
       &:before {
         content: ', ';
       }
+
       &:first-child:before {
         content: '';
       }
+    }
+  }
+
+  .antrag-herunterladen {
+    float: right;
+    
+    &:hover {
+      text-decoration: none;
     }
   }
 }
