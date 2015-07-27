@@ -2,7 +2,7 @@
 
 class BAInitiativeParser extends RISParser
 {
-    private static $MAX_OFFSET        = 4800;
+    private static $MAX_OFFSET        = 5000;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
