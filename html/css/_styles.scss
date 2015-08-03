@@ -991,9 +991,13 @@ ul.terminliste > li > .termindetails {
 
   .antrag-herunterladen {
     float: right;
-    
+
     &:hover {
       text-decoration: none;
+    }
+
+    @media print {
+      display: none;
     }
   }
 }

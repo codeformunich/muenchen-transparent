@@ -126,7 +126,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             }
             ?>
 
-            <h3><abbr title="Bezirksausschuss - Stadtteil-&quot;Parlament&quot;">BA</abbr>-Termine</h3>
+            <h3>Termine</h3>
             <br>
             <?
             $this->renderPartial("../termine/termin_liste", array(
