@@ -515,6 +515,9 @@ class IndexController extends RISBaseController
         if ($tage === null) $tage = static::$BA_DOKUMENTE_TAGE_PRO_SEITE;
 
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
+	    if ($datum_max < 2013) {
+                return array(); // Überlastung des Servers verhindertn
+	    }
             $datum_bis = $datum_max;
             $datum_von = date("Y-m-d", RISTools::date_iso2timestamp($datum_max) - $tage * 24 * 3600);
         } else {
