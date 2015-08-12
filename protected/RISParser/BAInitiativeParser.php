@@ -9,7 +9,11 @@ class BAInitiativeParser extends RISParser
     {
         $antrag_id = IntVal($antrag_id);
 
-        if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
+        if (SITE_CALL_MODE != "cron") echo "- Initiative $antrag_id\n";
+	if ($antrag_id == 0) {
+                RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Initiative-ID 0\n" . print_r(debug_backtrace(), true), null, "system");
+                return;
+        }
 
         $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=$antrag_id");
         $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_dokumente.jsp?Id=$antrag_id");
