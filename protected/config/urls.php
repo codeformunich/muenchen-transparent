@@ -3,6 +3,7 @@
 $GLOBALS["RIS_URL_RULES"] = array(
     SITE_BASE_URL . '/'                                                 => 'index/startseite',
     SITE_BASE_URL . '/ajax-<datum_max:[0-9\-]+>'                        => 'index/antraegeAjax',
+    SITE_BASE_URL . '/bezirksausschuss'                                 => 'index/baListe',
     SITE_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>_<ba_name:[^\/]*>'    => 'index/ba',
     SITE_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>/termine'             => 'termine/baTermineAlle',
     SITE_BASE_URL . '/bezirksausschuss/<ba_nr:\d+>/dokumente'           => 'index/baDokumente',

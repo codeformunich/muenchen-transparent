@@ -42,7 +42,7 @@ $datum_nav = ((isset($neuere_url_std) && $neuere_url_std !== null) || (isset($ae
 
 
 if (count($antraege) > 0) {
-    echo '<h3>' . $erkl_str . '</h3><br>';
+    echo '<h2>' . $erkl_str . '</h2><br>';
 
     if ($weiter_links_oben && $datum_nav) {
         ?>

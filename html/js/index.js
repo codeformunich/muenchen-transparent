@@ -27,7 +27,7 @@ function index_datum_dokumente_load(node, url_ajax) {
 function index_geo_dokumente_load(url, lng, lat, radius) {
     var $holder = $("#stadtratsdokumente_holder"),
         topc = $("#main_navbar").height() * -1,
-        $ben_holder = $("#ben_map_infos");
+        $ben_holder = $("#benachrichtigung_hinweis_text");
 
     $ben_holder.find(".nichts").hide();
     $ben_holder.find(".infos").show();

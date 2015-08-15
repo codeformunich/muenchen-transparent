@@ -176,7 +176,7 @@ class BATerminParser extends RISParser
                 if (!$baantrag) {
                     echo "Creating: $baantrag_id\n";
                     $p = new BAAntragParser();
-                    $p->parse($baantrag);
+                    $p->parse($baantrag_id);
                 }
             }
 

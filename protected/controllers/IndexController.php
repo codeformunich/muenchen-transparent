@@ -515,6 +515,9 @@ class IndexController extends RISBaseController
         if ($tage === null) $tage = static::$BA_DOKUMENTE_TAGE_PRO_SEITE;
 
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
+	    if ($datum_max < 2013) {
+                return array(); // Überlastung des Servers verhindertn
+	    }
             $datum_bis = $datum_max;
             $datum_von = date("Y-m-d", RISTools::date_iso2timestamp($datum_max) - $tage * 24 * 3600);
         } else {
@@ -614,7 +617,7 @@ class IndexController extends RISBaseController
         $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
         $gremien = $ba->gremien;
 
-        $this->render("ba_uebersicht", array_merge(array(
+        $this->render("ba_startseite", array_merge(array(
             "ba"                           => $ba,
             "gremien"                      => $gremien,
             "termine"                      => $termine,
@@ -850,5 +853,10 @@ class IndexController extends RISBaseController
         ));
         echo json_encode($shariff->get($url));
         Yii::app()->end();
+    }
+
+    public function actionBaListe()
+    {
+        $this->render('ba_liste', array("bas" => Bezirksausschuss::model()->findAll()));
     }
 }

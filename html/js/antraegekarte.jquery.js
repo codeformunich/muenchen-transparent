@@ -205,9 +205,9 @@ $.widget("ratsinformant.AntraegeKarte", {
         $widget.rebuildMarkers($overflow.find("input").prop("checked"));
 
         if (antraege_data_overflow !== null && antraege_data_overflow.length > 0) {
-            $overflow.css("visibility", "visible").find(".anzahl").text(antraege_data_overflow.length == 1 ? "1 Dokument" : antraege_data_overflow.length + " Dokumente");
+            $overflow.css("display", "inline").find(".anzahl").text(antraege_data_overflow.length == 1 ? "1 Dokument" : antraege_data_overflow.length + " Dokumente");
         } else {
-            $overflow.css("visibility", "hidden");
+            $overflow.css("display", "hidden");
         }
 
     },

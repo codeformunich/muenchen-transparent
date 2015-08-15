@@ -2,7 +2,7 @@
 
 class BAAntragParser extends RISParser
 {
-    private static $MAX_OFFSET        = 13500;
+    private static $MAX_OFFSET        = 14000;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
@@ -10,6 +10,10 @@ class BAAntragParser extends RISParser
         $antrag_id = IntVal($antrag_id);
 
         if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
+	if ($antrag_id == 0) {
+		RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Antrag-ID 0\n" . print_r(debug_backtrace(), true), null, "system");
+		return;
+	}
 
         $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
         $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
