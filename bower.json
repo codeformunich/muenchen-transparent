@@ -1,11 +1,11 @@
 {
   "name": "München Transparent",
   "dependencies": {
-    "list.js": "*",
-    "isotope": "*",
-    "fullcalendar": "*",
-    "leaflet.locatecontrol": "*",
-    "mediaelement": "*",
-    "shariff": "*"
+    "list.js": "~1.1",
+    "isotope": "~2.2",
+    "fullcalendar": "~2.4",
+    "leaflet.locatecontrol": "~0.45",
+    "mediaelement": "~2.18",
+    "shariff": "~1.18"
   }
 }
