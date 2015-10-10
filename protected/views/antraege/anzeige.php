@@ -231,10 +231,10 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     if ($ts1 < $ts2) return -1;
                     return 0;
                 });
-                zeile_anzeigen($docs, "Dokumente:", function ($dok) {
+                zeile_anzeigen($docs, "Dokumente:", function ($dokument) {
                     /** @var Dokument $dok */
-                    echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
-                    ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode($dok->getOriginalLink()) ?>" download></a> <?
+                    echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
+                    ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode($dokument->getOriginalLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"></a> <?
                 });
                 $angezeigte_dokumente = array();
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;
