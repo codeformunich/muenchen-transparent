@@ -377,7 +377,6 @@
 
 #stadtratsdokumente_holder {
   position: relative;
-  min-height: 400px;
   overflow: auto;
 
   .nur_dokumente & {
@@ -398,6 +397,7 @@
   .antragsliste_nav {
     overflow: auto;
   }
+  
   .aeltere_caller {
     font-size: 1.5em;
     margin-top: 1.5em;
@@ -1527,5 +1527,22 @@ ul.baliste {
 .ba-wahl-link {
   @media screen and (min-width: $screen-sm-min) {
     display: none !important;
+  }
+}
+
+
+@media screen and (max-width: $screen-sm-min) {
+  div#content {
+    padding: 0;
+  }
+  
+  // Der selector stammt aus dem bootstrap code
+  body .well, .container .well, .container-fluid .well, body .jumbotron, .container .jumbotron, .container-fluid .jumbotron {
+    box-shadow: none;
+    margin-bottom: 1px;
+  }
+  
+  #content > section {
+    margin-top: 1px;
   }
 }
