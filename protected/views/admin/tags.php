@@ -13,7 +13,7 @@ $user = $this->aktuelleBenutzerIn();
         <fieldset>
             <legend>Tag Umbennen</legend>
                 <div class="input-group col">
-                <div class="col col-md-4"><select name="tag_id">
+                <div class="col col-md-6"><select name="tag_id">
                 <?
                 $tags = Tag::model()->findAll();
                 usort($tags, function ($tag1, $tag2) {
@@ -35,7 +35,7 @@ $user = $this->aktuelleBenutzerIn();
 
                 <div class="col col-md-4"><input type="text" placeholder="Neuer Name des Tags" name="neuer_name" class="form-control"></div>
 
-                <div class="col col-md-4"><button type="submit" class="btn btn-primary" name="<?=AntiXSS::createToken("tag_umbennen")?>" style="postion: absolute; top: -10px;">Umbennen</button></div>
+                <div class="col col-md-2"><button type="submit" class="btn btn-primary" name="<?=AntiXSS::createToken("tag_umbennen")?>" style="postion: absolute; top: -10px;">Umbennen</button></div>
             </div>
         </fieldset>
     </form>
@@ -64,7 +64,7 @@ $user = $this->aktuelleBenutzerIn();
                 ?>
                 </select></div>
 
-                <div class="col col-md-6"><button type="submit" class="btn btn-danger" name="<?=AntiXSS::createToken("tag_loeschen")?>" style="postion: absolute; top: -10px; left: 10px">Löschen</button></div>
+                <div class="col col-md-2"><button type="submit" class="btn btn-danger" name="<?=AntiXSS::createToken("tag_loeschen")?>" style="postion: absolute; top: -10px; left: 10px">Löschen</button></div>
             </div>
         </fieldset>
     </form>
