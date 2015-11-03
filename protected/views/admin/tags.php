@@ -15,19 +15,6 @@ $user = $this->aktuelleBenutzerIn();
                 <div class="input-group col">
                 <div class="col col-md-6"><select name="tag_id">
                 <?
-                $tags = Tag::model()->findAll();
-                usort($tags, function ($tag1, $tag2) {
-                    /**
-                    * @var Tag $dok1
-                    * @var Tag $dok2
-                    */
-                    $name1 = strtolower($tag1->name);
-                    $name2 = strtolower($tag2->name);
-                    if ($name1 == $name2) {
-                        return 0;
-                    }
-                    return ($name1 > $name2) ? +1 : -1;
-                });
                 foreach($tags as $tag)
                     echo "<option value=" . $tag->id . ">" . $tag->name . "</option>";
                 ?>
@@ -46,19 +33,6 @@ $user = $this->aktuelleBenutzerIn();
                 <div class="input-group col">
                 <div class="col col-md-6"><select name="tag_id">
                 <?
-                $tags = Tag::model()->findAll();
-                usort($tags, function ($tag1, $tag2) {
-                    /**
-                    * @var Tag $dok1
-                    * @var Tag $dok2
-                    */
-                    $name1 = strtolower($tag1->name);
-                    $name2 = strtolower($tag2->name);
-                    if ($name1 == $name2) {
-                        return 0;
-                    }
-                    return ($name1 > $name2) ? +1 : -1;
-                });
                 foreach($tags as $tag)
                     echo "<option value=" . $tag->id . ">" . $tag->name . "</option>";
                 ?>
@@ -68,5 +42,20 @@ $user = $this->aktuelleBenutzerIn();
             </div>
         </fieldset>
     </form>
+
+
+    <table style="width: 100%">
+    <tr><th>Tag</th><th>Antrag</th><th>E-Mail</th><th>Löschen</th></tr>
+    <? foreach($tags as $tag) { ?>
+        <? foreach($tag->antraege as $antrag) { ?>
+            <tr>
+                <td><?= $tag->name ?></td>
+                <td><?= CHtml::link($antrag->id, $antrag->getLink()) ?></td>
+                <td><?= $tag->angelegt_benutzerIn->email ?></td>
+                <td class="fontello-cancel" style="font-size: 18px"></td>
+            </tr>
+        <? } ?>
+    <? } ?>
+    </table>
 
 </section>

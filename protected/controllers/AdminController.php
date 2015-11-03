@@ -174,7 +174,23 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Tag gelöscht";
         }
 
-        $this->render("tags");
+        $tags = Tag::model()->findAll();
+        usort($tags, function ($tag1, $tag2) {
+            /**
+            * @var Tag $dok1
+            * @var Tag $dok2
+            */
+            $name1 = strtolower($tag1->name);
+            $name2 = strtolower($tag2->name);
+            if ($name1 == $name2) {
+                return 0;
+            }
+            return ($name1 > $name2) ? +1 : -1;
+        });
+
+        $this->render("tags", array(
+            "tags" => $tags,
+        ));
     }
 
     public function actionBuergerInnenversammlungen()
@@ -222,6 +238,5 @@ class AdminController extends RISBaseController
         $this->render("buergerInnenversammlungen", array(
             "termine" => $termine,
         ));
-
     }
 }
