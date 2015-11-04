@@ -43,19 +43,36 @@ $user = $this->aktuelleBenutzerIn();
         </fieldset>
     </form>
 
-
-    <table style="width: 100%">
-    <tr><th>Tag</th><th>Antrag</th><th>E-Mail</th><th>Löschen</th></tr>
-    <? foreach($tags as $tag) { ?>
-        <? foreach($tag->antraege as $antrag) { ?>
-            <tr>
-                <td><?= $tag->name ?></td>
-                <td><?= CHtml::link($antrag->id, $antrag->getLink()) ?></td>
-                <td><?= $tag->angelegt_benutzerIn->email ?></td>
-                <td class="fontello-cancel" style="font-size: 18px"></td>
-            </tr>
-        <? } ?>
-    <? } ?>
-    </table>
+    <h3>Alle Tags</h3>
+    <div id="tag-liste">
+        <input class="search" placeholder="Filtern" />
+        <table style="width: 100%">
+            <tr><th><button class="sort" data-sort="tag-name">Tag</button></th>
+                <th><button class="sort" data-sort="antrag-id">Antrag</button></th>
+                <th><button class="sort" data-sort="email">E-Mail</button></th>
+                <th>Löschen</tr>
+            <tbody class="list">
+            <? foreach($tags as $tag) { ?>
+                <? foreach($tag->antraege as $antrag) { ?>
+                    <tr>
+                        <td class="tag-name"><?= $tag->name ?></td>
+                        <td class="antrag-id"><?= CHtml::link($antrag->id, $antrag->getLink()) ?></td>
+                        <td class="email"><?= $tag->angelegt_benutzerIn->email ?></td>
+                        <td class="fontello-cancel" style="font-size: 18px"></td>
+                    </tr>
+                <? } ?>
+            <? } ?>
+            <tbody>
+        </table>
+    </div>
 
 </section>
+
+<script src="/js/list.js/dist/list.min.js"></script>
+<script>
+var options = {
+    valueNames: ["tag-name", "antrag-id", "email"]
+};
+
+var userList = new List('tag-liste', options);
+</script>
