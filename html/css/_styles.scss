@@ -1546,3 +1546,43 @@ ul.baliste {
     margin-top: 1px;
   }
 }
+
+.sortiert {
+    text-align: center;
+
+    input.search {
+        margin-bottom: 10px;
+    }
+
+    .sort:after {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        content: "";
+        position: relative;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+    }
+
+    .sort.asc:after {
+        top: 4px;
+        right: -5px;
+        border-top: 5px solid #000;
+        border-bottom: 5px solid transparent;
+    }
+
+    .sort.desc:after {
+        top: -4px;
+        right: -5px;
+        border-bottom: 5px solid #000;
+    }
+
+    button.sort {
+        width: 100%;
+    }
+
+    td.fontello-cancel {
+        font-size: 18px;
+        text-align: center;
+    }
+}
