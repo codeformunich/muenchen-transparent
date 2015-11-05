@@ -45,12 +45,12 @@ $user = $this->aktuelleBenutzerIn();
 
     <h3>Alle Tags</h3>
     <div id="tag-liste">
-        <input class="search" placeholder="Filtern" />
+        <input class="search" placeholder="Filtern" style="margin-bottom: 10px;"/>
         <table style="width: 100%">
             <tr><th><button class="sort" data-sort="tag-name">Tag</button></th>
                 <th><button class="sort" data-sort="antrag-id">Antrag</button></th>
                 <th><button class="sort" data-sort="email">E-Mail</button></th>
-                <th>Löschen</tr>
+                <th><button class="sort">Löschen</button></tr>
             <tbody class="list">
             <? foreach($tags as $tag) { ?>
                 <? foreach($tag->antraege as $antrag) { ?>
@@ -58,7 +58,7 @@ $user = $this->aktuelleBenutzerIn();
                         <td class="tag-name"><?= $tag->name ?></td>
                         <td class="antrag-id"><?= CHtml::link($antrag->id, $antrag->getLink()) ?></td>
                         <td class="email"><?= $tag->angelegt_benutzerIn->email ?></td>
-                        <td class="fontello-cancel" style="font-size: 18px"></td>
+                        <td class="fontello-cancel"></td>
                     </tr>
                 <? } ?>
             <? } ?>
@@ -76,3 +76,37 @@ var options = {
 
 var userList = new List('tag-liste', options);
 </script>
+
+<style>
+.sort:after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    content: "";
+    position: relative;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+
+.sort.asc:after {
+    top: 4px;
+    right: -5px;
+    border-top: 5px solid #000;
+    border-bottom: 5px solid transparent;
+}
+
+.sort.desc:after {
+    top: -4px;
+    right: -5px;
+    border-bottom: 5px solid #000;
+}
+
+button.sort {
+    width: 100%;
+}
+
+td.fontello-cancel {
+    font-size: 18px;
+    text-align: center;
+}
+</style>
