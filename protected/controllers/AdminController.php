@@ -174,6 +174,16 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Tag gelöscht";
         }
 
+        if (AntiXSS::isTokenSet("einzelnen_tag_loeschen")) {
+            $tag = Tag::model()->findByAttributes(array("name" => $_REQUEST["tag_name"]));
+
+            Yii::app()->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id AND antrag_id=:antrag_id')
+                ->bindValues(array(':tag_id' => $tag->id, ':antrag_id' => $_REQUEST["antrag_id"]))
+                ->execute();
+
+            $this->msg_ok = "Einzelner Tag gelöscht";
+        }
+
         $tags = Tag::model()->findAll();
         usort($tags, function ($tag1, $tag2) {
             /**
