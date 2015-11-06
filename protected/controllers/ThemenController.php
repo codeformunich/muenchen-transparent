@@ -6,7 +6,7 @@ class ThemenController extends RISBaseController
     public function actionReferat($referat_url)
     {
         /** @var Referat $ref */
-        $ref = Referat::model()->findByAttributes(array("urlpart" => $referat_url));
+        $ref = Referat::model()->findByAttributes(["urlpart" => $referat_url]);
         if (!$ref) die("Nicht gefunden");
 
         $this->top_menu = "themen";
@@ -15,7 +15,7 @@ class ThemenController extends RISBaseController
         $bis              = date("Y-m-d H:i:s", time());
         $antraege_referat = Antrag::model()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
 
-        $text = Text::model()->findByAttributes(array("typ" => 2, "titel" => $ref->name));
+        $text = Text::model()->findByAttributes(["typ" => 2, "titel" => $ref->name]);
         $my_url = Yii::app()->createUrl("/themen/referat/" . $referat_url);
 
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
@@ -25,12 +25,12 @@ class ThemenController extends RISBaseController
             $this->msg_ok = "Gespeichert.";
         }
 
-        $this->render("referat", array(
+        $this->render("referat", [
             "referat"          => $ref,
             "antraege_referat" => $antraege_referat,
             "text"             => $text,
             "my_url"           => $my_url,
-        ));
+        ]);
     }
 
     /**
@@ -39,11 +39,11 @@ class ThemenController extends RISBaseController
     public function actionIndex()
     {
         $this->top_menu = "themen";
-        $this->render("index", array(
+        $this->render("index", [
             "referate"   => Referat::model()->findAll(),
             "highlights" => Dokument::getHighlightDokumente(5),
             "tags"       => Tag::getTopTags(10),
-        ));
+        ]);
     }
 
     /**
@@ -61,10 +61,10 @@ class ThemenController extends RISBaseController
 
         $antraege_tag = $tag->antraege;
 
-        $this->render("tag", array(
+        $this->render("tag", [
             "tag"          => $tag,
             "antraege_tag" => $antraege_tag,
-        ));
+        ]);
     }
 
 

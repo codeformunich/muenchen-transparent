@@ -35,7 +35,7 @@ if (isset($title) && $title !== null) {
     $erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
 }
 
-if (!isset($rathausumschauen)) $rathausumschauen = array();
+if (!isset($rathausumschauen)) $rathausumschauen = [];
 if (!isset($zeige_ba_orte)) $zeige_ba_orte = 0;
 
 $datum_nav = ((isset($neuere_url_std) && $neuere_url_std !== null) || (isset($aeltere_url_std) && $aeltere_url_std !== null));

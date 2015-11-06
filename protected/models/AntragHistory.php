@@ -58,18 +58,18 @@ class AntragHistory extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, typ, datum_letzte_aenderung', 'required'),
-            array('id, ba_nr, vorgang_id, referat_id', 'numerical', 'integerOnly' => true),
-            array('typ', 'length', 'max' => 16),
-            array('antrags_nr', 'length', 'max' => 20),
-            array('referat', 'length', 'max' => 500),
-            array('referent', 'length', 'max' => 200),
-            array('wahlperiode, antrag_typ, status', 'length', 'max' => 50),
-            array('bearbeitung', 'length', 'max' => 100),
-            array('gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'),
-            array('id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'),
-        );
+        return [
+            ['id, typ, datum_letzte_aenderung', 'required'],
+            ['id, ba_nr, vorgang_id, referat_id', 'numerical', 'integerOnly' => true],
+            ['typ', 'length', 'max' => 16],
+            ['antrags_nr', 'length', 'max' => 20],
+            ['referat', 'length', 'max' => 500],
+            ['referent', 'length', 'max' => 200],
+            ['wahlperiode, antrag_typ, status', 'length', 'max' => 50],
+            ['bearbeitung', 'length', 'max' => 100],
+            ['gestellt_am, bearbeitungsfrist, registriert_am, erledigt_am, fristverlaengerung, initiative_to_aufgenommen', 'safe'],
+            ['id, typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'],
+        ];
     }
 
     /**
@@ -79,9 +79,9 @@ class AntragHistory extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'ba' => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-        );
+        return [
+            'ba' => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
+        ];
     }
 
     /**
@@ -89,7 +89,7 @@ class AntragHistory extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                        => 'ID',
             'vorgang_id'                => 'Vorgangs-ID',
             'typ'                       => 'Typ',
@@ -113,6 +113,6 @@ class AntragHistory extends CActiveRecord
             'fristverlaengerung'        => 'Fristverlaengerung',
             'initiatorInnen'            => 'InitiatorInnen',
             'initiative_to_aufgenommen' => 'Initiative To Aufgenommen',
-        );
+        ];
     }
 }

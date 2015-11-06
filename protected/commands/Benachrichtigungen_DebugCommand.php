@@ -11,7 +11,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
         if (is_numeric($args[0])) {
             $benutzerIn = BenutzerIn::model()->findByPk($args[0]);
         } else {
-            $benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $args[0]));
+            $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $args[0]]);
         }
         if (!$benutzerIn) {
             die("BenutzerIn nicht gefunden.\n");

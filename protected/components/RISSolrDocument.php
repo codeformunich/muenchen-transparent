@@ -35,7 +35,7 @@ class RISSolrDocument implements Solarium\QueryType\Update\Query\Document\Docume
      * @param array $boosts
      * @param array $modifiers
      */
-    public function __construct(array $fields = array(), array $boosts = array(), array $modifiers = array())
+    public function __construct(array $fields = [], array $boosts = [], array $modifiers = [])
     {
     }
 }

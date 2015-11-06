@@ -45,15 +45,15 @@ class Referat extends CActiveRecord implements IRISItem
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, name, urlpart', 'required'),
-            array('id, aktiv', 'numerical', 'integerOnly' => true),
-            array('name, email, telefon', 'length', 'max' => 100),
-            array('kurzbeschreibung, website', 'length', 'max' => 200),
-            array('strasse, urlpart', 'length', 'max' => 45),
-            array('plz', 'length', 'max' => 10),
-            array('ort', 'length', 'max' => 30),
-        );
+        return [
+            ['id, name, urlpart', 'required'],
+            ['id, aktiv', 'numerical', 'integerOnly' => true],
+            ['name, email, telefon', 'length', 'max' => 100],
+            ['kurzbeschreibung, website', 'length', 'max' => 200],
+            ['strasse, urlpart', 'length', 'max' => 45],
+            ['plz', 'length', 'max' => 10],
+            ['ort', 'length', 'max' => 30],
+        ];
     }
 
     /**
@@ -63,10 +63,10 @@ class Referat extends CActiveRecord implements IRISItem
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'antraege'               => array(self::HAS_MANY, 'Antrag', 'referat_id'),
-            'stadtraetInnenReferate' => array(self::HAS_MANY, 'StadtraetInReferat', 'referat_id'),
-        );
+        return [
+            'antraege'               => [self::HAS_MANY, 'Antrag', 'referat_id'],
+            'stadtraetInnenReferate' => [self::HAS_MANY, 'StadtraetInReferat', 'referat_id'],
+        ];
     }
 
     /**
@@ -74,7 +74,7 @@ class Referat extends CActiveRecord implements IRISItem
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'               => 'ID',
             'name'             => 'Name',
             'urlpart'          => 'URL',
@@ -86,16 +86,16 @@ class Referat extends CActiveRecord implements IRISItem
             'website'          => 'Website',
             'kurzbeschreibung' => 'Kurzbeschreibung',
             'aktiv'            => 'Aktiv',
-        );
+        ];
     }
 
     /**
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
-        return Yii::app()->createUrl("themen/referat", array_merge(array("id" => $this->id), $add_params));
+        return Yii::app()->createUrl("themen/referat", array_merge(["id" => $this->id], $add_params));
     }
 
 
@@ -130,7 +130,7 @@ class Referat extends CActiveRecord implements IRISItem
     public static function getByHtmlName($name)
     {
         $name = trim(strip_tags($name));
-        $ref  = Referat::model()->findByAttributes(array("name" => $name));
+        $ref  = Referat::model()->findByAttributes(["name" => $name]);
         return $ref;
     }
 
@@ -149,19 +149,19 @@ class Referat extends CActiveRecord implements IRISItem
         if ($zeit_von != "" && $zeit_bis != "") $time_condition .= ' AND ';
         if ($zeit_bis != "") $time_condition .= 'c.datum <= "' . addslashes($zeit_bis) . '"';
 
-        $params = array(
+        $params = [
             'alias'     => 'a',
             'condition' => 'a.id = ' . IntVal($referat_id),
             'order'     => 'c.datum DESC',
-            'with'      => array(
-                'antraege'           => array(
+            'with'      => [
+                'antraege'           => [
                     'alias' => 'b',
-                ),
-                'antraege.dokumente' => array(
+                ],
+                'antraege.dokumente' => [
                     'alias'     => 'c',
                     'condition' => $time_condition,
-                ),
-            ));
+                ],
+            ]];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
         return $this;

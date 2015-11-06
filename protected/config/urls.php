@@ -1,6 +1,6 @@
 <?php
 
-$GLOBALS["RIS_URL_RULES"] = array(
+$GLOBALS["RIS_URL_RULES"] = [
     SITE_BASE_URL . '/'                                                 => 'index/startseite',
     SITE_BASE_URL . '/ajax-<datum_max:[0-9\-]+>'                        => 'index/antraegeAjax',
     SITE_BASE_URL . '/bezirksausschuss'                                 => 'index/baListe',
@@ -33,4 +33,4 @@ $GLOBALS["RIS_URL_RULES"] = array(
     SITE_BASE_URL . '/<controller:\w+>/<id:\d+>'                        => '<controller>/anzeigen',
     SITE_BASE_URL . '/<controller:\w+>/<action:\w+>/<id:\d+>'           => '<controller>/<action>',
     SITE_BASE_URL . '/<controller:\w+>/<action:\w+>'                    => '<controller>/<action>',
-);
+];

@@ -120,7 +120,7 @@ echo ris_intern_html_extra_headers();
                     <input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
                            id="quicksearch_form_input" required
                            data-prefetch-url="<?= CHtml::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
-                           data-search-url="<?= CHtml::encode($this->createUrl("index/suche", array("suchbegriff" => "SUCHBEGRIFF"))) ?>">
+                           data-search-url="<?= CHtml::encode($this->createUrl("index/suche", ["suchbegriff" => "SUCHBEGRIFF"])) ?>">
                     <button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span>
                     </button>
                 </form>

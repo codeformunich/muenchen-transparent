@@ -39,11 +39,11 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, typ', 'required'),
-            array('id, typ', 'numerical', 'integerOnly' => true),
-            array('betreff', 'length', 'max' => 200),
-        );
+        return [
+            ['id, typ', 'required'],
+            ['id, typ', 'numerical', 'integerOnly' => true],
+            ['betreff', 'length', 'max' => 200],
+        ];
     }
 
     /**
@@ -53,11 +53,11 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'antraege'   => array(self::HAS_MANY, 'Antrag', 'vorgang_id'),
-            'ergebnisse' => array(self::HAS_MANY, 'Tagesordnungspunkt', 'vorgang_id'),
-            'dokumente'  => array(self::HAS_MANY, 'Dokument', 'vorgang_id'),
-        );
+        return [
+            'antraege'   => [self::HAS_MANY, 'Antrag', 'vorgang_id'],
+            'ergebnisse' => [self::HAS_MANY, 'Tagesordnungspunkt', 'vorgang_id'],
+            'dokumente'  => [self::HAS_MANY, 'Dokument', 'vorgang_id'],
+        ];
     }
 
     /**
@@ -65,11 +65,11 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'      => 'ID',
             'typ'     => 'Typ',
             'betreff' => 'Betreff',
-        );
+        ];
     }
 
     /**
@@ -78,7 +78,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
     public function getRISItemsByDate()
     {
         /** @var IRISItem[] $items */
-        $items = array();
+        $items = [];
         foreach ($this->antraege as $ant) $items[] = $ant;
         foreach ($this->dokumente as $dok) $items[] = $dok;
         foreach ($this->ergebnisse as $erg) $items[] = $erg;
@@ -137,7 +137,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
         try {
             Yii::app()->db
                 ->createCommand("INSERT INTO `benutzerInnen_vorgaenge_abos` (`benutzerInnen_id`, `vorgaenge_id`) VALUES (:BenutzerInId, :VorgangId)")
-                ->bindValues(array(':VorgangId' => $this->id, ':BenutzerInId' => $benutzerIn->id))
+                ->bindValues([':VorgangId' => $this->id, ':BenutzerInId' => $benutzerIn->id])
                 ->execute();
         } catch (CDbException $e) {
             if ($e->errorInfo[1] != 1062) throw $e; // Duplicate Entry, ist ok
@@ -151,7 +151,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
     {
         Yii::app()->db
             ->createCommand("DELETE FROM `benutzerInnen_vorgaenge_abos` WHERE `benutzerInnen_id` = :BenutzerInId AND `vorgaenge_id` = :VorgangId")
-            ->bindValues(array(':VorgangId' => $this->id, ':BenutzerInId' => $benutzerIn->id))
+            ->bindValues([':VorgangId' => $this->id, ':BenutzerInId' => $benutzerIn->id])
             ->execute();
     }
 
@@ -189,12 +189,12 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 
             Yii::app()->db
                 ->createCommand("UPDATE IGNORE `benutzerInnen_vorgaenge_abos` SET vorgaenge_id = :VorgangIdNeu WHERE vorgaenge_id = :VorgangIdAlt")
-                ->bindValues(array(':VorgangIdNeu' => $vorgang_zu_id, ':VorgangIdAlt' => $vorgang_von_id))
+                ->bindValues([':VorgangIdNeu' => $vorgang_zu_id, ':VorgangIdAlt' => $vorgang_von_id])
                 ->execute();
 
             Yii::app()->db
                 ->createCommand("DELETE FROM `benutzerInnen_vorgaenge_abos` WHERE vorgaenge_id = :VorgangIdAlt")
-                ->bindValues(array(':VorgangIdAlt' => $vorgang_von_id))
+                ->bindValues([':VorgangIdAlt' => $vorgang_von_id])
                 ->execute();
 
             $str .= "Gelöscht.\n";
@@ -208,7 +208,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
         // TODO: Implement getLink() method.
     }

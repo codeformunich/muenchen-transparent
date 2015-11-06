@@ -57,7 +57,7 @@ $GLOBALS["SOLR_CONFIG"] = array(
 
 function ris_intern_address2geo($land, $plz, $ort, $strasse)
 {
-    return array("lon" => 0, "lat" => 0);
+    return ["lon" => 0, "lat" => 0];
 }
 
 
@@ -113,44 +113,44 @@ function ris_intern_html_extra_headers()
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
-return array(
+return [
     'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name'           => 'München Transparent',
 
     // preloading 'log' component
-    'preload'        => array('log'),
+    'preload'        => ['log'],
 
     // autoloading model and component classes
-    'import'         => array(
+    'import'         => [
         'application.models.*',
         'application.components.*',
         'application.RISParser.*',
-    ),
+    ],
 
     'onBeginRequest' => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
     'onEndRequest'   => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_end_flush();'),
 
-    'modules'        => array(
+    'modules'        => [
         // uncomment the following to enable the Gii tool
-        'gii' => array(
+        'gii' => [
             'class'    => 'system.gii.GiiModule',
             'password' => 'RANDOMKEY',
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
             //'ipFilters' => array('*', '::1'),
-        ),
-    ),
+        ],
+    ],
 
     // application components
-    'components'     => array(
-        'cache'        => array(
+    'components'     => [
+        'cache'        => [
             'class' => 'system.caching.CFileCache',
-        ),
-        'urlManager'   => array(
+        ],
+        'urlManager'   => [
             'urlFormat'      => 'path',
             'showScriptName' => false,
             'rules'          => $GLOBALS["RIS_URL_RULES"],
-        ),
-        'db'           => array(
+        ],
+        'db'           => [
             'connectionString'      => 'mysql:host=127.0.0.1;dbname=DB',
             'emulatePrepare'        => true,
             'username'              => 'ris',
@@ -158,30 +158,30 @@ return array(
             'charset'               => 'utf8mb4',
             'queryCacheID'          => 'apcCache',
             'schemaCachingDuration' => 3600,
-        ),
-        'errorHandler' => array(
+        ],
+        'errorHandler' => [
             // use 'site/error' action to display errors
             'errorAction' => 'index/error',
-        ),
-        'log'          => array(
+        ],
+        'log'          => [
             'class'  => 'CLogRouter',
-            'routes' => array(
-                array(
+            'routes' => [
+                [
                     'class'  => 'CFileLogRoute',
                     'levels' => 'error, warning',
-                ),
+                ],
                 /*
                 array(
                     'class' => 'CWebLogRoute',
                 ),
                 */
-            ),
-        ),
-    ),
+            ],
+        ],
+    ],
 
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
-    'params'         => array(
+    'params'         => [
         // this is used in contact page
         'adminEmail'          => 'info@muenchen-transparent.de',
         'adminEmailName'      => "München Transparent",
@@ -191,5 +191,5 @@ return array(
         'projectTitle'        => 'München Transparent',
         'startseiten_warnung' => '',
         'concatScripts'       => false,
-    ),
-);
+    ],
+];

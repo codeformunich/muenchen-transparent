@@ -50,7 +50,7 @@ class Dokument extends CActiveRecord implements IRISItem
     public static $TYP_BA_BESCHLUSS       = "ba_beschluss";
     public static $TYP_RATHAUSUMSCHAU     = "rathausumschau";
     //public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung"; @TODO
-    public static $TYPEN_ALLE = array(
+    public static $TYPEN_ALLE = [
         "stadtrat_antrag"    => "Stadtratsantrag",
         "stadtrat_vorlage"   => "Stadtratsvorlage",
         "stadtrat_termin"    => "Stadtrat: Termin",
@@ -61,12 +61,12 @@ class Dokument extends CActiveRecord implements IRISItem
         "ba_beschluss"       => "BA: Beschluss",
         "rathausumschau"     => "Rathausumschau",
         //"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
-    );
+    ];
 
     public static $OCR_VON_TESSERACT = "tesseract";
     public static $OCR_VON_OMNIPAGE  = "omnipage";
 
-    private static $_cache = array();
+    private static $_cache = [];
 
     /**
      * Returns the static model of the specified AR class.
@@ -93,14 +93,14 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, url, name, datum', 'required'),
-            array('id, antrag_id, termin_id, tagesordnungspunkt_id, rathausumschau_id, deleted, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true),
-            array('typ', 'length', 'max' => 25),
-            array('url', 'length', 'max' => 500),
-            array('name, name_title', 'length', 'max' => 300),
-            array('text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight, name, name_title', 'safe'),
-        );
+        return [
+            ['id, url, name, datum', 'required'],
+            ['id, antrag_id, termin_id, tagesordnungspunkt_id, rathausumschau_id, deleted, seiten_anzahl, vorgang_id', 'numerical', 'integerOnly' => true],
+            ['typ', 'length', 'max' => 25],
+            ['url', 'length', 'max' => 500],
+            ['name, name_title', 'length', 'max' => 300],
+            ['text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight, name, name_title', 'safe'],
+        ];
     }
 
     /**
@@ -110,14 +110,14 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'vorgang_id'         => array(self::BELONGS_TO, 'Vorgang', 'id'),
-            'antrag'             => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-            'termin'             => array(self::BELONGS_TO, 'Termin', 'termin_id'),
-            'tagesordnungspunkt' => array(self::BELONGS_TO, 'Tagesordnungspunkt', 'tagesordnungspunkt_id'),
-            'rathausumschau'     => array(self::BELONGS_TO, 'Rathausumschau', 'rathausumschau_id'),
-            'orte'               => array(self::HAS_MANY, 'AntragOrt', 'dokument_id'),
-        );
+        return [
+            'vorgang_id'         => [self::BELONGS_TO, 'Vorgang', 'id'],
+            'antrag'             => [self::BELONGS_TO, 'Antrag', 'antrag_id'],
+            'termin'             => [self::BELONGS_TO, 'Termin', 'termin_id'],
+            'tagesordnungspunkt' => [self::BELONGS_TO, 'Tagesordnungspunkt', 'tagesordnungspunkt_id'],
+            'rathausumschau'     => [self::BELONGS_TO, 'Rathausumschau', 'rathausumschau_id'],
+            'orte'               => [self::HAS_MANY, 'AntragOrt', 'dokument_id'],
+        ];
     }
 
     /**
@@ -125,7 +125,7 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                      => 'ID',
             'vorgang_id'              => 'Vorgangs-ID',
             'typ'                     => 'Typ',
@@ -144,24 +144,24 @@ class Dokument extends CActiveRecord implements IRISItem
             'text_ocr_garbage_seiten' => 'Text Ocr Garbage Seiten',
             'text_pdf'                => 'Text Pdf',
             'seiten_anzahl'           => 'Seitenanzahl',
-        );
+        ];
     }
 
     public function behaviors()
     {
-        return array(
-            'CTimestampBehavior' => array(
+        return [
+            'CTimestampBehavior' => [
                 'class' => 'DisableDefaultScopeBehavior',
-            )
-        );
+            ]
+        ];
     }
 
     public function defaultScope()
     {
         $alias = $this->getTableAlias(false, false);
-        return $this->getDefaultScopeDisabled() ? array() : array(
+        return $this->getDefaultScopeDisabled() ? [] : [
             'condition' => $alias . ".deleted = 0",
-        );
+        ];
 
     }
 
@@ -182,10 +182,10 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function neueste($limit)
     {
-        $this->getDbCriteria()->mergeWith(array(
+        $this->getDbCriteria()->mergeWith([
             'order' => 'datum DESC',
             'limit' => $limit,
-        ));
+        ]);
         return $this;
     }
 
@@ -194,7 +194,7 @@ class Dokument extends CActiveRecord implements IRISItem
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
         if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
             if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
@@ -320,12 +320,12 @@ class Dokument extends CActiveRecord implements IRISItem
         $strassen_gefunden = RISGeo::suche_strassen($text);
 
         /** @var array|AntragOrt[] $bisherige */
-        $bisherige     = AntragOrt::model()->findAllByAttributes(array("dokument_id" => $this->id));
-        $bisherige_ids = array();
+        $bisherige     = AntragOrt::model()->findAllByAttributes(["dokument_id" => $this->id]);
+        $bisherige_ids = [];
         foreach ($bisherige as $i) $bisherige_ids[] = $i->ort_id;
 
-        $neue_ids = array();
-        $indexed  = array();
+        $neue_ids = [];
+        $indexed  = [];
 
         foreach ($strassen_gefunden as $strasse_name) if (!in_array($strasse_name, $indexed)) {
             $indexed[] = $strasse_name;
@@ -357,10 +357,10 @@ class Dokument extends CActiveRecord implements IRISItem
         }
 
         foreach ($bisherige_ids as $id) if (!in_array($id, $neue_ids)) {
-            AntragOrt::model()->deleteAllByAttributes(array("dokument_id" => $this->id, "ort_id" => $id));
+            AntragOrt::model()->deleteAllByAttributes(["dokument_id" => $this->id, "ort_id" => $id]);
         }
 
-        $this->orte = AntragOrt::model()->findAllByAttributes(array("dokument_id" => $this->id));
+        $this->orte = AntragOrt::model()->findAllByAttributes(["dokument_id" => $this->id]);
     }
 
 
@@ -460,11 +460,11 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getLinkZumDokument()
     {
-        return Yii::app()->createUrl("index/dokumente", array("id" => $this->id));
+        return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
     }
 
 
-    private static $dokumente_cache = array();
+    private static $dokumente_cache = [];
 
     /**
      * @param string $id
@@ -479,7 +479,7 @@ class Dokument extends CActiveRecord implements IRISItem
             if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = Dokument::model()->with("antrag")->findByPk($id);
             return static::$dokumente_cache[$id];
         }
-        return Dokument::model()->with(array("antrag", "tagesordnungspunkt", "rathausumschau"))->findByPk($id);
+        return Dokument::model()->with(["antrag", "tagesordnungspunkt", "rathausumschau"])->findByPk($id);
     }
 
     /**
@@ -487,9 +487,9 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getRISItem()
     {
-        if (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) return $this->tagesordnungspunkt;
-        if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) return $this->termin;
-        if (in_array($this->typ, array(static::$TYP_RATHAUSUMSCHAU))) return $this->rathausumschau;
+        if (in_array($this->typ, [static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS])) return $this->tagesordnungspunkt;
+        if (in_array($this->typ, [static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN])) return $this->termin;
+        if (in_array($this->typ, [static::$TYP_RATHAUSUMSCHAU])) return $this->rathausumschau;
         return $this->antrag;
     }
 
@@ -504,14 +504,14 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function solrMoreLikeThis($limit = 10)
     {
-        if ($GLOBALS["SOLR_CONFIG"] === null) return array();
+        if ($GLOBALS["SOLR_CONFIG"] === null) return [];
         $solr   = RISSolrHelper::getSolrClient("ris");
         $select = $solr->createSelect();
         $select->setQuery("id:\"Document:" . $this->id . "\"");
         $select->getMoreLikeThis()->setFields("text")->setMinimumDocumentFrequency(1)->setMinimumTermFrequency(1)->setCount($limit);
         $ergebnisse = $solr->select($select);
         $mlt        = $ergebnisse->getMoreLikeThis();
-        $ret        = array();
+        $ret        = [];
         foreach ($ergebnisse as $document) {
             $mltResult = $mlt->getResult($document->id);
             if ($mltResult) foreach ($mltResult as $mltDoc) {
@@ -543,8 +543,8 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->termin_datum       = RISSolrHelper::mysql2solrDate($this->termin->termin);
         $max_datum               = $this->termin->termin;
 
-        $geo            = array();
-        $dokument_bas   = array();
+        $geo            = [];
+        $dokument_bas   = [];
         $dokument_bas[] = ($this->termin->ba_nr > 0 ? $this->termin->ba_nr : 0);
         foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
             $geo[] = $ort->ort->lat . "," . $ort->ort->lon;
@@ -553,10 +553,10 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->geo          = $geo;
         $doc->dokument_bas = $dokument_bas;
 
-        $aenderungs_datum = array();
+        $aenderungs_datum = [];
 
         /** @var array|RISAenderung[] $aenderungen */
-        $aenderungen = RISAenderung::model()->findAllByAttributes(array("ris_id" => $this->antrag_id), array("order" => "datum DESC"));
+        $aenderungen = RISAenderung::model()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
         foreach ($aenderungen as $o) {
             $aenderungs_datum[] = RISSolrHelper::mysql2solrDate($o->datum);
             $max_datum          = $o->datum;
@@ -566,7 +566,7 @@ class Dokument extends CActiveRecord implements IRISItem
 
         if ($max_datum != "") $doc->sort_datum = RISSolrHelper::mysql2solrDate($max_datum);
 
-        $update->addDocuments(array($doc));
+        $update->addDocuments([$doc]);
 
     }
 
@@ -595,7 +595,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->antrag_betreff     = RISSolrHelper::string_cleanup($this->antrag->betreff);
         $doc->referat_id         = $this->antrag->referat_id;
 
-        $antrag_erstellt = $aenderungs_datum = array();
+        $antrag_erstellt = $aenderungs_datum = [];
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/", $this->antrag->gestellt_am)) {
             $antrag_erstellt[]  = RISSolrHelper::mysql2solrDate($this->antrag->gestellt_am . " 12:00:00");
             $aenderungs_datum[] = RISSolrHelper::mysql2solrDate($this->antrag->gestellt_am . " 12:00:00");
@@ -603,8 +603,8 @@ class Dokument extends CActiveRecord implements IRISItem
         }
 
 
-        $geo            = array();
-        $dokument_bas   = array();
+        $geo            = [];
+        $dokument_bas   = [];
         $dokument_bas[] = ($this->antrag->ba_nr > 0 ? $this->antrag->ba_nr : 0);
         foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
             $geo[] = $ort->ort->lat . "," . $ort->ort->lon;
@@ -614,7 +614,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->dokument_bas = $dokument_bas;
 
         /** @var array|RISAenderung[] $aenderungen */
-        $aenderungen = RISAenderung::model()->findAllByAttributes(array("ris_id" => $this->antrag_id), array("order" => "datum DESC"));
+        $aenderungen = RISAenderung::model()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
         foreach ($aenderungen as $o) {
             $aenderungs_datum[] = RISSolrHelper::mysql2solrDate($o->datum);
             $max_datum          = $o->datum;
@@ -626,7 +626,7 @@ class Dokument extends CActiveRecord implements IRISItem
 
 
         if ($max_datum != "") $doc->sort_datum = RISSolrHelper::mysql2solrDate($max_datum);
-        $update->addDocuments(array($doc));
+        $update->addDocuments([$doc]);
     }
 
 
@@ -647,8 +647,8 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->dokument_url  = $this->url;
         $doc->antrag_id     = $this->rathausumschau->nr;
 
-        $geo          = array();
-        $dokument_bas = array();
+        $geo          = [];
+        $dokument_bas = [];
         foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
             $geo[] = $ort->ort->lat . "," . $ort->ort->lon;
             if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
@@ -657,7 +657,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->dokument_bas = $dokument_bas;
 
         $doc->sort_datum = RISSolrHelper::mysql2solrDate($this->rathausumschau->datum . " 13:00:00");
-        $update->addDocuments(array($doc));
+        $update->addDocuments([$doc]);
     }
 
 
@@ -677,8 +677,8 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->dokument_name = RISSolrHelper::string_cleanup($this->name);
         $doc->dokument_url  = $this->url;
 
-        $geo          = array();
-        $dokument_bas = array();
+        $geo          = [];
+        $dokument_bas = [];
         foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
             $geo[] = $ort->ort->lat . "," . $ort->ort->lon;
             if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
@@ -688,7 +688,7 @@ class Dokument extends CActiveRecord implements IRISItem
 
         $datum           = $this->getDate();
         $doc->sort_datum = RISSolrHelper::mysql2solrDate($datum);
-        $update->addDocuments(array($doc));
+        $update->addDocuments([$doc]);
     }
 
 
@@ -710,8 +710,8 @@ class Dokument extends CActiveRecord implements IRISItem
                 }
 
             } else {
-                if (in_array($this->typ, array(static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN))) $this->solrIndex_termin_do($update);
-                elseif (in_array($this->typ, array(static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS))) $this->solrIndex_beschluss_do($update);
+                if (in_array($this->typ, [static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN])) $this->solrIndex_termin_do($update);
+                elseif (in_array($this->typ, [static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS])) $this->solrIndex_beschluss_do($update);
                 elseif ($this->typ == static::$TYP_RATHAUSUMSCHAU) $this->solrIndex_rathausumschau_do($update);
                 else $this->solrIndex_antrag_do($update);
             }
@@ -731,7 +731,7 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public static function getHighlightDokumente($limit = 3)
     {
-        return Dokument::model()->findAll(array("condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit));
+        return Dokument::model()->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit]);
     }
 
     /**

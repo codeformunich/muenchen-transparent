@@ -5,7 +5,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
     public function run($args)
     {
 
-        $sitemap_files = array();
+        $sitemap_files = [];
 
         $datumformat = function ($datum) {
             $x = explode(" ", $datum);

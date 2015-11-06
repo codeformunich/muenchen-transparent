@@ -47,11 +47,11 @@ class Bezirksausschuss extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('ba_nr, ris_id', 'required'),
-            array('ba_nr, ris_id, osm_init_zoom', 'numerical', 'integerOnly' => true),
-            array('name', 'length', 'max' => 100),
-        );
+        return [
+            ['ba_nr, ris_id', 'required'],
+            ['ba_nr, ris_id, osm_init_zoom', 'numerical', 'integerOnly' => true],
+            ['name', 'length', 'max' => 100],
+        ];
     }
 
     /**
@@ -61,16 +61,16 @@ class Bezirksausschuss extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'antraege'          => array(self::HAS_MANY, 'Antrag', 'ba_nr'),
-            'antraegeHistories' => array(self::HAS_MANY, 'AntragHistory', 'ba_nr'),
-            'gremien'           => array(self::HAS_MANY, 'Gremium', 'ba_nr'),
-            'gremienHistories'  => array(self::HAS_MANY, 'GremiumHistory', 'ba_nr'),
-            'RISAenderungen'    => array(self::HAS_MANY, 'RisAenderung', 'ba_nr'),
-            'stadtraetInnen'    => array(self::HAS_MANY, 'StadtraetIn', 'ba_nr'),
-            'fraktionen'        => array(self::HAS_MANY, 'Fraktion', 'ba_nr'),
-            'budgets'           => array(self::HAS_MANY, 'BezirksausschussBudget', 'ba_nr'),
-        );
+        return [
+            'antraege'          => [self::HAS_MANY, 'Antrag', 'ba_nr'],
+            'antraegeHistories' => [self::HAS_MANY, 'AntragHistory', 'ba_nr'],
+            'gremien'           => [self::HAS_MANY, 'Gremium', 'ba_nr'],
+            'gremienHistories'  => [self::HAS_MANY, 'GremiumHistory', 'ba_nr'],
+            'RISAenderungen'    => [self::HAS_MANY, 'RisAenderung', 'ba_nr'],
+            'stadtraetInnen'    => [self::HAS_MANY, 'StadtraetIn', 'ba_nr'],
+            'fraktionen'        => [self::HAS_MANY, 'Fraktion', 'ba_nr'],
+            'budgets'           => [self::HAS_MANY, 'BezirksausschussBudget', 'ba_nr'],
+        ];
     }
 
     /**
@@ -78,7 +78,7 @@ class Bezirksausschuss extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'ba_nr'         => 'BA Nr',
             'ris_id'        => "RIS ID",
             'name'          => 'Name',
@@ -86,25 +86,25 @@ class Bezirksausschuss extends CActiveRecord
             'osm_init_zoom' => 'OSM Zoom',
             'osm_shape'     => 'OSM Shape',
             'budgets'       => 'Budgets',
-        );
+        ];
     }
 
 
     public function toGeoJSONArray()
     {
-        return array(
+        return [
             "type"       => "Feature",
             "id"         => $this->ba_nr,
-            "properties" => array(
+            "properties" => [
                 "name"    => $this->name,
                 "website" => $this->website
-            ),
+            ],
             "init_zoom"  => IntVal($this->osm_init_zoom),
-            "geometry"   => array(
+            "geometry"   => [
                 "type"        => "Polygon",
-                "coordinates" => array(json_decode($this->osm_shape))
-            )
-        );
+                "coordinates" => [json_decode($this->osm_shape)]
+            ]
+        ];
     }
 
 
@@ -168,9 +168,9 @@ class Bezirksausschuss extends CActiveRecord
             }
         }
         if (!$vollgremium) {
-            return array();
+            return [];
         }
-        $funktionen = array();
+        $funktionen = [];
         foreach ($vollgremium->mitgliedschaften as $mitgliedschaft) {
             if (mb_stripos($mitgliedschaft->funktion, "Mitgl") === 0) {
                 continue;
@@ -183,10 +183,10 @@ class Bezirksausschuss extends CActiveRecord
 
         $funktion2weight = function ($funktion) {
             $funktion = trim($funktion);
-            if (in_array($funktion, array("Vorsitz", "BA-Vorsitz", "BA-Vorsitzender", "BA-Vorsitzende", "Vorsitzender", "Vorsitzende", "Sitzungsleitung"))) {
+            if (in_array($funktion, ["Vorsitz", "BA-Vorsitz", "BA-Vorsitzender", "BA-Vorsitzende", "Vorsitzender", "Vorsitzende", "Sitzungsleitung"])) {
                 return 1;
             }
-            if (mb_stripos($funktion, "1. stell") === 0 || mb_stripos($funktion, "1. stv") === 0 || in_array($funktion, array("stellv. Vorsitz"))) {
+            if (mb_stripos($funktion, "1. stell") === 0 || mb_stripos($funktion, "1. stv") === 0 || in_array($funktion, ["stellv. Vorsitz"])) {
                 return 2;
             }
             if (mb_stripos($funktion, "2. stell") === 0 || mb_stripos($funktion, "2. stv") === 0) {
@@ -212,7 +212,7 @@ class Bezirksausschuss extends CActiveRecord
     /** @return string */
     public function getLink()
     {
-        return Yii::app()->createUrl("index/ba", array("ba_nr" => $this->ba_nr, "ba_name" => $this->name));
+        return Yii::app()->createUrl("index/ba", ["ba_nr" => $this->ba_nr, "ba_name" => $this->name]);
     }
 
 
@@ -223,14 +223,14 @@ class Bezirksausschuss extends CActiveRecord
     {
         //return array(); // @TODO
 
-        $statistiken = array();
+        $statistiken = [];
 
-        $daten = StatistikDatensatz::model()->findByAttributes(array("gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"), array("order" => "jahr DESC"));
+        $daten = StatistikDatensatz::model()->findByAttributes(["gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"], ["order" => "jahr DESC"]);
         if ($daten) {
-            $statistiken[] = array(
+            $statistiken[] = [
                 "name" => "EinwohnerInnen",
                 "wert" => $daten->basiswert_2,
-            );
+            ];
         }
 
         return $statistiken;

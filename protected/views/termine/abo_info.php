@@ -10,7 +10,7 @@
         <ul class="breadcrumb" style="margin-bottom: 5px;">
             <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
             <li><a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>">Termine</a><br></li>
-            <li><a href="<?= CHtml::encode(Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->id))) ?>">Termin</a><br></li>
+            <li><a href="<?= CHtml::encode(Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $termin->id])) ?>">Termin</a><br></li>
             <li class="active">Export</li>
         </ul>
 

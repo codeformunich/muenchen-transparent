@@ -42,12 +42,12 @@ class GremiumHistory extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, datum_letzte_aenderung, name, kuerzel, gremientyp, referat', 'required'),
-            array('id, ba_nr', 'numerical', 'integerOnly' => true),
-            array('name, gremientyp, referat', 'length', 'max' => 100),
-            array('kuerzel', 'length', 'max' => 20),
-        );
+        return [
+            ['id, datum_letzte_aenderung, name, kuerzel, gremientyp, referat', 'required'],
+            ['id, ba_nr', 'numerical', 'integerOnly' => true],
+            ['name, gremientyp, referat', 'length', 'max' => 100],
+            ['kuerzel', 'length', 'max' => 20],
+        ];
     }
 
     /**
@@ -57,9 +57,9 @@ class GremiumHistory extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'ba' => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-        );
+        return [
+            'ba' => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
+        ];
     }
 
     /**
@@ -67,7 +67,7 @@ class GremiumHistory extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                     => 'ID',
             'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
             'ba_nr'                  => 'Ba Nr',
@@ -75,6 +75,6 @@ class GremiumHistory extends CActiveRecord
             'kuerzel'                => 'Kuerzel',
             'gremientyp'             => 'Gremientyp',
             'referat'                => 'Referat',
-        );
+        ];
     }
 }

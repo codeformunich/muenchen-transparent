@@ -8,11 +8,11 @@ $assets_base = $this->getAssetsBase();
 
 foreach ($termin->tagesordnungspunkte as $ergebnis) {
 	$geo = $ergebnis->get_geo();
-	foreach ($geo as $g) $geodata[] = array(
+	foreach ($geo as $g) $geodata[] = [
 		FloatVal($g->lat),
 		FloatVal($g->lon),
 		str_replace(".", ".<br>", trim($ergebnis->top_nr, "."))
-	);
+	];
 }
 ?>
 <html>

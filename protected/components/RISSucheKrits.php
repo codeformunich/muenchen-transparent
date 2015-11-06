@@ -4,7 +4,7 @@ class RISSucheKrits
 {
 
     /** @var array */
-    public $krits = array();
+    public $krits = [];
 
     /**
      * @param string|array $krits
@@ -128,7 +128,7 @@ class RISSucheKrits
      */
     public function getUrlArray()
     {
-        $krits = $vals = array();
+        $krits = $vals = [];
         foreach ($this->krits as $krit) {
             $krits[] = $krit["typ"];
             if ($krit["typ"] == "geo") $vals[] = $krit["lng"] . "-" . $krit["lat"] . "-" . $krit["radius"];
@@ -136,7 +136,7 @@ class RISSucheKrits
             elseif ($krit["typ"] == "referat") $vals[] = $krit["referat_id"];
             else $vals[] = $krit["suchbegriff"];
         }
-        return array("krit_typ" => $krits, "krit_val" => $vals);
+        return ["krit_typ" => $krits, "krit_val" => $vals];
     }
 
     /**
@@ -272,8 +272,8 @@ class RISSucheKrits
      */
     public function getBenachrichtigungKrits()
     {
-        $krits = array();
-        foreach ($this->krits as $krit) if (!in_array($krit["typ"], array("antrag_wahlperiode"))) $krits[] = $krit;
+        $krits = [];
+        foreach ($this->krits as $krit) if (!in_array($krit["typ"], ["antrag_wahlperiode"])) $krits[] = $krit;
         return new RISSucheKrits($krits);
     }
 
@@ -297,21 +297,21 @@ class RISSucheKrits
                 return "Volltextsuche nach \"" . $such . "\"";
             case "ba":
                 /** @var Bezirksausschuss $ba */
-                $ba = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $this->krits[0]["ba_nr"]));
+                $ba = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $this->krits[0]["ba_nr"]]);
                 return "Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
             case "geo":
                 $ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
                 $title = "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
                 if ($dokument) {
                     /** @var OrtGeo[] $gefundene_orte */
-                    $gefundene_orte = array();
+                    $gefundene_orte = [];
                     foreach ($dokument->orte as $dok_ort_ort) {
                         $dok_ort = $dok_ort_ort->ort;
                         $distance = RISGeo::getDistance($dok_ort->lat, $dok_ort->lon, $this->krits[0]["lat"], $this->krits[0]["lng"]);
                         if (($distance * 1000) <= $this->krits[0]["radius"]) $gefundene_orte[] = $dok_ort;
                     }
                     if (count($gefundene_orte) > 0) {
-                        $namen = array();
+                        $namen = [];
                         foreach ($gefundene_orte as $gef_ort) $namen[] = $gef_ort->ort;
                         $title .= ": " . implode(", ", $namen);
                     }
@@ -328,7 +328,7 @@ class RISSucheKrits
                 return "Antrag Nr. " . str_replace("*", " ", $this->krits[0]["suchbegriff"]);
         }
         if (count($this->krits) > 1) {
-            $krits = array();
+            $krits = [];
             foreach ($this->krits as $cr) switch ($cr["typ"]) {
                 case "betreff":
                     $krits[] = "mit \"" . $cr["suchbegriff"] . "\" im Betreff";
@@ -341,7 +341,7 @@ class RISSucheKrits
                     break;
                 case "ba":
                     /** @var Bezirksausschuss $ba */
-                    $ba      = Bezirksausschuss::model()->findByAttributes(array("ba_nr" => $cr["ba_nr"]));
+                    $ba      = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $cr["ba_nr"]]);
                     $krits[] = "aus dem Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
                     break;
                 case "geo":
@@ -380,10 +380,10 @@ class RISSucheKrits
      */
     public function addVolltextsucheKrit($str)
     {
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"         => "volltext",
             "suchbegriff" => $str
-        );
+        ];
         return $this;
     }
 
@@ -395,12 +395,12 @@ class RISSucheKrits
      */
     public function addGeoKrit($lng, $lat, $radius)
     {
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"    => "geo",
             "lng"    => FloatVal($lng),
             "lat"    => FloatVal($lat),
             "radius" => FloatVal($radius)
-        );
+        ];
         return $this;
     }
 
@@ -410,19 +410,19 @@ class RISSucheKrits
      */
     public function addBAKrit($ba_nr)
     {
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"   => "ba",
             "ba_nr" => IntVal($ba_nr)
-        );
+        ];
         return $this;
     }
 
     public function addReferatKrit($referat_id)
     {
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"        => "referat",
             "referat_id" => IntVal($referat_id)
-        );
+        ];
         return $this;
     }
 
@@ -432,10 +432,10 @@ class RISSucheKrits
      */
     public function addAntragTypKrit($str)
     {
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"         => "antrag_typ",
             "suchbegriff" => $str
-        );
+        ];
         return $this;
     }
 
@@ -446,10 +446,10 @@ class RISSucheKrits
      */
     public function addWahlperiodeKrit($str)
     {
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"         => "antrag_wahlperiode",
             "suchbegriff" => $str
-        );
+        ];
         return $this;
     }
 
@@ -459,10 +459,10 @@ class RISSucheKrits
      */
     public function addBetreffKrit($str)
     {
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"         => "betreff",
             "suchbegriff" => $str
-        );
+        ];
         return $this;
     }
 
@@ -474,10 +474,10 @@ class RISSucheKrits
     {
         $str           = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $str);
         $str           = preg_replace("/ +/siu", "*", $str);
-        $this->krits[] = array(
+        $this->krits[] = [
             "typ"         => "antrag_nr",
             "suchbegriff" => $str,
-        );
+        ];
         return $this;
     }
 

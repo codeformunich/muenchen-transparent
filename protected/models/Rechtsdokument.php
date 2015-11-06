@@ -39,12 +39,12 @@ class Rechtsdokument extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id', 'length', 'max' => 200),
-            array('titel', 'length', 'max' => 200),
-            array('url_base, url_html, url_pdf', 'length', 'max' => 200),
-            array('str_beschluss, bekanntmachung', 'length', 'max' => 10),
-        );
+        return [
+            ['id', 'length', 'max' => 200],
+            ['titel', 'length', 'max' => 200],
+            ['url_base, url_html, url_pdf', 'length', 'max' => 200],
+            ['str_beschluss, bekanntmachung', 'length', 'max' => 10],
+        ];
     }
 
     /**
@@ -52,7 +52,7 @@ class Rechtsdokument extends CActiveRecord
      */
     public function relations()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -60,7 +60,7 @@ class Rechtsdokument extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'             => 'id',
             'titel'          => 'titel',
             'url_base'       => 'url-base',
@@ -70,7 +70,7 @@ class Rechtsdokument extends CActiveRecord
             'bekanntmachung' => 'Bekanntmachung',
             'html'           => 'HTML',
             'css'            => 'CSS'
-        );
+        ];
     }
 
     public function alle_sortiert()

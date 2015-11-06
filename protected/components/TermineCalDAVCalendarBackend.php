@@ -43,24 +43,24 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
     {
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($this->termin_id);
-        if (!$termin) return array();
+        if (!$termin) return [];
 
         list(, $name) = \Sabre\HTTP\URLUtil::splitPath($principalUri);
-        if ($name !== 'guest') return array();
+        if ($name !== 'guest') return [];
 
-        return array(
-            array(
+        return [
+            [
                 'id'                                                                        => $this->termin_id,
                 'uri'                                                                       => $this->termin_id,
                 'principaluri'                                                              => $principalUri,
                 '{DAV:}displayname'                                                         => $termin->gremium->getName(),
                 '{' . \Sabre\CalDAV\Plugin::NS_CALENDARSERVER . '}getctag'                  => rand(0, 100000000),
                 '{http://sabredav.org/ns}sync-token'                                        => '0',
-                '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}supported-calendar-component-set' => new \Sabre\CalDAV\Property\SupportedCalendarComponentSet(array("VEVENT", "VJOURNAL", "VTODO")),
+                '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}supported-calendar-component-set' => new \Sabre\CalDAV\Property\SupportedCalendarComponentSet(["VEVENT", "VJOURNAL", "VTODO"]),
                 '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}schedule-calendar-transp'         => new \Sabre\CalDAV\Property\ScheduleCalendarTransp('opaque'),
                 '{http://sabredav.org/ns}read-only'                                         => '1',
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -152,9 +152,9 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
 
         $alle_termine = $termin->alleTermineDerReihe();
 
-        $dav_termine = array();
+        $dav_termine = [];
         foreach ($alle_termine as $akt_termin) {
-            $dav_termine[] = array(
+            $dav_termine[] = [
                 'id'           => $akt_termin->id,
                 'uri'          => $akt_termin->id,
                 'lastmodified' => $akt_termin->datum_letzte_aenderung,
@@ -162,7 +162,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
                 'calendarid'   => $calendarId,
                 'size'         => (int)10, // Dummywert
                 'component'    => 'VEVENT',
-            );
+            ];
         }
         return $dav_termine;
         /*
@@ -212,7 +212,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
         $calendardata = $vcalendar->serialize();
 
 
-        return array(
+        return [
             'id'           => $termin->id,
             'uri'          => $termin->id,
             'lastmodified' => $termin->datum_letzte_aenderung,
@@ -222,7 +222,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
             'calendardata' => $calendardata,
             'size'         => strlen($calendardata),
             'component'    => 'VEVENT',
-        );
+        ];
     }
 
     /**
@@ -240,7 +240,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      */
     function getMultipleCalendarObjects($calendarId, array $uris)
     {
-        $return = array();
+        $return = [];
         foreach ($uris as $uri) {
             /** @var Termin $termin */
             $termin = Termin::model()->findByPk($uri);
@@ -250,7 +250,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
             $vcalendar->add('VEVENT', $termin->getVEventParams());
             $calendardata = $vcalendar->serialize();
 
-            $return[] = array(
+            $return[] = [
                 'id'           => $termin->id,
                 'uri'          => $termin->id,
                 'lastmodified' => $termin->datum_letzte_aenderung,
@@ -260,7 +260,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
                 'calendardata' => $calendardata,
                 'size'         => strlen($calendardata),
                 'component'    => 'VEVENT',
-            );
+            ];
         }
         return $return;
     }
@@ -382,7 +382,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
         if (!$termin) throw new \Sabre\DAV\Exception\NotFound('Calendar not found');
 
         $alle_termine = $termin->alleTermineDerReihe();
-        $return       = array();
+        $return       = [];
         foreach ($alle_termine as $termin) {
             // @TODO Filtern
             $return[] = $termin->id;

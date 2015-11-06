@@ -32,7 +32,7 @@ class RISAenderung extends CActiveRecord
     public static $TYP_RATHAUSUMSCHAU = "rathausumschau";
     public static $TYP_BA_MITGLIED = "ba_mitglied";
     public static $TYP_BA_ERGEBNIS = "ba_ergebnis";
-    public static $TYPEN_ALLE = array(
+    public static $TYPEN_ALLE = [
         "stadtrat_antrag"   => "stadtratsantrag",
         "stadtrat_vorlage"  => "Stadtratsvorlage",
         "stadtrat_termin"   => "Stadtratstermin",
@@ -47,7 +47,7 @@ class RISAenderung extends CActiveRecord
         "ba_mitglied"       => "BA-Mitglied",
         "ba_ergebnis"       => "BA-Tagesordnung",
         "rathausumschau"    => "Rathausumschau",
-    );
+    ];
 
     /**
      * Returns the static model of the specified AR class.
@@ -74,11 +74,11 @@ class RISAenderung extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('ris_id, typ, datum, aenderungen', 'required'),
-            array('ris_id, ba_nr', 'numerical', 'integerOnly' => true),
-            array('typ', 'length', 'max' => 20),
-        );
+        return [
+            ['ris_id, typ, datum, aenderungen', 'required'],
+            ['ris_id, ba_nr', 'numerical', 'integerOnly' => true],
+            ['typ', 'length', 'max' => 20],
+        ];
     }
 
     /**
@@ -88,9 +88,9 @@ class RISAenderung extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'baNr' => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-        );
+        return [
+            'baNr' => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
+        ];
     }
 
     /**
@@ -98,14 +98,14 @@ class RISAenderung extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'          => 'ID',
             'ris_id'      => 'Ris',
             'ba_nr'       => 'Ba Nr',
             'typ'         => 'Typ',
             'datum'       => 'Datum',
             'aenderungen' => 'Aenderungen',
-        );
+        ];
     }
 
     /**
@@ -149,12 +149,12 @@ class RISAenderung extends CActiveRecord
     public function toFeedData()
     {
         $item = $this->getRISItem();
-        return array(
+        return [
             "title"          => ($item ? $item->getTypName() . ": " . $item->getName() : "?"),
             "link"           => ($item ? $item->getLink() : "-"),
             "content"        => nl2br(CHtml::encode($this->aenderungen)),
             "dateCreated"    => RISTools::date_iso2timestamp($this->datum),
-            "aenderung_guid" => Yii::app()->createUrl("aenderung/anzeigen", array("id" => $this->id))
-        );
+            "aenderung_guid" => Yii::app()->createUrl("aenderung/anzeigen", ["id" => $this->id])
+        ];
     }
 }

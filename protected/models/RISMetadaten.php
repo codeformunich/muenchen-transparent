@@ -27,7 +27,7 @@ class RISMetadaten
     public static function getStats()
     {
         $result = Yii::app()->db->createCommand("SELECT * FROM metadaten WHERE meta_key IN ('anzahl_dokumente', 'anzahl_dokumente_1w', 'anzahl_seiten', 'anzahl_seiten_1w', 'letzte_aktualisierung')")->queryAll();
-        $ret    = array();
+        $ret    = [];
         foreach ($result as $res) $ret[$res["meta_key"]] = $res["meta_val"];
         return $ret;
     }

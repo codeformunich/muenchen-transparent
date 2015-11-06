@@ -41,12 +41,12 @@ class Fraktion extends CActiveRecord implements IRISItem
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, name', 'required'),
-            array('id, ba_nr', 'numerical', 'integerOnly' => true),
-            array('name', 'length', 'max' => 70),
-            array('website', 'length', 'max' => 250),
-        );
+        return [
+            ['id, name', 'required'],
+            ['id, ba_nr', 'numerical', 'integerOnly' => true],
+            ['name', 'length', 'max' => 70],
+            ['website', 'length', 'max' => 250],
+        ];
     }
 
     /**
@@ -56,11 +56,11 @@ class Fraktion extends CActiveRecord implements IRISItem
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'fraktion_id'),
-            'bezirksausschuss'         => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-            'personen'                 => array(self::HAS_MANY, 'Person', 'ris_fraktion'),
-        );
+        return [
+            'stadtraetInnenFraktionen' => [self::HAS_MANY, 'StadtraetInFraktion', 'fraktion_id'],
+            'bezirksausschuss'         => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
+            'personen'                 => [self::HAS_MANY, 'Person', 'ris_fraktion'],
+        ];
     }
 
     /**
@@ -68,18 +68,18 @@ class Fraktion extends CActiveRecord implements IRISItem
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'    => 'ID',
             'ba_nr' => "BA-Nr",
             'name'  => 'Name',
-        );
+        ];
     }
 
     /**
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
         if ($this->id < 0) return "#";
         $strs = $this->stadtraetInnenFraktionen;
@@ -101,9 +101,9 @@ class Fraktion extends CActiveRecord implements IRISItem
         $name = RISTools::korrigiereTitelZeichen($this->name);
         if ($name == "&nbsp;" || trim($name) == "") return "fraktionslos";
         if ($kurzfassung) {
-            if (in_array($this->id, array(3339564, 2988265, 3312425))) return "Bürgerliche Mitte";
+            if (in_array($this->id, [3339564, 2988265, 3312425])) return "Bürgerliche Mitte";
             if ($this->id == 3312427) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
-            if (in_array($this->id, array(3312426, 1431959, 33))) return "Die Grünen / RL";
+            if (in_array($this->id, [3312426, 1431959, 33])) return "Die Grünen / RL";
         }
         return $name;
     }

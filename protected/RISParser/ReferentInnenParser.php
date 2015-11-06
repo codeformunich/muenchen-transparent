@@ -49,7 +49,7 @@ class ReferentInnenParser extends RISParser
             }
 
             /** @var Referat $referat */
-            $referat = Referat::model()->findByAttributes(array("name" => $referat_name));
+            $referat = Referat::model()->findByAttributes(["name" => $referat_name]);
             if (!$referat) {
                 RISTools::send_email(Yii::app()->params['adminEmail'], "Referat nicht gefunden", $referat_name, null, "system");
                 return;

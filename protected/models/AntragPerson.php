@@ -16,10 +16,10 @@ class AntragPerson extends CActiveRecord
 
     public static $TYP_GESTELLT_VON = "gestellt_von";
     public static $TYP_INITIATORIN = "initiator";
-    public static $TYPEN_ALLE = array(
+    public static $TYPEN_ALLE = [
         "gestellt_von" => "Gestellt von",
         "initiator"    => "InitiatorIn"
-    );
+    ];
 
 
     /**
@@ -47,11 +47,11 @@ class AntragPerson extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('antrag_id, person_id', 'required'),
-            array('antrag_id, person_id', 'numerical', 'integerOnly' => true),
-            array('typ', 'length', 'max' => 12),
-        );
+        return [
+            ['antrag_id, person_id', 'required'],
+            ['antrag_id, person_id', 'numerical', 'integerOnly' => true],
+            ['typ', 'length', 'max' => 12],
+        ];
     }
 
     /**
@@ -59,10 +59,10 @@ class AntragPerson extends CActiveRecord
      */
     public function relations()
     {
-        return array(
-            'person' => array(self::BELONGS_TO, 'Person', 'person_id'),
-            'antrag' => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-        );
+        return [
+            'person' => [self::BELONGS_TO, 'Person', 'person_id'],
+            'antrag' => [self::BELONGS_TO, 'Antrag', 'antrag_id'],
+        ];
     }
 
     /**
@@ -70,12 +70,12 @@ class AntragPerson extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'antrag_id' => 'Antrag (ID)',
             'person_id' => 'Person (ID)',
             'antrag'    => 'Antrag',
             'person'    => 'Person',
             'typ'       => 'Typ',
-        );
+        ];
     }
 }

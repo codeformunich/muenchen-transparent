@@ -92,7 +92,7 @@ class BenachrichtigungenController extends RISBaseController
 
                 Yii::app()->db
                     ->createCommand("DELETE FROM `benutzerInnen_vorgaenge_abos` WHERE `benutzerInnen_id` = :BenutzerInId")
-                    ->bindValues(array(':BenutzerInId' => $ich->id))
+                    ->bindValues([':BenutzerInId' => $ich->id])
                     ->execute();
 
                 $this->msg_ok = "Account gelöscht";
@@ -121,13 +121,13 @@ class BenachrichtigungenController extends RISBaseController
                     $this->msg_err = "Die beiden Passwörter stimmen nicht überein";
                 }
             } else {
-                $this->render('/index/error', array("code" => 403, "message" => "Sie sind nicht angemeldet."));
+                $this->render('/index/error', ["code" => 403, "message" => "Sie sind nicht angemeldet."]);
             }
         }
 
-        $this->render("index", array(
+        $this->render("index", [
             "ich" => $ich,
-        ));
+        ]);
     }
 
     /**
@@ -148,7 +148,7 @@ class BenachrichtigungenController extends RISBaseController
         $dismax->setQueryFields("text text_ocr");
 
         $benachrichtigungen = $benutzerIn->getBenachrichtigungen();
-        $krits_solr         = array();
+        $krits_solr         = [];
 
         foreach ($benachrichtigungen as $ben) $krits_solr[] = "(" . $ben->getSolrQueryStr($select) . ")";
         $querystr = implode(" OR ", $krits_solr);
@@ -171,7 +171,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         $benutzerIn = BenutzerIn::getByFeedCode($code);
         if (!$benutzerIn) {
-            $this->render('../index/error', array("code" => 400, "message" => "Das Feed konnte leider nicht gefunden werden."));
+            $this->render('../index/error', ["code" => 400, "message" => "Das Feed konnte leider nicht gefunden werden."]);
             return;
         }
 
@@ -185,11 +185,11 @@ class BenachrichtigungenController extends RISBaseController
         $ergebnisse = $solr->select($select);
         $data       = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
 
-        $this->render("../index/feed", array(
+        $this->render("../index/feed", [
             "feed_title"       => $titel,
             "feed_description" => $description,
             "data"             => $data,
-        ));
+        ]);
 
     }
 
@@ -211,9 +211,9 @@ class BenachrichtigungenController extends RISBaseController
         $ergebnisse = $solr->select($select);
 
 
-        $this->render("alle_suchergebnisse", array(
+        $this->render("alle_suchergebnisse", [
             "ergebnisse" => $ergebnisse,
-        ));
+        ]);
     }
 
 
@@ -232,7 +232,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         if (AntiXSS::isTokenSet("reset_password")) {
             /** @var null|BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
+            $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $_REQUEST["email"]]);
             if ($benutzerIn) {
                 $ret = $benutzerIn->resetPasswordStart();
                 if ($ret === true) {
@@ -256,24 +256,24 @@ class BenachrichtigungenController extends RISBaseController
     */
     public function actionNeuesPasswortSetzen($id = "", $code = "")
     {
-        $my_url = $this->createUrl("benachrichtigungen/NeuesPasswortSetzen", array("id" => $id, "code" => $code));
+        $my_url = $this->createUrl("benachrichtigungen/NeuesPasswortSetzen", ["id" => $id, "code" => $code]);
         if (AntiXSS::isTokenSet("reset_password")) {
             /** @var null|BenutzerIn $benutzerIn */
             $benutzerIn = BenutzerIn::model()->findByPk($id);
 
             if (!$benutzerIn) {
                 $this->msg_err = "BenutzerIn nicht gefunden";
-                $this->render('reset_password_form', array(
+                $this->render('reset_password_form', [
                     "current_url" => $this->createUrl("benachrichtigungen/PasswortZuruecksetzen"),
-                ));
+                ]);
                 return;
             }
 
             if ($_REQUEST["password"] != $_REQUEST["password2"]) {
                 $this->msg_err = "Die beiden Passwörter stimmen nicht überein";
-                $this->render('reset_password_set_form', array(
+                $this->render('reset_password_set_form', [
                     "current_url" => $my_url,
-                ));
+                ]);
                 return;
             }
 
@@ -282,14 +282,14 @@ class BenachrichtigungenController extends RISBaseController
                 $this->render('reset_password_done');
             } else {
                 $this->msg_err = $ret;
-                $this->render('reset_password_set_form', array(
+                $this->render('reset_password_set_form', [
                     "current_url" => $my_url,
-                ));
+                ]);
             }
         } else {
-            $this->render('reset_password_set_form', array(
+            $this->render('reset_password_set_form', [
                 "current_url" => $my_url,
-            ));
+            ]);
         }
     }
 
