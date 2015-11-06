@@ -10,10 +10,10 @@ class TermineCalDAVDebug extends \Sabre\DAV\ServerPlugin {
 
 	protected $logLevel = 5;
 
-	protected $contentTypeWhiteList = array(
+	protected $contentTypeWhiteList = [
 		'|^text/|',
 		'|^application/xml|',
-	);
+	];
 
 	function __construct($logFile, $logLevel = 1) {
 		$this->logFile = $logFile;
@@ -40,10 +40,10 @@ class TermineCalDAVDebug extends \Sabre\DAV\ServerPlugin {
 	public function initialize(\Sabre\DAV\Server $server) {
 
 		$this->server = $server;
-		$this->server->on('beforeMethod', array($this, 'beforeMethod'), 5);
-		$this->server->on('unknownMethod', array($this, 'unknownMethod'), 5);
-		$this->server->on('report', array($this, 'report'), 5);
-		$this->server->on('beforeGetProperties', array($this, 'beforeGetProperties'), 5);
+		$this->server->on('beforeMethod', [$this, 'beforeMethod'], 5);
+		$this->server->on('unknownMethod', [$this, 'unknownMethod'], 5);
+		$this->server->on('report', [$this, 'report'], 5);
+		$this->server->on('beforeGetProperties', [$this, 'beforeGetProperties'], 5);
 		$this->log(2,'Initialized plugin. Request time ' . $this->startTime . ' (' . date(\DateTime::RFC2822,$this->startTime) . '). Version: ' . \Sabre\DAV\Version::VERSION);
 
 	}

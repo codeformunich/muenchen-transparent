@@ -52,12 +52,12 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('top_betreff, sitzungstermin_id, sitzungstermin_datum, datum_letzte_aenderung', 'required'),
-            array('antrag_id, gremium_id, sitzungstermin_id, top_ueberschrift, vorgang_id', 'numerical', 'integerOnly' => true),
-            array('gremium_name', 'length', 'max' => 100),
-            array('beschluss_text', 'length', 'max' => 500),
-        );
+        return [
+            ['top_betreff, sitzungstermin_id, sitzungstermin_datum, datum_letzte_aenderung', 'required'],
+            ['antrag_id, gremium_id, sitzungstermin_id, top_ueberschrift, vorgang_id', 'numerical', 'integerOnly' => true],
+            ['gremium_name', 'length', 'max' => 100],
+            ['beschluss_text', 'length', 'max' => 500],
+        ];
     }
 
     /**
@@ -67,13 +67,13 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'sitzungstermin' => array(self::BELONGS_TO, 'Termin', 'sitzungstermin_id'),
-            'gremium'        => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
-            'antrag'         => array(self::BELONGS_TO, 'Antrag', 'antrag_id'),
-            'dokumente'      => array(self::HAS_MANY, 'Dokument', 'tagesordnungspunkt_id'),
-            'vorgang'        => array(self::BELONGS_TO, 'Vorgang', 'vorgang_id'),
-        );
+        return [
+            'sitzungstermin' => [self::BELONGS_TO, 'Termin', 'sitzungstermin_id'],
+            'gremium'        => [self::BELONGS_TO, 'Gremium', 'gremium_id'],
+            'antrag'         => [self::BELONGS_TO, 'Antrag', 'antrag_id'],
+            'dokumente'      => [self::HAS_MANY, 'Dokument', 'tagesordnungspunkt_id'],
+            'vorgang'        => [self::BELONGS_TO, 'Vorgang', 'vorgang_id'],
+        ];
     }
 
     /**
@@ -81,7 +81,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                     => 'ID',
             'vorgang_id'             => 'Vorgangs-ID',
             'antrag_id'              => 'Antrag',
@@ -96,7 +96,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             'top_ueberschrift'       => 'Ist Überschrift',
             'top_betreff'            => 'Betreff',
             'status'                 => 'Status'
-        );
+        ];
     }
 
     /**
@@ -122,9 +122,9 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
      */
     public function get_geo()
     {
-        $return            = array();
+        $return            = [];
         $strassen_gefunden = RISGeo::suche_strassen($this->top_betreff);
-        $indexed           = array();
+        $indexed           = [];
         foreach ($strassen_gefunden as $strasse_name) if (!in_array($strasse_name, $indexed)) {
             $indexed[] = $strasse_name;
             $geo       = OrtGeo::getOrCreate($strasse_name);
@@ -139,13 +139,13 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
      */
     public function zugeordneteAntraegeHeuristisch()
     {
-        $betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
+        $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
         preg_match_all("/[0-9]{2}\-[0-9]{2} ?\/ ?[A-Z] ?[0-9]+/su", $betreff, $matches);
 
-        $antraege = array();
+        $antraege = [];
         foreach ($matches[0] as $match) {
             /** @var Antrag $antrag */
-            $antrag = Antrag::model()->findByAttributes(array("antrags_nr" => Antrag::cleanAntragNr($match)));
+            $antrag = Antrag::model()->findByAttributes(["antrags_nr" => Antrag::cleanAntragNr($match)]);
             if ($antrag) $antraege[] = $antrag;
             else $antraege[] = "Nr. " . $match;
         }
@@ -157,7 +157,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
         if ($this->antrag) return $this->antrag->getLink($add_params);
         return $this->sitzungstermin->getLink($add_params);
@@ -177,7 +177,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
     public function getName($kurzfassung = false)
     {
         if ($kurzfassung) {
-            $betreff = str_replace(array("\n", "\r"), array(" ", " "), $this->top_betreff);
+            $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
             $x       = explode(" Antrag Nr.", $betreff);
             $x       = explode("<strong>Antrag: </strong>", $x[0]);
             return RISTools::korrigiereTitelZeichen($x[0]);

@@ -42,12 +42,12 @@ class Tag extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('name', 'required'),
-            array('id, angelegt_benutzerIn_id, reviewed', 'numerical', 'integerOnly' => true),
-            array('name', 'length', 'max' => 100),
-            array('angelegt_datum', 'length', 'max' => 20),
-        );
+        return [
+            ['name', 'required'],
+            ['id, angelegt_benutzerIn_id, reviewed', 'numerical', 'integerOnly' => true],
+            ['name', 'length', 'max' => 100],
+            ['angelegt_datum', 'length', 'max' => 20],
+        ];
     }
 
     /**
@@ -55,10 +55,10 @@ class Tag extends CActiveRecord
      */
     public function relations()
     {
-        return array(
-            'angelegt_benutzerIn' => array(self::BELONGS_TO, 'BenutzerIn', 'angelegt_benutzerIn_id'),
-            'antraege'            => array(self::MANY_MANY, 'Antrag', 'antraege_tags(tag_id, antrag_id)'),
-        );
+        return [
+            'angelegt_benutzerIn' => [self::BELONGS_TO, 'BenutzerIn', 'angelegt_benutzerIn_id'],
+            'antraege'            => [self::MANY_MANY, 'Antrag', 'antraege_tags(tag_id, antrag_id)'],
+        ];
     }
 
     /**
@@ -66,7 +66,7 @@ class Tag extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                     => 'ID',
             'name'                   => 'Name',
             'reviewed'               => 'Geprüft',
@@ -74,7 +74,7 @@ class Tag extends CActiveRecord
             'angelegt_benutzerIn_id' => 'Anegelegt: BenutzerIn-ID',
             'angelegt_benutzerIn'    => 'Anegelegt: BenutzerIn',
             'antraege'               => 'Anträge',
-        );
+        ];
     }
 
     /**
@@ -83,7 +83,7 @@ class Tag extends CActiveRecord
     public function getNameLink()
     {
         $link_name = $this->name;
-        return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", array("tag_id" => $this->id, "tag_name" => $link_name)));
+        return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
     }
 
     /**
@@ -96,7 +96,7 @@ class Tag extends CActiveRecord
 
         /** @var Tag[] $tags */
         $tags     = Tag::model()->findAll();
-        $tags_out = array();
+        $tags_out = [];
         foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
         return $tags_out;
     }

@@ -22,11 +22,11 @@ class BenutzerIn extends CActiveRecord
     public static $BERECHTIGUNG_USER    = 1;
     public static $BERECHTIGUNG_CONTENT = 2;
     public static $BERECHTIGUNG_TAG     = 4;
-    public static $BERECHTIGUNGEN = array(
+    public static $BERECHTIGUNGEN = [
         1 => "User-Admin",
         2 => "Content-Admin",
         4 => "Tag-Admin",
-    );
+    ];
 
     /** @var null|BenutzerInnenEinstellungen */
     private $einstellungen_object = null;
@@ -37,7 +37,7 @@ class BenutzerIn extends CActiveRecord
      */
     public static function alleAktiveAccounts()
     {
-        return BenutzerIn::model()->findAllByAttributes(array("email_bestaetigt" => "1"), array("order" => "email"));
+        return BenutzerIn::model()->findAllByAttributes(["email_bestaetigt" => "1"], ["order" => "email"]);
     }
 
     /**
@@ -97,11 +97,11 @@ class BenutzerIn extends CActiveRecord
      */
     public function rules()
     {
-        $rules = array(
-            array('email, datum_angelegt', 'required'),
-            array('id, email_bestaetigt, berechtigungen_flags', 'numerical', 'integerOnly' => true),
-            array('datum_letzte_benachrichtigung', 'default', 'setOnEmpty' => true, 'value' => null),
-        );
+        $rules = [
+            ['email, datum_angelegt', 'required'],
+            ['id, email_bestaetigt, berechtigungen_flags', 'numerical', 'integerOnly' => true],
+            ['datum_letzte_benachrichtigung', 'default', 'setOnEmpty' => true, 'value' => null],
+        ];
         return $rules;
     }
 
@@ -110,10 +110,10 @@ class BenutzerIn extends CActiveRecord
      */
     public function relations()
     {
-        return array(
-            'abonnierte_vorgaenge' => array(self::MANY_MANY, 'Vorgang', 'benutzerInnen_vorgaenge_abos(benutzerInnen_id, vorgaenge_id)'),
-            'stadtraetInnen'       => array(self::HAS_MANY, 'StadtraetIn', 'benutzerIn_id'),
-        );
+        return [
+            'abonnierte_vorgaenge' => [self::MANY_MANY, 'Vorgang', 'benutzerInnen_vorgaenge_abos(benutzerInnen_id, vorgaenge_id)'],
+            'stadtraetInnen'       => [self::HAS_MANY, 'StadtraetIn', 'benutzerIn_id'],
+        ];
     }
 
     /**
@@ -121,7 +121,7 @@ class BenutzerIn extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                            => Yii::t('app', 'ID'),
             'email'                         => Yii::t('app', 'E-Mail'),
             'email_bestaetigt'              => Yii::t('app', 'E-Mail-Adresse bestätigt'),
@@ -133,7 +133,7 @@ class BenutzerIn extends CActiveRecord
             'einstellungen'                 => null,
             'abonnierte_vorgaenge'          => Yii::t('app', 'Abonnierte Vorgänge'),
             'berechtigungen_flags'          => 'Berechtigungen',
-        );
+        ];
     }
 
     /**
@@ -187,7 +187,7 @@ class BenutzerIn extends CActiveRecord
     public function sendEmailBestaetigungsMail()
     {
         $best_code = $this->createEmailBestaetigungsCode();
-        $link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", array("code" => $best_code));
+        $link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", ["code" => $best_code]);
         RISTools::send_email($this->email, "Anmeldung bei München Transparent", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von München Transparent zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
             . "Liebe Grüße,\n\tDas München Transparent-Team.", null, "email");
     }
@@ -226,7 +226,7 @@ class BenutzerIn extends CActiveRecord
         $this->pwd_change_code = sha1(uniqid() . $this->pwd_enc);
         $this->pwd_change_date = new CDbExpression("NOW()");
         if ($this->save()) {
-            $link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("benachrichtigungen/NeuesPasswortSetzen", array("id" => $this->id, "code" => $this->pwd_change_code));
+            $link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("benachrichtigungen/NeuesPasswortSetzen", ["id" => $this->id, "code" => $this->pwd_change_code]);
             RISTools::send_email($this->email, "Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang bei München Transparent zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
                 . "Liebe Grüße,\n\tDas München Transparent-Team.", null, "password");
             return true;
@@ -285,7 +285,7 @@ class BenutzerIn extends CActiveRecord
     {
         $suchkrits     = $krits->getBenachrichtigungKrits();
         $einstellungen = $this->getEinstellungen();
-        $neue          = array();
+        $neue          = [];
         foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits != $ben) $neue[] = $ben;
         $einstellungen->benachrichtigungen = $neue;
         $this->setEinstellungen($einstellungen);
@@ -297,7 +297,7 @@ class BenutzerIn extends CActiveRecord
      */
     public function getBenachrichtigungen()
     {
-        $arr           = array();
+        $arr           = [];
         $einstellungen = $this->getEinstellungen();
         foreach ($einstellungen->benachrichtigungen as $krit) $arr[] = new RISSucheKrits($krit);
         return $arr;
@@ -322,8 +322,8 @@ class BenutzerIn extends CActiveRecord
     public static function heuteZuBenachrichtigendeBenutzerInnen()
     {
         /** @var BenutzerIn[] $benutzerInnen */
-        $benutzerInnen = BenutzerIn::model()->findAllByAttributes(array("email_bestaetigt" => 1));
-        $todo          = array();
+        $benutzerInnen = BenutzerIn::model()->findAllByAttributes(["email_bestaetigt" => 1]);
+        $todo          = [];
         foreach ($benutzerInnen as $benutzerIn) {
             $wochentag = $benutzerIn->getEinstellungen()->benachrichtigungstag;
             if ($wochentag === null || $wochentag == date("w")) $todo[] = $benutzerIn;
@@ -363,12 +363,12 @@ class BenutzerIn extends CActiveRecord
         $ergebnisse = $solr->select($select);
         /** @var RISSolrDocument[] $documents */
         $documents = $ergebnisse->getDocuments();
-        $res       = array();
+        $res       = [];
         foreach ($documents as $document) {
-            $res[] = array(
+            $res[] = [
                 "id"   => $document->id,
                 "name" => $document->dokument_name . ", " . $document->antrag_betreff,
-            );
+            ];
         }
         return $res;
     }
@@ -389,18 +389,18 @@ class BenutzerIn extends CActiveRecord
             $neu_seit_ts = RISTools::date_iso2timestamp($neu_seit);
         }
 
-        $ergebnisse = array(
-            "antraege"  => array(),
-            "termine"   => array(),
-            "vorgaenge" => array(),
-        );
+        $ergebnisse = [
+            "antraege"  => [],
+            "termine"   => [],
+            "vorgaenge" => [],
+        ];
 
         $sql = Yii::app()->db->createCommand();
         $sql->select("id")->from("dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
-        $data = $sql->queryColumn(array("id"));
+        $data = $sql->queryColumn(["id"]);
         if (count($data) > 0) {
 
-            $document_ids = array();
+            $document_ids = [];
             foreach ($data as $did) $document_ids[] = "id:\"Document:$did\"";
 
             foreach ($benachrichtigungen as $benachrichtigung) {
@@ -412,30 +412,30 @@ class BenutzerIn extends CActiveRecord
                     if (!$dokument) continue;
                     if ($dokument->antrag_id > 0) {
                         if (!isset($ergebnisse["antraege"][$dokument->antrag_id])) {
-                            $ergebnisse["antraege"][$dokument->antrag_id] = array(
+                            $ergebnisse["antraege"][$dokument->antrag_id] = [
                                 "antrag"    => $dokument->antrag,
-                                "dokumente" => array()
-                            );
+                                "dokumente" => []
+                            ];
                         }
                         if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) {
-                            $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = array(
+                            $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = [
                                 "dokument" => Dokument::model()->findByPk($dokument_id),
-                                "queries"  => array()
-                            );
+                                "queries"  => []
+                            ];
                         }
                         $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
                     } elseif ($dokument->termin_id > 0) {
                         if (!isset($ergebnisse["termine"][$dokument->termin_id])) {
-                            $ergebnisse["termine"][$dokument->termin_id] = array(
+                            $ergebnisse["termine"][$dokument->termin_id] = [
                                 "termin"    => $dokument->termin,
-                                "dokumente" => array()
-                            );
+                                "dokumente" => []
+                            ];
                         }
                         if (!isset($ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id])) {
-                            $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id] = array(
+                            $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id] = [
                                 "dokument" => Dokument::model()->findByPk($dokument_id),
-                                "queries"  => array()
-                            );
+                                "queries"  => []
+                            ];
                         }
                         $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id]["queries"][] = $benachrichtigung;
                     }
@@ -446,18 +446,18 @@ class BenutzerIn extends CActiveRecord
         foreach ($this->abonnierte_vorgaenge as $vorgang) {
             foreach ($vorgang->antraege as $ant) {
                 if (RISTools::date_iso2timestamp($ant->datum_letzte_aenderung) < $neu_seit_ts) continue;
-                if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = array("vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => array());
+                if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = ["vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => []];
                 $ant->findeAenderungen(time());
                 $ergebnisse["vorgaenge"][$vorgang->id]["neues"][] = $ant;
             }
             foreach ($vorgang->dokumente as $dok) {
                 if (RISTools::date_iso2timestamp($dok->datum) < $neu_seit_ts) continue;
-                if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = array("vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => array());
+                if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = ["vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => []];
                 $ergebnisse["vorgaenge"][$vorgang->id]["neues"][] = $dok;
             }
             foreach ($vorgang->ergebnisse as $erg) {
                 if (RISTools::date_iso2timestamp($erg->datum_letzte_aenderung) < $neu_seit_ts) continue;
-                if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = array("vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => array());
+                if (!isset($ergebnisse["vorgaenge"][$vorgang->id])) $ergebnisse["vorgaenge"][$vorgang->id] = ["vorgang" => $vorgang->wichtigstesRisItem()->getName(true), "neues" => []];
                 $ergebnisse["vorgaenge"][$vorgang->id]["neues"][] = $erg;
             }
         }

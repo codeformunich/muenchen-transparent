@@ -22,13 +22,13 @@ class RISBaseController extends CController
     /**
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
      */
-    public $menu = array();
+    public $menu = [];
     /**
      * @var array the breadcrumbs of the current page. The value of this property will
      * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
      * for more details on how to specify this property.
      */
-    public $breadcrumbs = array();
+    public $breadcrumbs = [];
 
     public $top_menu = "";
 
@@ -60,7 +60,7 @@ class RISBaseController extends CController
 
             $path = getcwd() . $this->_assetsBase . "/";
             if (!file_exists($path . "bas.js")) {
-                $BAfeatures = array();
+                $BAfeatures = [];
                 /** @var array|Bezirksausschuss[] $BAs */
                 $BAs = Bezirksausschuss::model()->findAll();
                 foreach ($BAs as $ba) $BAfeatures[] = $ba->toGeoJSONArray();
@@ -100,7 +100,7 @@ class RISBaseController extends CController
 
         if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && !isset($_REQUEST["register"])) {
             /** @var BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::model()->findByAttributes(array("email" => $_REQUEST["email"]));
+            $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $_REQUEST["email"]]);
             if ($benutzerIn) {
                 if ($benutzerIn->validate_password($_REQUEST["password"])) {
                     $identity = new RISUserIdentity($benutzerIn);
@@ -115,9 +115,9 @@ class RISBaseController extends CController
 
         if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && isset($_REQUEST["register"])) {
             /** @var BenutzerIn[] $gefundene_benutzerInnen */
-            $gefundene_benutzerInnen = BenutzerIn::model()->findAll(array(
+            $gefundene_benutzerInnen = BenutzerIn::model()->findAll([
                 "condition" => "email='" . addslashes($_REQUEST["email"]) . "'"
-            ));
+            ]);
             if (count($gefundene_benutzerInnen) > 0) {
                 $this->msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
             } elseif (trim($_REQUEST["password"]) == "") {
@@ -152,9 +152,9 @@ class RISBaseController extends CController
         $this->performLoginActions($code);
 
         if (Yii::app()->getUser()->isGuest) {
-            $this->render("../index/login", array(
+            $this->render("../index/login", [
                 "current_url" => $target_url,
-            ));
+            ]);
             Yii::app()->end();
         } else {
             $benutzerIn = $this->aktuelleBenutzerIn();
@@ -173,7 +173,7 @@ class RISBaseController extends CController
         $user = Yii::app()->getUser();
         if ($user->isGuest) return null;
         /** @var BenutzerIn $ich */
-        $ich = BenutzerIn::model()->findByAttributes(array("email" => Yii::app()->user->id));
+        $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::app()->user->id]);
         return $ich;
     }
 
@@ -193,10 +193,10 @@ class RISBaseController extends CController
      */
     public function errorMessageAndDie($error_code, $error_message)
     {
-        $this->render("../index/error", array(
+        $this->render("../index/error", [
             "code"    => $error_code,
             "message" => $error_message,
-        ));
+        ]);
         Yii::app()->end($error_code);
         die();
     }

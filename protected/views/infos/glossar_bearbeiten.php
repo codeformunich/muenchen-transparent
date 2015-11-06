@@ -9,7 +9,7 @@ $this->pageTitle = "Glossar bearbeiten";
 	<h2>Eintrag bearbeiten</h2>
 	<a href="<?= CHtml::encode(Yii::app()->createUrl("infos/glossar")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
 
-	<form method="POST" action="<?= CHtml::encode(Yii::app()->createUrl("infos/glossarBearbeiten", array("id" => $eintrag->id))) ?>" role="form" class="well"
+	<form method="POST" action="<?= CHtml::encode(Yii::app()->createUrl("infos/glossarBearbeiten", ["id" => $eintrag->id])) ?>" role="form" class="well"
 		  style="max-width: 850px; margin-top: 50px; margin-left: auto; margin-right: auto;">
 
 		<div class="form-group">
@@ -23,7 +23,7 @@ $this->pageTitle = "Glossar bearbeiten";
 			<textarea id="glossary_new_text" name="text" cols="80" rows="10"><?=CHtml::encode($eintrag->text)?></textarea>
 		</div>
 
-		<a href="<?=CHtml::encode($this->createUrl("infos/glossarBearbeiten", array("id" => $eintrag->id, AntiXSS::createToken("del") => "1")))?>" id="eintrag_del_caller" style="color: red; float: right;">
+		<a href="<?=CHtml::encode($this->createUrl("infos/glossarBearbeiten", ["id" => $eintrag->id, AntiXSS::createToken("del") => "1"]))?>" id="eintrag_del_caller" style="color: red; float: right;">
 			<span class="glyphicon glyphicon-minus"></span> Eintrag löschen
 		</a>
 

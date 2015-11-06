@@ -9,7 +9,7 @@ class Reindex_BA_AntragCommand extends CConsoleCommand
         $parser = new BAAntragParser();
         if ($args[0] == "ohnereferat") {
             /** @var Antrag[] $antraege */
-            $antraege = Antrag::model()->findAllByAttributes(array("typ" => Antrag::$TYP_BA_ANTRAG, "referat_id" => null));
+            $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::$TYP_BA_ANTRAG, "referat_id" => null]);
             foreach ($antraege as $antrag) $parser->parse($antrag->id);
         } elseif ($args[0] == "alle") {
             $parser->parseAlle();

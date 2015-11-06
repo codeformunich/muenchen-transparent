@@ -25,15 +25,15 @@ class AdminController extends RISBaseController
         }
 
         /** @var Person[] $personen */
-        $personen = Person::model()->findAll(array("order" => "name"));
+        $personen = Person::model()->findAll(["order" => "name"]);
 
         /** @var StadtraetIn[] $stadtraetInnen */
-        $stadtraetInnen = StadtraetIn::model()->findAll(array("order" => "name"));
+        $stadtraetInnen = StadtraetIn::model()->findAll(["order" => "name"]);
 
-        $this->render("stadtraetInnenPersonen", array(
+        $this->render("stadtraetInnenPersonen", [
             "personen"       => $personen,
             "stadtraetInnen" => $stadtraetInnen,
-        ));
+        ]);
     }
 
 
@@ -59,9 +59,9 @@ class AdminController extends RISBaseController
         /** @var array[] $fraktionen */
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
-        $this->render("stadtraetInnenSocialMedia", array(
+        $this->render("stadtraetInnenSocialMedia", [
             "fraktionen" => $fraktionen,
-        ));
+        ]);
     }
 
 
@@ -87,9 +87,9 @@ class AdminController extends RISBaseController
         /** @var array[] $fraktionen */
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
-        $this->render("stadtraetInnenBeschreibungen", array(
+        $this->render("stadtraetInnenBeschreibungen", [
             "fraktionen" => $fraktionen,
-        ));
+        ]);
     }
 
     public function actionStadtraetInnenBenutzerInnen()
@@ -115,9 +115,9 @@ class AdminController extends RISBaseController
         $stadtraetInnen = StadtraetIn::model()->findAll();
         $stadtraetInnen = StadtraetIn::sortByName($stadtraetInnen);
 
-        $this->render("stadtraetInnenBenutzerInnen", array(
+        $this->render("stadtraetInnenBenutzerInnen", [
             "stadtraetInnen" => $stadtraetInnen,
-        ));
+        ]);
     }
 
 
@@ -138,17 +138,17 @@ class AdminController extends RISBaseController
         $this->top_menu = "admin";
 
         if (AntiXSS::isTokenSet("tag_umbennen")) {
-            $tag_alt     = Tag::model()->findByAttributes(array("id" => $_REQUEST["tag_id"]));
-            $gleichnamig = Tag::model()->findByAttributes(array("name" => $_REQUEST["neuer_name"]));
+            $tag_alt     = Tag::model()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
+            $gleichnamig = Tag::model()->findByAttributes(["name" => $_REQUEST["neuer_name"]]);
 
             if ($gleichnamig != null) { // Tag mit neuem Namen existiert bereits-> merge
                 // Zuerst bei allen Anträgen mit beiden tags den Eintrag für den alten tag löschen
                 Yii::app()->db->createCommand('DELETE t1 FROM antraege_tags t1 INNER JOIN antraege_tags t2 ON t1.antrag_id=t2.antrag_id WHERE t1.tag_id=:tag_id_alt AND t2.tag_id=:tag_id_neu')
-                    ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
+                    ->bindValues([':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id])
                     ->execute();
 
                 Yii::app()->db->createCommand('UPDATE antraege_tags SET tag_id=:tag_id_neu WHERE tag_id=:tag_id_alt')
-                    ->bindValues(array(':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id))
+                    ->bindValues([':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id])
                     ->execute();
 
                 $tag_alt->delete();
@@ -163,10 +163,10 @@ class AdminController extends RISBaseController
         }
 
         if (AntiXSS::isTokenSet("tag_loeschen")) {
-            $tag = Tag::model()->findByAttributes(array("id" => $_REQUEST["tag_id"]));
+            $tag = Tag::model()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
 
             Yii::app()->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id')
-                ->bindValues(array(':tag_id' => $tag->id))
+                ->bindValues([':tag_id' => $tag->id])
                 ->execute();
 
             $tag->delete();
@@ -175,10 +175,10 @@ class AdminController extends RISBaseController
         }
 
         if (AntiXSS::isTokenSet("einzelnen_tag_loeschen")) {
-            $tag = Tag::model()->findByAttributes(array("name" => $_REQUEST["tag_name"]));
+            $tag = Tag::model()->findByAttributes(["name" => $_REQUEST["tag_name"]]);
 
             Yii::app()->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id AND antrag_id=:antrag_id')
-                ->bindValues(array(':tag_id' => $tag->id, ':antrag_id' => $_REQUEST["antrag_id"]))
+                ->bindValues([':tag_id' => $tag->id, ':antrag_id' => $_REQUEST["antrag_id"]])
                 ->execute();
 
             $this->msg_ok = "Einzelner Tag gelöscht";
@@ -198,9 +198,9 @@ class AdminController extends RISBaseController
             return ($name1 > $name2) ? +1 : -1;
         });
 
-        $this->render("tags", array(
+        $this->render("tags", [
             "tags" => $tags,
-        ));
+        ]);
     }
 
     public function actionBuergerInnenversammlungen()
@@ -244,9 +244,9 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Gespeichert";
         }
 
-        $termine = Termin::model()->findAllByAttributes(array("typ" => Termin::$TYP_BV), array("order" => "termin DESC"));
-        $this->render("buergerInnenversammlungen", array(
+        $termine = Termin::model()->findAllByAttributes(["typ" => Termin::$TYP_BV], ["order" => "termin DESC"]);
+        $this->render("buergerInnenversammlungen", [
             "termine" => $termine,
-        ));
+        ]);
     }
 }

@@ -38,12 +38,12 @@ class StadtraetInReferat extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('stadtraetIn_id, referat_id', 'required'),
-            array('stadtraetIn_id, referat_id, id', 'numerical', 'integerOnly' => true),
-            array('datum_von, datum_bis', 'length', 'max' => 10),
-            array('datum_von, datum_bis', 'safe'),
-        );
+        return [
+            ['stadtraetIn_id, referat_id', 'required'],
+            ['stadtraetIn_id, referat_id, id', 'numerical', 'integerOnly' => true],
+            ['datum_von, datum_bis', 'length', 'max' => 10],
+            ['datum_von, datum_bis', 'safe'],
+        ];
     }
 
     /**
@@ -53,10 +53,10 @@ class StadtraetInReferat extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'referat'     => array(self::BELONGS_TO, 'Referat', 'referat_id'),
-            'stadtraetIn' => array(self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'),
-        );
+        return [
+            'referat'     => [self::BELONGS_TO, 'Referat', 'referat_id'],
+            'stadtraetIn' => [self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'],
+        ];
     }
 
     /**
@@ -64,12 +64,12 @@ class StadtraetInReferat extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'             => 'id',
             'stadtraetIn_id' => 'StadträtIn',
             'referat_id'     => 'Referat',
             'datum_von'      => 'Von',
             'datum_bis'      => 'Bis',
-        );
+        ];
     }
 }

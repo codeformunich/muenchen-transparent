@@ -8,7 +8,7 @@ class ImportStatistikCommand extends CConsoleCommand
             return FALSE;
 
         $header = NULL;
-        $data   = array();
+        $data   = [];
         if (($handle = fopen($filename, 'r')) !== FALSE) {
             while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE) {
                 if (!$header)
@@ -28,7 +28,7 @@ class ImportStatistikCommand extends CConsoleCommand
             die();
         }
         $sql = Yii::app()->db->createCommand();
-        $sql->delete('statistik_datensaetze', array("quelle = " . StatistikDatensatz::QUELLE_BEVOELKERUNG));
+        $sql->delete('statistik_datensaetze', ["quelle = " . StatistikDatensatz::QUELLE_BEVOELKERUNG]);
         $arr = $this->csv_to_array($args[0]);
 
         $floatize = function($in) {

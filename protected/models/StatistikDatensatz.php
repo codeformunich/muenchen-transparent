@@ -51,9 +51,9 @@ class StatistikDatensatz extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('quelle', 'required'),
-        );
+        return [
+            ['quelle', 'required'],
+        ];
     }
 
     /**
@@ -63,7 +63,7 @@ class StatistikDatensatz extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array();
+        return [];
     }
 
     /**
@@ -71,8 +71,8 @@ class StatistikDatensatz extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'      => 'ID',
-        );
+        ];
     }
 }

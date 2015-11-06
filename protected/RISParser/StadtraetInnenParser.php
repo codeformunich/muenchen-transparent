@@ -3,7 +3,7 @@
 class StadtraetInnenParser extends RISParser
 {
 
-    private $bearbeitete_stadtraetInnen = array();
+    private $bearbeitete_stadtraetInnen = [];
     private $antraege_alle              = false;
 
     /**
@@ -20,7 +20,7 @@ class StadtraetInnenParser extends RISParser
 
         preg_match_all("/ris_antrag_detail\.jsp\?risid=(?<antrag_id>[0-9]+)[\"'& ]/siU", $antr_text, $matches);
         foreach ($matches["antrag_id"] as $antrag_id) try {
-            Yii::app()->db->createCommand()->insert("antraege_stadtraetInnen", array("antrag_id" => $antrag_id, "stadtraetIn_id" => $stadtraetIn_id, "gefunden_am" => new CDbExpression("NOW()")));
+            Yii::app()->db->createCommand()->insert("antraege_stadtraetInnen", ["antrag_id" => $antrag_id, "stadtraetIn_id" => $stadtraetIn_id, "gefunden_am" => new CDbExpression("NOW()")]);
         } catch (Exception $e) {
         }
     }
@@ -117,7 +117,7 @@ class StadtraetInnenParser extends RISParser
             $str_fraktion->mitgliedschaft = $matches["mitgliedschaft"][$i];
 
             /** @var array|StadtraetInFraktion[] $bisherige_fraktionen */
-            $bisherige_fraktionen = StadtraetInFraktion::model()->findAllByAttributes(array("stadtraetIn_id" => $stadtraetIn_id));
+            $bisherige_fraktionen = StadtraetInFraktion::model()->findAllByAttributes(["stadtraetIn_id" => $stadtraetIn_id]);
             /** @var null|StadtraetInFraktion $bisherige */
 
             $bisherige = null;
@@ -177,7 +177,7 @@ class StadtraetInnenParser extends RISParser
         $txt  = explode("<!-- tabellenkopf -->", $text);
         if (!isset($txt[1])) {
             if (SITE_CALL_MODE != "cron") echo "- leer\n";
-            return array();
+            return [];
         } elseif ($first) {
             RISTools::send_email(Yii::app()->params['adminEmail'], "StadträTinnenUpdate VOLL", "Erste Seite voll: $seite", null, "system");
         }
@@ -199,7 +199,7 @@ class StadtraetInnenParser extends RISParser
     public function parseAlle()
     {
         $anz                              = 350;
-        $this->bearbeitete_stadtraetInnen = array();
+        $this->bearbeitete_stadtraetInnen = [];
         $first                            = true;
         for ($i = $anz; $i >= 0; $i -= 10) {
             if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";

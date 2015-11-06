@@ -61,7 +61,7 @@ class RathausumschauParser extends RISParser
 
         for ($i = 0; $i < count($matches["url"]); $i++) {
             $datum = explode(".", $matches["datum"][$i]);
-            $ru    = Rathausumschau::model()->findByAttributes(array("jahr" => $datum[2], "nr" => $matches["nr"][$i]));
+            $ru    = Rathausumschau::model()->findByAttributes(["jahr" => $datum[2], "nr" => $matches["nr"][$i]]);
             if (!$ru) {
                 $ru        = new Rathausumschau();
                 $ru->nr    = $matches["nr"][$i];
@@ -75,7 +75,7 @@ class RathausumschauParser extends RISParser
     }
 
 
-    public static $MON_MAPPING = array(
+    public static $MON_MAPPING = [
         "Jan"  => 1,
         "Feb"  => 2,
         "Mrz"  => 3,
@@ -89,7 +89,7 @@ class RathausumschauParser extends RISParser
         "Okt"  => 10,
         "Nov"  => 11,
         "Dez"  => 12,
-    );
+    ];
 
     /* 2009, 2010, 2011 */
     public function parseArchive2($jahr)
@@ -103,7 +103,7 @@ class RathausumschauParser extends RISParser
         for ($i = 0; $i < count($matches["nr"]); $i++) {
             $datum = $jahr . "-" . static::$MON_MAPPING[$matches["mon"][$i]] . "-" . $matches["tag"][$i];
 
-            $ru = Rathausumschau::model()->findByAttributes(array("jahr" => $jahr, "nr" => IntVal($matches["nr"][$i])));
+            $ru = Rathausumschau::model()->findByAttributes(["jahr" => $jahr, "nr" => IntVal($matches["nr"][$i])]);
             if (!$ru) {
                 $ru        = new Rathausumschau();
                 $ru->nr    = IntVal($matches["nr"][$i]);
@@ -116,7 +116,7 @@ class RathausumschauParser extends RISParser
         }
     }
 
-    public static $MONAT_MAPPING = array(
+    public static $MONAT_MAPPING = [
         "Januar"    => 1,
         "Februar"   => 2,
         "März"      => 3,
@@ -129,7 +129,7 @@ class RathausumschauParser extends RISParser
         "Oktober"   => 10,
         "November"  => 11,
         "Dezember"  => 12,
-    );
+    ];
 
     /* 2005, 2006, 2007, 2008 */
     public function parseArchive1($jahr)
@@ -142,7 +142,7 @@ class RathausumschauParser extends RISParser
 
                 if (!isset($datum["monat"])) continue;
 
-                $ru = Rathausumschau::model()->findByAttributes(array("jahr" => $jahr, "nr" => IntVal($file)));
+                $ru = Rathausumschau::model()->findByAttributes(["jahr" => $jahr, "nr" => IntVal($file)]);
                 if (!$ru) {
                     $ru        = new Rathausumschau();
                     $ru->nr    = IntVal($file);

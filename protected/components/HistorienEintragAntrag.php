@@ -34,7 +34,7 @@ class HistorienEintragAntrag implements HistorienEintrag
      */
     public function getFormattedDiff()
     {
-        $felder = array();
+        $felder = [];
         if ($this->antrag_alt->betreff != $this->antrag_neu->betreff) $felder[] = new HistorienEintragFeld(
             "Betreff", CHtml::encode($this->antrag_alt->betreff), CHtml::encode($this->antrag_neu->betreff)
         );

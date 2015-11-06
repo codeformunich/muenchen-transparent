@@ -8,10 +8,10 @@ class Recalc_Ort2BACommand extends CConsoleCommand
 
         if ($args[0] == "alle") {
             /** @var OrtGeo[] $orte */
-            $orte = OrtGeo::model()->findAll(array("order" => "id"));
+            $orte = OrtGeo::model()->findAll(["order" => "id"]);
         } else {
             /** @var OrtGeo[] $orte */
-            $orte = OrtGeo::model()->findAll(array("condition" => "id = " . IntVal($args[0])));
+            $orte = OrtGeo::model()->findAll(["condition" => "id = " . IntVal($args[0])]);
         }
 
 

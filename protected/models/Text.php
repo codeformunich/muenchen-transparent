@@ -46,12 +46,12 @@ class Text extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('typ, titel', 'required'),
-            array('id, typ, pos, edit_benutzerIn_id', 'numerical', 'integerOnly' => true),
-            array('titel', 'length', 'max' => 180),
-            array('typ, pos, text, titel', 'safe'),
-        );
+        return [
+            ['typ, titel', 'required'],
+            ['id, typ, pos, edit_benutzerIn_id', 'numerical', 'integerOnly' => true],
+            ['titel', 'length', 'max' => 180],
+            ['typ, pos, text, titel', 'safe'],
+        ];
     }
 
     /**
@@ -59,9 +59,9 @@ class Text extends CActiveRecord
      */
     public function relations()
     {
-        return array(
-            'edit_benutzerIn' => array(self::BELONGS_TO, 'Person', 'edit_benutzerIn_id'),
-        );
+        return [
+            'edit_benutzerIn' => [self::BELONGS_TO, 'Person', 'edit_benutzerIn_id'],
+        ];
     }
 
     /**
@@ -69,7 +69,7 @@ class Text extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                 => 'ID',
             'typ'                => 'Typ',
             'pos'                => 'Position',
@@ -78,7 +78,7 @@ class Text extends CActiveRecord
             'edit_datum'         => 'Zuletzt bearbeitet: Datum',
             'edit_benutzerIn'    => 'Zuletzt bearbeitet: BenutzerIn',
             'edit_benutzerIn_id' => 'Zuletzt bearbeitet: BenutzerIn-ID',
-        );
+        ];
     }
 
 }

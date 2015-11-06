@@ -19,13 +19,13 @@ class BAMitgliederParser extends RISParser
         $x = explode('<!-- tabellenkopf -->', $ba_details);
         $x = explode('<!-- seitenfuss -->', $x[1]);
 
-        $gefundene_fraktionen = array();
+        $gefundene_fraktionen = [];
 
         preg_match_all("/ba_mitglieder_details_mitgliedschaft\.jsp\?Id=(?<mitglied_id>[0-9]+)&amp;Wahlperiode=(?<wahlperiode>[0-9]+)[\"'& ]>(?<name>[^<]*)<.*tdborder\">(?<mitgliedschaft>[^<]*)<\/td>.*tdborder[^>]*>(?<fraktion>[^<]*) *<\/td>.*notdborder[^>]*>(?<funktion>[^<]*) *<\/td.*<\/tr/siU", $x[0], $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $fraktion_name = trim(html_entity_decode($matches["fraktion"][$i]));
             $name          = str_replace("&nbsp;", " ", $matches["name"][$i]);
-            $name          = trim(str_replace(array("Herr", "Frau"), array(" ", " "), $name));
+            $name          = trim(str_replace(["Herr", "Frau"], [" ", " "], $name));
 
             if ($fraktion_name == "")
                 $fraktion_name = "Parteifrei";
@@ -46,7 +46,7 @@ class BAMitgliederParser extends RISParser
             }
 
             /** @var Fraktion|null $fraktion */
-            $fraktion = Fraktion::model()->findByAttributes(array("ba_nr" => $ba_nr, "name" => $fraktion_name));
+            $fraktion = Fraktion::model()->findByAttributes(["ba_nr" => $ba_nr, "name" => $fraktion_name]);
             if (!$fraktion) {
                 echo "Lege an: " . $fraktion_name . "\n";
                 $min = Yii::app()->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
@@ -91,7 +91,7 @@ class BAMitgliederParser extends RISParser
                 }
                 $strfrakt->save();
             }
-            if (!isset($gefundene_fraktionen[$matches["mitglied_id"][$i]])) $gefundene_fraktionen[$matches["mitglied_id"][$i]] = array();
+            if (!isset($gefundene_fraktionen[$matches["mitglied_id"][$i]])) $gefundene_fraktionen[$matches["mitglied_id"][$i]] = [];
             $gefundene_fraktionen[$matches["mitglied_id"][$i]][] = $fraktion->id;
         }
 

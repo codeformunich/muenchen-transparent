@@ -4,7 +4,7 @@ class BenutzerInnenEinstellungen
 {
 
     /** @var array */
-    public $benachrichtigungen = array();
+    public $benachrichtigungen = [];
 
     /** @var null|int */
     public $benachrichtigungstag = null;

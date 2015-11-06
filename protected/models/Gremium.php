@@ -45,12 +45,12 @@ class Gremium extends CActiveRecord implements IRISItem
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, datum_letzte_aenderung, name, kuerzel, gremientyp', 'required'),
-            array('id, ba_nr', 'numerical', 'integerOnly' => true),
-            array('name, gremientyp, referat', 'length', 'max' => 100),
-            array('kuerzel', 'length', 'max' => 50),
-        );
+        return [
+            ['id, datum_letzte_aenderung, name, kuerzel, gremientyp', 'required'],
+            ['id, ba_nr', 'numerical', 'integerOnly' => true],
+            ['name, gremientyp, referat', 'length', 'max' => 100],
+            ['kuerzel', 'length', 'max' => 50],
+        ];
     }
 
     /**
@@ -60,12 +60,12 @@ class Gremium extends CActiveRecord implements IRISItem
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'tagesordnungspunkte' => array(self::HAS_MANY, 'Tagesordnungspunkt', 'gremium_id'),
-            'ba'                  => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-            'termine'             => array(self::HAS_MANY, 'Termin', 'gremium_id'),
-            'mitgliedschaften'    => array(self::HAS_MANY, 'StadtraetInGremium', 'gremium_id'),
-        );
+        return [
+            'tagesordnungspunkte' => [self::HAS_MANY, 'Tagesordnungspunkt', 'gremium_id'],
+            'ba'                  => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
+            'termine'             => [self::HAS_MANY, 'Termin', 'gremium_id'],
+            'mitgliedschaften'    => [self::HAS_MANY, 'StadtraetInGremium', 'gremium_id'],
+        ];
     }
 
     /**
@@ -73,7 +73,7 @@ class Gremium extends CActiveRecord implements IRISItem
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                     => 'ID',
             'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
             'ba_nr'                  => 'Ba Nr',
@@ -81,7 +81,7 @@ class Gremium extends CActiveRecord implements IRISItem
             'kuerzel'                => 'Kuerzel',
             'gremientyp'             => 'Gremientyp',
             'referat'                => 'Referat',
-        );
+        ];
     }
 
     /**
@@ -169,9 +169,9 @@ class Gremium extends CActiveRecord implements IRISItem
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
-        return Yii::app()->createUrl("gremium/anzeigen", array_merge(array("id" => $this->id), $add_params));
+        return Yii::app()->createUrl("gremium/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
 

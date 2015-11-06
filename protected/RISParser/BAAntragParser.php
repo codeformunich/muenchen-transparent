@@ -23,7 +23,7 @@ class BAAntragParser extends RISParser
         $daten->id                     = $antrag_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
 
-        $dokumente = array();
+        $dokumente = [];
         //$ergebnisse = array();
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
@@ -97,11 +97,11 @@ class BAAntragParser extends RISParser
 
         preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\"[^>]*title=\"([^\"]*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
-            $dokumente[] = array(
+            $dokumente[] = [
                 "url"        => $matches[1][$i],
                 "name"       => $matches[3][$i],
                 "name_title" => $matches[2][$i],
-            );
+            ];
         }
 
         /*
@@ -185,7 +185,7 @@ class BAAntragParser extends RISParser
         $text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege.jsp?Start=$seite");
 
         $txt = explode("<!-- tabellenkopf -->", $text);
-        if (!isset($txt[1])) return array();
+        if (!isset($txt[1])) return [];
 
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ba_antraege_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -215,7 +215,7 @@ class BAAntragParser extends RISParser
     public function parseUpdate()
     {
         echo "Updates: BA-Anträge\n";
-        $loaded_ids = array();
+        $loaded_ids = [];
 
         $anz = static::$MAX_OFFSET_UPDATE;
         for ($i = $anz; $i >= 0; $i -= 10) {

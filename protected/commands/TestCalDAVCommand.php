@@ -9,9 +9,9 @@ class TestCalDAVCommand extends CConsoleCommand
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERPWD, "user:pw");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "REPORT");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Content-Type: text/xml",
-        ));
+        ]);
         curl_setopt($ch, CURLOPT_POSTFIELDS, '<?xml version="1.0" encoding="UTF-8"?><calendar-query xmlns="urn:ietf:params:xml:ns:caldav"><prop xmlns="DAV:"><getetag /></prop><filter><comp-filter name="VCALENDAR"><comp-filter name="VEVENT"><time-range start="20150111T000000Z" end="20150712T000000Z" /></comp-filter></comp-filter></filter></calendar-query>');
 
         $output = curl_exec($ch);

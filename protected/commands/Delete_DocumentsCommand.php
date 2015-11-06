@@ -14,7 +14,7 @@ class Delete_DocumentsCommand extends CConsoleCommand
         if ($args[0] == "alle") {
             $sql = Yii::app()->db->createCommand();
             $sql->select("id")->from("dokumente")->order("id DESC");
-            $data = $sql->queryColumn(array("id"));
+            $data = $sql->queryColumn(["id"]);
 
             for ($i = 0; $i < count($data); $i++) {
                 if (($i % 100) == 0) echo $i . " / " . count($data) . "\n";

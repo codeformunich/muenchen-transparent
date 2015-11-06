@@ -10,25 +10,25 @@ class TermineController extends RISBaseController
     private function getFullcalendarStruct($appointments)
     {
         $appointments_data = Termin::groupAppointments($appointments);
-        $jsdata            = array();
+        $jsdata            = [];
         $has_weekend       = false;
         foreach ($appointments_data as $appointment) {
-            $d        = array(
+            $d        = [
                 "title"    => str_replace("Ausschuss für ", "", implode(", ", array_keys($appointment["gremien"]))),
                 "start"    => str_replace(" ", "T", $appointment["datum_iso"]),
                 "url"      => $appointment["link"],
                 "abgesagt" => $appointment["abgesagt"],
-            );
+            ];
             $jsdata[] = $d;
             $weekday  = date("N", $appointment["datum_ts"]);
             if ($weekday == 6 || $weekday == 7) {
                 $has_weekend = true;
             }
         }
-        return array(
+        return [
             "has_weekend" => $has_weekend,
             "data"        => $jsdata,
-        );
+        ];
     }
 
 
@@ -90,14 +90,14 @@ class TermineController extends RISBaseController
 
         $fullcalendar_struct = $this->getFullCalendarStructByMonth(date("Y"), date("m"));
 
-        $this->render("index", array(
+        $this->render("index", [
             "termine_zukunft"       => $gruppiert_zukunft,
             "termine_vergangenheit" => $gruppiert_vergangenheit,
             "termin_dokumente"      => $termin_dokumente,
             "fullcalendar_struct"   => $fullcalendar_struct,
             "tage_vergangenheit"    => $tage_vergangenheit,
             "tage_zukunft"          => $tage_zukunft,
-        ));
+        ]);
     }
 
     /**
@@ -112,7 +112,7 @@ class TermineController extends RISBaseController
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
-            $this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
+            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
@@ -132,11 +132,11 @@ class TermineController extends RISBaseController
             }
         }
 
-        $this->render("anzeige", array(
+        $this->render("anzeige", [
             "termin" => $termin,
             "to_pdf" => $to_pdf,
             "to_db"  => $to_db,
-        ));
+        ]);
     }
 
 
@@ -150,13 +150,13 @@ class TermineController extends RISBaseController
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
-            $this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
+            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
-        $this->renderPartial("ics_all", array(
+        $this->renderPartial("ics_all", [
             "alle_termine" => $termin->alleTermineDerReihe(),
-        ));
+        ]);
     }
 
     /**
@@ -169,13 +169,13 @@ class TermineController extends RISBaseController
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
-            $this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
+            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
-        $this->renderPartial("ics_single", array(
+        $this->renderPartial("ics_single", [
             "termin" => $termin,
-        ));
+        ]);
     }
 
     /**
@@ -183,7 +183,7 @@ class TermineController extends RISBaseController
      */
     public function actionTopGeoExport($termin_id)
     {
-        $this->render('/index/error', array("code" => 404, "message" => "Diese Seite gibt es (noch) nicht."));
+        $this->render('/index/error', ["code" => 404, "message" => "Diese Seite gibt es (noch) nicht."]);
         return;
 
         $termin_id = IntVal($termin_id);
@@ -194,9 +194,9 @@ class TermineController extends RISBaseController
         /** @var Termin $sitzung */
         $termin = Termin::model()->findByPk($termin_id);
 
-        $this->renderPartial("top_geo_export", array(
+        $this->renderPartial("top_geo_export", [
             "termin" => $termin
-        ));
+        ]);
     }
 
 
@@ -207,9 +207,9 @@ class TermineController extends RISBaseController
         $sql = Yii::app()->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
-        $this->render("ba_zukunft_html", array(
+        $this->render("ba_zukunft_html", [
             "termine" => $termine
-        ));
+        ]);
     }
     /**
      */
@@ -218,9 +218,9 @@ class TermineController extends RISBaseController
         $sql = Yii::app()->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
-        $this->renderPartial("ba_zukunft_csv", array(
+        $this->renderPartial("ba_zukunft_csv", [
             "termine" => $termine
-        ));
+        ]);
     }
 
     /**
@@ -231,13 +231,13 @@ class TermineController extends RISBaseController
         /** @var Termin $sitzung */
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
-            $this->render('/index/error', array("code" => 404, "message" => "Der Termin wurde nicht gefunden"));
+            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
-        $this->render("abo_info", array(
+        $this->render("abo_info", [
             "termin" => $termin,
-        ));
+        ]);
     }
 
 
@@ -251,13 +251,13 @@ class TermineController extends RISBaseController
         $principalBackend = new TermineCalDAVPrincipalBackend($termin_id);
         $calendarBackend  = new TermineCalDAVCalendarBackend($termin_id);
 
-        $tree = array(
+        $tree = [
             new Sabre\CalDAV\Principal\Collection($principalBackend),
             new Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend),
-        );
+        ];
 
         $server = new TermineCalDAVServerBugfix($tree);
-        $server->setBaseUri(Yii::app()->createUrl("termine/dav", array("termin_id" => $termin_id)));
+        $server->setBaseUri(Yii::app()->createUrl("termine/dav", ["termin_id" => $termin_id]));
 
         $authBackend = new TermineCalDAVAuthBackend();
         $authPlugin  = new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV');
@@ -284,8 +284,8 @@ class TermineController extends RISBaseController
     public function actionBaTermineAlle($ba_nr)
     {
         /** @var Termin[] $termine */
-        $termine    = Termin::model()->findAllByAttributes(array("ba_nr" => $ba_nr), array("order" => "termin DESC"));
-        $termin_arr = array();
+        $termine    = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr], ["order" => "termin DESC"]);
+        $termin_arr = [];
         foreach ($termine as $t) {
             $termin_arr[] = $t->toArr();
         }
@@ -293,10 +293,10 @@ class TermineController extends RISBaseController
         /** @var Bezirksausschuss $ba */
         $ba = Bezirksausschuss::model()->findByPk($ba_nr);
 
-        $this->render("ba_termine_alle", array(
+        $this->render("ba_termine_alle", [
             "ba"      => $ba,
             "termine" => $termin_arr,
-        ));
+        ]);
     }
 
 

@@ -16,10 +16,10 @@ class InfosController extends RISBaseController
             $this->msg_ok = "Gespeichert.";
         }
 
-        $this->render("stadtpolitik", array(
+        $this->render("stadtpolitik", [
             "text"   => $text,
             "my_url" => $this->createUrl("infos/soFunktioniertStadtpolitik"),
-        ));
+        ]);
     }
 
     public function actionImpressum()
@@ -63,10 +63,10 @@ class InfosController extends RISBaseController
         /** @var Rechtsdokument $dok */
         $dok = Rechtsdokument::model()->findByPk($id);
         if (!$dok) {
-            $this->render('../index/error', array("code" => 404, "message" => "Das Dokument wurde nicht gefunden"));
+            $this->render('../index/error', ["code" => 404, "message" => "Das Dokument wurde nicht gefunden"]);
             Yii::app()->end();
         }
-        $this->render("stadtrecht_dokument", array("dokument" => $dok));
+        $this->render("stadtrecht_dokument", ["dokument" => $dok]);
     }
 
     /**
@@ -87,12 +87,12 @@ class InfosController extends RISBaseController
             $this->msg_ok = "Gespeichert.";
         }
 
-        $this->render("std", array(
+        $this->render("std", [
             "text"            => $text,
             "my_url"          => $my_url,
             "show_title"      => $show_title,
             "insert_tooltips" => $insert_tooltips,
-        ));
+        ]);
     }
 
 
@@ -112,11 +112,11 @@ class InfosController extends RISBaseController
 
             RISTools::send_email(Yii::app()->params['adminEmail'], "[München Transparent] Feedback", $text, null, "feedback");
 
-            $this->render('feedback_done', array());
+            $this->render('feedback_done', []);
         } else {
-            $this->render('feedback_form', array(
+            $this->render('feedback_form', [
                 "current_url" => Yii::app()->createUrl("infos/feedback"),
-            ));
+            ]);
         }
     }
 
@@ -135,13 +135,13 @@ class InfosController extends RISBaseController
             $text->save();
         }
 
-        $eintraege = Text::model()->findAllByAttributes(array(
+        $eintraege = Text::model()->findAllByAttributes([
             "typ" => Text::$TYP_GLOSSAR,
-        ), array("order" => "titel"));
+        ], ["order" => "titel"]);
 
-        $this->render('glossar', array(
+        $this->render('glossar', [
             "eintraege" => $eintraege,
-        ));
+        ]);
     }
 
 
@@ -156,10 +156,10 @@ class InfosController extends RISBaseController
         $this->top_menu = "so_funktioniert";
 
         /** @var Text $eintrag */
-        $eintrag = Text::model()->findByAttributes(array(
+        $eintrag = Text::model()->findByAttributes([
             "id"  => $id,
             "typ" => Text::$TYP_GLOSSAR,
-        ));
+        ]);
         if (!$eintrag) throw new Exception("Nicht gefunden");
 
         if (AntiXSS::isTokenSet("speichern")) {
@@ -177,8 +177,8 @@ class InfosController extends RISBaseController
             $this->redirect($this->createUrl("infos/glossar"));
         }
 
-        $this->render('glossar_bearbeiten', array(
+        $this->render('glossar_bearbeiten', [
             "eintrag" => $eintrag,
-        ));
+        ]);
     }
 }

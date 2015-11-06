@@ -37,11 +37,11 @@ class BezirksausschussBudget extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('ba_nr, jahr, budget, vorjahr_rest', 'required'),
-            array('ba_nr, jahr, budget, vorjahr_rest, cache_aktuell', 'numerical', 'integerOnly' => true),
-            array('budget, vorjahr_rest, cache_aktuell', 'safe'),
-        );
+        return [
+            ['ba_nr, jahr, budget, vorjahr_rest', 'required'],
+            ['ba_nr, jahr, budget, vorjahr_rest, cache_aktuell', 'numerical', 'integerOnly' => true],
+            ['budget, vorjahr_rest, cache_aktuell', 'safe'],
+        ];
     }
 
     /**
@@ -51,9 +51,9 @@ class BezirksausschussBudget extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'bezirksausschuss' => array(self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'),
-        );
+        return [
+            'bezirksausschuss' => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
+        ];
     }
 
     /**
@@ -61,12 +61,12 @@ class BezirksausschussBudget extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'ba_nr'         => 'Bezirksausschuss Nr.',
             'jahr'          => 'Jahr',
             'budget'        => 'Jahresbudget',
             'vorjahr_rest'  => 'Übertrag d. Vorjahr',
             'cache_aktuell' => 'Aktuelles Restguthaben',
-        );
+        ];
     }
 }
