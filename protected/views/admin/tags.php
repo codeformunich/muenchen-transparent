@@ -86,7 +86,7 @@ td.fontello-cancel:hover {
 }
 </style>
 
-<script src="/js/list.js/dist/list.min.js"/>
+<script src="/js/list.js/dist/list.min.js"></script>
 
 <script>
 var userList = new List("tag-liste", {valueNames: ["tag-name", "antrag-id", "email"]});
