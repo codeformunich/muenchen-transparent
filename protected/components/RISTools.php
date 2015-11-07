@@ -26,7 +26,7 @@ class RISTools
      */
     public static function bracketEscape($string)
     {
-        return str_replace(array("[", "]"), array(urlencode("["), urlencode("]")), $string);
+        return str_replace(["[", "]"], [urlencode("["), urlencode("]")], $string);
     }
 
     /**
@@ -127,7 +127,7 @@ class RISTools
         $date = explode("-", $x[0]);
 
         if (count($x) == 2) $time = explode(":", $x[1]);
-        else $time = array(0, 0, 0);
+        else $time = [0, 0, 0];
 
         return mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
     }
@@ -154,8 +154,8 @@ class RISTools
      */
     public static function rssent($text)
     {
-        $search  = array("<br>", "&", "\"", "<", ">", "'", "–");
-        $replace = array("\n", "&amp;", "&quot;", "&lt;", "&gt;", "&apos;", "-");
+        $search  = ["<br>", "&", "\"", "<", ">", "'", "–"];
+        $replace = ["\n", "&amp;", "&quot;", "&lt;", "&gt;", "&apos;", "-"];
         return str_replace($search, $replace, $text);
     }
 
@@ -232,7 +232,7 @@ class RISTools
             return $matches["anfang"] . " (" . trim($matches["name"]) . ")";
         }, $titel);
 
-        $titel = str_replace(array("Ae", "Oe", "Ue", "ae", "oe", "ue"), array("Ä", "Ö", "Ü", "ä", "ö", "ü"), $titel); // @TODO: False positives filtern? Geht das überhaupt?
+        $titel = str_replace(["Ae", "Oe", "Ue", "ae", "oe", "ue"], ["Ä", "Ö", "Ü", "ä", "ö", "ü"], $titel); // @TODO: False positives filtern? Geht das überhaupt?
         $titel = preg_replace("/(n)eü/siu", "$1eue", $titel);
         $titel = preg_replace("/aü/siu", "aue", $titel);
 
@@ -250,7 +250,7 @@ class RISTools
     public static function normalize_antragvon($str)
     {
         $a   = explode(",", $str);
-        $ret = array();
+        $ret = [];
         foreach ($a as $y) {
             $z = explode(";", $y);
             if (count($z) == 2) $y = $z[1] . " " . $z[0];
@@ -275,7 +275,7 @@ class RISTools
             for ($i = 0; $i < 10; $i++) $y = str_replace("  ", " ", $y);
             $y = str_replace("Zeilhofer-Rath", "Zeilnhofer-Rath", $y);
 
-            if (trim($y) != "") $ret[] = array("name" => $name_orig, "name_normalized" => $y);
+            if (trim($y) != "") $ret[] = ["name" => $name_orig, "name_normalized" => $y];
         }
         return $ret;
     }
@@ -289,7 +289,7 @@ class RISTools
     public function ris_get_person_by_name($name_normalized, $name)
     {
         /** @var Person $p */
-        $p = Person::model()->findByAttributes(array("name_normalized" => $name_normalized));
+        $p = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
         if ($p) return $p;
         echo "$name / $name_normalized \n";
 
@@ -384,37 +384,37 @@ class RISTools
     public static function send_email_mandrill($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
     {
         $mandrill = new Mandrill(MANDRILL_API_KEY);
-        $tags     = array();
+        $tags     = [];
         if ($mail_tag !== null) $tags[] = $mail_tag;
 
-        $headers = array();
+        $headers = [];
         if ($mail_tag == 'newsletter') {
             $headers['Precedence']     = 'bulk';
             $headers['Auto-Submitted'] = 'auto-generated';
         }
 
-        $message = array(
+        $message = [
             'html'         => $text_html,
             'text'         => $text_plain,
             'subject'      => $betreff,
             'from_email'   => Yii::app()->params["adminEmail"],
             'from_name'    => Yii::app()->params["adminEmailName"],
-            'to'           => array(
-                array(
+            'to'           => [
+                [
                     "name"  => null,
                     "email" => $email,
                     "type"  => "to",
-                )
-            ),
+                ]
+            ],
             'important'    => false,
             'tags'         => $tags,
             'track_clicks' => false,
             'track_opens'  => false,
             'inline_css'   => true,
             'headers'      => $headers,
-        );
+        ];
 
-        if (in_array($mail_tag, array("email", "password"))) $message["view_content_link"] = false;
+        if (in_array($mail_tag, ["email", "password"])) $message["view_content_link"] = false;
 
         $mandrill->messages->send($message, false);
     }
@@ -445,7 +445,7 @@ class RISTools
             $html_part->type    = "text/html";
             $html_part->charset = "UTF-8";
             $mimem              = new Zend\Mime\Message();
-            $mimem->setParts(array($text_part, $html_part));
+            $mimem->setParts([$text_part, $html_part]);
 
             $mail->setBody($mimem);
             $mail->getHeaders()->get('content-type')->setType('multipart/alternative');
@@ -466,12 +466,12 @@ class RISTools
      */
     public static function makeArrValuesUnique($arr)
     {
-        $val_count = array();
+        $val_count = [];
         foreach ($arr as $elem) {
             if (isset($val_count[$elem])) $val_count[$elem]++;
             else $val_count[$elem] = 1;
         }
-        $vals_used = array();
+        $vals_used = [];
         foreach ($arr as $i => $elem) {
             if ($val_count[$elem] == 1) continue;
             if (isset($vals_used[$elem])) $vals_used[$elem]++;
@@ -488,14 +488,14 @@ class RISTools
     public static function insertTooltips($text_html)
     {
         /** @var Text[] $eintraege */
-        $eintraege    = Text::model()->findAllByAttributes(array(
+        $eintraege    = Text::model()->findAllByAttributes([
             "typ" => Text::$TYP_GLOSSAR,
-        ));
-        $regexp_parts = array();
+        ]);
+        $regexp_parts = [];
         /** @var Text[] $tooltip_replaces */
-        $tooltip_replaces = array();
+        $tooltip_replaces = [];
         foreach ($eintraege as $ein) {
-            $aliases = array(strtolower($ein->titel));
+            $aliases = [strtolower($ein->titel)];
             if ($ein->titel == "Fraktion") $aliases[] = "fraktionen";
             if ($ein->titel == "Ausschuss") $aliases[] = "aussch&uuml;ssen";
 

@@ -40,13 +40,13 @@ class StadtraetInFraktion extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('stadtraetIn_id, fraktion_id, wahlperiode, mitgliedschaft, datum_von', 'required'),
-            array('stadtraetIn_id, fraktion_id', 'numerical', 'integerOnly' => true),
-            array('wahlperiode', 'length', 'max' => 30),
-            array('datum_von, datum_bis', 'length', 'max' => 10),
-            array('funktion', 'safe'),
-        );
+        return [
+            ['stadtraetIn_id, fraktion_id, wahlperiode, mitgliedschaft, datum_von', 'required'],
+            ['stadtraetIn_id, fraktion_id', 'numerical', 'integerOnly' => true],
+            ['wahlperiode', 'length', 'max' => 30],
+            ['datum_von, datum_bis', 'length', 'max' => 10],
+            ['funktion', 'safe'],
+        ];
     }
 
     /**
@@ -56,10 +56,10 @@ class StadtraetInFraktion extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'fraktion'    => array(self::BELONGS_TO, 'Fraktion', 'fraktion_id'),
-            'stadtraetIn' => array(self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'),
-        );
+        return [
+            'fraktion'    => [self::BELONGS_TO, 'Fraktion', 'fraktion_id'],
+            'stadtraetIn' => [self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'],
+        ];
     }
 
     /**
@@ -67,7 +67,7 @@ class StadtraetInFraktion extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'stadtraetIn_id' => 'StadträtIn',
             'fraktion_id'    => 'Fraktion',
             'wahlperiode'    => 'Wahlperiode',
@@ -75,7 +75,7 @@ class StadtraetInFraktion extends CActiveRecord
             'funktion'       => 'Funktion',
             'datum_von'      => 'Von',
             'datum_bis'      => 'Bis',
-        );
+        ];
     }
 
     /**

@@ -184,7 +184,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                     <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
                             class="glyphicon glyphicon-chevron-right"></span>
                         Alle Suchergebnisse</a>
-                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", array("code" => $ich->getFeedCode()))) ?>" class="ben_alle_feed"><span
+                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", ["code" => $ich->getFeedCode()])) ?>" class="ben_alle_feed"><span
                             class="fontello-rss"></span>
                         Alle Suchergebnisse als Feed</a>
                 </div>

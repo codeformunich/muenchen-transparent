@@ -47,14 +47,14 @@ class TerminHistory extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, typ, datum_letzte_aenderung', 'required'),
-            array('id, typ, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true),
-            array('referat, referent, vorsitz', 'length', 'max' => 200),
-            array('wahlperiode', 'length', 'max' => 20),
-            array('status', 'length', 'max' => 100),
-            array('termin', 'safe'),
-        );
+        return [
+            ['id, typ, datum_letzte_aenderung', 'required'],
+            ['id, typ, termin_reihe, gremium_id, ba_nr, termin_prev_id, termin_next_id', 'numerical', 'integerOnly' => true],
+            ['referat, referent, vorsitz', 'length', 'max' => 200],
+            ['wahlperiode', 'length', 'max' => 20],
+            ['status', 'length', 'max' => 100],
+            ['termin', 'safe'],
+        ];
     }
 
     /**
@@ -64,7 +64,7 @@ class TerminHistory extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array();
+        return [];
     }
 
     /**
@@ -72,7 +72,7 @@ class TerminHistory extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                     => 'ID',
             'typ'                    => 'Typ',
             'datum_letzte_aenderung' => 'Datum Letzte Aenderung',
@@ -88,6 +88,6 @@ class TerminHistory extends CActiveRecord
             'vorsitz'                => 'Vorsitz',
             'wahlperiode'            => 'Wahlperiode',
             'status'                 => 'Status',
-        );
+        ];
     }
 }

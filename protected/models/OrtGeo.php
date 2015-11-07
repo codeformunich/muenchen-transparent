@@ -44,14 +44,14 @@ class OrtGeo extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('ort, lat, lon, source, to_hide, datum', 'required'),
-            array('to_hide, ba_nr', 'numerical', 'integerOnly' => true),
-            array('lat, lon', 'numerical'),
-            array('ort', 'length', 'max' => 100),
-            array('source', 'length', 'max' => 6),
-            array('to_hide_kommentar', 'length', 'max' => 200),
-        );
+        return [
+            ['ort, lat, lon, source, to_hide, datum', 'required'],
+            ['to_hide, ba_nr', 'numerical', 'integerOnly' => true],
+            ['lat, lon', 'numerical'],
+            ['ort', 'length', 'max' => 100],
+            ['source', 'length', 'max' => 6],
+            ['to_hide_kommentar', 'length', 'max' => 200],
+        ];
     }
 
     /**
@@ -61,9 +61,9 @@ class OrtGeo extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'antraegeOrte' => array(self::HAS_MANY, 'AntragOrt', 'ort_id'),
-        );
+        return [
+            'antraegeOrte' => [self::HAS_MANY, 'AntragOrt', 'ort_id'],
+        ];
     }
 
     /**
@@ -71,7 +71,7 @@ class OrtGeo extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                => 'ID',
             'ort'               => 'Ort',
             'lat'               => 'Lat',
@@ -80,7 +80,7 @@ class OrtGeo extends CActiveRecord
             'to_hide'           => 'To Hide',
             'to_hide_kommentar' => 'To Hide Kommentar',
             'datum'             => 'Datum',
-        );
+        ];
     }
 
     /**
@@ -91,7 +91,7 @@ class OrtGeo extends CActiveRecord
     public static function getOrCreate($name)
     {
         /** @var null|OrtGeo */
-        $ort = OrtGeo::model()->findByAttributes(array("ort" => $name));
+        $ort = OrtGeo::model()->findByAttributes(["ort" => $name]);
         if ($ort) return $ort;
 
         $data = RISGeo::addressToGeo("Deutschland", "", "München", $name);

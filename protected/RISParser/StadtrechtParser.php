@@ -13,7 +13,7 @@ class StadtrechtParser extends RISParser
                 $url_base = "http://www.muenchen.info/dir/recht/" . $matches[1];
                 $titel    = $matches[2];
                 $id       = preg_replace("/\S+\/(\S+)/", "$1", $matches[1]);
-                array_push($all_docs, array($url_base, trim($titel), $id));
+                array_push($all_docs, [$url_base, trim($titel), $id]);
             }
         }
         return $all_docs;
@@ -49,7 +49,7 @@ class StadtrechtParser extends RISParser
             $x    = explode('</BODY>', $x[1]);
             $text = $x[0];
 
-            $html = str_replace(array("<NOBR>", "</NOBR>", "<SPAN", "</SPAN"), array("", "", "<DIV", "</DIV"), $text);
+            $html = str_replace(["<NOBR>", "</NOBR>", "<SPAN", "</SPAN"], ["", "", "<DIV", "</DIV"], $text);
 
 
             preg_match("/text positioning information \*\/\\n(?<css>.*)<\/STYLE/siu", $document, $matches);
@@ -71,8 +71,8 @@ class StadtrechtParser extends RISParser
         $titel = html_entity_decode($titel, ENT_COMPAT, "UTF-8");;
 
         /** @var Rechtsdokument $rechtsdokument */
-        if ($id > 0) $rechtsdokument = Rechtsdokument::model()->findByAttributes(array("id" => $id));
-        else $rechtsdokument = Rechtsdokument::model()->findByAttributes(array("titel" => $titel));
+        if ($id > 0) $rechtsdokument = Rechtsdokument::model()->findByAttributes(["id" => $id]);
+        else $rechtsdokument = Rechtsdokument::model()->findByAttributes(["titel" => $titel]);
         if (!$rechtsdokument) $rechtsdokument = new Rechtsdokument();
 
         $rechtsdokument->url_base = $url_base;

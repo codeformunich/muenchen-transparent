@@ -321,7 +321,8 @@
     .glyphicon {
       position: absolute;
       left: 10px;
-      top: 15px;
+      top: 50%;
+      transform: translateY(-50%);
       font-weight: normal;
       font-size: 30px;
     }
@@ -1544,5 +1545,37 @@ ul.baliste {
   
   #content > section {
     margin-top: 1px;
+  }
+}
+
+.sortiert {
+  text-align: center;
+
+  /* TODO: Zentrieren nur nach dem Text */
+  .sort {
+    width: 100%;
+
+    &:after { 
+      display: inline-block;
+      width: 0;
+      height: 0;
+      content: "";
+      position: relative;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+    }
+
+    &.asc:after {
+      top: 4px;
+      right: -5px;
+      border-top: 5px solid #000;
+      border-bottom: 5px solid transparent;
+    }
+
+    &.desc:after {
+      top: -4px;
+      right: -5px;
+      border-bottom: 5px solid #000;
+    }
   }
 }

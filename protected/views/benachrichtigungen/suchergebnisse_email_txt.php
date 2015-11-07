@@ -91,7 +91,7 @@ foreach ($data["termine"] as $dat) {
 }
 }
 ?>
-Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter <?php echo trim(Yii::app()->createUrl("benachrichtigungen/index", array("code" => $benutzerIn->getBenachrichtigungAbmeldenCode())), "."); ?> abbestellen.
+Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie unter <?php echo trim(Yii::app()->createUrl("benachrichtigungen/index", ["code" => $benutzerIn->getBenachrichtigungAbmeldenCode()]), "."); ?> abbestellen.
 
 Liebe Grüße
   Das München Transparent-Team

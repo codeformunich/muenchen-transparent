@@ -18,8 +18,8 @@ class StadtratsvorlageParser extends RISParser
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_STADTRAT_VORLAGE;
 
-        $dokumente  = array();
-        $ergebnisse = array();
+        $dokumente  = [];
+        $ergebnisse = [];
 
         if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
             $html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
@@ -29,7 +29,7 @@ class StadtratsvorlageParser extends RISParser
                 return;
             }
             $txt             = explode("</div>", $txt[1]);
-            $daten->kurzinfo = trim(str_replace(array("<br />", "<p>", "</p>"), array("", "", ""), $txt[0]));
+            $daten->kurzinfo = trim(str_replace(["<br />", "<p>", "</p>"], ["", "", ""], $txt[0]));
         }
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
@@ -107,16 +107,16 @@ class StadtratsvorlageParser extends RISParser
 
         preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]+)\"[^>]*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
-            $dokumente[] = array(
+            $dokumente[] = [
                 "url"        => $matches[2][$i],
                 "name"       => $matches[3][$i],
                 "name_title" => $matches[1][$i],
-            );
+            ];
         }
 
 
         preg_match_all("/ris_antrag_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches);
-        $antrag_links = (isset($matches[1]) && is_array($matches[1]) ? $matches[1] : array());
+        $antrag_links = (isset($matches[1]) && is_array($matches[1]) ? $matches[1] : []);
 
         $dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
         if (count($dat_ergebnisse) > 1) {
@@ -266,7 +266,7 @@ class StadtratsvorlageParser extends RISParser
         if (SITE_CALL_MODE != "cron") echo "Seite: $seite\n";
         $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
         $txt  = explode("<!-- ergebnisreihen -->", $text);
-        if (count($txt) == 1) return array();
+        if (count($txt) == 1) return [];
 
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ris_vorlagen_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -297,7 +297,7 @@ class StadtratsvorlageParser extends RISParser
     public function parseUpdate()
     {
         echo "Updates: Stadtratsvorlagen\n";
-        $loaded_ids = array();
+        $loaded_ids = [];
         for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
             $ids        = $this->parseSeite($i, false);
             $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));

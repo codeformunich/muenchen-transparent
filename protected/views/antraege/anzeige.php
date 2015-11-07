@@ -8,10 +8,10 @@
 $this->pageTitle         = $antrag->getName(true);
 $this->load_selectize_js = true;
 
-$personen = array(
-    AntragPerson::$TYP_GESTELLT_VON => array(),
-    AntragPerson::$TYP_INITIATORIN  => array(),
-);
+$personen = [
+    AntragPerson::$TYP_GESTELLT_VON => [],
+    AntragPerson::$TYP_INITIATORIN  => [],
+];
 foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 
 $historie = $antrag->getHistoryDiffs();
@@ -104,7 +104,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                         <?
                         } else {
                             ?>
-                            <form method="POST" action="<?= CHtml::encode($antrag->getLink(array("tag_mode" => 1))) ?>"
+                            <form method="POST" action="<?= CHtml::encode($antrag->getLink(["tag_mode" => 1])) ?>"
                                   class="login_modal_form">
                                 <?
                                 $this->renderPartial("../index/login_modal");
@@ -231,10 +231,10 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     if ($ts1 < $ts2) return -1;
                     return 0;
                 });
-                zeile_anzeigen($docs, "Dokumente:", function ($dok) {
+                zeile_anzeigen($docs, "Dokumente:", function ($dokument) {
                     /** @var Dokument $dok */
-                    echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
-                    ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode($dok->getOriginalLink()) ?>" download></a> <?
+                    echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
+                    ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>" title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>"></a> <?
                 });
                 $angezeigte_dokumente = array();
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;
@@ -311,7 +311,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
         ?>
         <div class="well themenverwandt_liste" id="themenverwandt">
 
-            <form method="POST" action="<?= Yii::app()->createUrl("antraege/anzeigen", array("id" => $antrag->id)) ?>"
+            <form method="POST" action="<?= Yii::app()->createUrl("antraege/anzeigen", ["id" => $antrag->id]) ?>"
                   class="abo_button row_head"
                   style="min-height: 80px; text-align: center;">
                 <?
@@ -347,7 +347,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     ?>
                 </ul>
 
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("antraege/themenverwandte", array("id" => $antrag->id))) ?>"
+                <a href="<?= CHtml::encode(Yii::app()->createUrl("antraege/themenverwandte", ["id" => $antrag->id])) ?>"
                    class="weitere">
                     Weitere Themenverwandte <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>

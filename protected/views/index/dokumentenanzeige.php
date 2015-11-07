@@ -55,7 +55,7 @@ if ($risitem) {
         }
         ?>
     </ul>
-    <div class="pdf_download_holder"><a href="<?= CHtml::encode($dokument->getLink()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></div>
+    <div class="pdf_download_holder"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></div>
 
     <?
     $this->renderPartial("pdf_embed", array(

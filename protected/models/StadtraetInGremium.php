@@ -38,12 +38,12 @@ class StadtraetInGremium extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('stadtraetIn_id, gremium_id, datum_von', 'required'),
-            array('stadtraetIn_id, gremium_id', 'numerical', 'integerOnly' => true),
-            array('datum_von, datum_bis', 'length', 'max' => 10),
-            array('funktion, datum_von, datum_bis', 'safe'),
-        );
+        return [
+            ['stadtraetIn_id, gremium_id, datum_von', 'required'],
+            ['stadtraetIn_id, gremium_id', 'numerical', 'integerOnly' => true],
+            ['datum_von, datum_bis', 'length', 'max' => 10],
+            ['funktion, datum_von, datum_bis', 'safe'],
+        ];
     }
 
     /**
@@ -53,10 +53,10 @@ class StadtraetInGremium extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'gremium'     => array(self::BELONGS_TO, 'Gremium', 'gremium_id'),
-            'stadtraetIn' => array(self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'),
-        );
+        return [
+            'gremium'     => [self::BELONGS_TO, 'Gremium', 'gremium_id'],
+            'stadtraetIn' => [self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'],
+        ];
     }
 
     /**
@@ -64,13 +64,13 @@ class StadtraetInGremium extends CActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'stadtraetIn_id' => 'StadträtIn',
             'gremium_id'     => 'Gremium',
             'funktion'       => 'Funktion',
             'datum_von'      => 'Von',
             'datum_bis'      => 'Bis',
-        );
+        ];
     }
 
     /**

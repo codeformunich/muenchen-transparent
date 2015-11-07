@@ -45,7 +45,7 @@ class BATerminParser extends RISParser
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id             = NULL;
 
-        $dokumente = array();
+        $dokumente = [];
 
         if (preg_match("/ba_gremien_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->gremium_id = IntVal($matches[1]);
         if ($daten->gremium_id) {
@@ -61,7 +61,7 @@ class BATerminParser extends RISParser
 
         if (preg_match("/Termin:.*detail_div\">([^&<]+)[&<]/siU", $html_details, $matches)) {
             $termin = $matches[1];
-            $MONATE = array(
+            $MONATE = [
                 "januar"    => "01",
                 "februar"   => "02",
                 "märz"      => "03",
@@ -74,7 +74,7 @@ class BATerminParser extends RISParser
                 "oktober"   => "10",
                 "november"  => "11",
                 "dezember"  => "12",
-            );
+            ];
             $x      = explode(" ", trim($termin));
             $tag    = IntVal($x[1]);
             if ($tag < 10) $tag = "0" . IntVal($tag);
@@ -96,11 +96,11 @@ class BATerminParser extends RISParser
 
         preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]+)\"[^>]*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
-            $dokumente[] = array(
+            $dokumente[] = [
                 "url"        => $matches[2][$i],
                 "name"       => $matches[3][$i],
                 "name_title" => $matches[1][$i],
-            );
+            ];
         }
 
         $aenderungen = "";
@@ -132,15 +132,15 @@ class BATerminParser extends RISParser
         $matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
 
         /** @var Tagesordnungspunkt[] $bisherige_tops */
-        $bisherige_tops          = ($alter_eintrag ? $alter_eintrag->tagesordnungspunkte : array());
+        $bisherige_tops          = ($alter_eintrag ? $alter_eintrag->tagesordnungspunkte : []);
         $aenderungen_tops        = "";
         $abschnitt_nr            = "";
-        $verwendete_top_betreffs = array();
+        $verwendete_top_betreffs = [];
         for ($i = 0; $i < count($matches["top"]); $i++) {
             $betreff = $matches["betreff"][$i];
             if (mb_stripos($betreff, "<strong>") !== false) {
                 $abschnitt_nr = trim($matches["top"][$i], " \t\n\r\0\x0B.");
-                $betreff      = str_replace(array("<strong>", "</strong>"), array("", ""), $betreff);
+                $betreff      = str_replace(["<strong>", "</strong>"], ["", ""], $betreff);
                 if ($abschnitt_nr == "&nbsp;") {
                     if (preg_match("/TOP (?<top>[0-9.]+)+: (?<betreff>.*)/siu", $betreff, $matches2)) {
                         $abschnitt_nr = $matches2["top"];
@@ -205,11 +205,11 @@ class BATerminParser extends RISParser
 
             /** @var Tagesordnungspunkt[] $alte_tops */
             if ($vorlage_id) {
-                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id));
+                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(["sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id]);
             } elseif ($baantrag_id) {
-                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id));
+                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(["sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id]);
             } else {
-                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(array("sitzungstermin_id" => $termin_id, "top_betreff" => $betreff));
+                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(["sitzungstermin_id" => $termin_id, "top_betreff" => $betreff]);
             }
             $alter_top = $this->loescheDoppelteTOPs($alte_tops);
 
@@ -270,7 +270,7 @@ class BATerminParser extends RISParser
 
             preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
             if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII/RII/DOK/TOP/") {
-                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $tagesordnungspunkt, array("url" => $matches2["url"], "name" => $matches2["title"], "name_title" => ""));
+                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $tagesordnungspunkt, ["url" => $matches2["url"], "name" => $matches2["title"], "name_title" => ""]);
             }
         }
 

@@ -8,7 +8,7 @@
 
 $this->pageTitle = $termin->getName(true);
 $assets_base     = $this->getAssetsBase();
-$geodata         = array();
+$geodata         = [];
 
 function zeile_anzeigen($feld, $name, $callback)
 {
@@ -107,7 +107,7 @@ function zeile_anzeigen($feld, $name, $callback)
 				<div id="map"></div>
 			</div>
 			<!--
-			<a href="<?= Yii::app()->createUrl("termine/topGeoExport", array("termin_id" => $termin->id)) ?>" style="float: right;" rel="nofollow">Großversion der Karte exportieren
+			<a href="<?= Yii::app()->createUrl("termine/topGeoExport", ["termin_id" => $termin->id]) ?>" style="float: right;" rel="nofollow">Großversion der Karte exportieren
 				<span class="fontello-right-open"></span></a>-->
 		</section>
 		<br>

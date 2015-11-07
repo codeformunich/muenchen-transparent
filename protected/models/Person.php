@@ -22,11 +22,11 @@ class Person extends CActiveRecord implements IRISItem
     public static $TYP_SONSTIGES = "sonstiges";
     public static $TYP_PERSON = "person";
     public static $TYP_FRAKTION = "fraktion";
-    public static $TYPEN_ALLE = array(
+    public static $TYPEN_ALLE = [
         "sonstiges" => "Sonstiges / Unbekannt",
         "person"    => "Person",
         "fraktion"  => "Fraktion"
-    );
+    ];
 
     /**
      * @param string $className active record class name.
@@ -50,12 +50,12 @@ class Person extends CActiveRecord implements IRISItem
      */
     public function rules()
     {
-        return array(
-            array('name_normalized, typ, name', 'required'),
-            array('ris_stadtraetIn, ris_fraktion', 'numerical', 'integerOnly' => true),
-            array('typ', 'length', 'max' => 9),
-            array('name, name_normalized', 'length', 'max' => 100),
-        );
+        return [
+            ['name_normalized, typ, name', 'required'],
+            ['ris_stadtraetIn, ris_fraktion', 'numerical', 'integerOnly' => true],
+            ['typ', 'length', 'max' => 9],
+            ['name, name_normalized', 'length', 'max' => 100],
+        ];
     }
 
     /**
@@ -63,11 +63,11 @@ class Person extends CActiveRecord implements IRISItem
      */
     public function relations()
     {
-        return array(
-            'antraegePersonen' => array(self::HAS_MANY, 'AntragPerson', 'person_id'),
-            'stadtraetIn'      => array(self::BELONGS_TO, 'StadtraetIn', 'ris_stadtraetIn'),
-            'fraktion'         => array(self::BELONGS_TO, 'Fraktion', 'ris_fraktion'),
-        );
+        return [
+            'antraegePersonen' => [self::HAS_MANY, 'AntragPerson', 'person_id'],
+            'stadtraetIn'      => [self::BELONGS_TO, 'StadtraetIn', 'ris_stadtraetIn'],
+            'fraktion'         => [self::BELONGS_TO, 'Fraktion', 'ris_fraktion'],
+        ];
     }
 
     /**
@@ -75,14 +75,14 @@ class Person extends CActiveRecord implements IRISItem
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'              => 'ID',
             'name_normalized' => 'Name Normalized',
             'typ'             => 'Typ',
             'name'            => 'Name',
             'ris_stadtraetIn' => 'StadträtInnen-ID',
             'ris_fraktion'    => 'Fraktion',
-        );
+        ];
     }
 
     /**
@@ -94,7 +94,7 @@ class Person extends CActiveRecord implements IRISItem
     public static function getOrCreate($name, $name_normalized)
     {
         /** @var Person|null $pers */
-        $pers = Person::model()->findByAttributes(array("name_normalized" => $name_normalized));
+        $pers = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
         if (is_null($pers)) {
             $pers                  = new Person();
             $pers->name            = $name;
@@ -128,9 +128,9 @@ class Person extends CActiveRecord implements IRISItem
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
-        return Yii::app()->createUrl("personen/person", array_merge(array("id" => $this->id, "name" => $this->name), $add_params));
+        return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $this->name], $add_params));
     }
 
     /** @return string */
@@ -146,7 +146,7 @@ class Person extends CActiveRecord implements IRISItem
     public function getName($kurzfassung = false)
     {
         if ($kurzfassung) {
-            if (in_array($this->id, array(279))) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
+            if (in_array($this->id, [279])) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
         }
         return $this->name;
     }

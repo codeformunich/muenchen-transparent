@@ -29,11 +29,11 @@
  */
 class StadtraetIn extends CActiveRecord implements IRISItem
 {
-    public static $GESCHLECHTER = array(
+    public static $GESCHLECHTER = [
         "weiblich"  => "Weiblich",
         "maennlich" => "Männlich",
         "sonstiges" => "Beides passt nicht",
-    );
+    ];
 
 
     /**
@@ -59,14 +59,14 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('id, name, referentIn', 'required'),
-            array('id, referentIn, benutzerIn_id', 'numerical', 'integerOnly' => true),
-            array('web', 'length', 'max' => 250),
-            array('name, email', 'length', 'max' => 100),
-            array('twitter', 'length', 'max' => 45),
-            array('facebook, abgeordnetenwatch', 'length', 'max' => 200),
-        );
+        return [
+            ['id, name, referentIn', 'required'],
+            ['id, referentIn, benutzerIn_id', 'numerical', 'integerOnly' => true],
+            ['web', 'length', 'max' => 250],
+            ['name, email', 'length', 'max' => 100],
+            ['twitter', 'length', 'max' => 45],
+            ['facebook, abgeordnetenwatch', 'length', 'max' => 200],
+        ];
     }
 
     /**
@@ -76,14 +76,14 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'antraege'                 => array(self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antrag_id)', 'order' => 'gestellt_am DESC'),
-            'personen'                 => array(self::HAS_MANY, 'Person', 'ris_stadtraetIn'),
-            'stadtraetInnenFraktionen' => array(self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'),
-            'mitgliedschaften'         => array(self::HAS_MANY, 'StadtraetInGremium', 'stadtraetIn_id'),
-            'stadtraetInnenReferate'   => array(self::HAS_MANY, 'StadtraetInReferat', 'stadtraetIn_id'),
-            'benutzerIn'               => array(self::HAS_ONE, 'BenutzerIn', 'benutzerIn_id'),
-        );
+        return [
+            'antraege'                 => [self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antrag_id)', 'order' => 'gestellt_am DESC'],
+            'personen'                 => [self::HAS_MANY, 'Person', 'ris_stadtraetIn'],
+            'stadtraetInnenFraktionen' => [self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'],
+            'mitgliedschaften'         => [self::HAS_MANY, 'StadtraetInGremium', 'stadtraetIn_id'],
+            'stadtraetInnenReferate'   => [self::HAS_MANY, 'StadtraetInReferat', 'stadtraetIn_id'],
+            'benutzerIn'               => [self::HAS_ONE, 'BenutzerIn', 'benutzerIn_id'],
+        ];
     }
 
     /**
@@ -91,7 +91,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id'                => 'ID',
             'benutzerIn_id'     => 'BenutzerIn-ID',
             'gewaehlt_am'       => 'Gewaehlt Am',
@@ -107,17 +107,17 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             'beruf'             => 'Beruf',
             'beschreibung'      => 'Beschreibung',
             'quellen'           => 'Quellen',
-        );
+        ];
     }
 
     /**
      * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = array())
+    public function getLink($add_params = [])
     {
         $name = $this->getName();
-        return Yii::app()->createUrl("personen/person", array_merge(array("id" => $this->id, "name" => $name), $add_params));
+        return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $name], $add_params));
     }
 
 
@@ -213,8 +213,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     {
         $name1 = preg_replace("/^([a-z]+\. )*/siu", "", $name1);
         $name2 = preg_replace("/^([a-z]+\. )*/siu", "", $name2);
-        $name1 = str_replace(array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß"), array("A", "O", "U", "a", "o", "u", "s"), $name1);
-        $name2 = str_replace(array("Ä", "Ö", "Ü", "ä", "Ö", "ü", "ß"), array("A", "O", "U", "a", "o", "u", "s"), $name2);
+        $name1 = str_replace(["Ä", "Ö", "Ü", "ä", "ö", "ü", "ß"], ["A", "O", "U", "a", "o", "u", "s"], $name1);
+        $name2 = str_replace(["Ä", "Ö", "Ü", "ä", "Ö", "ü", "ß"], ["A", "O", "U", "a", "o", "u", "s"], $name2);
         return strnatcasecmp($name1, $name2);
     }
 
@@ -268,11 +268,11 @@ class StadtraetIn extends CActiveRecord implements IRISItem
                 $mitgliedschaft->datum_von       = $override["datum_von"];
                 $mitgliedschaft->datum_bis       = $override["datum_bis"];
                 $mitgliedschaft->wahlperiode     = $override["wahlperiode"];
-                $this->stadtraetInnenFraktionen = array_merge(array($mitgliedschaft), $this->stadtraetInnenFraktionen);
+                $this->stadtraetInnenFraktionen = array_merge([$mitgliedschaft], $this->stadtraetInnenFraktionen);
             }
         }
         if (isset(StadtraetInFraktionOverrides::$FRAKTION_DEL[$this->id])) {
-            $fraktionen_neu = array();
+            $fraktionen_neu = [];
             foreach ($this->stadtraetInnenFraktionen as $mitgliedschaft) {
                 $todel = false;
                 foreach (StadtraetInFraktionOverrides::$FRAKTION_DEL[$this->id] as $override) {
@@ -302,24 +302,24 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         }
 
         /** @var StadtraetIn[] $strs_in */
-        $strs_in = StadtraetIn::model()->findAll(array(
+        $strs_in = StadtraetIn::model()->findAll([
             'alias' => 'a',
             'order' => 'a.name ASC',
-            'with'  => array(
-                'stadtraetInnenFraktionen'          => array(
+            'with'  => [
+                'stadtraetInnenFraktionen'          => [
                     'alias'     => 'b',
                     'condition' => 'b.datum_von <= "' . addslashes($datum) . '" AND (b.datum_bis IS NULL OR b.datum_bis >= "' . addslashes($datum) . '")',
-                ),
-                'stadtraetInnenFraktionen.fraktion' => array(
+                ],
+                'stadtraetInnenFraktionen.fraktion' => [
                     'alias'     => 'c',
                     'condition' => $ba_where,
-                )
-            )));
+                ]
+            ]]);
 
         foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
 
         /** @var StadtraetIn[] $strs_out */
-        $strs_out = array();
+        $strs_out = [];
         foreach ($strs_in as $strs) {
             if ($strs->id == 3425214) {
                 continue;
@@ -337,13 +337,13 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     public static function getGroupedByFraktion($datum, $ba_nr)
     {
         $strs       = static::getByFraktion($datum, $ba_nr);
-        $fraktionen = array();
+        $fraktionen = [];
         foreach ($strs as $str) {
             if (count($str->stadtraetInnenFraktionen) == 0) {
                 continue;
             }
             if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) {
-                $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = array();
+                $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = [];
             }
             $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
         }

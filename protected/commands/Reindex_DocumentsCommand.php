@@ -12,7 +12,7 @@ class Reindex_DocumentsCommand extends CConsoleCommand
         //$sql->select("id")->from("dokumente")->where("datum < NOW() - INTERVAL 2 MONTH AND datum > NOW() - INTERVAL 3 MONTH")->order("id");
         //$sql->select("id")->from("dokumente")->where("text_pdf = '' AND url LIKE '%pdf'")->order("id");
         $sql->select("id")->from("dokumente")->where("id <= " . IntVal($max_id))->order("id DESC");
-        $data = $sql->queryColumn(array("id"));
+        $data = $sql->queryColumn(["id"]);
 
         $anz = count($data);
         foreach ($data as $nr => $dok_id) {

@@ -15,22 +15,22 @@ class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\Abstra
 
     public function getPrincipalsByPrefix($prefixPath)
     {
-        $base = YII::app()->createUrl("termine/dav", array("termin_id" => $this->termin_id));
-        return array(
-            array(
+        $base = YII::app()->createUrl("termine/dav", ["termin_id" => $this->termin_id]);
+        return [
+            [
                 '{DAV:}displayname' => 'Gast',
                 'uri'               => "principals/guest",
-            ),
-        );
+            ],
+        ];
     }
 
     public function getPrincipalByPath($path)
     {
-        $base = YII::app()->createUrl("termine/dav", array("termin_id" => $this->termin_id));
-        if ($path == 'principals/guest') return array(
+        $base = YII::app()->createUrl("termine/dav", ["termin_id" => $this->termin_id]);
+        if ($path == 'principals/guest') return [
             '{DAV:}displayname' => 'Gast',
             'uri'               => "principals/guest",
-        );
+        ];
         return null;
     }
 
@@ -47,14 +47,14 @@ class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\Abstra
     public function getGroupMemberSet($principal)
     {
         // not implemented, this could return all principals for a share-all calendar server
-        return array();
+        return [];
     }
 
     public function getGroupMembership($principal)
     {
         // not implemented, this could return a list of all principals
         // with two subprincipals: calendar-proxy-read and calendar-proxy-write for a share-all calendar server
-        return array();
+        return [];
 
     }
 

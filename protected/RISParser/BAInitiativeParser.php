@@ -24,7 +24,7 @@ class BAInitiativeParser extends RISParser
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_BA_INITIATIVE;
 
-        $dokumente = array();
+        $dokumente = [];
         //$ergebnisse = array();
 
         preg_match("/<h3.*>.* +(.*)<\/h3/siU", $html_details, $matches);
@@ -88,11 +88,11 @@ class BAInitiativeParser extends RISParser
 
         preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]+)\"[^>]+href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
-            $dokumente[] = array(
+            $dokumente[] = [
                 "url"        => $matches[2][$i],
                 "name"       => $matches[3][$i],
                 "name_title" => $matches[1][$i],
-            );
+            ];
         }
 
         /*
@@ -202,7 +202,7 @@ class BAInitiativeParser extends RISParser
     public function parseUpdate()
     {
         echo "Updates: BA-Initiativen\n";
-        $loaded_ids = array();
+        $loaded_ids = [];
         $anz        = static::$MAX_OFFSET_UPDATE;
         for ($i = $anz; $i >= 0; $i -= 10) {
             $ids        = $this->parseSeite($i, false);

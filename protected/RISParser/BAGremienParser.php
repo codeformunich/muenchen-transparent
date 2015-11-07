@@ -60,10 +60,10 @@ class BAGremienParser extends RISParser
         }
 
         /** @var StadtraetInGremium[] $mitglieder_pre */
-        $mitglieder_pre = array();
+        $mitglieder_pre = [];
         if ($alter_eintrag) foreach ($alter_eintrag->mitgliedschaften as $mitgliedschaft) $mitglieder_pre[$mitgliedschaft->stadtraetIn_id] = $mitgliedschaft;
 
-        $mitglieder_post = array();
+        $mitglieder_post = [];
         preg_match_all("/ergebnistab_tr.*<\/tr/siU", $html_details, $matches);
         foreach ($matches[0] as $str) {
             preg_match("/<a[^>]*Id=(?<id>[0-9]+)&[^>]*>(?<name>[^<]*)<\/a>.*<td[^>]*>(?<partei>[^<]*)<\/td.*<td[^>]*>(?<datum>[^<]*)<\/td.*<td[^>]*>(?<funktion>[^<]*)<\/td/siU", $str, $match2);
@@ -77,8 +77,8 @@ class BAGremienParser extends RISParser
 
                     $stadtraetIn = StadtraetIn::model()->findByPk($match2["id"]);
                     if (!$stadtraetIn) {
-                        $name        = trim(str_replace(array("&nbsp;", "Herr", "Frau"), array(" ", " ", " "), $match2["name"]));
-                        $stadtraetIn = StadtraetIn::model()->findByAttributes(array("name" => $name));
+                        $name        = trim(str_replace(["&nbsp;", "Herr", "Frau"], [" ", " ", " "], $match2["name"]));
+                        $stadtraetIn = StadtraetIn::model()->findByAttributes(["name" => $name]);
                         if (!$stadtraetIn) {
                             RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Gremium nicht zuordbar", "Gremium: $gremien_id\nMitglieds-ID: " . $match2["id"], null, "system");
                             return;

@@ -8,13 +8,13 @@ class RISGeo
     /** @var null|array|Strasse[] */
     public static $STREETS = null;
 
-    public static $RIS_STREET_IGNORE_STREETS = array(
+    public static $RIS_STREET_IGNORE_STREETS = [
         "tal",
-    );
+    ];
 
     public static function get_RIS_STREET_CLEAN_REPLACES_1()
     {
-        return array(
+        return [
             "."              => "",
             "-"              => "",
             "ö"              => "oe",
@@ -29,17 +29,17 @@ class RISGeo
             "\n "            => " ",
             "\n"             => " ",
             "  "             => " ",
-        );
+        ];
     }
 
     public static function get_RIS_STREET_CLEAN_REPLACES_2()
     {
-        return array(
+        return [
             "e ost"        => "e#ost",
             "ende weg"     => "ende#weg",
             "ortskern str" => "ortskern#str",
             "frauenhofer"  => "fraunhofer",
-        );
+        ];
     }
 
     public static function addressToGeo($land, $plz, $ort, $strasse)
@@ -50,8 +50,8 @@ class RISGeo
     public static function init_streets()
     {
         if (static::$STREETS_INITIALIZED) return;
-        $streets_by_length = array();
-        $streets_by_norm   = array();
+        $streets_by_length = [];
+        $streets_by_norm   = [];
         $maxlength         = 0;
 
         /** @var array|Strasse[] $strassen */
@@ -61,11 +61,11 @@ class RISGeo
             $strasse->name_normalized = $norm;
             $streets_by_norm[$norm]   = $strasse;
             $l                        = mb_strlen($norm);
-            if (!isset($streets_by_length[$l])) $streets_by_length[$l] = array();
+            if (!isset($streets_by_length[$l])) $streets_by_length[$l] = [];
             $streets_by_length[$l][] = $norm;
             if ($l > $maxlength) $maxlength = $l;
         }
-        static::$STREETS = array();
+        static::$STREETS = [];
         for ($i = $maxlength; $i > 0; $i--) if (isset($streets_by_length[$i])) foreach ($streets_by_length[$i] as $n) {
             if (!in_array($n, static::$RIS_STREET_IGNORE_STREETS)) static::$STREETS[] = $streets_by_norm[$n];
         }
@@ -80,7 +80,7 @@ class RISGeo
 
         $name = strtolower($name);
 
-        $froms                       = $tos = array();
+        $froms                       = $tos = [];
         $RIS_STREET_CLEAN_REPLACES_1 = static::get_RIS_STREET_CLEAN_REPLACES_1();
         foreach ($RIS_STREET_CLEAN_REPLACES_1 as $key => $val) {
             $froms[] = $key;
@@ -93,7 +93,7 @@ class RISGeo
         $name = preg_replace("/[\n\r]+([0-9])/", "#\\2", $name);
         $name = preg_replace("/[0-9]+[,\\.][0-9]+/", "", $name);
 
-        $froms                       = $tos = array();
+        $froms                       = $tos = [];
         $RIS_STREET_CLEAN_REPLACES_2 = static::get_RIS_STREET_CLEAN_REPLACES_2();
         foreach ($RIS_STREET_CLEAN_REPLACES_2 as $key => $val) {
             $froms[] = $key;
@@ -111,7 +111,7 @@ class RISGeo
     {
         static::init_streets();
         $antragtext    = static::ris_street_cleanstring($str);
-        $streets_found = array();
+        $streets_found = [];
         foreach (static::$STREETS as $street) {
             $offset      = -1;
             $last_offset = -1;
@@ -137,12 +137,12 @@ class RISGeo
             }
         }
 
-        $streets_found_consolidated = array();
+        $streets_found_consolidated = [];
         foreach ($streets_found as $street) {
-            $street_short       = str_replace(array(" str", "-str"), array("str", "str"), mb_strtolower($street));
+            $street_short       = str_replace([" str", "-str"], ["str", "str"], mb_strtolower($street));
             $laengeres_gefunden = false;
             foreach ($streets_found as $street_cmp) {
-                $street_cmp_short = str_replace(array(" str", "-str"), array("str", "str"), mb_strtolower($street_cmp));
+                $street_cmp_short = str_replace([" str", "-str"], ["str", "str"], mb_strtolower($street_cmp));
                 if (mb_strpos($street_cmp_short, $street_short) !== false && mb_strlen($street_short) < mb_strlen($street_cmp_short)) {
                     $laengeres_gefunden = true;
                 }

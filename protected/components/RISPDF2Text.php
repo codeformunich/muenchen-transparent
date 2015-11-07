@@ -3,7 +3,7 @@
 class RISPDF2Text
 {
 
-    public static $RIS_OCR_CLEAN_I_REPLACES = array(
+    public static $RIS_OCR_CLEAN_I_REPLACES = [
         "ı"           => "i",
         "vv"          => "w",
         "Munchen"     => "München",
@@ -27,9 +27,9 @@ class RISPDF2Text
         "vWWv"        => "www",
         "Vlﬁ"         => "Wi",
         "Scn"         => "sch",
-    );
+    ];
 
-    public static $RIS_OCR_CLEAN_REPLACES = array(
+    public static $RIS_OCR_CLEAN_REPLACES = [
         "nıv"     => "rw",
         " lsar"   => " Isar",
         "-lsar"   => "-Isar",
@@ -46,14 +46,14 @@ class RISPDF2Text
         "MVGISWM" => "MVG/SWM",
         "tiich"   => "tlich",
         "Schuie"  => "Schule",
-    );
+    ];
 
-    public static $RIS_OCR_CLEAN_PREG_REPLACES = array(
+    public static $RIS_OCR_CLEAN_PREG_REPLACES = [
         "/^l([bcdfghkmnpqrstvwxz])/um" => "I\\1",
         "/ l([bcdfghkmnpqrstvwxz])/um" => " I\\1",
         "/ i([aeou])/um"               => " l\\1",
         "/(niv)(?!eau)/u"              => "rw",
-    );
+    ];
 
     /**
      * @param string $filename
@@ -61,7 +61,7 @@ class RISPDF2Text
      */
     public static function document_pdf_metadata($filename)
     {
-        $result = array();
+        $result = [];
         exec(PATH_PDFINFO . " '" . addslashes($filename) . "'", $result);
         $seiten = 0;
         $datum  = "";
@@ -76,14 +76,14 @@ class RISPDF2Text
             }
         }
 
-        if ($seiten > 0) return array("seiten" => $seiten, "datum" => $datum);
+        if ($seiten > 0) return ["seiten" => $seiten, "datum" => $datum];
 
-        $result = array();
+        $result = [];
         exec(PATH_IDENTIFY . " $filename", $result);
         $anzahl = 0;
         foreach ($result as $res) if (strpos($res, "DirectClass")) $anzahl++;
 
-        return array("seiten" => $anzahl, "datum" => $datum);
+        return ["seiten" => $anzahl, "datum" => $datum];
     }
 
     /**

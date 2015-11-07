@@ -4,27 +4,27 @@ class TestTitelKorrekturCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        $TESTS_TITEL = array(
-            array(
+        $TESTS_TITEL = [
+            [
                 'input'      => 'Welche Schäden hat der Aufbau des ?Cotton Club? verursacht?',
                 'korrigiert' => 'Welche Schäden hat der Aufbau des „Cotton Club“ verursacht?'
-            ),
-            array(
+            ],
+            [
                 'input'      => 'Fortschreibung des Standortkonzepts "Kulturstrand" 2015 ff.',
                 'korrigiert' => 'Fortschreibung des Standortkonzepts „Kulturstrand“ 2015 ff.'
-            ),
-        );
+            ],
+        ];
 
-        $TESTS_DOKUMENT = array(
-            array(
+        $TESTS_DOKUMENT = [
+            [
                 'input'      => 'Neuer Titel',
                 'korrigiert' => 'Neuer Titel'
-            ),
-            array(
+            ],
+            [
                 'input'      => 'Hinweis fuer Internet',
                 'korrigiert' => 'Hinweis für Internet'
-            ),
-        );
+            ],
+        ];
 
         $allesok = true;
         foreach ($TESTS_TITEL as $test) {

@@ -9,7 +9,7 @@ class StadtratsantragParser extends RISParser
     {
         $antrag_id = IntVal($antrag_id);
 
-        if (in_array($antrag_id, array(3258272))) return;
+        if (in_array($antrag_id, [3258272])) return;
 
         if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
@@ -24,7 +24,7 @@ class StadtratsantragParser extends RISParser
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_STADTRAT_ANTRAG;
 
-        $dokumente = array();
+        $dokumente = [];
         // $ergebnisse = array();
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
@@ -96,11 +96,11 @@ class StadtratsantragParser extends RISParser
 
         preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]*)\"[^>]*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
-            $dokumente[] = array(
+            $dokumente[] = [
                 "url"        => $matches[2][$i],
                 "name"       => $matches[3][$i],
                 "name_title" => $matches[1][$i],
-            );
+            ];
         }
         /*
         $dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
@@ -181,7 +181,7 @@ class StadtratsantragParser extends RISParser
         $txt  = explode("<!-- ergebnisreihen -->", $text);
         if (!isset($txt[1])) {
             if (SITE_CALL_MODE != "cron") echo "- nichts\n";
-            return array();
+            return [];
         }
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ris_antrag_detail.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -208,7 +208,7 @@ class StadtratsantragParser extends RISParser
 
     public function parseUpdate()
     {
-        $loaded_ids = array();
+        $loaded_ids = [];
         echo "Updates: Stadtratsanträge\n";
 
         for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
@@ -227,7 +227,7 @@ class StadtratsantragParser extends RISParser
 
     public function parseQuickUpdate()
     {
-        $loaded_ids = array();
+        $loaded_ids = [];
         echo "Updates (quick): Stadtratsanträge\n";
 
         for ($i = 0; $i <= 3; $i++) {
