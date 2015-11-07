@@ -51,7 +51,7 @@ $user = $this->aktuelleBenutzerIn();
                 <th><button class="sort" data-sort="tag-name" >Tag    </button></th>
                 <th><button class="sort" data-sort="antrag-id">Antrag </button></th>
                 <th><button class="sort" data-sort="email"    >E-Mail </button></th>
-                <th><button class="sort"                      >Löschen</th>
+                <th><button class="sort"                      >Löschen</button></th>
             </tr>
             <tbody class="list">
             <? foreach($tags as $tag) { ?>
