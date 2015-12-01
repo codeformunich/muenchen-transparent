@@ -70,7 +70,7 @@ $this->pageTitle = "Termine";
 				?>
 				<h3>Neue Protokolle</h3>
 				<br>
-				<ul class="antragsliste2"><?
+				<ul class="antragsliste-web"><?
 					foreach ($termin_dokumente as $termin) {
 						$titel = $termin->gremium->name . " am " . strftime("%e. %B '%y, %H:%M Uhr", RISTools::date_iso2timestamp($termin->termin));
 						echo '<li class="panel panel-primary"><div class="panel-heading"><a href="' . CHtml::encode($termin->getLink()) . '"><span>';
