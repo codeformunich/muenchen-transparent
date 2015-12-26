@@ -20,23 +20,15 @@ chown -R www-data:www-data html/assets
 cp protected/config/main.template.php protected/config/main.php
 ```
 
-SASS-Dateien kompilieren:
-```bash
-apt-get install rubygems
-gem install sass
-
-scss --style compressed --cache-location /tmp/ --watch html/css
-```
-
 JS-Bibliotheken installieren:
 ```bash
 npm install -g bower
 bower install
 ```
 
-JS- & CSS-Dateien zusammenfügen und minimieren (werden nur ausgeliefert, wenn in config/main.php: params[concatScripts] = true):
+JS- & CSS-Dateien zusammenfügen und minimieren:
 ```bash
-npm install gulp gulp-concat gulp-uglifyjs gulp-concat-css gulp-minify-css
+npm install gulp gulp-concat gulp-uglifyjs gulp-concat-css gulp-minify-css gulp-sourcemaps gulp-sass
 gulp
 ```
 

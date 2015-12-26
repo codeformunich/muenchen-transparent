@@ -43,7 +43,7 @@
 
     <?
     if (Yii::app()->params["concatScripts"]) { ?>
-        <link rel="stylesheet" href="/css/build/std.css">
+        <link rel="stylesheet" href="/css/styles_website_combined.css">
     <? } else { ?>
         <link rel="stylesheet" href="/js/leaflet/dist/leaflet.css">
         <link rel="stylesheet" href="/js/Leaflet.Control.Geocoder/Control.Geocoder.css">
