@@ -14,7 +14,7 @@ class ExportController extends RISBaseController
 		$strIds = implode( ", ", array_map( "IntVal", $strIds ) );
 
 		$SQL       = "SELECT a.id FROM antraege a JOIN antraege_stadtraetInnen b ON a.id = b.antrag_id " .
-		             "WHERE b.stadtraetIn_id IN ($strIds) ORDER BY a.gestellt_am DESC LIMIT 0,30";
+		             "WHERE b.stadtraetIn_id IN ($strIds) GROUP BY a.id ORDER BY a.gestellt_am DESC LIMIT 0,30";
 		$antragIds = Yii::app()->db->createCommand( $SQL )->queryAll();
 
 		$return = [ ];
