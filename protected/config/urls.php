@@ -29,6 +29,7 @@ $GLOBALS["RIS_URL_RULES"] = [
     SITE_BASE_URL . '/themen/schlagwort/<tag_id:\d+>_<tag_name:[^\/]+>' => 'themen/tag',
     SITE_BASE_URL . '/themen/'                                          => 'themen/index',
     SITE_BASE_URL . '/infos/stadtrechtDokument/<id:\w+>'                => 'infos/stadtrechtDokument',
+    SITE_BASE_URL . '/export/fraktionantraege/<fraktion_id:\w+>'        => 'export/fraktionantraege',
     SITE_BASE_URL . '/<action:\w+>'                                     => 'index/<action>',
     SITE_BASE_URL . '/<controller:\w+>/<id:\d+>'                        => '<controller>/anzeigen',
     SITE_BASE_URL . '/<controller:\w+>/<action:\w+>/<id:\d+>'           => '<controller>/<action>',
