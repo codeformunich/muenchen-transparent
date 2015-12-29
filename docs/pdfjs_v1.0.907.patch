@@ -1,0 +1,180 @@
+diff --git a/a/viewer.css b/Ratsinformant/html/pdfjs/viewer.css
+index cddad65..5a96bfb 100644
+--- a/a/viewer.css
++++ b/Ratsinformant/html/pdfjs/viewer.css
+@@ -69,9 +69,7 @@
+   margin: 1px auto -8px auto;
+   position: relative;
+   overflow: visible;
+-  border: 9px solid transparent;
+   background-clip: content-box;
+-  border-image: url(images/shadow.png) 9 9 repeat;
+   background-color: white;
+ }
+ 
+@@ -402,7 +400,7 @@ html[dir='rtl'] #viewerContainer {
+   position: relative;
+   left: 0;
+   right: 0;
+-  z-index: 9999;
++  z-index: 99;
+   cursor: default;
+ }
+ 
+diff --git a/a/viewer.html b/Ratsinformant/html/pdfjs/viewer.html
+index 6e04e15..990d5a7 100644
+--- a/a/viewer.html
++++ b/Ratsinformant/html/pdfjs/viewer.html
+@@ -96,10 +96,6 @@ http://sourceforge.net/adobe/cmap/wiki/License/
+               <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
+             </button>
+ 
+-            <button id="secondaryOpenFile" class="secondaryToolbarButton openFile visibleLargeView" title="Open File" tabindex="52" data-l10n-id="open_file">
+-              <span data-l10n-id="open_file_label">Open</span>
+-            </button>
+-
+             <button id="secondaryPrint" class="secondaryToolbarButton print visibleMediumView" title="Print" tabindex="53" data-l10n-id="print">
+               <span data-l10n-id="print_label">Print</span>
+             </button>
+@@ -135,7 +131,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
+             <button id="toggleHandTool" class="secondaryToolbarButton handTool" title="Enable hand tool" tabindex="60" data-l10n-id="hand_tool_enable">
+               <span data-l10n-id="hand_tool_enable_label">Enable hand tool</span>
+             </button>
+-            
++
+             <div class="horizontalToolbarSeparator"></div>
+ 
+             <button id="documentProperties" class="secondaryToolbarButton documentProperties" title="Document Properties…" tabindex="61" data-l10n-id="document_properties">
+@@ -173,10 +169,6 @@ http://sourceforge.net/adobe/cmap/wiki/License/
+                   <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
+                 </button>
+ 
+-                <button id="openFile" class="toolbarButton openFile hiddenLargeView" title="Open File" tabindex="32" data-l10n-id="open_file">
+-                  <span data-l10n-id="open_file_label">Open</span>
+-                </button>
+-
+                 <button id="print" class="toolbarButton print hiddenMediumView" title="Print" tabindex="33" data-l10n-id="print">
+                   <span data-l10n-id="print_label">Print</span>
+                 </button>
+@@ -190,10 +182,10 @@ http://sourceforge.net/adobe/cmap/wiki/License/
+                 </a>
+ 
+                 <div class="verticalToolbarSeparator hiddenSmallView"></div>
+-                
++
+                 <button id="secondaryToolbarToggle" class="toolbarButton" title="Tools" tabindex="36" data-l10n-id="tools">
+                   <span data-l10n-id="tools_label">Tools</span>
+-                </button> 
++                </button>
+               </div>
+               <div class="outerCenter">
+                 <div class="innerCenter" id="toolbarViewerMiddle">
+diff --git a/a/viewer.js b/Ratsinformant/html/pdfjs/viewer.js
+index 3706d65..708ea78 100644
+--- a/a/viewer.js
++++ b/Ratsinformant/html/pdfjs/viewer.js
+@@ -36,9 +36,9 @@ var SCALE_SELECT_CONTAINER_PADDING = 8;
+ var SCALE_SELECT_PADDING = 22;
+ var PAGE_NUMBER_LOADING_INDICATOR = 'visiblePageIsLoading';
+ 
+-PDFJS.imageResourcesPath = './images/';
+-  PDFJS.workerSrc = '../build/pdf.worker.js';
+-  PDFJS.cMapUrl = '../web/cmaps/';
++PDFJS.imageResourcesPath = '/pdfjs/images/';
++  PDFJS.workerSrc = '/pdfjs/pdf.worker.js';
++  PDFJS.cMapUrl = '/pdfjs/cmaps/';
+   PDFJS.cMapPacked = true;
+ 
+ var mozL10n = document.mozL10n || document.webL10n;
+@@ -1296,7 +1296,7 @@ var PDFFindController = (function PDFFindControllerClosure() {
+           if (this.pagesToSearch < 0) {
+             // No point in wrapping again, there were no matches.
+             this.updateMatch(false);
+-            // while matches were not found, searching for a page 
++            // while matches were not found, searching for a page
+             // with matches should nevertheless halt.
+             return true;
+           }
+@@ -1329,7 +1329,7 @@ var PDFFindController = (function PDFFindControllerClosure() {
+       offset.matchIdx = null;
+ 
+       this.pagesToSearch--;
+-      
++
+       if (offset.pageIdx >= numPages || offset.pageIdx < 0) {
+         offset.pageIdx = (previous ? numPages - 1 : 0);
+         offset.wrapped = true;
+@@ -1340,7 +1340,7 @@ var PDFFindController = (function PDFFindControllerClosure() {
+       var state = FindStates.FIND_NOTFOUND;
+       var wrapped = this.offset.wrapped;
+       this.offset.wrapped = false;
+-    
++
+       if (found) {
+         var previousPage = this.selected.pageIdx;
+         this.selected.pageIdx = this.offset.pageIdx;
+@@ -1351,7 +1351,7 @@ var PDFFindController = (function PDFFindControllerClosure() {
+           this.updatePage(previousPage);
+         }
+       }
+-    
++
+       this.updateUIState(state, this.state.findPrevious);
+       if (this.selected.pageIdx !== -1) {
+         this.updatePage(this.selected.pageIdx);
+@@ -2713,7 +2713,7 @@ var DocumentProperties = {
+ 
+   parseDate: function documentPropertiesParseDate(inputDate) {
+     // This is implemented according to the PDF specification (see
+-    // http://www.gnupdf.org/Date for an overview), but note that 
++    // http://www.gnupdf.org/Date for an overview), but note that
+     // Adobe Reader doesn't handle changing the date to universal time
+     // and doesn't use the user's time zone (they're effectively ignoring
+     // the HH' and mm' parts of the date string).
+@@ -4666,7 +4666,6 @@ var PDFViewerApplication = {
+       toggleButton: document.getElementById('secondaryToolbarToggle'),
+       presentationModeButton:
+         document.getElementById('secondaryPresentationMode'),
+-      openFile: document.getElementById('secondaryOpenFile'),
+       print: document.getElementById('secondaryPrint'),
+       download: document.getElementById('secondaryDownload'),
+       viewBookmark: document.getElementById('secondaryViewBookmark'),
+@@ -4870,7 +4869,8 @@ var PDFViewerApplication = {
+   },
+ 
+   setTitle: function pdfViewSetTitle(title) {
+-    document.title = title;
++    // Das wird bereits im PHP gemacht
++    //document.title = title;
+   },
+ 
+   close: function pdfViewClose() {
+@@ -6182,7 +6182,7 @@ function webViewerLoad(evt) {
+ function webViewerInitialized() {
+   var queryString = document.location.search.substring(1);
+   var params = PDFViewerApplication.parseQueryString(queryString);
+-  var file = 'file' in params ? params.file : DEFAULT_URL;
++  var file = document.getElementById("filename_store").innerHTML;
+ 
+   var fileInput = document.createElement('input');
+   fileInput.id = 'fileInput';
+@@ -6192,8 +6192,7 @@ function webViewerInitialized() {
+   document.body.appendChild(fileInput);
+ 
+   if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+-    document.getElementById('openFile').setAttribute('hidden', 'true');
+-    document.getElementById('secondaryOpenFile').setAttribute('hidden', 'true');
++    // gelöscht für München Transparent
+   } else {
+     document.getElementById('fileInput').value = null;
+   }
+@@ -6362,9 +6361,6 @@ function webViewerInitialized() {
+   document.getElementById('presentationMode').addEventListener('click',
+     SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));
+ 
+-  document.getElementById('openFile').addEventListener('click',
+-    SecondaryToolbar.openFileClick.bind(SecondaryToolbar));
+-
+   document.getElementById('print').addEventListener('click',
+     SecondaryToolbar.printClick.bind(SecondaryToolbar));
+ 
