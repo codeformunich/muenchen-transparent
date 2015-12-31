@@ -3,8 +3,7 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglifyjs'),
     concat = require('gulp-concat'),
-    concatCss = require('gulp-concat-css'),
-    minifyCSS = require('gulp-minify-css');
+    concatCss = require('gulp-concat-css');
 
 gulp.task('default', function () {
     gulp.src(["./html/js/jquery-ui-1.11.2.custom.min.js", "./html/js/scrollintoview.js", "./html/js/antraegekarte.jquery.js",
