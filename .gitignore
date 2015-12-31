@@ -15,10 +15,8 @@ html/js/OverlappingMarkerSpiderfier-Leaflet/
 html/js/Leaflet/
 html/js/Leaflet.draw/
 html/js/font-awesome/
-html/css/styles_website.css
-html/css/styles_website.css.map
-html/css/styles_mail.css
-html/css/styles_mail.css.map
+html/css/*.css
+html/css/*.css.map
 html/css/.sass-cache/
 html/piwik/
 html/sitemap-*

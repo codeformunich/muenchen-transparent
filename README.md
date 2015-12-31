@@ -7,7 +7,7 @@ Entwicklungs-Setup
 
 Vorausgesetzt wird ein funktionierender Webserver (nginx oder apache) mit PHP und MySQL/MariaDB
 
-Berechtigungen setzen und Abhängigkeiten installieren: (www-data muss durch den passenden Nutzer ersetzt werden, bei MacOSX z.B. "_www" benutzen)
+Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
@@ -28,7 +28,7 @@ bower install
 
 JS- & CSS-Dateien zusammenfügen und minimieren:
 ```bash
-npm install gulp gulp-concat gulp-uglifyjs gulp-concat-css gulp-minify-css gulp-sourcemaps gulp-sass
+npm install
 gulp
 ```
 
