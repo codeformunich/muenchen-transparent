@@ -23,7 +23,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
     <h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= CHtml::encode($ich->email) ?>:</h1>
 
     <div class="row">
-        <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-7 einstellungen_form" style="margin-left: 23px;">
+        <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8 einstellungen_form" style="margin-left: 23px;">
             <h3>Ich möchte benachrichtigt werden...</h3>
 
             <div>
@@ -119,7 +119,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
     } else {
         ?>
         <div class="row">
-            <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-7" style="margin-left: 23px;">
+            <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8" style="margin-left: 23px;">
                 <? if (count($bens) > 0) { ?>
                     <h3>Abonnierte Suchabfragen</h3>
                     <ul class="benachrichtigungsliste">
@@ -180,7 +180,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         </div>
         <? if (count($bens) > 0) { ?>
             <div class="row">
-                <div class="ben_alle_holder col col-lg-7">
+                <div class="ben_alle_holder col col-lg-8">
                     <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
                             class="glyphicon glyphicon-chevron-right"></span>
                         Alle Suchergebnisse</a>
@@ -199,7 +199,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
             <label for="suchbegriff"><span class="glyphicon glyphicon-search"></span> <span class="name">... mit diesem Suchbegriff:</span></label><br>
 
-            <div class="input-group col col-lg-7" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
+            <div class="input-group col col-lg-8" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
                 <input type="text" placeholder="Suchbegriff" id="suchbegriff" name="suchbegriff" class="form-control">
             <span class="input-group-btn">
                 <button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_text") ?>" type="submit">Benachrichtigen!</button>
@@ -212,7 +212,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         <fieldset>
             <label for="suchbegriff"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... aus diesem Stadtteil:</span></label><br>
 
-            <div class="input-group col col-lg-7" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
+            <div class="input-group col col-lg-8" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
                 <select name="ba" class="form-control"><?
                     $bas = Bezirksausschuss::model()->findAll();
                     /** @var Bezirksausschuss $ba */
@@ -239,7 +239,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
             <br style="clear: both;">
 
-            <div class="input-group col col-lg-7" style="padding: 10px; margin-left: 23px;">
+            <div class="input-group col col-lg-8" style="padding: 10px; margin-left: 23px;">
                 <div id="ben_mapholder">
                     <div id="ben_map"></div>
                 </div>
@@ -299,7 +299,6 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Passwort Ändern</h3>
               </div>
               <div class="modal-body">
                 <legend class="form_row">Neues Passwort setzen</legend>
