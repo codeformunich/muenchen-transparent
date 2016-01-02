@@ -1,7 +1,7 @@
 [München Transparent](https://www.muenchen-transparent.de)
 =========================================
 
-[![Build Status](https://travis-ci.org/codeformunich/Muenchen-Transparent.svg?branch=master)](https://travis-ci.org/konstin/Ratsinformant)
+[![Build Status](https://travis-ci.org/codeformunich/Muenchen-Transparent.svg?branch=master)](https://travis-ci.org/codeformunich/Muenchen-Transparent)
 
 Entwicklungs-Setup
 ------------------
