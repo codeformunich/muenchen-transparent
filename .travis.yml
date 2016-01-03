@@ -1,5 +1,6 @@
 # Currently, this script only tries to install the dependencies and then runs the default gulp job
 
+sudo: false
 language: php
 
 install:
