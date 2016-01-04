@@ -30,7 +30,7 @@ $.widget("ratsinformant.AntraegeKarte", {
                 this.options["assetsBase"] + "/ba_features.js"
             ],
             complete: function () {
-                var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>',
+                var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>',
                     fullScreen = new L.Control.FullScreen();
 
                 if (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1) attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://cloudmade.com">CloudMade</a>';
