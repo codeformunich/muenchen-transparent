@@ -45,8 +45,8 @@
 
     <?
     if ($this->load_mediaelement)     echo '<link rel="stylesheet" href="/js/mediaelement/build/mediaelementplayer.min.css">';
-    if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css">';
-    if ($this->load_calendar)         echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css">';
+    if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/bower/Leaflet.draw-0.2.3/dist/leaflet.draw.css">';
+    if ($this->load_calendar)         echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
     if ($this->load_selectize_js)     echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
 
     if ($this->load_pdf_js) { ?>
@@ -204,6 +204,6 @@ echo ris_intern_html_extra_headers();
 
 <script src="/js/build/std.js"></script>
 
-<? if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js"></script>'; ?>
+<? if ($this->load_selectize_js) echo '<script src="/bower/selectize.js-0.11.2/dist/js/standalone/selectize.min.js"></script>'; ?>
 </body>
 </html>

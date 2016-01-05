@@ -16,23 +16,23 @@ var paths = {
     build_js: ["html/js/build/*.js"],
     php: ["protected/**/*.php"],
     std_js: [
+        "html/bower/typeahead.js/dist/typeahead.bundle.min.js",
         "html/js/jquery-ui-1.11.2.custom.min.js",
         "html/js/scrollintoview.js",
         "html/js/antraegekarte.jquery.js",
         "html/js/bootstrap.min.js",
         "html/js/material/ripples.min.js",
         "html/js/material/material.min.js",
-        "html/js/typeahead.js/typeahead.bundle.min.js",
-        "html/js/index.js"
+        "html/js/index.js",
     ],
     leaflet_js: [
-        "html/js/leaflet/dist/leaflet.js",
+        "html/bower/leaflet/dist/leaflet.js",
+        "html/bower/Leaflet.draw/dist/leaflet.draw.js",
+        "html/bower/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
         "html/js/Leaflet.Fullscreen/Control.FullScreen.js",
-        "html/js/Leaflet.Control.Geocoder/Control.Geocoder.js", 
-        "html/js/Leaflet.draw-0.2.3/dist/leaflet.draw.js",
-        "html/js/leaflet.spiderfy.js", 
-        "html/js/leaflet.textmarkers.js", 
-        "html/js/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
+        "html/js/Leaflet.Control.Geocoder/Control.Geocoder.js",
+        "html/js/leaflet.spiderfy.js",
+        "html/js/leaflet.textmarkers.js",
     ],
 }
 
@@ -48,7 +48,7 @@ gulp.task('browsersync', ['watch'], function() {
     browsersync.init({
         proxy: "ratsinformant.local"
     });
-    
+
     gulp.watch(paths.build_js).on("change", browsersync.reload);
     gulp.watch(paths.php     ).on("change", browsersync.reload);
 });

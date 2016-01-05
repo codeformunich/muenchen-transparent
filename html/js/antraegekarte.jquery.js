@@ -35,7 +35,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 
                 if (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1) attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://cloudmade.com">CloudMade</a>';
 
-                L.Icon.Default.imagePath = '/js/leaflet/dist/images';
+                L.Icon.Default.imagePath = '/bower/leaflet/dist/images';
                 $widget.map = L.map($widget.element.attr("id"), {
                     inertia: false
                 });

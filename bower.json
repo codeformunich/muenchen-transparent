@@ -5,7 +5,9 @@
     "isotope": "~2.2",
     "fullcalendar": "~2.4",
     "leaflet.locatecontrol": "~0.45",
+    "leaflet.draw": "~0.2.4",
     "mediaelement": "~2.18",
-    "shariff": "~1.18"
+    "shariff": "~1.21",
+    "typeahead.js": "~0.11"
   }
 }

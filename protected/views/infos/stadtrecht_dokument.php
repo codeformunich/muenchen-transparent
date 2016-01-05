@@ -56,7 +56,7 @@ $this->inline_css .= $dokument->css;
     </div>
 </div>
 
-<script src="/js/list.js/dist/list.min.js"></script>
+<script src="/bower/list.js/dist/list.min.js"></script>
 <script>
 var options = {
   valueNames: [ 'list-name' ]

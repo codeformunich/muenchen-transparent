@@ -149,7 +149,7 @@ $this->pageTitle   = $personen_typ_name;
                 ?>
             </ul>
 
-            <script src="/js/isotope/dist/isotope.pkgd.min.js"></script>
+            <script src="/bower/isotope/dist/isotope.pkgd.min.js"></script>
             <script>
                 $(function () {
                     var $liste = $(".strIn_liste"),

@@ -12,3 +12,4 @@ script:
   - node_modules/bower/bin/bower install
   - npm install
   - gulp
+  - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies

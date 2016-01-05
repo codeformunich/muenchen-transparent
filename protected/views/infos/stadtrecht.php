@@ -34,7 +34,7 @@ $this->pageTitle = "Stadtrecht";
 
 </section>
 
-<script src="/js/list.js/dist/list.min.js"></script>
+<script src="/bower/list.js/dist/list.min.js"></script>
 <script>
 var options = {
   valueNames: [ 'list-name' ]
