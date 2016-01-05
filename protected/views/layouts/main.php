@@ -41,23 +41,13 @@
         ?></title>
 
 
-    <?
-    if (Yii::app()->params["concatScripts"]) { ?>
-        <link rel="stylesheet" href="/css/styles_website_combined.css">
-    <? } else { ?>
-        <link rel="stylesheet" href="/js/leaflet/dist/leaflet.css">
-        <link rel="stylesheet" href="/js/Leaflet.Control.Geocoder/Control.Geocoder.css">
-        <link rel="stylesheet" href="/js/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
-        <link rel="stylesheet" href="/css/jquery-ui-1.11.2.custom.min.css">
-        <link rel="stylesheet" href="/css/styles_website.css">
-    <? }
+    <link rel="stylesheet" href="/css/styles_website_combined.css">
 
-    if ($this->load_mediaelement) {
-        echo '<link rel="stylesheet" href="/js/mediaelement/build/mediaelementplayer.min.css">';
-    }
+    <?
+    if ($this->load_mediaelement)     echo '<link rel="stylesheet" href="/js/mediaelement/build/mediaelementplayer.min.css">';
     if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/js/Leaflet.draw-0.2.3/dist/leaflet.draw.css">';
-    if ($this->load_calendar) echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css">';
-    if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
+    if ($this->load_calendar)         echo '<link rel="stylesheet" href="/js/fullcalendar/dist/fullcalendar.min.css">';
+    if ($this->load_selectize_js)     echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
 
     if ($this->load_pdf_js) { ?>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -65,9 +55,7 @@
         <link rel="stylesheet" href="/pdfjs/viewer.css"/>
     <? } ?>
 
-
-    <?
-    if ($this->inline_css != "") {
+    <? if ($this->inline_css != "") {
         echo '<style>' . $this->inline_css . '</style>';
     }
     ?>
@@ -214,21 +202,8 @@ echo ris_intern_html_extra_headers();
     </p>
 </footer>
 
-<?
-if (Yii::app()->params["concatScripts"]) { ?>
-    <script src="/js/build/std.js"></script>
-<? } else { ?>
-    <script src="/js/jquery-ui-1.11.2.custom.min.js"></script>
-    <script src="/js/scrollintoview.js"></script>
-    <script src="/js/antraegekarte.jquery.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/material/ripples.min.js"></script>
-    <script src="/js/material/material.min.js"></script>
-    <script src="/js/typeahead.js/typeahead.bundle.min.js"></script>
-    <script src="/js/index.js"></script>
-<? }
+<script src="/js/build/std.js"></script>
 
-if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js"></script>';
-?>
+<? if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js"></script>'; ?>
 </body>
 </html>

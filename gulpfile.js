@@ -11,9 +11,10 @@ var browsersync = require('browser-sync').create();
 var use_browsersync = false;
 
 var paths = {
-    scss: 'html/css/*.scss',
+    scss: ['html/css/*.scss'],
     source_js: ['html/js/**/*.js', "!html/js/build/*.js"],
     build_js: ["html/js/build/*.js"],
+    php: ["protected/**/*.php"],
     std_js: [
         "html/js/jquery-ui-1.11.2.custom.min.js",
         "html/js/scrollintoview.js",
@@ -49,6 +50,7 @@ gulp.task('browsersync', ['watch'], function() {
     });
     
     gulp.watch(paths.build_js).on("change", browsersync.reload);
+    gulp.watch(paths.php     ).on("change", browsersync.reload);
 });
 
 // helper tasks
