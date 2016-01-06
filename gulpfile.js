@@ -3,7 +3,7 @@ var gulp       = require('gulp'),
     gulpif     = require('gulp-if'),
     sass       = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
-    uglify     = require('gulp-uglifyjs'),
+    uglify     = require('gulp-uglify'),
     gutil      = require('gulp-util');
 
 // browsersync will only be used with the browsersync task
