@@ -56,29 +56,26 @@ gulp.task('browsersync', ['watch'], function() {
 // helper tasks
 
 gulp.task('std.js', function () {
-    gulp.src(paths.std_js)
+    return gulp.src(paths.std_js)
         .pipe(concat('std.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('html/js/build/'))
-        .on('end', function(){ gutil.log('main js finished'); });
+        .pipe(gulp.dest('html/js/build/'));
 });
 
 gulp.task('leaflet.js', function () {
-    gulp.src(paths.leaflet_js)
+    return gulp.src(paths.leaflet_js)
         .pipe(concat('leaflet.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('html/js/build/'))
-        .on('end', function(){ gutil.log('leaflet finished'); });
+        .pipe(gulp.dest('html/js/build/'));
 });
 
 gulp.task('sass', function () {
-    gulp.src(paths.scss)
+    return gulp.src(paths.scss)
         .pipe(sourcemaps.init())
         .pipe(sass({
             outputStyle: 'compressed'
         }).on('error', sass.logError))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('html/css'))
-        .on('end', function(){ gutil.log('css finished'); })
         .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
 });
