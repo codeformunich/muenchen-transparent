@@ -15,7 +15,7 @@ $this->inline_css .= $dokument->css;
         <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtrecht<span class="caret"></span></a>
-            <ul class="dropdown-menu" id="auswahl" style="padding: 5px 10px;">
+            <ul class="dropdown-menu" id="list-js-container" style="padding: 5px 10px;">
                 <li><input class="search" placeholder="Suche" style="width: 100%" /></li>
                 <li><ul class="list" style="padding: 0;">
                     <?
@@ -57,13 +57,11 @@ $this->inline_css .= $dokument->css;
 </div>
 
 <script src="/bower/list.js/dist/list.min.js"></script>
-<script>
-var options = {
-  valueNames: [ 'list-name' ]
-};
 
-var userList = new List('auswahl', options);
+<script>
+var userList = new List("list-js-container", { valueNames: [ 'list-name' ] });
 </script>
+
 <script>
 // http://stackoverflow.com/questions/10863821/bootstrap-dropdown-closing-when-clicked
 $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
