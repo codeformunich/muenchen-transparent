@@ -11,12 +11,12 @@ var browsersync = require('browser-sync').create();
 var use_browsersync = false;
 
 var paths = {
-    scss: ['html/css/*.scss'],
-    source_js: ['html/js/**/*.js', "!html/js/build/*.js"],
+    scss: ["html/css/*.scss"],
+    source_js: ["html/js/**/*.js", "html/bower/**/*.js", "!html/js/build/*.js"],
     build_js: ["html/js/build/*.js"],
     php: ["protected/**/*.php"],
     std_js: [
-        "html/bower/typeahead.js/dist/typeahead.bundle.min.js",
+        "html/bower/typeahead.js/dist/typeahead.bundle.js",
         "html/js/jquery-ui-1.11.2.custom.min.js",
         "html/js/scrollintoview.js",
         "html/js/antraegekarte.jquery.js",
