@@ -8,6 +8,6 @@
     "leaflet.draw": "~0.2.4",
     "mediaelement": "~2.18",
     "shariff": "~1.21",
-    "typeahead.js": "~0.10.5"
+    "typeahead.js": "~0.11"
   }
 }

@@ -1242,7 +1242,7 @@ section.impressum {
   }
 
   span.twitter-typeahead {
-    .tt-dropdown-menu {
+    .tt-menu {
       position: absolute;
       top: 100%;
       left: 0;
@@ -1263,7 +1263,7 @@ section.impressum {
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
       background-clip: padding-box;
     }
-    .tt-suggestion > p {
+    .tt-suggestion {
       display: block;
       padding: 3px 10px 3px 20px;
       margin: 5px 0;
@@ -1273,17 +1273,13 @@ section.impressum {
       color: $text-color;
       white-space: nowrap;
       font-size: 14px;
-    }
-    .tt-suggestion > p:hover,
-    .tt-suggestion > p:focus {
-      color: #ffffff;
-      text-decoration: none;
-      outline: 0;
-      background-color: #88A4A0;
-    }
-    .tt-suggestion.tt-cursor {
-      color: #ffffff;
-      background-color: #88A4A0;
+      
+      &:hover, &:focus {
+        color: #ffffff;
+        text-decoration: none;
+        outline: 0;
+        background-color: #88A4A0;
+      }
     }
 
     .input-group & {
