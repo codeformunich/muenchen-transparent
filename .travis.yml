@@ -1,0 +1,15 @@
+# Currently, this script only tries to install the dependencies and then runs the default gulp job
+
+sudo: false
+language: php
+
+install:
+  - curl -sS https://getcomposer.org/installer | php
+  - npm install bower
+
+script:
+  - php composer.phar install
+  - node_modules/bower/bin/bower install
+  - npm install
+  - gulp
+  - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies

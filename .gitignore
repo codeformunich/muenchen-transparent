@@ -1,20 +1,15 @@
 *.log
 *.bak
 
-vendor/
+# Dependency managers
 composer.lock
-.idea
-node_modules
+composer.phar
+vendor/
+node_modules/
+html/bower/
 
-protected/runtime/
-protected/config/main.php
-
+# Static files
 html/assets/
-html/js/fizzy-ui-utils/
-html/js/OverlappingMarkerSpiderfier-Leaflet/
-html/js/Leaflet/
-html/js/Leaflet.draw/
-html/js/font-awesome/
 html/css/*.css
 html/css/*.css.map
 html/css/.sass-cache/
@@ -22,3 +17,8 @@ html/piwik/
 html/sitemap-*
 html/google*
 html/BingSiteAuth.xml
+
+.idea
+
+protected/runtime/
+protected/config/main.php

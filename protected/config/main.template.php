@@ -44,14 +44,14 @@ require_once(__DIR__ . "/urls.php");
 $GLOBALS["SOLR_CONFIG"] = null;
 /*
 $GLOBALS["SOLR_CONFIG"] = array(
-	'endpoint' => array(
-		'localhost' => array(
-			'host'    => '127.0.0.1',
-			'port'    => 8983,
-			'path'    => '/solr/collection1',
-			'timeout' => 300,
-		)
-	)
+    'endpoint' => array(
+        'localhost' => array(
+            'host'    => '127.0.0.1',
+            'port'    => 8983,
+            'path'    => '/solr/collection1',
+            'timeout' => 300,
+        )
+    )
 );
 */
 
@@ -190,6 +190,5 @@ return [
         'debug_log'           => true,
         'projectTitle'        => 'München Transparent',
         'startseiten_warnung' => '',
-        'concatScripts'       => false,
     ],
 ];

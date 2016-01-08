@@ -30,12 +30,11 @@ $.widget("ratsinformant.AntraegeKarte", {
                 this.options["assetsBase"] + "/ba_features.js"
             ],
             complete: function () {
-                var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>',
-                    fullScreen = new L.Control.FullScreen();
+                var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>';
 
                 if (typeof(window["devicePixelRatio"]) != "undefined" && window["devicePixelRatio"] > 1) attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a> | <a href="http://cloudmade.com">CloudMade</a>';
 
-                L.Icon.Default.imagePath = '/js/leaflet/dist/images';
+                L.Icon.Default.imagePath = '/bower/leaflet/dist/images';
                 $widget.map = L.map($widget.element.attr("id"), {
                     inertia: false
                 });

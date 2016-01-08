@@ -34,7 +34,7 @@ $this->pageTitle = "Themen";
         <div class="col col-md-4">
             <section class="well">
                 <h3>Schlagworte</h3>
-                <div id="auswahl" class="such-liste">
+                <div id="list-js-container" class="such-liste">
                     <input class="search" placeholder="Filtern" style="width: 100%;"/>
                     <ul class="list list-unstyled">
                         <?
@@ -68,11 +68,11 @@ $this->pageTitle = "Themen";
         </div>
     </div>
 
-<script src="/js/list.js/dist/list.min.js"></script>
+<script src="/bower/list.js/dist/list.min.js"></script>
 <script>
 var options = {
   valueNames: [ 'list-name' ]
 };
 
-var userList = new List('auswahl', options);
+var userList = new List("list-js-container", options);
 </script>
