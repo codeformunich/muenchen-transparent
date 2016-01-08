@@ -44,6 +44,10 @@ class BATerminParser extends RISParser
         $daten->id                     = $termin_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id             = NULL;
+        $daten->referat                = "";
+        $daten->referent               = "";
+        $daten->vorsitz                = "";
+        $daten->sitzungsstand          = "";
 
         $dokumente = [];
 
@@ -202,6 +206,7 @@ class BATerminParser extends RISParser
             $tagesordnungspunkt->top_betreff            = $betreff;
             $tagesordnungspunkt->gremium_id             = $daten->gremium_id;
             $tagesordnungspunkt->gremium_name           = $daten->gremium->name;
+            $tagesordnungspunkt->beschluss_text         = "";
 
             /** @var Tagesordnungspunkt[] $alte_tops */
             if ($vorlage_id) {

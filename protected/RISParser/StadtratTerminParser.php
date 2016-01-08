@@ -21,6 +21,13 @@ class StadtratTerminParser extends RISParser
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id             = NULL;
         $daten->ba_nr                  = NULL;
+        $daten->sitzungsstand          = "";
+        $daten->sitzungsort            = "";
+        $daten->referat                = "";
+        $daten->referent               = "";
+        $daten->vorsitz                = "";
+        $daten->wahlperiode            = "";
+        $daten->status                 = "";
 
         if (preg_match("/ris_gremien_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->gremium_id = IntVal($matches[1]);
         if ($daten->gremium_id) {
@@ -181,6 +188,7 @@ class StadtratTerminParser extends RISParser
             $top->top_betreff      = $betreff;
             $top->gremium_id       = $daten->gremium_id;
             $top->gremium_name     = $daten->gremium->name;
+            $top->beschluss_text   = "";
 
             if (!is_null($vorlage_id)) {
                 $html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");

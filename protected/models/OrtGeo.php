@@ -107,6 +107,7 @@ class OrtGeo extends CActiveRecord
         $ort->setzeBA();
         $ort->source  = "auto";
         $ort->to_hide = 0;
+        $ort->to_hide_kommentar = "";
         $ort->datum   = new CDbExpression('NOW()');
         if (!$ort->save()) {
             RISTools::send_email(Yii::app()->params['adminEmail'], "OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true), null, "system");

@@ -22,6 +22,13 @@ class BAAntragParser extends RISParser
         $daten                         = new Antrag();
         $daten->id                     = $antrag_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->gestellt_von           = "";
+        $daten->referat                = "";
+        $daten->referent               = "";
+        $daten->antrag_typ             = "";
+        $daten->kurzinfo               = "";
+        $daten->bearbeitung            = "";
+        $daten->initiatorInnen         = "";
 
         $dokumente = [];
         //$ergebnisse = array();

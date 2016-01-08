@@ -23,6 +23,10 @@ class StadtratsantragParser extends RISParser
         $daten->id                     = $antrag_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_STADTRAT_ANTRAG;
+        $daten->referent               = "";
+        $daten->referat                = "";
+        $daten->kurzinfo               = "";
+        $daten->bearbeitung            = "";
 
         $dokumente = [];
         // $ergebnisse = array();
@@ -137,16 +141,14 @@ class StadtratsantragParser extends RISParser
                 $alter_eintrag->copyToHistory();
                 $alter_eintrag->setAttributes($daten->getAttributes(), false);
                 if (!$alter_eintrag->save()) {
-                    echo "StadtratAntrag 1\n";
-                    var_dump($alter_eintrag->getErrors());
-                    die("Fehler");
+                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    throw new \Exception("StadtratAntrag 1");
                 }
                 $daten = $alter_eintrag;
             } else {
                 if (!$daten->save()) {
-                    echo "StadtratAntrag 2\n";
-                    var_dump($daten->getErrors());
-                    die("Fehler");
+                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 2", "Antrag $antrag_id\n" . print_r($daten->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    throw new \Exception("StadtratAntrag 2");
                 }
             }
 
