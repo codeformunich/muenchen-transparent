@@ -236,15 +236,11 @@ ul.dokumente {
       content: '';
       font-weight: normal;
     }
-
-    a.pdf:before {
-      //content: 'pdf'
-    }
   }
 }
 
 
-.suchergebnisse_holder2 {
+.suchergebnisse {
   .suchkrit_beschreibung {
     @extend blockquote;
   }

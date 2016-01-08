@@ -15,7 +15,7 @@
 $this->pageTitle = "Suchergebnisse";
 
 ?>
-<section class="well suchergebnisse_holder2">
+<section class="well suchergebnisse">
     <div class="pull-right" style="text-align: center;">
         <?
         $this->renderPartial("suchergebnisse_benachrichtigungen", array(
