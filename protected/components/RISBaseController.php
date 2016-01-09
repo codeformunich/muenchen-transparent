@@ -38,6 +38,7 @@ class RISBaseController extends CController
     public $load_calendar         = false;
     public $load_selectize_js     = false;
     public $load_mediaelement     = false;
+    public $load_shariff          = false;
     public $suche_pre             = "";
 
     public $msg_ok                = "";

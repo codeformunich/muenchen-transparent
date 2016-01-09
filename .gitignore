@@ -10,9 +10,7 @@ html/bower/
 
 # Static files
 html/assets/
-html/css/*.css
-html/css/*.css.map
-html/css/.sass-cache/
+html/css/build/
 html/piwik/
 html/sitemap-*
 html/google*

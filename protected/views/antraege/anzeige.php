@@ -7,6 +7,7 @@
 
 $this->pageTitle         = $antrag->getName(true);
 $this->load_selectize_js = true;
+$this->load_shariff      = true;
 
 $personen = [
     AntragPerson::$TYP_GESTELLT_VON => [],
@@ -329,7 +330,6 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
 
             <div class="shariff" data-backend-url="<?= CHtml::encode($this->createUrl("/index/shariffData")) ?>"
                  data-url="<?= CHtml::encode(Yii::app()->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
-            <script src="/js/shariff/build/shariff.min.js"></script>
         </div>
         <div class="well themenverwandt_liste">
             <?

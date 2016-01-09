@@ -41,7 +41,7 @@
         ?></title>
 
 
-    <link rel="stylesheet" href="/css/styles_website_combined.css">
+    <link rel="stylesheet" href="/css/build/website.css">
 
     <?
     if ($this->load_mediaelement)     echo '<link rel="stylesheet" href="/js/mediaelement/build/mediaelementplayer.min.css">';
@@ -74,11 +74,11 @@
 
     <? if ($this->load_pdf_js) { ?>
         <link rel="resource" type="application/l10n" href="/pdfjs/locale/locale.properties"/>
-        <script src="/pdfjs/viewer.min.js"></script>
+        <script src="/pdfjs/viewer.min.js" defer></script>
     <? }
-    if ($this->load_mediaelement) { ?>
-        <script src="/js/mediaelement/build/mediaelement-and-player.min.js"></script>
-    <? }
+    if ($this->load_mediaelement) echo '<script src="/js/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
+    if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
+    if ($this->load_shariff) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
     ?>
 </head>
 
@@ -203,7 +203,5 @@ echo ris_intern_html_extra_headers();
 </footer>
 
 <script src="/js/build/std.js"></script>
-
-<? if ($this->load_selectize_js) echo '<script src="/bower/selectize.js-0.11.2/dist/js/standalone/selectize.min.js"></script>'; ?>
 </body>
 </html>

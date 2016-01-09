@@ -11,7 +11,7 @@ var browsersync = require('browser-sync').create();
 var use_browsersync = false;
 
 var paths = {
-    scss: ["html/css/*.scss"],
+    source_styles: ["html/css/*.scss"],
     source_js: ["html/js/**/*.js", "html/bower/**/*.js", "!html/js/build/*.js"],
     build_js: ["html/js/build/*.js"],
     php: ["protected/**/*.php"],
@@ -40,7 +40,7 @@ gulp.task('default', ['std.js', 'leaflet.js', 'sass']);
 
 gulp.task('watch', function () {
     gulp.watch(paths.source_js, ['std.js', 'leaflet.js']);
-    gulp.watch(paths.scss, ['sass']);
+    gulp.watch(paths.source_styles, ['sass']);
 });
 
 gulp.task('browsersync', ['watch'], function() {
@@ -70,12 +70,12 @@ gulp.task('leaflet.js', function () {
 });
 
 gulp.task('sass', function () {
-    return gulp.src(paths.scss)
+    return gulp.src(paths.source_styles)
         .pipe(sourcemaps.init())
         .pipe(sass({
             outputStyle: 'compressed'
         }).on('error', sass.logError))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('html/css'))
+        .pipe(gulp.dest('html/css/build/'))
         .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
 });

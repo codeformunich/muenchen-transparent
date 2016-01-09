@@ -3,7 +3,7 @@
  * @var BenutzerIn $benutzerIn
  * @var array $data
  */
-$css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/styles_mail.css") . "\n\n";
+$css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.css") . "\n\n";
 ?>
 <!DOCTYPE html>
 <html lang="de">
