@@ -22,18 +22,7 @@ class RISSolrHelper
     public static function getSolrClient()
     {
         if (!isset($GLOBALS["SOLR_CLIENT"])) $GLOBALS["SOLR_CLIENT"] = new Solarium\Client($GLOBALS["SOLR_CONFIG"]);
-        /*
-        $options = array (
-            'hostname' => "localhost",
-            'login'    => "ris",
-            'password' => "e93kn4jLK",
-            'port'     => "8983",
-            'path'     => "/solr/" . $core,
-        );
-        return new SolrClient($options);
-        */
-
-// create a client instance
+        // create a client instance
         return $GLOBALS["SOLR_CLIENT"];
     }
 
