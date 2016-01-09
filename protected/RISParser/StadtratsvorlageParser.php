@@ -17,6 +17,13 @@ class StadtratsvorlageParser extends RISParser
         $daten->id                     = $vorlage_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_STADTRAT_VORLAGE;
+        $daten->antrag_typ             = "";
+        $daten->gestellt_von           = "";
+        $daten->antrag_typ             = "";
+        $daten->bearbeitung            = "";
+        $daten->initiatorInnen         = "";
+        $daten->referent               = "";
+        $daten->referat                = "";
 
         $dokumente  = [];
         $ergebnisse = [];

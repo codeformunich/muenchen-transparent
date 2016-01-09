@@ -300,6 +300,9 @@ class Dokument extends CActiveRecord implements IRISItem
         $metadata             = RISPDF2Text::document_pdf_metadata($absolute_filename);
         $this->seiten_anzahl  = $metadata["seiten"];
         $this->datum_dokument = $metadata["datum"];
+        if ($this->datum_dokument == "") {
+            $this->datum_dokument = null;
+        }
 
         if ($endung == "pdf") $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
         else $this->text_pdf = "";
@@ -401,9 +404,11 @@ class Dokument extends CActiveRecord implements IRISItem
             return "";
         }
 
-        $dokument      = new Dokument();
-        $dokument->id  = $dokument_id;
-        $dokument->typ = $typ;
+        $dokument             = new Dokument();
+        $dokument->id         = $dokument_id;
+        $dokument->typ        = $typ;
+        $dokument->name_title = "";
+        $dokument->datum_dokument = null;
         if (is_a($antrag_termin_tagesordnungspunkt, "Antrag")) $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
         if (is_a($antrag_termin_tagesordnungspunkt, "Termin")) $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
         if (is_a($antrag_termin_tagesordnungspunkt, "Tagesordnungspunkt")) $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
