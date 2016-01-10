@@ -152,11 +152,16 @@ $this->html_itemprop = "http://schema.org/Person";
                 <?
                 if ($person->web != "") {
                     echo '<dt>Homepage:</dt>';
-                    echo '<dd><a href="' . CHtml::encode($person->web) . '">' . CHtml::encode($person->web) . '</a></dd>' . "\n";
+                    echo '<bb>' . HTMLTools::textToHtmlWithLink($person->web) . '</dd>' . "\n";
                 }
                 if ($person->twitter != "") {
                     echo '<dt>Twitter:</dt>';
-                    echo '<dd><a href="https://twitter.com/' . CHtml::encode($person->twitter) . '">@' . CHtml::encode($person->twitter) . '</a></dd>' . "\n";
+                    if (preg_match("/twitter\.com\/(.*)/siu", $person->twitter, $matches)) {
+                        $twitter = $matches[1];
+                    } else {
+                        $twitter = $person->twitter;
+                    }
+                    echo '<dd><a href="https://twitter.com/' . CHtml::encode($twitter) . '">@' . CHtml::encode($twitter) . '</a></dd>' . "\n";
                 }
                 if ($person->facebook != "") {
                     echo '<dt>Facebook:</dt>';

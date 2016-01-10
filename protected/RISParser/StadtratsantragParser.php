@@ -27,6 +27,7 @@ class StadtratsantragParser extends RISParser
         $daten->referat                = "";
         $daten->kurzinfo               = "";
         $daten->bearbeitung            = "";
+        $daten->initiatorInnen         = "";
 
         $dokumente = [];
         // $ergebnisse = array();
