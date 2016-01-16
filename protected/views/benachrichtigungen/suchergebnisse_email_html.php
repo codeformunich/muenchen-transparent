@@ -46,7 +46,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
             if (count($data["antraege"]) > 0) {
                 ?>
                 <h3>Anträge &amp; Vorlagen</h3>
-                <ul class="list-group two_cols">
+                <ul class="list-group">
                     <?
                     foreach ($data["antraege"] as $dat) {
                         /** @var Antrag $antrag */
