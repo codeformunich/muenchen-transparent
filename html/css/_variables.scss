@@ -1,5 +1,5 @@
 // Used in css for url(...) loading
-$icon-font-path: "/css/bootstrap-sass-3.3.6/assets/fonts/bootstrap/" !default;
+$icon-font-path: "/bower/bootstrap-sass/assets/fonts/bootstrap/" !default;
 $font-path: "/fonts/";
 $pics-path: "/images/";
 
@@ -7,4 +7,4 @@ $darkbg-text: rgba(0,0,255,0.84);
 $lightbg-text: rgba(0,0,0,0.84);
 $navbar-color: $darkbg-text;
 
-@import "bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/variables";
+@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/variables";
