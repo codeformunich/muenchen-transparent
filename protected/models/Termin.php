@@ -31,7 +31,7 @@
 class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
     public static $TYP_AUTO   = 0;
-    public static $TYP_BV     = 1;
+    public static $TYP_BUERGERVERSAMMLUNG     = 1;
     public static $TYPEN_ALLE = [
         0 => "Automatisch vom RIS",
         1 => "BürgerInnenversammlung",
@@ -158,7 +158,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getName($kurzfassung = false)
     {
-        if ($this->typ == static::$TYP_BV) return "BürgerInnenversammlung";
+        if ($this->typ == static::$TYP_BUERGERVERSAMMLUNG) return "BürgerInnenversammlung";
 
         if (!$this->gremium) return "Unbekanntes Gremium";
 

@@ -67,7 +67,7 @@ class BAAntragParser extends RISParser
                     $daten->typ = Antrag::$TYP_BA_ANTRAG;
                     break;
                 case "BV-Empfehlungs-Nummer:":
-                    $daten->typ = Antrag::$TYP_BV_EMPFEHLUNG;
+                    $daten->typ = Antrag::$TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG;
                     break;
                 default:
                     RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $matches[1], null, "system");
@@ -165,7 +165,7 @@ class BAAntragParser extends RISParser
         }
 
         foreach ($dokumente as $dok) {
-            $dok_typ = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? Dokument::$TYP_BA_ANTRAG : Dokument::$TYP_BV_EMPFEHLUNG);
+            $dok_typ = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? Dokument::$TYP_BA_ANTRAG : Dokument::$TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG);
             $aenderungen .= Dokument::create_if_necessary($dok_typ, $daten, $dok);
         }
 
@@ -173,7 +173,7 @@ class BAAntragParser extends RISParser
             $aend              = new RISAenderung();
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
-            $aend->typ         = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? RISAenderung::$TYP_BA_ANTRAG : RISAenderung::$TYP_BV_EMPFEHLUNG);
+            $aend->typ         = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? RISAenderung::$TYP_BA_ANTRAG : RISAenderung::$TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG);
             $aend->datum       = new CDbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();

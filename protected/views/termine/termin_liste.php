@@ -12,7 +12,7 @@
 		$termine_ids[] = $termin["id"];
 		echo '<li class="list-group-item" itemscope itemtype="http://schema.org/Event"><div class="row-action-primary"><i class="glyphicon glyphicon-calendar" title="Termin"></i></div>';
 		echo '<div class="row-content"><h4 class="list-group-item-heading">';
-		if ($termin["typ"] == Termin::$TYP_BV) {
+		if ($termin["typ"] == Termin::$TYP_BUERGERVERSAMMLUNG) {
 			echo CHtml::encode($termin["datum_long"]);
 			echo '<meta itemprop="name" content="BürgerInnenversammlung">';
 		} else {

@@ -49,7 +49,7 @@ class Dokument extends CActiveRecord implements IRISItem
     public static $TYP_BA_TERMIN          = "ba_termin";
     public static $TYP_BA_BESCHLUSS       = "ba_beschluss";
     public static $TYP_RATHAUSUMSCHAU     = "rathausumschau";
-    //public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung"; @TODO
+    //public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung"; @TODO
     public static $TYPEN_ALLE = [
         "stadtrat_antrag"    => "Stadtratsantrag",
         "stadtrat_vorlage"   => "Stadtratsvorlage",

@@ -608,7 +608,7 @@ class IndexController extends RISBaseController
         $termine          = Termin::groupAppointments($termine);
 
         /** @var Termin[] $bvs */
-        $bvs     = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BV], ["order" => "termin DESC"]);
+        $bvs     = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
         $bvs_arr = [];
         foreach ($bvs as $bv) $bvs_arr[] = $bv->toArr();
 

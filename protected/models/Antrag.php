@@ -48,7 +48,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     public static $TYP_STADTRAT_VORLAGE_GEHEIM = "stadtrat_vorlage_geheim";
     public static $TYP_BA_ANTRAG = "ba_antrag";
     public static $TYP_BA_INITIATIVE = "ba_initiative";
-    public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung";
+    public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
 
     public static $TYPEN_ALLE = [
         "stadtrat_antrag"         => "Stadtratsantrag|Stadtratsanträge",
