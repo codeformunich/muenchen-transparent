@@ -31,6 +31,7 @@
         "mandrill/mandrill": "dev-master",
         "heise/shariff": "~1.5.2",
         "sabre/dav": "2.1.*@dev",
-        "sabre/vobject" : "~3.3"
+        "sabre/vobject" : "~3.3",
+        "codeception/codeception": "~2.1.5"
     }
 }

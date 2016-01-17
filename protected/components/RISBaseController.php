@@ -99,6 +99,7 @@ class RISBaseController extends CController
             $user->logout();
         }
 
+        echo "qwert" . implode(" ", $_REQUEST);
         if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && !isset($_REQUEST["register"])) {
             /** @var BenutzerIn $benutzerIn */
             $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $_REQUEST["email"]]);
