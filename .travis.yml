@@ -11,6 +11,7 @@ cache:
     - node_modules
     - html/bower
     - vendor
+    - $HOME/.composer/cache
 
 services:
   - mysql
@@ -29,7 +30,7 @@ install:
   - gulp
   - mysql -e 'create database ris;'
 
-before-script:
+before_script:
   - nginx -c `pwd`/docs/nginx-travis.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
@@ -37,6 +38,6 @@ script:
   - vendor/bin/codecept run
 
 
-after-script:
+after_script:
   - nginx -c `pwd`/etc/nginx.conf -s stop
   - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests
