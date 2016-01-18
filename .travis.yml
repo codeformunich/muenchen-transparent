@@ -31,6 +31,7 @@ install:
   - mysql -e 'create database ris;'
 
 before_script:
+  - ln -s /tmp/html `pwd`/html
   - nginx -c `pwd`/docs/nginx-travis.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
