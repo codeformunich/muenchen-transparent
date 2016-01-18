@@ -39,5 +39,5 @@ script:
 
 
 after_script:
-  - nginx -c `pwd`/etc/nginx.conf -s stop
+  - nginx -c `pwd`/docs/nginx-travis.conf -s stop
   - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests
