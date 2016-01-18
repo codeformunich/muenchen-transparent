@@ -3,8 +3,14 @@ sudo: false
 
 php:
   - '5.6'
-  - '7.0'
+#  - '7.0'
 #  - hhvm
+
+cache:
+  directories:
+    - node_modules
+    - html/bower
+    - vendor
 
 services:
   - mysql
@@ -21,7 +27,7 @@ install:
   - npm install bower
   - node_modules/bower/bin/bower install 
   - gulp
-  - mysql -e 'create database ris;
+  - mysql -e 'create database ris;'
 
 before-script:
   - nginx -c `pwd`/docs/nginx-travis.conf
