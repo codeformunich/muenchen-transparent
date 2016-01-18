@@ -1,15 +1,36 @@
-# Currently, this script only tries to install the dependencies and then runs the default gulp job
-
-sudo: false
 language: php
+sudo: false
 
-install:
-  - curl -sS https://getcomposer.org/installer | php
+php:
+  - '5.6'
+  - '7.0'
+#  - hhvm
+
+services:
+  - mysql
+
+addons:
+  apt:
+    packages:
+      - nginx
+
+before-script:
+  - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - composer install
+  - npm install
   - npm install bower
+  - node_modules/bower/bin/bower install 
+  - gulp
+  - mysql -e 'create database ris;
+
+before-script:
+  - nginx -c `pwd`/docs/nginx-travis.conf
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
 script:
-  - php composer.phar install
-  - node_modules/bower/bin/bower install
-  - npm install
-  - gulp
-  - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies
+  - vendor/bin/codecept run
+
+
+after-script:
+  - nginx -c `pwd`/etc/nginx.conf -s stop
+  - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests
