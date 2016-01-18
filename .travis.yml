@@ -14,7 +14,7 @@ addons:
     packages:
       - nginx
 
-before-script:
+install:
   - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - composer install
   - npm install
