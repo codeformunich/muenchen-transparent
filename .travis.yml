@@ -7,6 +7,7 @@ php:
 #  - hhvm
 
 cache:
+  apt: true
   directories:
     - node_modules
     - html/bower
@@ -22,23 +23,43 @@ addons:
       - nginx
 
 install:
-#  - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  # Create environment for the webserver running in travis ci
+  - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - phpenv config-add docs/travis.php.ini
+  - ln -s `pwd` /tmp/muenchen-transparent
+  
+  # Create yii-environment
+  - mkdir protected/runtime
+  - mkdir html/assets
+  - cp protected/config/main.travis.template.php protected/config/main.php
+
+  # Set up mysql
+  - mysql -e 'create database ristest;'
+  - cat docs/schema.sql tests/_data/data.sql >  tests/_data/dump.sql
+  - mysql -utravis ristest < tests/_data/dump.sql
+
+  # Install dependencies
   - composer install
   - npm install
   - npm install bower
   - node_modules/bower/bin/bower install 
   - gulp
-  - mysql -e 'create database ris;'
 
 before_script:
-  - ln -s /tmp/html `pwd`/html
   - nginx -c `pwd`/docs/nginx-travis.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
 script:
   - vendor/bin/codecept run
 
-
+after_failure:
+  - vendor/bin/codecept run --debug
+  - cat protected/runtime/application.log
+  - cat /tmp/error.log
+  - cat /tmp/access.log
+  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - cat tests/_output/*.html
+ 
 after_script:
   - nginx -c `pwd`/docs/nginx-travis.conf -s stop
   - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests

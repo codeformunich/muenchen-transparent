@@ -323,7 +323,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         foreach ($strs_in as $strs) {
             if ($strs->id == 3425214) {
                 continue;
-            } // Seltsamer RIS-Testuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
+            } // Seltsamer ristestuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
             $strs_out[] = $strs;
         }
         return $strs_out;
