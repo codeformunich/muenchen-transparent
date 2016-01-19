@@ -25,6 +25,7 @@ addons:
 install:
   # Create environment for the webserver running in travis ci
   - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - phpenv config-rm xdebug.ini # Speeds up build
   - phpenv config-add docs/travis.php.ini
   - ln -s `pwd` /tmp/muenchen-transparent
   
