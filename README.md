@@ -3,10 +3,9 @@
 
 [![Build Status](https://travis-ci.org/codeformunich/Muenchen-Transparent.svg?branch=master)](https://travis-ci.org/codeformunich/Muenchen-Transparent)
 
-Entwicklungs-Setup
-------------------
+## Entwicklungs-Setup
 
-Vorausgesetzt wird ein funktionierender Webserver (nginx oder apache) mit PHP und MySQL/MariaDB
+Vorausgesetzt wird nginx mit PHP und MySQL/MariaDB
 
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
@@ -34,8 +33,7 @@ gulp
 ```
 
 Webserver-Konfiguration:
-* DocumentRoot muss auf das html/-Verzeichnis gesetzt werden.
-* Bei Apache regelt die html/.htaccess alles weitere. Für nginx gibt es eine [Beispiel-Konfiguration](docs/nginx.conf)
+* [nginx-full.conf](docs/nginx-full.conf) und [nginx-travis.conf](docs/nginx-travis.conf) zeigen die Konfigurationen, die für https://www.muenchen-transparent.de und für Travis CI verwendet werden.
 * Der Hostname des Webservers muss auch als SITE_BASE_URL bei protected/config/main.php gesetzt werden.
 
 MariaDB/MySQL-Konfiguration
@@ -58,51 +56,53 @@ PHP-Konfiguration:
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
 * Das Modul für curl muss installiert sein (`php5-curl`)
 
-PDF.JS Updaten:
+[TODO: Solr]
+
+## Code-Organisation
+
+* __docs/___: Das Datenbankschema, die Konfiguration für nginx, solr, Fontello, travis, etc.
+* __html/__: Statische Daten - vor allem die JS-Bibliotheken und (S)CSS-Dateien
+* __protected/yiic.php__: Aufruf der Kommandozeilentools (entweder von der Shell wie z.B. "reindex_ba" oder als Cron-Job wie z.B. "update_ris_daily")
+* __protected/commands/__: Definitionen der Kommantozeilentools
+* __protected/components/__: Diverse (meist statische) Hilf-Funktionen
+* __protected/config/__: Die Konfiguration. Insb. das Mapping der URLs auf die Controller-Funktionen und die Pfade der Kommandozeilenanwendungen.
+* __protected/RISParser/__: Die Parser für das Scraping. Werden von den Kommandozeilentools aufgerufen und beschreiben das Modell.
+* __protected/models/__: Model
+* __protected/controllers/__: Controller
+* __protected/views/__: View
+
+## Tests
+
+Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet. Die Tests werden automatisch von Travis CI ausgeführt. Lokal können sie mit `vendor/bin/codeception run` ausgeführt werden. Es ist zu beachten, dass die Tests im Moment noch im PhpBrowser statt über selenium laufen, d.h. es können u.a. noch keine auf javascript basierenden Funktionen getestet werden.
+
+## Weitere Dokumentation
+* [Icon-Font bearbeiten](docs/fontello/updating.txt)
+* Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
+
+### pdf.js  Updaten:
 * Ggf. uglify-js installieren (`npm install -g uglify-js`)
 * Entweder mit `diff` `docs/pdfjs_v[version].diff` oder mit `git patch apply` `pdfjs_v[version].patch` anwenden
 * Im Ordner `html/pdfjs/`: `uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js`
 
-Code-Organisation
------------------
-
-* __docs/___: Das Datenbankschema, die Konfiguration für nginx, solr, Fontello
-* __html/__: Statische Daten - vor allem die JS-Bibliotheken und (S)CSS-Dateien
-* __protected/yiic.php__: Aufruf der Kommandozeilentools (entweder von der Shell wie z.B. "reindex_ba" oder als Cron-Job wie z.B. "update_ris_daily")
-* __protected/commands/__: Definitionen der Kommantozeilentool
-* __protected/components/__: Diverse (meist statische) Hilf-Funktionen
-* __protected/config/__: Die Konfiguration. Insb. das Mapping der URLs auf die Controller-Funktionen und die Pfade der Kommandozeilenanwendungen.
-* __protected/controllers/__: Die Controller-Klassen
-* __protected/models/__: Das Objekt-relationale Datenmodell
-* __protected/RISParser/__: Die Parser für das Scraping. Werden von den Kommandozeilentools aufgerufen und beschreiben das Modell.
-* __protected/views/__: Die Views
-
-Weitere Dokumentation
----------------------
-
-* [nginx.conf](docs/nginx.conf) und [lighttpd.conf](docs/lighttpd.conf) zeigen Beispiel-Konfigurationen für nginx und Lighttpd. Von der Verwendung von lighttpd ist aber abzuraten, da einige Funktionen, wie z.B. Kalender oder der "Ältere Dokumente"-Knopf damit nicht funktionieren.
-* [Icon-Font bearbeiten](docs/fontello/updating.txt)
-* Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
-
-Eingesetzte Shell-Programme
----------------------------
+## Eingesetzte Shell-Programme
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.
 * [Imagemagick](http://www.imagemagick.org/) zur Vorbereitung des OCRs.
 * [Solr](http://lucene.apache.org/solr/) für die Volltextsuche.
 * [PDFbox](pdfbox.apache.org) zur Text-Extraktion aus den PDFs.
-* [sass](http://sass-lang.com/)
 
-Eingesetzte PHP-Bibliotheken
-----------------------------
+## Eingesetzte PHP-Bibliotheken
 * [Yii Framework](http://www.yiiframework.com/)
 * [Zend Framework 2](http://framework.zend.com/)
 * [Solarium](http://www.solarium-project.org/) Zur Anbindung von SolR.
 * [CSS2InlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles) für die HTML-formatierten E-Mails.
 * [sabre/dav](http://sabre.io/) für die Kalender-Synchronisation
 * [Composer](https://getcomposer.org/)
+* [Codeception](http://codeception.com/)
 
 Eingesetzte JS/CSS-Bibliotheken
 -------------------------------
+* [Gulp](http://gulpjs.com/) Zum automatischen Erstellen von minimiertem css und javascript 
+* [Sass](http://sass-lang.com/)
 * [jQuery](http://www.jquery.com/)
 * [Leaflet](http://leafletjs.com/) für die Karten (mit dem Kartenmaterial von [Skobbler](http://www.skobbler.com/))
 * [Modernizr](http://modernizr.com/)
