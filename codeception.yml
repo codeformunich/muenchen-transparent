@@ -15,7 +15,8 @@ extensions:
 modules:
     config:
         Db:
-            dsn: 'mysql:host=127.0.0.1;dbname=ris-test'
-            user: 'ris-test'
-            password: 'ris-test'
-            dump: tests/_data/schema.sql
+            dsn: 'mysql:host=127.0.0.1;dbname=ristest'
+            user: 'travis'
+            password: ''
+            dump: 'tests/_data/dump.sql' # The dataset is created dynamically by the travis run script
+            populate: true

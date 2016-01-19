@@ -8,5 +8,5 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://ratsinformant.local
+            url: http://localhost:8080
         - \Helper\Acceptance
