@@ -1,0 +1,24 @@
+engines:
+  duplication:
+    enabled: true
+  eslint:
+    enabled: true
+  scss-lint:
+    enabled: true
+  fixme:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+  phpmd:
+    enabled: true
+ratings:
+  paths:
+  - html/**
+  - protected/**
+exclude_paths:
+  - html/pdfjs/material
+  - html/js/ckeditor # TODO ckeditor mit bower oder composer
+  - html/js/Leaflet.Control.Geocoder
+  - html/js/material
+  - html/js/selectize.js-0.11.2
+  - html/pdfjs
