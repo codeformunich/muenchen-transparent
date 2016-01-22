@@ -16,9 +16,9 @@ ratings:
   - html/**
   - protected/**
 exclude_paths:
-  - html/pdfjs/material
+  - html/css/material
   - html/js/ckeditor # TODO ckeditor mit bower oder composer
   - html/js/Leaflet.Control.Geocoder
   - html/js/material
-  - html/js/selectize.js-0.11.2
-  - html/pdfjs
+  - html/js/selectize.js-0.11.2/
+  - html/pdfjs/
