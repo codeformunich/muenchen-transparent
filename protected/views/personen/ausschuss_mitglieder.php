@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var Gremium[] $gremien
  * @var string $title

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var InfosController $this
  * @var string $current_url

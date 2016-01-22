@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var StadtraetIn[][] $fraktionen
  * @var string $title

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var InfosController $this
  * @var Text $text

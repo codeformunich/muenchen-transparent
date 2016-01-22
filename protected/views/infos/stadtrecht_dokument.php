@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var Rechtsdokument $dokument
  * @var InfosController $this

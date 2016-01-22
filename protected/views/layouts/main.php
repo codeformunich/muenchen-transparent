@@ -83,10 +83,10 @@
 </head>
 
 <body>
+
 <script src="/js/modernizr.js"></script>
-<?
-echo ris_intern_html_extra_headers();
-?>
+<? echo ris_intern_html_extra_headers(); ?>
+
 <a href="#page_main_content" class="sr-only">Zum Seiteninhalt</a>
 
 <div class="over_footer_wrapper">
