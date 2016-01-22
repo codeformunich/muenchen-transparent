@@ -28,7 +28,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                     <ul class="antragsliste">
                         <?
                         foreach ($data["vorgaenge"] as $vorgang) {
-                            echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode($vorg["vorgang"]) . "</div>";
+                            echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode($vorgang["vorgang"]) . "</div>";
                             echo "<ul class='dokumente'>";
                             foreach ($vorgang["neues"] as $item) {
                                 /** @var IRISItem $item */
