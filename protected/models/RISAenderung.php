@@ -26,7 +26,7 @@ class RISAenderung extends CActiveRecord
     public static $TYP_STADTRAETIN = "stadtraetIn";
     public static $TYP_BA_ANTRAG = "ba_antrag";
     public static $TYP_BA_INITIATIVE = "ba_initiative";
-    public static $TYP_BV_EMPFEHLUNG = "bv_empfehlung";
+    public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
     public static $TYP_BA_TERMIN = "ba_termin";
     public static $TYP_BA_GREMIUM = "ba_gremium";
     public static $TYP_RATHAUSUMSCHAU = "rathausumschau";

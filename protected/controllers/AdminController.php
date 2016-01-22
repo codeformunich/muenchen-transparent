@@ -226,7 +226,7 @@ class AdminController extends RISBaseController
                 $termin                         = new Termin();
                 $termin->id                     = $id;
                 $termin->ba_nr                  = IntVal($_REQUEST["neu"]["ba_nr"]);
-                $termin->typ                    = Termin::$TYP_BV;
+                $termin->typ                    = Termin::$TYP_BUERGERVERSAMMLUNG;
                 $termin->sitzungsort            = $_REQUEST["neu"]["ort"];
                 $termin->termin                 = $_REQUEST["neu"]["datum"];
                 $termin->datum_letzte_aenderung = new CDbExpression('NOW()');
@@ -244,7 +244,7 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Gespeichert";
         }
 
-        $termine = Termin::model()->findAllByAttributes(["typ" => Termin::$TYP_BV], ["order" => "termin DESC"]);
+        $termine = Termin::model()->findAllByAttributes(["typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
         $this->render("buergerInnenversammlungen", [
             "termine" => $termine,
         ]);

@@ -8,6 +8,7 @@
     "leaflet.draw": "~0.2.4",
     "mediaelement": "~2.18",
     "shariff": "~1.21",
-    "typeahead.js": "~0.11"
+    "typeahead.js": "~0.11",
+    "bootstrap-sass": "~3.3.6"
   }
 }

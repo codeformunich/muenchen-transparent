@@ -20,3 +20,7 @@ html/BingSiteAuth.xml
 
 protected/runtime/
 protected/config/main.php
+
+# Codeception
+tests/_output/*
+tests/_data/dump.sql

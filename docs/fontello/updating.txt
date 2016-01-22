@@ -8,6 +8,5 @@ How to include new icons into this font:
 * Download the new package
 * Replace the following files / directories:
     * docs/fontello/config.json
-    * html/css/fontello-ie7.css
     * html/css/_fontello.scss (by css/fontello.css)
     * html/fonts/fontello.* (by font/*)
