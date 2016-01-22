@@ -247,7 +247,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     if ($ergebnis->beschluss_text != '' || $ergebnis->entscheidung != '') {
                         echo '<br>';
                         $text = $ergebnis->beschluss_text;
-                        if ($ergebnis->beschluss_text != '' && $ergebnis->entscheidung != "") $text .= ', ';
+                        if ($ergebnis->beschluss_text != '' && $ergebnis->entscheidung != '') $text .= ', ';
                         $text .= $ergebnis->entscheidung;
                         if (count($ergebnis->dokumente) == 1) {
                             echo "Ergebnis: " . CHtml::link($text, $ergebnis->dokumente[0]->getLink());
@@ -286,13 +286,12 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                 }
                 /** @var IRISItem[] $vorgang_items */
                 if ($antrag->vorgang) {
-                    $items = array();
-                    foreach ($antrag->vorgang->getRISItemsByDate() as $item) {
-                        if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
-                        if (!is_a($item, "Dokument") || !in_array($item->id, $angezeigte_dokumente)) $items[] = $item;
-                    }
-                    zeile_anzeigen($items, "Verwandte Seiten:", function ($item) {
+                    zeile_anzeigen($antrag->vorgang->getRISItemsByDate(), "Verwandte Seiten:", function ($item) {
                         /** @var IRISItem $item */
+                        // Der gerade angezeigte Antrag und seine Dokumente überspringen, sodass sie nicht als verwandte Seiten angezeigt werden
+                        if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
+                        if (is_a($item, "Dokument") && in_array($item->id, $angezeigte_dokumente)) continue;
+                        
                         if (method_exists($item, "getLinkZumDokument"))
                             echo CHtml::link($item->getName(true), $item->getLinkZumDokument());
                         else
@@ -307,23 +306,20 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
     </div>
     <section class="col-md-4 antrag_sidebar">
 
-        <?
-        $related = $antrag->errateThemenverwandteAntraege(7);
-        ?>
+        <? $related = $antrag->errateThemenverwandteAntraege(7); ?>
         <div class="well themenverwandt_liste" id="themenverwandt">
 
             <form method="POST" action="<?= Yii::app()->createUrl("antraege/anzeigen", ["id" => $antrag->id]) ?>"
-                  class="abo_button row_head"
-                  style="min-height: 80px; text-align: center;">
-                <?
-                if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) {
-                    ?>
+                  class="abo_button row_head" style="min-height: 80px; text-align: center;">
+                <? if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) { ?>
                     <button type="submit" name="<?= AntiXSS::createToken("deabonnieren") ?>"
-                            class="btn btn-success btn-raised btn-lg"><span class="glyphicon">@</span> Abonniert
+                            class="btn btn-success btn-raised btn-lg">
+                        <span class="glyphicon">@</span> Abonniert
                     </button>
                 <? } else { ?>
                     <button type="submit" name="<?= AntiXSS::createToken("abonnieren") ?>"
-                            class="btn btn-info btn-raised btn-lg"><span class="glyphicon">@</span> Nicht abonniert
+                            class="btn btn-info btn-raised btn-lg">
+                        <span class="glyphicon">@</span> Nicht abonniert
                     </button>
                 <? } ?>
             </form>
@@ -340,10 +336,10 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
 
                 <ul class="list-group">
                     <?
-                    $this->renderPartial("related_list", array(
+                    $this->renderPartial("related_list", [
                         "related" => $related,
                         "narrow"  => true,
-                    ));
+                    ]);
                     ?>
                 </ul>
 
