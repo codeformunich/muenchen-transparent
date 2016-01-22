@@ -29,7 +29,7 @@ if ($this->binContentAdmin()) { ?>
         <?=$html_text?>
     </div>
     <form method="POST" action="<?= CHtml::encode($my_url) ?>" id="text_edit_form" style="display: none; border: dotted 1px gray;">
-        <div id="text_orig_holder"><?=$text->text?></div>
+        <div id="text_orig_holder"><?= $text->text ?></div>
         <input type="hidden" name="text" value="<?= CHtml::encode($text->text) ?>">
         <div style="text-align: center;">
             <button type="submit" name="<?= CHtml::encode(AntiXSS::createToken("save")) ?>" class="btn btn-primary">Speichern</button>

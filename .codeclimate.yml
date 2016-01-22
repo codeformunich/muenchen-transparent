@@ -13,8 +13,8 @@ engines:
     enabled: true
 ratings:
   paths:
-  - html/**/*
-  - protected/**/*
+  - html/**
+  - protected/**
 exclude_paths:
   - html/css/material/**/*
   - html/js/ckeditor/**/* # TODO ckeditor mit bower oder composer
@@ -22,3 +22,5 @@ exclude_paths:
   - html/js/material/**/*
   - html/js/selectize.js-0.11.2/**/*
   - html/pdfjs/**/*
+  - html/pdfjs/*
+  - html/pdfjs/**
