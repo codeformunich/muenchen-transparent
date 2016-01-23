@@ -22,3 +22,4 @@ exclude_paths:
 - html/js/material/**
 - html/js/selectize.js-0.11.2/**
 - html/pdfjs/**
+- docs/**

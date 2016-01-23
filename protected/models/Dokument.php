@@ -634,6 +634,24 @@ class Dokument extends CActiveRecord implements IRISItem
         $update->addDocuments([$doc]);
     }
 
+    private function solrIndex_generic_do($doc, $name_id, $text, $datum)
+    {
+        $doc->id            = $name_id . $this->id;
+        $doc->text          = RISSolrHelper::string_cleanup($text);
+        $doc->text_ocr      = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
+        $doc->dokument_name = RISSolrHelper::string_cleanup($this->name);
+        $doc->dokument_url  = $this->url;
+
+        $geo          = [];
+        $dokument_bas = [];
+        foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
+            $geo[] = $ort->ort->lat . "," . $ort->ort->lon;
+            if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
+        }
+        $doc->geo          = $geo;
+        $doc->dokument_bas = $dokument_bas;
+        $doc->sort_datum = RISSolrHelper::mysql2solrDate($datum);
+    }
 
     /**
      * @param Solarium\QueryType\Update\Query\Query $update
@@ -645,26 +663,11 @@ class Dokument extends CActiveRecord implements IRISItem
         /** @var RISSolrDocument $doc */
         $doc = $update->createDocument();
 
-        $doc->id            = "Rathausumschau:" . $this->id;
-        $doc->text          = RISSolrHelper::string_cleanup($this->text_pdf);
-        $doc->text_ocr      = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
-        $doc->dokument_name = RISSolrHelper::string_cleanup($this->name);
-        $doc->dokument_url  = $this->url;
-        $doc->antrag_id     = $this->rathausumschau->nr;
+        solrIndex_generic_do($doc, "Rathausumschau:", $this->text_pdf, $this->rathausumschau->datum . " 13:00:00");
 
-        $geo          = [];
-        $dokument_bas = [];
-        foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
-            $geo[] = $ort->ort->lat . "," . $ort->ort->lon;
-            if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
-        }
-        $doc->geo          = $geo;
-        $doc->dokument_bas = $dokument_bas;
-
-        $doc->sort_datum = RISSolrHelper::mysql2solrDate($this->rathausumschau->datum . " 13:00:00");
+        $doc->antrag_id = $this->rathausumschau->nr;
         $update->addDocuments([$doc]);
     }
-
 
     /**
      * @param Solarium\QueryType\Update\Query\Query $update
@@ -676,23 +679,9 @@ class Dokument extends CActiveRecord implements IRISItem
 
         if (is_null($this->tagesordnungspunkt)) return; // Kann vorkommen, wenn ein TOP nachträglich gelöscht wurde
 
-        $doc->id            = "Ergebnis:" . $this->id;
-        $doc->text          = RISSolrHelper::string_cleanup($this->tagesordnungspunkt->top_betreff . " " . $this->tagesordnungspunkt->beschluss_text . " " . $this->tagesordnungspunkt->entscheidung . " " . $this->text_pdf);
-        $doc->text_ocr      = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
-        $doc->dokument_name = RISSolrHelper::string_cleanup($this->name);
-        $doc->dokument_url  = $this->url;
+        $text = $this->tagesordnungspunkt->top_betreff . " " . $this->tagesordnungspunkt->beschluss_text . " " . $this->tagesordnungspunkt->entscheidung . " " . $this->text_pdf;
+        solrIndex_generic_do($doc, "Ergebnis:", $text, $this->getDate());
 
-        $geo          = [];
-        $dokument_bas = [];
-        foreach ($this->orte as $ort) if ($ort->ort->to_hide == 0) {
-            $geo[] = $ort->ort->lat . "," . $ort->ort->lon;
-            if ($ort->ort->ba_nr > 0 && !in_array($ort->ort->ba_nr, $dokument_bas)) $dokument_bas[] = $ort->ort->ba_nr;
-        }
-        $doc->geo          = $geo;
-        $doc->dokument_bas = $dokument_bas;
-
-        $datum           = $this->getDate();
-        $doc->sort_datum = RISSolrHelper::mysql2solrDate($datum);
         $update->addDocuments([$doc]);
     }
 
