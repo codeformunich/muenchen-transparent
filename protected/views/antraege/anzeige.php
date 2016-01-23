@@ -19,23 +19,17 @@ $historie = $antrag->getHistoryDiffs();
 
 $name = $antrag->getName(true);
 
-function zeile_anzeigen($feld, $name, $callback)
-{
-    if (count($feld) == 0) {
+function zeile_anzeigen($feld, $name, $css_id, $callback) {
+    if (count($feld) == 0) 
         return;
-    } else if (count($feld) == 1) {
-        ?>
-        <tr>
-            <th><? echo $name ?></th>
-            <td>
-                <? $callback($feld[0]); ?>
-            </td>
-        </tr> <?
-    } else {
-        ?>
-        <tr>
-            <th><? echo $name ?></th>
-            <td>
+    ?>
+    
+    <tr <? if ($css_id != "") echo 'id="' . $css_id . '"'; ?>>
+        <th><? echo $name ?></th>
+        <td>
+            <? if (count($feld) == 1) {
+                $callback($feld[0]);
+            } else { ?>
                 <ul>
                     <? foreach ($feld as $element) { ?>
                         <li>
@@ -43,13 +37,13 @@ function zeile_anzeigen($feld, $name, $callback)
                         </li>
                     <? } ?>
                 </ul>
-            </td>
-        </tr> <?
-    }
-}
+            <? } ?>
+        </td>
+    </tr>
+<? }
 
 function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
-    zeile_anzeigen($antraege, $ueberschrift, function ($element) use (&$this2){
+    zeile_anzeigen($antraege, $ueberschrift, "",  function ($element) use (&$this2){
         /** @var Antrag $element */
         echo CHtml::link($element->getName(true), $this2->createUrl("antraege/anzeigen", array("id" => $element->id)));
         echo '<div class="metainformationen_verbundene">';
@@ -162,7 +156,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     </td>
                 </tr>
                 <?
-                zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", function ($person) use ($antrag) {
+                zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", "",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
                         echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
@@ -171,7 +165,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                         echo CHtml::encode($person->name);
                     }
                 });
-                zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON], "Gestellt von:", function ($person) use ($antrag) {
+                zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON], "Gestellt von:", "",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
                         echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
@@ -232,7 +226,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     if ($ts1 < $ts2) return -1;
                     return 0;
                 });
-                zeile_anzeigen($docs, "Dokumente:", function ($dokument) {
+                zeile_anzeigen($docs, "Dokumente:", "",  function ($dokument) {
                     /** @var Dokument $dok */
                     echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
                     ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf" title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>"></a> <?
@@ -240,7 +234,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                 $angezeigte_dokumente = [];
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;
 
-                zeile_anzeigen($antrag->ergebnisse, "Behandelt:", function ($ergebnis) {
+                zeile_anzeigen($antrag->ergebnisse, "Behandelt:", "",  function ($ergebnis) {
                     /** @var Tagesordnungspunkt $termin */
                     $termin = $ergebnis->sitzungstermin;
                     echo CHtml::link(RISTools::datumstring($termin->termin) . ', ' . $termin->gremium->getName(), $termin->getLink());
@@ -296,7 +290,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                         $items[] = $item;
                     }
                     
-                    zeile_anzeigen($items, "Verwandte Seiten:", function ($item) {
+                    zeile_anzeigen($items, "Verwandte Seiten:", "verwandte_seiten", function ($item) {
                         /** @var IRISItem $item */
                         if (method_exists($item, "getLinkZumDokument"))
                             echo CHtml::link($item->getName(true), $item->getLinkZumDokument());

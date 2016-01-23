@@ -48,8 +48,8 @@ class RISBaseController extends CController
 
     public function getAssetsBase()
     {
-        /*if ($this->_assetsBase === null) {
-            /** @var CWebApplication $app /
+        if ($this->_assetsBase === null) {
+            /** @var CWebApplication $app */
             $app               = Yii::app();
             $this->_assetsBase = $app->assetManager->publish(
                 Yii::getPathOfAlias('application.assets'),
@@ -61,13 +61,13 @@ class RISBaseController extends CController
             $path = getcwd() . $this->_assetsBase . "/";
             if (!file_exists($path . "bas.js")) {
                 $BAGrenzenGeoJSON = [];
-                /** @var array|Bezirksausschuss[] $BAs *
+                /** @var array|Bezirksausschuss[] $BAs */
                 $BAs = Bezirksausschuss::model()->findAll();
                 foreach ($BAs as $ba) $BAGrenzenGeoJSON[] = $ba->toGeoJSONArray();
 
                 file_put_contents($path . "ba_grenzen_geojson.js", "BA_GRENZEN_GEOJSON = " . json_encode($BAGrenzenGeoJSON) . ";");
             };
-        }*/
+        }
         return $this->_assetsBase;
     }
 
