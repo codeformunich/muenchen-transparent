@@ -27,7 +27,7 @@ $.widget("ratsinformant.AntraegeKarte", {
         yepnope({
             load: [
                 "/js/build/leaflet.js",
-                this.options["assetsBase"] + "/ba_features.js"
+                this.options["assetsBase"] + "/ba_grenzen_geojson.js"
             ],
             complete: function () {
                 var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>';
@@ -46,8 +46,8 @@ $.widget("ratsinformant.AntraegeKarte", {
 
                 if ($widget.options["outlineBA"] > 0) {
                     var min_lon = null, min_lat = null, max_lon = null, max_lat = null;
-                    for (var i = 0; i < window["BA_FEATURES"][$widget.options["outlineBA"] - 1]["geometry"]["coordinates"][0].length; i++) {
-                        var c = window["BA_FEATURES"][$widget.options["outlineBA"] - 1]["geometry"]["coordinates"][0][i];
+                    for (var i = 0; i < window["BA_GRENZEN_GEOJSON"][$widget.options["outlineBA"] - 1]["geometry"]["coordinates"][0].length; i++) {
+                        var c = window["BA_GRENZEN_GEOJSON"][$widget.options["outlineBA"] - 1]["geometry"]["coordinates"][0][i];
                         if (min_lon === null || min_lon > c[0]) min_lon = c[0];
                         if (max_lon === null || max_lon < c[0]) max_lon = c[0];
                         if (min_lat === null || min_lat > c[1]) min_lat = c[1];
@@ -55,7 +55,7 @@ $.widget("ratsinformant.AntraegeKarte", {
                     }
                     var center_lon = (min_lon + max_lon) / 2,
                         center_lat = (min_lat + max_lat) / 2,
-                        init_zoom = window["BA_FEATURES"][$widget.options["outlineBA"] - 1]["init_zoom"];
+                        init_zoom = window["BA_GRENZEN_GEOJSON"][$widget.options["outlineBA"] - 1]["init_zoom"];
                     if($widget.element.width() > 1500) init_zoom += 2;
                     if($widget.element.width() < 700) init_zoom -= 1;
                     if($widget.element.width() < 560) init_zoom -= 1;
@@ -63,7 +63,7 @@ $.widget("ratsinformant.AntraegeKarte", {
                     geojsonFeature = {
                         "type": "Feature",
                         "properties": {},
-                        "geometry": window["BA_FEATURES"][$widget.options["outlineBA"] - 1]["geometry"]
+                        "geometry": window["BA_GRENZEN_GEOJSON"][$widget.options["outlineBA"] - 1]["geometry"]
                     };
                     geojsonFeature["geometry"]["coordinates"].push([[11,47.6],[13,47.6],[13,48.5],[11,48.5]]);
                 } else {
@@ -387,7 +387,7 @@ $.widget("ratsinformant.AntraegeKarte", {
 
         addInfo();
 
-        var BAs = {"type": "FeatureCollection", "features": window["BA_FEATURES"]},
+        var BAs = {"type": "FeatureCollection", "features": window["BA_GRENZEN_GEOJSON"]},
             BA_map_options = {
                 style: {
                     fillColor: "#ff7800",

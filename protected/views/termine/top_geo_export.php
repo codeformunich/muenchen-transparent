@@ -58,7 +58,7 @@ foreach ($termin->tagesordnungspunkte as $ergebnis) {
 	<script src="/js/Leaflet/leaflet.js"></script>
 	<script src="/js/Leaflet.Control.Geocoder/Control.Geocoder.js"></script>
 	<script src="/js/html2canvas.min.js"></script>
-	<script src="<?= CHtml::encode($assets_base) ?>/ba_features.js"></script>
+	<script src="<?= CHtml::encode($assets_base) ?>/ba_grenzen_geojson.js"></script>
 	<script src="/js/leaflet.spiderfy.js"></script>
 	<script src="/js/Leaflet.Fullscreen/Control.FullScreen.js"></script>
 	<script src="/js/leaflet.textmarkers_top.js"></script>
