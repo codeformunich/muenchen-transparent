@@ -206,6 +206,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                 }
                 if ($antrag->bearbeitungsfrist > 0) echo "<tr><th>Bearbeitungsfrist:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->bearbeitungsfrist)) . "</td></tr>\n";
                 if ($antrag->fristverlaengerung > 0) echo "<tr><th>Fristverlängerung:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->fristverlaengerung)) . "</td></tr>\n";
+                if ($antrag->erledigt_am > 0) echo "<tr><th>Erledigt am:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->erledigt_am)) . "</td></tr>\n";
                 ?>
                 <tr>
                     <th>Status:</th>

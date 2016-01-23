@@ -35,18 +35,34 @@ class ExportController extends RISBaseController
 				'bearbeitungsfrist'  => $antrag->bearbeitungsfrist,
 				'registriert_am'     => $antrag->registriert_am,
 				'fristverlaengerung' => $antrag->fristverlaengerung,
+				'erledigt_am'        => $antrag->erledigt_am,
 				'referat'            => $antrag->referat_id,
 				'referent'           => $antrag->referent,
 				'antrags_nr'         => $antrag->antrags_nr,
 				'status'             => $antrag->status,
 				'stadtraetInnen'     => [ ],
+				'initiatorInnen'     => [ ],
 			];
-			foreach ( $antrag->stadtraetInnen as $stadtraetIn ) {
-				$antragData['stadtraetInnen'][] = [
-					'id'   => IntVal( $stadtraetIn->id ),
-					'name' => $stadtraetIn->getName(),
-				];
+			foreach ($antrag->antraegePersonen as $person) {
+				if ($person->person->stadtraetIn) {
+					$arr = [
+						'id'   => $person->person->stadtraetIn->id,
+						'name' => $person->person->stadtraetIn->name,
+					];
+				} else {
+					$arr = [
+						'id'   => null,
+						'name' => $person->person->name,
+					];
+				}
+				if ($person->typ == AntragPerson::$TYP_GESTELLT_VON) {
+					$antragData['stadtraetInnen'][] = $arr;
+				}
+				if ($person->typ == AntragPerson::$TYP_INITIATORIN) {
+					$antragData['initiatorInnen'][] = $arr;
+				}
 			}
+
 			$return[] = $antragData;
 		}
 		echo json_encode( $return );
