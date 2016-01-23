@@ -2,7 +2,7 @@
 
 class ExportController extends RISBaseController
 {
-	public function actionFraktionantraege($fraktion_id) {
+	public function actionFraktionantraege($fraktion_id, $limit = 30, $offset = 0) {
 		Header("Content-Type: application/json; charset=UTF-8");
 
 		/** @var Fraktion $fraktion */
@@ -14,7 +14,10 @@ class ExportController extends RISBaseController
 		$strIds = implode( ", ", array_map( "IntVal", $strIds ) );
 
 		$SQL       = "SELECT a.id FROM antraege a JOIN antraege_stadtraetInnen b ON a.id = b.antrag_id " .
-		             "WHERE b.stadtraetIn_id IN ($strIds) GROUP BY a.id ORDER BY a.gestellt_am DESC LIMIT 0,30";
+		             "WHERE b.stadtraetIn_id IN ($strIds) GROUP BY a.id ORDER BY a.gestellt_am DESC";
+		if ( $limit > 0 || $offset > 0 ) {
+			$SQL .= " LIMIT " . IntVal( $offset ) . "," . IntVal( $limit );
+		}
 		$antragIds = Yii::app()->db->createCommand( $SQL )->queryAll();
 
 		$return = [ ];
