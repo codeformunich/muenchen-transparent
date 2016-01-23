@@ -73,7 +73,9 @@ PHP-Konfiguration:
 
 ## Tests
 
-Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet. Die Tests werden automatisch von Travis CI ausgeführt. Lokal können sie mit `vendor/bin/codeception run` ausgeführt werden. Es ist zu beachten, dass die Tests im Moment noch im PhpBrowser statt über selenium laufen, d.h. es können u.a. noch keine auf javascript basierenden Funktionen getestet werden.
+Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet. Die Tests werden automatisch von Travis CI ausgeführt. Es ist zu beachten, dass die Tests im Moment noch im PhpBrowser statt über selenium laufen, d.h. es können u.a. noch keine auf javascript basierenden Funktionen getestet werden.
+
+[TODO: Test lokal ausführen und Struktur erklären]
 
 ## Weitere Dokumentation
 * [Icon-Font bearbeiten](docs/fontello/updating.txt)

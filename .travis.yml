@@ -32,7 +32,6 @@ install:
   # Create yii-environment
   - mkdir protected/runtime
   - mkdir html/assets
-  - cp protected/config/main.travis.template.php protected/config/main.php
 
   # Set up mysql
   - mysql -e 'create database ristest;'
@@ -47,7 +46,7 @@ install:
   - gulp
 
 before_script:
-  - nginx -c `pwd`/docs/nginx-travis.conf
+  - nginx -c `pwd`/docs/nginx-codeception.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
 script:
@@ -60,7 +59,7 @@ after_failure:
   - cat /tmp/access.log
   - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - cat tests/_output/*.html
- 
+
 after_script:
-  - nginx -c `pwd`/docs/nginx-travis.conf -s stop
+  - nginx -c `pwd`/docs/nginx-codeception.conf -s stop
   - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests
