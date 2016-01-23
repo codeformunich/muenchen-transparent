@@ -286,12 +286,15 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                 }
                 /** @var IRISItem[] $vorgang_items */
                 if ($antrag->vorgang) {
-                    zeile_anzeigen($antrag->vorgang->getRISItemsByDate(), "Verwandte Seiten:", function ($item) {
-                        /** @var IRISItem $item */
+                    $items = [];
+                    foreach ($antrag->vorgang->getRISItemsByDate() as $item) {
                         // Der gerade angezeigte Antrag und seine Dokumente überspringen, sodass sie nicht als verwandte Seiten angezeigt werden
                         if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
                         if (is_a($item, "Dokument") && in_array($item->id, $angezeigte_dokumente)) continue;
-                        
+                        $items[] = $item;
+                    }
+                    zeile_anzeigen($items, "Verwandte Seiten:", function ($item) {
+                        /** @var IRISItem $item */
                         if (method_exists($item, "getLinkZumDokument"))
                             echo CHtml::link($item->getName(true), $item->getLinkZumDokument());
                         else
