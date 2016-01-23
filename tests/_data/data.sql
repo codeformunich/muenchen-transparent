@@ -3,10 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 23. Jan 2016 um 17:40
+-- Erstellungszeit: 23. Jan 2016 um 17:44
 -- Server Version: 5.6.27-0ubuntu1
 -- PHP-Version: 5.6.11-1ubuntu3.1
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -62,6 +63,7 @@ INSERT INTO `metadaten` (`meta_key`, `meta_val`) VALUES
 
 INSERT INTO `vorgaenge` (`id`, `typ`, `betreff`) VALUES
 (1, NULL, NULL);
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
