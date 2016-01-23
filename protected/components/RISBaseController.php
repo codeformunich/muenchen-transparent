@@ -59,7 +59,7 @@ class RISBaseController extends CController
             );
 
             $path = getcwd() . $this->_assetsBase . "/";
-            if (!file_exists($path . "bas.js")) {
+            if (!file_exists($path . "ba_grenzen_geojson.js")) {
                 $BAGrenzenGeoJSON = [];
                 /** @var array|Bezirksausschuss[] $BAs */
                 $BAs = Bezirksausschuss::model()->findAll();
