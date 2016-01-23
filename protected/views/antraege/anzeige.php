@@ -37,12 +37,11 @@ function zeile_anzeigen($feld, $name, $callback)
             <th><? echo $name ?></th>
             <td>
                 <ul>
-                    <? foreach ($feld as $element) {
-                        ?>
-                        <li> <?
-                            $callback($element);
-                            ?> </li> <?
-                    } ?>
+                    <? foreach ($feld as $element) { ?>
+                        <li>
+                            <? $callback($element); ?>
+                        </li>
+                    <? } ?>
                 </ul>
             </td>
         </tr> <?
@@ -237,7 +236,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
                     ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf" title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>"></a> <?
                 });
-                $angezeigte_dokumente = array();
+                $angezeigte_dokumente = [];
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;
 
                 zeile_anzeigen($antrag->ergebnisse, "Behandelt:", function ($ergebnis) {
@@ -267,7 +266,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     ?>
                     <tr>
                         <th>Historie: <span class="icon - info - circled" title="Seit dem 1. April 2014"
-                                            style="font - size: 12px; color: gray;"></span></th>
+                                            style="font - size: 12px; color: gray;"></span></th> <? /* FIXME */ ?>
                         <td>
                             <ol>
                                 <? foreach ($historie as $hist) {
@@ -284,14 +283,20 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     </tr>
                 <?
                 }
+
                 /** @var IRISItem[] $vorgang_items */
                 if ($antrag->vorgang) {
-                    zeile_anzeigen($antrag->vorgang->getRISItemsByDate(), "Verwandte Seiten:", function ($item) {
-                        /** @var IRISItem $item */
+                    $items = array();
+                    foreach ($antrag->vorgang->getRISItemsByDate() as $item) {
                         // Der gerade angezeigte Antrag und seine Dokumente überspringen, sodass sie nicht als verwandte Seiten angezeigt werden
                         if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
                         if (is_a($item, "Dokument") && in_array($item->id, $angezeigte_dokumente)) continue;
                         
+                        $items[] = $item;
+                    }
+                    
+                    zeile_anzeigen($items, "Verwandte Seiten:", function ($item) {
+                        /** @var IRISItem $item */
                         if (method_exists($item, "getLinkZumDokument"))
                             echo CHtml::link($item->getName(true), $item->getLinkZumDokument());
                         else
