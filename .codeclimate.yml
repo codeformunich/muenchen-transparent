@@ -23,3 +23,4 @@ exclude_paths:
 - html/js/selectize.js-0.11.2/**
 - html/pdfjs/**
 - docs/**
+- tests/** # TODO Nur automatisch generierte Dateien ausschließen
