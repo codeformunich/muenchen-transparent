@@ -6,6 +6,9 @@ php:
 #  - '7.0'
 #  - hhvm
 
+# Note: For using PHP 7 you have add the following line:
+# cp /home/travis/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default /home/travis/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+
 cache:
   apt: true
   directories:
@@ -28,7 +31,7 @@ install:
   - phpenv config-rm xdebug.ini # Speeds up build
   - phpenv config-add docs/travis.php.ini
   - ln -s `pwd` /tmp/muenchen-transparent
-  
+
   # Create yii-environment
   - mkdir protected/runtime
   - mkdir html/assets
@@ -42,14 +45,12 @@ install:
   - composer install --prefer-source # --prefer-source fixes github's limits
   - npm install
   - npm install bower
-  - node_modules/bower/bin/bower install 
+  - node_modules/bower/bin/bower install
   - gulp
 
-before_script:
+script:
   - nginx -c `pwd`/docs/nginx-codeception.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-
-script:
   - vendor/bin/codecept run
 
 after_failure:
@@ -59,6 +60,7 @@ after_failure:
   - cat /tmp/access.log
   - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - cat tests/_output/*.html
+  - find /home/travis/.phpenv/ -printf "%TY-%Tm-%Td\t%s\t%p\n"
 
 after_script:
   - nginx -c `pwd`/docs/nginx-codeception.conf -s stop
