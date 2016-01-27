@@ -45,7 +45,7 @@ class StadtratsantragParser extends RISParser
 
         preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
         $betreff_gefunden = false;
-        for ($i = 0; $i < count($matches[1]); $i++) switch ($matches[1][$i]) {
+        for ($i = 0; $i < count($matches[1]); $i++) switch (trim($matches[1][$i])) {
             case "Betreff:":
                 $betreff_gefunden = true;
                 $daten->betreff   = $this->text_simple_clean($matches[2][$i]);

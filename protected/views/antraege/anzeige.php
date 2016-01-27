@@ -42,8 +42,8 @@ function zeile_anzeigen($feld, $name, $css_id, $callback) {
     </tr>
 <? }
 
-function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
-    zeile_anzeigen($antraege, $ueberschrift, "",  function ($element) use (&$this2){
+function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
+    zeile_anzeigen($antraege, $ueberschrift, $css_id, function ($element) use (&$this2){
         /** @var Antrag $element */
         echo CHtml::link($element->getName(true), $this2->createUrl("antraege/anzeigen", array("id" => $element->id)));
         echo '<div class="metainformationen_verbundene">';
@@ -72,7 +72,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
 
             <table class="table antragsdaten">
                 <tbody>
-                <tr>
+                <tr id="schlagworte">
                     <th><?
                         if ($this->aktuelleBenutzerIn()) echo '<label for="antrag_tags">Schlagworte:</label>';
                         else echo 'Schlagworte:';
@@ -156,7 +156,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     </td>
                 </tr>
                 <?
-                zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", "",  function ($person) use ($antrag) {
+                zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", "initiatoren",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
                         echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
@@ -165,7 +165,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                         echo CHtml::encode($person->name);
                     }
                 });
-                zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON], "Gestellt von:", "",  function ($person) use ($antrag) {
+                zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON], "Gestellt von:", "gestellt_von",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
                         echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
@@ -175,7 +175,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     }
                 });
                 ?>
-                <tr>
+                <tr id="gremium">
                     <th>Gremium:</th>
                     <td><?
                         if ($antrag->ba_nr > 0) {
@@ -186,7 +186,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                         if ($antrag->referat != "") echo " / " . CHtml::encode(strip_tags($antrag->referat));
                         ?></td>
                 </tr>
-                <tr>
+                <tr "antragsnummer">
                     <th>Antragsnummer:</th>
                     <td><?= CHtml::encode($antrag->antrags_nr) ?></td>
                 </tr>
@@ -194,14 +194,14 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                 if ($antrag->gestellt_am > 0 && $antrag->gestellt_am == $antrag->registriert_am) {
                     echo "<tr><th>Gestellt u. registriert: </th><td>" . CHtml::encode(RISTools::datumstring($antrag->gestellt_am)) . "</td></tr>\n";
                 } else {
-                    if ($antrag->gestellt_am > 0) echo "<tr><th>Gestellt am:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->gestellt_am)) . "</td></tr>\n";
-                    if ($antrag->registriert_am > 0) echo "<tr><th>Registriert am:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->registriert_am)) . "</td></tr>\n";
+                    if ($antrag->gestellt_am > 0)    echo "<tr><th>Gestellt am:</th><td>"       . CHtml::encode(RISTools::datumstring($antrag->gestellt_am))        . "</td></tr>\n";
+                    if ($antrag->registriert_am > 0) echo "<tr><th>Registriert am:</th><td>"    . CHtml::encode(RISTools::datumstring($antrag->registriert_am))     . "</td></tr>\n";
                 }
-                if ($antrag->bearbeitungsfrist > 0) echo "<tr><th>Bearbeitungsfrist:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->bearbeitungsfrist)) . "</td></tr>\n";
+                if ($antrag->bearbeitungsfrist > 0)  echo "<tr><th>Bearbeitungsfrist:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->bearbeitungsfrist))  . "</td></tr>\n";
                 if ($antrag->fristverlaengerung > 0) echo "<tr><th>Fristverlängerung:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->fristverlaengerung)) . "</td></tr>\n";
-                if ($antrag->erledigt_am > 0) echo "<tr><th>Erledigt am:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->erledigt_am)) . "</td></tr>\n";
+                if ($antrag->erledigt_am > 0)        echo "<tr><th>Erledigt am:</th><td>"       . CHtml::encode(RISTools::datumstring($antrag->erledigt_am))        . "</td></tr>\n";
                 ?>
-                <tr>
+                <tr id="status">
                     <th>Status:</th>
                     <td><?
                         echo CHtml::encode($antrag->status);
@@ -209,7 +209,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                         echo CHtml::encode($antrag->bearbeitung);
                         ?></td>
                 </tr>
-                <tr>
+                <tr id="wahlperiode">
                     <th>Wahlperiode:</th>
                     <td><?= CHtml::encode($antrag->wahlperiode) ?></td>
                 </tr>
@@ -226,7 +226,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     if ($ts1 < $ts2) return -1;
                     return 0;
                 });
-                zeile_anzeigen($docs, "Dokumente:", "",  function ($dokument) {
+                zeile_anzeigen($docs, "Dokumente:", "dokumente",  function ($dokument) {
                     /** @var Dokument $dok */
                     echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
                     ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf" title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>"></a> <?
@@ -234,7 +234,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                 $angezeigte_dokumente = [];
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;
 
-                zeile_anzeigen($antrag->ergebnisse, "Behandelt:", "",  function ($ergebnis) {
+                zeile_anzeigen($antrag->ergebnisse, "Behandelt:", "behandelt",  function ($ergebnis) {
                     /** @var Tagesordnungspunkt $termin */
                     $termin = $ergebnis->sitzungstermin;
                     echo CHtml::link(RISTools::datumstring($termin->termin) . ', ' . $termin->gremium->getName(), $termin->getLink());
@@ -254,12 +254,12 @@ function verbundene_anzeigen($antraege, $ueberschrift, $this2) {
                     }
                 });
 
-                verbundene_anzeigen($antrag->antrag2vorlagen,  "Verbundene Stadtratsvorlagen:", $this);
-                verbundene_anzeigen($antrag->vorlage2antraege, "Verbundene Stadtratsanträge:" , $this);
+                verbundene_anzeigen($antrag->antrag2vorlagen,  "Verbundene Stadtratsvorlagen:", "verbundene_stadtratsvorlagen", $this);
+                verbundene_anzeigen($antrag->vorlage2antraege, "Verbundene Stadtratsanträge:" , "verbundene_stadtratsantraege", $this);
 
                 if (count($historie) > 0) {
                     ?>
-                    <tr>
+                    <tr id="historie">
                         <th>Historie: <span class="icon - info - circled" title="Seit dem 1. April 2014"
                                             style="font - size: 12px; color: gray;"></span></th> <? /* FIXME */ ?>
                         <td>

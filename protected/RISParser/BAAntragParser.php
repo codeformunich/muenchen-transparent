@@ -36,8 +36,8 @@ class BAAntragParser extends RISParser
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
         $dat_details = explode("<!-- detailbereich -->", $dat_details[1]);
-        preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
 
+        preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
         $betreff_gefunden = false;
         for ($i = 0; $i < count($matches[1]); $i++) switch (trim($matches[1][$i])) {
             case "Betreff:":
