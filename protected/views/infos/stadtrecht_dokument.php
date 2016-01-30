@@ -36,19 +36,6 @@ $this->inline_css .= $dokument->css;
 
 
 <div class="row" style="overflow:hidden;">
-    <!--<div class="col col-md-3">
-        <section class="well" style="margin-top: 50px;">
-            <ul>
-                <?
-                /** @var Rechtsdokument[] $dokumente */
-                $dokumente = Rechtsdokument::model()->findAll();
-                foreach ($dokumente as $dok) {
-                    echo '<li>' . CHtml::link($dok->titel_lang(), Yii::app()->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '</li>';
-                }
-                ?>
-            </ul>
-        </section>
-    </div>-->
     <div class="col col-md-12">
         <section class="well rechtstext" style="margin-top: 50px;">
             <?= $dokument->html ?>

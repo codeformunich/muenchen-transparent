@@ -57,8 +57,7 @@
 
     <? if ($this->inline_css != "") {
         echo '<style>' . $this->inline_css . '</style>';
-    }
-    ?>
+    } ?>
 
     <script src="/bower/jquery/dist/jquery.min.js"></script>
 
