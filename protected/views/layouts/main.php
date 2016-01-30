@@ -60,17 +60,7 @@
     }
     ?>
 
-    <!--[if lt IE 9]>
-    <script src="/js/jquery-1.11.3.min.js"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-    <script src="/js/jquery-2.1.4.min.js"></script>
-    <!--<![endif]-->
-
-    <!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-    <script src="/js/respond.min.js"></script>
-    <![endif]-->
+    <script src="/bower/jquery/dist/jquery.min.js"></script>
 
     <? if ($this->load_pdf_js) { ?>
         <link rel="resource" type="application/l10n" href="/pdfjs/locale/locale.properties"/>
