@@ -2,17 +2,14 @@
 indent_style = space
 charset = utf8
 
-[*.php]
+[*.{php,js}]
 indent_size = 4
 
-[*.js]
-indent_size = 4
-
-[*.scss]
+[*.{scss,yml}]
 indent_size = 2
 
-[bower.json]
+[{bower.json,.bowerrc,package.json}]
 indent_size = 2
 
-[composer.json]
+[{composer.json,gulpfile.js}]
 indent_size = 4

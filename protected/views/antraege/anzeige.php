@@ -63,7 +63,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
     <div class="col-md-8">
         <section class="well">
             <div class="original_ris_link"><?
-                echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $antrag->getSourceLink());
+                echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $antrag->getSourceLink());
                 ?></div>
             <h1 class="small"><? echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
                 if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")"; ?></h1>

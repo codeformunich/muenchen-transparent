@@ -43,7 +43,7 @@ function zeile_anzeigen($feld, $name, $callback)
 ?>
 <section class="well pdfjs_long" itemscope itemtype="http://schema.org/Event">
 	<div class="original_ris_link"><?
-		echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $termin->getSourceLink());
+		echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $termin->getSourceLink());
 		?></div>
 	<h1 itemprop="name"><?= CHtml::encode($termin->getName()) ?></h1>
 	<br>
@@ -65,7 +65,7 @@ function zeile_anzeigen($feld, $name, $callback)
 	?>
 	<table class="table termindaten">
 		<tbody>
-		<tr>
+		<tr id="datum">
 			<th>Datum:</th>
 			<td>
 				<?= RISTools::datumstring($termin->termin) . ", " . substr($termin->termin, 11, 5) ?>
@@ -73,18 +73,18 @@ function zeile_anzeigen($feld, $name, $callback)
 			</td>
 		</tr>
 		<? if ($termin->sitzungsstand != "") { ?>
-			<tr>
+			<tr id="sitzungsstand">
 				<th>Sitzungsstand:</th>
 				<td <? if ($termin->istAbgesagt()) echo ' class="abgesagt"';?>> <?=CHtml::encode($termin->sitzungsstand)?></td>
 			</tr>
 		<? } ?>
-		<tr>
+		<tr id="ort">
 			<th>Ort:</th>
 			<td itemprop="location">
 				<?= CHtml::encode($termin->sitzungsort) ?>
 			</td>
 		</tr>
-		<tr>
+		<tr id="gremium">
 			<th>Gremium:</th>
 			<td>
 				<?= CHtml::encode($termin->gremium->name) ?>
