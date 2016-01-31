@@ -41,7 +41,7 @@ class ExportController extends RISBaseController
 				'status'             => $antrag->status,
 				'stadtraetInnen'     => [ ],
 				'initiatorInnen'     => [ ],
-                'dokumente'          => [ ],
+				'dokumente'          => [ ],
 			];
 			foreach ($antrag->antraegePersonen as $person) {
 				if ($person->person->stadtraetIn) {
@@ -67,6 +67,7 @@ class ExportController extends RISBaseController
                     'id'    => IntVal($dokument->id),
                     'pdf'   => $dokument->getOriginalLink(),
                     'datum' => $dokument->datum_dokument,
+                    'titel' => $dokument->name_title,
                 ];
             }
 
