@@ -35,13 +35,13 @@ class ExportController extends RISBaseController
 				'bearbeitungsfrist'  => $antrag->bearbeitungsfrist,
 				'registriert_am'     => $antrag->registriert_am,
 				'fristverlaengerung' => $antrag->fristverlaengerung,
-				'erledigt_am'        => $antrag->erledigt_am,
 				'referat'            => $antrag->referat_id,
 				'referent'           => $antrag->referent,
 				'antrags_nr'         => $antrag->antrags_nr,
 				'status'             => $antrag->status,
 				'stadtraetInnen'     => [ ],
 				'initiatorInnen'     => [ ],
+                'dokumente'          => [ ],
 			];
 			foreach ($antrag->antraegePersonen as $person) {
 				if ($person->person->stadtraetIn) {
@@ -62,6 +62,13 @@ class ExportController extends RISBaseController
 					$antragData['initiatorInnen'][] = $arr;
 				}
 			}
+            foreach ($antrag->dokumente as $dokument) {
+                $antragData['dokumente'][] = [
+                    'id'    => IntVal($dokument->id),
+                    'pdf'   => $dokument->getOriginalLink(),
+                    'datum' => $dokument->datum_dokument,
+                ];
+            }
 
 			$return[] = $antragData;
 		}
