@@ -91,7 +91,7 @@ function zeile_anzeigen($feld, $name, $callback)
 			</td>
 		</tr>
 		<?
-		zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", "",  function ($dok) {
+		zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", function ($dok) {
 			/** @var Dokument $dok */
 			echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
 		});
