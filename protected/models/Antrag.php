@@ -515,17 +515,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     private static function rebuildVorgaengeCache_rek($curr_antrag, &$gefundene_antraege, &$gefundene_tops, &$gefundene_dokumente, &$vorgang_id)
     {
         /** @var Antrag $antrag */
-        foreach ($curr_antrag->vorlage2antraege as $ant) if (!isset($gefundene_antraege[$ant->id])) {
-            if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) {
-                Vorgang::vorgangMerge($ant->vorgang_id, $vorgang_id);
-                $ant->vorgang_id = $vorgang_id;
-                $ant->save(false);
-            }
-            if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
-            $gefundene_antraege[$ant->id] = $ant;
-            static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_tops, $gefundene_dokumente, $vorgang_id);
-        }
-        foreach ($curr_antrag->antrag2vorlagen as $ant) if (!isset($gefundene_antraege[$ant->id])) {
+        foreach (array_merge($curr_antrag->vorlage2antraege, $curr_antrag->antrag2vorlagen) as $ant) if (!isset($gefundene_antraege[$ant->id])) {
             if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) {
                 Vorgang::vorgangMerge($ant->vorgang_id, $vorgang_id);
                 $ant->vorgang_id = $vorgang_id;
