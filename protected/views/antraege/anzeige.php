@@ -285,7 +285,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     foreach ($antrag->vorgang->getRISItemsByDate() as $item) {
                         // Der gerade angezeigte Antrag und seine Dokumente überspringen, sodass sie nicht als verwandte Seiten angezeigt werden
                         if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
-                        if (is_a($item, "Dokument") && in_array($item->id, $angezeigte_dokumente)) continue;
+                        if (is_a($item, "Dokument")) continue;
                         
                         $items[] = $item;
                     }
