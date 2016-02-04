@@ -183,7 +183,7 @@ class BAAntragParser extends RISParser
             $antrag                         = Antrag::model()->findByPk($antrag_id);
             $antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
-            $antrag->rebuildVorgaengeCache();
+            $antrag->rebuildVorgaenge();
         }
     }
 

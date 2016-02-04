@@ -16,7 +16,7 @@ $this->html_itemprop = "http://schema.org/Person";
     </ul>
 
     <div style="float: right;"><?
-        echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $person->getSourceLink());
+        echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $person->getSourceLink());
         ?></div>
     <h1 itemprop="name"><?= CHtml::encode($person->getName()) ?></h1>
 </section>

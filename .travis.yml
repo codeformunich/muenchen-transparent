@@ -38,6 +38,7 @@ install:
 
   # Set up mysql
   - mysql -e 'create database ristest;'
+  - mysql -uroot --execute="SET GLOBAL time_zone = '+1:00'";
   - cat docs/schema.sql tests/_data/data.sql >  tests/_data/dump.sql
   - mysql -utravis ristest < tests/_data/dump.sql
 

@@ -512,10 +512,10 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
      * @param int $vorgang_id
      * @throws Exception
      */
-    private static function rebuildVorgaengeCache_rek($curr_antrag, &$gefundene_antraege, &$gefundene_tops, &$gefundene_dokumente, &$vorgang_id)
+    private static function rebuildVorgaengeRekursiv($curr_antrag, &$gefundene_antraege, &$gefundene_tops, &$gefundene_dokumente, &$vorgang_id)
     {
         /** @var Antrag $antrag */
-        foreach ($curr_antrag->vorlage2antraege as $ant) if (!isset($gefundene_antraege[$ant->id])) {
+        foreach (array_merge($curr_antrag->vorlage2antraege, $curr_antrag->antrag2vorlagen) as $ant) if (!isset($gefundene_antraege[$ant->id])) {
             if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) {
                 Vorgang::vorgangMerge($ant->vorgang_id, $vorgang_id);
                 $ant->vorgang_id = $vorgang_id;
@@ -523,17 +523,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             }
             if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
             $gefundene_antraege[$ant->id] = $ant;
-            static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_tops, $gefundene_dokumente, $vorgang_id);
-        }
-        foreach ($curr_antrag->antrag2vorlagen as $ant) if (!isset($gefundene_antraege[$ant->id])) {
-            if ($ant->vorgang_id > 0 && $vorgang_id > 0 && $ant->vorgang_id != $vorgang_id) {
-                Vorgang::vorgangMerge($ant->vorgang_id, $vorgang_id);
-                $ant->vorgang_id = $vorgang_id;
-                $ant->save(false);
-            }
-            if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
-            $gefundene_antraege[$ant->id] = $ant;
-            static::rebuildVorgaengeCache_rek($ant, $gefundene_antraege, $gefundene_tops, $gefundene_dokumente, $vorgang_id);
+            static::rebuildVorgaengeRekursiv($ant, $gefundene_antraege, $gefundene_tops, $gefundene_dokumente, $vorgang_id);
         }
         foreach ($curr_antrag->ergebnisse as $ergebnis) {
             $gefundene_ergebnisse[$ergebnis->id] = $ergebnis;
@@ -545,7 +535,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     /**
      *
      */
-    public function rebuildVorgaengeCache()
+    public function rebuildVorgaenge()
     {
         //if ($this->vorgang_id > 0) return;
         $vorgang_id = 0;
@@ -556,7 +546,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         /** @var Dokument[] $gefundene_dokumente */
         $gefundene_dokumente = [];
         try {
-            static::rebuildVorgaengeCache_rek($this, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
+            static::rebuildVorgaengeRekursiv($this, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
         } catch (Exception $e) {
             var_dump($e);
             return;
@@ -569,20 +559,11 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
             $gefundene_antraege[] = $this;
         }
-        //echo "Gefundene Anträge:\n";
-        foreach ($gefundene_antraege as $ant) {
-            $ant->vorgang_id = $vorgang_id;
-            $ant->save();
-        }
-        //echo "Gefundene Termine:\n";
-        foreach ($gefundene_ergebnisse as $erg) {
-            $erg->vorgang_id = $vorgang_id;
-            $erg->save();
-        }
-        if (SITE_CALL_MODE == "shell") echo "Gefundene Dokumente:\n";
-        foreach ($gefundene_dokumente as $dok) {
-            $dok->vorgang_id = $vorgang_id;
-            $dok->save();
+        
+        // Allen gefundenen Objekten den richtigen Vorgang zuordnen
+        foreach (array_merge($gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente) as $gefunden) {
+            $gefunden->vorgang_id = $vorgang_id;
+            $gefunden->save();
         }
         if (SITE_CALL_MODE == "shell") echo "Fertig";
     }
@@ -592,7 +573,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getVorgang()
     {
-        if ($this->vorgang === null) $this->rebuildVorgaengeCache();
+        if ($this->vorgang === null) $this->rebuildVorgaenge();
         $this->refresh();
         return $this->vorgang;
     }

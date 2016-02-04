@@ -63,7 +63,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
     <div class="col-md-8">
         <section class="well">
             <div class="original_ris_link"><?
-                echo CHtml::link("<span class='fontello-right-open'></span> Original-Seite im RIS", $antrag->getSourceLink());
+                echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $antrag->getSourceLink());
                 ?></div>
             <h1 class="small"><? echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
                 if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")"; ?></h1>
@@ -285,7 +285,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     foreach ($antrag->vorgang->getRISItemsByDate() as $item) {
                         // Der gerade angezeigte Antrag und seine Dokumente überspringen, sodass sie nicht als verwandte Seiten angezeigt werden
                         if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
-                        if (is_a($item, "Dokument") && in_array($item->id, $angezeigte_dokumente)) continue;
+                        if (is_a($item, "Dokument")) continue;
                         
                         $items[] = $item;
                     }

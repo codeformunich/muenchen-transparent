@@ -17,12 +17,12 @@ class Rebuild_VorgaengeCommand extends CConsoleCommand
                 echo $id . "\n";
                 /** @var Antrag $antrag */
                 $antrag = Antrag::model()->findByPk($id);
-                $antrag->rebuildVorgaengeCache();
+                $antrag->rebuildVorgaenge();
             }
         } else {
             /** @var Antrag $antrag */
             $antrag = Antrag::model()->findByPk($args[0]);
-            $antrag->rebuildVorgaengeCache();
+            $antrag->rebuildVorgaenge();
         }
 
     }
