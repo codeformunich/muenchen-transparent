@@ -11,5 +11,8 @@
     "typeahead.js": "~0.11",
     "bootstrap-sass": "~3.3.6",
     "jquery": "~2.2.0"
+  },
+  "resolutions": {
+    "jquery": "~2.2.0"
   }
 }

@@ -20,15 +20,15 @@ chown -R www-data:www-data html/assets
 cp protected/config/main.template.php protected/config/main.php
 ```
 
-JS-Bibliotheken installieren:
+Abhängigkeiten installieren:
 ```bash
 npm install -g bower
 bower install
+npm install
 ```
 
 JS- & CSS-Dateien zusammenfügen und minimieren:
 ```bash
-npm install
 gulp
 ```
 
