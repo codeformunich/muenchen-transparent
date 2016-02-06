@@ -17,7 +17,7 @@ var paths = {
     php: ["protected/**/*.php"],
     std_js: [
         "html/bower/typeahead.js/dist/typeahead.bundle.min.js",
-        "html/bower/bootstrap-sass/assets/javascript/bootstrap.min.js",
+        "html/bower/bootstrap-sass/assets/javascripts/bootstrap.min.js",
         "html/js/jquery-ui-1.11.2.custom.min.js",
         "html/js/scrollintoview.js",
         "html/js/material/ripples.min.js",
