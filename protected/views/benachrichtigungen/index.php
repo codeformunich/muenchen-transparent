@@ -265,7 +265,6 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                 $("#ben_map").AntraegeKarte({
                     benachrichtigungen_widget: true,
                     show_BAs: false,
-                    assetsBase: <?=json_encode($this->getAssetsBase())?>,
                     benachrichtigungen_widget_zoom: 9,
                     size: 11,
                     onSelect: function (latlng, rad) {

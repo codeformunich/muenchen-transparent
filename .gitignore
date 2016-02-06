@@ -19,6 +19,7 @@ html/BingSiteAuth.xml
 
 protected/runtime/
 protected/config/main.php
+html/js/ba_grenzen_geojson.js
 
 # Codeception
 tests/_output/*

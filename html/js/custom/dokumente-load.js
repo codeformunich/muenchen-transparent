@@ -39,30 +39,30 @@ function index_geo_dokumente_load(url, lng, lat, radius) {
 
     $ben_holder.find(".radius_m").text(parseInt(radius));
 
-    if (url != "") {
-        $holder.addClass("loading");
-        $holder.prepend('<div class="loading_indicator"><span class="animate-spin icon-spin4"></span></div>');
+    if (url == "")
+        return false;
+    
+    $holder.addClass("loading");
+    $holder.prepend('<div class="loading_indicator"><span class="animate-spin icon-spin4"></span></div>');
 
-        $holder.prepend('<div id="scroller" style="position: absolute; width: 1px; height: 1px; left: 0; top: ' + topc + 'px;"></div>');
-        //$("#scroller").scrollintoview();
+    $holder.prepend('<div id="scroller" style="position: absolute; width: 1px; height: 1px; left: 0; top: ' + topc + 'px;"></div>');
 
-        var done = false;
-        $holder.parent().find("> .keine_dokumente").fadeOut(400, function () {
-            $(this).hide();
-            if (done) $holder.addClass("fullsize");
-            else done = true;
-        });
+    var done = false;
+    $holder.parent().find("> .keine_dokumente").fadeOut(400, function () {
+        $(this).hide();
+        if (done) $holder.addClass("fullsize");
+        else done = true;
+    });
 
-        $.getJSON(url, function (data) {
-            if (done) $holder.addClass("fullsize");
-            else done = true;
-            $holder.html(data["html"]);
-            $holder.removeClass("loading");
-            $ben_holder.find(".zentrum_ort").text(data["naechster_ort"]);
-            $ben_holder.find("input[name=krit_str]").val(data["krit_str"]);
-            $("#map").AntraegeKarte("setAntraegeData", data["geodata"], data["geodata_overflow"]);
-        });
-    }
+    $.getJSON(url, function (data) {
+        if (done) $holder.addClass("fullsize");
+        else done = true;
+        $holder.html(data["html"]);
+        $holder.removeClass("loading");
+        $ben_holder.find(".zentrum_ort").text(data["naechster_ort"]);
+        $ben_holder.find("input[name=krit_str]").val(data["krit_str"]);
+        $("#map").AntraegeKarte("setAntraegeData", data["geodata"], data["geodata_overflow"]);
+    });
 
     return false;
 }

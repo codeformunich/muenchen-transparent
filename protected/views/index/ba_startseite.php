@@ -47,7 +47,6 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                 benachrichtigungen_widget: "benachrichtigung_hinweis",
                 benachrichtigungen_widget_zoom: 15,
                 outlineBA: <?=$ba->ba_nr?>,
-                assetsBase: <?=json_encode($this->getAssetsBase())?>,
                 onSelect: function (latlng, rad, zoom) {
                     if (zoom >= 15) {
                         index_geo_dokumente_load("", latlng.lng, latlng.lat, rad);

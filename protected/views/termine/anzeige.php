@@ -7,7 +7,6 @@
  */
 
 $this->pageTitle = $termin->getName(true);
-$assets_base     = $this->getAssetsBase();
 $geodata         = [];
 
 function zeile_anzeigen($feld, $name, $callback)
@@ -106,9 +105,6 @@ function zeile_anzeigen($feld, $name, $callback)
             <div id="mapholder">
                 <div id="map"></div>
             </div>
-            <!--
-            <a href="<?= Yii::app()->createUrl("termine/topGeoExport", ["termin_id" => $termin->id]) ?>" style="float: right;" rel="nofollow">Großversion der Karte exportieren
-                <span class="fontello-right-open"></span></a>-->
         </section>
         <br>
 
@@ -167,7 +163,6 @@ function zeile_anzeigen($feld, $name, $callback)
                 var geodata = <?=json_encode($geodata)?>;
                 if (geodata.length > 0) $(function () {
                     var $map = $("#map").AntraegeKarte({
-                        assetsBase: <?=json_encode($this->getAssetsBase())?>,
                         outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
                         onInit: function () {
                             $map.AntraegeKarte("setAntraegeData", geodata, null);

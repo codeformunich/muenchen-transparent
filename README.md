@@ -14,8 +14,6 @@ php composer.phar install
 
 mkdir protected/runtime
 chown -R www-data:www-data protected/runtime
-mkdir html/assets
-chown -R www-data:www-data html/assets
 
 cp protected/config/main.template.php protected/config/main.php
 ```

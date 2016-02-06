@@ -4,11 +4,15 @@ var gulp       = require('gulp'),
     sass       = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify     = require('gulp-uglify'),
-    gutil      = require('gulp-util');
+    gutil      = require('gulp-util'),
+    exec       = require('child_process').exec;
 
 // browsersync will only be used with the browsersync task
 var browsersync = require('browser-sync').create();
 var use_browsersync = false;
+
+// setting this to false makes debugging easier and building the js a hundred times faster
+var use_uglify = true;
 
 var paths = {
     source_styles: ["html/css/*.scss"],
@@ -35,9 +39,10 @@ var paths = {
     ],
 }
 
-gulp.task('default', ['std.js', 'leaflet.js', 'sass']);
+gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'ba_grenzen_geojson']);
 
 gulp.task('watch', function () {
+    use_uglify = false; // much better performance 
     gulp.watch(paths.source_js, ['std.js', 'leaflet.js']);
     gulp.watch(paths.source_styles, ['sass']);
 });
@@ -57,14 +62,14 @@ gulp.task('browsersync', ['watch'], function() {
 gulp.task('std.js', function () {
     return gulp.src(paths.std_js)
         .pipe(concat('std.js'))
-        .pipe(uglify())
+        .pipe(gulpif(use_uglify, uglify()))
         .pipe(gulp.dest('html/js/build/'));
 });
 
 gulp.task('leaflet.js', function () {
     return gulp.src(paths.leaflet_js)
         .pipe(concat('leaflet.js'))
-        .pipe(uglify())
+        .pipe(gulpif(use_uglify, uglify()))
         .pipe(gulp.dest('html/js/build/'));
 });
 
@@ -77,4 +82,8 @@ gulp.task('sass', function () {
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('html/css/build/'))
         .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
+});
+
+gulp.task('ba_grenzen_geojson', function () {
+    return exec('protected/yiic bagrenzengeojson html/js/ba_grenzen_geojson.js');
 });
