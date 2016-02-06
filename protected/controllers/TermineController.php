@@ -179,28 +179,6 @@ class TermineController extends RISBaseController
     }
 
     /**
-     * @param int $termin_id
-     */
-    public function actionTopGeoExport($termin_id)
-    {
-        $this->render('/index/error', ["code" => 404, "message" => "Diese Seite gibt es (noch) nicht."]);
-        return;
-
-        $termin_id = IntVal($termin_id);
-
-        $this->top_menu         = "termine";
-        $this->load_leaflet_css = true;
-
-        /** @var Termin $sitzung */
-        $termin = Termin::model()->findByPk($termin_id);
-
-        $this->renderPartial("top_geo_export", [
-            "termin" => $termin
-        ]);
-    }
-
-
-    /**
      */
     public function actionBaZukunft()
     {

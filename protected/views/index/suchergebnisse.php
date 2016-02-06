@@ -44,7 +44,6 @@ $this->pageTitle = "Suchergebnisse";
     echo '<br style="clear: both;">';
 
     if (!is_null($geodata) && count($geodata) > 0) {
-        $assets_base = $this->getAssetsBase();
         $geokrit     = $krits->getGeoKrit();
         ?>
         <div id="mapholder">
@@ -56,7 +55,6 @@ $this->pageTitle = "Suchergebnisse";
         <script>
             $(function () {
                 var $map = $("#map").AntraegeKarte({
-                    assetsBase: <?=json_encode($this->getAssetsBase())?>,
                     lat: <?=$geokrit["lat"]?>,
                     lng: <?=$geokrit["lng"]?>,
                     size: 14,

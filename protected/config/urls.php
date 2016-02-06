@@ -19,7 +19,6 @@ $GLOBALS["RIS_URL_RULES"] = [
     SITE_BASE_URL . '/benachrichtigungen'                               => 'benachrichtigungen/index',
     SITE_BASE_URL . '/benachrichtigungen/alleFeed/<code:[0-9\-a-z]+>'   => 'benachrichtigungen/alleFeed',
     SITE_BASE_URL . '/termine/<termin_id:\d+>'                          => 'termine/anzeigen',
-    SITE_BASE_URL . '/termine/<termin_id:\d+>/geoExport'                => 'termine/topGeoExport',
     SITE_BASE_URL . '/termine/<termin_id:\d+>/export'                   => 'termine/aboInfo',
     SITE_BASE_URL . '/termine/<termin_id:\d+>/icsSingle'                => 'termine/icsExportSingle',
     SITE_BASE_URL . '/termine/<termin_id:\d+>/icsAll'                   => 'termine/icsExportAll',

@@ -40,7 +40,6 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
                 show_BAs: true,
                 benachrichtigungen_widget_zoom: 14,
                 ba_links: <?=json_encode($ba_links)?>,
-                assetsBase: <?=json_encode($this->getAssetsBase())?>,
                 onSelect: function (latlng, rad, zoom) {
                     if (zoom >= 14) {
                         index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
