@@ -17,13 +17,12 @@ var paths = {
     php: ["protected/**/*.php"],
     std_js: [
         "html/bower/typeahead.js/dist/typeahead.bundle.min.js",
+        "html/bower/bootstrap-sass/assets/javascript/bootstrap.min.js",
         "html/js/jquery-ui-1.11.2.custom.min.js",
         "html/js/scrollintoview.js",
-        "html/js/antraegekarte.jquery.js",
-        "html/js/bootstrap.min.js",
         "html/js/material/ripples.min.js",
         "html/js/material/material.min.js",
-        "html/js/index.js",
+        "html/js/custom/*.js",
     ],
     leaflet_js: [
         "html/bower/leaflet/dist/leaflet.js",

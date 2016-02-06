@@ -36,7 +36,7 @@ $this->html_itemprop = "http://schema.org/Person";
                                 echo "<li class='" . ($frakts->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>" . CHtml::encode($frakts->fraktion->getName());
                                 if ($frakts->fraktion->ba_nr > 0) {
                                     echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . CHtml::encode($frakts->fraktion->bezirksausschuss->name) . ")";
-                                    // @Wird noch nicht zuverlässig erkannt; siehe https://github.com/codeformunich/Ratsinformant/issues/38
+                                    // @Wird noch nicht zuverlässig erkannt; siehe https://github.com/codeformunich/muenchen-transparent/issues/38
                                 }
                                 if ($frakts->datum_von > 0 && $frakts->datum_bis > 0) {
                                     echo "<br><small>(von " . RISTools::datumstring($frakts->datum_von);

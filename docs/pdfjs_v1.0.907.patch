@@ -1,7 +1,7 @@
-diff --git a/a/viewer.css b/Ratsinformant/html/pdfjs/viewer.css
+diff --git a/a/viewer.css b/muenchen-transparent/html/pdfjs/viewer.css
 index cddad65..5a96bfb 100644
 --- a/a/viewer.css
-+++ b/Ratsinformant/html/pdfjs/viewer.css
++++ b/muenchen-transparent/html/pdfjs/viewer.css
 @@ -69,9 +69,7 @@
    margin: 1px auto -8px auto;
    position: relative;
@@ -21,10 +21,10 @@ index cddad65..5a96bfb 100644
    cursor: default;
  }
  
-diff --git a/a/viewer.html b/Ratsinformant/html/pdfjs/viewer.html
+diff --git a/a/viewer.html b/muenchen-transparent/html/pdfjs/viewer.html
 index 6e04e15..990d5a7 100644
 --- a/a/viewer.html
-+++ b/Ratsinformant/html/pdfjs/viewer.html
++++ b/muenchen-transparent/html/pdfjs/viewer.html
 @@ -96,10 +96,6 @@ http://sourceforge.net/adobe/cmap/wiki/License/
                <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
              </button>
@@ -69,10 +69,10 @@ index 6e04e15..990d5a7 100644
                </div>
                <div class="outerCenter">
                  <div class="innerCenter" id="toolbarViewerMiddle">
-diff --git a/a/viewer.js b/Ratsinformant/html/pdfjs/viewer.js
+diff --git a/a/viewer.js b/muenchen-transparent/html/pdfjs/viewer.js
 index 3706d65..708ea78 100644
 --- a/a/viewer.js
-+++ b/Ratsinformant/html/pdfjs/viewer.js
++++ b/muenchen-transparent/html/pdfjs/viewer.js
 @@ -36,9 +36,9 @@ var SCALE_SELECT_CONTAINER_PADDING = 8;
  var SCALE_SELECT_PADDING = 22;
  var PAGE_NUMBER_LOADING_INDICATOR = 'visiblePageIsLoading';

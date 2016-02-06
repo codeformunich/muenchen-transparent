@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>Ratsinformant</ShortName>
-  <Description>Ratsinformant ist eine Plattform, um sich über die Stadtpolitik zu informieren</Description>
+  <ShortName>München Transparent</ShortName>
+  <Description>Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.</Description>
   <InputEncoding>UTF-8</InputEncoding>
   <Image height="48" width="48">https://www.muenchen-transparent.de/favicon.ico</Image>
   <Url type="text/html" method="post" template="https://www.muenchen-transparent.de/suche">

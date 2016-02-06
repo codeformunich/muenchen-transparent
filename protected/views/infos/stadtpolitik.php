@@ -64,8 +64,8 @@ $this->load_mediaelement = true;
             <video width="560" height="306" poster="/media/v1.jpg" controls="controls" preload="none">
                 <source type="video/mp4" src="/media/v1.aac.mp4">
                 <source type="video/ogg" src="/media/v1.ogv">
-                <object width="560" height="306" type="application/x-shockwave-flash" data="/js/mediaelement/build/flashmediaelement.swf">
-                    <param name="movie" value="/js/mediaelement/build/flashmediaelement.swf" />
+                <object width="560" height="306" type="application/x-shockwave-flash" data="/bower/mediaelement/build/flashmediaelement.swf">
+                    <param name="movie" value="/bower/mediaelement/build/flashmediaelement.swf" />
                     <param name="flashvars" value="controls=true&file=/media/v1.mp4" />
                     <!-- Image as a last resort -->
                     <img src="/media/v1.jpg" width="560" height="305" title="No video playback capabilities" />

@@ -1,6 +1,6 @@
 "use strict";
 
-$.widget("ratsinformant.AntraegeKarte", {
+$.widget("muenchen-transparent.AntraegeKarte", {
     options: {
         lat: 48.15509285476017,
         lng: 11.542510986328125,
