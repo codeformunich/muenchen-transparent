@@ -33,7 +33,7 @@ $this->load_mediaelement = true;
         <div class="col col-md-6">
             <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/stadtrecht")) ?>"
                class="btn btn-success">
-                <h2><span class="glyphicon paragraph">§</span> Stadtrecht</h2>
+                <h2><span class="glyphicon glyphicon-paragraph">§</span> Stadtrecht</h2>
 
                 <div class="description">
                     Satzungen &amp; Verordnungen
