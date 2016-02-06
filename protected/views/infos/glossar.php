@@ -56,7 +56,7 @@ $this->pageTitle = "Glossar";
 			</div>
 		</form>
 
-		<script src="/js/ckeditor/ckeditor.js"></script>
+		<script src="/bower/ckeditor/ckeditor.js"></script>
 		<script>
 			$(function () {
 				$("#glossar_anlegen_caller").click(function (ev) {

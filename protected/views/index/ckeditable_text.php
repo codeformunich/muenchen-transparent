@@ -24,7 +24,7 @@ if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);
 if ($show_title) echo '<h1>' . CHtml::encode($text->titel) . '</h1>';
 
 if ($this->binContentAdmin()) { ?>
-    <script src="/js/ckeditor/ckeditor.js"></script>
+    <script src="/bower/ckeditor/ckeditor.js"></script>
     <div id="text_content_holder" style="border: dotted 1px transparent;">
         <?=$html_text?>
     </div>

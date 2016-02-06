@@ -10,7 +10,8 @@
     "shariff": "~1.21",
     "typeahead.js": "~0.11",
     "bootstrap-sass": "~3.3.6",
-    "jquery": "~2.2.0"
+    "jquery": "~2.2.0",
+    "ckeditor": "~4.5.7"
   },
   "resolutions": {
     "jquery": "~2.2.0"

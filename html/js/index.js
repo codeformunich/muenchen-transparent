@@ -70,20 +70,12 @@ function index_geo_dokumente_load(url, lng, lat, radius) {
 
 function ckeditor_init($element, mode) {
     var options = {
-        removePlugins: 'save,backup,about,pastefromword,pastetext,print,preview,templates,newpage',
-        extraPlugins: 'a11yhelp,codemirror,enterkey,font,format,justify,basicstyles,blockquote,colorbutton,colordialog,elementspath,filebrowser,horizontalrule,htmlwriter,image,indent,indentblock,indentlist,link,list,listblock,pastefromword,resize,showborders,specialchar,stylescombo,tab,table,tabletools,magicline,floatingspace,removeformat,flash,tableresize,maximize,sourcedialog',
-        // wordcount,
         docType: '<!DOCTYPE HTML>',
-        removeButtons: 'Anchor,Redo',
         contentsLangDirection: 'lrt',
 
         allowedContent: true,
         floatSpaceDockedOffsetY: 45,
         floatSpaceDockedOffsetX: 0,
-
-        codemirror: {
-            showSearchButton: false
-        },
 
         toolbarGroups: [
             {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
@@ -91,18 +83,16 @@ function ckeditor_init($element, mode) {
             {name: 'colors'},
             {name: 'links'},
             {name: 'clipboard', groups: ['clipboard', 'undo']},
-            '/',
             {name: 'tools'},
+            '/',
             {name: 'document', groups: ['mode', 'document', 'doctools']},
             {name: 'styles'},
             {name: 'others'},
             {name: 'editing', groups: ['find', 'selection', 'spellchecker']},
             {name: 'about'},
-            '/',
             {name: 'forms'},
             {name: 'insert'}
         ],
-        indentClasses: ['indent1', 'indent2', 'indent3', 'indent4', 'indent5', 'indent6', 'indent7', 'indent8', 'indent9', 'indent10', 'indent11', 'indent12', 'indent13', 'indent14', 'indent15']
 
     };
     CKEDITOR.dtd.$removeEmpty.span = 0;

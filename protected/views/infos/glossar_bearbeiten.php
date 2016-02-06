@@ -32,7 +32,7 @@ $this->pageTitle = "Glossar bearbeiten";
 		</div>
 	</form>
 
-	<script src="/js/ckeditor/ckeditor.js"></script>
+	<script src="/bower/ckeditor/ckeditor.js"></script>
 	<script>
 		$(function () {
 			$("#eintrag_del_caller").click(function(ev) {
