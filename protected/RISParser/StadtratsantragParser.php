@@ -99,6 +99,7 @@ class StadtratsantragParser extends RISParser
                 break;
         }
 
+        // Die erste Match-Gruppe enthält den Wert von title im <a>-tag, der zweite die URL und der Dritte den von <a>-tag umschlossenen Text
         preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]*)\"[^>]*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = [
