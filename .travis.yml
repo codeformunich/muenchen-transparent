@@ -43,6 +43,7 @@ install:
   - mysql -utravis ristest < tests/_data/dump.sql
 
   # Install dependencies
+  - chmod 644 vendor/heise/shariff/index.php || true # Prevent a weird "has uncommitted changes" error message when updating shariff
   - composer install --prefer-source # --prefer-source fixes github's limits
   - npm install
   - npm install bower
