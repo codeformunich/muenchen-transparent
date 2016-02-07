@@ -621,4 +621,21 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
         return $ergebniss;
     }
+
+    /**
+     * @return array
+     */
+    public function toOParlPaper()
+    {
+        return [
+            'id' => 'de.muenchen-transparent.paper.' . $this->id,
+            'type' => OParl::TYPE_PAPER,
+            'body' => 'de.muenchen-transparent.body.' . $this->ba_nr,
+            'name' => $this->getName(),
+            'reference' => $this->antrags_nr,
+            'publishedDate' => $this->gestellt_am . 'T00:00:00',
+
+        ];
+    }
+
 }
