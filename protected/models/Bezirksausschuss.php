@@ -236,37 +236,4 @@ class Bezirksausschuss extends CActiveRecord
         return $statistiken;
 
     }
-
-    /**
-     * @return array
-     */
-    public function toOParlBody()
-    {
-        $legislativeTerm = [
-            // @TODO
-            [
-                'id'        => 'de.muenchen-transparent.term.0',
-                'body'      => 'de.muenchen-transparent.body.' . $this->ba_nr,
-                'name'      => '2014-2020',
-                'startDate' => '2010-12-03',
-                'endDate'   => '2013-12-03',
-            ]
-        ];
-
-        return [
-            'id'              => 'de.muenchen-transparent.body.' . $this->ba_nr,
-            'type'            => OParl::TYPE_BODY,
-            'system'          => OParlController::getOparlUrl('system'),
-            'contactEmail'    => Yii::app()->params['adminEmail'],
-            'contactName'     => Yii::app()->params['adminEmailName'],
-            'name'            => $this->name,
-            'shortName'       => ($this->ba_nr > 0 ? 'BA ' . $this->ba_nr : 'Stadtrat'),
-            'website'         => $this->getLink(),
-            'organization'    => OParlController::getOparlUrl('organization', $this->ba_nr),
-            'person'          => OParlController::getOparlUrl('person', $this->ba_nr),
-            'meeting'         => OParlController::getOparlUrl('meeting', $this->ba_nr),
-            'paper'           => OParlController::getOparlUrl('paper', $this->ba_nr),
-            'legislativeTerm' => $legislativeTerm,
-        ];
-    }
 }
