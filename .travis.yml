@@ -31,6 +31,7 @@ install:
   - phpenv config-rm xdebug.ini # Speeds up build
   - phpenv config-add docs/travis.php.ini
   - ln -s `pwd` /tmp/muenchen-transparent
+  - jdk_switcher use openjdk8
 
   # Create yii-environment
   - mkdir protected/runtime
