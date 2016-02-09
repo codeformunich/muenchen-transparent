@@ -186,7 +186,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                         if ($antrag->referat != "") echo " / " . CHtml::encode(strip_tags($antrag->referat));
                         ?></td>
                 </tr>
-                <tr "antragsnummer">
+                <tr id="antragsnummer">
                     <th>Antragsnummer:</th>
                     <td><?= CHtml::encode($antrag->antrags_nr) ?></td>
                 </tr>

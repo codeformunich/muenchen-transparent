@@ -1,7 +1,7 @@
 <?php 
 $I = new AcceptanceTester($scenario);
 $I->wantTo('Check that an Antrag with a Vorgang has the correct "Verwandte Seiten"');
-$I->amOnPage('/antraege/2');
+$I->amOnPageValidated('/antraege/2');
 $I->see('Antrag mit verwandten Seiten');
 
 $I->seeLink('Das Dokument zum Antrag mit verwandten Seiten', '/dokumente/2');

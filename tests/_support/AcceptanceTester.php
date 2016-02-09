@@ -23,4 +23,8 @@ class AcceptanceTester extends \Codeception\Actor
    /**
     * Define custom actions here
     */
+    function amOnPageValidated($page) {
+        $this->amOnPage($page);
+        $this->validateHTML();
+    }
 }

@@ -1,8 +1,7 @@
 <?php 
 $I = new AcceptanceTester($scenario);
 $I->wantTo('Check that a simply Termin-entry works');
-$I->amOnPage('/termine/1');
-$I->validateHTML();
+$I->amOnPageValidated('/termine/1');
 
 $I->see('Ausschuss mit Terminen (2016-01-01 09:00:00)', 'h1');
 $I->seeLink('Original-Seite im RIS', 'http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=1');
