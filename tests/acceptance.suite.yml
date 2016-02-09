@@ -10,3 +10,7 @@ modules:
         - PhpBrowser:
             url: http://localhost:8080
         - \Helper\Acceptance
+        - \Helper\HTMLValidator
+    config:
+        \Helper\HTMLValidator:
+            vnuPath: tests/_vnu/vnu.jar
