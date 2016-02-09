@@ -26,6 +26,6 @@ class AcceptanceTester extends \Codeception\Actor
     function amOnPageValidated($page) {
         $this->amOnPage($page);
         $this->validateHTML();
-        //$this->validatePa11y();
+        //$this->validatePa11y('WCAG2AA', ["tag_add_form"]); // TODO: Wieder aktivieren und alle Fehler abarbeiten
     }
 }

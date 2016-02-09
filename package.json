@@ -1,5 +1,5 @@
 {
-  "devDependencies": {
+  "dependencies": {
     "browser-sync": "^2.10.1",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
@@ -9,6 +9,7 @@
     "gulp-uglify": "^1.5.1",
     "gulp-util": "^3.0.7",
     "gulp-exec": "^2.1.2",
-    "pa11y": "^3.5.1"
+    "pa11y": "^3.5.1",
+    "phantomjs-prebuilt": "^2.1.4"
   }
 }

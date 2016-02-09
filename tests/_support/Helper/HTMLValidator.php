@@ -92,7 +92,7 @@ class HTMLValidator extends \Codeception\Module
         } else if ($this->hasModule('PhpBrowser')) {
             return $this->getModule('PhpBrowser')->_getResponseContent();
         } else {
-            throw new \Exception('This validator needs WebDriver to work');
+            throw new \Exception('This validator needs WebDriver or PhpBrowser to work');
         }
     }
 

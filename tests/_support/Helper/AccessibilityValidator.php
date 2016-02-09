@@ -12,7 +12,7 @@
  *
  * - Codeception with WebDriver or PhpBrowser set up
  * - pa11y is installed locally (e.g. using "npm insgall -g pa11y")
- *
+ * - phantomjs is installed locally (e.g. using "npm insgall -g phantomjs-prebuilt")
  *
  * Installation:
  * =============
@@ -26,6 +26,7 @@
  *   config:
  *     \Helper\AccessibilityValidator:
  *       pa11yPath: /usr/local/bin/pa11y
+ *       phantomjsPath: /usr/bin/phantomjs
  *
  *
  * Usage:
@@ -76,13 +77,13 @@ class AccessibilityValidator extends \Codeception\Module
     private function getPageUrl()
     {
         if ($this->hasModule('WebDriver')) {
-            /** @var \Codeception\Module\WebDriver $webdriver */
-            $webdriver = $this->getModule('WebDriver');
-            return $webdriver->webDriver->getCurrentURL();
-        } else {
+            return $this->getModule('WebDriver')->webDriver->getCurrentURL();
+        } else if ($this->hasModule('PhpBrowser')) {
             /** @var \Codeception\Module\PhpBrowser $phpBrowser */
             $phpBrowser = $this->getModule('PhpBrowser');
             return trim($phpBrowser->_getUrl(), '/') . $phpBrowser->_getCurrentUri();
+        } else {
+            throw new \Exception('This validator needs WebDriver or PhpBrowser to work');
         }
     }
 
@@ -102,11 +103,12 @@ class AccessibilityValidator extends \Codeception\Module
         if (!$pa11yPath) {
             $pa11yPath = 'pa11y';
         }
-        if (!file_exists($pa11yPath)) {
-            throw new \Exception('pa11y not found: ' . $pa11yPath);
+        $phantomjsPath = $this->_getConfig('phantomjsPath');
+        if (!$phantomjsPath) {
+            $phantomjsPath = 'phantomjs';
         }
-
-        exec($pa11yPath . " -s " . $standard . " -r json '" . addslashes($url) . "'", $return);
+        
+        exec($pa11yPath . " -s " . $standard . " -r json '" . addslashes($url) . "'" . " -e " . $phantomjsPath, $return);
         $data = json_decode($return[0], true);
         if (!$data) {
             $msg = 'Invalid data returned from validation service: ';

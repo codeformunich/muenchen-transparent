@@ -17,3 +17,4 @@ modules:
             vnuPath: tests/_vnu/vnu.jar
         \Helper\AccessibilityValidator:
             pa11yPath: node_modules/.bin/pa11y
+            phantomjsPath: node_modules/.bin/phantomjs
