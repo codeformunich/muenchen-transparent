@@ -8,6 +8,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.1",
     "gulp-util": "^3.0.7",
-    "gulp-exec": "^2.1.2"
+    "gulp-exec": "^2.1.2",
+    "pa11y": "^3.5.1"
   }
 }

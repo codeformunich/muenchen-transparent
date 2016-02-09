@@ -11,6 +11,9 @@ modules:
             url: http://localhost:8080
         - \Helper\Acceptance
         - \Helper\HTMLValidator
+        - \Helper\AccessibilityValidator
     config:
         \Helper\HTMLValidator:
             vnuPath: tests/_vnu/vnu.jar
+        \Helper\AccessibilityValidator:
+            pa11yPath: node_modules/.bin/pa11y

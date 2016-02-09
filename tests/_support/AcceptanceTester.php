@@ -26,5 +26,6 @@ class AcceptanceTester extends \Codeception\Actor
     function amOnPageValidated($page) {
         $this->amOnPage($page);
         $this->validateHTML();
+        //$this->validatePa11y();
     }
 }
