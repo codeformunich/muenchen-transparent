@@ -20,6 +20,7 @@ class Text extends CActiveRecord
 
     public static $TYP_STD = 0;
     public static $TYP_GLOSSAR = 1;
+    public static $TYP_REFERAT = 2;
 
     /**
      * Returns the static model of the specified AR class.
