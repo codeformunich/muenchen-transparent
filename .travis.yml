@@ -22,11 +22,8 @@ services:
 
 addons:
   apt:
-    sources:
-      - debian-sid
     packages:
       - nginx
-      - openjdk-8-jre
 
 install:
   # Create environment for the webserver running in travis ci
