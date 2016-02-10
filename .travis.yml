@@ -25,6 +25,7 @@ addons:
     packages:
       - nginx
       - oracle-java8-installer
+      - openjdk-8-jdk
 
 install:
   # Create environment for the webserver running in travis ci
@@ -32,7 +33,8 @@ install:
   - phpenv config-rm xdebug.ini # Speeds up build
   - phpenv config-add docs/travis.php.ini
   - ln -s `pwd` /tmp/muenchen-transparent
-
+  - java -version
+  
   # Create yii-environment
   - mkdir protected/runtime
   - mkdir html/assets
