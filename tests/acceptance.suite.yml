@@ -18,3 +18,9 @@ modules:
         \Helper\AccessibilityValidator:
             pa11yPath: node_modules/.bin/pa11y
             phantomjsPath: node_modules/.bin/phantomjs
+
+env:
+    nohtmlvalidation:
+        # Stub to work around travis ci's problems with java 8
+    asdf:
+        #asrfg

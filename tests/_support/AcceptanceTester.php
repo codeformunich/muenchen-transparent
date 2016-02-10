@@ -25,7 +25,11 @@ class AcceptanceTester extends \Codeception\Actor
     */
     function amOnPageValidated($page) {
         $this->amOnPage($page);
-        $this->validateHTML();
+        codecept_debug($this->getScenario()->current('env'));
+        // FIXME: Workaround for travis ci because it doesn't support java 8
+        if (strpos($this->getScenario()->current('env'), 'nohtmlvalidation') === false) {
+            $this->validateHTML();
+        }
         //$this->validatePa11y('WCAG2AA', ["tag_add_form"]); // TODO: Wieder aktivieren und alle Fehler abarbeiten
     }
 }

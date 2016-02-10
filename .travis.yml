@@ -57,10 +57,10 @@ install:
 script:
   - nginx -c `pwd`/docs/nginx-codeception.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  - vendor/bin/codecept run
+  - vendor/bin/codecept run --env nohtmlvalidation # nohtmlvalidation is a workaround for the missing java 8
 
 after_failure:
-  - vendor/bin/codecept run --debug
+  - vendor/bin/codecept run --debug --env nohtmlvalidation
   - cat protected/runtime/application.log
   - cat /tmp/error.log
   - cat /tmp/access.log
