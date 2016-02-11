@@ -663,7 +663,7 @@ class Dokument extends CActiveRecord implements IRISItem
         /** @var RISSolrDocument $doc */
         $doc = $update->createDocument();
 
-        solrIndex_generic_do($doc, "Rathausumschau:", $this->text_pdf, $this->rathausumschau->datum . " 13:00:00");
+        $this->solrIndex_generic_do($doc, "Rathausumschau:", $this->text_pdf, $this->rathausumschau->datum . " 13:00:00");
 
         $doc->antrag_id = $this->rathausumschau->nr;
         $update->addDocuments([$doc]);
@@ -680,7 +680,7 @@ class Dokument extends CActiveRecord implements IRISItem
         if (is_null($this->tagesordnungspunkt)) return; // Kann vorkommen, wenn ein TOP nachträglich gelöscht wurde
 
         $text = $this->tagesordnungspunkt->top_betreff . " " . $this->tagesordnungspunkt->beschluss_text . " " . $this->tagesordnungspunkt->entscheidung . " " . $this->text_pdf;
-        solrIndex_generic_do($doc, "Ergebnis:", $text, $this->getDate());
+        $this->solrIndex_generic_do($doc, "Ergebnis:", $text, $this->getDate());
 
         $update->addDocuments([$doc]);
     }
