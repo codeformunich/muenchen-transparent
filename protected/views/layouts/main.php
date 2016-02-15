@@ -68,6 +68,7 @@
     if ($this->load_mediaelement) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
     if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
     if ($this->load_shariff) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
+    <script src="/js/build/std.js" defer></script>
     ?>
 </head>
 
@@ -190,7 +191,5 @@
         </span>
     </p>
 </footer>
-
-<script src="/js/build/std.js"></script>
 </body>
 </html>
