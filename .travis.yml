@@ -25,6 +25,10 @@ addons:
     packages:
       - nginx
 
+branches:
+  only:
+    - master
+
 install:
   # Create environment for the webserver running in travis ci
   - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
