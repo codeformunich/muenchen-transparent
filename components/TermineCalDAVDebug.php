@@ -1,5 +1,8 @@
 <?php
 
+namespace app\components;
+
+
 class TermineCalDAVDebug extends \Sabre\DAV\ServerPlugin {
 
 	/** @var \Sabre\DAV\Server $server */

@@ -1,4 +1,12 @@
 <?php
+
+use yii\helpers\Html;
+use Yii;
+use app\components\HTMLTools;
+use app\components\RISSolrHelper;
+use app\components\RISTools;
+use app\models\Dokument;
+
 /**
  * @var StadtraetIn $person
  * @var IndexController $this

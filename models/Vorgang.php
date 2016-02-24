@@ -1,5 +1,12 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\components\RISTools;
+use app\models\Antrag;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "bezirksausschuesse".
  *

@@ -1,8 +1,7 @@
 <?php
 
+namespace app\components;
 
-use Sabre\DAV;
-use Sabre\DAVACL;
 
 class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\AbstractBackend
 {

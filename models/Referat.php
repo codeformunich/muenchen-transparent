@@ -1,5 +1,10 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use yii\db\ActiveRecord;
+
 /**
  * The followings are the available columns in table 'gremien':
  * @property integer $id

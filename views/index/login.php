@@ -1,5 +1,8 @@
 <?php
 
+use yii\helpers\Html;
+use app\components\AntiXSS;
+
 /**
 * @var IndexController $this
 * @var string $current_url

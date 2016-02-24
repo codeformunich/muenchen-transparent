@@ -1,4 +1,12 @@
 <?php
+
+use app\models\AntragPerson;
+use yii\helpers\Html;
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISTools;
+use app\models\Antrag;
+
 /**
  * @var Antrag $antrag
  * @var AntraegeController $this

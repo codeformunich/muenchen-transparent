@@ -1,5 +1,15 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISBaseController;
+use app\components\RISSolrHelper;
+use app\models\BenutzerIn;
+use app\models\Vorgang;
+use yii\helpers\Html;
+
 class BenachrichtigungenController extends RISBaseController
 {
     public function actionIndex($code = "")

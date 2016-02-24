@@ -1,5 +1,13 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\components\RISGeo;
+use app\components\RISTools;
+use app\models\Bezirksausschuss;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "orte_geo".
  *

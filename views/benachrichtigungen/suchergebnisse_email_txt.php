@@ -1,4 +1,7 @@
 <?php
+
+use Yii;
+
 /**
  * @var BenutzerIn $benutzerIn
  * @var array $data

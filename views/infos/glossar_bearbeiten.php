@@ -1,4 +1,9 @@
 <?php
+
+use yii\helpers\Html;
+use Yii;
+use app\components\AntiXSS;
+
 /**
  * @var InfosController $this
  * @var Text $eintrag

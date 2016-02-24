@@ -1,5 +1,15 @@
 <?php
 
+namespace app\risparser;
+
+use Yii;
+use app\components\RISTools;
+use app\models\Fraktion;
+use app\models\RISAenderung;
+use app\models\StadtraetIn;
+use app\models\StadtraetInFraktion;
+use app\risparser\RISParser;
+
 class StadtraetInnenParser extends RISParser
 {
 

@@ -1,4 +1,8 @@
 <?php
+
+use app\models\Termin;
+use yii\helpers\Html;
+
 /**
  * @var array $termine
  * @var bool $gremienname

@@ -1,5 +1,16 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\components\RISTools;
+use app\models\AntragHistory;
+use app\models\AntragPerson;
+use app\models\Person;
+use app\models\RISAenderung;
+use app\models\Vorgang;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "antraege".
  *

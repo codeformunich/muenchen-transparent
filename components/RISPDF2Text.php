@@ -1,5 +1,10 @@
 <?php
 
+namespace app\components;
+
+use Yii;
+use app\components\RISTools;
+
 class RISPDF2Text
 {
 

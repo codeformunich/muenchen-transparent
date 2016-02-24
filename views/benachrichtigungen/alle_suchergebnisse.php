@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @var BenachrichtigungenController $this
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse

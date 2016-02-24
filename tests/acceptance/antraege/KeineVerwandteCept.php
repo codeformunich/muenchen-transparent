@@ -1,4 +1,6 @@
 <?php 
+
+
 $I = new AcceptanceTester($scenario);
 $I->wantTo('Check that an Antrag without Vorgang has no "Verwandte Seiten"');
 $I->amOnPageValidated('/antraege/1');

@@ -1,5 +1,14 @@
 <?php
 
+namespace app\risparser;
+
+use Yii;
+use app\components\RISTools;
+use app\models\Gremium;
+use app\models\RISAenderung;
+use app\models\StadtraetIn;
+use app\risparser\RISParser;
+
 class BAGremienParser extends RISParser
 {
     private static $MAX_OFFSET     = 200;

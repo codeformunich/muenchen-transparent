@@ -1,5 +1,13 @@
 <?php
 
+namespace app\risparser;
+
+use Yii;
+use app\components\RISPDF2Text;
+use app\models\Dokument;
+use app\models\Rathausumschau;
+use app\risparser\RISParser;
+
 class RathausumschauParser extends RISParser
 {
 

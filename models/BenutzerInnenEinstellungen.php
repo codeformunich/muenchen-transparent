@@ -1,5 +1,8 @@
 <?php
 
+namespace app\models;
+
+
 class BenutzerInnenEinstellungen
 {
 

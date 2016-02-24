@@ -1,5 +1,10 @@
 <?php
 
+namespace app\models;
+
+use app\components\RISTools;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "tagesordnungspunkte_history".
  *

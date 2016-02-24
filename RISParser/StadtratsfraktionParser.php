@@ -1,5 +1,11 @@
 <?php
 
+namespace app\risparser;
+
+use app\components\RISTools;
+use app\models\Fraktion;
+use app\models\RISAenderung;
+
 class StadtratsfraktionParser
 {
 

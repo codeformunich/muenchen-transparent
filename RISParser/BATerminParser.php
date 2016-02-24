@@ -1,5 +1,16 @@
 <?php
 
+namespace app\risparser;
+
+use app\components\RISTools;
+use app\models\Antrag;
+use app\models\Dokument;
+use app\models\Gremium;
+use app\models\RISAenderung;
+use app\models\Tagesordnungspunkt;
+use app\models\Termin;
+use app\risparser\RISParser;
+
 class BATerminParser extends RISParser
 {
     private static $MAX_OFFSET        = 5200;

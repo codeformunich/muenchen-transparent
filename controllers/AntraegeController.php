@@ -1,5 +1,13 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISBaseController;
+use app\models\Antrag;
+use app\models\Tag;
+
 class AntraegeController extends RISBaseController
 {
 

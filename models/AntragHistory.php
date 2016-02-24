@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models;
+
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "antraege_history".
  *

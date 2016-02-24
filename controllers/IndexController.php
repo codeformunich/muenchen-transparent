@@ -1,5 +1,25 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISBaseController;
+use app\components\RISSolrHelper;
+use app\components\RISSucheKrits;
+use app\components\RISTools;
+use app\models\Antrag;
+use app\models\BenutzerIn;
+use app\models\Bezirksausschuss;
+use app\models\Dokument;
+use app\models\OrtGeo;
+use app\models\RISAenderung;
+use app\models\RISMetadaten;
+use app\models\Rathausumschau;
+use app\models\StadtraetIn;
+use app\models\Termin;
+use yii\helpers\Html;
+
 class IndexController extends RISBaseController
 {
     public static $BA_DOKUMENTE_TAGE_PRO_SEITE = 14;

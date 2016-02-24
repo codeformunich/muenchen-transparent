@@ -1,5 +1,7 @@
 <?php
 
+use app\components\AntiXSS;
+
 /**
  * @var IndexController $this
  */

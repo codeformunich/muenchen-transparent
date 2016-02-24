@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+
 class RISMetadaten
 {
 

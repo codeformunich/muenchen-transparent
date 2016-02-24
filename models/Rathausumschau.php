@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models;
+
+use yii\db\ActiveRecord;
+
 /**
  * @property integer $id
  * @property string $datum

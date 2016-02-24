@@ -1,5 +1,8 @@
 <?php
 
+namespace app\risparser;
+
+
 abstract class RISParser
 {
     public abstract function parse($id);

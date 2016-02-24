@@ -1,5 +1,8 @@
 <?php
 
+namespace app\components;
+
+
 class RISUserIdentity extends BaseUserIdentity
 {
     /** @var BenutzerIn */

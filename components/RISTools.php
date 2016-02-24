@@ -1,5 +1,12 @@
 <?php
 
+namespace app\components;
+
+use Yii;
+use app\models\Person;
+use app\models\Text;
+use yii\helpers\Html;
+
 class RISTools
 {
 

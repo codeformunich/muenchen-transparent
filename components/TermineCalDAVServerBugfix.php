@@ -1,5 +1,8 @@
 <?php
 
+namespace app\components;
+
+
 class TermineCalDAVServerBugfix extends \Sabre\DAV\Server {
     /**
      * Windows Phone liefert kein "Depth" mit, daher funktioniert der Calendar-Query nicht,

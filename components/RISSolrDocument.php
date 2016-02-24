@@ -1,5 +1,8 @@
 <?php
 
+namespace app\components;
+
+
 class RISSolrDocument implements Solarium\QueryType\Update\Query\Document\DocumentInterface
 {
 

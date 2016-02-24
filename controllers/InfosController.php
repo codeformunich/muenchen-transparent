@@ -1,5 +1,14 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISBaseController;
+use app\components\RISTools;
+use app\models\Rechtsdokument;
+use app\models\Text;
+
 class InfosController extends RISBaseController
 {
     public function actionSoFunktioniertStadtpolitik()

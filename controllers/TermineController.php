@@ -1,5 +1,12 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\RISBaseController;
+use app\models\Bezirksausschuss;
+use app\models\Termin;
+
 class TermineController extends RISBaseController
 {
 

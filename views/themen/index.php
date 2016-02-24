@@ -1,4 +1,8 @@
 <?php
+
+use yii\helpers\Html;
+use Yii;
+
 /**
  * @var Dokument[] $highlights
  * @var Referat[] $referate

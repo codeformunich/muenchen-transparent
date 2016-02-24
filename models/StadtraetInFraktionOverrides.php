@@ -1,5 +1,8 @@
 <?php
 
+namespace app\models;
+
+
 /*
  * Dieser Hack ist nötig, da nicht alle Fraktionen im RIS gelistst werden.
  */

@@ -1,5 +1,15 @@
 <?php
 
+namespace app\risparser;
+
+use Yii;
+use app\components\RISTools;
+use app\models\Antrag;
+use app\models\Dokument;
+use app\models\RISAenderung;
+use app\models\Referat;
+use app\risparser\RISParser;
+
 class StadtratsantragParser extends RISParser
 {
     private static $MAX_OFFSET        = 17000;

@@ -1,5 +1,16 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\components\RISTools;
+use app\models\Antrag;
+use app\models\Gremium;
+use app\models\StadtraetIn;
+use app\models\Termin;
+use yii\db\ActiveRecord;
+use yii\helpers\Html;
+
 /**
  * This is the model class for table "ris_aenderungen".
  *

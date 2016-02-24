@@ -1,4 +1,9 @@
 <?php
+
+use Yii;
+use yii\helpers\Html;
+use app\components\AntiXSS;
+
 /**
  * @var InfosController $this
  * @var string $current_url

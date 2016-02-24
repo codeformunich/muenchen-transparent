@@ -1,5 +1,14 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\components\RISGeo;
+use app\components\RISTools;
+use app\models\Antrag;
+use app\models\OrtGeo;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "tagesordnungspunkte".
  *

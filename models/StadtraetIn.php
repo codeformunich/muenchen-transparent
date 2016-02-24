@@ -1,5 +1,11 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\models\StadtraetInFraktionOverrides;
+use yii\db\ActiveRecord;
+
 /**
  * @property integer $id
  * @property integer $referentIn

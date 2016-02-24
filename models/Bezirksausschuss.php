@@ -1,5 +1,11 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\models\StatistikDatensatz;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "bezirksausschuesse".
  *

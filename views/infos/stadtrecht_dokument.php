@@ -1,4 +1,9 @@
 <?php
+
+use yii\helpers\Html;
+use Yii;
+use app\models\Rechtsdokument;
+
 /**
  * @var Rechtsdokument $dokument
  * @var InfosController $this

@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models;
+
+use yii\db\ActiveRecord;
+
 /**
  * @propeerty integer $id
  * @property integer $stadtraetIn_id

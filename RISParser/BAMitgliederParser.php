@@ -1,5 +1,14 @@
 <?php
 
+namespace app\risparser;
+
+use Yii;
+use app\components\RISTools;
+use app\models\Bezirksausschuss;
+use app\models\Fraktion;
+use app\models\StadtraetIn;
+use app\risparser\RISParser;
+
 class BAMitgliederParser extends RISParser
 {
 

@@ -1,5 +1,10 @@
 <?php
 
+namespace app\components;
+
+use app\components\RISTools;
+use yii\helpers\Html;
+
 class HistorienEintragAntrag implements HistorienEintrag
 {
     /**

@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models;
+
+use yii\db\ActiveRecord;
+
 /**
  * @property integer $ba_nr
  * @property integer $jahr

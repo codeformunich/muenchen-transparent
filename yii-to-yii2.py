@@ -263,7 +263,7 @@ def main():
     if args.import_usages:
         sources = generate_namespace_mapping()
         for filepath in get_all_files(paths):
-            imports = find_usages_for_import(sources)
+            imports = find_usages_for_import(filepath, sources)
             insert_imports(filepath, imports)
     
 if __name__ == "__main__":

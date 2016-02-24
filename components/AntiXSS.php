@@ -1,5 +1,8 @@
 <?php
 
+namespace app\components;
+
+
 class AntiXSS
 {
     private static $seed = null;

@@ -1,4 +1,6 @@
 <?php 
+
+
 $I = new AcceptanceTester($scenario);
 $I->wantTo('Check that a simply Termin-entry works');
 $I->amOnPageValidated('/termine/1');

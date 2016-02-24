@@ -1,7 +1,8 @@
 <?php
 
-use Sabre\DAV;
-use Sabre\DAVACL;
+namespace app\components;
+
+use app\models\Termin;
 
 class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterface
 {

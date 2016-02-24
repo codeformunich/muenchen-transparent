@@ -1,4 +1,7 @@
 <?php
+
+use yii\helpers\Html;
+
 /** @var Bezirksausschuss[] $bas */
 /** Liste zum Auswählen eines Ba's auf Geräten mit kleinem Bildschirm */
 ?>

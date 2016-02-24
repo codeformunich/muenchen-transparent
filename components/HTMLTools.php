@@ -1,5 +1,9 @@
 <?php
 
+namespace app\components;
+
+use yii\helpers\Html;
+
 class HTMLTools {
     /**
      * @param $text

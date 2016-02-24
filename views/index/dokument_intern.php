@@ -1,4 +1,7 @@
 <?php
+
+use yii\helpers\Html;
+
 /**
  * @var IndexController $this
  * @var Dokument $dokument

@@ -1,5 +1,13 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+use app\components\RISSolrHelper;
+use app\components\RISTools;
+use app\models\Dokument;
+use yii\db\ActiveRecord;
+
 /**
  * @property integer $id
  * @property string $email

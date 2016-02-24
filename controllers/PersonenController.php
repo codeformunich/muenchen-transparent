@@ -1,5 +1,12 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISBaseController;
+use app\models\StadtraetIn;
+
 class PersonenController extends RISBaseController
 {
 

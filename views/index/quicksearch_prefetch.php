@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @var IndexController $this
  * @var StadtraetIn[] $stadtraetInnen

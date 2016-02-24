@@ -1,4 +1,8 @@
 <?php
+
+use app\models\Dokument;
+use yii\helpers\Html;
+
 /**
  * @var RISBaseController $this
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse

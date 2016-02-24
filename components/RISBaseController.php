@@ -1,5 +1,12 @@
 <?php
 
+namespace app\components;
+
+use Yii;
+use app\components\AntiXSS;
+use app\models\BenutzerIn;
+use yii\web\Controller;
+
 class RISBaseController extends Controller
 {
     /**

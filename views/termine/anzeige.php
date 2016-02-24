@@ -1,4 +1,9 @@
 <?php
+
+use yii\helpers\Html;
+use Yii;
+use app\components\RISTools;
+
 /**
  * @var TermineController $this
  * @var Termin $termin

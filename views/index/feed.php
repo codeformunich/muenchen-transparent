@@ -1,5 +1,9 @@
 <?php
 
+use app\components\RISTools;
+use yii\helpers\Html;
+use Yii;
+
 /**
  * @var IndexController $this
  * @var string $feed_title

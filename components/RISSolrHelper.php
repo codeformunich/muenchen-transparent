@@ -1,5 +1,10 @@
 <?php
 
+namespace app\components;
+
+use app\components\RISTools;
+use app\models\Dokument;
+
 class RISSolrHelper
 {
     /**

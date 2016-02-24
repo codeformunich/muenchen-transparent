@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models;
+
+use yii\db\ActiveRecord;
+
 /**
  * @property integer $stadtraetIn_id
  * @property integer $fraktion_id

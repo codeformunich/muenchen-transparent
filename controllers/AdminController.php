@@ -1,5 +1,16 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISBaseController;
+use app\models\BenutzerIn;
+use app\models\Person;
+use app\models\StadtraetIn;
+use app\models\Tag;
+use app\models\Termin;
+
 class AdminController extends RISBaseController
 {
     public function actionStadtraetInnenPersonen()

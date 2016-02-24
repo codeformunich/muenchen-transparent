@@ -1,5 +1,9 @@
 <?php
 
+namespace app\risparser;
+
+use app\models\Rechtsdokument;
+use app\risparser\RISParser;
 
 class StadtrechtParser extends RISParser
 {

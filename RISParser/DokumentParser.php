@@ -1,5 +1,9 @@
 <?php
 
+namespace app\risparser;
+
+use app\models\Dokument;
+
 class DokumentParser
 {
 

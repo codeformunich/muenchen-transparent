@@ -1,4 +1,10 @@
 <?php
+
+use yii\helpers\Html;
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISTools;
+
 /**
  * @var string $my_url
  * @var Text $text

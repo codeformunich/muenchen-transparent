@@ -1,5 +1,9 @@
 <?php
 
+use yii\helpers\Html;
+use Yii;
+use app\components\AntiXSS;
+
 /**
  * @var RISBaseController $this
  * @var RISSucheKrits $krits

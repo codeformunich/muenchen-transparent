@@ -1,5 +1,16 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+use app\components\AntiXSS;
+use app\components\RISBaseController;
+use app\models\Antrag;
+use app\models\Dokument;
+use app\models\Referat;
+use app\models\Tag;
+use app\models\Text;
+
 class ThemenController extends RISBaseController
 {
 

@@ -1,4 +1,6 @@
 <?php 
+
+
 $I = new AcceptanceTester($scenario);
 $I->wantTo('Check that an Antrag with a Vorgang has the correct "Verwandte Seiten"');
 $I->amOnPageValidated('/antraege/2');

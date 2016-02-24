@@ -1,4 +1,9 @@
 <?php
+
+use app\models\Person;
+use yii\helpers\Html;
+use app\components\AntiXSS;
+
 /**
  * @var AntraegeController $this
  * @var StadtraetIn[] $stadtraetInnen,

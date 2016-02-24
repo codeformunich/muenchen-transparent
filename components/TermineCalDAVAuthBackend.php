@@ -1,7 +1,7 @@
 <?php
 
-use Sabre\DAV;
-use Sabre\HTTP;
+namespace app\components;
+
 
 class TermineCalDAVAuthBackend implements \Sabre\DAV\Auth\Backend\BackendInterface
 {

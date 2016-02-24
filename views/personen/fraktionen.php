@@ -1,4 +1,8 @@
 <?php
+
+use yii\helpers\Html;
+use app\models\StadtraetIn;
+
 /**
  * @var StadtraetIn[][] $fraktionen
  * @var string $title

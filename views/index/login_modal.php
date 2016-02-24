@@ -1,3 +1,10 @@
+<?php
+
+use yii\helpers\Html;
+use app\components\AntiXSS;
+
+?>
+
 <section class="modal fade" id="benachrichtigung_login">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content form-horizontal form-signin">

@@ -1,5 +1,13 @@
 <?php
 
+namespace app\risparser;
+
+use Yii;
+use app\components\RISTools;
+use app\models\Referat;
+use app\models\StadtraetIn;
+use app\risparser\RISParser;
+
 class ReferentInnenParser extends RISParser
 {
 
