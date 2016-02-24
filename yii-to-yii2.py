@@ -10,7 +10,7 @@ default_code_paths = ["controllers/", "views/", "models/", "components/", "RISPa
 fnmatch_pattern = '*.php'
 php_class = "[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*"
 
-global_replaces = {
+global_replacements = {
     "yii-app": ("Yii::app\(\)", "Yii::$app"),
     "html-web": ("html/", "web/"),
 }
@@ -101,19 +101,22 @@ def convert_folderstructure():
         gitignore.write(i)
     gitignore.close()
 
-def do_replace(filepath, yii1_classes, replaces):
+def do_replace(filepath, yii1_classes, replacements):
+    """
+    Applies the replacements named in `replacements` in the the file `filepath`
+    """
     print("Processing " + filepath)
     with open_wrapper(filepath, 'r') as file:
         contents = file.read()
     
-    for name, (search, replace) in global_replaces.items():
-        if name in replaces:
+    for name, (search, replace) in global_replacements.items():
+        if name in replacements:
             new_contents = re.sub(search, replace, contents)
             if new_contents != contents:
                 print("Replaced by " + search)
                 contents = new_contents
     
-    if "yii1-classes" in replaces:
+    if "yii1-classes" in replacements:
         for i in yii1_classes:
             new_contents = contents.replace(" " + i, " " + i[1:])
             if new_contents != contents:
@@ -124,6 +127,12 @@ def do_replace(filepath, yii1_classes, replaces):
         file.write(contents)
 
 def find_yii1_classes():
+    """
+    Finds the names of the classes that are specific to yii1 and stores them in
+    a file called "yii1-classes". You shouldn't need to run that script.
+    
+    Requirement: Yii1 can be found in ../yii1/
+    """
     with open_wrapper("yii1-classes.txt", 'w') as file:
         for root, dirnames, filenames in os.walk("../yii1/framework/"):
             for filename in filenames:
@@ -136,7 +145,7 @@ def get_all_files(paths):
     
     `paths` might contain anarbitrary count of files and folders.
     """
-    # Pretty python >= 3.5 solution
+    # Pretty python >= 3.5 solution:
     #for filename in glob.iglob(path + "**/*.php", recursive=True):
     #    yield filename
     
@@ -148,7 +157,7 @@ def get_all_files(paths):
                 for filename in fnmatch.filter(filenames, fnmatch_pattern):
                     yield os.path.join(root, filename)
 
-def find_usages_for_import(filepath):
+def find_usages_for_import(filepath, sources):
     """
     Searches for all classes to be imported using the `searcher` and finds the
     matching namespace. It returns a list of lines that should be inserted at
@@ -193,7 +202,11 @@ def find_usages_for_import(filepath):
     imports[2:] = sorted(imports[2:])
     return imports
 
-def insert_imports_and_namespace(filepath, imports, sources):
+def insert_imports(filepath, imports):
+    """
+    Inserts the lines given in `imports` at the top of the file given in
+    `filepath` while attempting to create some nice formatting
+    """
     with open_wrapper(filepath, 'r') as file:
         contents = file.readlines()
     
@@ -249,8 +262,8 @@ def main():
     if args.import_usages:
         sources = generate_namespace_mapping()
         for filepath in get_all_files(paths):
-            imports = find_usages_for_import()
-            insert_imports_and_namespace(filepath, imports, sources)
+            imports = find_usages_for_import(sources)
+            insert_imports(filepath, imports)
     
 if __name__ == "__main__":
     main()
