@@ -42,7 +42,7 @@ class BATerminParser extends RISParser
         $daten                         = new Termin();
         $daten->typ                    = Termin::$TYP_AUTO;
         $daten->id                     = $termin_id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->datum_letzte_aenderung = new DbExpression('NOW()');
         $daten->gremium_id             = NULL;
         $daten->referat                = "";
         $daten->referent               = "";
@@ -197,7 +197,7 @@ class BATerminParser extends RISParser
             $entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
             $entscheidung          = static::text_clean_spaces(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
 
-            $tagesordnungspunkt->datum_letzte_aenderung = new CDbExpression("NOW()");
+            $tagesordnungspunkt->datum_letzte_aenderung = new DbExpression("NOW()");
             $tagesordnungspunkt->sitzungstermin_id      = $termin_id;
             $tagesordnungspunkt->sitzungstermin_datum   = substr($daten->termin, 0, 10);
             $tagesordnungspunkt->top_nr                 = $top_nr;
@@ -236,7 +236,7 @@ class BATerminParser extends RISParser
                     $aend->ris_id      = $alter_top->id;
                     $aend->ba_nr       = NULL;
                     $aend->typ         = RISAenderung::$TYP_BA_ERGEBNIS;
-                    $aend->datum       = new CDbExpression("NOW()");
+                    $aend->datum       = new DbExpression("NOW()");
                     $aend->aenderungen = $tagesordnungspunkt_aenderungen;
                     if (!$aend->save()) {
                         var_dump($aend->getErrors());
@@ -324,13 +324,13 @@ class BATerminParser extends RISParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
             $aend->typ         = RISAenderung::$TYP_BA_TERMIN;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
 
             /** @var Termin $termin */
             $termin                         = Termin::model()->findByPk($termin_id);
-            $termin->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
+            $termin->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $termin->save();
         }
 

@@ -20,7 +20,7 @@
  * @property string $wahlperiode
  * @property string $status
  */
-class TerminHistory extends CActiveRecord
+class TerminHistory extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

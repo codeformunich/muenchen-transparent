@@ -1,9 +1,7 @@
-#/usr/bin/env python3.5
+#!/usr/bin/env python3
 import argparse, os, re, glob, fnmatch, sys, subprocess, shutil
 
 ## Settings
-
-print(sys.version_info)
 
 default_code_paths = ["controllers/", "views/", "models/", "components/", "RISParser/", "tests/acceptance/"]
 
@@ -13,8 +11,8 @@ fnmatch_pattern = '*.php'
 php_class = "[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*"
 
 global_replaces = {
-    "Yii::app\(\)": "Yii::$app",
-    "html/": "web/"
+    "yii-app": ("Yii::app\(\)", "Yii::$app"),
+    "html-web": ("html/", "web/"),
 }
 
 searcher = [
@@ -51,6 +49,12 @@ exclude = ['parent', 'self', "static"]
 
 ## The actual code
 
+def open_wrapper(filepath, flags):
+    if sys.version_info.major > 2:
+        return open(filepath, flags, encoding="utf8")
+    else:
+        return open(filepath, flags)
+
 def convert_folderstructure():
     if not os.path.isdir("protected/") or not os.path.isdir("html/"):
         raise Exception("The directories protected/ and html/ have to exist for the conversion to work.")
@@ -64,8 +68,7 @@ def convert_folderstructure():
     ]
     
     for command in commands:
-        break
-        print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read()
+        print(subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read())
     
     print("finished running composer commands.\n")
     
@@ -98,22 +101,24 @@ def convert_folderstructure():
         gitignore.write(i)
     gitignore.close()
 
-def do_replace(filepath, yii1_classes):
+def do_replace(filepath, yii1_classes, replaces):
     print("Processing " + filepath)
     with open_wrapper(filepath, 'r') as file:
         contents = file.read()
     
-    for search, replace in global_replaces.items():
-        new_contents = re.sub(search, replace, contents)
-        if new_contents != contents:
-            print("Replaced by " + search)
-            contents = new_contents
+    for name, (search, replace) in global_replaces.items():
+        if name in replaces:
+            new_contents = re.sub(search, replace, contents)
+            if new_contents != contents:
+                print("Replaced by " + search)
+                contents = new_contents
     
-    for i in yii1_classes:
-        new_contents = contents.replace(" " + i, " " + i[1:])
-        if new_contents != contents:
-            print("Replaced class " + i)
-            contents = new_contents
+    if "yii1-classes" in replaces:
+        for i in yii1_classes:
+            new_contents = contents.replace(" " + i, " " + i[1:])
+            if new_contents != contents:
+                print("Replaced " + i + " with " + i[1:])
+                contents = new_contents
     
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
@@ -135,7 +140,7 @@ def get_all_files(paths):
     #for filename in glob.iglob(path + "**/*.php", recursive=True):
     #    yield filename
     
-    for path in code_paths:
+    for path in paths:
         if os.path.isfile(path):
             yield path
         else:
@@ -222,25 +227,30 @@ def insert_imports_and_namespace(filepath, imports, sources):
 def main():
     parser = argparse.ArgumentParser(description='Semi-automatically converts a yii1 to a yii2 project')
     parser.add_argument('--yii2-template', action='store_true', help='Initial-step. Changes the folderstrucuture to the yii2 basic template and also updates .gitignore so you commit the changes')
-    parser.add_argument('--replace',       action='store_true')
+    parser.add_argument('--replace', nargs='+')
     parser.add_argument('--import-usages', action='store_true')
     parser.add_argument('--path', default=None)
     args = parser.parse_args()
     print(args)
     paths = [args.path] if args.path else default_code_paths
     
+    if not args.yii2_template and not args.import_usages and not args.import_usages:
+        parser.print_help()
+    
+    print(sys.version_info)
+    
     if args.yii2_template:
         convert_folderstructure()
     if args.replace:
         with open("yii1-classes.txt", 'r') as file:
             yii1_classes = [i.strip() for i in file.readlines()]
-        for filepath in get_all_files(files):
-            do_replace(filepath, yii1_classes)
+        for filepath in get_all_files(paths):
+            do_replace(filepath, yii1_classes, args.replace)
     if args.import_usages:
         sources = generate_namespace_mapping()
-        for filepath in get_all_files(files):
+        for filepath in get_all_files(paths):
             imports = find_usages_for_import()
             insert_imports_and_namespace(filepath, imports, sources)
-            
+    
 if __name__ == "__main__":
     main()

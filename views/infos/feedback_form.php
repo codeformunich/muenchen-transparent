@@ -13,7 +13,7 @@ else
 
 <section class="col-md-6 col-md-offset-3">
     <div class="well">
-        <form class="form-horizontal form-signin" method="POST" action="<?= CHtml::encode($current_url) ?>" id="feedback_form">
+        <form class="form-horizontal form-signin" method="POST" action="<?= Html::encode($current_url) ?>" id="feedback_form">
             <fieldset>
                 <legend class="form_row">Verbesserungsvorschläge? Fehler gefunden?</legend>
 

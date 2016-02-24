@@ -25,7 +25,7 @@
  * @property Antrag $antrag
  * @property Dokument[] $dokumente
  */
-class TagesordnungspunktHistory extends CActiveRecord
+class TagesordnungspunktHistory extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

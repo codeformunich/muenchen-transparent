@@ -20,13 +20,13 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
                 if (mb_strlen($title) > $max_title_width) {
                     $title_short = mb_substr($title, 0, $max_title_width * 1.5);
                     ?>
-                    <a href="<?= CHtml::encode($verw->getLink()) ?>" title="<?= CHtml::encode($title) ?>" class="overflow-fadeout-white"><span class="hyphenate">
-                        <?= CHtml::encode($title_short) ?>
+                    <a href="<?= Html::encode($verw->getLink()) ?>" title="<?= Html::encode($title) ?>" class="overflow-fadeout-white"><span class="hyphenate">
+                        <?= Html::encode($title_short) ?>
                     </span></a>
                     <?
                 } else {
                     ?>
-                    <a href="<?= CHtml::encode($verw->getLink()) ?>" class="overflow-fadeout-white"><?= CHtml::encode($title) ?></a>
+                    <a href="<?= Html::encode($verw->getLink()) ?>" class="overflow-fadeout-white"><?= Html::encode($title) ?></a>
                     <?
                 }
                 ?>
@@ -60,14 +60,14 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
                 foreach ($parteien as $partei => $personen) {
                     $personen_net = array();
                     foreach ($personen as $p) if ($p != $partei) $personen_net[] = $p;
-                    $str_p = "<span class='partei' title='" . CHtml::encode(implode(", ", $personen_net)) . "'>";
-                    $str_p .= CHtml::encode($partei);
+                    $str_p = "<span class='partei' title='" . Html::encode(implode(", ", $personen_net)) . "'>";
+                    $str_p .= Html::encode($partei);
                     $str_p .= "</span>";
                     $p_strs[] = $str_p;
                 }
                 if (count($p_strs) > 0) echo implode(", ", $p_strs) . ", ";
 
-                if ($verw->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $verw->ba_nr . " (" . $verw->ba->name . ")") . "' class='ba'>BA " . $verw->ba_nr . "</span>, ";
+                if ($verw->ba_nr > 0) echo "<span title='" . Html::encode("Bezirksausschuss " . $verw->ba_nr . " (" . $verw->ba->name . ")") . "' class='ba'>BA " . $verw->ba_nr . "</span>, ";
 
                 echo date((date("Y", $max_date) == date("Y") ? "d.m." : "d.m.Y"), $max_date);
 

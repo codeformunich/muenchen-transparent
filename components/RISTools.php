@@ -508,8 +508,8 @@ class RISTools
             $eintrag = $tooltip_replaces[strtolower($matches["word"])];
             $text    = strip_tags(html_entity_decode($eintrag->text, ENT_COMPAT, "UTF-8"));
             if (strlen($text) > 200) $text = substr($text, 0, 198) . "... [weiter]";
-            $link         = CHtml::encode(Yii::app()->createUrl("infos/glossar") . "#" . $eintrag->titel);
-            $replace_html = '<a href="' . $link . '" class="tooltip_link" data-toggle="tooltip" data-placement="top" title="" data-original-title="' . CHtml::encode($text) . '">' . $matches["word"] . '</a>';
+            $link         = Html::encode(Yii::app()->createUrl("infos/glossar") . "#" . $eintrag->titel);
+            $replace_html = '<a href="' . $link . '" class="tooltip_link" data-toggle="tooltip" data-placement="top" title="" data-original-title="' . Html::encode($text) . '">' . $matches["word"] . '</a>';
             return $matches["pre"] . $replace_html . $matches["post"];
 
         }, $text_html);

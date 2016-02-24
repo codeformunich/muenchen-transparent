@@ -14,7 +14,7 @@
  * @property BenutzerIn $angelegt_benutzerIn
  * @property Antrag[] $antraege
  */
-class Tag extends CActiveRecord
+class Tag extends ActiveRecord
 {
 
     /**
@@ -83,7 +83,7 @@ class Tag extends CActiveRecord
     public function getNameLink()
     {
         $link_name = $this->name;
-        return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
+        return Html::link($this->name, Yii::app()->createUrl("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
     }
 
     /**

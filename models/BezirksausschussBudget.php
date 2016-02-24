@@ -10,7 +10,7 @@
  * The followings are the available model relations:
  * @property Bezirksausschuss $bezirksausschuss
  */
-class BezirksausschussBudget extends CActiveRecord
+class BezirksausschussBudget extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

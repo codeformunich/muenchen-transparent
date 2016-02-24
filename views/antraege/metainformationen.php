@@ -10,11 +10,11 @@
 $parteinliste = array();
 $parteien = $antrag->findeFraktionen();
 foreach ($parteien as $partei) {
-    $parteinliste[] = "<span class='partei' title='" . CHtml::encode(implode(", ", $partei["mitglieder"])) . "'>" . CHtml::encode($partei["name"]) . "</span>";
+    $parteinliste[] = "<span class='partei' title='" . Html::encode(implode(", ", $partei["mitglieder"])) . "'>" . Html::encode($partei["name"]) . "</span>";
 }
 if (count($parteinliste) > 0) echo implode(", ", $parteinliste) . ", ";
 
-if ($antrag->ba_nr > 0) echo "<span title='" . CHtml::encode("Bezirksausschuss " . $antrag->ba_nr . " (" . $antrag->ba->name . ")") . "' class='ba'>BA " . $antrag->ba_nr . "</span>, ";
+if ($antrag->ba_nr > 0) echo "<span title='" . Html::encode("Bezirksausschuss " . $antrag->ba_nr . " (" . $antrag->ba->name . ")") . "' class='ba'>BA " . $antrag->ba_nr . "</span>, ";
 
 $ts = $antrag->getDokumentenMaxTS();
 if ((isset($zeige_jahr) && $zeige_jahr) || (date("Y") != date("Y", $ts))) {

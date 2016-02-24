@@ -31,7 +31,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
 
 <section class="well">
-    <h1><?= CHtml::encode($ba->name) ?>
+    <h1><?= Html::encode($ba->name) ?>
         <small>(Bezirksausschuss <?= $ba->ba_nr ?>)</small>
     </h1>
 
@@ -105,8 +105,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                         $name = str_replace(" (oeff)", "", $dokument->getName(true));
                         $name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
                         echo '<li>';
-                        echo "<div class='metainformationen_antraege'>" . CHtml::encode($dokument->getDisplayDate()) . "</div>";
-                        echo CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkZumDokument());
+                        echo "<div class='metainformationen_antraege'>" . Html::encode($dokument->getDisplayDate()) . "</div>";
+                        echo Html::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkZumDokument());
                         echo '</li>';
                     } ?>
                 </ul>
@@ -150,8 +150,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             <h2>Statistik</h2>
             <dl class="ba_funktionen">
                 <? foreach ($statistiken as $statistik) {
-                    echo '<dt>' . CHtml::encode($statistik["name"]) . '</dt>';
-                    echo '<dd>' . CHtml::encode($statistik["wert"]) . '</dd>';
+                    echo '<dt>' . Html::encode($statistik["name"]) . '</dt>';
+                    echo '<dd>' . Html::encode($statistik["wert"]) . '</dd>';
                 }
                 ?>
                 </dl>
@@ -174,8 +174,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                     foreach ($funktionen as $funktion) {
                         if (!$funktion->mitgliedschaftAktiv()) continue;
                         $strIn = $funktion->stadtraetIn;
-                        echo '<dt>' . CHtml::encode($funktion->funktion) . '</dt>';
-                        echo '<dd><a href="' . CHtml::encode($strIn->getLink()) . '">' . CHtml::encode($strIn->getName()) . '</a></dd>';
+                        echo '<dt>' . Html::encode($funktion->funktion) . '</dt>';
+                        echo '<dd><a href="' . Html::encode($strIn->getLink()) . '">' . Html::encode($strIn->getName()) . '</a></dd>';
                         echo "\n";
                     }
                     ?>

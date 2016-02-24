@@ -40,7 +40,7 @@
  * @property Vorgang $vorgang
  * @property Tag[] $tags
  */
-class Antrag extends CActiveRecord implements IRISItemHasDocuments
+class Antrag extends ActiveRecord implements IRISItemHasDocuments
 {
 
     public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
@@ -273,7 +273,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
 
     /**
-     * @throws CDbException|Exception
+     * @throws DbException|Exception
      */
     public function copyToHistory()
     {
@@ -303,11 +303,11 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         /**
          * @var AntragHistory[] $his
          * '='M');
-         * $criteria = new CDbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
+         * $criteria = new DbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
          * $criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
          * $rows = user::model()->findAllByAttributes($u
          */
-        $criteria = new CDbCriteria(['order' => "datum_letzte_aenderung DESC"]);
+        $criteria = new DbCriteria(['order' => "datum_letzte_aenderung DESC"]);
         $criteria->addCondition("datum_letzte_aenderung >= '2014-05-01 00:00:00'");
         $his = AntragHistory::model()->findAllByAttributes(["id" => $this->id], $criteria);
         foreach ($his as $alt) {

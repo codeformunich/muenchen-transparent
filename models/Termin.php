@@ -28,7 +28,7 @@
  * @property Gremium $gremium
  * @property Bezirksausschuss $ba
  */
-class Termin extends CActiveRecord implements IRISItemHasDocuments
+class Termin extends ActiveRecord implements IRISItemHasDocuments
 {
     public static $TYP_AUTO   = 0;
     public static $TYP_BUERGERVERSAMMLUNG     = 1;
@@ -115,7 +115,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @throws CDbException|Exception
+     * @throws DbException|Exception
      */
     public function copyToHistory()
     {

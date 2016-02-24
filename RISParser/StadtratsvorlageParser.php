@@ -15,7 +15,7 @@ class StadtratsvorlageParser extends RISParser
 
         $daten                         = new Antrag();
         $daten->id                     = $vorlage_id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->datum_letzte_aenderung = new DbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_STADTRAT_VORLAGE;
         $daten->antrag_typ             = "";
         $daten->gestellt_von           = "";
@@ -210,7 +210,7 @@ class StadtratsvorlageParser extends RISParser
                     $aend->ris_id      = $daten->id;
                     $aend->ba_nr       = NULL;
                     $aend->typ         = RISAenderung::$TYP_STADTRAT_VORLAGE;
-                    $aend->datum       = new CDbExpression("NOW()");
+                    $aend->datum       = new DbExpression("NOW()");
                     $aend->aenderungen = $aenderungen;
                     $aend->save();
                     return;
@@ -256,13 +256,13 @@ class StadtratsvorlageParser extends RISParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
             $aend->typ         = RISAenderung::$TYP_STADTRAT_VORLAGE;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
 
             /** @var Antrag $antrag */
             $antrag                         = Antrag::model()->findByPk($vorlage_id);
-            $antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
+            $antrag->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();
         }
@@ -310,7 +310,7 @@ class StadtratsvorlageParser extends RISParser
             $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
         }
 
-        $crit            = new CDbCriteria();
+        $crit            = new DbCriteria();
         $crit->condition = "typ='" . addslashes(Antrag::$TYP_STADTRAT_VORLAGE) . "' AND status NOT IN ('Endgültiger Beschluss', 'abgeschlossen') AND gestellt_am > NOW() - INTERVAL 2 YEAR";
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 

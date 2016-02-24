@@ -25,7 +25,7 @@
  * @property Antrag $antrag
  * @property Dokument[] $dokumente
  */
-class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
+class Tagesordnungspunkt extends ActiveRecord implements IRISItemHasDocuments
 {
     /**
      * Returns the static model of the specified AR class.
@@ -100,7 +100,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @throws CDbException|Exception
+     * @throws DbException|Exception
      */
     public function copyToHistory()
     {

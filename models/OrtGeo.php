@@ -17,7 +17,7 @@
  * The followings are the available model relations:
  * @property AntragOrt[] $antraegeOrte
  */
-class OrtGeo extends CActiveRecord
+class OrtGeo extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
@@ -108,7 +108,7 @@ class OrtGeo extends CActiveRecord
         $ort->source  = "auto";
         $ort->to_hide = 0;
         $ort->to_hide_kommentar = "";
-        $ort->datum   = new CDbExpression('NOW()');
+        $ort->datum   = new DbExpression('NOW()');
         if (!$ort->save()) {
             RISTools::send_email(Yii::app()->params['adminEmail'], "OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true), null, "system");
             throw new Exception("Fehler beim Speichern: Geo");

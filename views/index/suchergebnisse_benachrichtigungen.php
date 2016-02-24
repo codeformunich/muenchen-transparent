@@ -11,12 +11,12 @@
  */
 
 ?>
-<form method="POST" action="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" id="login_ben_form">
+<form method="POST" action="<?= Html::encode(Yii::app()->createUrl("index/suche")) ?>" id="login_ben_form">
     <?
     $krits = $krits->getUrlArray();
     for ($i = 0; $i < count($krits["krit_typ"]); $i++) {
-        echo '<input type="hidden" name="krit_typ[]" value="' . CHtml::encode($krits["krit_typ"][$i]) . '">' . "\n";
-        echo '<input type="hidden" name="krit_val[]" value="' . CHtml::encode($krits["krit_val"][$i]) . '">' . "\n";
+        echo '<input type="hidden" name="krit_typ[]" value="' . Html::encode($krits["krit_typ"][$i]) . '">' . "\n";
+        echo '<input type="hidden" name="krit_val[]" value="' . Html::encode($krits["krit_val"][$i]) . '">' . "\n";
     }
 
     if ($eingeloggt) {

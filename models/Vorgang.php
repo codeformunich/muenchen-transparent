@@ -13,7 +13,7 @@
  * @property Tagesordnungspunkt[] $ergebnisse
  * @property Dokument[] $dokumente
  */
-class Vorgang extends CActiveRecord implements IRISItemHasDocuments
+class Vorgang extends ActiveRecord implements IRISItemHasDocuments
 {
     /**
      * @param string $className active record class name.
@@ -130,7 +130,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * @param BenutzerIn $benutzerIn
-     * @throws CDbException
+     * @throws DbException
      */
     public function abonnieren($benutzerIn)
     {

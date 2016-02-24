@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?
-    if ($this->html_description != "") echo CHtml::encode($this->html_description);
+    if ($this->html_description != "") echo Html::encode($this->html_description);
     else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
     ?>">
     <meta name="author" content="Tobias Hößl, Konstantin Schütze">
@@ -32,12 +32,12 @@
     <meta name="msapplication-TileImage" content="/mstile-144x144.png?1">
     <meta property="og:image" content="/images/fb-img2.png">
 
-    <link rel="search" type="application/opensearchdescription+xml" title="<?= CHtml::encode(Yii::app()->params['projectTitle']) ?>" href="/OpenSearch.xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="<?= Html::encode(Yii::app()->params['projectTitle']) ?>" href="/OpenSearch.xml">
     <link rel="icon" type="image/png" href="/favicon-96x96.png?1">
 
     <title><?php
-        echo CHtml::encode($this->pageTitle);
-        if (strpos($this->pageTitle, "Transparent") === false) echo " (" . CHtml::encode(Yii::app()->params['projectTitle']) . ")";
+        echo Html::encode($this->pageTitle);
+        if (strpos($this->pageTitle, "Transparent") === false) echo " (" . Html::encode(Yii::app()->params['projectTitle']) . ")";
         ?></title>
 
 
@@ -93,18 +93,18 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right" method="POST" action="<?= CHtml::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
+                <form class="navbar-form navbar-right" method="POST" action="<?= Html::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
                     <label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
-                    <input type="text" name="suchbegriff" value="<?= CHtml::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
+                    <input type="text" name="suchbegriff" value="<?= Html::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
                            id="quicksearch_form_input" required
-                           data-prefetch-url="<?= CHtml::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
-                           data-search-url="<?= CHtml::encode($this->createUrl("index/suche", ["suchbegriff" => "SUCHBEGRIFF"])) ?>">
+                           data-prefetch-url="<?= Html::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
+                           data-search-url="<?= Html::encode($this->createUrl("index/suche", ["suchbegriff" => "SUCHBEGRIFF"])) ?>">
                     <button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span>
                     </button>
                 </form>
 
                 <ul class="nav navbar-nav">
-                    <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
+                    <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
                     <!-- Desktop BA-wähler-->
                     <li class="dropdown ba-wahl-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <span class="caret"></span></a>
@@ -112,16 +112,16 @@
                             <?
                             /** @var Bezirksausschuss[] $bas */
                             $bas = Bezirksausschuss::model()->findAll();
-                            foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
+                            foreach ($bas as $ba) echo "<li>" . Html::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
                             ?>
                         </ul>
                     </li>
                     <!-- Mobiler BA-wähler-->
-                    <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= CHtml::link("Bezirksausschüsse", $this->createUrl("index/bezirksausschuss")) ?></li>
-                    <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("personen/index")) ?></li>
+                    <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= Html::link("Bezirksausschüsse", $this->createUrl("index/bezirksausschuss")) ?></li>
+                    <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= Html::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
+                    <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= Html::link("Themen", $this->createUrl("themen/index")) ?></li>
+                    <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= Html::link("Termine", $this->createUrl("termine/index")) ?></li>
+                    <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= Html::link("Personen", $this->createUrl("personen/index")) ?></li>
                     <?
                     $user = $this->aktuelleBenutzerIn();
                     if ($user && ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER))) {
@@ -131,16 +131,16 @@
                             <ul class="dropdown-menu">
                                 <?
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
-                                    <li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
-                                    <li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
-                                    <li><?= CHtml::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
-                                    <li><?= CHtml::link("BürgerInnenversammlungen", $this->createUrl("admin/buergerInnenversammlungen")) ?></li>
+                                    <li><?= Html::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
+                                    <li><?= Html::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+                                    <li><?= Html::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
+                                    <li><?= Html::link("BürgerInnenversammlungen", $this->createUrl("admin/buergerInnenversammlungen")) ?></li>
                                 <? }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) { ?>
-                                    <li><?= CHtml::link("StadträtInnen: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
+                                    <li><?= Html::link("StadträtInnen: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
                                 <? }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) { ?>
-                                    <li><?= CHtml::link("Tags", $this->createUrl("admin/tags")) ?></li>
+                                    <li><?= Html::link("Tags", $this->createUrl("admin/tags")) ?></li>
                                 <? }
                                 ?>
                             </ul>
@@ -167,7 +167,7 @@
     <div id="print_header">München Transparent - www.muenchen-transparent.de</div>
 
     <main class="container center-block row" id="page_main_content" <?
-    if ($this->html_itemprop != "") echo 'itemscope itemtype="' . CHtml::encode($this->html_itemprop) . '"';
+    if ($this->html_itemprop != "") echo 'itemscope itemtype="' . Html::encode($this->html_itemprop) . '"';
     ?>>
         <?php echo $content; ?>
     </main>
@@ -181,13 +181,13 @@
 <footer>
     <p class="container">
         <span class="pull-left">
-            <?= CHtml::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?> /
-            <?= CHtml::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
+            <?= Html::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?> /
+            <?= Html::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
         </span>
         <span class="pull-right">
-            <?= CHtml::link("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
-            <?= CHtml::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
-            <?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
+            <?= Html::link("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
+            <?= Html::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
+            <?= Html::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
         </span>
     </p>
 </footer>

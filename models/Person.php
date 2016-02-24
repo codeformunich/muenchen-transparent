@@ -16,7 +16,7 @@
  * @property StadtraetIn $stadtraetIn
  * @property Fraktion $fraktion
  */
-class Person extends CActiveRecord implements IRISItem
+class Person extends ActiveRecord implements IRISItem
 {
 
     public static $TYP_SONSTIGES = "sonstiges";

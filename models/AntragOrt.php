@@ -21,7 +21,7 @@
  * @property Rathausumschau $rathausumschau
  * @property OrtGeo $ort
  */
-class AntragOrt extends CActiveRecord
+class AntragOrt extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

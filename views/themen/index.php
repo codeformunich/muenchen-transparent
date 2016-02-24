@@ -11,7 +11,7 @@ $this->pageTitle = "Themen";
 
     <section class="well">
         <ul class="breadcrumb">
-            <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+            <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
             <li class="active">Themen</li>
         </ul>
         <h1>Themen</h1>
@@ -24,7 +24,7 @@ $this->pageTitle = "Themen";
                 <ul><?
                     foreach ($referate as $ref) {
                         echo "<li>";
-                        echo CHtml::link($ref->getName(true), Yii::app()->createUrl("themen/referat", array("referat_url" => $ref->urlpart)));
+                        echo Html::link($ref->getName(true), Yii::app()->createUrl("themen/referat", array("referat_url" => $ref->urlpart)));
                         echo "</li>";
                     }
                     ?>
@@ -52,13 +52,13 @@ $this->pageTitle = "Themen";
             </section>
             <!--
             <section class="start_berichte well">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("index/highlights")) ?>" class="weitere">Weitere</a>
+                <a href="<?= Html::encode(Yii::app()->createUrl("index/highlights")) ?>" class="weitere">Weitere</a>
 
                 <h3>Berichte / Highlights</h3>
                 <ul><?
                     foreach ($highlights as $dok) {
                         echo "<li>";
-                        echo CHtml::link($dok->antrag->getName(true), $dok->getLinkZumDokument());
+                        echo Html::link($dok->antrag->getName(true), $dok->getLinkZumDokument());
                         echo "</li>";
                     }
                     ?>

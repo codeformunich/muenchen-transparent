@@ -21,7 +21,7 @@ class BAInitiativeParser extends RISParser
 
         $daten                         = new Antrag();
         $daten->id                     = $antrag_id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->datum_letzte_aenderung = new DbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_BA_INITIATIVE;
 
         $dokumente = [];
@@ -156,13 +156,13 @@ class BAInitiativeParser extends RISParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
             $aend->typ         = RISAenderung::$TYP_BA_INITIATIVE;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
 
             /** @var Antrag $antrag */
             $antrag                         = Antrag::model()->findByPk($antrag_id);
-            $antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
+            $antrag->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();
         }

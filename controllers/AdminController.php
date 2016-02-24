@@ -229,7 +229,7 @@ class AdminController extends RISBaseController
                 $termin->typ                    = Termin::$TYP_BUERGERVERSAMMLUNG;
                 $termin->sitzungsort            = $_REQUEST["neu"]["ort"];
                 $termin->termin                 = $_REQUEST["neu"]["datum"];
-                $termin->datum_letzte_aenderung = new CDbExpression('NOW()');
+                $termin->datum_letzte_aenderung = new DbExpression('NOW()');
                 if (!$termin->save()) {
                     $this->msg_err = print_r($termin->getErrors(), true);
                 }

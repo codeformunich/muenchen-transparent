@@ -25,16 +25,16 @@
                 ?>
                 <tr>
                     <td>
-                        <?= CHtml::encode("BA " . $termin->ba->ba_nr . ": " . $termin->ba->name) ?>
+                        <?= Html::encode("BA " . $termin->ba->ba_nr . ": " . $termin->ba->name) ?>
                     </td>
                     <td>
-                        <input type="text" name="termin[<?= $id ?>][datum]" placeholder="YYYY-MM-DD HH:II:SS" size="20" value="<?= CHtml::encode($termin->termin) ?>">
+                        <input type="text" name="termin[<?= $id ?>][datum]" placeholder="YYYY-MM-DD HH:II:SS" size="20" value="<?= Html::encode($termin->termin) ?>">
                     </td>
                     <td>
-                        <textarea cols="50" rows="3" name="termin[<?= $id ?>][ort]"><?= CHtml::encode($termin->sitzungsort) ?></textarea>
+                        <textarea cols="50" rows="3" name="termin[<?= $id ?>][ort]"><?= Html::encode($termin->sitzungsort) ?></textarea>
                     </td>
                     <td>
-                        <a href="<?= CHtml::encode($del_url) ?>" onclick="return confirm('Wirklich löschen?');" style="color: red;">löschen</a>
+                        <a href="<?= Html::encode($del_url) ?>" onclick="return confirm('Wirklich löschen?');" style="color: red;">löschen</a>
                     </td>
                 </tr>
             <?
@@ -50,7 +50,7 @@
                         /** @var Bezirksausschuss[] $bas */
                         $bas = Bezirksausschuss::model()->findAll(array("order" => "ba_nr"));
                         foreach ($bas as $ba) {
-                            echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ': ' . CHtml::encode($ba->name) . '</option>' . "\n";
+                            echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ': ' . Html::encode($ba->name) . '</option>' . "\n";
                         }
                         ?>
                     </select></td>

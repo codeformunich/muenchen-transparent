@@ -80,7 +80,7 @@ class AntraegeController extends RISBaseController
                     $tag                         = new Tag();
                     $tag->name                   = $tag_name;
                     $tag->angelegt_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
-                    $tag->angelegt_datum         = new CDbExpression('NOW()');
+                    $tag->angelegt_datum         = new DbExpression('NOW()');
                     $tag->reviewed               = ($this->binContentAdmin() ? 1 : 0);
                     $tag->save();
 

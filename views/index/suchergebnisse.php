@@ -28,17 +28,17 @@ $this->pageTitle = "Suchergebnisse";
         ));
         ?>
         <div style="font-size: 90%;">
-            <a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="fontello-rss"></span> Suchergebnisse als RSS-Feed</a>
+            <a href="<?= Html::encode($krits->getFeedUrl()) ?>"><span class="fontello-rss"></span> Suchergebnisse als RSS-Feed</a>
         </div>
     </div>
 
     <?
     if ($krits->getKritsCount() == 1) {
-        echo '<h1>' . CHtml::encode($krits->getTitle()) . '</h1>';
+        echo '<h1>' . Html::encode($krits->getTitle()) . '</h1>';
     } else {
         echo '<h1>Suchergebnisse</h1>';
         echo '<div class="suchkrit_beschreibung">';
-        echo CHtml::encode($krits->getTitle());
+        echo Html::encode($krits->getTitle());
         echo '</div>';
     }
     echo '<br style="clear: both;">';
@@ -108,7 +108,7 @@ $this->pageTitle = "Suchergebnisse";
             <div id="suchergebnis_eingrenzen_holder">
                 <?
                 foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
-                    echo '<div class="eingrenzen_row"><h3>' . CHtml::encode($name) . '</h3><ul>';
+                    echo '<div class="eingrenzen_row"><h3>' . Html::encode($name) . '</h3><ul>';
                     echo implode("", $facets);
                     echo '</ul></div>';
                 }

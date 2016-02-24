@@ -18,7 +18,7 @@
  * @property Termin[] $termine
  * @property StadtraetInGremium[] $mitgliedschaften
  */
-class Gremium extends CActiveRecord implements IRISItem
+class Gremium extends ActiveRecord implements IRISItem
 {
     /**
      * Returns the static model of the specified AR class.
@@ -85,7 +85,7 @@ class Gremium extends CActiveRecord implements IRISItem
     }
 
     /**
-     * @throws CDbException|Exception
+     * @throws DbException|Exception
      */
     public function copyToHistory()
     {
@@ -112,7 +112,7 @@ class Gremium extends CActiveRecord implements IRISItem
 
         $daten                         = new Gremium();
         $daten->id                     = $ris_id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->datum_letzte_aenderung = new DbExpression('NOW()');
         $daten->ba_nr                  = null;
 
         if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = $matches[1];
@@ -158,7 +158,7 @@ class Gremium extends CActiveRecord implements IRISItem
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = null;
             $aend->typ         = RISAenderung::$TYP_STADTRAT_GREMIUM;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
         }

@@ -10,15 +10,15 @@ $this->html_itemprop = "http://schema.org/Person";
 ?>
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
-        <li class="active"><?= CHtml::encode($person->getName()) ?></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
+        <li class="active"><?= Html::encode($person->getName()) ?></li>
     </ul>
 
     <div style="float: right;"><?
-        echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $person->getSourceLink());
+        echo Html::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $person->getSourceLink());
         ?></div>
-    <h1 itemprop="name"><?= CHtml::encode($person->getName()) ?></h1>
+    <h1 itemprop="name"><?= Html::encode($person->getName()) ?></h1>
 </section>
 
 <div class="row personentable">
@@ -33,9 +33,9 @@ $this->html_itemprop = "http://schema.org/Person";
                             <?
                             $mitgliedschaften = $person->getFraktionsMitgliedschaften();
                             foreach ($mitgliedschaften as $frakts) {
-                                echo "<li class='" . ($frakts->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>" . CHtml::encode($frakts->fraktion->getName());
+                                echo "<li class='" . ($frakts->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>" . Html::encode($frakts->fraktion->getName());
                                 if ($frakts->fraktion->ba_nr > 0) {
-                                    echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . CHtml::encode($frakts->fraktion->bezirksausschuss->name) . ")";
+                                    echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . Html::encode($frakts->fraktion->bezirksausschuss->name) . ")";
                                     // @Wird noch nicht zuverlässig erkannt; siehe https://github.com/codeformunich/muenchen-transparent/issues/38
                                 }
                                 if ($frakts->datum_von > 0 && $frakts->datum_bis > 0) {
@@ -60,9 +60,9 @@ $this->html_itemprop = "http://schema.org/Person";
                                 foreach ($person->mitgliedschaften as $mitgliedschaft) {
                                     $gremium = $mitgliedschaft->gremium;
                                     echo "<li class='" . ($mitgliedschaft->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>";
-                                    echo CHtml::encode($gremium->getName(true));
+                                    echo Html::encode($gremium->getName(true));
                                     if ($gremium->ba_nr > 0) {
-                                        echo " (Bezirksausschuss " . CHtml::link($gremium->ba->name, $gremium->ba->getLink()) . ")";
+                                        echo " (Bezirksausschuss " . Html::link($gremium->ba->name, $gremium->ba->getLink()) . ")";
                                     }
                                     if ($mitgliedschaft->datum_bis != "") {
                                         echo '<br><small>(' . RISTools::datumstring($mitgliedschaft->datum_von);
@@ -86,7 +86,7 @@ $this->html_itemprop = "http://schema.org/Person";
                                 <?
                                 foreach ($person->antraege as $antrag) {
                                     echo "<li>";
-                                    echo "<a class='antrag-name' href='" . CHtml::encode($antrag->getLink()) . "'>" . $antrag->getName(true) . "</a>";
+                                    echo "<a class='antrag-name' href='" . Html::encode($antrag->getLink()) . "'>" . $antrag->getName(true) . "</a>";
                                     echo "<span class='list-js-datum'> (" . RISTools::datumstring($antrag->gestellt_am) . ")</span>";
                                     echo "</li>\n";
                                 }
@@ -133,8 +133,8 @@ $this->html_itemprop = "http://schema.org/Person";
 
                                 $dokurl = $dok->getLinkZumDokument();
                                 echo '<li style="margin-bottom: 10px;">';
-                                echo CHtml::link($risitem->getName(true), $risitem->getLink()) . '<br>';
-                                echo '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dok->name) . '</a>';
+                                echo Html::link($risitem->getName(true), $risitem->getLink()) . '<br>';
+                                echo '<a href="' . Html::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . Html::encode($dok->name) . '</a>';
                                 echo '</li>';
                             }
                         }
@@ -161,15 +161,15 @@ $this->html_itemprop = "http://schema.org/Person";
                     } else {
                         $twitter = $person->twitter;
                     }
-                    echo '<dd><a href="https://twitter.com/' . CHtml::encode($twitter) . '">@' . CHtml::encode($twitter) . '</a></dd>' . "\n";
+                    echo '<dd><a href="https://twitter.com/' . Html::encode($twitter) . '">@' . Html::encode($twitter) . '</a></dd>' . "\n";
                 }
                 if ($person->facebook != "") {
                     echo '<dt>Facebook:</dt>';
-                    echo '<dd><a href="https://www.facebook.com/' . CHtml::encode($person->facebook) . '">Facebook-Profil</a></dd>' . "\n";
+                    echo '<dd><a href="https://www.facebook.com/' . Html::encode($person->facebook) . '">Facebook-Profil</a></dd>' . "\n";
                 }
                 if ($person->abgeordnetenwatch != "") {
                     echo '<dt>Abgeordnetenwatch:</dt>';
-                    echo '<dd><a href="' . CHtml::encode($person->abgeordnetenwatch) . '">Abgeordnetenwatch-Profil</a></dd>' . "\n";
+                    echo '<dd><a href="' . Html::encode($person->abgeordnetenwatch) . '">Abgeordnetenwatch-Profil</a></dd>' . "\n";
                 }
                 if ($person->geburtstag != "") {
                     $datum = explode("-", $person->geburtstag);
@@ -178,13 +178,13 @@ $this->html_itemprop = "http://schema.org/Person";
                         echo '<dd>' . RISTools::datumstring($person->geburtstag) . '</dd>' . "\n";
                     } else {
                         echo '<dt>Geburtsjahr:</dt>';
-                        echo '<dd>' . CHtml::encode($datum[0]) . '</dd>' . "\n";
+                        echo '<dd>' . Html::encode($datum[0]) . '</dd>' . "\n";
                     }
                 }
                 if ($person->beschreibung != "") {
                     echo '<dt>Beschreibung</dt>';
                     echo '<dd>' . nl2br(CHtml::encode($person->beschreibung));
-                    if ($person->quellen != "") echo '<div class="quelle">Quelle: ' . CHtml::encode($person->quellen) . '</div>';
+                    if ($person->quellen != "") echo '<div class="quelle">Quelle: ' . Html::encode($person->quellen) . '</div>';
                     echo '</dd>' . "\n";
                 }
                 ?>
@@ -193,11 +193,11 @@ $this->html_itemprop = "http://schema.org/Person";
             $ich = $this->aktuelleBenutzerIn();
             if ($ich && $ich->id == $person->benutzerIn_id) {
                 $editlink = Yii::app()->createUrl("personen/personBearbeiten", array("id" => $person->id));
-                echo '<a href="' . CHtml::encode($editlink) . '"><span class="mdi-content-create"></span> Eintrag bearbeiten</a>';
+                echo '<a href="' . Html::encode($editlink) . '"><span class="mdi-content-create"></span> Eintrag bearbeiten</a>';
             } else {
                 $binichlink = Yii::app()->createUrl("personen/binIch", array("id" => $person->id));
                 $login_add = ($ich ? '' : ' <small>(Login)</small>');
-                echo '<a href="' . CHtml::encode($binichlink) . '" style="font-size: 0.9em; color: gray; font-style: italic;">Sie Sind ' . CHtml::encode($person->getName()) . '?' . $login_add . '</a>';
+                echo '<a href="' . Html::encode($binichlink) . '" style="font-size: 0.9em; color: gray; font-style: italic;">Sie Sind ' . Html::encode($person->getName()) . '?' . $login_add . '</a>';
             }
             ?>
         </div>

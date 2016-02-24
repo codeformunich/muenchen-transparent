@@ -14,7 +14,7 @@
  * The followings are the available model relations:
  * @property Bezirksausschuss $ba
  */
-class RISAenderung extends CActiveRecord
+class RISAenderung extends ActiveRecord
 {
 
     public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";

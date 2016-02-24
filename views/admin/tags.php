@@ -9,7 +9,7 @@ $user = $this->aktuelleBenutzerIn();
 
 <section class="well">
 
-    <form method="POST" style="overflow: auto;" action="<?= CHtml::encode($this->createUrl("admin/tags")) ?>" >
+    <form method="POST" style="overflow: auto;" action="<?= Html::encode($this->createUrl("admin/tags")) ?>" >
         <fieldset>
             <legend>Tag Umbennen</legend>
                 <div class="input-group col">
@@ -27,7 +27,7 @@ $user = $this->aktuelleBenutzerIn();
         </fieldset>
     </form>
 
-    <form method="POST" style="overflow: auto;" action="<?= CHtml::encode($this->createUrl("admin/tags")) ?>" >
+    <form method="POST" style="overflow: auto;" action="<?= Html::encode($this->createUrl("admin/tags")) ?>" >
         <fieldset>
             <legend>Tag Löschen</legend>
                 <div class="input-group col">
@@ -58,7 +58,7 @@ $user = $this->aktuelleBenutzerIn();
                 <? foreach($tag->antraege as $antrag) { ?>
                     <tr>
                         <td class="tag-name" ><?= $tag->name ?></td>
-                        <td class="antrag-id"><?= CHtml::link($antrag->id, $antrag->getLink()) ?></td>
+                        <td class="antrag-id"><?= Html::link($antrag->id, $antrag->getLink()) ?></td>
                         <td class="email"    ><?= $tag->angelegt_benutzerIn->email ?></td>
                         <td class="fontello-cancel tag-delete"></td>
                     </tr>
@@ -95,7 +95,7 @@ var userList = new List("tag-liste", {valueNames: ["tag-name", "antrag-id", "ema
 <script>
 $(".tag-delete").click(function() {
     form = $("<form>", {
-        "action": "<?= CHtml::encode($this->createUrl('admin/tags')) ?>",
+        "action": "<?= Html::encode($this->createUrl('admin/tags')) ?>",
         "method": "POST"
     }).append($("<input>", {
         "name": "tag_name",

@@ -8,13 +8,13 @@
 $this->pageTitle = $text->titel;
 
 $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
-    return CHtml::encode(Yii::app()->createUrl($matches["url"]));
+    return Html::encode(Yii::app()->createUrl($matches["url"]));
 }, $text->text);
 ?>
 
 <section class="well std_fliesstext">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <li class="active"><?=CHtml::encode($text->titel)?></li>
     </ul>
 

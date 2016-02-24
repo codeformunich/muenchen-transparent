@@ -357,7 +357,7 @@ class RISSucheKrits
                     $krits[] = "im Zuständigkeitsbereich des " . $ref->name;
                     break;
                 case "antrag_wahlperiode":
-                    $krits[] = "aus der Wahlperiode " . CHtml::encode($cr["suchbegriff"]);
+                    $krits[] = "aus der Wahlperiode " . Html::encode($cr["suchbegriff"]);
                     break;
                 default:
                     $krits[] = json_encode($cr);

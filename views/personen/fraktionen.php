@@ -10,7 +10,7 @@
         $insgesamt += count($fraktion);
     ?>
 
-    <h2><?= CHtml::encode($title) ?> <span style="float: right"><?= $insgesamt ?></span></h2>
+    <h2><?= Html::encode($title) ?> <span style="float: right"><?= $insgesamt ?></span></h2>
 
     <ul class="fraktionen_liste"><?
         usort($fraktionen, function ($val1, $val2) {
@@ -21,17 +21,17 @@
         foreach ($fraktionen as $fraktion) {
             /** @var StadtraetIn[] $fraktion */
             $fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
-            echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
+            echo "<li><a href='" . Html::encode($fr->getLink()) . "' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
             echo "<span class='count'>" . count($fraktion) . "</span>";
-            echo CHtml::encode($fr->getName()) . "</a><ul class='mitglieder'>";
+            echo Html::encode($fr->getName()) . "</a><ul class='mitglieder'>";
             $mitglieder = StadtraetIn::sortByName($fraktion);
             foreach ($mitglieder as $mitglied) {
                 echo "<li>";
-                echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>" . CHtml::encode($mitglied->getName()) . "</a>";
-                if ($mitglied->abgeordnetenwatch != "") echo "<a href='" . CHtml::encode($mitglied->abgeordnetenwatch) . "' title='Abgeordnetenwatch' class='abgeordnetenwatch_link'></a>";
-                if ($mitglied->web != "") echo "<a href='" . CHtml::encode($mitglied->web) . "' title='Homepage' class='web_link'></a>";
-                if ($mitglied->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($mitglied->twitter) . "' title='Twitter'           class='twitter_link'>T         </a>";
-                if ($mitglied->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($mitglied->facebook) . "' title='Facebook'          class='fb_link'>     f         </a>";
+                echo "<a href='" . Html::encode($mitglied->getLink()) . "' class='ris_link'>" . Html::encode($mitglied->getName()) . "</a>";
+                if ($mitglied->abgeordnetenwatch != "") echo "<a href='" . Html::encode($mitglied->abgeordnetenwatch) . "' title='Abgeordnetenwatch' class='abgeordnetenwatch_link'></a>";
+                if ($mitglied->web != "") echo "<a href='" . Html::encode($mitglied->web) . "' title='Homepage' class='web_link'></a>";
+                if ($mitglied->twitter != "") echo "<a href='https://twitter.com/" . Html::encode($mitglied->twitter) . "' title='Twitter'           class='twitter_link'>T         </a>";
+                if ($mitglied->facebook != "") echo "<a href='https://www.facebook.com/" . Html::encode($mitglied->facebook) . "' title='Facebook'          class='fb_link'>     f         </a>";
                 echo "</li>\n";
             }
             echo "</ul></li>\n";

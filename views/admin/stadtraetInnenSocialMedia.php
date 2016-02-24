@@ -27,12 +27,12 @@
                 /** @var StadtraetIn $str */
                 ?>
                 <tr>
-                    <td><?= CHtml::encode($str->name) ?></td>
-                    <td><?= CHtml::encode($str->stadtraetInnenFraktionen[0]->fraktion->name) ?></td>
-                    <td><input name="web[<?= $str->id ?>]" title="Homepage" value="<?= CHtml::encode($str->web) ?>" width="60" maxlength="200"></td>
-                    <td style="white-space: nowrap;">@<input name="twitter[<?= $str->id ?>]" title="Twitter" value="<?= CHtml::encode($str->twitter) ?>" maxlength="45"></td>
-                    <td><input name="facebook[<?= $str->id ?>]" title="Facebook" value="<?= CHtml::encode($str->facebook) ?>" width="60" maxlength="200"></td>
-                    <td><input name="abgeordnetenwatch[<?= $str->id ?>]" title="Twitter" value="<?= CHtml::encode($str->abgeordnetenwatch) ?>" width="60" maxlength="200"></td>
+                    <td><?= Html::encode($str->name) ?></td>
+                    <td><?= Html::encode($str->stadtraetInnenFraktionen[0]->fraktion->name) ?></td>
+                    <td><input name="web[<?= $str->id ?>]" title="Homepage" value="<?= Html::encode($str->web) ?>" width="60" maxlength="200"></td>
+                    <td style="white-space: nowrap;">@<input name="twitter[<?= $str->id ?>]" title="Twitter" value="<?= Html::encode($str->twitter) ?>" maxlength="45"></td>
+                    <td><input name="facebook[<?= $str->id ?>]" title="Facebook" value="<?= Html::encode($str->facebook) ?>" width="60" maxlength="200"></td>
+                    <td><input name="abgeordnetenwatch[<?= $str->id ?>]" title="Twitter" value="<?= Html::encode($str->abgeordnetenwatch) ?>" width="60" maxlength="200"></td>
                 </tr>
             <? } ?>
             </tbody>

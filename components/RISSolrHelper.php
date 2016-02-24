@@ -38,7 +38,7 @@ class RISSolrHelper
         $dokumente    = $ergebnisse->getDocuments();
         $highlighting = $ergebnisse->getHighlighting();
 
-        $purifier = new CHtmlPurifier();
+        $purifier = new HtmlPurifier();
         $purifier->options = array('URI.AllowedSchemes'=>array(
             'http' => true,
             'https' => true,

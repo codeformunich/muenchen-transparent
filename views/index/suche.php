@@ -8,7 +8,7 @@ $this->pageTitle = "Suche";
 
 ?>
 <section class="well">
-	<form class="form-horizontal form-signin" method="POST" action="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>">
+	<form class="form-horizontal form-signin" method="POST" action="<?= Html::encode(Yii::app()->createUrl("index/suche")) ?>">
 		<fieldset>
 			<legend class="form_row">Suche</legend>
 		</fieldset>
@@ -36,7 +36,7 @@ $this->pageTitle = "Suche";
 				<select id="suche_typ" name="typ" size="1" class="form-control">
 					<option value="">- egal -</option>
 					<? foreach (Dokument::$TYPEN_ALLE as $typ_id => $typ_name) { ?>
-						<option value="<?= $typ_id ?>"><?= CHtml::encode($typ_name) ?></option>
+						<option value="<?= $typ_id ?>"><?= Html::encode($typ_name) ?></option>
 					<? } ?>
 				</select>
 			</div>
@@ -53,7 +53,7 @@ $this->pageTitle = "Suche";
 					$referate = Referat::model()->findAll();
 					foreach ($referate as $ref) {
 						?>
-						<option value="<?= $ref->id ?>"><?= CHtml::encode($ref->name) ?></option>
+						<option value="<?= $ref->id ?>"><?= Html::encode($ref->name) ?></option>
 					<? } ?>
 				</select>
 			</div>

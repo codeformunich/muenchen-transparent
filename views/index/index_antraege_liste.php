@@ -20,7 +20,7 @@
  */
 
 if (isset($title) && $title !== null) {
-    $erkl_str = CHtml::encode($title);
+    $erkl_str = Html::encode($title);
 } elseif (isset($datum)) {
     if ($datum == date("Y-m-d", time() - 3600 * 24) . " 00:00:00") $erkl_str = "des letzten Tages";
     else {
@@ -32,7 +32,7 @@ if (isset($title) && $title !== null) {
 } elseif (isset($datum_von) && isset($datum_bis)) {
     $erkl_str = "Dokumente vom " . RISTools::datumstring($datum_von) . " bis " . RISTools::datumstring($datum_bis);
 } else {
-    $erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
+    $erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . Html::encode($naechster_ort->ort) . "\"";
 }
 
 if (!isset($rathausumschauen)) $rathausumschauen = [];
@@ -51,14 +51,14 @@ if (count($antraege) > 0) {
             if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
                 ?>
                 <div class="neuere_caller">
-                    <a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
+                    <a href="<?= Html::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= Html::encode($neuere_url_ajax) ?>');" rel="next"><span
                             class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
                 </div>
             <?
             } elseif (isset($neuere_url_std) && $neuere_url_std !== null) {
                 ?>
                 <div class="neuere_caller">
-                    <a href="<?= CHtml::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
+                    <a href="<?= Html::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
                 </div>
             <?
             }
@@ -66,14 +66,14 @@ if (count($antraege) > 0) {
             if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
                 ?>
                 <div class="aeltere_caller">
-                    <a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
+                    <a href="<?= Html::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= Html::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
                         Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
             <?
             } elseif (isset($aeltere_url_std) && $aeltere_url_std !== null) {
                 ?>
                 <div class="aeltere_caller">
-                    <a href="<?= CHtml::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a href="<?= Html::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
             <?
             }
@@ -105,8 +105,8 @@ if (count($antraege) > 0) {
         if (is_a($entry, "Rathausumschau")) {
             /** @var Rathausumschau $entry */
             echo '<li class="panel panel-success">
-            <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"><span>';
-            echo CHtml::encode($entry->getName(true)) . '</span></a></div>';
+            <div class="panel-heading"><a href="' . Html::encode($entry->getLink()) . '"><span>';
+            echo Html::encode($entry->getName(true)) . '</span></a></div>';
             echo '<div class="panel-body">';
 
             echo "<div class='metainformationen_antraege'>";
@@ -121,8 +121,8 @@ if (count($antraege) > 0) {
             $inhalt = $entry->inhaltsverzeichnis();
             if (count($inhalt) > 0) echo '<ul class="toc">';
             foreach ($inhalt as $inh) {
-                if ($inh["link"]) echo '<li>' . CHtml::link($inh["titel"], $inh["link"]) . '</li>';
-                else echo '<li>' . CHtml::encode($inh["titel"]) . '</li>';
+                if ($inh["link"]) echo '<li>' . Html::link($inh["titel"], $inh["link"]) . '</li>';
+                else echo '<li>' . Html::encode($inh["titel"]) . '</li>';
             }
             if (count($inhalt) > 0) echo '</ul>';
 
@@ -133,18 +133,18 @@ if (count($antraege) > 0) {
             $doklist = "";
             foreach ($entry->dokumente as $dokument) {
                 $dokurl = $dokument->getLinkZumDokument();
-                $doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
+                $doklist .= "<li><a href='" . Html::encode($dokurl) . "'";
                 if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
-                $doklist .= ">" . CHtml::encode($dokument->getName(false)) . "</a></li>";
+                $doklist .= ">" . Html::encode($dokument->getName(false)) . "</a></li>";
                 $dat = RISTools::date_iso2timestamp($dokument->getDate());
             }
 
             $titel = $entry->getName(true);
             echo '<li class="panel panel-primary">
-            <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"';
-            if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
+            <div class="panel-heading"><a href="' . Html::encode($entry->getLink()) . '"';
+            if (mb_strlen($titel) > 110) echo ' title="' . Html::encode($titel) . '"';
             echo '><span>';
-            echo CHtml::encode($titel) . '</span></a></div>';
+            echo Html::encode($titel) . '</span></a></div>';
             echo '<div class="panel-body">';
 
             $this->renderPartial("/antraege/metainformationen", array(
@@ -167,14 +167,14 @@ if ($datum_nav) {
         if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
             ?>
             <div class="neuere_caller">
-                <a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
+                <a href="<?= Html::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= Html::encode($neuere_url_ajax) ?>');" rel="next"><span
                         class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
             </div>
         <?
         } elseif (isset($neuere_url_std) && $neuere_url_std !== null) {
             ?>
             <div class="neuere_caller">
-                <a href="<?= CHtml::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
+                <a href="<?= Html::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
             </div>
         <?
         }
@@ -182,7 +182,7 @@ if ($datum_nav) {
         if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
             ?>
             <div class="aeltere_caller">
-                <a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
+                <a href="<?= Html::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= Html::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
                     Dokumente
                     <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
@@ -190,7 +190,7 @@ if ($datum_nav) {
         } else if (isset($aeltere_url_std) && $aeltere_url_std !== null) {
             ?>
             <div class="aeltere_caller">
-                <a href="<?= CHtml::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a href="<?= Html::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         <?
         }

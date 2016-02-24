@@ -16,7 +16,7 @@ if ($risitem) {
 
 <section class="well pdfjs">
     <ul class="breadcrumb">
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <?
 
         /**
@@ -28,21 +28,21 @@ if ($risitem) {
         function dokumentenliste($uebergruppe, $name, $dokument, $link)
         {
             if ($link && $uebergruppe) {
-                echo "<li>" . CHtml::link($name, $uebergruppe->getLink()) . "<br></li>";
+                echo "<li>" . Html::link($name, $uebergruppe->getLink()) . "<br></li>";
             } else {
-                echo "<li class=\"active\">" . CHtml::encode($name) . "<br></li>";
+                echo "<li class=\"active\">" . Html::encode($name) . "<br></li>";
             }
 
             if ($uebergruppe && count($uebergruppe->getDokumente()) > 1) {
                 ?>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= CHtml::encode($dokument->getName()) ?><span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::encode($dokument->getName()) ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
+                        <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . Html::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
                     </ul>
                 </li> <?
             } else {
-                echo "<li>" . CHtml::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</li>\n";
+                echo "<li>" . Html::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</li>\n";
             }
         }
 
@@ -51,11 +51,11 @@ if ($risitem) {
             else if ($dokument->tagesordnungspunkt_id) dokumentenliste(Tagesordnungspunkt::model()->findByPk($dokument->tagesordnungspunkt_id), "Ergebnisseite", $dokument, true);
             else if ($dokument->termin_id) dokumentenliste(Termin::model()->findByPk($dokument->termin_id), "Terminseite", $dokument, true);
             else if ($dokument->vorgang_id) dokumentenliste(Vorgang::model()->findByPk($dokument->vorgang_id), "Vorgangsseite", $dokument, false);
-            else     echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
+            else     echo "<li class=\"active\">" . Html::encode($dokument->getName()) . "</li>";
         }
         ?>
     </ul>
-    <div class="pdf_download_holder"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></div>
+    <div class="pdf_download_holder"><a href="<?= Html::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= Html::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></div>
 
     <?
     $this->renderPartial("pdf_embed", array(

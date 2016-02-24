@@ -45,10 +45,10 @@ function zeile_anzeigen($feld, $name, $css_id, $callback) {
 function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
     zeile_anzeigen($antraege, $ueberschrift, $css_id, function ($element) use (&$this2){
         /** @var Antrag $element */
-        echo CHtml::link($element->getName(true), $this2->createUrl("antraege/anzeigen", array("id" => $element->id)));
+        echo Html::link($element->getName(true), $this2->createUrl("antraege/anzeigen", array("id" => $element->id)));
         echo '<div class="metainformationen_verbundene">';
         if ($element->antrag_typ != "" && $element->antrag_typ != "Antrag")
-            echo "<span>" . CHtml::encode($element->antrag_typ) . "</span>";
+            echo "<span>" . Html::encode($element->antrag_typ) . "</span>";
         $this2->renderPartial("/antraege/metainformationen", array(
             "antrag" => $element,
             "zeige_ba_orte" => true
@@ -63,12 +63,12 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
     <div class="col-md-8">
         <section class="well">
             <div class="original_ris_link"><?
-                echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $antrag->getSourceLink());
+                echo Html::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $antrag->getSourceLink());
                 ?></div>
             <h1 class="small"><? echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
-                if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")"; ?></h1>
+                if ($antrag->antrag_typ != "") echo " (" . Html::encode($antrag->antrag_typ) . ")"; ?></h1>
 
-            <p style="font-size: 18px;"><?= CHtml::encode($name) ?></p>
+            <p style="font-size: 18px;"><?= Html::encode($name) ?></p>
 
             <table class="table antragsdaten">
                 <tbody>
@@ -98,7 +98,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                         <?
                         } else {
                             ?>
-                            <form method="POST" action="<?= CHtml::encode($antrag->getLink(["tag_mode" => 1])) ?>"
+                            <form method="POST" action="<?= Html::encode($antrag->getLink(["tag_mode" => 1])) ?>"
                                   class="login_modal_form">
                                 <?
                                 $this->renderPartial("../index/login_modal");
@@ -159,19 +159,19 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", "initiatoren",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
-                        echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
-                        echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
+                        echo Html::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
+                        echo " (" . Html::encode($person->ratePartei($antrag->gestellt_am)) . ")";
                     } else {
-                        echo CHtml::encode($person->name);
+                        echo Html::encode($person->name);
                     }
                 });
                 zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON], "Gestellt von:", "gestellt_von",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
-                        echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
-                        echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
+                        echo Html::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
+                        echo " (" . Html::encode($person->ratePartei($antrag->gestellt_am)) . ")";
                     } else {
-                        echo CHtml::encode($person->name);
+                        echo Html::encode($person->name);
                     }
                 });
                 ?>
@@ -179,39 +179,39 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     <th>Gremium:</th>
                     <td><?
                         if ($antrag->ba_nr > 0) {
-                            echo CHtml::link("Bezirksausschuss " . $antrag->ba_nr, $antrag->ba->getLink()) . " (" . CHtml::encode($antrag->ba->name) . ")";
+                            echo Html::link("Bezirksausschuss " . $antrag->ba_nr, $antrag->ba->getLink()) . " (" . Html::encode($antrag->ba->name) . ")";
                         } else {
                             echo "Stadtrat";
                         }
-                        if ($antrag->referat != "") echo " / " . CHtml::encode(strip_tags($antrag->referat));
+                        if ($antrag->referat != "") echo " / " . Html::encode(strip_tags($antrag->referat));
                         ?></td>
                 </tr>
                 <tr id="antragsnummer">
                     <th>Antragsnummer:</th>
-                    <td><?= CHtml::encode($antrag->antrags_nr) ?></td>
+                    <td><?= Html::encode($antrag->antrags_nr) ?></td>
                 </tr>
                 <?
                 if ($antrag->gestellt_am > 0 && $antrag->gestellt_am == $antrag->registriert_am) {
-                    echo "<tr><th>Gestellt u. registriert: </th><td>" . CHtml::encode(RISTools::datumstring($antrag->gestellt_am)) . "</td></tr>\n";
+                    echo "<tr><th>Gestellt u. registriert: </th><td>" . Html::encode(RISTools::datumstring($antrag->gestellt_am)) . "</td></tr>\n";
                 } else {
-                    if ($antrag->gestellt_am > 0)    echo "<tr><th>Gestellt am:</th><td>"       . CHtml::encode(RISTools::datumstring($antrag->gestellt_am))        . "</td></tr>\n";
-                    if ($antrag->registriert_am > 0) echo "<tr><th>Registriert am:</th><td>"    . CHtml::encode(RISTools::datumstring($antrag->registriert_am))     . "</td></tr>\n";
+                    if ($antrag->gestellt_am > 0)    echo "<tr><th>Gestellt am:</th><td>"       . Html::encode(RISTools::datumstring($antrag->gestellt_am))        . "</td></tr>\n";
+                    if ($antrag->registriert_am > 0) echo "<tr><th>Registriert am:</th><td>"    . Html::encode(RISTools::datumstring($antrag->registriert_am))     . "</td></tr>\n";
                 }
-                if ($antrag->bearbeitungsfrist > 0)  echo "<tr><th>Bearbeitungsfrist:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->bearbeitungsfrist))  . "</td></tr>\n";
-                if ($antrag->fristverlaengerung > 0) echo "<tr><th>Fristverlängerung:</th><td>" . CHtml::encode(RISTools::datumstring($antrag->fristverlaengerung)) . "</td></tr>\n";
-                if ($antrag->erledigt_am > 0)        echo "<tr><th>Erledigt am:</th><td>"       . CHtml::encode(RISTools::datumstring($antrag->erledigt_am))        . "</td></tr>\n";
+                if ($antrag->bearbeitungsfrist > 0)  echo "<tr><th>Bearbeitungsfrist:</th><td>" . Html::encode(RISTools::datumstring($antrag->bearbeitungsfrist))  . "</td></tr>\n";
+                if ($antrag->fristverlaengerung > 0) echo "<tr><th>Fristverlängerung:</th><td>" . Html::encode(RISTools::datumstring($antrag->fristverlaengerung)) . "</td></tr>\n";
+                if ($antrag->erledigt_am > 0)        echo "<tr><th>Erledigt am:</th><td>"       . Html::encode(RISTools::datumstring($antrag->erledigt_am))        . "</td></tr>\n";
                 ?>
                 <tr id="status">
                     <th>Status:</th>
                     <td><?
-                        echo CHtml::encode($antrag->status);
+                        echo Html::encode($antrag->status);
                         if ($antrag->bearbeitung != "") echo " / ";
-                        echo CHtml::encode($antrag->bearbeitung);
+                        echo Html::encode($antrag->bearbeitung);
                         ?></td>
                 </tr>
                 <tr id="wahlperiode">
                     <th>Wahlperiode:</th>
-                    <td><?= CHtml::encode($antrag->wahlperiode) ?></td>
+                    <td><?= Html::encode($antrag->wahlperiode) ?></td>
                 </tr>
                 <?
                 $docs = $antrag->dokumente;
@@ -228,8 +228,8 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 });
                 zeile_anzeigen($docs, "Dokumente:", "dokumente",  function ($dokument) {
                     /** @var Dokument $dok */
-                    echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
-                    ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf" title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>"></a> <?
+                    echo Html::encode($dokument->getDisplayDate()) . ": " . Html::link($dokument->getName(false), $dokument->getLinkZumDokument());
+                    ?> <a class="fontello-download antrag-herunterladen" href="<?= Html::encode('/dokumente/' . $dokument->id . '.pdf') ?>" download="<?= $dokument->antrag_id ?> - <?= Html::encode($dokument->getName())?>.pdf" title="Herunterladen: <?= Html::encode($dokument->getName()) ?>"></a> <?
                 });
                 $angezeigte_dokumente = [];
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;
@@ -237,18 +237,18 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 zeile_anzeigen($antrag->ergebnisse, "Behandelt:", "behandelt",  function ($ergebnis) {
                     /** @var Tagesordnungspunkt $termin */
                     $termin = $ergebnis->sitzungstermin;
-                    echo CHtml::link(RISTools::datumstring($termin->termin) . ', ' . $termin->gremium->getName(), $termin->getLink());
+                    echo Html::link(RISTools::datumstring($termin->termin) . ', ' . $termin->gremium->getName(), $termin->getLink());
                     if ($ergebnis->beschluss_text != '' || $ergebnis->entscheidung != '') {
                         echo '<br>';
                         $text = $ergebnis->beschluss_text;
                         if ($ergebnis->beschluss_text != '' && $ergebnis->entscheidung != '') $text .= ', ';
                         $text .= $ergebnis->entscheidung;
                         if (count($ergebnis->dokumente) == 1) {
-                            echo "Ergebnis: " . CHtml::link($text, $ergebnis->dokumente[0]->getLink());
+                            echo "Ergebnis: " . Html::link($text, $ergebnis->dokumente[0]->getLink());
                         } else {
-                            echo "Ergebnis: " . CHtml::encode($text);
+                            echo "Ergebnis: " . Html::encode($text);
                             foreach ($ergebnis->dokumente as $dok) {
-                                echo '<br>' . CHtml::link($dok->getName(), $dok->getLink());
+                                echo '<br>' . Html::link($dok->getName(), $dok->getLink());
                             }
                         }
                     }
@@ -293,9 +293,9 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     zeile_anzeigen($items, "Verwandte Seiten:", "verwandte_seiten", function ($item) {
                         /** @var IRISItem $item */
                         if (method_exists($item, "getLinkZumDokument"))
-                            echo CHtml::link($item->getName(true), $item->getLinkZumDokument());
+                            echo Html::link($item->getName(true), $item->getLinkZumDokument());
                         else
-                            echo CHtml::link($item->getName(true), $item->getLink());
+                            echo Html::link($item->getName(true), $item->getLink());
                     });
                 }
                 ?>
@@ -324,8 +324,8 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 <? } ?>
             </form>
 
-            <div class="shariff" data-backend-url="<?= CHtml::encode($this->createUrl("/index/shariffData")) ?>"
-                 data-url="<?= CHtml::encode(Yii::app()->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
+            <div class="shariff" data-backend-url="<?= Html::encode($this->createUrl("/index/shariffData")) ?>"
+                 data-url="<?= Html::encode(Yii::app()->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
         </div>
         <div class="well themenverwandt_liste">
             <?
@@ -343,7 +343,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     ?>
                 </ul>
 
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("antraege/themenverwandte", ["id" => $antrag->id])) ?>"
+                <a href="<?= Html::encode(Yii::app()->createUrl("antraege/themenverwandte", ["id" => $antrag->id])) ?>"
                    class="weitere">
                     Weitere Themenverwandte <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>

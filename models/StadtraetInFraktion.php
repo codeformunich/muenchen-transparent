@@ -13,7 +13,7 @@
  * @property Fraktion $fraktion
  * @property StadtraetIn $stadtraetIn
  */
-class StadtraetInFraktion extends CActiveRecord
+class StadtraetInFraktion extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

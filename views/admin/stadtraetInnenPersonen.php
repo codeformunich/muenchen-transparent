@@ -17,8 +17,8 @@
         <? foreach ($personen as $person) {
             echo "<label ";
             if (!is_null($person->stadtraetIn) || $person->typ == Person::$TYP_FRAKTION) echo "style='color: gray;';";
-            echo "><input type='radio' name='person' value='" . $person->id . "'> " . CHtml::encode($person->name);
-            if (!is_null($person->stadtraetIn)) echo " ( => " . CHtml::encode($person->stadtraetIn->name) . ")";
+            echo "><input type='radio' name='person' value='" . $person->id . "'> " . Html::encode($person->name);
+            if (!is_null($person->stadtraetIn)) echo " ( => " . Html::encode($person->stadtraetIn->name) . ")";
             if ($person->typ == Person::$TYP_FRAKTION) echo " (Fraktion)";
             echo "</label><br>\n";
         } ?>
@@ -35,7 +35,7 @@
                 $frakts[] = "$ba: " . $fr->fraktion->name;
             }
             if (count($frakts) > 0) $name .= " (" . implode(", ", $frakts) . ")";
-            echo CHtml::encode($name);
+            echo Html::encode($name);
             echo "</label><br>\n";
         } ?>
     </div>

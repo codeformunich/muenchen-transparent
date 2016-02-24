@@ -20,7 +20,7 @@ class StadtraetInnenParser extends RISParser
 
         preg_match_all("/ris_antrag_detail\.jsp\?risid=(?<antrag_id>[0-9]+)[\"'& ]/siU", $antr_text, $matches);
         foreach ($matches["antrag_id"] as $antrag_id) try {
-            Yii::app()->db->createCommand()->insert("antraege_stadtraetInnen", ["antrag_id" => $antrag_id, "stadtraetIn_id" => $stadtraetIn_id, "gefunden_am" => new CDbExpression("NOW()")]);
+            Yii::app()->db->createCommand()->insert("antraege_stadtraetInnen", ["antrag_id" => $antrag_id, "stadtraetIn_id" => $stadtraetIn_id, "gefunden_am" => new DbExpression("NOW()")]);
         } catch (Exception $e) {
         }
     }
@@ -154,7 +154,7 @@ class StadtraetInnenParser extends RISParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = null;
             $aend->typ         = RISAenderung::$TYP_STADTRAETIN;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
         }

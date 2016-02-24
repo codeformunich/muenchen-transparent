@@ -11,7 +11,7 @@
  * @property Gremium $gremium
  * @property StadtraetIn $stadtraetIn
  */
-class StadtraetInGremium extends CActiveRecord
+class StadtraetInGremium extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

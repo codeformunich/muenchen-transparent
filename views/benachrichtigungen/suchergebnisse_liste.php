@@ -42,14 +42,14 @@ if (count($dokumente) == 0) {
                     <div class="row-content">
                         <h4 class="list-group-item-heading">
                             <a href="<?=CHtml::encode($risitem->getLink())?>" title="<?=CHtml::encode($risitem->getName()) ?>" class="overflow-fadeout-white"><span>
-                                <span class="least-content"><?= CHtml::encode($dok->getDisplayDate()) ?></span>
+                                <span class="least-content"><?= Html::encode($dok->getDisplayDate()) ?></span>
                                 <?=CHtml::encode($risitem->getName(true))?>
                             </span></a>
                         </h4>
 
                         <p class="list-group-item-text">
                             <?
-                            echo '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dok->getName(false)) . '</a><br>';
+                            echo '<a href="' . Html::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . Html::encode($dok->getName(false)) . '</a><br>';
                             $highlightedDoc = $highlighting->getResult($dokument->id);
                             if ($highlightedDoc && count($highlightedDoc) > 0) {
                                 foreach ($highlightedDoc as $field => $highlight) {

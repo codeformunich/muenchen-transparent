@@ -14,7 +14,7 @@
  * @property Person[] $personen
  * @property Bezirksausschuss $bezirksausschuss
  */
-class Fraktion extends CActiveRecord implements IRISItem
+class Fraktion extends ActiveRecord implements IRISItem
 {
     /**
      * Returns the static model of the specified AR class.

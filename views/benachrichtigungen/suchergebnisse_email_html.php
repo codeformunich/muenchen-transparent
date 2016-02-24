@@ -28,11 +28,11 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                     <ul class="antragsliste">
                         <?
                         foreach ($data["vorgaenge"] as $vorgang) {
-                            echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode($vorgang["vorgang"]) . "</div>";
+                            echo "<li class='listitem'><div class='antraglink'>" . Html::encode($vorgang["vorgang"]) . "</div>";
                             echo "<ul class='dokumente'>";
                             foreach ($vorgang["neues"] as $item) {
                                 /** @var IRISItem $item */
-                                echo '<li><a href="' . CHtml::encode($item->getLink()) . '">' . CHtml::encode($item->getName(true)) . '</a> (' . CHtml::encode($item->getTypName()) . ')</li><br>';
+                                echo '<li><a href="' . Html::encode($item->getLink()) . '">' . Html::encode($item->getName(true)) . '</a> (' . Html::encode($item->getTypName()) . ')</li><br>';
                             }
                             echo "</ul>";
                             echo "</li>\n";
@@ -59,7 +59,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                             /** @var Dokument $dokument */
                             $dokument = $dok["dokument"];
                             $dokurl   = $dokument->getLinkZumDokument();
-                            $doklist .= '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dokument->name) . '</a><br>';
+                            $doklist .= '<a href="' . Html::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . Html::encode($dokument->name) . '</a><br>';
                             $dat = RISTools::date_iso2timestamp($dokument->getDate());
                             if ($dat > $max_date) $max_date = $dat;
 
@@ -76,15 +76,15 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                             </div>
                             <div class="row-content">
                                 <h4 class="list-group-item-heading">
-                                    <a href="<?= CHtml::encode($antrag->getLink()) ?>" title="<?= CHtml::encode($antrag->getName()) ?>" class="overflow-fadeout-white"><span>
-                                            <span class="least-content"><?= CHtml::encode(date("d.m.Y", $max_date)) ?></span>
-                                            <?= CHtml::encode($antrag->getName(true)) ?>
+                                    <a href="<?= Html::encode($antrag->getLink()) ?>" title="<?= Html::encode($antrag->getName()) ?>" class="overflow-fadeout-white"><span>
+                                            <span class="least-content"><?= Html::encode(date("d.m.Y", $max_date)) ?></span>
+                                            <?= Html::encode($antrag->getName(true)) ?>
                             </span></a>
                                 </h4>
 
                                 <p class="list-group-item-text">
                                     <?
-                                    if ($antrag->ba_nr > 0) echo " <span title='" . CHtml::encode("Bezirksausschuss " . $antrag->ba_nr . " (" . $antrag->ba->name . ")") . "' class='ba'>BA " . $antrag->ba_nr . "</span>, ";
+                                    if ($antrag->ba_nr > 0) echo " <span title='" . Html::encode("Bezirksausschuss " . $antrag->ba_nr . " (" . $antrag->ba->name . ")") . "' class='ba'>BA " . $antrag->ba_nr . "</span>, ";
                                     echo $doklist;
 
                                     echo "<div class='gefunden_ueber'>";
@@ -118,8 +118,8 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                             /** @var Termin $termin */
                             $termin = $dat["termin"];
 
-                            echo "<li class='listitem'><div class='antraglink'><a href='" . CHtml::encode($termin->getLink()) . "' title='" . CHtml::encode($termin->getName()) . "'>";
-                            echo CHtml::encode($termin->getName()) . "</a></div>";
+                            echo "<li class='listitem'><div class='antraglink'><a href='" . Html::encode($termin->getLink()) . "' title='" . Html::encode($termin->getName()) . "'>";
+                            echo Html::encode($termin->getName()) . "</a></div>";
 
                             $dokumente_strs = array();
                             $queries        = array();
@@ -129,9 +129,9 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                                 /** @var Dokument $dokument */
                                 $dokument = $dok["dokument"];
                                 $dokurl   = $dokument->getLinkZumDokument();
-                                $doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
+                                $doklist .= "<li><a href='" . Html::encode($dokurl) . "'";
                                 if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
-                                $doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
+                                $doklist .= ">" . Html::encode($dokument->name) . "</a></li>";
                                 $dat = RISTools::date_iso2timestamp($dokument->getDate());
                                 if ($dat > $max_date) $max_date = $dat;
 
@@ -166,7 +166,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
             Das München Transparent-Team
             <br><br>
             <? $url = Yii::app()->createUrl("benachrichtigungen/index", array("code" => $benutzerIn->getBenachrichtigungAbmeldenCode())); ?>
-            PS: Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href="<?php echo CHtml::encode($url); ?>">hier abbestellen</a>.
+            PS: Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href="<?php echo Html::encode($url); ?>">hier abbestellen</a>.
 
         </div>
     </div>

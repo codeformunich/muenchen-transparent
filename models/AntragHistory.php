@@ -31,7 +31,7 @@
  * The followings are the available model relations:
  * @property Bezirksausschuss $ba
  */
-class AntragHistory extends CActiveRecord
+class AntragHistory extends ActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

@@ -22,7 +22,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Adobe CMap resources are covered by their own copyright and license:
+Adobe Map resources are covered by their own copyright and license:
 http://sourceforge.net/adobe/cmap/wiki/License/
 -->
     <div id="outerContainer" class="loadingInProgress">

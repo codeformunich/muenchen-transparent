@@ -28,7 +28,7 @@
                 <strong>Ausgewählt:</strong> <span class="radius_m"></span> Meter um "<span class="zentrum_ort"></span>" (ungefähr)<br>
                 <br>Willst du per E-Mail benachrichtigt werden, wenn neue Dokumente mit diesem Ortsbezug erscheinen?
             </div>
-            <form method="POST" action="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>">
+            <form method="POST" action="<?= Html::encode($this->createUrl("benachrichtigungen/index")) ?>">
                 <input type="hidden" name="geo_lng" value="">
                 <input type="hidden" name="geo_lat" value="">
                 <input type="hidden" name="geo_radius" id="geo_radius" value="">

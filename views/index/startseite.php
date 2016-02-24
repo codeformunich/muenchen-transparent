@@ -24,7 +24,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 ?>
 
 <section class="well">
-    <h1 class="sr-only"><?= CHtml::encode($this->pageTitle) ?></h1>
+    <h1 class="sr-only"><?= Html::encode($this->pageTitle) ?></h1>
 
     <?
     $this->renderPartial("/index/map", array(
@@ -55,7 +55,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
     <section class="teaser_buttons">
         <div class="row">
             <div class="col-md-12">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>" class="btn btn-success">
+                <a href="<?= Html::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>" class="btn btn-success">
                     <span class="glyphicon glyphicon-info-sign"></span>
 
                     <h2>So funktioniert Stadtpolitik</h2>
@@ -70,7 +70,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
         <div class="row">
             <div class="col-md-6">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("termine/index")) ?>" class="btn btn-info">
+                <a href="<?= Html::encode(Yii::app()->createUrl("termine/index")) ?>" class="btn btn-info">
                     <span class="glyphicon glyphicon-calendar"></span>
 
                     <h2>Termine</h2>
@@ -82,7 +82,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
             </div>
 
             <div class="col-md-6">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("personen/index")) ?>" class="btn btn-info">
+                <a href="<?= Html::encode(Yii::app()->createUrl("personen/index")) ?>" class="btn btn-info">
                     <span class="glyphicon glyphicon-user"></span>
 
                     <h2>Personen</h2>
@@ -96,7 +96,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
         <div class="row">
             <div class="col-md-6">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("themen/index")) ?>" class="btn btn-info">
+                <a href="<?= Html::encode(Yii::app()->createUrl("themen/index")) ?>" class="btn btn-info">
                     <span class="glyphicon glyphicon-chevron-right"></span>
 
                     <h2>Themen</h2>
@@ -108,7 +108,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
             </div>
 
             <div class="col-md-6">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("benachrichtigungen/index")) ?>" class="btn btn-info">
+                <a href="<?= Html::encode(Yii::app()->createUrl("benachrichtigungen/index")) ?>" class="btn btn-info">
                     <span class="glyphicon" style="height: 37px; font-weight: bold;">@</span>
 
                     <h2>E-Mail-Benachrichtigung</h2>
@@ -122,7 +122,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
         <div class="row">
             <div class="col-md-6">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" class="btn btn-info">
+                <a href="<?= Html::encode(Yii::app()->createUrl("index/suche")) ?>" class="btn btn-info">
                     <span class="glyphicon glyphicon-search"></span>
 
                     <h2>Dokumentensuche</h2>
@@ -135,7 +135,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
             </div>
 
             <div class="col-md-6">
-                <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/ueber")) ?>" class="btn btn-info">
+                <a href="<?= Html::encode(Yii::app()->createUrl("infos/ueber")) ?>" class="btn btn-info">
                     <span class="glyphicon glyphicon-question-sign"></span>
 
                     <h2>Über München-Transparent</h2>

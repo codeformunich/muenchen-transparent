@@ -21,7 +21,7 @@
  * @property Fraktion[] $fraktionen
  * @property BezirksausschussBudget[] $budgets
  */
-class Bezirksausschuss extends CActiveRecord
+class Bezirksausschuss extends ActiveRecord
 {
     /**
      * @param string $className active record class name.

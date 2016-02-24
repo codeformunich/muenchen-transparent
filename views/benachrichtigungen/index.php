@@ -16,14 +16,14 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
 <section class="well">
 
-    <form style="float: right;" method="POST" action="<?= CHtml::encode($this->createUrl("index/startseite")) ?>">
+    <form style="float: right;" method="POST" action="<?= Html::encode($this->createUrl("index/startseite")) ?>">
         <button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
     </form>
 
-    <h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= CHtml::encode($ich->email) ?>:</h1>
+    <h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= Html::encode($ich->email) ?>:</h1>
 
     <div class="row">
-        <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8 einstellungen_form" style="margin-left: 23px;">
+        <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8 einstellungen_form" style="margin-left: 23px;">
             <h3>Ich möchte benachrichtigt werden...</h3>
 
             <div>
@@ -114,12 +114,12 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         ?>
         <div class="benachrichtigung_keine">Noch keine E-Mail-Benachrichtigungen</div>
         <p class="benachrichtigung_keine">Wenn neue Dokumente zu einem von Ihnen abonnierten Thema oder Vorgang veröffentlicht werden, dann erhalten Sie automatisch eine
-            Benachrichtigung an <?= CHtml::encode($ich->email) ?>.</p>
+            Benachrichtigung an <?= Html::encode($ich->email) ?>.</p>
     <?
     } else {
         ?>
         <div class="row">
-            <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8" style="margin-left: 23px;">
+            <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8" style="margin-left: 23px;">
                 <? if (count($bens) > 0) { ?>
                     <h3>Abonnierte Suchabfragen</h3>
                     <ul class="benachrichtigungsliste">
@@ -167,7 +167,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                                     <button type='submit' class='del' name='<?= $del_form_name ?>'><span class='glyphicon glyphicon-minus-sign'></span></button>
                                 </div>
                                 <div class='krit_holder'>
-                                    <a href="<?= CHtml::encode($item->getLink()) ?>"><span class="fontello-right-open"></span> <?= CHtml::encode($item->getName()) ?></a>
+                                    <a href="<?= Html::encode($item->getLink()) ?>"><span class="fontello-right-open"></span> <?= Html::encode($item->getName()) ?></a>
                                 </div>
                             </li>
                         <?
@@ -181,10 +181,10 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         <? if (count($bens) > 0) { ?>
             <div class="row">
                 <div class="ben_alle_holder col col-lg-8">
-                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
+                    <a href="<?= Html::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
                             class="glyphicon glyphicon-chevron-right"></span>
                         Alle Suchergebnisse</a>
-                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", ["code" => $ich->getFeedCode()])) ?>" class="ben_alle_feed"><span
+                    <a href="<?= Html::encode($this->createUrl("benachrichtigungen/alleFeed", ["code" => $ich->getFeedCode()])) ?>" class="ben_alle_feed"><span
                             class="fontello-rss"></span>
                         Alle Suchergebnisse als Feed</a>
                 </div>
@@ -193,7 +193,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         <br style="clear: both;">
     <? } ?>
 
-    <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
+    <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
         <fieldset>
             <legend>Benachrichtige mich bei neuen Dokumenten...</legend>
 
@@ -208,7 +208,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         </fieldset>
     </form>
 
-    <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
+    <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
         <fieldset>
             <label for="suchbegriff"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... aus diesem Stadtteil:</span></label><br>
 
@@ -216,7 +216,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                 <select name="ba" class="form-control"><?
                     $bas = Bezirksausschuss::model()->findAll();
                     /** @var Bezirksausschuss $ba */
-                    foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": " . CHtml::encode($ba->name) . '</option>';
+                    foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": " . Html::encode($ba->name) . '</option>';
                     ?>
                 </select>
             <span class="input-group-btn">
@@ -233,7 +233,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
     </form>
 
 
-    <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add" id="benachrichtigung_add_geo_form">
+    <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add" id="benachrichtigung_add_geo_form">
         <fieldset>
             <label for="geo_radius"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... mit diesem Ortsbezug:</span></label>
 

@@ -42,9 +42,9 @@ function zeile_anzeigen($feld, $name, $callback)
 ?>
 <section class="well pdfjs_long" itemscope itemtype="http://schema.org/Event">
     <div class="original_ris_link"><?
-        echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $termin->getSourceLink());
+        echo Html::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $termin->getSourceLink());
         ?></div>
-    <h1 itemprop="name"><?= CHtml::encode($termin->getName()) ?></h1>
+    <h1 itemprop="name"><?= Html::encode($termin->getName()) ?></h1>
     <br>
 
     <?
@@ -52,13 +52,13 @@ function zeile_anzeigen($feld, $name, $callback)
         echo '<div style="text-align: center; overflow: auto;">';
         if ($termin->termin_next_id > 0) {
             $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
-            echo '<a href="' . CHtml::encode($url) . '" style="float: right;">Nächster Termin <span class="fontello-right-open"></span></a>';
+            echo '<a href="' . Html::encode($url) . '" style="float: right;">Nächster Termin <span class="fontello-right-open"></span></a>';
         }
         if ($termin->termin_prev_id > 0) {
             $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
-            echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
+            echo '<a href="' . Html::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
         }
-        echo '<a href="' . CHtml::encode(Yii::app()->createUrl("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
+        echo '<a href="' . Html::encode(Yii::app()->createUrl("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
         echo '</div>';
     }
     ?>
@@ -80,19 +80,19 @@ function zeile_anzeigen($feld, $name, $callback)
         <tr id="ort">
             <th>Ort:</th>
             <td itemprop="location">
-                <?= CHtml::encode($termin->sitzungsort) ?>
+                <?= Html::encode($termin->sitzungsort) ?>
             </td>
         </tr>
         <tr id="gremium">
             <th>Gremium:</th>
             <td>
-                <?= CHtml::encode($termin->gremium->name) ?>
+                <?= Html::encode($termin->gremium->name) ?>
             </td>
         </tr>
         <?
         zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", function ($dok) {
             /** @var Dokument $dok */
-            echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
+            echo Html::encode($dok->getDisplayDate()) . ": " . Html::link($dok->getName(false), $dok->getLinkZumDokument());
         });
         ?>
         </tbody>
@@ -121,29 +121,29 @@ function zeile_anzeigen($feld, $name, $callback)
                 $name = $ergebnis->top_nr . ": " . $ergebnis->getName(true);
                 echo "<li style='margin-bottom: 7px;'>";
                 if ($ergebnis->top_ueberschrift) echo "<strong>";
-                echo CHtml::encode(strip_tags($name));
+                echo Html::encode(strip_tags($name));
                 if ($ergebnis->top_ueberschrift) echo "</strong>";
                 $antraege = $ergebnis->zugeordneteAntraegeHeuristisch();
                 if (count($ergebnis->dokumente) > 0 || is_object($ergebnis->antrag) || count($antraege) > 0) {
                     echo "<ul class='doks'>";
                     $antrag_ids = array();
                     if (is_object($ergebnis->antrag)) {
-                        echo "<li>" . CHtml::link("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
+                        echo "<li>" . Html::link("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
                         $antrag_ids[] = $ergebnis->antrag->id;
                     }
                     foreach ($ergebnis->dokumente as $dokument) {
-                        echo "<li>" . CHtml::link($dokument->name, $dokument->getLinkZumDokument());
+                        echo "<li>" . Html::link($dokument->name, $dokument->getLinkZumDokument());
                         $x = explode("Beschluss:", $dokument->text_pdf);
-                        if (count($x) > 1) echo " (" . CHtml::encode(trim($x[1])) . ")";
+                        if (count($x) > 1) echo " (" . Html::encode(trim($x[1])) . ")";
                         echo "</li>\n";
                     }
                     foreach ($antraege as $ant) if (is_object($ant)) {
                         /** @var Antrag $ant */
                         if (in_array($ant->id, $antrag_ids)) continue;
                         $antrag_ids[] = $ant->id;
-                        echo "<li>Verwandter Antrag: " . CHtml::link($ant->getName(true), $ant->getLink()) . "</li>\n";
+                        echo "<li>Verwandter Antrag: " . Html::link($ant->getName(true), $ant->getLink()) . "</li>\n";
                     } else {
-                        echo "<li>Verwandter Antrag: " . CHtml::encode(RISTools::korrigiereTitelZeichen($ant)) . "</li>\n";
+                        echo "<li>Verwandter Antrag: " . Html::encode(RISTools::korrigiereTitelZeichen($ant)) . "</li>\n";
                     }
                     echo "</ul>";
                 }

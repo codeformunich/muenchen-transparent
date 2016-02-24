@@ -22,7 +22,7 @@
  * @property integer $gliederung_nummer
  * @property string $gliederung_name
  */
-class StatistikDatensatz extends CActiveRecord
+class StatistikDatensatz extends ActiveRecord
 {
     const QUELLE_BEVOELKERUNG = 1;
 

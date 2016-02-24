@@ -15,7 +15,7 @@
  * @property Vorgang[] $abonnierte_vorgaenge
  * @property StadtraetIn[] $stadtraetInnen
  */
-class BenutzerIn extends CActiveRecord
+class BenutzerIn extends ActiveRecord
 {
 
     // Hinweis: Müssen 2er-Potenzen sein, also 32, 64, 128, ...
@@ -51,8 +51,8 @@ class BenutzerIn extends CActiveRecord
         $benutzerIn->email                         = $email;
         $benutzerIn->email_bestaetigt              = 0;
         $benutzerIn->pwd_enc                       = ($password != "" ? BenutzerIn::create_hash($password) : "");
-        $benutzerIn->datum_angelegt                = new CDbExpression("NOW()");
-        $benutzerIn->datum_letzte_benachrichtigung = new CDbExpression("NOW()");
+        $benutzerIn->datum_angelegt                = new DbExpression("NOW()");
+        $benutzerIn->datum_letzte_benachrichtigung = new DbExpression("NOW()");
         return $benutzerIn;
     }
 
@@ -224,7 +224,7 @@ class BenutzerIn extends CActiveRecord
             if (time() - $ts < 3600 * 24) return "Es kann nur eine Passwortänderung innerhalb von 24 Stunden beantragt werden.";
         }
         $this->pwd_change_code = sha1(uniqid() . $this->pwd_enc);
-        $this->pwd_change_date = new CDbExpression("NOW()");
+        $this->pwd_change_date = new DbExpression("NOW()");
         if ($this->save()) {
             $link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("benachrichtigungen/NeuesPasswortSetzen", ["id" => $this->id, "code" => $this->pwd_change_code]);
             RISTools::send_email($this->email, "Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang bei München Transparent zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"

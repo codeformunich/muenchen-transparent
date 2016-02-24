@@ -18,7 +18,7 @@
  * @property Antrag[] $antraege
  * @property StadtraetInReferat[] $stadtraetInnenReferate
  */
-class Referat extends CActiveRecord implements IRISItem
+class Referat extends ActiveRecord implements IRISItem
 {
     /**
      * Returns the static model of the specified AR class.

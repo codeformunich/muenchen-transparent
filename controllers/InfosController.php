@@ -130,7 +130,7 @@ class InfosController extends RISBaseController
             $text->titel              = $_REQUEST["titel"];
             $text->text               = $_REQUEST["text"];
             $text->pos                = 0;
-            $text->edit_datum         = new CDbExpression("NOW()");
+            $text->edit_datum         = new DbExpression("NOW()");
             $text->edit_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
             $text->save();
         }
@@ -165,7 +165,7 @@ class InfosController extends RISBaseController
         if (AntiXSS::isTokenSet("speichern")) {
             $eintrag->titel              = $_REQUEST["titel"];
             $eintrag->text               = $_REQUEST["text"];
-            $eintrag->edit_datum         = new CDbExpression("NOW()");
+            $eintrag->edit_datum         = new DbExpression("NOW()");
             $eintrag->edit_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
             $eintrag->save();
 

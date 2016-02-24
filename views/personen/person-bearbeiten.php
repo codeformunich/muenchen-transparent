@@ -18,13 +18,13 @@ if (count($x) == 3 && $x[1] > 0) {
 ?>
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
-        <li><a href="<?= CHtml::encode($person->getLink()) ?>"><?=CHtml::encode($person->getName())?></a><br></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
+        <li><a href="<?= Html::encode($person->getLink()) ?>"><?=CHtml::encode($person->getName())?></a><br></li>
         <li class="active">Bearbeiten</li>
     </ul>
 
-    <h1>Bearbeiten: <?= CHtml::encode($person->getName()) ?></h1>
+    <h1>Bearbeiten: <?= Html::encode($person->getName()) ?></h1>
 
     <form method="post" style="max-width: 500px; margin-left: auto; margin-right: auto; margin-top: 40px;">
         <fieldset>
@@ -32,7 +32,7 @@ if (count($x) == 3 && $x[1] > 0) {
                 <label for="inputEmail" class="col-md-4 control-label">E-Mail (öffentlich):</label>
 
                 <div class="col-md-8">
-                    <input type="email" name="email" class="form-control" id="inputEmail" placeholder="E-Mail-Adresse" value="<?= CHtml::encode($person->email) ?>">
+                    <input type="email" name="email" class="form-control" id="inputEmail" placeholder="E-Mail-Adresse" value="<?= Html::encode($person->email) ?>">
                 </div>
             </div>
 
@@ -40,7 +40,7 @@ if (count($x) == 3 && $x[1] > 0) {
                 <label for="inputWebsite" class="col-md-4 control-label">Website:</label>
 
                 <div class="col-md-8">
-                    <input type="text" name="web" class="form-control" id="inputWebsite" placeholder="https://www.meine-website.de/" value="<?= CHtml::encode($person->web) ?>">
+                    <input type="text" name="web" class="form-control" id="inputWebsite" placeholder="https://www.meine-website.de/" value="<?= Html::encode($person->web) ?>">
                 </div>
             </div>
 
@@ -49,7 +49,7 @@ if (count($x) == 3 && $x[1] > 0) {
 
                 <div class="col-md-8">
                     <input type="text" name="facebook" class="form-control" id="inputFacebook" placeholder="https://www.facebook.com/....."
-                           value="<?= CHtml::encode($person->facebook) ?>">
+                           value="<?= Html::encode($person->facebook) ?>">
                 </div>
             </div>
 

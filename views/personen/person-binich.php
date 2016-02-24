@@ -12,13 +12,13 @@ $ich             = $this->aktuelleBenutzerIn();
 
     <section class="well">
         <ul class="breadcrumb" style="margin-bottom: 5px;">
-            <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-            <li><a href="<?= CHtml::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
-            <li><a href="<?= CHtml::encode($person->getLink()) ?>"><?= CHtml::encode($person->getName()) ?></a><br></li>
+            <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+            <li><a href="<?= Html::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
+            <li><a href="<?= Html::encode($person->getLink()) ?>"><?= Html::encode($person->getName()) ?></a><br></li>
             <li class="active">Bin ich</li>
         </ul>
 
-        <h1>Ich bin: <?= CHtml::encode($person->getName()) ?></h1>
+        <h1>Ich bin: <?= Html::encode($person->getName()) ?></h1>
 
 
         <p>Sie können uns über die vorgefertigte Mail unten anschreiben, dass wir Ihren Zugang mit Ihrem Profil hier auf München Transparent verbinden.</p>
@@ -26,7 +26,7 @@ $ich             = $this->aktuelleBenutzerIn();
         <p>Dann können Sie zusätzliche Informationen über sich und Ihre politische Arbeit veröffentlichen, Angaben ändern oder auch wieder löschen.</p>
 
         <p>Da wir keine offizielle Liste der E-Mail-Adressen aller StadträtInnen und BA-Mitglieder haben, prüfen wir die Legitimität der Anfrage anhand der E-Mail-Adresse Ihres
-            Accounts (<?= CHtml::encode($ich->email) ?>). Eventuell halten wir dabei noch kurz Rücksprache, um das zu prüfen.</p>
+            Accounts (<?= Html::encode($ich->email) ?>). Eventuell halten wir dabei noch kurz Rücksprache, um das zu prüfen.</p>
 
         <div style="text-align: center;">
             <?

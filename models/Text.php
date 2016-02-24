@@ -15,7 +15,7 @@
  * The followings are the available model relations:
  * @property BenutzerIn $edit_benutzerIn
  */
-class Text extends CActiveRecord
+class Text extends ActiveRecord
 {
 
     public static $TYP_STD = 0;

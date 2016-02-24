@@ -15,7 +15,7 @@ class BAGremienParser extends RISParser
 
         $daten                         = new Gremium();
         $daten->id                     = $gremien_id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->datum_letzte_aenderung = new DbExpression('NOW()');
 
         if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = trim($matches[1]);
         if (preg_match("/<a href=\"ba_bezirksausschuesse_details[^>]+>(?<ba>[0-9]+ )/siU", $html_details, $matches)) $daten->ba_nr = trim($matches["ba"]);
@@ -143,7 +143,7 @@ class BAGremienParser extends RISParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = null;
             $aend->typ         = RISAenderung::$TYP_BA_GREMIUM;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
         }

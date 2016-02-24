@@ -37,7 +37,7 @@
  * @method boolean getDefaultScopeDisabled()
  * @method Dokument disableDefaultScope()
  */
-class Dokument extends CActiveRecord implements IRISItem
+class Dokument extends ActiveRecord implements IRISItem
 {
 
     public static $TYP_STADTRAT_ANTRAG    = "stadtrat_antrag";
@@ -736,7 +736,7 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
     /**
-     * @throws CDbException
+     * @throws DbException
      */
     public function loeschen()
     {

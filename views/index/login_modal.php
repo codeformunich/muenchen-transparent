@@ -25,7 +25,7 @@
 					<input id="password2" name="password2" type="password" class="form-control" placeholder="Passwort bestätigen">
 				</div>
 				<div style="text-align: right; font-style: italic; margin-top: -5px; font-size: 11px; margin-bottom: 7px;">
-					<?php echo CHtml::link("Passwort vergessen?", $this->createUrl("index/resetPasswordForm")) ?>
+					<?php echo Html::link("Passwort vergessen?", $this->createUrl("index/resetPasswordForm")) ?>
 				</div>
 
 			</fieldset>

@@ -11,7 +11,7 @@ $this->pageTitle = "Passwort zurücksetzen";
 <section class="col-md-4 col-md-offset-4">
     <div class="well">
 
-        <form class="form-horizontal form-signin" method="POST" action="<?= CHtml::encode($current_url) ?>">
+        <form class="form-horizontal form-signin" method="POST" action="<?= Html::encode($current_url) ?>">
             <fieldset>
                 <legend class="form_row">Neues Passwort setzen</legend>
 

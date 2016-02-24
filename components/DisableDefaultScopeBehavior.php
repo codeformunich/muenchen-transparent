@@ -1,6 +1,6 @@
 <?php
 
-class DisableDefaultScopeBehavior extends CActiveRecordBehavior
+class DisableDefaultScopeBehavior extends ActiveRecordBehavior
 {
     private $_defaultScopeDisabled = false; // Flag - whether defaultScope is disabled or not
 

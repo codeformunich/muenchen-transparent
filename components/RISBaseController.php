@@ -1,6 +1,6 @@
 <?php
 
-class RISBaseController extends CController
+class RISBaseController extends Controller
 {
     /**
      * Alternative: //layouts/width_wide
@@ -20,12 +20,12 @@ class RISBaseController extends CController
 
 
     /**
-     * @var array context menu items. This property will be assigned to {@link CMenu::items}.
+     * @var array context menu items. This property will be assigned to {@link Menu::items}.
      */
     public $menu = [];
     /**
      * @var array the breadcrumbs of the current page. The value of this property will
-     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
+     * be assigned to {@link Breadcrumbs::links}. Please refer to {@link Breadcrumbs::links}
      * for more details on how to specify this property.
      */
     public $breadcrumbs = [];
@@ -46,7 +46,7 @@ class RISBaseController extends CController
 
     protected function performLoginActions($code = "")
     {
-        /** @var CWebUser $user */
+        /** @var WebUser $user */
         $user = Yii::app()->getUser();
 
         $this->msg_err = "";

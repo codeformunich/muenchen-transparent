@@ -17,7 +17,7 @@ $this->pageTitle   = $personen_typ_name;
 ?>
 <section class="well personen_liste">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <li class="active">Personen</li>
     </ul>
 
@@ -39,14 +39,14 @@ $this->pageTitle   = $personen_typ_name;
                         <ul class="nav navbar-nav">
                             <?
                             $str_link = Yii::app()->createUrl("personen/index");
-                            if ($ba_nr === null) echo '<li class="stadtrat active"><a href="' . CHtml::encode($str_link) . '">Stadtrat <span class="sr-only">(aktuell)</span></a></li>';
-                            else echo '<li class="stadtrat"><a href="' . CHtml::encode($str_link) . '">Stadtrat</a></li>';
+                            if ($ba_nr === null) echo '<li class="stadtrat active"><a href="' . Html::encode($str_link) . '">Stadtrat <span class="sr-only">(aktuell)</span></a></li>';
+                            else echo '<li class="stadtrat"><a href="' . Html::encode($str_link) . '">Stadtrat</a></li>';
 
                             foreach ($bas as $ba) {
                                 $str_link = Yii::app()->createUrl("personen/index", array("ba" => $ba->ba_nr));
                                 $name     = "BA " . $ba->ba_nr . " <small>(" . $ba->name . ")</small>";
-                                if ($ba_nr === $ba->ba_nr) echo '<li class="active"><a href="' . CHtml::encode($str_link) . '">' . $name . ' <span class="sr-only">(aktuell)</span></a></li>';
-                                else echo '<li><a href="' . CHtml::encode($str_link) . '">' . $name . '</a></li>';
+                                if ($ba_nr === $ba->ba_nr) echo '<li class="active"><a href="' . Html::encode($str_link) . '">' . $name . ' <span class="sr-only">(aktuell)</span></a></li>';
+                                else echo '<li><a href="' . Html::encode($str_link) . '">' . $name . '</a></li>';
                             }
                             ?>
                         </ul>
@@ -56,7 +56,7 @@ $this->pageTitle   = $personen_typ_name;
         </div>
         <div class="col-sm-9">
             <?
-            //echo '<h2>' . CHtml::encode($personen_typ_name) . '</h2>';
+            //echo '<h2>' . Html::encode($personen_typ_name) . '</h2>';
 
             $fraktionen = array();
             $twitter    = $facebook = $website = false;
@@ -86,7 +86,7 @@ $this->pageTitle   = $personen_typ_name;
                         if ($fr_name == 'Die Grünen / RL') $fr_name = 'Grüne';
                         if ($fr_name == 'Freiheitsrechte Transparenz Bürgerbeteiligung') $fr_name = 'Freiheitsrechte/...';
                         echo '<label class="btn btn-primary">';
-                        echo '<input type="radio" name="options" value="' . $fr_id . '" autocomplete="off"> ' . CHtml::encode($fr_name);
+                        echo '<input type="radio" name="options" value="' . $fr_id . '" autocomplete="off"> ' . Html::encode($fr_name);
                         echo '</label>';
                     }
                     if ($facebook) {
@@ -131,15 +131,15 @@ $this->pageTitle   = $personen_typ_name;
                     if ($strIn->facebook != "") echo " facebook";
                     if ($strIn->web != "") echo " homepage";
                     echo ' "><div class="sm_links">';
-                    if ($strIn->web != "") echo "<a href='" . CHtml::encode($strIn->web) . "' title='Homepage' class='web_link'></a>";
-                    if ($strIn->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($strIn->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
-                    if ($strIn->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($strIn->facebook) . "' title='Facebook' class='fb_link'>f</a>";
+                    if ($strIn->web != "") echo "<a href='" . Html::encode($strIn->web) . "' title='Homepage' class='web_link'></a>";
+                    if ($strIn->twitter != "") echo "<a href='https://twitter.com/" . Html::encode($strIn->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
+                    if ($strIn->facebook != "") echo "<a href='https://www.facebook.com/" . Html::encode($strIn->facebook) . "' title='Facebook' class='fb_link'>f</a>";
                     echo '</div>';
-                    echo '<a href="' . CHtml::encode($strIn->getLink()) . '" class="name" data-vorname="' . CHtml::encode($strIn->errateVorname()) . '"';
-                    echo ' data-nachname="' . CHtml::encode($strIn->errateNachname()) . '">' . CHtml::encode($strIn->getName()) . '</a>';
+                    echo '<a href="' . Html::encode($strIn->getLink()) . '" class="name" data-vorname="' . Html::encode($strIn->errateVorname()) . '"';
+                    echo ' data-nachname="' . Html::encode($strIn->errateNachname()) . '">' . Html::encode($strIn->getName()) . '</a>';
                     echo '<div class="partei">';
                     if (count($strIn->stadtraetInnenFraktionen) > 0) {
-                        echo CHtml::encode($strIn->stadtraetInnenFraktionen[0]->fraktion->getName(true));
+                        echo Html::encode($strIn->stadtraetInnenFraktionen[0]->fraktion->getName(true));
                     } else {
                         echo "Fraktionslos";
                     }

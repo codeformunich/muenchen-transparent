@@ -7,7 +7,7 @@
  */
 
 $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
-    return CHtml::encode(Yii::app()->createUrl($matches["url"]));
+    return Html::encode(Yii::app()->createUrl($matches["url"]));
 }, $text->text);
 if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);
 ?>
@@ -21,18 +21,18 @@ if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);
     </a>
 <? }
 
-if ($show_title) echo '<h1>' . CHtml::encode($text->titel) . '</h1>';
+if ($show_title) echo '<h1>' . Html::encode($text->titel) . '</h1>';
 
 if ($this->binContentAdmin()) { ?>
     <script src="/bower/ckeditor/ckeditor.js"></script>
     <div id="text_content_holder" style="border: dotted 1px transparent;">
         <?=$html_text?>
     </div>
-    <form method="POST" action="<?= CHtml::encode($my_url) ?>" id="text_edit_form" style="display: none; border: dotted 1px gray;">
+    <form method="POST" action="<?= Html::encode($my_url) ?>" id="text_edit_form" style="display: none; border: dotted 1px gray;">
         <div id="text_orig_holder"><?= $text->text ?></div>
-        <input type="hidden" name="text" value="<?= CHtml::encode($text->text) ?>">
+        <input type="hidden" name="text" value="<?= Html::encode($text->text) ?>">
         <div style="text-align: center;">
-            <button type="submit" name="<?= CHtml::encode(AntiXSS::createToken("save")) ?>" class="btn btn-primary">Speichern</button>
+            <button type="submit" name="<?= Html::encode(AntiXSS::createToken("save")) ?>" class="btn btn-primary">Speichern</button>
         </div>
     </form>
 

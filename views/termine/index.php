@@ -12,7 +12,7 @@ $this->pageTitle = "Termine";
 
 <section class="well">
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
-		<li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+		<li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active">Termine</li>
 	</ul>
 	<h1 class="sr-only">Termine</h1>
@@ -73,18 +73,18 @@ $this->pageTitle = "Termine";
 				<ul class="antragsliste2"><?
 					foreach ($termin_dokumente as $termin) {
 						$titel = $termin->gremium->name . " am " . strftime("%e. %B '%y, %H:%M Uhr", RISTools::date_iso2timestamp($termin->termin));
-						echo '<li class="panel panel-primary"><div class="panel-heading"><a href="' . CHtml::encode($termin->getLink()) . '"><span>';
-						echo CHtml::encode($titel) . '</a></span></div>';
+						echo '<li class="panel panel-primary"><div class="panel-heading"><a href="' . Html::encode($termin->getLink()) . '"><span>';
+						echo Html::encode($titel) . '</a></span></div>';
 						echo '<div class="panel-body">';
 
 						$max_date = 0;
 						$doklist  = "";
 						foreach ($termin->antraegeDokumente as $dokument) {
-							//$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
+							//$doklist .= "<li>" . Html::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
 							$dokurl = $dokument->getLinkZumDokument();
-							$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
+							$doklist .= "<li><a href='" . Html::encode($dokurl) . "'";
 							if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
-							$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
+							$doklist .= ">" . Html::encode($dokument->name) . "</a></li>";
 							$dat = RISTools::date_iso2timestamp($dokument->getDate());
 							if ($dat > $max_date) $max_date = $dat;
 						}

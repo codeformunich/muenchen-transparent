@@ -1,6 +1,6 @@
 <?php
 
-class RISUserIdentity extends CBaseUserIdentity
+class RISUserIdentity extends BaseUserIdentity
 {
     /** @var BenutzerIn */
     private $benutzerIn;

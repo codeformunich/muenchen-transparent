@@ -9,7 +9,7 @@
  *
  * @property Dokument[] $dokumente
  */
-class Rathausumschau extends CActiveRecord implements IRISItem
+class Rathausumschau extends ActiveRecord implements IRISItem
 {
 
     /**

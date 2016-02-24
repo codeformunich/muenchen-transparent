@@ -22,12 +22,12 @@
     })
     </script>
 
-    <form class="form-horizontal form-signin" method="POST" action="<?= CHtml::encode($current_url) ?>">
+    <form class="form-horizontal form-signin" method="POST" action="<?= Html::encode($current_url) ?>">
         <fieldset>
             <legend class="form_row">Einloggen</legend>
             <?
             foreach ($_POST as $key => $val) if (!in_array($key, array("email", "bestaetigungscode", "password", "password2", AntiXSS::createToken("login"), AntiXSS::createToken("anlegen")))) {
-                echo "<input type='hidden' name='" . CHtml::encode($key) . "' value='" . CHtml::encode($val) . "'>";
+                echo "<input type='hidden' name='" . Html::encode($key) . "' value='" . Html::encode($val) . "'>";
             }
             ?>
 
@@ -61,7 +61,7 @@
             </div>
 
             <div style="text-align: right; font-style: italic; margin-top: -5px; font-size: 11px; margin-bottom: 7px;">
-                <?php echo CHtml::link("Passwort vergessen?", $this->createUrl("benachrichtigungen/PasswortZuruecksetzen")) ?>
+                <?php echo Html::link("Passwort vergessen?", $this->createUrl("benachrichtigungen/PasswortZuruecksetzen")) ?>
             </div>
 
             <button class="btn btn-lg btn-primary btn-block" id="login" type="submit" name="<?php echo AntiXSS::createToken("login_anlegen"); ?>"><span class="login">Login</span><span

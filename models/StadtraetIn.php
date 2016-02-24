@@ -27,7 +27,7 @@
  * @property StadtraetInGremium[] $mitgliedschaften
  * @property StadtraetInReferat[] $stadtraetInnenReferate
  */
-class StadtraetIn extends CActiveRecord implements IRISItem
+class StadtraetIn extends ActiveRecord implements IRISItem
 {
     public static $GESCHLECHTER = [
         "weiblich"  => "Weiblich",

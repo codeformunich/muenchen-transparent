@@ -31,7 +31,7 @@ switch ($code) {
 	<h1>Leider ist ein Fehler aufgetreten</h1>
 
 	<div class="alert alert-danger">
-		<?= CHtml::encode($message) ?>
+		<?= Html::encode($message) ?>
 	</div>
 
 </section>

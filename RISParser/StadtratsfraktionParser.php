@@ -59,7 +59,7 @@ class StadtratsfraktionParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = null;
             $aend->typ         = RISAenderung::$TYP_STADTRAT_FRAKTION;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
         }

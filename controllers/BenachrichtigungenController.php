@@ -97,7 +97,7 @@ class BenachrichtigungenController extends RISBaseController
 
                 $this->msg_ok = "Account gelöscht";
 
-                /** @var CWebUser $user */
+                /** @var WebUser $user */
                 $user = Yii::app()->getUser();
                 if ($user) $user->logout();
             } else {
@@ -178,7 +178,7 @@ class BenachrichtigungenController extends RISBaseController
         $titel       = "Suchergebnisse";
         $description = "Neue Dokumente, die einem der folgenden Kriterien entsprechen:<br>";
         $bens        = $benutzerIn->getBenachrichtigungen();
-        foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getTitle()) . "<br>";
+        foreach ($bens as $ben) $description .= "- " . Html::encode($ben->getTitle()) . "<br>";
 
         $solr       = RISSolrHelper::getSolrClient("ris");
         $select     = $this->getAlleSuchergebnisse($solr, $benutzerIn);

@@ -7,9 +7,9 @@
 
 
 ?>
-<h1><?= CHtml::encode($dokument->name) ?></h1>
+<h1><?= Html::encode($dokument->name) ?></h1>
 
-<?= CHtml::link("Original", $dokument->getLinkZumDokument()) ?><br><br>
+<?= Html::link("Original", $dokument->getLinkZumDokument()) ?><br><br>
 
 <div style="float: right; max-width: 300px;" class="well">
 	<h3>Ähnliche Dokumente</h3>
@@ -20,7 +20,7 @@
 			$name = $doc->name;
 			if ($doc->antrag) $name = $doc->antrag->getName() . " - " . $name;
 			if ($doc->termin) $name = $doc->termin->termin . " - " . $name;
-			echo CHtml::link($name, $this->createUrl("index/dokument", array("id" => $doc->id)));
+			echo Html::link($name, $this->createUrl("index/dokument", array("id" => $doc->id)));
 			echo "</li>";
 		}
 		echo "</ul>";

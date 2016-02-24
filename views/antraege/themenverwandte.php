@@ -11,8 +11,8 @@ $related         = $antrag->errateThemenverwandteAntraege(50);
 
 <section class="well themenverwandt_liste">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= CHtml::encode($antrag->getLink()) ?>"><?= CHtml::encode($antrag->getTypName()) ?></a><br></li>
+        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode($antrag->getLink()) ?>"><?= Html::encode($antrag->getTypName()) ?></a><br></li>
         <li class="active">Verwandte</li>
     </ul>
     <h1>Möglicherweise verwandte Dokumente</h1>

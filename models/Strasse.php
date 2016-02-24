@@ -9,7 +9,7 @@
  * @property string $plz
  * @property string $osm_ref
  */
-class Strasse extends CActiveRecord
+class Strasse extends ActiveRecord
 {
 
     /** @var string */

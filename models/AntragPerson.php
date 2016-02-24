@@ -11,7 +11,7 @@
  * @property Person $person
  * @property Antrag $antrag
  */
-class AntragPerson extends CActiveRecord
+class AntragPerson extends ActiveRecord
 {
 
     public static $TYP_GESTELLT_VON = "gestellt_von";

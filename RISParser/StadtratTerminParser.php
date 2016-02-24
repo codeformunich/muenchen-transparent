@@ -18,7 +18,7 @@ class StadtratTerminParser extends RISParser
         $daten                         = new Termin();
         $daten->typ                    = Termin::$TYP_AUTO;
         $daten->id                     = $termin_id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->datum_letzte_aenderung = new DbExpression('NOW()');
         $daten->gremium_id             = NULL;
         $daten->ba_nr                  = NULL;
         $daten->sitzungsstand          = "";
@@ -178,7 +178,7 @@ class StadtratTerminParser extends RISParser
             $entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
 
             $top                         = new Tagesordnungspunkt();
-            $top->datum_letzte_aenderung = new CDbExpression("NOW()");
+            $top->datum_letzte_aenderung = new DbExpression("NOW()");
             $top->sitzungstermin_id      = $termin_id;
             $top->sitzungstermin_datum   = substr($daten->termin, 0, 10);;
             $top->top_nr           = $top_nr;
@@ -227,7 +227,7 @@ class StadtratTerminParser extends RISParser
                     $aend->ris_id      = $alter_top->id;
                     $aend->ba_nr       = NULL;
                     $aend->typ         = RISAenderung::$TYP_STADTRAT_ERGEBNIS;
-                    $aend->datum       = new CDbExpression("NOW()");
+                    $aend->datum       = new DbExpression("NOW()");
                     $aend->aenderungen = $top_aenderungen;
                     $aend->save();
 
@@ -282,7 +282,7 @@ class StadtratTerminParser extends RISParser
             }
             $top->sitzungstermin_id      = $termin_id;
             $top->sitzungstermin_datum   = $daten->termin;
-            $top->datum_letzte_aenderung = new CDbExpression("NOW()");
+            $top->datum_letzte_aenderung = new DbExpression("NOW()");
             $top->antrag_id              = null;
             $top->status                 = "geheim";
             $top->beschluss_text         = $matches["vorlage_id"][$i];
@@ -347,7 +347,7 @@ class StadtratTerminParser extends RISParser
                     $aend->ris_id      = $daten->id;
                     $aend->ba_nr       = NULL;
                     $aend->typ         = RISAenderung::$TYP_STADTRAT_TERMIN;
-                    $aend->datum       = new CDbExpression("NOW()");
+                    $aend->datum       = new DbExpression("NOW()");
                     $aend->aenderungen = $aenderungen;
                     $aend->save();
                     return;
@@ -373,13 +373,13 @@ class StadtratTerminParser extends RISParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = NULL;
             $aend->typ         = RISAenderung::$TYP_STADTRAT_TERMIN;
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
 
             /** @var Termin $termin */
             $termin                         = Termin::model()->findByPk($termin_id);
-            $termin->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
+            $termin->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $termin->save();
         }
 

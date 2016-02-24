@@ -12,7 +12,7 @@
  * @property string $css
  *
  */
-class Rechtsdokument extends CActiveRecord
+class Rechtsdokument extends ActiveRecord
 {
 
     /**

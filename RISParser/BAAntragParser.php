@@ -22,7 +22,7 @@ class BAAntragParser extends RISParser
 
         $daten                         = new Antrag();
         $daten->id                     = $antrag_id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->datum_letzte_aenderung = new DbExpression('NOW()');
         $daten->gestellt_von           = "";
         $daten->referat                = "";
         $daten->referent               = "";
@@ -175,13 +175,13 @@ class BAAntragParser extends RISParser
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
             $aend->typ         = ($daten->typ == Antrag::$TYP_BA_ANTRAG ? RISAenderung::$TYP_BA_ANTRAG : RISAenderung::$TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG);
-            $aend->datum       = new CDbExpression("NOW()");
+            $aend->datum       = new DbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
 
             /** @var Antrag $antrag */
             $antrag                         = Antrag::model()->findByPk($antrag_id);
-            $antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
+            $antrag->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();
         }
@@ -231,7 +231,7 @@ class BAAntragParser extends RISParser
             $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
         }
 
-        $crit            = new CDbCriteria();
+        $crit            = new DbCriteria();
         $crit->condition = "typ='" . addslashes(Antrag::$TYP_BA_ANTRAG) . "' AND status != 'erledigt' AND gestellt_am > NOW() - INTERVAL 2 YEAR AND ((TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) < 14 AND TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) > -14) OR ((TO_DAYS(CURRENT_DATE()) - TO_DAYS(gestellt_am)) % 3) = 0)";
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 
