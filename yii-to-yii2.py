@@ -1,5 +1,5 @@
 #/usr/bin/env python3.5
-import os, re, glob, fnmatch, sys, subprocess
+import os, re, glob, fnmatch, sys, subprocess, shutil
 
 ## Settings
 
@@ -47,7 +47,6 @@ def generate_namespace_mapping():
 
     return sources
 
-sources = generate_namespace_mapping()
 exclude = ['parent', 'self', "static"]
 
 with open("yii1-classes.txt", 'r') as file:
@@ -55,7 +54,8 @@ with open("yii1-classes.txt", 'r') as file:
 
 ## The actual code
 
-def install_yii2():
+def convert_folderstructure():
+    print("running composer commands ...\n")
     commands = [
         "composer global require 'fxp/composer-asset-plugin:~1.1.1'",
         "composer create-project --prefer-dist yiisoft/yii2-app-basic yii2-template",
@@ -64,22 +64,39 @@ def install_yii2():
     ]
     
     for command in commands:
-        print subprocess.Popen(command, stdout=PIPE).stdout.read()
+        break
+        print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read()
     
+    print("finished running composer commands.\n")
+    
+    # get all the interesting files form the yii2 basic app template
     shutil.move("yii2-template/config/", "config/")
-    shutil.mkdir("runtime/")
+    shutil.move("yii2-template/runtime/", "runtime/")
     shutil.move("html/", "web/")
-    shutil.move("yii2-template/web/index.html", "web/index.html")
-    shutil.move("yii2-template/web/index_test.html", "web/index_test.html")
+    shutil.move("yii2-template/web/index.php", "web/index.php")
+    shutil.move("yii2-template/web/index-test.php", "web/index-test.php")
     shutil.move("yii2-template/yii", "yii")
     shutil.move("yii2-template/yii.bat", "yii.bat")
     shutil.rmtree("yii2-template")
 
-def open_wrapper(filepath, flags):
-    if sys.version_info.major < 3:
-        return open(filepath, flags) # TODO Test this version on windows
-    else:
-        return open(filepath, flags, encoding="utf8")
+    # get the code out of protected/ into the root dir
+    for i in os.listdir("protected/"):
+        path = os.path.join("protected/", i)
+        if os.path.isdir(path):
+            shutil.move(path, i)
+    
+    shutil.rmtree("protected/")
+
+    # make git recognise the new folder struture
+    with open(".gitignore", 'r') as gitignore:
+        contents = gitignore.readlines()
+
+    gitignore = open(".gitignore", 'w')
+    for i in contents:
+        i = re.sub("^html/", "web/", i)
+        i = re.sub("^protected/", "", i)
+        gitignore.write(i)
+    gitignore.close()
 
 def do_replace(filepath):
     print("Processing " + filepath)
@@ -168,7 +185,7 @@ def find_usages_for_import(filepath):
     imports[2:] = sorted(imports[2:])
     return imports
 
-def insert_imports_and_namespace(filepath, imports):
+def insert_imports_and_namespace(filepath, imports, sources):
     with open_wrapper(filepath, 'r') as file:
         contents = file.readlines()
     
@@ -204,10 +221,10 @@ def replace_all():
         do_replace(filepath)
 
 def import_all():
+    sources = generate_namespace_mapping()
     for filepath in get_all_code_files():
         imports = find_usages_for_import(filepath)
-        insert_imports_and_namespace(filepath, imports)
+        insert_imports_and_namespace(filepath, imports, sources)
 
 if __name__ == "__main__":
-    replace_all()
-    import_all()
+    convert_folderstructure()

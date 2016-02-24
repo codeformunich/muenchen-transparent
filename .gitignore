@@ -5,21 +5,21 @@
 composer.phar
 vendor/
 node_modules/
-html/bower/
+web/bower/
 
 # Static files
-html/assets/
-html/css/build/
-html/piwik/
-html/sitemap-*
-html/google*
-html/BingSiteAuth.xml
+web/assets/
+web/css/build/
+web/piwik/
+web/sitemap-*
+web/google*
+web/BingSiteAuth.xml
 
 .idea
 
-protected/runtime/
-protected/config/main.php
-html/js/ba_grenzen_geojson.js
+runtime/
+config/main.php
+web/js/ba_grenzen_geojson.js
 
 # Codeception
 tests/_output/*
