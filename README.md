@@ -59,7 +59,7 @@ PHP-Konfiguration:
 ## Code-Organisation
 
 * __docs/___: Das Datenbankschema, die Konfiguration für nginx, solr, Fontello, travis, etc.
-* __html/__: Statische Daten - vor allem die JS-Bibliotheken und (S)CSS-Dateien
+* __web/__: Statische Daten - vor allem die JS-Bibliotheken und (S)CSS-Dateien
 * __protected/yiic.php__: Aufruf der Kommandozeilentools (entweder von der Shell wie z.B. "reindex_ba" oder als Cron-Job wie z.B. "update_ris_daily")
 * __protected/commands/__: Definitionen der Kommantozeilentools
 * __protected/components/__: Diverse (meist statische) Hilf-Funktionen
@@ -82,7 +82,7 @@ Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet
 ### pdf.js  Updaten:
 * Ggf. uglify-js installieren (`npm install -g uglify-js`)
 * Entweder mit `diff` `docs/pdfjs_v[version].diff` oder mit `git patch apply` `pdfjs_v[version].patch` anwenden
-* Im Ordner `html/pdfjs/`: `uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js`
+* Im Ordner `web/pdfjs/`: `uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js`
 
 ## Eingesetzte Shell-Programme
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.

@@ -13,13 +13,13 @@ engines:
     enabled: true
 ratings:
   paths:
-  - html/**
+  - web/**
   - protected/**
 exclude_paths:
-- html/css/material/**
-- html/js/Leaflet.Control.Geocoder/**
-- html/js/material/**
-- html/js/selectize.js-0.11.2/**
-- html/pdfjs/**
+- web/css/material/**
+- web/js/Leaflet.Control.Geocoder/**
+- web/js/material/**
+- web/js/selectize.js-0.11.2/**
+- web/pdfjs/**
 - docs/**
 - tests/** # TODO Nur automatisch generierte Dateien ausschließen

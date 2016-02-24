@@ -328,7 +328,7 @@ function isValidUrl(url, allowRelative) {
   if (!url) {
     return false;
   }
-  // RFC 3986 (http://tools.ietf.org/html/rfc3986#section-3.1)
+  // RFC 3986 (http://tools.ietf.org/web/rfc3986#section-3.1)
   // scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
   var protocol = /^[a-z][a-z0-9+\-.]*(?=:)/i.exec(url);
   if (!protocol) {

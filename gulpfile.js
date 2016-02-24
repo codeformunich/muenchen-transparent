@@ -15,27 +15,27 @@ var use_browsersync = false;
 var use_uglify = true;
 
 var paths = {
-    source_styles: ["html/css/*.scss"],
-    source_js: ["html/js/**/*.js", "html/bower/**/*.js", "!html/js/build/*.js"],
-    build_js: ["html/js/build/*.js"],
+    source_styles: ["web/css/*.scss"],
+    source_js: ["web/js/**/*.js", "web/bower/**/*.js", "!web/js/build/*.js"],
+    build_js: ["web/js/build/*.js"],
     php: ["protected/**/*.php"],
     std_js: [
-        "html/bower/typeahead.js/dist/typeahead.bundle.min.js",
-        "html/bower/bootstrap-sass/assets/javascripts/bootstrap.min.js",
-        "html/js/jquery-ui-1.11.2.custom.min.js",
-        "html/js/scrollintoview.js",
-        "html/js/material/ripples.min.js",
-        "html/js/material/material.min.js",
-        "html/js/custom/*.js",
+        "web/bower/typeahead.js/dist/typeahead.bundle.min.js",
+        "web/bower/bootstrap-sass/assets/javascripts/bootstrap.min.js",
+        "web/js/jquery-ui-1.11.2.custom.min.js",
+        "web/js/scrollintoview.js",
+        "web/js/material/ripples.min.js",
+        "web/js/material/material.min.js",
+        "web/js/custom/*.js",
     ],
     leaflet_js: [
-        "html/bower/leaflet/dist/leaflet.js",
-        "html/bower/Leaflet.draw/dist/leaflet.draw.js",
-        "html/bower/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
-        "html/js/Leaflet.Fullscreen/Control.FullScreen.js",
-        "html/js/Leaflet.Control.Geocoder/Control.Geocoder.js",
-        "html/js/leaflet.spiderfy.js",
-        "html/js/leaflet.textmarkers.js",
+        "web/bower/leaflet/dist/leaflet.js",
+        "web/bower/Leaflet.draw/dist/leaflet.draw.js",
+        "web/bower/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
+        "web/js/Leaflet.Fullscreen/Control.FullScreen.js",
+        "web/js/Leaflet.Control.Geocoder/Control.Geocoder.js",
+        "web/js/leaflet.spiderfy.js",
+        "web/js/leaflet.textmarkers.js",
     ],
 }
 
@@ -63,14 +63,14 @@ gulp.task('std.js', function () {
     return gulp.src(paths.std_js)
         .pipe(concat('std.js'))
         .pipe(gulpif(use_uglify, uglify()))
-        .pipe(gulp.dest('html/js/build/'));
+        .pipe(gulp.dest('web/js/build/'));
 });
 
 gulp.task('leaflet.js', function () {
     return gulp.src(paths.leaflet_js)
         .pipe(concat('leaflet.js'))
         .pipe(gulpif(use_uglify, uglify()))
-        .pipe(gulp.dest('html/js/build/'));
+        .pipe(gulp.dest('web/js/build/'));
 });
 
 gulp.task('sass', function () {
@@ -80,10 +80,10 @@ gulp.task('sass', function () {
             outputStyle: 'compressed'
         }).on('error', sass.logError))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('html/css/build/'))
+        .pipe(gulp.dest('web/css/build/'))
         .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
 });
 
 gulp.task('ba_grenzen_geojson', function () {
-    return exec('protected/yiic bagrenzengeojson html/js/ba_grenzen_geojson.js');
+    return exec('protected/yiic bagrenzengeojson web/js/ba_grenzen_geojson.js');
 });

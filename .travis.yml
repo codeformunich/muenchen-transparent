@@ -13,7 +13,7 @@ cache:
   apt: true
   directories:
     - node_modules
-    - html/bower
+    - web/bower
     - vendor
     - $HOME/.composer/cache
 
@@ -39,7 +39,7 @@ install:
   
   # Create yii-environment
   - mkdir protected/runtime
-  - mkdir html/assets
+  - mkdir web/assets
 
   # Set up mysql
   - mysql -e 'create database ristest;'

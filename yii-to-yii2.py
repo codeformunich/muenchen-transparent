@@ -12,7 +12,7 @@ php_class = "[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*"
 
 global_replacements = {
     "yii-app": ("Yii::app\(\)", "Yii::$app"),
-    "html-web": ("html/", "web/"),
+    "html-web": ("web/", "web/"),
 }
 
 searcher = [
@@ -56,8 +56,8 @@ def open_wrapper(filepath, flags):
         return open(filepath, flags)
 
 def convert_folderstructure():
-    if not os.path.isdir("protected/") or not os.path.isdir("html/"):
-        raise Exception("The directories protected/ and html/ have to exist for the conversion to work.")
+    if not os.path.isdir("protected/") or not os.path.isdir("web/"):
+        raise Exception("The directories protected/ and web/ have to exist for the conversion to work.")
     
     print("running composer commands ...\n")
     commands = [
@@ -73,7 +73,7 @@ def convert_folderstructure():
     print("finished running composer commands.\n")
     
     # get all the interesting files form the yii2 basic app template
-    shutil.move("html/", "web/")
+    shutil.move("web/", "web/")
     shutil.move("yii2-template/web/index.php", "web/index.php")
     shutil.move("yii2-template/web/index-test.php", "web/index-test.php")
     shutil.move("yii2-template/yii", "yii")
@@ -96,7 +96,7 @@ def convert_folderstructure():
 
     gitignore = open(".gitignore", 'w')
     for i in contents:
-        i = re.sub("^html/", "web/", i)
+        i = re.sub("^web/", "web/", i)
         i = re.sub("^protected/", "", i)
         gitignore.write(i)
     gitignore.close()
