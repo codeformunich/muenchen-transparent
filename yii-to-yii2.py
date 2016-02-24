@@ -65,6 +65,7 @@ def convert_folderstructure():
         "composer create-project --prefer-dist yiisoft/yii2-app-basic yii2-template",
         "composer require yiisoft/yii2",
         "composer require --dev yiisoft/yii2-debug"
+        "composer require --dev yiisoft/yii2-gii"
     ]
     
     for command in commands:
@@ -99,6 +100,7 @@ def convert_folderstructure():
         i = re.sub("^web/", "web/", i)
         i = re.sub("^protected/", "", i)
         gitignore.write(i)
+    gitignore.write("config/web.php\n")
     gitignore.close()
 
 def do_replace(filepath, yii1_classes, replacements):

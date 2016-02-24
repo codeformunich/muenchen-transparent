@@ -17,7 +17,7 @@ web/BingSiteAuth.xml
 
 .idea
 
-
+config/web.php
 config/main.php
 web/js/ba_grenzen_geojson.js
 
