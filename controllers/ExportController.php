@@ -18,7 +18,7 @@ class ExportController extends RISBaseController
 		if ( $limit > 0 || $offset > 0 ) {
 			$SQL .= " LIMIT " . IntVal( $offset ) . "," . IntVal( $limit );
 		}
-		$antragIds = Yii::app()->db->createCommand( $SQL )->queryAll();
+		$antragIds = Yii::$app->db->createCommand( $SQL )->queryAll();
 
 		$return = [ ];
 		foreach ( $antragIds as $antragId ) {
@@ -75,7 +75,7 @@ class ExportController extends RISBaseController
 		}
 		echo json_encode( $return );
 
-		Yii::app()->end();
+		Yii::$app->end();
 	}
 
 }

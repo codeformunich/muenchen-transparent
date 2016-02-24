@@ -32,18 +32,18 @@ class IndexController extends RISBaseController
 
                 if ($outofbounds) {
                     Header("Location: /images/HereBeDragons256.png");
-                    Yii::app()->end();
+                    Yii::$app->end();
                 }
             }
         }
 
         if ($width == 256) {
             $array = ["1", "2", "3"];
-            $key   = $array[array_rand($array)] . "-" . Yii::app()->params['skobblerKey'];
+            $key   = $array[array_rand($array)] . "-" . Yii::$app->params['skobblerKey'];
             $url   = "http://tiles" . $key . ".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png";
         } else {
             $array = ["1", "2", "3"];
-            $key   = $array[array_rand($array)] . "-" . Yii::app()->params['skobblerKey'];
+            $key   = $array[array_rand($array)] . "-" . Yii::$app->params['skobblerKey'];
             $url   = "http://tiles" . $key . ".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png@2x";
         }
 
@@ -76,14 +76,14 @@ class IndexController extends RISBaseController
             echo $status;
             var_dump($ch);
         }
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     public function actionFeed()
     {
         if (isset($_REQUEST["krit_typ"])) {
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
-            $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getTitle();
+            $titel = Yii::$app->params['projectTitle'] . ': ' . $krits->getTitle();
 
             $solr   = RISSolrHelper::getSolrClient("ris");
             $select = $solr->createSelect();
@@ -107,7 +107,7 @@ class IndexController extends RISBaseController
             /** @var array|RISAenderung[] $aenderungen */
             $aenderungen = RISAenderung::model()->findAll(["order" => "id DESC", "limit" => 100]);
             foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
-            $titel = Yii::app()->params['projectTitle'] . ' Änderungen';
+            $titel = Yii::$app->params['projectTitle'] . ' Änderungen';
         }
 
         $this->render("feed", [
@@ -124,7 +124,7 @@ class IndexController extends RISBaseController
      */
     protected function sucheBenachrichtigungenAnmelden($curr_krits, $code)
     {
-        $user = Yii::app()->getUser();
+        $user = Yii::$app->getUser();
 
         $correct_person      = null;
         $wird_benachrichtigt = false;
@@ -136,7 +136,7 @@ class IndexController extends RISBaseController
 
         if (!$user->isGuest) {
             /** @var BenutzerIn $ich */
-            $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::app()->user->id]);
+            $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::$app->user->id]);
 
             if ($do_benachrichtigung_add) {
                 $ich->addBenachrichtigung($curr_krits);
@@ -159,7 +159,7 @@ class IndexController extends RISBaseController
         } else {
             $eingeloggt = true;
             /** @var BenutzerIn $ich */
-            if (!$ich) $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::app()->user->id]);
+            if (!$ich) $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::$app->user->id]);
             if ($ich->email == "") {
                 $email_angegeben  = false;
                 $email_bestaetigt = false;
@@ -239,7 +239,7 @@ class IndexController extends RISBaseController
             $lng        = FloatVal($geo["lng"]);
             $dist_field = "(((acos(sin(($lat*pi()/180)) * sin((lat*pi()/180))+cos(($lat*pi()/180)) * cos((lat*pi()/180)) * cos((($lng- lon)*pi()/180))))*180/pi())*60*1.1515*1.609344) <= " . FloatVal($geo["radius"] / 1000);
             $SQL        = "select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (" . implode(", ", $dokument_ids) . ") AND b.to_hide = 0 AND $dist_field";
-            $result     = Yii::app()->db->createCommand($SQL)->queryAll();
+            $result     = Yii::$app->db->createCommand($SQL)->queryAll();
             foreach ($result as $geo) {
                 /** @var Dokument $dokument */
                 $dokument = Dokument::model()->findByPk($geo["dokument_id"]);
@@ -323,7 +323,7 @@ class IndexController extends RISBaseController
         echo json_encode([
             "ort_name" => $naechster_ort->ort,
         ]);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
 
@@ -398,7 +398,7 @@ class IndexController extends RISBaseController
             "krit_str"      => $krits->getJson(),
             "naechster_ort" => $naechster_ort->ort
         ]);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
 
@@ -474,7 +474,7 @@ class IndexController extends RISBaseController
                 ], $benachrichtigungen_optionen));
             } catch (Exception $e) {
                 $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
-                Yii::app()->end(500);
+                Yii::$app->end(500);
             }
         } else {
             $this->render("suche");
@@ -501,7 +501,7 @@ class IndexController extends RISBaseController
             header("HTTP/1.0 404 Not Found");
             die();
         }
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     /**
@@ -583,7 +583,7 @@ class IndexController extends RISBaseController
             "geodata"          => $data["geodata"],
             "geodata_overflow" => $data["geodata_overflow"],
         ]);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
 
@@ -718,7 +718,7 @@ class IndexController extends RISBaseController
             "geodata"          => $geodata,
             "geodata_overflow" => $geodata_overflow
         ]);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
 
@@ -810,8 +810,8 @@ class IndexController extends RISBaseController
      */
     public function actionError()
     {
-        if ($error = Yii::app()->errorHandler->error) {
-            if (Yii::app()->request->isAjaxRequest)
+        if ($error = Yii::$app->errorHandler->error) {
+            if (Yii::$app->request->isAjaxRequest)
                 echo $error['message'];
             else
                 $this->render('error', $error);
@@ -852,7 +852,7 @@ class IndexController extends RISBaseController
             ]
         ]);
         echo json_encode($shariff->get($url));
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     public function actionBaListe()

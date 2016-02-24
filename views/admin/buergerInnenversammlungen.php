@@ -8,7 +8,7 @@
 <section class="well">
     <h1>BürgerInnenversammlungen</h1>
 
-    <form method="POST" action="<?=CHtml::encode(Yii::app()->createUrl("admin/buergerInnenversammlungen"))?>">
+    <form method="POST" action="<?=CHtml::encode(Yii::$app->createUrl("admin/buergerInnenversammlungen"))?>">
         <table>
             <thead>
             <tr>
@@ -21,7 +21,7 @@
             <tbody>
             <? foreach ($termine as $termin) {
                 $id      = $termin->id;
-                $del_url = Yii::app()->createUrl("admin/buergerInnenversammlungen", array(AntiXSS::createToken("delete") => $id));
+                $del_url = Yii::$app->createUrl("admin/buergerInnenversammlungen", array(AntiXSS::createToken("delete") => $id));
                 ?>
                 <tr>
                     <td>

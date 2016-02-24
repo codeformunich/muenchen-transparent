@@ -212,7 +212,7 @@ class Bezirksausschuss extends ActiveRecord
     /** @return string */
     public function getLink()
     {
-        return Yii::app()->createUrl("index/ba", ["ba_nr" => $this->ba_nr, "ba_name" => $this->name]);
+        return Yii::$app->createUrl("index/ba", ["ba_nr" => $this->ba_nr, "ba_name" => $this->name]);
     }
 
 

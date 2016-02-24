@@ -64,7 +64,7 @@ class TermineController extends RISBaseController
         $fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
         Header("Content-Type: application/json; charset=UTF-8");
         echo json_encode($fullcalendar_struct["data"]);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
 
@@ -182,7 +182,7 @@ class TermineController extends RISBaseController
      */
     public function actionBaZukunft()
     {
-        $sql = Yii::app()->db->createCommand();
+        $sql = Yii::$app->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
         $this->render("ba_zukunft_html", [
@@ -193,7 +193,7 @@ class TermineController extends RISBaseController
      */
     public function actionBaZukunftCsv()
     {
-        $sql = Yii::app()->db->createCommand();
+        $sql = Yii::$app->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
         $this->renderPartial("ba_zukunft_csv", [
@@ -235,7 +235,7 @@ class TermineController extends RISBaseController
         ];
 
         $server = new TermineCalDAVServerBugfix($tree);
-        $server->setBaseUri(Yii::app()->createUrl("termine/dav", ["termin_id" => $termin_id]));
+        $server->setBaseUri(Yii::$app->createUrl("termine/dav", ["termin_id" => $termin_id]));
 
         $authBackend = new TermineCalDAVAuthBackend();
         $authPlugin  = new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV');

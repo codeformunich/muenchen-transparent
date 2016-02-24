@@ -349,7 +349,7 @@ class Dokument extends ActiveRecord implements IRISItem
                 $antragort->datum             = date("Y-m-d H:i:s");
                 try {
                     if (!$antragort->save()) {
-                        RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true), null, "system");
+                        RISTools::send_email(Yii::$app->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true), null, "system");
                         throw new Exception("Fehler beim Speichern: geo_extract");
                     }
                 } catch (Exception $e) {
@@ -423,7 +423,7 @@ class Dokument extends ActiveRecord implements IRISItem
         }
 
         if (!$dokument->save()) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true), null, "system");
+            RISTools::send_email(Yii::$app->params['adminEmail'], "Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true), null, "system");
             throw new Exception("Fehler");
         }
 
@@ -465,7 +465,7 @@ class Dokument extends ActiveRecord implements IRISItem
      */
     public function getLinkZumDokument()
     {
-        return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
+        return Yii::$app->createUrl("index/dokumente", ["id" => $this->id]);
     }
 
 
@@ -716,7 +716,7 @@ class Dokument extends ActiveRecord implements IRISItem
             $tries--;
             sleep(15);
         }
-        RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes(), true), null, "system");
+        RISTools::send_email(Yii::$app->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes(), true), null, "system");
     }
 
     /**
@@ -732,7 +732,7 @@ class Dokument extends ActiveRecord implements IRISItem
      */
     public function highlightBenachrichtigung()
     {
-        if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::app()->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink(), null, "system");
+        if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::$app->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink(), null, "system");
     }
 
     /**

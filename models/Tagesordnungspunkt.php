@@ -108,7 +108,7 @@ class Tagesordnungspunkt extends ActiveRecord implements IRISItemHasDocuments
         $history->setAttributes($this->getAttributes(), false);
         try {
             if (!$history->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "TagesordnungspunktHistory:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::send_email(Yii::$app->params['adminEmail'], "TagesordnungspunktHistory:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {

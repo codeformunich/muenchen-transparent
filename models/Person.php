@@ -101,7 +101,7 @@ class Person extends ActiveRecord implements IRISItem
             $pers->name_normalized = $name_normalized;
             $pers->typ             = static::$TYP_SONSTIGES;
             if (!$pers->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Person:getOrCreate Error", print_r($pers->getErrors(), true), null, "system");
+                RISTools::send_email(Yii::$app->params['adminEmail'], "Person:getOrCreate Error", print_r($pers->getErrors(), true), null, "system");
                 throw new Exception("Fehler beim Speichern: Person");
             }
         }
@@ -130,7 +130,7 @@ class Person extends ActiveRecord implements IRISItem
      */
     public function getLink($add_params = [])
     {
-        return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $this->name], $add_params));
+        return Yii::$app->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $this->name], $add_params));
     }
 
     /** @return string */

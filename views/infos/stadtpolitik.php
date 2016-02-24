@@ -13,14 +13,14 @@ $this->load_mediaelement = true;
 <section class="well">
 
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <li class="active">Stadtpolitik</li>
     </ul>
 
 
     <div class="row teaser_buttons">
         <div class="col col-md-6">
-            <a href="<?= Html::encode(Yii::app()->createUrl("infos/glossar")) ?>"
+            <a href="<?= Html::encode(Yii::$app->createUrl("infos/glossar")) ?>"
                class="btn btn-success">
                 <h2><span class="glyphicon glyphicon-info-sign"></span>Glossar</h2>
 
@@ -31,7 +31,7 @@ $this->load_mediaelement = true;
         </div>
 
         <div class="col col-md-6">
-            <a href="<?= Html::encode(Yii::app()->createUrl("infos/stadtrecht")) ?>"
+            <a href="<?= Html::encode(Yii::$app->createUrl("infos/stadtrecht")) ?>"
                class="btn btn-success">
                 <h2><span class="glyphicon glyphicon-paragraph">§</span> Stadtrecht</h2>
 
@@ -105,7 +105,7 @@ $this->load_mediaelement = true;
                 <li><a href="http://www.opengov-muenchen.de/">Das OpenGovernment-Portal der Stadt München</a></li>
                 <li><a href="http://codefor.de/muenchen/">OK Lab München</a></li>
                 <li><a href="http://www.muenchen.de/rathaus/Stadtpolitik.html">Die Stadtpolitik-Seite der Stadt München</a></li>
-                <li>...weitere Links über München und Open Data? <a href="<?=CHtml::encode(Yii::app()->createUrl("infos/feedback"))?>">Schreib uns!</a></li>
+                <li>...weitere Links über München und Open Data? <a href="<?=CHtml::encode(Yii::$app->createUrl("infos/feedback"))?>">Schreib uns!</a></li>
             </ul>
         </section>
     </div>

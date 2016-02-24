@@ -9,8 +9,8 @@ $this->pageTitle = $tag->name;
 
 	<section class="well two_cols">
 		<ul class="breadcrumb" style="margin-bottom: 5px;">
-			<li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-			<li><a href="<?= Html::encode(Yii::app()->createUrl("themen/index")) ?>">Themen</a><br></li>
+			<li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+			<li><a href="<?= Html::encode(Yii::$app->createUrl("themen/index")) ?>">Themen</a><br></li>
 			<li class="active">Schlagwort</li>
 		</ul>
 		<h1>Anträge und Vorlagen mit dem Schlagwort "<?= Html::encode($tag->name) ?>"</h1>

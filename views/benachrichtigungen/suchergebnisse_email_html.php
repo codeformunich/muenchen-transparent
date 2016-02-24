@@ -3,7 +3,7 @@
  * @var BenutzerIn $benutzerIn
  * @var array $data
  */
-$css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.css") . "\n\n";
+$css = file_get_contents(Yii::$app->getBasePath() . "/../html/css/build/mail.css") . "\n\n";
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -165,7 +165,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
             &nbsp;
             Das München Transparent-Team
             <br><br>
-            <? $url = Yii::app()->createUrl("benachrichtigungen/index", array("code" => $benutzerIn->getBenachrichtigungAbmeldenCode())); ?>
+            <? $url = Yii::$app->createUrl("benachrichtigungen/index", array("code" => $benutzerIn->getBenachrichtigungAbmeldenCode())); ?>
             PS: Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href="<?php echo Html::encode($url); ?>">hier abbestellen</a>.
 
         </div>

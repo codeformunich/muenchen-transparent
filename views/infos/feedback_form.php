@@ -5,8 +5,8 @@
  */
 $this->pageTitle = "Feedback an uns";
 
-if (Yii::app()->user)
-    $email_default = 'value = "' . Yii::app()->user->id . '"';
+if (Yii::$app->user)
+    $email_default = 'value = "' . Yii::$app->user->id . '"';
 else
     $email_default = 'placeholder="meine@email.de"';
 ?>

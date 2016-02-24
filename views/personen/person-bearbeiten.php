@@ -18,8 +18,8 @@ if (count($x) == 3 && $x[1] > 0) {
 ?>
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("personen/index")) ?>">Personen</a><br></li>
         <li><a href="<?= Html::encode($person->getLink()) ?>"><?=CHtml::encode($person->getName())?></a><br></li>
         <li class="active">Bearbeiten</li>
     </ul>

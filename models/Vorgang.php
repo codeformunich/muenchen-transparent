@@ -135,7 +135,7 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
     public function abonnieren($benutzerIn)
     {
         try {
-            Yii::app()->db
+            Yii::$app->db
                 ->createCommand("INSERT INTO `benutzerInnen_vorgaenge_abos` (`benutzerInnen_id`, `vorgaenge_id`) VALUES (:BenutzerInId, :VorgangId)")
                 ->bindValues([':VorgangId' => $this->id, ':BenutzerInId' => $benutzerIn->id])
                 ->execute();
@@ -149,7 +149,7 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
      */
     public function deabonnieren($benutzerIn)
     {
-        Yii::app()->db
+        Yii::$app->db
             ->createCommand("DELETE FROM `benutzerInnen_vorgaenge_abos` WHERE `benutzerInnen_id` = :BenutzerInId AND `vorgaenge_id` = :VorgangId")
             ->bindValues([':VorgangId' => $this->id, ':BenutzerInId' => $benutzerIn->id])
             ->execute();
@@ -187,12 +187,12 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
                 $str .= "Ergebnis: " . $erg->getName() . "\n";
             }
 
-            Yii::app()->db
+            Yii::$app->db
                 ->createCommand("UPDATE IGNORE `benutzerInnen_vorgaenge_abos` SET vorgaenge_id = :VorgangIdNeu WHERE vorgaenge_id = :VorgangIdAlt")
                 ->bindValues([':VorgangIdNeu' => $vorgang_zu_id, ':VorgangIdAlt' => $vorgang_von_id])
                 ->execute();
 
-            Yii::app()->db
+            Yii::$app->db
                 ->createCommand("DELETE FROM `benutzerInnen_vorgaenge_abos` WHERE vorgaenge_id = :VorgangIdAlt")
                 ->bindValues([':VorgangIdAlt' => $vorgang_von_id])
                 ->execute();
@@ -201,7 +201,7 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
         } catch (Exception $e) {
             $str .= $e;
         }
-        RISTools::send_email(Yii::app()->params['adminEmail'], "Vorgang:vorgangMerge Error", $str, null, "system");
+        RISTools::send_email(Yii::$app->params['adminEmail'], "Vorgang:vorgangMerge Error", $str, null, "system");
     }
 
     /**

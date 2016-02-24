@@ -131,7 +131,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                                     load: function (query, callback) {
                                         if (!query.length) return callback();
                                         $.ajax({
-                                            url: '<?=CHtml::encode(Yii::app()->createUrl("antraege/ajaxTagsSuggest"))?>/?term=' + encodeURIComponent(query),
+                                            url: '<?=CHtml::encode(Yii::$app->createUrl("antraege/ajaxTagsSuggest"))?>/?term=' + encodeURIComponent(query),
                                             type: 'GET',
                                             error: function () {
                                                 callback();
@@ -309,7 +309,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
         <? $related = $antrag->errateThemenverwandteAntraege(7); ?>
         <div class="well themenverwandt_liste" id="themenverwandt">
 
-            <form method="POST" action="<?= Yii::app()->createUrl("antraege/anzeigen", ["id" => $antrag->id]) ?>"
+            <form method="POST" action="<?= Yii::$app->createUrl("antraege/anzeigen", ["id" => $antrag->id]) ?>"
                   class="abo_button row_head" style="min-height: 80px; text-align: center;">
                 <? if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) { ?>
                     <button type="submit" name="<?= AntiXSS::createToken("deabonnieren") ?>"
@@ -325,7 +325,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
             </form>
 
             <div class="shariff" data-backend-url="<?= Html::encode($this->createUrl("/index/shariffData")) ?>"
-                 data-url="<?= Html::encode(Yii::app()->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
+                 data-url="<?= Html::encode(Yii::$app->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
         </div>
         <div class="well themenverwandt_liste">
             <?
@@ -343,7 +343,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     ?>
                 </ul>
 
-                <a href="<?= Html::encode(Yii::app()->createUrl("antraege/themenverwandte", ["id" => $antrag->id])) ?>"
+                <a href="<?= Html::encode(Yii::$app->createUrl("antraege/themenverwandte", ["id" => $antrag->id])) ?>"
                    class="weitere">
                     Weitere Themenverwandte <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>

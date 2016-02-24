@@ -187,7 +187,7 @@ class BenutzerIn extends ActiveRecord
     public function sendEmailBestaetigungsMail()
     {
         $best_code = $this->createEmailBestaetigungsCode();
-        $link      = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", ["code" => $best_code]);
+        $link      = Yii::$app->getBaseUrl(true) . Yii::$app->createUrl("index/benachrichtigungen", ["code" => $best_code]);
         RISTools::send_email($this->email, "Anmeldung bei München Transparent", "Hallo,\n\num deine E-Mail-Adresse zu bestätigen und E-Mail-Benachrichtigungen von München Transparent zu erhalten, klicke bitte auf folgenden Link:\n$link\n\n"
             . "Liebe Grüße,\n\tDas München Transparent-Team.", null, "email");
     }
@@ -226,7 +226,7 @@ class BenutzerIn extends ActiveRecord
         $this->pwd_change_code = sha1(uniqid() . $this->pwd_enc);
         $this->pwd_change_date = new DbExpression("NOW()");
         if ($this->save()) {
-            $link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("benachrichtigungen/NeuesPasswortSetzen", ["id" => $this->id, "code" => $this->pwd_change_code]);
+            $link = Yii::$app->getBaseUrl(true) . Yii::$app->createUrl("benachrichtigungen/NeuesPasswortSetzen", ["id" => $this->id, "code" => $this->pwd_change_code]);
             RISTools::send_email($this->email, "Passwort zurücksetzen", "Hallo,\n\num ein neues Passwort für deinen Zugang bei München Transparent zu setzen, klicke bitte auf folgenden Link:\n$link\n\n"
                 . "Liebe Grüße,\n\tDas München Transparent-Team.", null, "password");
             return true;
@@ -395,7 +395,7 @@ class BenutzerIn extends ActiveRecord
             "vorgaenge" => [],
         ];
 
-        $sql = Yii::app()->db->createCommand();
+        $sql = Yii::$app->db->createCommand();
         $sql->select("id")->from("dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
         $data = $sql->queryColumn(["id"]);
         if (count($data) > 0) {

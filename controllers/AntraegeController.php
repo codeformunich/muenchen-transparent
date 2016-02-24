@@ -6,7 +6,7 @@ class AntraegeController extends RISBaseController
     public function actionAjaxTagsSuggest($term)
     {
         $sqlterm = addslashes($term);
-        $found   = Yii::app()->db->createCommand("SELECT id, name, LOCATE(\"$sqlterm\", name) firstpos FROM tags WHERE name LIKE \"%$sqlterm%\" ORDER BY firstpos, LENGTH(name), name LIMIT 0,10")->queryAll();
+        $found   = Yii::$app->db->createCommand("SELECT id, name, LOCATE(\"$sqlterm\", name) firstpos FROM tags WHERE name LIKE \"%$sqlterm%\" ORDER BY firstpos, LENGTH(name), name LIMIT 0,10")->queryAll();
         $tags    = [];
         foreach ($found as $f) $tags[] = ["text" => $f["name"], "value" => $f["name"]];
         header('Content-type: application/json; charset=UTF-8');
@@ -89,7 +89,7 @@ class AntraegeController extends RISBaseController
                     }
                 }
 
-                Yii::app()->db->createCommand()->insert("antraege_tags", [
+                Yii::$app->db->createCommand()->insert("antraege_tags", [
                     "antrag_id" => $antrag->id, "tag_id" => $tag->id, "zugeordnet_datum" => date("Y-m-d H:i:s"), "zugeordnet_benutzerIn_id" => $this->aktuelleBenutzerIn()->id
                 ]);
             } catch (Exception $e) {

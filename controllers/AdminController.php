@@ -143,11 +143,11 @@ class AdminController extends RISBaseController
 
             if ($gleichnamig != null) { // Tag mit neuem Namen existiert bereits-> merge
                 // Zuerst bei allen Anträgen mit beiden tags den Eintrag für den alten tag löschen
-                Yii::app()->db->createCommand('DELETE t1 FROM antraege_tags t1 INNER JOIN antraege_tags t2 ON t1.antrag_id=t2.antrag_id WHERE t1.tag_id=:tag_id_alt AND t2.tag_id=:tag_id_neu')
+                Yii::$app->db->createCommand('DELETE t1 FROM antraege_tags t1 INNER JOIN antraege_tags t2 ON t1.antrag_id=t2.antrag_id WHERE t1.tag_id=:tag_id_alt AND t2.tag_id=:tag_id_neu')
                     ->bindValues([':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id])
                     ->execute();
 
-                Yii::app()->db->createCommand('UPDATE antraege_tags SET tag_id=:tag_id_neu WHERE tag_id=:tag_id_alt')
+                Yii::$app->db->createCommand('UPDATE antraege_tags SET tag_id=:tag_id_neu WHERE tag_id=:tag_id_alt')
                     ->bindValues([':tag_id_neu' => $gleichnamig->id, ':tag_id_alt' => $tag_alt->id])
                     ->execute();
 
@@ -165,7 +165,7 @@ class AdminController extends RISBaseController
         if (AntiXSS::isTokenSet("tag_loeschen")) {
             $tag = Tag::model()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
 
-            Yii::app()->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id')
+            Yii::$app->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id')
                 ->bindValues([':tag_id' => $tag->id])
                 ->execute();
 
@@ -177,7 +177,7 @@ class AdminController extends RISBaseController
         if (AntiXSS::isTokenSet("einzelnen_tag_loeschen")) {
             $tag = Tag::model()->findByAttributes(["name" => $_REQUEST["tag_name"]]);
 
-            Yii::app()->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id AND antrag_id=:antrag_id')
+            Yii::$app->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id AND antrag_id=:antrag_id')
                 ->bindValues([':tag_id' => $tag->id, ':antrag_id' => $_REQUEST["antrag_id"]])
                 ->execute();
 
@@ -218,7 +218,7 @@ class AdminController extends RISBaseController
 
         if (AntiXSS::isTokenSet("save")) {
             if (isset($_REQUEST["neu"]) && $_REQUEST["neu"]["datum"] != "" && $_REQUEST["neu"]["ba_nr"] > 0) {
-                $result = Yii::app()->db->createCommand("SELECT MIN(id) minid FROM termine")->queryAll();
+                $result = Yii::$app->db->createCommand("SELECT MIN(id) minid FROM termine")->queryAll();
                 $id     = $result[0]["minid"];
                 if ($id >= 0) $id = 0;
                 $id--;

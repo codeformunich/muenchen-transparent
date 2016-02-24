@@ -8,8 +8,8 @@ $this->pageTitle = "Glossar";
 ?>
 <section class="well">
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
-		<li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-		<li><a href="<?= Html::encode(Yii::app()->createUrl("infos/soFunktioniertStadtpolitik")) ?>">So funktioniert Stadtpolitik</a><br></li>
+		<li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+		<li><a href="<?= Html::encode(Yii::$app->createUrl("infos/soFunktioniertStadtpolitik")) ?>">So funktioniert Stadtpolitik</a><br></li>
 		<li class="active">Glossar</li>
 	</ul>
 
@@ -36,7 +36,7 @@ $this->pageTitle = "Glossar";
 		<div style="text-align: center;"><a href="#" id="glossar_anlegen_caller">
 				<span class="glyphicon glyphicon-plus"></span> Neuen Eintrag anlegen
 			</a></div>
-		<form method="POST" action="<?= Html::encode(Yii::app()->createUrl("infos/glossar")) ?>" role="form" class="well"
+		<form method="POST" action="<?= Html::encode(Yii::$app->createUrl("infos/glossar")) ?>" role="form" class="well"
 			  style="max-width: 850px; margin-top: 50px; margin-left: auto; margin-right: auto; display: none;" id="glossar_anlegen_form">
 			<h3>Neuen Eintrag anlegen</h3>
 

@@ -110,7 +110,7 @@ class OrtGeo extends ActiveRecord
         $ort->to_hide_kommentar = "";
         $ort->datum   = new DbExpression('NOW()');
         if (!$ort->save()) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true), null, "system");
+            RISTools::send_email(Yii::$app->params['adminEmail'], "OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true), null, "system");
             throw new Exception("Fehler beim Speichern: Geo");
         }
         return $ort;
@@ -138,7 +138,7 @@ class OrtGeo extends ActiveRecord
         // SQRT(POW(69.1 * (fld_lat - ( $lat )), 2) + POW(69.1 * (($lon) - fld_lon) * COS(fld_lat / 57.3 ), 2 )) AS distance
         $lat    = FloatVal($lat);
         $lng    = FloatVal($lng);
-        $result = Yii::app()->db->createCommand("SELECT *, SQRT(POW(69.1 * (lat - ( " . $lat . ")), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance FROM orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
+        $result = Yii::$app->db->createCommand("SELECT *, SQRT(POW(69.1 * (lat - ( " . $lat . ")), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance FROM orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
         $res    = new OrtGeo();
         $res->setAttributes($result[0]);
         return $res;

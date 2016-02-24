@@ -49,7 +49,7 @@ class BAMitgliederParser extends RISParser
             $fraktion = Fraktion::model()->findByAttributes(["ba_nr" => $ba_nr, "name" => $fraktion_name]);
             if (!$fraktion) {
                 echo "Lege an: " . $fraktion_name . "\n";
-                $min = Yii::app()->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
+                $min = Yii::$app->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
                 if ($min > 0) $min = -1;
                 $fraktion        = new Fraktion();
                 $fraktion->id    = $min;
@@ -100,7 +100,7 @@ class BAMitgliederParser extends RISParser
             $sql = 'DELETE FROM b USING `fraktionen` a JOIN `stadtraetInnen_fraktionen` b ON a.id = b.fraktion_id WHERE ';
             $frakts = implode(", ", array_map('IntVal', $fraktionen));
             $sql .= 'b.stadtraetIn_id = ' . IntVal($strIn) . ' AND a.ba_nr = ' . IntVal($ba_nr) . ' AND b.fraktion_id NOT IN (' . $frakts . ')';
-            if (Yii::app()->db->createCommand($sql)->execute() > 0) {
+            if (Yii::$app->db->createCommand($sql)->execute() > 0) {
                 echo 'Fraktionen gelöscht bei: ' . $strIn . "\n";
             }
         }

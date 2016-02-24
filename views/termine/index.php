@@ -12,7 +12,7 @@ $this->pageTitle = "Termine";
 
 <section class="well">
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
-		<li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+		<li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active">Termine</li>
 	</ul>
 	<h1 class="sr-only">Termine</h1>
@@ -35,7 +35,7 @@ $this->pageTitle = "Termine";
 				timeFormat: 'H:mm',
 				weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
 				eventSources: [
-					"<?=CHtml::encode(Yii::app()->createUrl("termine/fullCalendarFeed"))?>"
+					"<?=CHtml::encode(Yii::$app->createUrl("termine/fullCalendarFeed"))?>"
 				],
 				eventRender: function (event, element) {
 					element.attr("title", event["title"]);

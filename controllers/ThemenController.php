@@ -16,7 +16,7 @@ class ThemenController extends RISBaseController
         $antraege_referat = Antrag::model()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
 
         $text = Text::model()->findByAttributes(["typ" => Text::$TYP_REFERAT, "titel" => $ref->name]);
-        $my_url = Yii::app()->createUrl("/themen/referat/" . $referat_url);
+        $my_url = Yii::$app->createUrl("/themen/referat/" . $referat_url);
 
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
             if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");

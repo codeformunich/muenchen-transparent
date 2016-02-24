@@ -90,7 +90,7 @@ class BenachrichtigungenController extends RISBaseController
                 $ich->einstellungen                 = NULL;
                 $ich->save(false);
 
-                Yii::app()->db
+                Yii::$app->db
                     ->createCommand("DELETE FROM `benutzerInnen_vorgaenge_abos` WHERE `benutzerInnen_id` = :BenutzerInId")
                     ->bindValues([':BenutzerInId' => $ich->id])
                     ->execute();
@@ -98,15 +98,15 @@ class BenachrichtigungenController extends RISBaseController
                 $this->msg_ok = "Account gelöscht";
 
                 /** @var WebUser $user */
-                $user = Yii::app()->getUser();
+                $user = Yii::$app->getUser();
                 if ($user) $user->logout();
             } else {
                 $this->msg_err = "Sie sind nicht angemeldet";
             }
 
-            $this->redirect(Yii::app()->createUrl("index/startseite"));
+            $this->redirect(Yii::$app->createUrl("index/startseite"));
 
-            Yii::app()->end();
+            Yii::$app->end();
         }
 
         if (AntiXSS::isTokenSet("passwort_aendern")) {
@@ -225,7 +225,7 @@ class BenachrichtigungenController extends RISBaseController
         $path = Yii::getPathOfAlias('application.views.benachrichtigungen') . '/suchergebnisse_email_html.php';
         if (!file_exists($path)) throw new Exception('Template ' . $path . ' does not exist.');
         require($path);
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     public function actionPasswortZuruecksetzen()

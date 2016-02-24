@@ -47,7 +47,7 @@ class RISBaseController extends Controller
     protected function performLoginActions($code = "")
     {
         /** @var WebUser $user */
-        $user = Yii::app()->getUser();
+        $user = Yii::$app->getUser();
 
         $this->msg_err = "";
         $this->msg_ok  = "";
@@ -62,7 +62,7 @@ class RISBaseController extends Controller
             else {
                 $this->msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
                 $identity = new RISUserIdentity($benutzerIn);
-                Yii::app()->user->login($identity);
+                Yii::$app->user->login($identity);
             }
         }
 
@@ -77,7 +77,7 @@ class RISBaseController extends Controller
             if ($benutzerIn) {
                 if ($benutzerIn->validate_password($_REQUEST["password"])) {
                     $identity = new RISUserIdentity($benutzerIn);
-                    Yii::app()->user->login($identity);
+                    Yii::$app->user->login($identity);
                 } else {
                     $this->msg_err = "Das angegebene Passwort ist falsch.";
                 }
@@ -103,7 +103,7 @@ class RISBaseController extends Controller
                 if ($benutzerIn->save()) {
                     $benutzerIn->sendEmailBestaetigungsMail();
                     $identity = new RISUserIdentity($benutzerIn);
-                    Yii::app()->user->login($identity);
+                    Yii::$app->user->login($identity);
 
                     $this->msg_ok = "Der Zugang wurde angelegt. Es wurde eine Bestätigungs-Mail an die angegebene Adresse geschickt. Bitte klicke auf den Link in dieser Mail an, um E-Mail-Benachrichtigungen zu erhalten.";
                 } else {
@@ -124,15 +124,15 @@ class RISBaseController extends Controller
     {
         $this->performLoginActions($code);
 
-        if (Yii::app()->getUser()->isGuest) {
+        if (Yii::$app->getUser()->isGuest) {
             $this->render("../index/login", [
                 "current_url" => $target_url,
             ]);
-            Yii::app()->end();
+            Yii::$app->end();
         } else {
             $benutzerIn = $this->aktuelleBenutzerIn();
             if (!$benutzerIn) {
-                Yii::app()->getUser()->logout();
+                Yii::$app->getUser()->logout();
                 $this->redirect("/");
             }
         }
@@ -143,10 +143,10 @@ class RISBaseController extends Controller
      */
     public function aktuelleBenutzerIn()
     {
-        $user = Yii::app()->getUser();
+        $user = Yii::$app->getUser();
         if ($user->isGuest) return null;
         /** @var BenutzerIn $ich */
-        $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::app()->user->id]);
+        $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::$app->user->id]);
         return $ich;
     }
 
@@ -170,7 +170,7 @@ class RISBaseController extends Controller
             "code"    => $error_code,
             "message" => $error_message,
         ]);
-        Yii::app()->end($error_code);
+        Yii::$app->end($error_code);
         die();
     }
 }

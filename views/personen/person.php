@@ -10,8 +10,8 @@ $this->html_itemprop = "http://schema.org/Person";
 ?>
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("personen/index")) ?>">Personen</a><br></li>
         <li class="active"><?= Html::encode($person->getName()) ?></li>
     </ul>
 
@@ -192,10 +192,10 @@ $this->html_itemprop = "http://schema.org/Person";
             <?
             $ich = $this->aktuelleBenutzerIn();
             if ($ich && $ich->id == $person->benutzerIn_id) {
-                $editlink = Yii::app()->createUrl("personen/personBearbeiten", array("id" => $person->id));
+                $editlink = Yii::$app->createUrl("personen/personBearbeiten", array("id" => $person->id));
                 echo '<a href="' . Html::encode($editlink) . '"><span class="mdi-content-create"></span> Eintrag bearbeiten</a>';
             } else {
-                $binichlink = Yii::app()->createUrl("personen/binIch", array("id" => $person->id));
+                $binichlink = Yii::$app->createUrl("personen/binIch", array("id" => $person->id));
                 $login_add = ($ich ? '' : ' <small>(Login)</small>');
                 echo '<a href="' . Html::encode($binichlink) . '" style="font-size: 0.9em; color: gray; font-style: italic;">Sie Sind ' . Html::encode($person->getName()) . '?' . $login_add . '</a>';
             }

@@ -9,8 +9,8 @@ $this->pageTitle = $referat->getName();
 
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("themen/index")) ?>">Themen</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("themen/index")) ?>">Themen</a><br></li>
         <li class="active">Referat</li>
     </ul>
     <h1><?= Html::encode($referat->getName()) ?></h1>

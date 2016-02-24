@@ -129,7 +129,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
     public function addVorlage($vorlage)
     {
         try {
-            Yii::app()->db->createCommand()->insert("antraege_vorlagen", ["antrag1" => $vorlage->id, "antrag2" => $this->id]);
+            Yii::$app->db->createCommand()->insert("antraege_vorlagen", ["antrag1" => $vorlage->id, "antrag2" => $this->id]);
             $this->antrag2vorlagen     = array_merge($this->antrag2vorlagen, [$vorlage]);
             $vorlage->vorlage2antraege = array_merge($vorlage->vorlage2antraege, [$this]);
         } catch (Exception $e) {
@@ -142,7 +142,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
     public function addAntrag($antrag)
     {
         try {
-            Yii::app()->db->createCommand()->insert("antraege_vorlagen", ["antrag2" => $antrag->id, "antrag1" => $this->id]);
+            Yii::$app->db->createCommand()->insert("antraege_vorlagen", ["antrag2" => $antrag->id, "antrag1" => $this->id]);
             $this->vorlage2antraege  = array_merge($this->vorlage2antraege, [$antrag]);
             $antrag->antrag2vorlagen = array_merge($antrag->antrag2vorlagen, [$this]);
         } catch (Exception $e) {
@@ -281,7 +281,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
         $history->setAttributes($this->getAttributes(), false);
         try {
             if (!$history->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::send_email(Yii::$app->params['adminEmail'], "Antrag:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
@@ -339,7 +339,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
             $ap->person_id = $person->id;
             $ap->typ       = AntragPerson::$TYP_GESTELLT_VON;
             if (!$ap->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
+                RISTools::send_email(Yii::$app->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
                 throw new Exception("Fehler");
             }
         }
@@ -353,7 +353,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
             $ap->person_id = $person->id;
             $ap->typ       = AntragPerson::$TYP_INITIATORIN;
             if (!$ap->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
+                RISTools::send_email(Yii::$app->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
                 throw new Exception("Fehler");
             }
         }
@@ -365,7 +365,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
      */
     public function getLink($add_params = [])
     {
-        return Yii::app()->createUrl("antraege/anzeigen", array_merge(["id" => $this->id], $add_params));
+        return Yii::$app->createUrl("antraege/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
     /**

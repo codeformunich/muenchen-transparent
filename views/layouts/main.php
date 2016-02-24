@@ -32,12 +32,12 @@
     <meta name="msapplication-TileImage" content="/mstile-144x144.png?1">
     <meta property="og:image" content="/images/fb-img2.png">
 
-    <link rel="search" type="application/opensearchdescription+xml" title="<?= Html::encode(Yii::app()->params['projectTitle']) ?>" href="/OpenSearch.xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="<?= Html::encode(Yii::$app->params['projectTitle']) ?>" href="/OpenSearch.xml">
     <link rel="icon" type="image/png" href="/favicon-96x96.png?1">
 
     <title><?php
         echo Html::encode($this->pageTitle);
-        if (strpos($this->pageTitle, "Transparent") === false) echo " (" . Html::encode(Yii::app()->params['projectTitle']) . ")";
+        if (strpos($this->pageTitle, "Transparent") === false) echo " (" . Html::encode(Yii::$app->params['projectTitle']) . ")";
         ?></title>
 
 
@@ -104,7 +104,7 @@
                 </form>
 
                 <ul class="nav navbar-nav">
-                    <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
+                    <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
                     <!-- Desktop BA-wähler-->
                     <li class="dropdown ba-wahl-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <span class="caret"></span></a>
@@ -181,13 +181,13 @@
 <footer>
     <p class="container">
         <span class="pull-left">
-            <?= Html::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?> /
-            <?= Html::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
+            <?= Html::link("Über München-Transparent", Yii::$app->createUrl("infos/ueber")) ?> /
+            <?= Html::link("Anregungen?", Yii::$app->createUrl("infos/feedback")) ?>
         </span>
         <span class="pull-right">
             <?= Html::link("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
-            <?= Html::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
-            <?= Html::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
+            <?= Html::link("Datenschutz", Yii::$app->createUrl("infos/datenschutz")) ?> /
+            <?= Html::link("Impressum", Yii::$app->createUrl("infos/impressum")) ?>
         </span>
     </p>
 </footer>

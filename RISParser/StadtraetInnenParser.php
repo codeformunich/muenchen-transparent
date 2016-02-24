@@ -20,7 +20,7 @@ class StadtraetInnenParser extends RISParser
 
         preg_match_all("/ris_antrag_detail\.jsp\?risid=(?<antrag_id>[0-9]+)[\"'& ]/siU", $antr_text, $matches);
         foreach ($matches["antrag_id"] as $antrag_id) try {
-            Yii::app()->db->createCommand()->insert("antraege_stadtraetInnen", ["antrag_id" => $antrag_id, "stadtraetIn_id" => $stadtraetIn_id, "gefunden_am" => new DbExpression("NOW()")]);
+            Yii::$app->db->createCommand()->insert("antraege_stadtraetInnen", ["antrag_id" => $antrag_id, "stadtraetIn_id" => $stadtraetIn_id, "gefunden_am" => new DbExpression("NOW()")]);
         } catch (Exception $e) {
         }
     }
@@ -179,7 +179,7 @@ class StadtraetInnenParser extends RISParser
             if (SITE_CALL_MODE != "cron") echo "- leer\n";
             return [];
         } elseif ($first) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "StadträTinnenUpdate VOLL", "Erste Seite voll: $seite", null, "system");
+            RISTools::send_email(Yii::$app->params['adminEmail'], "StadträTinnenUpdate VOLL", "Erste Seite voll: $seite", null, "system");
         }
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ris_mitglieder_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -187,7 +187,7 @@ class StadtraetInnenParser extends RISParser
             try {
                 $this->parse($matches[1][$i]);
             } catch (Exception $e) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "StadträTinnenUpdate Error", $matches[1][$i] . $e, null, "system");
+                RISTools::send_email(Yii::$app->params['adminEmail'], "StadträTinnenUpdate Error", $matches[1][$i] . $e, null, "system");
             }
 
             $this->bearbeitete_stadtraetInnen[] = $matches[1][$i];

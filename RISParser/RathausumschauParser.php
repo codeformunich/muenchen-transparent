@@ -13,7 +13,7 @@ class RathausumschauParser extends RISParser
             if ($ru->dokumente[0]->text_pdf != "") return;
             $dokument = $ru->dokumente[0];
         } else {
-            $result = Yii::app()->db->createCommand("SELECT MIN(id) minid FROM dokumente")->queryAll();
+            $result = Yii::$app->db->createCommand("SELECT MIN(id) minid FROM dokumente")->queryAll();
             $id     = $result[0]["minid"];
             if ($id >= 0) $id = 0;
             $id--;

@@ -51,14 +51,14 @@ function zeile_anzeigen($feld, $name, $callback)
     if ($termin->termin_next_id > 0 || $termin->termin_prev_id > 0) {
         echo '<div style="text-align: center; overflow: auto;">';
         if ($termin->termin_next_id > 0) {
-            $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
+            $url = Yii::$app->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
             echo '<a href="' . Html::encode($url) . '" style="float: right;">Nächster Termin <span class="fontello-right-open"></span></a>';
         }
         if ($termin->termin_prev_id > 0) {
-            $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
+            $url = Yii::$app->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
             echo '<a href="' . Html::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
         }
-        echo '<a href="' . Html::encode(Yii::app()->createUrl("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
+        echo '<a href="' . Html::encode(Yii::$app->createUrl("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
         echo '</div>';
     }
     ?>

@@ -64,7 +64,7 @@ class InfosController extends RISBaseController
         $dok = Rechtsdokument::model()->findByPk($id);
         if (!$dok) {
             $this->render('../index/error', ["code" => 404, "message" => "Das Dokument wurde nicht gefunden"]);
-            Yii::app()->end();
+            Yii::$app->end();
         }
         $this->render("stadtrecht_dokument", ["dokument" => $dok]);
     }
@@ -110,12 +110,12 @@ class InfosController extends RISBaseController
             $text .= "\n\n";
             $text .= $_REQUEST["message"];
 
-            RISTools::send_email(Yii::app()->params['adminEmail'], "[München Transparent] Feedback", $text, null, "feedback");
+            RISTools::send_email(Yii::$app->params['adminEmail'], "[München Transparent] Feedback", $text, null, "feedback");
 
             $this->render('feedback_done', []);
         } else {
             $this->render('feedback_form', [
-                "current_url" => Yii::app()->createUrl("infos/feedback"),
+                "current_url" => Yii::$app->createUrl("infos/feedback"),
             ]);
         }
     }

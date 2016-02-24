@@ -23,8 +23,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= Html::encode(Yii::app()->createUrl($ba->getLink())) ?>">BA <?=$ba->ba_nr?></a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl($ba->getLink())) ?>">BA <?=$ba->ba_nr?></a><br></li>
         <li class="active">Dokumente</li>
     </ul>
 

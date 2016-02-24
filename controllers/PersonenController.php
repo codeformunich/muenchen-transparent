@@ -93,7 +93,7 @@ class PersonenController extends RISBaseController
 
         /** @var StadtraetIn $person */
         $person = StadtraetIn::model()->findByPk($id);
-        if ($person->benutzerIn_id !== null) $this->errorMessageAndDie(403, "Diese Person ist schon einem Account zugeordnet. Falls das ein Fehler ist, schreiben Sie uns bitte per Mail (" . Yii::app()->params["adminEmail"] . ")");
+        if ($person->benutzerIn_id !== null) $this->errorMessageAndDie(403, "Diese Person ist schon einem Account zugeordnet. Falls das ein Fehler ist, schreiben Sie uns bitte per Mail (" . Yii::$app->params["adminEmail"] . ")");
 
         $this->render("person-binich", [
             "person" => $person,

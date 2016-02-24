@@ -397,8 +397,8 @@ class RISTools
             'html'         => $text_html,
             'text'         => $text_plain,
             'subject'      => $betreff,
-            'from_email'   => Yii::app()->params["adminEmail"],
-            'from_name'    => Yii::app()->params["adminEmailName"],
+            'from_email'   => Yii::$app->params["adminEmail"],
+            'from_name'    => Yii::$app->params["adminEmailName"],
             'to'           => [
                 [
                     "name"  => null,
@@ -423,7 +423,7 @@ class RISTools
     public static function send_email_zend($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
     {
         $mail = new Zend\Mail\Message();
-        $mail->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
+        $mail->setFrom(Yii::$app->params["adminEmail"], Yii::$app->params["adminEmailName"]);
         $mail->addTo($email, $email);
         $mail->setSubject($betreff);
 
@@ -508,7 +508,7 @@ class RISTools
             $eintrag = $tooltip_replaces[strtolower($matches["word"])];
             $text    = strip_tags(html_entity_decode($eintrag->text, ENT_COMPAT, "UTF-8"));
             if (strlen($text) > 200) $text = substr($text, 0, 198) . "... [weiter]";
-            $link         = Html::encode(Yii::app()->createUrl("infos/glossar") . "#" . $eintrag->titel);
+            $link         = Html::encode(Yii::$app->createUrl("infos/glossar") . "#" . $eintrag->titel);
             $replace_html = '<a href="' . $link . '" class="tooltip_link" data-toggle="tooltip" data-placement="top" title="" data-original-title="' . Html::encode($text) . '">' . $matches["word"] . '</a>';
             return $matches["pre"] . $replace_html . $matches["post"];
 

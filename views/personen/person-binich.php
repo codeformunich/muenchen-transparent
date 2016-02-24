@@ -12,8 +12,8 @@ $ich             = $this->aktuelleBenutzerIn();
 
     <section class="well">
         <ul class="breadcrumb" style="margin-bottom: 5px;">
-            <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-            <li><a href="<?= Html::encode(Yii::app()->createUrl("personen/index")) ?>">Personen</a><br></li>
+            <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+            <li><a href="<?= Html::encode(Yii::$app->createUrl("personen/index")) ?>">Personen</a><br></li>
             <li><a href="<?= Html::encode($person->getLink()) ?>"><?= Html::encode($person->getName()) ?></a><br></li>
             <li class="active">Bin ich</li>
         </ul>
@@ -30,7 +30,7 @@ $ich             = $this->aktuelleBenutzerIn();
 
         <div style="text-align: center;">
             <?
-            $email = "mailto:" . Yii::app()->params["adminEmail"] . "?subject=" . rawurlencode("Zuordnung eines BA/StR-Profils") . "&body=";
+            $email = "mailto:" . Yii::$app->params["adminEmail"] . "?subject=" . rawurlencode("Zuordnung eines BA/StR-Profils") . "&body=";
             $text = "Hallo!\n\nBitte ordnen Sie meinen Account mit der E-Mail-Adresse\n" . $ich->email . "\ndem folgendem Profil auf München Transparent zu:\n" . SITE_BASE_URL . $person->getLink() . "\n\n\n";
             $email .= rawurlencode($text)
             ?>

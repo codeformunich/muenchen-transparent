@@ -16,7 +16,7 @@ if ($risitem) {
 
 <section class="well pdfjs">
     <ul class="breadcrumb">
-        <li><a href="<?= Html::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <?
 
         /**

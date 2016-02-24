@@ -126,7 +126,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
         if ($history->sitzungsort == "") $history->sitzungsort = "?";
         try {
             if (!$history->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Termin:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::send_email(Yii::$app->params['adminEmail'], "Termin:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
@@ -141,7 +141,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
      */
     public function getLink($add_params = [])
     {
-        return Yii::app()->createUrl("termine/anzeigen", array_merge(["id" => $this->id], $add_params));
+        return Yii::$app->createUrl("termine/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
 
@@ -332,7 +332,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
         foreach ($appointments as $appointment) {
             $key = $appointment->termin . $appointment->sitzungsort;
             if (!isset($data[$key])) $data[$key] = $appointment->toArr();
-            $url = Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $appointment->id]);
+            $url = Yii::$app->createUrl("termine/anzeigen", ["termin_id" => $appointment->id]);
             if ($appointment->gremium) {
                 if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = [];
                 $data[$key]["gremien"][$appointment->gremium->name][] = $url;
@@ -419,7 +419,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
      */
     public function getVEventParams()
     {
-        $description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $this->id]);
+        $description = "Infoseite: " . SITE_BASE_URL . Yii::$app->createUrl("termine/anzeigen", ["termin_id" => $this->id]);
         foreach ($this->antraegeDokumente as $dok) {
             $description .= "\n" . $dok->getName() . ": " . $dok->getLink();
         }
