@@ -72,7 +72,7 @@ $this->pageTitle = "Suchergebnisse";
     $antrag_typ = array();
     $facet      = $ergebnisse->getFacetSet()->getFacet('antrag_typ');
     foreach ($facet as $value => $count) if ($count > 0) {
-        $str = "<li><a href='" . RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addAntragTypKrit($value)->getUrl())) . "'>";
+        $str = "<li><a href='" . RISTools::bracketEscape(Html::encode($krits->cloneKrits()->addAntragTypKrit($value)->getUrl())) . "'>";
         if (isset(Antrag::$TYPEN_ALLE[$value])) {
             $x = explode("|", Antrag::$TYPEN_ALLE[$value]);
             $str .= $x[1] . ' (' . $count . ')';
@@ -88,7 +88,7 @@ $this->pageTitle = "Suchergebnisse";
     $facet       = $ergebnisse->getFacetSet()->getFacet('antrag_wahlperiode');
     foreach ($facet as $value => $count) if ($count > 0) {
         if (in_array($value, array("", "?"))) continue;
-        $str = "<li><a href='" . RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addWahlperiodeKrit($value)->getUrl())) . "'>";
+        $str = "<li><a href='" . RISTools::bracketEscape(Html::encode($krits->cloneKrits()->addWahlperiodeKrit($value)->getUrl())) . "'>";
         $str .= $value . ' (' . $count . ')';
         $str .= "</a></li>";
         $wahlperiode[] = $str;

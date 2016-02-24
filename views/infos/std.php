@@ -15,7 +15,7 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
 <section class="well std_fliesstext">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
         <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li class="active"><?=CHtml::encode($text->titel)?></li>
+        <li class="active"><?=Html::encode($text->titel)?></li>
     </ul>
 
     <?

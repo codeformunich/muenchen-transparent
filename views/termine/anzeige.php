@@ -68,13 +68,13 @@ function zeile_anzeigen($feld, $name, $callback)
             <th>Datum:</th>
             <td>
                 <?= RISTools::datumstring($termin->termin) . ", " . substr($termin->termin, 11, 5) ?>
-                <meta itemprop="startdate" content="<?=CHtml::encode($termin->termin)?>">
+                <meta itemprop="startdate" content="<?=Html::encode($termin->termin)?>">
             </td>
         </tr>
         <? if ($termin->sitzungsstand != "") { ?>
             <tr id="sitzungsstand">
                 <th>Sitzungsstand:</th>
-                <td <? if ($termin->istAbgesagt()) echo ' class="abgesagt"';?>> <?=CHtml::encode($termin->sitzungsstand)?></td>
+                <td <? if ($termin->istAbgesagt()) echo ' class="abgesagt"';?>> <?=Html::encode($termin->sitzungsstand)?></td>
             </tr>
         <? } ?>
         <tr id="ort">

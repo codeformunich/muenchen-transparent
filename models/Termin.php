@@ -129,7 +129,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
                 RISTools::send_email(Yii::$app->params['adminEmail'], "Termin:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
                 throw new Exception("Fehler");
             }
-        } catch (CDbException $e) {
+        } catch (DbException $e) {
             if (strpos($e->getMessage(), "Duplicate entry") === false) throw $e;
         }
 

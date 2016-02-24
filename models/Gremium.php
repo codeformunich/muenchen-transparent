@@ -96,7 +96,7 @@ class Gremium extends ActiveRecord implements IRISItem
                 RISTools::send_email(Yii::$app->params['adminEmail'], "Gremium:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
                 throw new Exception("Fehler");
             }
-        } catch (CDbException $e) {
+        } catch (DbException $e) {
             if (strpos($e->getMessage(), "Duplicate entry") === false) throw $e;
         }
 

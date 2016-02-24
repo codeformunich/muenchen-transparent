@@ -8,7 +8,7 @@
 <section class="well">
     <h1>BürgerInnenversammlungen</h1>
 
-    <form method="POST" action="<?=CHtml::encode(Yii::$app->createUrl("admin/buergerInnenversammlungen"))?>">
+    <form method="POST" action="<?=Html::encode(Yii::$app->createUrl("admin/buergerInnenversammlungen"))?>">
         <table>
             <thead>
             <tr>

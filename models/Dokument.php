@@ -150,7 +150,7 @@ class Dokument extends ActiveRecord implements IRISItem
     public function behaviors()
     {
         return [
-            'CTimestampBehavior' => [
+            'TimestampBehavior' => [
                 'class' => 'DisableDefaultScopeBehavior',
             ]
         ];

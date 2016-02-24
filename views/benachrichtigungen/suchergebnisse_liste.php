@@ -41,9 +41,9 @@ if (count($dokumente) == 0) {
                     </div>
                     <div class="row-content">
                         <h4 class="list-group-item-heading">
-                            <a href="<?=CHtml::encode($risitem->getLink())?>" title="<?=CHtml::encode($risitem->getName()) ?>" class="overflow-fadeout-white"><span>
+                            <a href="<?=Html::encode($risitem->getLink())?>" title="<?=Html::encode($risitem->getName()) ?>" class="overflow-fadeout-white"><span>
                                 <span class="least-content"><?= Html::encode($dok->getDisplayDate()) ?></span>
-                                <?=CHtml::encode($risitem->getName(true))?>
+                                <?=Html::encode($risitem->getName(true))?>
                             </span></a>
                         </h4>
 

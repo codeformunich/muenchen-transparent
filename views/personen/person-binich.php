@@ -34,7 +34,7 @@ $ich             = $this->aktuelleBenutzerIn();
             $text = "Hallo!\n\nBitte ordnen Sie meinen Account mit der E-Mail-Adresse\n" . $ich->email . "\ndem folgendem Profil auf München Transparent zu:\n" . SITE_BASE_URL . $person->getLink() . "\n\n\n";
             $email .= rawurlencode($text)
             ?>
-            <a class="btn btn-primary" href="<?=CHtml::encode($email)?>">
+            <a class="btn btn-primary" href="<?=Html::encode($email)?>">
                 <span class="glyphicon" style="font-weight: bold; font-size: 1.4em;">@</span>
                 Anfrage stellen
             </a>

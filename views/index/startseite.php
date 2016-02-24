@@ -42,7 +42,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
                 ba_links: <?=json_encode($ba_links)?>,
                 onSelect: function (latlng, rad, zoom) {
                     if (zoom >= 14) {
-                        index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
+                        index_geo_dokumente_load("<?=Html::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
                     }
                 },
                 onInit: function () {
@@ -154,7 +154,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
     <a href="https://twitter.com/MUCTransparent" class="btn btn-fab btn-raised btn-primary btn-twitter-link pull-right"><span class="fontello-twitter"></span></a>
     <h3>Aktuelles</h3>
 
-    28. Januar 2015: <a href="<?=CHtml::encode(Yii::$app->createUrl("infos/news"))?>">Start der offenen Beta-Phase von „München Transparent“</a>
+    28. Januar 2015: <a href="<?=Html::encode(Yii::$app->createUrl("infos/news"))?>">Start der offenen Beta-Phase von „München Transparent“</a>
 </section-->
 
 <section class="well two_cols" id="listen_holder">

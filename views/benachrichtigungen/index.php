@@ -130,7 +130,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                         </li>
                         <?
                         foreach ($bens as $ben) {
-                            $del_form_name = AntiXSS::createToken("del_ben") . "[" . RISTools::bracketEscape(CHtml::encode(json_encode($ben->krits))) . "]";
+                            $del_form_name = AntiXSS::createToken("del_ben") . "[" . RISTools::bracketEscape(Html::encode(json_encode($ben->krits))) . "]";
                             $such_url      = $ben->getUrl();
                             ?>
                             <li>
@@ -138,7 +138,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                                     <button type='submit' class='del' name='<?= $del_form_name ?>'><span class='glyphicon glyphicon-minus-sign'></span></button>
                                 </div>
                                 <div class='krit_holder'><?= $ben->getTitle() ?></div>
-                                <div class='such_holder'><a href='<?= RISTools::bracketEscape(CHtml::encode($ben->getUrl())) ?>'><span
+                                <div class='such_holder'><a href='<?= RISTools::bracketEscape(Html::encode($ben->getUrl())) ?>'><span
                                             class='glyphicon glyphicon-search'></span></a>
                                 </div>
                             </li>
@@ -269,7 +269,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                     size: 11,
                     onSelect: function (latlng, rad) {
                         $.ajax({
-                            "url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
+                            "url": "<?=Html::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
                             "success": function (ret) {
                                 $("#benachrichtigung_hinweis_text").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
                                 $(".ben_add_geo").prop("disabled", false);

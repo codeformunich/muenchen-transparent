@@ -120,7 +120,7 @@ def do_replace(filepath, yii1_classes, replacements):
     
     if "yii1-classes" in replacements:
         for i in yii1_classes:
-            new_contents = contents.replace(" " + i, " " + i[1:])
+            new_contents = re.sub("([^\\w\\d])" + i, "\\1" + i[1:], contents)
             if new_contents != contents:
                 print("Replaced " + i + " with " + i[1:])
                 contents = new_contents
@@ -138,7 +138,7 @@ def find_yii1_classes():
     with open_wrapper("yii1-classes.txt", 'w') as file:
         for root, dirnames, filenames in os.walk("../yii1/framework/"):
             for filename in filenames:
-                if re.match("C[A-Z].*\\.php", filename):
+                if re.match("C[A-Z]\w\w.*\\.php", filename):
                     file.write(filename[:-4] + "\n")
 
 def get_all_files(paths):
@@ -246,7 +246,6 @@ def main():
     parser.add_argument('--import-usages', action='store_true')
     parser.add_argument('--path', default=None)
     args = parser.parse_args()
-    print(args)
     paths = [args.path] if args.path else default_code_paths
     
     if not args.yii2_template and not args.import_usages and not args.import_usages:

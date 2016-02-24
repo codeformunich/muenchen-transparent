@@ -35,8 +35,8 @@
                         } ?>
                     </td>
                     <td style="padding-top: 20px;"><input type="text" name="geburtstag[<?= $str->id ?>]" placeholder="YYYY-MM-DD" title="Geburtstag" value="<?= Html::encode($str->geburtstag) ?>" maxlength="15"></td>
-                    <td style="padding-top: 20px;"><textarea name="beschreibung[<?=$str->id?>]" title="Beschreibung" rows="3" style="width: 230px;"><?=CHtml::encode($str->beschreibung)?></textarea></td>
-                    <td style="padding-top: 20px;"><textarea name="quellen[<?=$str->id?>]" title="Quellen" rows="3"><?=CHtml::encode($str->quellen)?></textarea></td>
+                    <td style="padding-top: 20px;"><textarea name="beschreibung[<?=$str->id?>]" title="Beschreibung" rows="3" style="width: 230px;"><?=Html::encode($str->beschreibung)?></textarea></td>
+                    <td style="padding-top: 20px;"><textarea name="quellen[<?=$str->id?>]" title="Quellen" rows="3"><?=Html::encode($str->quellen)?></textarea></td>
                 </tr>
             <? } ?>
             </tbody>

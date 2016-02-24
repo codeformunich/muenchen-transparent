@@ -7,7 +7,7 @@ class HTMLTools {
      */
     public static function textToHtmlWithLink($text)
     {
-        $html = nl2br(CHtml::encode($text), false);
+        $html = nl2br(Html::encode($text), false);
 
         $urlsearch = $urlreplace = [];
         $wwwsearch = $wwwreplace = [];

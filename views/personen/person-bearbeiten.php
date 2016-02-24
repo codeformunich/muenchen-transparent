@@ -20,7 +20,7 @@ if (count($x) == 3 && $x[1] > 0) {
     <ul class="breadcrumb" style="margin-bottom: 5px;">
         <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
         <li><a href="<?= Html::encode(Yii::$app->createUrl("personen/index")) ?>">Personen</a><br></li>
-        <li><a href="<?= Html::encode($person->getLink()) ?>"><?=CHtml::encode($person->getName())?></a><br></li>
+        <li><a href="<?= Html::encode($person->getLink()) ?>"><?=Html::encode($person->getName())?></a><br></li>
         <li class="active">Bearbeiten</li>
     </ul>
 
@@ -57,7 +57,7 @@ if (count($x) == 3 && $x[1] > 0) {
                 <label for="inputTwitter" class="col-md-4 control-label">Twitter-Name:</label>
 
                 <div class="col-md-8">
-                    <input type="text" name="twitter" class="form-control" id="inputTwitter" placeholder="@BenutzerInnenname" value="<?=CHtml::encode($person->twitter)?>">
+                    <input type="text" name="twitter" class="form-control" id="inputTwitter" placeholder="@BenutzerInnenname" value="<?=Html::encode($person->twitter)?>">
                 </div>
             </div>
 
@@ -65,7 +65,7 @@ if (count($x) == 3 && $x[1] > 0) {
                 <label for="inputGeburtstag" class="col-md-4 control-label">Geburtstag:</label>
 
                 <div class="col-md-8">
-                    <input type="text" name="geburtstag" class="form-control" id="inputGeburtstag" placeholder="TT.MM.JJJJ" value="<?=CHtml::encode($geburtstag)?>">
+                    <input type="text" name="geburtstag" class="form-control" id="inputGeburtstag" placeholder="TT.MM.JJJJ" value="<?=Html::encode($geburtstag)?>">
                 </div>
             </div>
 
@@ -73,7 +73,7 @@ if (count($x) == 3 && $x[1] > 0) {
                 <label for="inputBeschreibung" class="col-md-4 control-label">Selbstbeschreibung:</label>
 
                 <div class="col-md-8">
-                    <textarea name="beschreibung" id="inputBeschreibung" rows="4" style="width: 100%;"><?=CHtml::encode($person->beschreibung)?></textarea>
+                    <textarea name="beschreibung" id="inputBeschreibung" rows="4" style="width: 100%;"><?=Html::encode($person->beschreibung)?></textarea>
                 </div>
             </div>
 

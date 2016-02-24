@@ -152,7 +152,7 @@ class RISAenderung extends ActiveRecord
         return [
             "title"          => ($item ? $item->getTypName() . ": " . $item->getName() : "?"),
             "link"           => ($item ? $item->getLink() : "-"),
-            "content"        => nl2br(CHtml::encode($this->aenderungen)),
+            "content"        => nl2br(Html::encode($this->aenderungen)),
             "dateCreated"    => RISTools::date_iso2timestamp($this->datum),
             "aenderung_guid" => Yii::$app->createUrl("aenderung/anzeigen", ["id" => $this->id])
         ];

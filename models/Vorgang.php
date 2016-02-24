@@ -139,7 +139,7 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
                 ->createCommand("INSERT INTO `benutzerInnen_vorgaenge_abos` (`benutzerInnen_id`, `vorgaenge_id`) VALUES (:BenutzerInId, :VorgangId)")
                 ->bindValues([':VorgangId' => $this->id, ':BenutzerInId' => $benutzerIn->id])
                 ->execute();
-        } catch (CDbException $e) {
+        } catch (DbException $e) {
             if ($e->errorInfo[1] != 1062) throw $e; // Duplicate Entry, ist ok
         }
     }

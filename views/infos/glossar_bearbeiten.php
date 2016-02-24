@@ -14,16 +14,16 @@ $this->pageTitle = "Glossar bearbeiten";
 
 		<div class="form-group">
 			<label for="glossary_new_title">Begriff</label>
-			<input type="text" name="titel" class="form-control" id="glossary_new_title" placeholder="Zu erklärender Begriff" value="<?=CHtml::encode($eintrag->titel)?>" required>
+			<input type="text" name="titel" class="form-control" id="glossary_new_title" placeholder="Zu erklärender Begriff" value="<?=Html::encode($eintrag->titel)?>" required>
 		</div>
 
 		<div class="form-group">
 			<label for="glossary_new_text">Erkärung</label>
 
-			<textarea id="glossary_new_text" name="text" cols="80" rows="10"><?=CHtml::encode($eintrag->text)?></textarea>
+			<textarea id="glossary_new_text" name="text" cols="80" rows="10"><?=Html::encode($eintrag->text)?></textarea>
 		</div>
 
-		<a href="<?=CHtml::encode($this->createUrl("infos/glossarBearbeiten", ["id" => $eintrag->id, AntiXSS::createToken("del") => "1"]))?>" id="eintrag_del_caller" style="color: red; float: right;">
+		<a href="<?=Html::encode($this->createUrl("infos/glossarBearbeiten", ["id" => $eintrag->id, AntiXSS::createToken("del") => "1"]))?>" id="eintrag_del_caller" style="color: red; float: right;">
 			<span class="glyphicon glyphicon-minus"></span> Eintrag löschen
 		</a>
 

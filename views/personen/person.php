@@ -183,7 +183,7 @@ $this->html_itemprop = "http://schema.org/Person";
                 }
                 if ($person->beschreibung != "") {
                     echo '<dt>Beschreibung</dt>';
-                    echo '<dd>' . nl2br(CHtml::encode($person->beschreibung));
+                    echo '<dd>' . nl2br(Html::encode($person->beschreibung));
                     if ($person->quellen != "") echo '<div class="quelle">Quelle: ' . Html::encode($person->quellen) . '</div>';
                     echo '</dd>' . "\n";
                 }

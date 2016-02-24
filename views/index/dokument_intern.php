@@ -29,11 +29,11 @@
 
 OCR:
 <blockquote>
-	<?= nl2br(CHtml::encode($dokument->text_ocr_corrected)) ?>
+	<?= nl2br(Html::encode($dokument->text_ocr_corrected)) ?>
 </blockquote>
 
 PDF-Text:
 <blockquote>
-	<?= nl2br(CHtml::encode($dokument->text_pdf)) ?>
+	<?= nl2br(Html::encode($dokument->text_pdf)) ?>
 </blockquote>
 

@@ -14,9 +14,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 	<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 		<channel>
-			<atom:link href="<?php echo RISTools::bracketEscape(CHtml::encode(Yii::$app->getBaseUrl(true) . Yii::$app->request->requestUri)); ?>" rel="self" type="application/rss+xml" />
+			<atom:link href="<?php echo RISTools::bracketEscape(Html::encode(Yii::$app->getBaseUrl(true) . Yii::$app->request->requestUri)); ?>" rel="self" type="application/rss+xml" />
 			<title><?php echo Html::encode($feed_title); ?></title>
-			<link><?php echo RISTools::bracketEscape(CHtml::encode(Yii::$app->getBaseUrl(true))); ?></link>
+			<link><?php echo RISTools::bracketEscape(Html::encode(Yii::$app->getBaseUrl(true))); ?></link>
 			<description><![CDATA[<?php echo $feed_description; ?>]]></description>
 			<image>
 				<url><?php echo Html::encode(Yii::$app->getBaseUrl(true)); ?>/favicon-192x192.png</url>
@@ -26,8 +26,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<?php foreach ($data as $dat) { ?>
 				<item>
 					<title><?php echo Html::encode($dat["title"]); ?></title>
-					<link><?php echo RISTools::bracketEscape(CHtml::encode(yii::app()->getBaseUrl(true) . $dat["link"])); ?></link>
-					<guid><?php echo RISTools::bracketEscape(CHtml::encode(yii::app()->getBaseUrl(true) . $dat["aenderung_guid"])); ?></guid>
+					<link><?php echo RISTools::bracketEscape(Html::encode(yii::app()->getBaseUrl(true) . $dat["link"])); ?></link>
+					<guid><?php echo RISTools::bracketEscape(Html::encode(yii::app()->getBaseUrl(true) . $dat["aenderung_guid"])); ?></guid>
 					<description><![CDATA[<?php
 						echo $dat["content"];
 						?>]]></description>

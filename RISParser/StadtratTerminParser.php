@@ -304,7 +304,7 @@ class StadtratTerminParser extends RISParser
                 $aenderungen_tops .= "TOP entfernt: " . $top->top_nr . ":" . $top->top_betreff . "\n";
                 try {
                     $top->delete();
-                } catch (CDbException $e) {
+                } catch (DbException $e) {
                     $str = "Vermutlich verwaiste Dokumente (war zuvor: \"" . $top->getName() . "\" in " . $daten->getLink() . ":\n";
                     /** @var Dokument[] $doks */
                     $doks = Dokument::model()->findAllByAttributes(["tagesordnungspunkt_id" => $top->id]);

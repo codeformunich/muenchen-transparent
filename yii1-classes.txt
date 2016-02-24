@@ -132,8 +132,6 @@ CActiveFinder
 CActiveRecord
 CActiveRecordBehavior
 CSSDefinition
-CSS
-CPP
 CConsoleCommandEvent
 CConsoleCommandBehavior
 CHelpCommand

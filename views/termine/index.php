@@ -35,7 +35,7 @@ $this->pageTitle = "Termine";
 				timeFormat: 'H:mm',
 				weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
 				eventSources: [
-					"<?=CHtml::encode(Yii::$app->createUrl("termine/fullCalendarFeed"))?>"
+					"<?=Html::encode(Yii::$app->createUrl("termine/fullCalendarFeed"))?>"
 				],
 				eventRender: function (event, element) {
 					element.attr("title", event["title"]);

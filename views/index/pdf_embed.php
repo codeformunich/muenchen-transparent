@@ -5,7 +5,7 @@
 ?>
 
 
-<p id="filename_store" class="hidden"><?=CHtml::encode($url)?></p>
+<p id="filename_store" class="hidden"><?=Html::encode($url)?></p>
 
 <!--
 Copyright 2012 Mozilla Foundation

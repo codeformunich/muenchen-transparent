@@ -105,7 +105,7 @@ $this->load_mediaelement = true;
                 <li><a href="http://www.opengov-muenchen.de/">Das OpenGovernment-Portal der Stadt München</a></li>
                 <li><a href="http://codefor.de/muenchen/">OK Lab München</a></li>
                 <li><a href="http://www.muenchen.de/rathaus/Stadtpolitik.html">Die Stadtpolitik-Seite der Stadt München</a></li>
-                <li>...weitere Links über München und Open Data? <a href="<?=CHtml::encode(Yii::$app->createUrl("infos/feedback"))?>">Schreib uns!</a></li>
+                <li>...weitere Links über München und Open Data? <a href="<?=Html::encode(Yii::$app->createUrl("infos/feedback"))?>">Schreib uns!</a></li>
             </ul>
         </section>
     </div>

@@ -131,7 +131,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                                     load: function (query, callback) {
                                         if (!query.length) return callback();
                                         $.ajax({
-                                            url: '<?=CHtml::encode(Yii::$app->createUrl("antraege/ajaxTagsSuggest"))?>/?term=' + encodeURIComponent(query),
+                                            url: '<?=Html::encode(Yii::$app->createUrl("antraege/ajaxTagsSuggest"))?>/?term=' + encodeURIComponent(query),
                                             type: 'GET',
                                             error: function () {
                                                 callback();
