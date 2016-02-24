@@ -1,11 +1,11 @@
 #/usr/bin/env python3.5
-import os, re, glob, fnmatch, sys, subprocess, shutil
+import argparse, os, re, glob, fnmatch, sys, subprocess, shutil
 
 ## Settings
 
 print(sys.version_info)
 
-code_paths = ["controllers/", "views/", "models/", "components/", "RISParser/", "tests/acceptance/"]
+default_code_paths = ["controllers/", "views/", "models/", "components/", "RISParser/", "tests/acceptance/"]
 
 ## Constants (alter if necessary)
 
@@ -49,12 +49,12 @@ def generate_namespace_mapping():
 
 exclude = ['parent', 'self', "static"]
 
-with open("yii1-classes.txt", 'r') as file:
-    yii1_classes = [i.strip() for i in file.readlines()]
-
 ## The actual code
 
 def convert_folderstructure():
+    if not os.path.isdir("protected/") or not os.path.isdir("html/"):
+        raise Exception("The directories protected/ and html/ have to exist for the conversion to work.")
+    
     print("running composer commands ...\n")
     commands = [
         "composer global require 'fxp/composer-asset-plugin:~1.1.1'",
@@ -70,13 +70,13 @@ def convert_folderstructure():
     print("finished running composer commands.\n")
     
     # get all the interesting files form the yii2 basic app template
-    shutil.move("yii2-template/config/", "config/")
-    shutil.move("yii2-template/runtime/", "runtime/")
     shutil.move("html/", "web/")
     shutil.move("yii2-template/web/index.php", "web/index.php")
     shutil.move("yii2-template/web/index-test.php", "web/index-test.php")
     shutil.move("yii2-template/yii", "yii")
     shutil.move("yii2-template/yii.bat", "yii.bat")
+    shutil.move("yii2-template/config/", "config-new/")
+    shutil.move("yii2-template/runtime/", "runtime/")
     shutil.rmtree("yii2-template")
 
     # get the code out of protected/ into the root dir
@@ -98,7 +98,7 @@ def convert_folderstructure():
         gitignore.write(i)
     gitignore.close()
 
-def do_replace(filepath):
+def do_replace(filepath, yii1_classes):
     print("Processing " + filepath)
     with open_wrapper(filepath, 'r') as file:
         contents = file.read()
@@ -125,17 +125,20 @@ def find_yii1_classes():
                 if re.match("C[A-Z].*\\.php", filename):
                     file.write(filename[:-4] + "\n")
 
-def get_all_code_files():
+def get_all_files(paths):
     """
-    Yields all files that match `fnmatch_pattern` in `code_paths` and its subdirectories
+    Yields all files in `paths` that match `fnmatch_pattern`.
+    
+    `paths` might contain anarbitrary count of files and folders.
     """
-    if sys.version_info >= (3, 5):
-        for path in code_paths:
-            for filename in glob.iglob(path + "**/*.php", recursive=True):
-                yield filename
-    else:
-        print("Using the code for python < 3.5")
-        for path in code_paths:
+    # Pretty python >= 3.5 solution
+    #for filename in glob.iglob(path + "**/*.php", recursive=True):
+    #    yield filename
+    
+    for path in code_paths:
+        if os.path.isfile(path):
+            yield path
+        else:
             for root, dirnames, filenames in os.walk(path):
                 for filename in fnmatch.filter(filenames, fnmatch_pattern):
                     yield os.path.join(root, filename)
@@ -216,15 +219,28 @@ def insert_imports_and_namespace(filepath, imports, sources):
     
     file.close()
 
-def replace_all():
-    for filepath in get_all_code_files():
-        do_replace(filepath)
-
-def import_all():
-    sources = generate_namespace_mapping()
-    for filepath in get_all_code_files():
-        imports = find_usages_for_import(filepath)
-        insert_imports_and_namespace(filepath, imports, sources)
-
+def main():
+    parser = argparse.ArgumentParser(description='Semi-automatically converts a yii1 to a yii2 project')
+    parser.add_argument('--yii2-template', action='store_true', help='Initial-step. Changes the folderstrucuture to the yii2 basic template and also updates .gitignore so you commit the changes')
+    parser.add_argument('--replace',       action='store_true')
+    parser.add_argument('--import-usages', action='store_true')
+    parser.add_argument('--path', default=None)
+    args = parser.parse_args()
+    print(args)
+    paths = [args.path] if args.path else default_code_paths
+    
+    if args.yii2_template:
+        convert_folderstructure()
+    if args.replace:
+        with open("yii1-classes.txt", 'r') as file:
+            yii1_classes = [i.strip() for i in file.readlines()]
+        for filepath in get_all_files(files):
+            do_replace(filepath, yii1_classes)
+    if args.import_usages:
+        sources = generate_namespace_mapping()
+        for filepath in get_all_files(files):
+            imports = find_usages_for_import()
+            insert_imports_and_namespace(filepath, imports, sources)
+            
 if __name__ == "__main__":
-    convert_folderstructure()
+    main()
