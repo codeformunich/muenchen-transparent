@@ -74,7 +74,7 @@ def convert_folderstructure():
     print("finished running composer commands.\n")
     
     # get all the interesting files form the yii2 basic app template
-    shutil.move("web/", "web/")
+    shutil.move("html/", "web/")
     shutil.move("yii2-template/web/index.php", "web/index.php")
     shutil.move("yii2-template/web/index-test.php", "web/index-test.php")
     shutil.move("yii2-template/yii", "yii")
@@ -90,18 +90,27 @@ def convert_folderstructure():
             shutil.move(path, i)
     
     shutil.rmtree("protected/")
+    created_assets_dir = False
+    if not os.path.exists("web/assets"):
+        os.mkdir("web/assets")
+        created_assets_dir = True
 
     # make git recognise the new folder struture
     with open(".gitignore", 'r') as gitignore:
-        contents = gitignore.readlines()
+        ignores = gitignore.readlines()
 
-    gitignore = open(".gitignore", 'w')
-    for i in contents:
-        i = re.sub("^web/", "web/", i)
-        i = re.sub("^protected/", "", i)
-        gitignore.write(i)
-    gitignore.write("config/web.php\n")
-    gitignore.close()
+    for i, elem in enumerate(ignores):
+        ignores[i] = re.sub("^html/",      "web/", elem)
+        ignores[i] = re.sub("^protected/", "",     elem)
+
+    if not "config/web.php\n" in ignores and not "config/web.php/\n" in ignores:
+        ignores.append("config/web.php\n")
+
+    if not "web/assets\n" in ignores and not "web/assets/\n" in ignores:
+        ignores.append("web/assets/\n")
+
+    with open(".gitignore", 'w') as gitignore:
+        gitignore.writelines(ignores)
 
 def do_replace(filepath, yii1_classes, replacements):
     """
