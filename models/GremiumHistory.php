@@ -34,7 +34,7 @@ class GremiumHistory extends ActiveRecord
     /**
      * @return string the associated database table name
      */
-    public function tableName()
+    public static function tableName()
     {
         return 'gremien_history';
     }

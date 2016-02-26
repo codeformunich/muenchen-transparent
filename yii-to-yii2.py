@@ -124,10 +124,13 @@ def do_replace(filepath, yii1_classes, replacements):
     if "yii1-classes" in replacements:
         for i in yii1_classes:
             contents = re.sub("([^\\w\\d])" + i, "\\1" + i[1:], contents)
-            
+    
     if "create-url" in replacements:
         contents = contents.replace("Yii::\$app\->createUrl\(", "Url::to(")
         contents = contents.replace("$this->createUrl(",        "Url::to(")
+    
+    if "static-table-name" in replacements:
+        contents = contents.replace("public function tableName()", "public static function tableName()")
     
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)

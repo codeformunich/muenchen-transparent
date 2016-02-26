@@ -32,7 +32,7 @@ class StadtraetInFraktion extends ActiveRecord
     /**
      * @return string the associated database table name
      */
-    public function tableName()
+    public static function tableName()
     {
         return 'stadtraetInnen_fraktionen';
     }
