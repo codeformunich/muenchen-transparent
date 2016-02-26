@@ -1,9 +1,8 @@
 <?php
 
 /**
- * @var IndexController $this
+ * @var IndexController
  */
-
 ?>
 <section class="col-md-4 col-md-offset-4">
   <div class="well">

@@ -7,6 +7,7 @@ class DisableDefaultScopeBehavior extends CActiveRecordBehavior
     public function disableDefaultScope()
     {
         $this->_defaultScopeDisabled = true;
+
         return $this->Owner;
     }
 
@@ -14,5 +15,4 @@ class DisableDefaultScopeBehavior extends CActiveRecordBehavior
     {
         return $this->_defaultScopeDisabled;
     }
-
 }

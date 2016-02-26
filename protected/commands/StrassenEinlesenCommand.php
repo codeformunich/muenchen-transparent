@@ -2,11 +2,10 @@
 
 class StrassenEinlesenCommand extends CConsoleCommand
 {
-
     public function run($args)
     {
         for ($i = ord('A'); $i <= ord('Z'); $i++) {
-            $txt = RISTools::load_file('http://stadt-muenchen.net/strassen/index.php?name=' . chr($i));
+            $txt = RISTools::load_file('http://stadt-muenchen.net/strassen/index.php?name='.chr($i));
             $txt = explode("<table class='full' border='0'>", $txt);
             $txt = explode("</table>", $txt[1]);
 
@@ -18,7 +17,7 @@ class StrassenEinlesenCommand extends CConsoleCommand
 
                 $str = Strasse::model()->findByAttributes(["name" => $strassenname]);
                 if (!$str) {
-                    echo "Neu: " . $plz . " - " . $strassenname . "\n";
+                    echo "Neu: ".$plz." - ".$strassenname."\n";
                     $str          = new Strasse();
                     $str->name    = $strassenname;
                     $str->plz     = $plz;
@@ -31,6 +30,4 @@ class StrassenEinlesenCommand extends CConsoleCommand
             }
         }
     }
-
-
 }

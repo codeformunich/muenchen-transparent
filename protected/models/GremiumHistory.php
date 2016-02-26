@@ -4,9 +4,10 @@
  * This is the model class for table "gremien_history".
  *
  * The followings are the available columns in table 'gremien_history':
- * @property integer $id
+ *
+ * @property int $id
  * @property string $datum_letzte_aenderung
- * @property integer $ba_nr
+ * @property int $ba_nr
  * @property string $name
  * @property string $kuerzel
  * @property string $gremientyp
@@ -19,7 +20,9 @@ class GremiumHistory extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return GremiumHistory the static model class
      */
     public static function model($className = __CLASS__)

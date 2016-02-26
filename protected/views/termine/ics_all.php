@@ -1,15 +1,13 @@
 <?php
 /**
- * @var Termin[] $alle_termine
+ * @var Termin[]
  */
-
-
-Header("Content-Type: text/calendar");
+header("Content-Type: text/calendar");
 
 $vcalendar = new \Sabre\VObject\Component\VCalendar();
 
 foreach ($alle_termine as $curr_termin) {
-	$vcalendar->add('VEVENT', $curr_termin->getVEventParams());
+    $vcalendar->add('VEVENT', $curr_termin->getVEventParams());
 }
 
 echo $vcalendar->serialize();

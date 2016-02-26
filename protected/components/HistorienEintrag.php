@@ -2,13 +2,11 @@
 
 interface HistorienEintrag
 {
-
     public function getLink();
 
     public function getDatum();
 
     public function getFormattedDiff();
-
 }
 
 class HistorienEintragFeld

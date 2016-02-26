@@ -13,15 +13,13 @@ class RISUserIdentity extends CBaseUserIdentity
         $this->benutzerIn = $benutzerIn;
     }
 
-
     /**
-     * @return Bool
+     * @return bool
      */
     public function authenticate()
     {
         return false;
     }
-
 
     /**
      * @return string
@@ -46,6 +44,4 @@ class RISUserIdentity extends CBaseUserIdentity
     {
         return $this->benutzerIn->email;
     }
-
-
 }

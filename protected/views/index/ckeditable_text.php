@@ -1,12 +1,11 @@
 <?php
 /**
- * @var string $my_url
- * @var Text $text
- * @var bool $show_title
- * @var bool $insert_tooltips
+ * @var string
+ * @var Text   $text
+ * @var bool   $show_title
+ * @var bool   $insert_tooltips
  */
-
-$html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
+$html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function ($matches) {
     return CHtml::encode(Yii::app()->createUrl($matches["url"]));
 }, $text->text);
 if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);

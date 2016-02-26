@@ -4,20 +4,22 @@
  * This is the model class for table "strassen".
  *
  * The followings are the available columns in table 'strassen':
- * @property integer $id
+ *
+ * @property int $id
  * @property string $name
  * @property string $plz
  * @property string $osm_ref
  */
 class Strasse extends CActiveRecord
 {
-
     /** @var string */
     public $name_normalized;
 
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Strasse the static model class
      */
     public static function model($className = __CLASS__)

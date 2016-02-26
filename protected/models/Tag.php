@@ -4,6 +4,7 @@
  * This is the model class for table "texte".
  *
  * The followings are the available columns in table 'texte':
+ *
  * @property int $id
  * @property string $name
  * @property int $angelegt_benutzerIn_id
@@ -16,10 +17,11 @@
  */
 class Tag extends CActiveRecord
 {
-
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Text the static model class
      */
     public static function model($className = __CLASS__)
@@ -83,11 +85,13 @@ class Tag extends CActiveRecord
     public function getNameLink()
     {
         $link_name = $this->name;
+
         return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
     }
 
     /**
      * @param int $num
+     *
      * @return Tag[]
      */
     public static function getTopTags($num)
@@ -95,10 +99,10 @@ class Tag extends CActiveRecord
         // @TODO
 
         /** @var Tag[] $tags */
-        $tags     = Tag::model()->findAll();
-        $tags_out = [];
+        $tags                                                              = self::model()->findAll();
+        $tags_out                                                          = [];
         foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
+
         return $tags_out;
     }
-
 }

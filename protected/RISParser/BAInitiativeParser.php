@@ -7,11 +7,12 @@ class BAInitiativeParser extends RISParser
 
     public function parse($antrag_id)
     {
-        $antrag_id = IntVal($antrag_id);
+        $antrag_id = intval($antrag_id);
 
         if (SITE_CALL_MODE != "cron") echo "- Initiative $antrag_id\n";
-	if ($antrag_id == 0) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Initiative-ID 0\n" . print_r(debug_backtrace(), true), null, "system");
+    if ($antrag_id == 0) {
+                RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Initiative-ID 0\n".print_r(debug_backtrace(), true), null, "system");
+
                 return;
         }
 
@@ -28,7 +29,7 @@ class BAInitiativeParser extends RISParser
         //$ergebnisse = array();
 
         preg_match("/<h3.*>.* +(.*)<\/h3/siU", $html_details, $matches);
-        if (count($matches) == 2) $daten->antrags_nr = Antrag::cleanAntragNr($matches[1]);;
+        if (count($matches) == 2) $daten->antrags_nr = Antrag::cleanAntragNr($matches[1]);
 
         $dat_details = explode("<h3 class=\"introheadline\">BA-Initiativen-Nummer", $html_details);
         $dat_details = explode("<div class=\"formularcontainer\">", $dat_details[1]);
@@ -49,10 +50,9 @@ class BAInitiativeParser extends RISParser
         }
 
         if (!$betreff_gefunden) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Kein Betreff\n" . $html_details, null, "system");
+            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Kein Betreff\n".$html_details, null, "system");
             throw new Exception("Betreff nicht gefunden");
         }
-
 
         $dat_details = explode("<div class=\"detailborder\">", $html_details);
         $dat_details = explode("<!-- seitenfuss -->", $dat_details[1]);
@@ -75,7 +75,7 @@ class BAInitiativeParser extends RISParser
                 $daten->registriert_am = $this->date_de2mysql($matches[3][$i]);
                 break;
             case "Bezirksausschuss:":
-                $daten->ba_nr = IntVal($matches[3][$i]);
+                $daten->ba_nr = intval($matches[3][$i]);
                 break;
             case "Typ:":
                 $daten->antrag_typ = strip_tags($matches[3][$i]);
@@ -103,8 +103,9 @@ class BAInitiativeParser extends RISParser
         */
 
         if ($daten->ba_nr == 0) {
-            echo "BA-Initiative $antrag_id: " . "Keine BA-Angabe";
+            echo "BA-Initiative $antrag_id: "."Keine BA-Angabe";
             $GLOBALS["RIS_PARSE_ERROR_LOG"][] = "Keine BA-Angabe (Initiative): $antrag_id";
+
             return;
         }
 
@@ -115,19 +116,19 @@ class BAInitiativeParser extends RISParser
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
-            if ($alter_eintrag->betreff != $daten->betreff) $aenderungen .= "Betreff: " . $alter_eintrag->betreff . " => " . $daten->betreff . "\n";
-            if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
-            if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
-            if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
-            if ($alter_eintrag->initiative_to_aufgenommen != $daten->initiative_to_aufgenommen) $aenderungen .= "In TO Aufgenommen: " . $alter_eintrag->initiative_to_aufgenommen . " => " . $daten->initiative_to_aufgenommen . "\n";
-            if ($aenderungen != "") $changed = true;
+            if ($alter_eintrag->betreff != $daten->betreff) $aenderungen .= "Betreff: ".$alter_eintrag->betreff." => ".$daten->betreff."\n";
+            if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: ".$alter_eintrag->bearbeitungsfrist." => ".$daten->bearbeitungsfrist."\n";
+            if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: ".$alter_eintrag->status." => ".$daten->status."\n";
+            if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: ".$alter_eintrag->fristverlaengerung." => ".$daten->fristverlaengerung."\n";
+            if ($alter_eintrag->initiative_to_aufgenommen != $daten->initiative_to_aufgenommen) $aenderungen .= "In TO Aufgenommen: ".$alter_eintrag->initiative_to_aufgenommen." => ".$daten->initiative_to_aufgenommen."\n";
+            if ($aenderungen != "") $changed                                   = true;
             if ($alter_eintrag->wahlperiode == "") $alter_eintrag->wahlperiode = "?";
         }
 
         if ($changed) {
             if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
 
-            echo "BA-Initiative $antrag_id: Verändert: " . $aenderungen . "\n";
+            echo "BA-Initiative $antrag_id: Verändert: ".$aenderungen."\n";
 
             if ($alter_eintrag) {
                 $alter_eintrag->copyToHistory();
@@ -182,8 +183,9 @@ class BAInitiativeParser extends RISParser
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);
         } catch (Exception $e) {
-            echo " EXCEPTION! " . $e . "\n";
+            echo " EXCEPTION! ".$e."\n";
         }
+
         return $matches[1];
     }
 
@@ -192,12 +194,11 @@ class BAInitiativeParser extends RISParser
         $anz   = static::$MAX_OFFSET;
         $first = true;
         for ($i = $anz; $i >= 0; $i -= 10) {
-            if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+            if (SITE_CALL_MODE != "cron") echo($anz - $i)." / $anz\n";
             $this->parseSeite($i, $first);
             $first = false;
         }
     }
-
 
     public function parseUpdate()
     {
@@ -214,5 +215,4 @@ class BAInitiativeParser extends RISParser
     {
 
     }
-
 }

@@ -7,21 +7,20 @@ define("PATH_CONVERT", "/usr/bin/convert");
 define("PATH_TESSERACT", "/usr/local/bin/tesseract");
 define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
-define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.10.jar");
+define("PATH_PDFBOX", RIS_DATA_DIR."pdfbox-app-1.8.10.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
 define("PATH_PDFTOHTML", "/usr/bin/pdftohtml");
 
-define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");
-define("PATH_PDF_RU", RIS_DATA_DIR . "data/ru-pdf/");
+define("PATH_PDF", RIS_DATA_DIR."data/pdf/");
+define("PATH_PDF_RU", RIS_DATA_DIR."data/ru-pdf/");
 define("TMP_PATH", "/tmp/");
-define("LOG_PATH", RIS_DATA_DIR . "logs/");
-define("RU_PDF_PATH", RIS_DATA_DIR . "data/ru-pdf/");
-define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR . "ocr-todo/");
-define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR . "ocr-dst/");
-define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
-define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
+define("LOG_PATH", RIS_DATA_DIR."logs/");
+define("RU_PDF_PATH", RIS_DATA_DIR."data/ru-pdf/");
+define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR."ocr-todo/");
+define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR."ocr-dst/");
+define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR."ocr-imported/");
+define("TILE_CACHE_DIR", RIS_DATA_DIR."tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
-
 
 define("SITE_BASE_URL", "http://localhost:8080");
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
@@ -39,7 +38,7 @@ ini_set('mbstring.substitute_character', "none");
 setlocale(LC_TIME, "de_DE.UTF-8");
 setlocale(LC_NUMERIC, "C"); // Scheint in manchen Umgebungen (HHVM?) sonst bei de_DE Probleme mit FloatVal zu machen
 
-require_once(__DIR__ . "/urls.php");
+require_once __DIR__."/urls.php";
 
 $GLOBALS["SOLR_CONFIG"] = null;
 /*
@@ -60,14 +59,15 @@ function ris_intern_address2geo($land, $plz, $ort, $strasse)
     return ["lon" => 0, "lat" => 0];
 }
 
-
 /**
  * @param string $url_to_read
  * @param string $username
  * @param string $password
- * @param int $timeout
- * @return string
+ * @param int    $timeout
+ *
  * @throws Exception
+ *
+ * @return string
  */
 function ris_download_string($url_to_read, $username = "", $password = "", $timeout = 30)
 {
@@ -94,10 +94,10 @@ function ris_download_string($url_to_read, $username = "", $password = "", $time
     return $data;
 }
 
-
 /**
  * @param Antrag $referenz
  * @param Antrag $antrag
+ *
  * @return bool
  */
 function ris_intern_antrag_ist_relevant_mlt($referenz, $antrag)
@@ -110,11 +110,10 @@ function ris_intern_html_extra_headers()
     return '';
 }
 
-
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return [
-    'basePath'       => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
+    'basePath'       => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
     'name'           => 'München Transparent',
 
     // preloading 'log' component

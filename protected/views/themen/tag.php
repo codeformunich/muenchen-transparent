@@ -1,9 +1,8 @@
 <?php
 /**
- * @var Tag $tag
+ * @var Tag
  * @var $antraege_tag
  */
-
 $this->pageTitle = $tag->name;
 ?>
 

@@ -1,12 +1,9 @@
 <?php
 /**
- * @var AntraegeController $this
- * @var StadtraetIn[] $stadtraetInnen,
- * @var Person[] $personen
+ * @var AntraegeController
+ * @var StadtraetIn[]      $stadtraetInnen,
+ * @var Person[]           $personen
  */
-
-
-
 ?>
 <section class="well">
 

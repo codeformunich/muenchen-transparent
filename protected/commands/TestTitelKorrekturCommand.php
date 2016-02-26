@@ -7,22 +7,22 @@ class TestTitelKorrekturCommand extends CConsoleCommand
         $TESTS_TITEL = [
             [
                 'input'      => 'Welche Schäden hat der Aufbau des ?Cotton Club? verursacht?',
-                'korrigiert' => 'Welche Schäden hat der Aufbau des „Cotton Club“ verursacht?'
+                'korrigiert' => 'Welche Schäden hat der Aufbau des „Cotton Club“ verursacht?',
             ],
             [
                 'input'      => 'Fortschreibung des Standortkonzepts "Kulturstrand" 2015 ff.',
-                'korrigiert' => 'Fortschreibung des Standortkonzepts „Kulturstrand“ 2015 ff.'
+                'korrigiert' => 'Fortschreibung des Standortkonzepts „Kulturstrand“ 2015 ff.',
             ],
         ];
 
         $TESTS_DOKUMENT = [
             [
                 'input'      => 'Neuer Titel',
-                'korrigiert' => 'Neuer Titel'
+                'korrigiert' => 'Neuer Titel',
             ],
             [
                 'input'      => 'Hinweis fuer Internet',
-                'korrigiert' => 'Hinweis für Internet'
+                'korrigiert' => 'Hinweis für Internet',
             ],
         ];
 
@@ -31,9 +31,9 @@ class TestTitelKorrekturCommand extends CConsoleCommand
             $korrektur = RISTools::korrigiereTitelZeichen($test["input"]);
             if ($korrektur != $test["korrigiert"]) {
                 echo "Fehlerhaft:\n";
-                echo "- Input: " . $test["input"] . "\n";
-                echo "- Erwartet: " . $test["korrigiert"] . "\n";
-                echo "- Tatsächlich: " . $korrektur . "\n";
+                echo "- Input: ".$test["input"]."\n";
+                echo "- Erwartet: ".$test["korrigiert"]."\n";
+                echo "- Tatsächlich: ".$korrektur."\n";
                 $allesok = false;
             }
         }
@@ -41,9 +41,9 @@ class TestTitelKorrekturCommand extends CConsoleCommand
             $korrektur = RISTools::korrigiereDokumentenTitel($test["input"]);
             if ($korrektur != $test["korrigiert"]) {
                 echo "Fehlerhaft:\n";
-                echo "- Input: " . $test["input"] . "\n";
-                echo "- Erwartet: " . $test["korrigiert"] . "\n";
-                echo "- Tatsächlich: " . $korrektur . "\n";
+                echo "- Input: ".$test["input"]."\n";
+                echo "- Erwartet: ".$test["korrigiert"]."\n";
+                echo "- Tatsächlich: ".$korrektur."\n";
                 $allesok = false;
             }
         }

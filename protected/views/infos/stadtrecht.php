@@ -1,10 +1,7 @@
 <?php
 /**
- * @var InfosController $this
+ * @var InfosController
  */
-
-
-
 $this->pageTitle = "Stadtrecht";
 
 ?>

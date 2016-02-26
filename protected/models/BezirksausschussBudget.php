@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @property integer $ba_nr
- * @property integer $jahr
- * @property integer $budget
- * @property integer $vorjahr_rest
- * @property integer $cache_aktuell
+ * @property int $ba_nr
+ * @property int $jahr
+ * @property int $budget
+ * @property int $vorjahr_rest
+ * @property int $cache_aktuell
  *
  * The followings are the available model relations:
  * @property Bezirksausschuss $bezirksausschuss
@@ -14,7 +14,9 @@ class BezirksausschussBudget extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return StadtraetInGremium the static model class
      */
     public static function model($className = __CLASS__)

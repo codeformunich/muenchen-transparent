@@ -1,17 +1,17 @@
 <?php
 /**
- * @var InfosController $this
- * @var string $personen_typ
- * @var int|null $ba_nr
- * @var StadtraetIn[] $personen
+ * @var InfosController
+ * @var string          $personen_typ
+ * @var int|null        $ba_nr
+ * @var StadtraetIn[]   $personen
  */
 
 /** @var Bezirksausschuss[] $bas */
-$bas = Bezirksausschuss::model()->findAll();
-$curr_ba = null;
+$bas                                                                     = Bezirksausschuss::model()->findAll();
+$curr_ba                                                                 = null;
 if ($ba_nr > 0) foreach ($bas as $ba) if ($ba->ba_nr == $ba_nr) $curr_ba = $ba;
 
-$personen_typ_name = ($personen_typ == 'str' ? 'StadträtInnen' : 'Mitglieder des Bezirksausschuss ' . $ba_nr . ' (' . $curr_ba->name . ')');
+$personen_typ_name = ($personen_typ == 'str' ? 'StadträtInnen' : 'Mitglieder des Bezirksausschuss '.$ba_nr.' ('.$curr_ba->name.')');
 $this->pageTitle   = $personen_typ_name;
 
 ?>

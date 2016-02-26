@@ -1,10 +1,9 @@
 <?php
 /**
- * @var StadtraetIn $person
+ * @var StadtraetIn
  * @var IndexController $this
  */
-
-$this->pageTitle = "Ich bin: " . $person->getName();
+$this->pageTitle = "Ich bin: ".$person->getName();
 $ich             = $this->aktuelleBenutzerIn();
 
 ?>

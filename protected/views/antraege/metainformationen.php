@@ -1,7 +1,7 @@
 <?php
 /**
- * @var Antrag $antrag
- * @var bool $zeige_ba_orte
+ * @var Antrag
+ * @var bool   $zeige_ba_orte
  */
 ?>
 <div class='metainformationen_antraege'>

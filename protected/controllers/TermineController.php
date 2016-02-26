@@ -2,9 +2,9 @@
 
 class TermineController extends RISBaseController
 {
-
     /**
-     * @var Termin[] $appointments
+     * @var Termin[]
+     *
      * @return array
      */
     private function getFullcalendarStruct($appointments)
@@ -25,17 +25,18 @@ class TermineController extends RISBaseController
                 $has_weekend = true;
             }
         }
+
         return [
             "has_weekend" => $has_weekend,
             "data"        => $jsdata,
         ];
     }
 
-
     /**
      * @param int $year
      * @param int $month
      * @param int $margin_days
+     *
      * @return array
      */
     private function getFullCalendarStructByMonth($year, $month, $margin_days = 7)
@@ -50,6 +51,7 @@ class TermineController extends RISBaseController
         /** @var Termin[] $termine_monat */
         $termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $margin_start, $margin_end, true)->findAll();
         $fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
+
         return $fullcalendar_struct;
     }
 
@@ -62,11 +64,10 @@ class TermineController extends RISBaseController
         /** @var Termin[] $termine_monat */
         $termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $start, $end, true)->findAll();
         $fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
-        Header("Content-Type: application/json; charset=UTF-8");
+        header("Content-Type: application/json; charset=UTF-8");
         echo json_encode($fullcalendar_struct["data"]);
         Yii::app()->end();
     }
-
 
     /**
      *
@@ -82,9 +83,9 @@ class TermineController extends RISBaseController
         $termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
         $termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
         $termin_dokumente      = Termin::model()->neueste_str_protokolle(0, date("Y-m-d 00:00:00", time() - 60 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
-        /** @var Termin[] $termine_zukunft */
-        /** @var Termin[] $termine_vergangenheit */
-        /** @var Termin[] $termin_dokumente */
+        /* @var Termin[] $termine_zukunft */
+        /* @var Termin[] $termine_vergangenheit */
+        /* @var Termin[] $termin_dokumente */
         $gruppiert_zukunft       = Termin::groupAppointments($termine_zukunft);
         $gruppiert_vergangenheit = Termin::groupAppointments($termine_vergangenheit);
 
@@ -105,7 +106,7 @@ class TermineController extends RISBaseController
      */
     public function actionAnzeigen($termin_id)
     {
-        $termin_id = IntVal($termin_id);
+        $termin_id = intval($termin_id);
 
         $this->top_menu = "termine";
 
@@ -113,6 +114,7 @@ class TermineController extends RISBaseController
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+
             return;
         }
 
@@ -139,18 +141,18 @@ class TermineController extends RISBaseController
         ]);
     }
 
-
     /**
      * @param int $termin_id
      */
     public function actionIcsExportAll($termin_id)
     {
-        $termin_id = IntVal($termin_id);
+        $termin_id = intval($termin_id);
 
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+
             return;
         }
 
@@ -164,12 +166,13 @@ class TermineController extends RISBaseController
      */
     public function actionIcsExportSingle($termin_id)
     {
-        $termin_id = IntVal($termin_id);
+        $termin_id = intval($termin_id);
 
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+
             return;
         }
 
@@ -186,9 +189,10 @@ class TermineController extends RISBaseController
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
         $this->render("ba_zukunft_html", [
-            "termine" => $termine
+            "termine" => $termine,
         ]);
     }
+
     /**
      */
     public function actionBaZukunftCsv()
@@ -197,7 +201,7 @@ class TermineController extends RISBaseController
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
         $this->renderPartial("ba_zukunft_csv", [
-            "termine" => $termine
+            "termine" => $termine,
         ]);
     }
 
@@ -206,10 +210,11 @@ class TermineController extends RISBaseController
      */
     public function actionAboInfo($termin_id)
     {
-        /** @var Termin $sitzung */
+        /* @var Termin $sitzung */
         $termin = Termin::model()->findByPk($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+
             return;
         }
 
@@ -217,7 +222,6 @@ class TermineController extends RISBaseController
             "termin" => $termin,
         ]);
     }
-
 
     /**
      * @param int $termin_id
@@ -246,13 +250,13 @@ class TermineController extends RISBaseController
         $server->addPlugin(new Sabre\DAVACL\Plugin());
 
         if ($DEBUG) {
-            $server->addPlugin(new TermineCalDAVDebug(TMP_PATH . "sabredav.log"));
+            $server->addPlugin(new TermineCalDAVDebug(TMP_PATH."sabredav.log"));
 
             ob_start();
             $server->exec();
             $txt = ob_get_flush();
-            $fp  = fopen(TMP_PATH . "sabredav.log", "a");
-            fwrite($fp, "RESPONSE:\n\n" . $txt . "\n\n=============================\n\n");
+            $fp  = fopen(TMP_PATH."sabredav.log", "a");
+            fwrite($fp, "RESPONSE:\n\n".$txt."\n\n=============================\n\n");
             fclose($fp);
         } else {
             $server->exec();
@@ -276,6 +280,4 @@ class TermineController extends RISBaseController
             "termine" => $termin_arr,
         ]);
     }
-
-
 }

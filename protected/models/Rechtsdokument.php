@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @property integer $id
+ * @property int $id
  * @property string $titel
  * @property string $url_base
  * @property string $url_html
@@ -10,13 +10,12 @@
  * @property string $bekanntmachung
  * @property string $html
  * @property string $css
- *
  */
 class Rechtsdokument extends CActiveRecord
 {
-
     /**
      * @param string $className active record class name.
+     *
      * @return Rechtsdokument the static model class
      */
     public static function model($className = __CLASS__)
@@ -69,7 +68,7 @@ class Rechtsdokument extends CActiveRecord
             'str_beschluss'  => 'Stadtratsbeschluss',
             'bekanntmachung' => 'Bekanntmachung',
             'html'           => 'HTML',
-            'css'            => 'CSS'
+            'css'            => 'CSS',
         ];
     }
 
@@ -77,7 +76,7 @@ class Rechtsdokument extends CActiveRecord
     {
         $dokumente = $this->findAll();
         usort($dokumente, function ($dok1, $dok2) {
-            /**
+            /*
              * @var Rechtsdokument $dok1
              * @var Rechtsdokument $dok2
              */
@@ -86,8 +85,10 @@ class Rechtsdokument extends CActiveRecord
             if ($name1 == $name2) {
                 return 0;
             }
+
             return ($name1 > $name2) ? +1 : -1;
         });
+
         return $dokumente;
     }
 
@@ -100,6 +101,7 @@ class Rechtsdokument extends CActiveRecord
         $titel = preg_replace("/O /", "ordnung ", $titel);
         $titel = preg_replace("/S *$/", "satzung", $titel);
         $titel = preg_replace("/S /", "satzung ", $titel);
+
         return $titel;
     }
 }

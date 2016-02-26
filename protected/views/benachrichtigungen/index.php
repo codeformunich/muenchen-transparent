@@ -1,12 +1,11 @@
 <?php
 /**
- * @var $this IndexController
- * @var $error array
- * @var string $code
- * @var string $message
- * @var BenutzerIn $ich
+ * @var IndexController
+ * @var $error          array
+ * @var string          $code
+ * @var string          $message
+ * @var BenutzerIn      $ich
  */
-
 $this->pageTitle = "Benachrichtigungen";
 
 $bens                 = $ich->getBenachrichtigungen();

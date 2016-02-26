@@ -4,12 +4,13 @@
  * This is the model class for table "orte_geo".
  *
  * The followings are the available columns in table 'orte_geo':
- * @property integer $id
+ *
+ * @property int $id
  * @property string $ort
  * @property float $lat
  * @property float $lon
  * @property string $source
- * @property integer $to_hide
+ * @property int $to_hide
  * @property string $to_hide_kommentar
  * @property string $datum
  * @property int $ba_nr
@@ -21,7 +22,9 @@ class OrtGeo extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return OrtGeo the static model class
      */
     public static function model($className = __CLASS__)
@@ -85,37 +88,39 @@ class OrtGeo extends CActiveRecord
 
     /**
      * @param string $name
+     *
      * @throws Exception
+     *
      * @return OrtGeo|null
      */
     public static function getOrCreate($name)
     {
-        /** @var null|OrtGeo */
-        $ort = OrtGeo::model()->findByAttributes(["ort" => $name]);
+        /* @var null|OrtGeo */
+        $ort = self::model()->findByAttributes(["ort" => $name]);
         if ($ort) return $ort;
 
-        $data = RISGeo::addressToGeo("Deutschland", "", "München", $name);
-        if (($data === false || $data["lat"] == 0) && mb_strpos($name, "-") !== false) $data = RISGeo::addressToGeo("Deutschland", "", "München", str_replace("-", "", $name));
+        $data                                                                                    = RISGeo::addressToGeo("Deutschland", "", "München", $name);
+        if (($data === false || $data["lat"] == 0) && mb_strpos($name, "-") !== false) $data     = RISGeo::addressToGeo("Deutschland", "", "München", str_replace("-", "", $name));
         if (($data === false || $data["lat"] == 0) && mb_stripos($name, "Str.") !== false) $data = RISGeo::addressToGeo("Deutschland", "", "München", str_ireplace("Str.", "Straße", $name));
 
-        if ($data["lat"] <= 0 || $data["lon"] <= 0) return null;
+        if ($data["lat"] <= 0 || $data["lon"] <= 0) return;
 
-        $ort      = new OrtGeo();
+        $ort      = new self();
         $ort->ort = $name;
         $ort->lat = $data["lat"];
         $ort->lon = $data["lon"];
         $ort->setzeBA();
-        $ort->source  = "auto";
-        $ort->to_hide = 0;
+        $ort->source            = "auto";
+        $ort->to_hide           = 0;
         $ort->to_hide_kommentar = "";
-        $ort->datum   = new CDbExpression('NOW()');
+        $ort->datum             = new CDbExpression('NOW()');
         if (!$ort->save()) {
             RISTools::send_email(Yii::app()->params['adminEmail'], "OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true), null, "system");
             throw new Exception("Fehler beim Speichern: Geo");
         }
+
         return $ort;
     }
-
 
     public function setzeBA()
     {
@@ -131,16 +136,18 @@ class OrtGeo extends CActiveRecord
     /**
      * @param float $lng
      * @param float $lat
+     *
      * @return OrtGeo
      */
     public static function findClosest($lng, $lat)
     {
         // SQRT(POW(69.1 * (fld_lat - ( $lat )), 2) + POW(69.1 * (($lon) - fld_lon) * COS(fld_lat / 57.3 ), 2 )) AS distance
-        $lat    = FloatVal($lat);
-        $lng    = FloatVal($lng);
-        $result = Yii::app()->db->createCommand("SELECT *, SQRT(POW(69.1 * (lat - ( " . $lat . ")), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance FROM orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
-        $res    = new OrtGeo();
+        $lat    = floatval($lat);
+        $lng    = floatval($lng);
+        $result = Yii::app()->db->createCommand("SELECT *, SQRT(POW(69.1 * (lat - ( ".$lat.")), 2) + POW(69.1 * (($lng) - lon) * COS(lat / 57.3 ), 2 )) AS distance FROM orte_geo ORDER BY distance ASC LIMIT 0,1")->queryAll();
+        $res    = new self();
         $res->setAttributes($result[0]);
+
         return $res;
     }
 }

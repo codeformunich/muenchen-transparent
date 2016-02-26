@@ -1,10 +1,8 @@
 <?php
 /**
- * @var IndexController $this
+ * @var IndexController
  */
-
 $this->pageTitle = "Suche";
-
 
 ?>
 <section class="well">

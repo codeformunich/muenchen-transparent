@@ -1,8 +1,9 @@
 <?php
 
 /**
- * The followings are the available columns in table 'gremien':
- * @property integer $id
+ * The followings are the available columns in table 'gremien':.
+ *
+ * @property int $id
  * @property string $name
  * @property string $urlpart
  * @property string $strasse
@@ -12,7 +13,7 @@
  * @property string $telefon
  * @property string $website
  * @property string $kurzbeschreibung
- * @property integer $aktiv
+ * @property int $aktiv
  *
  * The followings are the available model relations:
  * @property Antrag[] $antraege
@@ -22,7 +23,9 @@ class Referat extends CActiveRecord implements IRISItem
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Referat the static model class
      */
     public static function model($className = __CLASS__)
@@ -91,13 +94,13 @@ class Referat extends CActiveRecord implements IRISItem
 
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
     {
         return Yii::app()->createUrl("themen/referat", array_merge(["id" => $this->id], $add_params));
     }
-
 
     /** @return string */
     public function getTypName()
@@ -107,6 +110,7 @@ class Referat extends CActiveRecord implements IRISItem
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -122,36 +126,37 @@ class Referat extends CActiveRecord implements IRISItem
         return "0000-00-00 00:00:00";
     }
 
-
     /**
      * @param string $name
+     *
      * @return null|Referat
      */
     public static function getByHtmlName($name)
     {
         $name = trim(strip_tags($name));
-        $ref  = Referat::model()->findByAttributes(["name" => $name]);
+        $ref  = self::model()->findByAttributes(["name" => $name]);
+
         return $ref;
     }
 
-
     /**
-     * @param int $referat_id
+     * @param int    $referat_id
      * @param string $zeit_von
      * @param string $zeit_bis
-     * @param int $limit
+     * @param int    $limit
+     *
      * @return $this
      */
     public function neueste_dokumente($referat_id, $zeit_von = "", $zeit_bis = "", $limit = 0)
     {
         $time_condition = '';
-        if ($zeit_von != "") $time_condition .= 'c.datum >= "' . addslashes($zeit_von) . '"';
+        if ($zeit_von != "") $time_condition .= 'c.datum >= "'.addslashes($zeit_von).'"';
         if ($zeit_von != "" && $zeit_bis != "") $time_condition .= ' AND ';
-        if ($zeit_bis != "") $time_condition .= 'c.datum <= "' . addslashes($zeit_bis) . '"';
+        if ($zeit_bis != "") $time_condition .= 'c.datum <= "'.addslashes($zeit_bis).'"';
 
         $params = [
             'alias'     => 'a',
-            'condition' => 'a.id = ' . IntVal($referat_id),
+            'condition' => 'a.id = '.intval($referat_id),
             'order'     => 'c.datum DESC',
             'with'      => [
                 'antraege'           => [
@@ -161,9 +166,10 @@ class Referat extends CActiveRecord implements IRISItem
                     'alias'     => 'c',
                     'condition' => $time_condition,
                 ],
-            ]];
+            ], ];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
+
         return $this;
     }
 }

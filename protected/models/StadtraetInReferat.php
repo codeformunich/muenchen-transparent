@@ -2,8 +2,9 @@
 
 /**
  * @propeerty integer $id
- * @property integer $stadtraetIn_id
- * @property integer $referat_id
+ *
+ * @property int $stadtraetIn_id
+ * @property int $referat_id
  * @property string $datum_von
  * @property string $datum_bis
  *
@@ -15,7 +16,9 @@ class StadtraetInReferat extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return StadtraetInReferat the static model class
      */
     public static function model($className = __CLASS__)

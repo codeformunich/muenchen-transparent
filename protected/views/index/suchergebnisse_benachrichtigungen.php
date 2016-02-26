@@ -1,15 +1,14 @@
 <?php
 
 /**
- * @var RISBaseController $this
- * @var RISSucheKrits $krits
- * @var bool $email_bestaetigt
- * @var bool $email_angegeben
- * @var bool $eingeloggt
- * @var bool $wird_benachrichtigt
- * @var BenutzerIn $ich
+ * @var RISBaseController
+ * @var RISSucheKrits     $krits
+ * @var bool              $email_bestaetigt
+ * @var bool              $email_angegeben
+ * @var bool              $eingeloggt
+ * @var bool              $wird_benachrichtigt
+ * @var BenutzerIn        $ich
  */
-
 ?>
 <form method="POST" action="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" id="login_ben_form">
     <?

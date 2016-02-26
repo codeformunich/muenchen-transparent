@@ -4,13 +4,14 @@
  * This is the model class for table "tagesordnungspunkte_history".
  *
  * The followings are the available columns in table 'tagesordnungspunkte_history':
- * @property integer $id
- * @property integer $vorgang_id
+ *
+ * @property int $id
+ * @property int $vorgang_id
  * @property string $datum_letzte_aenderung
- * @property integer $antrag_id
+ * @property int $antrag_id
  * @property string $gremium_name
- * @property integer $gremium_id
- * @property integer $sitzungstermin_id
+ * @property int $gremium_id
+ * @property int $sitzungstermin_id
  * @property string $sitzungstermin_datum
  * @property string $beschluss_text
  * @property string $entscheidung
@@ -29,7 +30,9 @@ class TagesordnungspunktHistory extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return TagesordnungspunktHistory the static model class
      */
     public static function model($className = __CLASS__)
@@ -95,12 +98,13 @@ class TagesordnungspunktHistory extends CActiveRecord
             'top_nr'                 => 'Tagesordnungspunkt',
             'top_ueberschrift'       => 'Ist Überschrift',
             'top_betreff'            => 'Betreff',
-            'status'                 => 'Status'
+            'status'                 => 'Status',
         ];
     }
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -108,6 +112,7 @@ class TagesordnungspunktHistory extends CActiveRecord
         if ($kurzfassung) {
             $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
             $x       = explode(" Antrag Nr.", $betreff);
+
             return RISTools::korrigiereTitelZeichen($x[0]);
         } else {
             return RISTools::korrigiereTitelZeichen($this->top_betreff);

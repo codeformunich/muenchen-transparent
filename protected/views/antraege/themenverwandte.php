@@ -1,10 +1,9 @@
 <?php
 /**
- * @var Antrag $antrag
+ * @var Antrag
  * @var AntraegeController $this
  */
-
-$this->pageTitle = $antrag->getName(true) . " - Themenverwandt";
+$this->pageTitle = $antrag->getName(true)." - Themenverwandt";
 $related         = $antrag->errateThemenverwandteAntraege(50);
 
 ?>

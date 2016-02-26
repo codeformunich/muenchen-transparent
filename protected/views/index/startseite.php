@@ -1,25 +1,24 @@
 <?php
 /**
- * @var IndexController $this
- * @var array $geodata
- * @var array $geodata_overflow
- * @var Antrag[] $antraege_stadtrat
- * @var Antrag[] $antraege_sonstige
- * @var string $datum
- * @var bool $explizites_datum
- * @var string $neuere_url_ajax
- * @var string $neuere_url_std
- * @var string $aeltere_url_ajax
- * @var string $aeltere_url_std
- * @var array $statistiken
+ * @var IndexController
+ * @var array            $geodata
+ * @var array            $geodata_overflow
+ * @var Antrag[]         $antraege_stadtrat
+ * @var Antrag[]         $antraege_sonstige
+ * @var string           $datum
+ * @var bool             $explizites_datum
+ * @var string           $neuere_url_ajax
+ * @var string           $neuere_url_std
+ * @var string           $aeltere_url_ajax
+ * @var string           $aeltere_url_std
+ * @var array            $statistiken
  * @var Rathausumschau[] $rathausumschauen
  */
-
 $this->pageTitle = Yii::app()->name;
-$ba_links = [];
+$ba_links        = [];
 /** @var Bezirksausschuss[] $bas */
-$bas = Bezirksausschuss::model()->findAll();
-foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
+$bas                                              = Bezirksausschuss::model()->findAll();
+foreach ($bas as $ba) $ba_links["ba_".$ba->ba_nr] = $ba->getLink();
 
 ?>
 

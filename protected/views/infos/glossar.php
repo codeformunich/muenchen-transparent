@@ -1,7 +1,7 @@
 <?php
 /**
- * @var InfosController $this
- * @var Text[] $eintraege
+ * @var InfosController
+ * @var Text[]          $eintraege
  */
 $this->pageTitle = "Glossar";
 

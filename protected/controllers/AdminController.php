@@ -36,7 +36,6 @@ class AdminController extends RISBaseController
         ]);
     }
 
-
     public function actionStadtraetInnenSocialMedia()
     {
         if (!$this->binContentAdmin()) $this->errorMessageAndDie(403, "");
@@ -63,7 +62,6 @@ class AdminController extends RISBaseController
             "fraktionen" => $fraktionen,
         ]);
     }
-
 
     public function actionStadtraetInnenBeschreibungen()
     {
@@ -103,9 +101,9 @@ class AdminController extends RISBaseController
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["BenutzerIn"])) {
             foreach ($_REQUEST["BenutzerIn"] as $strIn_id => $benutzerIn_id) {
                 /** @var StadtraetIn $strIn */
-                $strIn = StadtraetIn::model()->findByPk($strIn_id);
-                if ($benutzerIn_id > 0) $strIn->benutzerIn_id = IntVal($benutzerIn_id);
-                else $strIn->benutzerIn_id = null;
+                $strIn                                        = StadtraetIn::model()->findByPk($strIn_id);
+                if ($benutzerIn_id > 0) $strIn->benutzerIn_id = intval($benutzerIn_id);
+                else $strIn->benutzerIn_id                    = null;
                 $strIn->save();
             }
             $this->msg_ok = "Gespeichert";
@@ -119,7 +117,6 @@ class AdminController extends RISBaseController
             "stadtraetInnen" => $stadtraetInnen,
         ]);
     }
-
 
     public function actionIndex()
     {
@@ -186,7 +183,7 @@ class AdminController extends RISBaseController
 
         $tags = Tag::model()->findAll();
         usort($tags, function ($tag1, $tag2) {
-            /**
+            /*
             * @var Tag $dok1
             * @var Tag $dok2
             */
@@ -195,6 +192,7 @@ class AdminController extends RISBaseController
             if ($name1 == $name2) {
                 return 0;
             }
+
             return ($name1 > $name2) ? +1 : -1;
         });
 
@@ -218,14 +216,14 @@ class AdminController extends RISBaseController
 
         if (AntiXSS::isTokenSet("save")) {
             if (isset($_REQUEST["neu"]) && $_REQUEST["neu"]["datum"] != "" && $_REQUEST["neu"]["ba_nr"] > 0) {
-                $result = Yii::app()->db->createCommand("SELECT MIN(id) minid FROM termine")->queryAll();
-                $id     = $result[0]["minid"];
+                $result           = Yii::app()->db->createCommand("SELECT MIN(id) minid FROM termine")->queryAll();
+                $id               = $result[0]["minid"];
                 if ($id >= 0) $id = 0;
                 $id--;
 
                 $termin                         = new Termin();
                 $termin->id                     = $id;
-                $termin->ba_nr                  = IntVal($_REQUEST["neu"]["ba_nr"]);
+                $termin->ba_nr                  = intval($_REQUEST["neu"]["ba_nr"]);
                 $termin->typ                    = Termin::$TYP_BUERGERVERSAMMLUNG;
                 $termin->sitzungsort            = $_REQUEST["neu"]["ort"];
                 $termin->termin                 = $_REQUEST["neu"]["datum"];

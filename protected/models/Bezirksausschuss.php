@@ -4,11 +4,12 @@
  * This is the model class for table "bezirksausschuesse".
  *
  * The followings are the available columns in table 'bezirksausschuesse':
- * @property integer $ba_nr
- * @property integer $ris_id
+ *
+ * @property int $ba_nr
+ * @property int $ris_id
  * @property string $name
  * @property string $website
- * @property integer $osm_init_zoom
+ * @property int $osm_init_zoom
  * @property string $osm_shape
  *
  * The followings are the available model relations:
@@ -25,6 +26,7 @@ class Bezirksausschuss extends CActiveRecord
 {
     /**
      * @param string $className active record class name.
+     *
      * @return Bezirksausschuss the static model class
      */
     public static function model($className = __CLASS__)
@@ -89,7 +91,6 @@ class Bezirksausschuss extends CActiveRecord
         ];
     }
 
-
     public function toGeoJSONArray()
     {
         return [
@@ -97,22 +98,22 @@ class Bezirksausschuss extends CActiveRecord
             "id"         => $this->ba_nr,
             "properties" => [
                 "name"    => $this->name,
-                "website" => $this->website
+                "website" => $this->website,
             ],
-            "init_zoom"  => IntVal($this->osm_init_zoom),
+            "init_zoom"  => intval($this->osm_init_zoom),
             "geometry"   => [
                 "type"        => "Polygon",
-                "coordinates" => [json_decode($this->osm_shape)]
-            ]
+                "coordinates" => [json_decode($this->osm_shape)],
+            ],
         ];
     }
-
 
     private $kontur_cache = null;
 
     /**
      * @param float $point_lon
      * @param float $point_lat
+     *
      * @return bool
      */
     public function pointInBA($point_lon, $point_lat)
@@ -204,8 +205,10 @@ class Bezirksausschuss extends CActiveRecord
             if ($funktion2weight($funk1->funktion) > $funktion2weight($funk2->funktion)) {
                 return 1;
             }
+
             return 0;
         });
+
         return $funktionen;
     }
 
@@ -214,7 +217,6 @@ class Bezirksausschuss extends CActiveRecord
     {
         return Yii::app()->createUrl("index/ba", ["ba_nr" => $this->ba_nr, "ba_name" => $this->name]);
     }
-
 
     /**
      * @return array
@@ -236,5 +238,4 @@ class Bezirksausschuss extends CActiveRecord
         return $statistiken;
 
     }
-
 }

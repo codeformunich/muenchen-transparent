@@ -1,11 +1,9 @@
 <?php
 /**
- * @var IndexController $this
- * @var Dokument $dokument
+ * @var IndexController
+ * @var Dokument        $dokument
  * @var null|Dokument[] $morelikethis
  */
-
-
 ?>
 <h1><?= CHtml::encode($dokument->name) ?></h1>
 

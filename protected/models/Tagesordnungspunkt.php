@@ -4,13 +4,14 @@
  * This is the model class for table "tagesordnungspunkte".
  *
  * The followings are the available columns in table 'tagesordnungspunkte':
- * @property integer $id
- * @property integer $vorgang_id
+ *
+ * @property int $id
+ * @property int $vorgang_id
  * @property string $datum_letzte_aenderung
- * @property integer $antrag_id
+ * @property int $antrag_id
  * @property string $gremium_name
- * @property integer $gremium_id
- * @property integer $sitzungstermin_id
+ * @property int $gremium_id
+ * @property int $sitzungstermin_id
  * @property string $sitzungstermin_datum
  * @property string $beschluss_text
  * @property string $entscheidung
@@ -29,7 +30,9 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Tagesordnungspunkt the static model class
      */
     public static function model($className = __CLASS__)
@@ -95,7 +98,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             'top_nr'                 => 'Tagesordnungspunkt',
             'top_ueberschrift'       => 'Ist Überschrift',
             'top_betreff'            => 'Betreff',
-            'status'                 => 'Status'
+            'status'                 => 'Status',
         ];
     }
 
@@ -131,6 +134,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             if (is_null($geo)) continue;
             $return[] = $geo;
         }
+
         return $return;
     }
 
@@ -145,24 +149,25 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
         $antraege = [];
         foreach ($matches[0] as $match) {
             /** @var Antrag $antrag */
-            $antrag = Antrag::model()->findByAttributes(["antrags_nr" => Antrag::cleanAntragNr($match)]);
+            $antrag                  = Antrag::model()->findByAttributes(["antrags_nr" => Antrag::cleanAntragNr($match)]);
             if ($antrag) $antraege[] = $antrag;
-            else $antraege[] = "Nr. " . $match;
+            else $antraege[]         = "Nr. ".$match;
         }
+
         return $antraege;
     }
 
-
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
     {
         if ($this->antrag) return $this->antrag->getLink($add_params);
+
         return $this->sitzungstermin->getLink($add_params);
     }
-
 
     /** @return string */
     public function getTypName()
@@ -172,6 +177,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -180,6 +186,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
             $x       = explode(" Antrag Nr.", $betreff);
             $x       = explode("<strong>Antrag: </strong>", $x[0]);
+
             return RISTools::korrigiereTitelZeichen($x[0]);
         } else {
             return RISTools::korrigiereTitelZeichen($this->top_betreff);
@@ -201,6 +208,4 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
     {
         return $this->datum_letzte_aenderung;
     }
-
-
 }

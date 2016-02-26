@@ -14,7 +14,7 @@ class Rebuild_VorgaengeCommand extends CConsoleCommand
             $sql->select("id")->from("antraege")->where("id < 10561")->order("id DESC");
             $data = $sql->queryColumn(["id"]);
             foreach ($data as $id) {
-                echo $id . "\n";
+                echo $id."\n";
                 /** @var Antrag $antrag */
                 $antrag = Antrag::model()->findByPk($id);
                 $antrag->rebuildVorgaenge();

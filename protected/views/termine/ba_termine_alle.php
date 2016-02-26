@@ -1,13 +1,11 @@
 <?php
 
 /**
- * @var TermineController $this
- * @var Bezirksausschuss $ba
- * @var array $termine
+ * @var TermineController
+ * @var Bezirksausschuss  $ba
+ * @var array             $termine
  */
-
-
-$this->pageTitle = "Termine des Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
+$this->pageTitle = "Termine des Bezirksausschuss ".$ba->ba_nr.", ".$ba->name;
 
 ?>
 
@@ -17,7 +15,7 @@ $this->pageTitle = "Termine des Bezirksausschuss " . $ba->ba_nr . ", " . $ba->na
         <li><a href="<?= CHtml::encode(Yii::app()->createUrl($ba->getLink())) ?>">BA <?=$ba->ba_nr?></a><br></li>
         <li class="active">Termine</li>
     </ul>
-    <h1>Termine des Bezirksausschuss <?= $ba->ba_nr . ", " . CHtml::encode($ba->name) ?></h1>
+    <h1>Termine des Bezirksausschuss <?= $ba->ba_nr.", ".CHtml::encode($ba->name) ?></h1>
     <br>
     <br>
     <?

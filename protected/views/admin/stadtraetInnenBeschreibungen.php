@@ -1,10 +1,8 @@
 <?php
 /**
- * @var AntraegeController $this
- * @var array[] $fraktionen
+ * @var AntraegeController
+ * @var array[]            $fraktionen
  */
-
-
 ?>
 
 <section class="well">

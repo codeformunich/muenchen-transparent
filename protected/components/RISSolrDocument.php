@@ -2,7 +2,6 @@
 
 class RISSolrDocument implements Solarium\QueryType\Update\Query\Document\DocumentInterface
 {
-
     /** @var int */
     public $id;
     public $antrag_ba;

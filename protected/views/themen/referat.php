@@ -1,9 +1,8 @@
 <?php
 /**
- * @var Referat $referat
+ * @var Referat
  * @var $antraege_referat
  */
-
 $this->pageTitle = $referat->getName();
 ?>
 

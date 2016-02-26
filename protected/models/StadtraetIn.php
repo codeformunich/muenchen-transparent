@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @property integer $id
- * @property integer $referentIn
- * @property integer $benutzerIn_id
+ * @property int $id
+ * @property int $referentIn
+ * @property int $benutzerIn_id
  * @property string $gewaehlt_am
  * @property string $bio
  * @property string $web
@@ -34,7 +34,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         "maennlich" => "Männlich",
         "sonstiges" => "Beides passt nicht",
     ];
-
 
     /**
      * @return StadtraetIn the static model class
@@ -112,14 +111,15 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
     {
         $name = $this->getName();
+
         return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $name], $add_params));
     }
-
 
     /** @return string */
     public function getTypName()
@@ -167,6 +167,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     public function errateVorname()
     {
         $this->errateNamen();
+
         return $this->vorname_erraten;
     }
 
@@ -176,11 +177,13 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     public function errateNachname()
     {
         $this->errateNamen();
+
         return $this->nachname_erraten;
     }
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -194,11 +197,12 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 
             $x = explode(",", $matches["name"]);
             if (count($x) == 2) {
-                $name = $x[1] . " " . $x[0];
+                $name = $x[1]." ".$x[0];
             } else {
                 $name = $this->name;
             }
-            return $titel . trim($name);
+
+            return $titel.trim($name);
         } else {
             return $this->name;
         }
@@ -207,6 +211,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     /**
      * @param string $name1
      * @param string $name2
+     *
      * @return int
      */
     public static function sortByNameCmp($name1, $name2)
@@ -215,20 +220,23 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $name2 = preg_replace("/^([a-z]+\. )*/siu", "", $name2);
         $name1 = str_replace(["Ä", "Ö", "Ü", "ä", "ö", "ü", "ß"], ["A", "O", "U", "a", "o", "u", "s"], $name1);
         $name2 = str_replace(["Ä", "Ö", "Ü", "ä", "Ö", "ü", "ß"], ["A", "O", "U", "a", "o", "u", "s"], $name2);
+
         return strnatcasecmp($name1, $name2);
     }
 
     /**
      * @param StadtraetIn[] $personen
+     *
      * @return StadtraetIn[];
      */
     public static function sortByName($personen)
     {
         usort($personen, function ($str1, $str2) {
-            /** @var StadtraetIn $str1 */
-            /** @var StadtraetIn $str2 */
+            /* @var StadtraetIn $str1 */
+            /* @var StadtraetIn $str2 */
             return StadtraetIn::sortByNameCmp($str1->getName(), $str2->getName());
         });
+
         return $personen;
     }
 
@@ -240,18 +248,17 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return "0000-00-00 00:00:00";
     }
 
-
     /**
      * @return string
      */
     public function getSourceLink()
     {
-        $istBAler = false;
+        $istBAler                                                                                      = false;
         foreach ($this->stadtraetInnenFraktionen as $frakt) if ($frakt->fraktion->ba_nr > 0) $istBAler = true;
         if ($istBAler) {
-            return "http://www.ris-muenchen.de/RII/BA-RII/ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id;
+            return "http://www.ris-muenchen.de/RII/BA-RII/ba_mitglieder_details_mitgliedschaft.jsp?Id=".$this->id;
         } else {
-            return "http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+            return "http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=".$this->id;
         }
     }
 
@@ -268,7 +275,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
                 $mitgliedschaft->datum_von       = $override["datum_von"];
                 $mitgliedschaft->datum_bis       = $override["datum_bis"];
                 $mitgliedschaft->wahlperiode     = $override["wahlperiode"];
-                $this->stadtraetInnenFraktionen = array_merge([$mitgliedschaft], $this->stadtraetInnenFraktionen);
+                $this->stadtraetInnenFraktionen  = array_merge([$mitgliedschaft], $this->stadtraetInnenFraktionen);
             }
         }
         if (isset(StadtraetInFraktionOverrides::$FRAKTION_DEL[$this->id])) {
@@ -289,8 +296,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     }
 
     /**
-     * @param string $datum
+     * @param string   $datum
      * @param int|null $ba_nr
+     *
      * @return StadtraetIn[]
      */
     public static function getByFraktion($datum, $ba_nr)
@@ -298,23 +306,23 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         if ($ba_nr === null) {
             $ba_where = "c.ba_nr IS NULL";
         } else {
-            $ba_where = "c.ba_nr = " . IntVal($ba_nr);
+            $ba_where = "c.ba_nr = ".intval($ba_nr);
         }
 
         /** @var StadtraetIn[] $strs_in */
-        $strs_in = StadtraetIn::model()->findAll([
+        $strs_in = self::model()->findAll([
             'alias' => 'a',
             'order' => 'a.name ASC',
             'with'  => [
                 'stadtraetInnenFraktionen'          => [
                     'alias'     => 'b',
-                    'condition' => 'b.datum_von <= "' . addslashes($datum) . '" AND (b.datum_bis IS NULL OR b.datum_bis >= "' . addslashes($datum) . '")',
+                    'condition' => 'b.datum_von <= "'.addslashes($datum).'" AND (b.datum_bis IS NULL OR b.datum_bis >= "'.addslashes($datum).'")',
                 ],
                 'stadtraetInnenFraktionen.fraktion' => [
                     'alias'     => 'c',
                     'condition' => $ba_where,
-                ]
-            ]]);
+                ],
+            ], ]);
 
         foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
 
@@ -326,12 +334,14 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             } // Seltsamer ristestuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
             $strs_out[] = $strs;
         }
+
         return $strs_out;
     }
 
     /**
-     * @param string $datum
+     * @param string   $datum
      * @param int|null $ba_nr
+     *
      * @return array[]
      */
     public static function getGroupedByFraktion($datum, $ba_nr)
@@ -347,6 +357,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             }
             $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
         }
+
         return $fraktionen;
     }
 
@@ -356,6 +367,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     public function getFraktionsMitgliedschaften()
     {
         $this->overrideFraktionsMitgliedschaften();
+
         return $this->stadtraetInnenFraktionen;
     }
 }

@@ -1,11 +1,10 @@
 <?php
 /**
- * @var InfosController $this
- * @var Text $text
- * @var string $my_url
+ * @var InfosController
+ * @var Text            $text
+ * @var string          $my_url
  */
-
-$this->pageTitle = "So funktioniert Stadtpolitik";
+$this->pageTitle         = "So funktioniert Stadtpolitik";
 $this->load_mediaelement = true;
 
 ?>

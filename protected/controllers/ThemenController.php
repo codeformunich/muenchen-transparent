@@ -2,7 +2,6 @@
 
 class ThemenController extends RISBaseController
 {
-
     public function actionReferat($referat_url)
     {
         /** @var Referat $ref */
@@ -15,8 +14,8 @@ class ThemenController extends RISBaseController
         $bis              = date("Y-m-d H:i:s", time());
         $antraege_referat = Antrag::model()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
 
-        $text = Text::model()->findByAttributes(["typ" => Text::$TYP_REFERAT, "titel" => $ref->name]);
-        $my_url = Yii::app()->createUrl("/themen/referat/" . $referat_url);
+        $text   = Text::model()->findByAttributes(["typ" => Text::$TYP_REFERAT, "titel" => $ref->name]);
+        $my_url = Yii::app()->createUrl("/themen/referat/".$referat_url);
 
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
             if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
@@ -47,12 +46,12 @@ class ThemenController extends RISBaseController
     }
 
     /**
-     * @param int $tag_id
+     * @param int    $tag_id
      * @param string $tag_name
      */
     public function actionTag($tag_id, $tag_name = "")
     {
-        $tag_id = IntVal($tag_id);
+        $tag_id = intval($tag_id);
 
         $this->top_menu = "themen";
 
@@ -66,6 +65,4 @@ class ThemenController extends RISBaseController
             "antraege_tag" => $antraege_tag,
         ]);
     }
-
-
 }

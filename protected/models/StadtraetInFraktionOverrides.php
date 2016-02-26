@@ -16,7 +16,6 @@ class StadtraetInFraktionOverrides
         -102, // Fraktionslos, BA21
     ];
 
-
     /*
      * Keys beziehen sich auf StadtraetIn-ID
      * Z.B. AGS - Arbeitsgemeinschaft für ein soziales Neuhausen-Nymphenburg
@@ -31,7 +30,7 @@ class StadtraetInFraktionOverrides
                 "datum_von"   => "2014-09-01", // ungefähr
                 "datum_bis"   => null,
                 "wahlperiode" => "2014-2020",
-            ]
+            ],
         ],
         526     => [
             [
@@ -39,7 +38,7 @@ class StadtraetInFraktionOverrides
                 "datum_von"   => "2014-09-01", // ungefähr
                 "datum_bis"   => null,
                 "wahlperiode" => "2014-2020",
-            ]
+            ],
         ],
         528     => [
             [
@@ -47,7 +46,7 @@ class StadtraetInFraktionOverrides
                 "datum_von"   => "2014-09-01", // ungefähr
                 "datum_bis"   => null,
                 "wahlperiode" => "2014-2020",
-            ]
+            ],
         ],
 
         // SPD
@@ -58,7 +57,7 @@ class StadtraetInFraktionOverrides
                 "datum_von"   => "2014-05-01",
                 "datum_bis"   => null,
                 "wahlperiode" => "2014-2020",
-            ]
+            ],
         ],
         1431198 => [
             [
@@ -66,7 +65,7 @@ class StadtraetInFraktionOverrides
                 "datum_von"   => "2014-05-01",
                 "datum_bis"   => null,
                 "wahlperiode" => "2014-2020",
-            ]
+            ],
         ],
         1431229 => [
             [
@@ -74,7 +73,7 @@ class StadtraetInFraktionOverrides
                 "datum_von"   => "2014-05-01",
                 "datum_bis"   => null,
                 "wahlperiode" => "2014-2020",
-            ]
+            ],
 
         ],
     ];
@@ -85,25 +84,25 @@ class StadtraetInFraktionOverrides
             [
                 "fraktion_id" => -38,
                 "datum_von"   => "2014-05-01",
-            ]
+            ],
         ],
         1431198 => [
             [
                 "fraktion_id" => -40,
                 "datum_von"   => "2014-05-01",
-            ]
+            ],
         ],
         1431229 => [
             [
                 "fraktion_id" => -37,
                 "datum_von"   => "2014-05-01",
-            ]
+            ],
         ],
         3310431 => [
             [
                 "fraktion_id" => -102,
                 "datum_von"   => "2014-05-01",
-            ]
+            ],
         ],
     ];
 }

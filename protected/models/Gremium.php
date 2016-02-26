@@ -4,9 +4,10 @@
  * This is the model class for table "gremien".
  *
  * The followings are the available columns in table 'gremien':
- * @property integer $id
+ *
+ * @property int $id
  * @property string $datum_letzte_aenderung
- * @property integer $ba_nr
+ * @property int $ba_nr
  * @property string $name
  * @property string $kuerzel
  * @property string $gremientyp
@@ -22,7 +23,9 @@ class Gremium extends CActiveRecord implements IRISItem
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Gremium the static model class
      */
     public static function model($className = __CLASS__)
@@ -102,37 +105,36 @@ class Gremium extends CActiveRecord implements IRISItem
 
     }
 
-
     public static function parse_stadtrat_gremien($ris_id)
     {
-        $ris_id = IntVal($ris_id);
+        $ris_id = intval($ris_id);
         echo "- Gremium $ris_id\n";
 
-        $html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_gremien_detail.jsp?risid=" . $ris_id);
+        $html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_gremien_detail.jsp?risid=".$ris_id);
 
-        $daten                         = new Gremium();
+        $daten                         = new self();
         $daten->id                     = $ris_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->ba_nr                  = null;
 
-        if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = $matches[1];
-        if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = $matches[1];
+        if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name               = $matches[1];
+        if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel          = $matches[1];
         if (preg_match("/Gremientyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
-        if (preg_match("/Referat:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->referat = $matches[1];
+        if (preg_match("/Referat:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->referat       = $matches[1];
 
         foreach ($daten as $key => $val) $daten[$key] = ($val === null ? null : html_entity_decode(trim($val), ENT_COMPAT, "UTF-8"));
 
         $aenderungen = "";
 
         /** @var Gremium $alter_eintrag */
-        $alter_eintrag = Gremium::model()->findByPk($ris_id);
+        $alter_eintrag = self::model()->findByPk($ris_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
-            if ($alter_eintrag->name != $daten->name) $aenderungen .= "Name: " . $alter_eintrag->name . " => " . $daten->name . "\n";
-            if ($alter_eintrag->kuerzel != $daten->kuerzel) $aenderungen .= "Kürzel: " . $alter_eintrag->kuerzel . " => " . $daten->kuerzel . "\n";
-            if ($alter_eintrag->gremientyp != $daten->gremientyp) $aenderungen .= "Gremientyp: " . $alter_eintrag->gremientyp . " => " . $daten->gremientyp . "\n";
-            if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
+            if ($alter_eintrag->name != $daten->name) $aenderungen .= "Name: ".$alter_eintrag->name." => ".$daten->name."\n";
+            if ($alter_eintrag->kuerzel != $daten->kuerzel) $aenderungen .= "Kürzel: ".$alter_eintrag->kuerzel." => ".$daten->kuerzel."\n";
+            if ($alter_eintrag->gremientyp != $daten->gremientyp) $aenderungen .= "Gremientyp: ".$alter_eintrag->gremientyp." => ".$daten->gremientyp."\n";
+            if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: ".$alter_eintrag->referat." => ".$daten->referat."\n";
             if ($aenderungen != "") $changed = true;
         }
 
@@ -167,13 +169,13 @@ class Gremium extends CActiveRecord implements IRISItem
 
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
     {
         return Yii::app()->createUrl("gremium/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
-
 
     /** @return string */
     public function getTypName()
@@ -184,6 +186,7 @@ class Gremium extends CActiveRecord implements IRISItem
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -195,6 +198,7 @@ class Gremium extends CActiveRecord implements IRISItem
             $name = preg_replace("/^UA /", "", $name);
             $name = trim($name, " \n\t-");
         }
+
         return $name;
     }
 
@@ -205,6 +209,4 @@ class Gremium extends CActiveRecord implements IRISItem
     {
         return $this->datum_letzte_aenderung;
     }
-
-
 }

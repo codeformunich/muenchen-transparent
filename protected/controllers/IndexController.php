@@ -26,12 +26,12 @@ class IndexController extends RISBaseController
                 11 => [1086, 708, 1091, 712],
             ];
             if (isset($boundaries[$zoom])) {
-                $bound       = $boundaries[$zoom];
-                $outofbounds = false;
+                $bound                                                                                 = $boundaries[$zoom];
+                $outofbounds                                                                           = false;
                 if ($x < $bound[0] || $y < $bound[1] || $x > $bound[2] || $y > $bound[3]) $outofbounds = true;
 
                 if ($outofbounds) {
-                    Header("Location: /images/HereBeDragons256.png");
+                    header("Location: /images/HereBeDragons256.png");
                     Yii::app()->end();
                 }
             }
@@ -39,18 +39,17 @@ class IndexController extends RISBaseController
 
         if ($width == 256) {
             $array = ["1", "2", "3"];
-            $key   = $array[array_rand($array)] . "-" . Yii::app()->params['skobblerKey'];
-            $url   = "http://tiles" . $key . ".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png";
+            $key   = $array[array_rand($array)]."-".Yii::app()->params['skobblerKey'];
+            $url   = "http://tiles".$key.".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png";
         } else {
             $array = ["1", "2", "3"];
-            $key   = $array[array_rand($array)] . "-" . Yii::app()->params['skobblerKey'];
-            $url   = "http://tiles" . $key . ".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png@2x";
+            $key   = $array[array_rand($array)]."-".Yii::app()->params['skobblerKey'];
+            $url   = "http://tiles".$key.".skobblermaps.com/TileService/tiles/2.0/00022210100/0/${zoom}/${x}/${y}.png@2x";
         }
 
         $fp = fopen("/tmp/tiles.log", "a");
-        fwrite($fp, $url . "\n");
+        fwrite($fp, $url."\n");
         fclose($fp);
-
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -65,14 +64,14 @@ class IndexController extends RISBaseController
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($status == 200 && $string != "") {
-            if (!file_exists(TILE_CACHE_DIR . "$width")) @mkdir(TILE_CACHE_DIR . "$width", 0775);
-            if (!file_exists(TILE_CACHE_DIR . "$width/$zoom")) @mkdir(TILE_CACHE_DIR . "$width/$zoom", 0775);
-            if (!file_exists(TILE_CACHE_DIR . "$width/$zoom/$x")) @mkdir(TILE_CACHE_DIR . "$width/$zoom/$x", 0775);
-            file_put_contents(TILE_CACHE_DIR . "$width/$zoom/$x/$y.png", $string);
-            Header("Content-Type: image/png");
+            if (!file_exists(TILE_CACHE_DIR."$width")) @mkdir(TILE_CACHE_DIR."$width", 0775);
+            if (!file_exists(TILE_CACHE_DIR."$width/$zoom")) @mkdir(TILE_CACHE_DIR."$width/$zoom", 0775);
+            if (!file_exists(TILE_CACHE_DIR."$width/$zoom/$x")) @mkdir(TILE_CACHE_DIR."$width/$zoom/$x", 0775);
+            file_put_contents(TILE_CACHE_DIR."$width/$zoom/$x/$y.png", $string);
+            header("Content-Type: image/png");
             echo $string;
         } else {
-            Header("Content-Type: text/plain");
+            header("Content-Type: text/plain");
             echo $status;
             var_dump($ch);
         }
@@ -83,7 +82,7 @@ class IndexController extends RISBaseController
     {
         if (isset($_REQUEST["krit_typ"])) {
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
-            $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getTitle();
+            $titel = Yii::app()->params['projectTitle'].': '.$krits->getTitle();
 
             $solr   = RISSolrHelper::getSolrClient("ris");
             $select = $solr->createSelect();
@@ -105,9 +104,9 @@ class IndexController extends RISBaseController
         } else {
             $data = [];
             /** @var array|RISAenderung[] $aenderungen */
-            $aenderungen = RISAenderung::model()->findAll(["order" => "id DESC", "limit" => 100]);
+            $aenderungen                                 = RISAenderung::model()->findAll(["order" => "id DESC", "limit" => 100]);
             foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
-            $titel = Yii::app()->params['projectTitle'] . ' Änderungen';
+            $titel                                       = Yii::app()->params['projectTitle'].' Änderungen';
         }
 
         $this->render("feed", [
@@ -119,7 +118,8 @@ class IndexController extends RISBaseController
 
     /**
      * @param RISSucheKrits $curr_krits
-     * @param string $code
+     * @param string        $code
+     *
      * @return array
      */
     protected function sucheBenachrichtigungenAnmelden($curr_krits, $code)
@@ -149,7 +149,6 @@ class IndexController extends RISBaseController
 
             $wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);
         }
-
 
         if ($user->isGuest) {
             $ich              = null;
@@ -181,10 +180,10 @@ class IndexController extends RISBaseController
         ];
     }
 
-
     /**
-     * @param Dokument[] $dokumente
+     * @param Dokument[]         $dokumente
      * @param null|RISSucheKrits $filter_krits
+     *
      * @return array
      */
     protected function dokumente2geodata(&$dokumente, $filter_krits = null)
@@ -200,27 +199,29 @@ class IndexController extends RISBaseController
             } else {
                 $link = $name = "";
             }
-            if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
-            if ($link != "") $link = "<div class='antraglink'>" . CHtml::link($name, $link) . "</div>";
+            if (strlen($name) > 150) $name = mb_substr($name, 0, 148)."...";
+            if ($link != "") $link         = "<div class='antraglink'>".CHtml::link($name, $link)."</div>";
             foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0 && ($filter_krits === null || $filter_krits->filterGeo($ort->ort))) {
                 $str = $link;
                 $str .= "<div class='ort_dokument'>";
-                $str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
-                $str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", ["id" => $dokument->id])) . "</div>";
+                $str .= "<div class='ort'>".CHtml::encode($ort->ort->ort)."</div>";
+                $str .= "<div class='dokument'>".CHtml::link($dokument->name, $this->createUrl("index/dokument", ["id" => $dokument->id]))."</div>";
                 $str .= "</div>";
                 $geodata[] = [
-                    FloatVal($ort->ort->lat),
-                    FloatVal($ort->ort->lon),
-                    $str
+                    floatval($ort->ort->lat),
+                    floatval($ort->ort->lon),
+                    $str,
                 ];
             }
         }
+
         return $geodata;
     }
 
     /**
-     * @param RISSucheKrits $krits
+     * @param RISSucheKrits                            $krits
      * @param \Solarium\QueryType\Select\Result\Result $ergebnisse
+     *
      * @return array
      */
     protected function getJSGeodata($krits, $ergebnisse)
@@ -231,14 +232,14 @@ class IndexController extends RISBaseController
         $dokument_ids   = [];
         foreach ($solr_dokumente as $dokument) {
             $x              = explode(":", $dokument->id);
-            $dokument_ids[] = IntVal($x[1]);
+            $dokument_ids[] = intval($x[1]);
         }
         $geodata = [];
         if (count($dokument_ids) > 0) {
-            $lat        = FloatVal($geo["lat"]);
-            $lng        = FloatVal($geo["lng"]);
-            $dist_field = "(((acos(sin(($lat*pi()/180)) * sin((lat*pi()/180))+cos(($lat*pi()/180)) * cos((lat*pi()/180)) * cos((($lng- lon)*pi()/180))))*180/pi())*60*1.1515*1.609344) <= " . FloatVal($geo["radius"] / 1000);
-            $SQL        = "select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (" . implode(", ", $dokument_ids) . ") AND b.to_hide = 0 AND $dist_field";
+            $lat        = floatval($geo["lat"]);
+            $lng        = floatval($geo["lng"]);
+            $dist_field = "(((acos(sin(($lat*pi()/180)) * sin((lat*pi()/180))+cos(($lat*pi()/180)) * cos((lat*pi()/180)) * cos((($lng- lon)*pi()/180))))*180/pi())*60*1.1515*1.609344) <= ".floatval($geo["radius"] / 1000);
+            $SQL        = "select a.dokument_id, b.* FROM antraege_orte a JOIN orte_geo b ON a.ort_id = b.id WHERE a.dokument_id IN (".implode(", ", $dokument_ids).") AND b.to_hide = 0 AND $dist_field";
             $result     = Yii::app()->db->createCommand($SQL)->queryAll();
             foreach ($result as $geo) {
                 /** @var Dokument $dokument */
@@ -253,28 +254,29 @@ class IndexController extends RISBaseController
                 } else {
                     $link = $name = "";
                 }
-                if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
-                if ($link != "") $link = "<div class='antraglink'>" . CHtml::link($name, $link) . "</div>";
-                $str = $link;
+                if (strlen($name) > 150) $name = mb_substr($name, 0, 148)."...";
+                if ($link != "") $link         = "<div class='antraglink'>".CHtml::link($name, $link)."</div>";
+                $str                           = $link;
                 $str .= "<div class='ort_dokument'>";
-                $str .= "<div class='ort'>" . CHtml::encode($geo["ort"]) . "</div>";
-                $str .= "<div class='dokument'>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", ["id" => $dokument->id])) . "</div>";
+                $str .= "<div class='ort'>".CHtml::encode($geo["ort"])."</div>";
+                $str .= "<div class='dokument'>".CHtml::link($dokument->name, $this->createUrl("index/dokument", ["id" => $dokument->id]))."</div>";
                 $str .= "</div>";
                 $geodata[] = [
-                    FloatVal($geo["lat"]),
-                    FloatVal($geo["lon"]),
-                    $str
+                    floatval($geo["lat"]),
+                    floatval($geo["lon"]),
+                    $str,
                 ];
             }
 
         }
+
         return $geodata;
     }
 
-
     /**
      * @param Antrag[] $antraege
-     * @param int $typ
+     * @param int      $typ
+     *
      * @return array
      */
     protected function antraege2geodata(&$antraege, $typ = 0)
@@ -284,21 +286,21 @@ class IndexController extends RISBaseController
         foreach ($antraege as $ant) {
             foreach ($ant->dokumente as $dokument) {
                 foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0) {
-                    $name = $ant->getName();
-                    if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
-                    $str = "<div class='antraglink'>" . CHtml::link($name, $ant->getLink()) . "</div>";
+                    $name                          = $ant->getName();
+                    if (strlen($name) > 150) $name = mb_substr($name, 0, 148)."...";
+                    $str                           = "<div class='antraglink'>".CHtml::link($name, $ant->getLink())."</div>";
                     $str .= "<div class='ort_dokument'>";
-                    $str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
-                    $str .= "<div class='dokument'>" . CHtml::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</div>";
+                    $str .= "<div class='ort'>".CHtml::encode($ort->ort->ort)."</div>";
+                    $str .= "<div class='dokument'>".CHtml::link($dokument->getName(), $dokument->getLinkZumDokument())."</div>";
                     $str .= "</div>";
                     $str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
 
                     if (!isset($geodata_nach_dok[$dokument->id])) $geodata_nach_dok[$dokument->id] = [];
-                    $geodata_nach_dok[$dokument->id][] = [
-                        FloatVal($ort->ort->lat),
-                        FloatVal($ort->ort->lon),
+                    $geodata_nach_dok[$dokument->id][]                                             = [
+                        floatval($ort->ort->lat),
+                        floatval($ort->ort->lon),
                         $str,
-                        $typ
+                        $typ,
                     ];
                 }
             }
@@ -318,7 +320,7 @@ class IndexController extends RISBaseController
      */
     public function actionGeo2Address($lat, $lng)
     {
-        Header("Content-Type: application/json; charset=UTF-8");
+        header("Content-Type: application/json; charset=UTF-8");
         $naechster_ort = OrtGeo::findClosest($lng, $lat);
         echo json_encode([
             "ort_name" => $naechster_ort->ort,
@@ -326,12 +328,11 @@ class IndexController extends RISBaseController
         Yii::app()->end();
     }
 
-
     /**
      * @param float $lat
      * @param float $lng
      * @param float $radius
-     * @param int $seite
+     * @param int   $seite
      */
     public function actionAntraegeAjaxGeo($lat, $lng, $radius, $seite = 0)
     {
@@ -356,7 +357,7 @@ class IndexController extends RISBaseController
         $dokument_ids   = [];
         foreach ($solr_dokumente as $dokument) {
             $x              = explode(":", $dokument->id);
-            $dokument_ids[] = IntVal($x[1]);
+            $dokument_ids[] = intval($x[1]);
         }
         foreach ($dokument_ids as $dok_id) {
             /** @var Dokument $ant */
@@ -364,8 +365,8 @@ class IndexController extends RISBaseController
                 "antrag"           => [],
                 "antrag.dokumente" => [
                     "alias"     => "dokumente_2",
-                    "condition" => "dokumente_2.id IN (" . implode(", ", $dokument_ids) . ")"
-                ]
+                    "condition" => "dokumente_2.id IN (".implode(", ", $dokument_ids).")",
+                ],
             ])->findByPk($dok_id);
             if ($ant && $ant->antrag) {
                 $antraege[$ant->antrag_id] = $ant->antrag;
@@ -390,17 +391,16 @@ class IndexController extends RISBaseController
             "zeige_jahr"        => true,
         ]);
 
-        Header("Content-Type: application/json; charset=UTF-8");
+        header("Content-Type: application/json; charset=UTF-8");
         echo json_encode([
             "datum"         => date("Y-m-d"),
             "html"          => ob_get_clean(),
             "geodata"       => $geodata,
             "krit_str"      => $krits->getJson(),
-            "naechster_ort" => $naechster_ort->ort
+            "naechster_ort" => $naechster_ort->ort,
         ]);
         Yii::app()->end();
     }
-
 
     public function actionSuche($code = "")
     {
@@ -441,12 +441,10 @@ class IndexController extends RISBaseController
 
             $benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
 
-
             $solr   = RISSolrHelper::getSolrClient("ris");
             $select = $solr->createSelect();
 
             $krits->addKritsToSolr($select);
-
 
             $select->setRows(50);
             $select->addSort('sort_datum', $select::SORT_DESC);
@@ -465,7 +463,7 @@ class IndexController extends RISBaseController
                 $ergebnisse = $solr->select($select);
 
                 if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
-                else $geodata = null;
+                else $geodata                     = null;
 
                 $this->render("suchergebnisse", array_merge([
                     "krits"      => $krits,
@@ -481,7 +479,6 @@ class IndexController extends RISBaseController
         }
     }
 
-
     /**
      * @param int $id
      */
@@ -492,11 +489,11 @@ class IndexController extends RISBaseController
         try {
             $data = ris_download_string($dokument->getLink());
 
-            Header("Content-Type: application/pdf; charset=UTF-8");
+            header("Content-Type: application/pdf; charset=UTF-8");
             echo $data;
         } catch (Exception $e) {
-            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
-            fwrite($fp, $id . " - " . "http://www.ris-muenchen.de" . $dokument->url . "\n");
+            $fp = fopen(TMP_PATH."ris-file-not-found.log", "a");
+            fwrite($fp, $id." - "."http://www.ris-muenchen.de".$dokument->url."\n");
             fclose($fp);
             header("HTTP/1.0 404 Not Found");
             die();
@@ -505,9 +502,10 @@ class IndexController extends RISBaseController
     }
 
     /**
-     * @param int $ba_nr
-     * @param string $datum_max
+     * @param int      $ba_nr
+     * @param string   $datum_max
      * @param int|null $tage
+     *
      * @return array
      */
     private function ba_dokumente_nach_datum($ba_nr, $datum_max, $tage = null)
@@ -526,31 +524,33 @@ class IndexController extends RISBaseController
         }
 
         /** @var array|Antrag[] $antraege1 */
-        $antraege1 = Antrag::model()->neueste_stadtratsantragsdokumente($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
+        $antraege1 = Antrag::model()->neueste_stadtratsantragsdokumente($ba_nr, $datum_von." 00:00:00", $datum_bis." 23:59:59")->findAll();
         /** @var array|Antrag[] $antraege2 */
-        $antraege2 = Antrag::model()->neueste_stadtratsantragsdokumente_geo($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
+        $antraege2 = Antrag::model()->neueste_stadtratsantragsdokumente_geo($ba_nr, $datum_von." 00:00:00", $datum_bis." 23:59:59")->findAll();
 
-        $antraege = $antraege1;
-        $a_ids    = [];
-        foreach ($antraege1 as $a) $a_ids[] = $a->id;
+        $antraege                                                             = $antraege1;
+        $a_ids                                                                = [];
+        foreach ($antraege1 as $a) $a_ids[]                                   = $a->id;
         foreach ($antraege2 as $a) if (!in_array($a->id, $a_ids)) $antraege[] = $a;
         usort($antraege, function ($a1, $a2) {
-            /** @var Antrag $a1 */
-            /** @var Antrag $a2 */
+            /* @var Antrag $a1 */
+            /* @var Antrag $a2 */
             $ts1 = $a1->neuestes_dokument_ts();
             $ts2 = $a2->neuestes_dokument_ts();
             if ($ts1 > $ts2) return -1;
             if ($ts1 < $ts2) return 1;
+
             return 0;
         });
 
         list($geodata1, $geodata_overflow1) = $this->antraege2geodata($antraege1);
         list($geodata2, $geodata_overflow2) = $this->antraege2geodata($antraege2, 1);
-        $geodata          = array_merge($geodata1, $geodata2);
-        $geodata_overflow = array_merge($geodata_overflow1, $geodata_overflow2);
+        $geodata                            = array_merge($geodata1, $geodata2);
+        $geodata_overflow                   = array_merge($geodata_overflow1, $geodata_overflow2);
 
         $aeltere_url_std  = $this->createUrl("index/baDokumente", ["ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) - $tage * 24 * 3600)]);
         $neuere_url_std   = (str_replace("-", "", $datum_bis) < date("Ymd") ? $this->createUrl("index/baDokumente", ["ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) + $tage * 24 * 3600)]) : null);
+
         return [
             "datum_von"        => $datum_von,
             "datum_bis"        => $datum_bis,
@@ -563,7 +563,7 @@ class IndexController extends RISBaseController
     }
 
     /**
-     * @param int $ba_nr
+     * @param int    $ba_nr
      * @param string $datum_max
      */
     public function actionBaAntraegeAjaxDatum($ba_nr, $datum_max)
@@ -575,7 +575,7 @@ class IndexController extends RISBaseController
             "weiter_links_oben" => true,
         ], $data));
 
-        Header("Content-Type: application/json; charset=UTF-8");
+        header("Content-Type: application/json; charset=UTF-8");
         echo json_encode([
             "datum_von"        => $data["datum_von"],
             "datum_bis"        => $data["datum_bis"],
@@ -586,9 +586,8 @@ class IndexController extends RISBaseController
         Yii::app()->end();
     }
 
-
     /**
-     * @param int $ba_nr
+     * @param int    $ba_nr
      * @param string $datum_max
      */
     public function actionBa($ba_nr, $datum_max = "")
@@ -608,10 +607,9 @@ class IndexController extends RISBaseController
         $termine          = Termin::groupAppointments($termine);
 
         /** @var Termin[] $bvs */
-        $bvs     = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
-        $bvs_arr = [];
+        $bvs                             = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
+        $bvs_arr                         = [];
         foreach ($bvs as $bv) $bvs_arr[] = $bv->toArr();
-
 
         /** @var Bezirksausschuss $ba */
         $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
@@ -632,7 +630,7 @@ class IndexController extends RISBaseController
     }
 
     /**
-     * @param int $ba_nr
+     * @param int    $ba_nr
      * @param string $datum_max
      */
     public function actionBaDokumente($ba_nr, $datum_max = "") {
@@ -651,11 +649,12 @@ class IndexController extends RISBaseController
 
     /**
      * @param int $date_ts
+     *
      * @return array
      */
     private function getStadtratsDokumenteByDate($date_ts)
     {
-        $heute = (date("Y-m-d", $date_ts) == date("Y-m-d"));
+        $heute         = (date("Y-m-d", $date_ts) == date("Y-m-d"));
         if ($heute) $i = 1;
         else        $i = 0;
 
@@ -663,46 +662,46 @@ class IndexController extends RISBaseController
 
         do {
             if ($heute) {
-                $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
+                $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i)." 00:00:00";
                 $datum_bis = date("Y-m-d H:i:s");
                 if ($i == 1) {
-                    $ru = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d")]);
+                    $ru             = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d")]);
                     if ($ru) $rus[] = $ru;
                 }
             } else {
-                $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
-                $datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
+                $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i)." 00:00:00";
+                $datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i)." 23:59:59";
             }
-            $ru = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)]);
+            $ru             = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)]);
             if ($ru) $rus[] = $ru;
             /** @var array|Antrag[] $antraege */
             $antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
             $antraege_stadtrat = $antraege_sonstige = [];
             foreach ($antraege as $ant) {
                 if ($ant->ba_nr === null) $antraege_stadtrat[] = $ant;
-                else $antraege_sonstige[] = $ant;
+                else $antraege_sonstige[]                      = $ant;
             }
             $i++;
         } while (count($antraege) == 0 && $i < 10);
+
         return [$antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis];
     }
-
 
     /**
      * @param string $datum_max
      */
     public function actionStadtratAntraegeAjaxDatum($datum_max)
     {
-        $time = RISTools::date_iso2timestamp($datum_max);
+        $time                                                                                 = RISTools::date_iso2timestamp($datum_max);
         list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($time);
-        list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
+        list($geodata, $geodata_overflow)                                                     = $this->antraege2geodata($antraege);
 
-        $gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von . " 00:00:00") - 1);
+        $gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von." 00:00:00") - 1);
 
         ob_start();
         $this->renderPartial('index_antraege_liste', [
             "aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
-            "aeltere_url_std"   => $this->createUrl("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
+            "aeltere_url_std"   => $this->createUrl("index/startseite", ["datum_max" => $gestern])."#stadtratsdokumente_holder",
             "neuere_url_ajax"   => null,
             "neuere_url_std"    => null,
             "antraege"          => $antraege,
@@ -711,16 +710,15 @@ class IndexController extends RISBaseController
             "rathausumschauen"  => $rus,
         ]);
 
-        Header("Content-Type: application/json; charset=UTF-8");
+        header("Content-Type: application/json; charset=UTF-8");
         echo json_encode([
             "datum"            => $datum_von,
             "html"             => ob_get_clean(),
             "geodata"          => $geodata,
-            "geodata_overflow" => $geodata_overflow
+            "geodata_overflow" => $geodata_overflow,
         ]);
         Yii::app()->end();
     }
-
 
     /**
      * @param string $datum_max
@@ -733,20 +731,19 @@ class IndexController extends RISBaseController
         $this->load_leaflet_css      = true;
         $this->load_leaflet_draw_css = true;
 
-
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
-            $ts = RISTools::date_iso2timestamp($datum_max);
+            $ts                                                                                   = RISTools::date_iso2timestamp($datum_max);
             list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($ts);
         } else {
             list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate(time());
         }
 
         list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
-        $gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1);
+        $gestern                          = date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1);
 
         $this->render('startseite', [
             "aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
-            "aeltere_url_std"   => $this->createUrl("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
+            "aeltere_url_std"   => $this->createUrl("index/startseite", ["datum_max" => $gestern])."#stadtratsdokumente_holder",
             "neuere_url_ajax"   => null,
             "neuere_url_std"    => null,
             "antraege_sonstige" => $antraege_sonstige,
@@ -767,7 +764,7 @@ class IndexController extends RISBaseController
         $this->render('personen', [
             "stadtraetInnen" => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
             "personen_typ"   => ($ba > 0 ? "ba" : "str"),
-            "ba_nr"          => $ba
+            "ba_nr"          => $ba,
         ]);
     }
 
@@ -784,17 +781,15 @@ class IndexController extends RISBaseController
         ]);
     }
 
-
     public function actionHighlights()
     {
         $dokumente = Dokument::model()->with("antrag")->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC"]);
         $this->render("dokumentenliste", ["dokumente" => $dokumente]);
     }
 
-
     public function actionQuickSearchPrefetch()
     {
-        header( 'Cache-Control: max-age=' . 7 * 24 * 3600);
+        header('Cache-Control: max-age='. 7 * 24 * 3600);
 
         /** @var StadtraetIn[] $stadtraetInnen */
         $stadtraetInnen = StadtraetIn::model()->findAll();
@@ -803,7 +798,6 @@ class IndexController extends RISBaseController
             'stadtraetInnen' => $stadtraetInnen,
         ]);
     }
-
 
     /**
      *
@@ -820,7 +814,6 @@ class IndexController extends RISBaseController
         }
     }
 
-
     public function actionDokumente($id)
     {
         $this->load_pdf_js = true;
@@ -831,25 +824,24 @@ class IndexController extends RISBaseController
         } else {
             $this->render('dokumentenanzeige', [
                 "id"       => $id,
-                "dokument" => $dokument
+                "dokument" => $dokument,
             ]);
         }
     }
-
 
     /**
      * @param string $url
      */
     public function actionShariffData($url)
     {
-        Header("Content-Type: application/json; charset=UTF-8");
+        header("Content-Type: application/json; charset=UTF-8");
         $shariff = new \Heise\Shariff\Backend([
             "domain"   => $_SERVER["HTTP_HOST"],
             "services" => ["Facebook", "GooglePlus"],
             "cache"    => [
                 "ttl"      => 60,
                 "cacheDir" => TMP_PATH,
-            ]
+            ],
         ]);
         echo json_encode($shariff->get($url));
         Yii::app()->end();

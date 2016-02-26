@@ -1,6 +1,6 @@
 <?php
 /**
- * @var int ortsbezugszahlgrenze
+ * @var int   ortsbezugszahlgrenze
  * @var array $geodata_overflow
  */
 /** */
@@ -12,7 +12,7 @@
 
     <div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>>
         <label><input type="checkbox" name="zeige_overflow">
-            Zeige <span class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über <?= $ortsbezugszahlgrenze ?> Ortsbezügen
+            Zeige <span class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow)." Dokumente") ?></span> mit über <?= $ortsbezugszahlgrenze ?> Ortsbezügen
         </label>
     </div>
 

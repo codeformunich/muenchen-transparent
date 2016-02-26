@@ -4,15 +4,16 @@
  * This is the model class for table "termine_history".
  *
  * The followings are the available columns in table 'termine_history':
- * @property integer $id
- * @property integer $typ
+ *
+ * @property int $id
+ * @property int $typ
  * @property string $datum_letzte_aenderung
- * @property integer $termin_reihe
- * @property integer $gremium_id
- * @property integer $ba_nr
+ * @property int $termin_reihe
+ * @property int $gremium_id
+ * @property int $ba_nr
  * @property string $termin
- * @property integer $termin_prev_id
- * @property integer $termin_next_id
+ * @property int $termin_prev_id
+ * @property int $termin_next_id
  * @property string $sitzungsort
  * @property string $referat
  * @property string $referent
@@ -24,7 +25,9 @@ class TerminHistory extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return TerminHistory the static model class
      */
     public static function model($className = __CLASS__)

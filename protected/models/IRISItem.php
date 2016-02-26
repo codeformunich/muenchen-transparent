@@ -2,9 +2,9 @@
 
 interface IRISItem
 {
-
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = []);
@@ -17,6 +17,7 @@ interface IRISItem
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false);

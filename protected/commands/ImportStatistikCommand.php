@@ -5,12 +5,12 @@ class ImportStatistikCommand extends CConsoleCommand
     public function csv_to_array($filename = '', $delimiter = ',')
     {
         if (!file_exists($filename) || !is_readable($filename))
-            return FALSE;
+            return false;
 
-        $header = NULL;
+        $header = null;
         $data   = [];
-        if (($handle = fopen($filename, 'r')) !== FALSE) {
-            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE) {
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
                 if (!$header)
                     $header = $row;
                 else
@@ -18,6 +18,7 @@ class ImportStatistikCommand extends CConsoleCommand
             }
             fclose($handle);
         }
+
         return $data;
     }
 
@@ -28,16 +29,17 @@ class ImportStatistikCommand extends CConsoleCommand
             die();
         }
         $sql = Yii::app()->db->createCommand();
-        $sql->delete('statistik_datensaetze', ["quelle = " . StatistikDatensatz::QUELLE_BEVOELKERUNG]);
+        $sql->delete('statistik_datensaetze', ["quelle = ".StatistikDatensatz::QUELLE_BEVOELKERUNG]);
         $arr = $this->csv_to_array($args[0]);
 
-        $floatize = function($in) {
-            if (trim($in) == "") return null;
-            return FloatVal(str_replace(",", ".", $in));
+        $floatize = function ($in) {
+            if (trim($in) == "") return;
+
+            return floatval(str_replace(",", ".", $in));
         };
 
         foreach ($arr as $i => $row) {
-            if (($i % 100) == 0) echo $i . "\n";
+            if (($i % 100) == 0) echo $i."\n";
             $dat                        = new StatistikDatensatz();
             $dat->quelle                = StatistikDatensatz::QUELLE_BEVOELKERUNG;
             $dat->indikator_gruppe      = $row["INDIKATOR_GRUPPE"];

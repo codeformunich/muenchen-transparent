@@ -1,25 +1,25 @@
 <?php
 
 /**
- * @property integer $id
- * @property integer $quelle
+ * @property int $id
+ * @property int $quelle
  * @property string $indikator_gruppe
  * @property string $indikator_bezeichnung
  * @property string $indikator_auspraegung
  * @property float $indikator_wert
  * @property float $basiswert_1
- * @property integer $basiswert_1_name
- * @property integer $basiswert_2
+ * @property int $basiswert_1_name
+ * @property int $basiswert_2
  * @property string $basiswert_2_name
- * @property integer $basiswert_3
+ * @property int $basiswert_3
  * @property string $basiswert_3_name
- * @property integer $basiswert_4
+ * @property int $basiswert_4
  * @property string $basiswert_4_name
- * @property integer $basiswert_5
+ * @property int $basiswert_5
  * @property string $basiswert_5_name
- * @property integer $jahr
+ * @property int $jahr
  * @property string $gliederung
- * @property integer $gliederung_nummer
+ * @property int $gliederung_nummer
  * @property string $gliederung_name
  */
 class StatistikDatensatz extends CActiveRecord
@@ -28,7 +28,9 @@ class StatistikDatensatz extends CActiveRecord
 
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return StatistikDatensatz the static model class
      */
     public static function model($className = __CLASS__)

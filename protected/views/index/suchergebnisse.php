@@ -1,17 +1,16 @@
 <?php
 /**
- * @var IndexController $this
+ * @var IndexController
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
- * @var RISSucheKrits $krits
- * @var bool $email_bestaetigt
- * @var bool $email_angegeben
- * @var bool $eingeloggt
- * @var bool $wird_benachrichtigt
- * @var BenutzerIn $ich
- * @var null|array $geodata
- * @var null|array $geodata_overflow
+ * @var RISSucheKrits                            $krits
+ * @var bool                                     $email_bestaetigt
+ * @var bool                                     $email_angegeben
+ * @var bool                                     $eingeloggt
+ * @var bool                                     $wird_benachrichtigt
+ * @var BenutzerIn                               $ich
+ * @var null|array                               $geodata
+ * @var null|array                               $geodata_overflow
  */
-
 $this->pageTitle = "Suchergebnisse";
 
 ?>
@@ -50,7 +49,7 @@ $this->pageTitle = "Suchergebnisse";
             <div id="map"></div>
         </div>
         <div id="overflow_hinweis" <? if (count($geodata_overflow) == 0) echo "style='display: none;'"; ?>><label><input type="checkbox" name="zeige_overflow"> Zeige <span
-                    class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow) . " Dokumente") ?></span> mit über 20 Ortsbezügen</label></div>
+                    class="anzahl"><?= (count($geodata_overflow) == 1 ? "1 Dokument" : count($geodata_overflow)." Dokumente") ?></span> mit über 20 Ortsbezügen</label></div>
 
         <script>
             $(function () {

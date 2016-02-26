@@ -15,13 +15,13 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
             $data = $sql->queryColumn(["id"]);
         } elseif (isset(Dokument::$TYPEN_ALLE[$args[0]])) {
             $sql = Yii::app()->db->createCommand();
-            $sql->select("id")->from("dokumente")->where("typ = '" . addslashes($args[0]) . "'")->order("id");
+            $sql->select("id")->from("dokumente")->where("typ = '".addslashes($args[0])."'")->order("id");
             $data = $sql->queryColumn(["id"]);
         } else {
             die("./yiic reindexsolr_documents [id]|stadtrat_beschluss|ba_beschluss|rathausumschau|alle\n");
         }
 
-        $offset = (isset($args[1]) && $args[1] > 0 ? IntVal($args[1]) : 0);
+        $offset = (isset($args[1]) && $args[1] > 0 ? intval($args[1]) : 0);
 
         $anz = count($data);
         for ($i = $offset; $i < $anz; $i++) {

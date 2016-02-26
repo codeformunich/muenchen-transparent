@@ -2,16 +2,15 @@
 
 class BAMitgliederParser extends RISParser
 {
-
     public function parse($ba_nr)
     {
-        $ba_nr = IntVal($ba_nr);
+        $ba_nr = intval($ba_nr);
 
         if (SITE_CALL_MODE != "cron") echo "- BA $ba_nr\n";
         /** @var Bezirksausschuss $ba */
         $ba = Bezirksausschuss::model()->findByPk($ba_nr);
 
-        $ba_details = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_bezirksausschuesse_details.jsp?Id=" . $ba->ris_id);
+        $ba_details = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_bezirksausschuesse_details.jsp?Id=".$ba->ris_id);
 
         preg_match("/Wahlperiode.*detail_div\">(?<wahlperiode>[^<]*)</siuU", $ba_details, $matches);
         $wahlperiode = $matches["wahlperiode"];
@@ -33,7 +32,7 @@ class BAMitgliederParser extends RISParser
             /** @var StadtraetIn $strIn */
             $strIn = StadtraetIn::model()->findByPk($matches["mitglied_id"][$i]);
             if (!$strIn) {
-                echo "Neu anlegen: " . $matches["mitglied_id"][$i] . " - " . $name . " (" . $fraktion_name . ")\n";
+                echo "Neu anlegen: ".$matches["mitglied_id"][$i]." - ".$name." (".$fraktion_name.")\n";
 
                 $strIn             = new StadtraetIn();
                 $strIn->name       = $name;
@@ -41,38 +40,38 @@ class BAMitgliederParser extends RISParser
                 $strIn->referentIn = 0;
 
                 $x                  = explode(".", $matches["mitgliedschaft"][$i]);
-                $strIn->gewaehlt_am = $x[2] . "-" . $x[1] . "-" . $x[0];
+                $strIn->gewaehlt_am = $x[2]."-".$x[1]."-".$x[0];
                 $strIn->save();
             }
 
             /** @var Fraktion|null $fraktion */
             $fraktion = Fraktion::model()->findByAttributes(["ba_nr" => $ba_nr, "name" => $fraktion_name]);
             if (!$fraktion) {
-                echo "Lege an: " . $fraktion_name . "\n";
-                $min = Yii::app()->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
+                echo "Lege an: ".$fraktion_name."\n";
+                $min               = Yii::app()->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
                 if ($min > 0) $min = -1;
-                $fraktion        = new Fraktion();
-                $fraktion->id    = $min;
-                $fraktion->name  = $fraktion_name;
-                $fraktion->ba_nr = $ba_nr;
+                $fraktion          = new Fraktion();
+                $fraktion->id      = $min;
+                $fraktion->name    = $fraktion_name;
+                $fraktion->ba_nr   = $ba_nr;
                 $fraktion->save();
             }
 
             $gefunden = false;
             foreach ($strIn->stadtraetInnenFraktionen as $strfrakt) if ($strfrakt->fraktion_id == $fraktion->id) {
                 $gefunden = true;
-                $von_pre = $strfrakt->datum_von;
-                $bis_pre = $strfrakt->datum_bis;
+                $von_pre  = $strfrakt->datum_von;
+                $bis_pre  = $strfrakt->datum_bis;
                 if (preg_match("/^von (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+) bis (?<bis_tag>[0-9]+)\\.(?<bis_monat>[0-9]+)\\.(?<bis_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
-                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
-                    $strfrakt->datum_bis = $mitgliedschaft_matches["bis_jahr"] . "-" . $mitgliedschaft_matches["bis_monat"] . "-" . $mitgliedschaft_matches["bis_tag"];
+                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"]."-".$mitgliedschaft_matches["von_monat"]."-".$mitgliedschaft_matches["von_tag"];
+                    $strfrakt->datum_bis = $mitgliedschaft_matches["bis_jahr"]."-".$mitgliedschaft_matches["bis_monat"]."-".$mitgliedschaft_matches["bis_tag"];
                 } elseif (preg_match("/^seit (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
-                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"]."-".$mitgliedschaft_matches["von_monat"]."-".$mitgliedschaft_matches["von_tag"];
                     $strfrakt->datum_bis = null;
                 }
                 if ($von_pre != $strfrakt->datum_von || $bis_pre != $strfrakt->datum_bis) {
                     $strfrakt->save();
-                    echo $strIn->getName() . ": " . $von_pre . "/" . $bis_pre . " => " . $strfrakt->datum_von . "/" . $strfrakt->datum_bis . "\n";
+                    echo $strIn->getName().": ".$von_pre."/".$bis_pre." => ".$strfrakt->datum_von."/".$strfrakt->datum_bis."\n";
                 }
             }
             if (!$gefunden) {
@@ -83,25 +82,25 @@ class BAMitgliederParser extends RISParser
                 $strfrakt->mitgliedschaft = $matches["mitgliedschaft"][$i];
 
                 if (preg_match("/^von (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+) bis (?<bis_tag>[0-9]+)\\.(?<bis_monat>[0-9]+)\\.(?<bis_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
-                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
-                    $strfrakt->datum_bis = $mitgliedschaft_matches["bis_jahr"] . "-" . $mitgliedschaft_matches["bis_monat"] . "-" . $mitgliedschaft_matches["bis_tag"];
+                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"]."-".$mitgliedschaft_matches["von_monat"]."-".$mitgliedschaft_matches["von_tag"];
+                    $strfrakt->datum_bis = $mitgliedschaft_matches["bis_jahr"]."-".$mitgliedschaft_matches["bis_monat"]."-".$mitgliedschaft_matches["bis_tag"];
                 } elseif (preg_match("/^seit (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
-                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
+                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"]."-".$mitgliedschaft_matches["von_monat"]."-".$mitgliedschaft_matches["von_tag"];
                     $strfrakt->datum_bis = null;
                 }
                 $strfrakt->save();
             }
             if (!isset($gefundene_fraktionen[$matches["mitglied_id"][$i]])) $gefundene_fraktionen[$matches["mitglied_id"][$i]] = [];
-            $gefundene_fraktionen[$matches["mitglied_id"][$i]][] = $fraktion->id;
+            $gefundene_fraktionen[$matches["mitglied_id"][$i]][]                                                               = $fraktion->id;
         }
 
         foreach ($gefundene_fraktionen as $strIn => $fraktionen) {
             //SELECT a.* FROM `fraktionen` a JOIN stadtraetInnen_fraktionen b ON a.id = b.fraktion_id WHERE b.stadtraetIn_id = 3314069 AND a.ba_nr = 18 AND b.fraktion_id NOT IN (-88)
-            $sql = 'DELETE FROM b USING `fraktionen` a JOIN `stadtraetInnen_fraktionen` b ON a.id = b.fraktion_id WHERE ';
+            $sql    = 'DELETE FROM b USING `fraktionen` a JOIN `stadtraetInnen_fraktionen` b ON a.id = b.fraktion_id WHERE ';
             $frakts = implode(", ", array_map('IntVal', $fraktionen));
-            $sql .= 'b.stadtraetIn_id = ' . IntVal($strIn) . ' AND a.ba_nr = ' . IntVal($ba_nr) . ' AND b.fraktion_id NOT IN (' . $frakts . ')';
+            $sql .= 'b.stadtraetIn_id = '.intval($strIn).' AND a.ba_nr = '.intval($ba_nr).' AND b.fraktion_id NOT IN ('.$frakts.')';
             if (Yii::app()->db->createCommand($sql)->execute() > 0) {
-                echo 'Fraktionen gelöscht bei: ' . $strIn . "\n";
+                echo 'Fraktionen gelöscht bei: '.$strIn."\n";
             }
         }
     }

@@ -2,7 +2,6 @@
 
 class DokumentParser
 {
-
     public function checkAndDeleteDocument($doc_id)
     {
         /** @var Dokument $dokument */
@@ -25,7 +24,7 @@ class DokumentParser
             echo "\n";
         } elseif ($info["http_code"] == 404 && $dokument->deleted == 0) {
             $dokument->loeschen();
-            echo "Gelöscht: " . $dokument->id . "\n";
+            echo "Gelöscht: ".$dokument->id."\n";
         }
     }
 }

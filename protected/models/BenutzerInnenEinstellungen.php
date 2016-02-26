@@ -2,7 +2,6 @@
 
 class BenutzerInnenEinstellungen
 {
-
     /** @var array */
     public $benachrichtigungen = [];
 
@@ -15,7 +14,7 @@ class BenutzerInnenEinstellungen
     public function __construct($data)
     {
         if ($data == "") return;
-        $data = (array)json_decode($data, true);
+        $data = (array) json_decode($data, true);
 
         if (!is_array($data)) return;
         foreach ($data as $key => $val) $this->$key = $val;
@@ -28,5 +27,4 @@ class BenutzerInnenEinstellungen
     {
         return json_encode(get_object_vars($this));
     }
-
 }

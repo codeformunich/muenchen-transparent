@@ -1,9 +1,8 @@
 <?php
 /**
- * @var Termin $termin
+ * @var Termin
  */
-
-Header("Content-Type: text/calendar");
+header("Content-Type: text/calendar");
 
 $vcalendar = new \Sabre\VObject\Component\VCalendar();
 $vcalendar->add('VEVENT', $termin->getVEventParams());

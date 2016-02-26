@@ -1,19 +1,18 @@
 <?php
 
 /**
- * @property integer $id
+ * @property int $id
  * @property string $datum
  * @property string $url
- * @property integer $jahr
- * @property integer $nr
- *
+ * @property int $jahr
+ * @property int $nr
  * @property Dokument[] $dokumente
  */
 class Rathausumschau extends CActiveRecord implements IRISItem
 {
-
     /**
      * @param string $className active record class name.
+     *
      * @return Rechtsdokument the static model class
      */
     public static function model($className = __CLASS__)
@@ -70,6 +69,7 @@ class Rathausumschau extends CActiveRecord implements IRISItem
 
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
@@ -95,12 +95,13 @@ class Rathausumschau extends CActiveRecord implements IRISItem
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
     {
-        if ($kurzfassung) return "Rathausumschau " . $this->nr . "/" . substr($this->datum, 0, 4);
-        else return "Rathausumschau " . $this->nr . " (" . $this->datum . ")";
+        if ($kurzfassung) return "Rathausumschau ".$this->nr."/".substr($this->datum, 0, 4);
+        else return "Rathausumschau ".$this->nr." (".$this->datum.")";
     }
 
     /**
@@ -123,9 +124,10 @@ class Rathausumschau extends CActiveRecord implements IRISItem
         for ($i = 1; $i < count($tops_in); $i++) {
             $top = trim(str_replace("\n", " ", $tops_in[$i]));
             preg_match("/^(?<titel>.*)(?<seite> [0-9]+)$/siu", $top, $matches);
-            if (isset($matches["seite"])) $tops_out[] = ["titel" => $matches["titel"], "seite" => IntVal($matches["seite"]), "link" => $link . "#page=" . IntVal($matches["seite"])];
+            if (isset($matches["seite"])) $tops_out[]     = ["titel" => $matches["titel"], "seite" => intval($matches["seite"]), "link" => $link."#page=".intval($matches["seite"])];
             elseif (isset($matches["titel"])) $tops_out[] = ["titel" => $matches["titel"], "seite" => null, "link" => null];
         }
+
         return $tops_out;
     }
 }
