@@ -10,11 +10,6 @@ default_code_paths = ["controllers/", "views/", "models/", "components/", "RISPa
 fnmatch_pattern = '*.php'
 php_class = "[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*"
 
-global_replacements = {
-    "yii-app": ("Yii::app\(\)", "Yii::$app"),
-    "html-web": ("web/", "web/"),
-}
-
 searcher = [
     # finds all classnames without namespace followed by ::
     # [^\$\w] catches local variables with static bindings
@@ -120,19 +115,19 @@ def do_replace(filepath, yii1_classes, replacements):
     with open_wrapper(filepath, 'r') as file:
         contents = file.read()
     
-    for name, (search, replace) in global_replacements.items():
-        if name in replacements:
-            new_contents = re.sub(search, replace, contents)
-            if new_contents != contents:
-                print("Replaced by " + search)
-                contents = new_contents
+    if "yii-app" in replacements:
+        contents = contents.replace("Yii::app()", "Yii::$app")
+    
+    if "html-web" in replacements:
+        contents = contents.replace("html/", "web/")
     
     if "yii1-classes" in replacements:
         for i in yii1_classes:
-            new_contents = re.sub("([^\\w\\d])" + i, "\\1" + i[1:], contents)
-            if new_contents != contents:
-                print("Replaced " + i + " with " + i[1:])
-                contents = new_contents
+            contents = re.sub("([^\\w\\d])" + i, "\\1" + i[1:], contents)
+            
+    if "create-url" in replacements:
+        contents = contents.replace("Yii::\$app\->createUrl\(", "Url::to(")
+        contents = contents.replace("$this->createUrl(",        "Url::to(")
     
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
@@ -257,7 +252,7 @@ def main():
     args = parser.parse_args()
     paths = [args.path] if args.path else default_code_paths
     
-    if not args.yii2_template and not args.import_usages and not args.import_usages:
+    if not args.yii2_template and not args.import_usages and not args.replace:
         parser.print_help()
     
     print(sys.version_info)
