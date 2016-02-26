@@ -6,6 +6,7 @@ use Yii;
 use app\components\AntiXSS;
 use app\components\RISTools;
 use app\models\Antrag;
+use yii\helpers\Url;
 
 /**
  * @var Antrag $antrag
@@ -332,7 +333,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 <? } ?>
             </form>
 
-            <div class="shariff" data-backend-url="<?= Html::encode($this->createUrl("/index/shariffData")) ?>"
+            <div class="shariff" data-backend-url="<?= Html::encode(Url::to("/index/shariffData")) ?>"
                  data-url="<?= Html::encode(Yii::$app->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
         </div>
         <div class="well themenverwandt_liste">

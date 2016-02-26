@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Url;
 use app\components\AntiXSS;
 
 /**
@@ -9,7 +10,7 @@ use app\components\AntiXSS;
 ?>
 <section class="col-md-4 col-md-offset-4">
   <div class="well">
-    <form class="form-horizontal form-signin" method="POST" action="<?= $this->createUrl("benachrichtigungen/PasswortZuruecksetzen") ?>">
+    <form class="form-horizontal form-signin" method="POST" action="<?= Url::to("benachrichtigungen/PasswortZuruecksetzen") ?>">
       <fieldset>
         <legend class="form_row">Passwort zurücksetzen</legend>
 

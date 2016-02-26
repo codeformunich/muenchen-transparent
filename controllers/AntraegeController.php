@@ -7,6 +7,7 @@ use app\components\AntiXSS;
 use app\components\RISBaseController;
 use app\models\Antrag;
 use app\models\Tag;
+use yii\helpers\Url;
 
 class AntraegeController extends RISBaseController
 {
@@ -69,12 +70,12 @@ class AntraegeController extends RISBaseController
         }
 
         if (AntiXSS::isTokenSet("abonnieren")) {
-            $this->requireLogin($this->createUrl("antraege/anzeigen", ["id" => $id]));
+            $this->requireLogin(Url::to("antraege/anzeigen", ["id" => $id]));
             $antrag->getVorgang()->abonnieren($this->aktuelleBenutzerIn());
         }
 
         if (AntiXSS::isTokenSet("deabonnieren")) {
-            $this->requireLogin($this->createUrl("antraege/anzeigen", ["id" => $id]));
+            $this->requireLogin(Url::to("antraege/anzeigen", ["id" => $id]));
             $antrag->getVorgang()->deabonnieren($this->aktuelleBenutzerIn());
         }
 

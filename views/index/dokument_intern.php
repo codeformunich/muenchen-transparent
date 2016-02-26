@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * @var IndexController $this
@@ -23,7 +24,7 @@ use yii\helpers\Html;
 			$name = $doc->name;
 			if ($doc->antrag) $name = $doc->antrag->getName() . " - " . $name;
 			if ($doc->termin) $name = $doc->termin->termin . " - " . $name;
-			echo Html::link($name, $this->createUrl("index/dokument", array("id" => $doc->id)));
+			echo Html::link($name, Url::to("index/dokument", array("id" => $doc->id)));
 			echo "</li>";
 		}
 		echo "</ul>";

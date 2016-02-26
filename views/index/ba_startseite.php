@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use app\components\RISTools;
+use yii\helpers\Url;
 
 /**
  * @var IndexController $this
@@ -137,7 +138,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             ));
             ?>
             <div style="text-align: right; font-size: 1.5em;">
-                <a href="<?=Html::encode($this->createUrl("termine/baTermineAlle", ["ba_nr" => $ba->ba_nr]))?>">
+                <a href="<?=Html::encode(Url::to("termine/baTermineAlle", ["ba_nr" => $ba->ba_nr]))?>">
                     Alle Termine <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
             </div>

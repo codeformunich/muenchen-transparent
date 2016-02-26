@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use Yii;
 use app\models\BenutzerIn;
 use app\models\Bezirksausschuss;
+use yii\helpers\Url;
 
 /**
  * @var RISBaseController $this
@@ -99,12 +100,12 @@ use app\models\Bezirksausschuss;
                 </button>
             </div>
             <div class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right" method="POST" action="<?= Html::encode($this->createUrl("index/suche")) ?>" id="quicksearch_form">
+                <form class="navbar-form navbar-right" method="POST" action="<?= Html::encode(Url::to("index/suche")) ?>" id="quicksearch_form">
                     <label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
                     <input type="text" name="suchbegriff" value="<?= Html::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
                            id="quicksearch_form_input" required
-                           data-prefetch-url="<?= Html::encode($this->createUrl("index/quickSearchPrefetch")) ?>"
-                           data-search-url="<?= Html::encode($this->createUrl("index/suche", ["suchbegriff" => "SUCHBEGRIFF"])) ?>">
+                           data-prefetch-url="<?= Html::encode(Url::to("index/quickSearchPrefetch")) ?>"
+                           data-search-url="<?= Html::encode(Url::to("index/suche", ["suchbegriff" => "SUCHBEGRIFF"])) ?>">
                     <button type="submit" class="btn btn-success" id="quicksearch_form_submit"><span class="glyphicon glyphicon-search"></span><span class="sr-only">Suchen</span>
                     </button>
                 </form>
@@ -123,11 +124,11 @@ use app\models\Bezirksausschuss;
                         </ul>
                     </li>
                     <!-- Mobiler BA-wähler-->
-                    <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= Html::link("Bezirksausschüsse", $this->createUrl("index/bezirksausschuss")) ?></li>
-                    <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= Html::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= Html::link("Themen", $this->createUrl("themen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= Html::link("Termine", $this->createUrl("termine/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= Html::link("Personen", $this->createUrl("personen/index")) ?></li>
+                    <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= Html::link("Bezirksausschüsse", Url::to("index/bezirksausschuss")) ?></li>
+                    <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= Html::link("Benachrichtigungen", Url::to("benachrichtigungen/index")) ?></li>
+                    <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= Html::link("Themen", Url::to("themen/index")) ?></li>
+                    <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= Html::link("Termine", Url::to("termine/index")) ?></li>
+                    <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= Html::link("Personen", Url::to("personen/index")) ?></li>
                     <?
                     $user = $this->aktuelleBenutzerIn();
                     if ($user && ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER))) {
@@ -137,16 +138,16 @@ use app\models\Bezirksausschuss;
                             <ul class="dropdown-menu">
                                 <?
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
-                                    <li><?= Html::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
-                                    <li><?= Html::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
-                                    <li><?= Html::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
-                                    <li><?= Html::link("BürgerInnenversammlungen", $this->createUrl("admin/buergerInnenversammlungen")) ?></li>
+                                    <li><?= Html::link("StadträtInnen/Personen", Url::to("admin/stadtraetInnenPersonen")) ?></li>
+                                    <li><?= Html::link("StadträtInnen: Social-Media-Daten", Url::to("admin/stadtraetInnenSocialMedia")) ?></li>
+                                    <li><?= Html::link("StadträtInnen: Beschreibungen", Url::to("admin/stadtraetInnenBeschreibungen")) ?></li>
+                                    <li><?= Html::link("BürgerInnenversammlungen", Url::to("admin/buergerInnenversammlungen")) ?></li>
                                 <? }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) { ?>
-                                    <li><?= Html::link("StadträtInnen: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
+                                    <li><?= Html::link("StadträtInnen: Accounts", Url::to("admin/stadtraetInnenBenutzerInnen")) ?></li>
                                 <? }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) { ?>
-                                    <li><?= Html::link("Tags", $this->createUrl("admin/tags")) ?></li>
+                                    <li><?= Html::link("Tags", Url::to("admin/tags")) ?></li>
                                 <? }
                                 ?>
                             </ul>

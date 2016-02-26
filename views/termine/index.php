@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use Yii;
 use app\components\RISTools;
+use yii\helpers\Url;
 
 /**
  * @var array $termine_zukunft
@@ -85,7 +86,7 @@ $this->pageTitle = "Termine";
 						$max_date = 0;
 						$doklist  = "";
 						foreach ($termin->antraegeDokumente as $dokument) {
-							//$doklist .= "<li>" . Html::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
+							//$doklist .= "<li>" . Html::link($dokument->name, Url::to("index/dokument", array("id" => $dokument->id))) . "</li>";
 							$dokurl = $dokument->getLinkZumDokument();
 							$doklist .= "<li><a href='" . Html::encode($dokurl) . "'";
 							if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';

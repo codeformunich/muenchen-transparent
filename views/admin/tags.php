@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use app\components\AntiXSS;
 
 /**
@@ -13,7 +14,7 @@ $user = $this->aktuelleBenutzerIn();
 
 <section class="well">
 
-    <form method="POST" style="overflow: auto;" action="<?= Html::encode($this->createUrl("admin/tags")) ?>" >
+    <form method="POST" style="overflow: auto;" action="<?= Html::encode(Url::to("admin/tags")) ?>" >
         <fieldset>
             <legend>Tag Umbennen</legend>
                 <div class="input-group col">
@@ -31,7 +32,7 @@ $user = $this->aktuelleBenutzerIn();
         </fieldset>
     </form>
 
-    <form method="POST" style="overflow: auto;" action="<?= Html::encode($this->createUrl("admin/tags")) ?>" >
+    <form method="POST" style="overflow: auto;" action="<?= Html::encode(Url::to("admin/tags")) ?>" >
         <fieldset>
             <legend>Tag Löschen</legend>
                 <div class="input-group col">
@@ -99,7 +100,7 @@ var userList = new List("tag-liste", {valueNames: ["tag-name", "antrag-id", "ema
 <script>
 $(".tag-delete").click(function() {
     form = $("<form>", {
-        "action": "<?= Html::encode($this->createUrl('admin/tags')) ?>",
+        "action": "<?= Html::encode(Url::to('admin/tags')) ?>",
         "method": "POST"
     }).append($("<input>", {
         "name": "tag_name",

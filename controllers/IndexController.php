@@ -19,6 +19,7 @@ use app\models\Rathausumschau;
 use app\models\StadtraetIn;
 use app\models\Termin;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 class IndexController extends RISBaseController
 {
@@ -226,7 +227,7 @@ class IndexController extends RISBaseController
                 $str = $link;
                 $str .= "<div class='ort_dokument'>";
                 $str .= "<div class='ort'>" . Html::encode($ort->ort->ort) . "</div>";
-                $str .= "<div class='dokument'>" . Html::link($dokument->name, $this->createUrl("index/dokument", ["id" => $dokument->id])) . "</div>";
+                $str .= "<div class='dokument'>" . Html::link($dokument->name, Url::to("index/dokument", ["id" => $dokument->id])) . "</div>";
                 $str .= "</div>";
                 $geodata[] = [
                     FloatVal($ort->ort->lat),
@@ -278,7 +279,7 @@ class IndexController extends RISBaseController
                 $str = $link;
                 $str .= "<div class='ort_dokument'>";
                 $str .= "<div class='ort'>" . Html::encode($geo["ort"]) . "</div>";
-                $str .= "<div class='dokument'>" . Html::link($dokument->name, $this->createUrl("index/dokument", ["id" => $dokument->id])) . "</div>";
+                $str .= "<div class='dokument'>" . Html::link($dokument->name, Url::to("index/dokument", ["id" => $dokument->id])) . "</div>";
                 $str .= "</div>";
                 $geodata[] = [
                     FloatVal($geo["lat"]),
@@ -397,8 +398,8 @@ class IndexController extends RISBaseController
         ob_start();
 
         $this->renderPartial('index_antraege_liste', [
-            "aeltere_url_ajax"  => $this->createUrl("index/antraegeAjaxGeo", ["lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1)]),
-            "aeltere_url_std"   => $this->createUrl("index/antraegeStdGeo", ["lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1)]),
+            "aeltere_url_ajax"  => Url::to("index/antraegeAjaxGeo", ["lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1)]),
+            "aeltere_url_std"   => Url::to("index/antraegeStdGeo", ["lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1)]),
             "neuere_url_ajax"   => null,
             "neuere_url_std"    => null,
             "antraege"          => $antraege,
@@ -447,7 +448,7 @@ class IndexController extends RISBaseController
 
         } elseif (isset($_REQUEST["suchbegriff"]) && $_REQUEST["suchbegriff"] != "") {
             $suchbegriff = $_REQUEST["suchbegriff"];
-            if ($_SERVER["REQUEST_METHOD"] == 'POST') $this->redirect($this->createUrl("index/suche", ["suchbegriff" => $suchbegriff]));
+            if ($_SERVER["REQUEST_METHOD"] == 'POST') $this->redirect(Url::to("index/suche", ["suchbegriff" => $suchbegriff]));
             $this->suche_pre = $suchbegriff;
             $krits           = new RISSucheKrits();
             $krits->addVolltextsucheKrit($suchbegriff);
@@ -569,8 +570,8 @@ class IndexController extends RISBaseController
         $geodata          = array_merge($geodata1, $geodata2);
         $geodata_overflow = array_merge($geodata_overflow1, $geodata_overflow2);
 
-        $aeltere_url_std  = $this->createUrl("index/baDokumente", ["ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) - $tage * 24 * 3600)]);
-        $neuere_url_std   = (str_replace("-", "", $datum_bis) < date("Ymd") ? $this->createUrl("index/baDokumente", ["ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) + $tage * 24 * 3600)]) : null);
+        $aeltere_url_std  = Url::to("index/baDokumente", ["ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) - $tage * 24 * 3600)]);
+        $neuere_url_std   = (str_replace("-", "", $datum_bis) < date("Ymd") ? Url::to("index/baDokumente", ["ba_nr" => $ba_nr, "datum_max" => date("Y-m-d", RISTools::date_iso2timestamp($datum_bis) + $tage * 24 * 3600)]) : null);
         return [
             "datum_von"        => $datum_von,
             "datum_bis"        => $datum_bis,
@@ -721,8 +722,8 @@ class IndexController extends RISBaseController
 
         ob_start();
         $this->renderPartial('index_antraege_liste', [
-            "aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
-            "aeltere_url_std"   => $this->createUrl("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
+            "aeltere_url_ajax"  => Url::to("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
+            "aeltere_url_std"   => Url::to("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
             "neuere_url_ajax"   => null,
             "neuere_url_std"    => null,
             "antraege"          => $antraege,
@@ -765,8 +766,8 @@ class IndexController extends RISBaseController
         $gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1);
 
         $this->render('startseite', [
-            "aeltere_url_ajax"  => $this->createUrl("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
-            "aeltere_url_std"   => $this->createUrl("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
+            "aeltere_url_ajax"  => Url::to("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
+            "aeltere_url_std"   => Url::to("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
             "neuere_url_ajax"   => null,
             "neuere_url_std"    => null,
             "antraege_sonstige" => $antraege_sonstige,

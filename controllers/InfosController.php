@@ -8,6 +8,7 @@ use app\components\RISBaseController;
 use app\components\RISTools;
 use app\models\Rechtsdokument;
 use app\models\Text;
+use yii\helpers\Url;
 
 class InfosController extends RISBaseController
 {
@@ -27,38 +28,38 @@ class InfosController extends RISBaseController
 
         $this->render("stadtpolitik", [
             "text"   => $text,
-            "my_url" => $this->createUrl("infos/soFunktioniertStadtpolitik"),
+            "my_url" => Url::to("infos/soFunktioniertStadtpolitik"),
         ]);
     }
 
     public function actionImpressum()
     {
         $this->top_menu = "impressum";
-        $this->std_content_page(23, $this->createUrl("infos/impressum"));
+        $this->std_content_page(23, Url::to("infos/impressum"));
     }
 
     public function actionDatenschutz()
     {
         $this->top_menu = "datenschutz";
-        $this->std_content_page(26, $this->createUrl("infos/datenschutz"));
+        $this->std_content_page(26, Url::to("infos/datenschutz"));
     }
 
     public function actionNews()
     {
         $this->top_menu = "";
-        $this->std_content_page(28, $this->createUrl("infos/news"));
+        $this->std_content_page(28, Url::to("infos/news"));
     }
 
     public function actionAPI()
     {
         $this->top_menu = "api";
-        $this->std_content_page(22, $this->createUrl("infos/api"));
+        $this->std_content_page(22, Url::to("infos/api"));
     }
 
     public function actionUeber()
     {
         $this->top_menu = "";
-        $this->std_content_page(21, $this->createUrl("infos/ueber"));
+        $this->std_content_page(21, Url::to("infos/ueber"));
     }
 
     public function actionStadtrecht()
@@ -178,12 +179,12 @@ class InfosController extends RISBaseController
             $eintrag->edit_benutzerIn_id = $this->aktuelleBenutzerIn()->id;
             $eintrag->save();
 
-            $this->redirect($this->createUrl("infos/glossar"));
+            $this->redirect(Url::to("infos/glossar"));
         }
 
         if (AntiXSS::isTokenSet("del")) {
             $eintrag->delete();
-            $this->redirect($this->createUrl("infos/glossar"));
+            $this->redirect(Url::to("infos/glossar"));
         }
 
         $this->render('glossar_bearbeiten', [

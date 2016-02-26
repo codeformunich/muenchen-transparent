@@ -3,6 +3,7 @@
 use Yii;
 use app\models\Bezirksausschuss;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * @var IndexController $this
@@ -47,7 +48,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
                 ba_links: <?=json_encode($ba_links)?>,
                 onSelect: function (latlng, rad, zoom) {
                     if (zoom >= 14) {
-                        index_geo_dokumente_load("<?=Html::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
+                        index_geo_dokumente_load("<?=Html::encode(Url::to("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
                     }
                 },
                 onInit: function () {

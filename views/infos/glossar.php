@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use Yii;
 use app\components\AntiXSS;
+use yii\helpers\Url;
 
 /**
  * @var InfosController $this
@@ -27,7 +28,7 @@ $this->pageTitle = "Glossar";
 		<?
 		foreach ($eintraege as $eintrag) {
 			echo '<dt id="eintrag_' . str_replace(' ', '-', $eintrag->titel) . '">';
-			if ($this->binContentAdmin()) echo ' <a href="' . Html::encode($this->createUrl("infos/glossarBearbeiten", array("id" => $eintrag->id))) . '" title="Bearbeiten"><span class="glyphicon glyphicon-pencil"></span></a>';
+			if ($this->binContentAdmin()) echo ' <a href="' . Html::encode(Url::to("infos/glossarBearbeiten", array("id" => $eintrag->id))) . '" title="Bearbeiten"><span class="glyphicon glyphicon-pencil"></span></a>';
 			echo Html::encode($eintrag->titel);
 			echo '</dt>';
 			echo '<dd>' . $eintrag->text . '</dd>';

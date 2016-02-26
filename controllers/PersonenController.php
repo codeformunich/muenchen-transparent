@@ -6,6 +6,7 @@ use Yii;
 use app\components\AntiXSS;
 use app\components\RISBaseController;
 use app\models\StadtraetIn;
+use yii\helpers\Url;
 
 class PersonenController extends RISBaseController
 {
@@ -96,7 +97,7 @@ class PersonenController extends RISBaseController
     {
         $this->top_menu = "personen";
 
-        $this->requireLogin($this->createUrl("personen/binIch", ["id" => $id]));
+        $this->requireLogin(Url::to("personen/binIch", ["id" => $id]));
 
         /** @var StadtraetIn $person */
         $person = StadtraetIn::model()->findByPk($id);

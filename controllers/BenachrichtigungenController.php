@@ -9,6 +9,7 @@ use app\components\RISSolrHelper;
 use app\models\BenutzerIn;
 use app\models\Vorgang;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 class BenachrichtigungenController extends RISBaseController
 {
@@ -16,7 +17,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         $this->top_menu = "benachrichtigungen";
 
-        $this->requireLogin($this->createUrl("index/benachrichtigungen"), $code);
+        $this->requireLogin(Url::to("index/benachrichtigungen"), $code);
 
         /** @var BenutzerIn $ich */
         $ich = $this->aktuelleBenutzerIn();
@@ -85,7 +86,7 @@ class BenachrichtigungenController extends RISBaseController
 
         if (AntiXSS::isTokenSet("account_loeschen")) {
             $this->top_menu = "Accountlöschung";
-            $this->requireLogin($this->createUrl("index/benachrichtigungen"));
+            $this->requireLogin(Url::to("index/benachrichtigungen"));
             $ich = $this->aktuelleBenutzerIn();
             $id  = $ich->id;
 
@@ -206,7 +207,7 @@ class BenachrichtigungenController extends RISBaseController
 
     public function actionAlleSuchergebnisse()
     {
-        $this->requireLogin($this->createUrl("index/benachrichtigungen"));
+        $this->requireLogin(Url::to("index/benachrichtigungen"));
 
         /** @var BenutzerIn $ich */
         $ich = $this->aktuelleBenutzerIn();
@@ -266,7 +267,7 @@ class BenachrichtigungenController extends RISBaseController
     */
     public function actionNeuesPasswortSetzen($id = "", $code = "")
     {
-        $my_url = $this->createUrl("benachrichtigungen/NeuesPasswortSetzen", ["id" => $id, "code" => $code]);
+        $my_url = Url::to("benachrichtigungen/NeuesPasswortSetzen", ["id" => $id, "code" => $code]);
         if (AntiXSS::isTokenSet("reset_password")) {
             /** @var null|BenutzerIn $benutzerIn */
             $benutzerIn = BenutzerIn::model()->findByPk($id);
@@ -274,7 +275,7 @@ class BenachrichtigungenController extends RISBaseController
             if (!$benutzerIn) {
                 $this->msg_err = "BenutzerIn nicht gefunden";
                 $this->render('reset_password_form', [
-                    "current_url" => $this->createUrl("benachrichtigungen/PasswortZuruecksetzen"),
+                    "current_url" => Url::to("benachrichtigungen/PasswortZuruecksetzen"),
                 ]);
                 return;
             }

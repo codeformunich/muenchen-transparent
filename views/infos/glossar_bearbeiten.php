@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use Yii;
 use app\components\AntiXSS;
+use yii\helpers\Url;
 
 /**
  * @var InfosController $this
@@ -28,7 +29,7 @@ $this->pageTitle = "Glossar bearbeiten";
 			<textarea id="glossary_new_text" name="text" cols="80" rows="10"><?=Html::encode($eintrag->text)?></textarea>
 		</div>
 
-		<a href="<?=Html::encode($this->createUrl("infos/glossarBearbeiten", ["id" => $eintrag->id, AntiXSS::createToken("del") => "1"]))?>" id="eintrag_del_caller" style="color: red; float: right;">
+		<a href="<?=Html::encode(Url::to("infos/glossarBearbeiten", ["id" => $eintrag->id, AntiXSS::createToken("del") => "1"]))?>" id="eintrag_del_caller" style="color: red; float: right;">
 			<span class="glyphicon glyphicon-minus"></span> Eintrag löschen
 		</a>
 

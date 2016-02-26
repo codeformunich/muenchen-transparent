@@ -32,7 +32,7 @@ def generate_namespace_mapping():
         "": ["Yii"],
         "yii\\web\\": ["Controller"],
         "yii\\db\\": ["ActiveRecord"],
-        "yii\\helpers\\": ["Html"]
+        "yii\\helpers\\": ["Html", "Url"]
     }
 
     for i, k in namespaces.items():

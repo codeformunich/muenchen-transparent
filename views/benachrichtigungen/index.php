@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use app\components\AntiXSS;
 use app\components\RISTools;
 use app\models\Bezirksausschuss;
@@ -22,14 +23,14 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
 <section class="well">
 
-    <form style="float: right;" method="POST" action="<?= Html::encode($this->createUrl("index/startseite")) ?>">
+    <form style="float: right;" method="POST" action="<?= Html::encode(Url::to("index/startseite")) ?>">
         <button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
     </form>
 
     <h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= Html::encode($ich->email) ?>:</h1>
 
     <div class="row">
-        <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8 einstellungen_form" style="margin-left: 23px;">
+        <form method="POST" action="<?= Html::encode(Url::to("index/benachrichtigungen")) ?>" class="col col-lg-8 einstellungen_form" style="margin-left: 23px;">
             <h3>Ich möchte benachrichtigt werden...</h3>
 
             <div>
@@ -125,7 +126,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
     } else {
         ?>
         <div class="row">
-            <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8" style="margin-left: 23px;">
+            <form method="POST" action="<?= Html::encode(Url::to("index/benachrichtigungen")) ?>" class="col col-lg-8" style="margin-left: 23px;">
                 <? if (count($bens) > 0) { ?>
                     <h3>Abonnierte Suchabfragen</h3>
                     <ul class="benachrichtigungsliste">
@@ -187,10 +188,10 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         <? if (count($bens) > 0) { ?>
             <div class="row">
                 <div class="ben_alle_holder col col-lg-8">
-                    <a href="<?= Html::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
+                    <a href="<?= Html::encode(Url::to("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
                             class="glyphicon glyphicon-chevron-right"></span>
                         Alle Suchergebnisse</a>
-                    <a href="<?= Html::encode($this->createUrl("benachrichtigungen/alleFeed", ["code" => $ich->getFeedCode()])) ?>" class="ben_alle_feed"><span
+                    <a href="<?= Html::encode(Url::to("benachrichtigungen/alleFeed", ["code" => $ich->getFeedCode()])) ?>" class="ben_alle_feed"><span
                             class="fontello-rss"></span>
                         Alle Suchergebnisse als Feed</a>
                 </div>
@@ -199,7 +200,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         <br style="clear: both;">
     <? } ?>
 
-    <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
+    <form method="POST" action="<?= Html::encode(Url::to("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
         <fieldset>
             <legend>Benachrichtige mich bei neuen Dokumenten...</legend>
 
@@ -214,7 +215,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         </fieldset>
     </form>
 
-    <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
+    <form method="POST" action="<?= Html::encode(Url::to("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
         <fieldset>
             <label for="suchbegriff"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... aus diesem Stadtteil:</span></label><br>
 
@@ -239,7 +240,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
     </form>
 
 
-    <form method="POST" action="<?= Html::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add" id="benachrichtigung_add_geo_form">
+    <form method="POST" action="<?= Html::encode(Url::to("index/benachrichtigungen")) ?>" class="benachrichtigung_add" id="benachrichtigung_add_geo_form">
         <fieldset>
             <label for="geo_radius"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... mit diesem Ortsbezug:</span></label>
 
@@ -275,7 +276,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                     size: 11,
                     onSelect: function (latlng, rad) {
                         $.ajax({
-                            "url": "<?=Html::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
+                            "url": "<?=Html::encode(Url::to("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
                             "success": function (ret) {
                                 $("#benachrichtigung_hinweis_text").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
                                 $(".ben_add_geo").prop("disabled", false);
@@ -299,7 +300,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
     <div class="modal fade" id="passwortaendernmodal" tabindex="-1" role="dialog" aria-labelledby="passwortaendernmodal" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="form-horizontal form-signin" method="POST" action="<?= $this->createUrl("/benachrichtigungen/index") ?>">
+        <form class="form-horizontal form-signin" method="POST" action="<?= Url::to("/benachrichtigungen/index") ?>">
           <fieldset>
             <div class="modal-content">
               <div class="modal-header">
@@ -342,7 +343,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
           </div>
           <div class="modal-footer">
 
-            <form class="form-horizontal form-signin" method="POST" action="<?= $this->createUrl("/benachrichtigungen/index") ?>">
+            <form class="form-horizontal form-signin" method="POST" action="<?= Url::to("/benachrichtigungen/index") ?>">
               <button class="btn btn-danger btn-raised" style="float: right" name="<?= AntiXSS::createToken("account_loeschen") ?>" type="submit">Account Löschen!</button>
             </form>
 
