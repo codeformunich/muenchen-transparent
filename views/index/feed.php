@@ -30,8 +30,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<?php foreach ($data as $dat) { ?>
 				<item>
 					<title><?php echo Html::encode($dat["title"]); ?></title>
-					<link><?php echo RISTools::bracketEscape(Html::encode(yii::app()->getBaseUrl(true) . $dat["link"])); ?></link>
-					<guid><?php echo RISTools::bracketEscape(Html::encode(yii::app()->getBaseUrl(true) . $dat["aenderung_guid"])); ?></guid>
+					<link><?php echo RISTools::bracketEscape(Html::encode(Yii::$app->getBaseUrl(true) . $dat["link"])); ?></link>
+					<guid><?php echo RISTools::bracketEscape(Html::encode(Yii::$app->getBaseUrl(true) . $dat["aenderung_guid"])); ?></guid>
 					<description><![CDATA[<?php
 						echo $dat["content"];
 						?>]]></description>
