@@ -1,8 +1,10 @@
 <?php
 
+use app\components\RISTools;
+
 //define("VERYFAST", true);
 
-class EMailTestCommand extends CConsoleCommand
+class EMailTestCommand extends ConsoleCommand
 {
     public function run($args)
     {

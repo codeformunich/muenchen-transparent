@@ -1,8 +1,9 @@
 <?php
 
+
 //define("VERYFAST", true);
 
-class Reindex_RechtCommand extends CConsoleCommand
+class Reindex_RechtCommand extends ConsoleCommand
 {
     public function run($args)
     {

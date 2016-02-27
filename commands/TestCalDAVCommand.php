@@ -1,6 +1,7 @@
 <?php
 
-class TestCalDAVCommand extends CConsoleCommand
+
+class TestCalDAVCommand extends ConsoleCommand
 {
     public function run($args)
     {

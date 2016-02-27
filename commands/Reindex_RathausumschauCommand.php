@@ -1,6 +1,7 @@
 <?php
 
-class Reindex_RathausumschauCommand extends CConsoleCommand
+
+class Reindex_RathausumschauCommand extends ConsoleCommand
 {
     public function run($args)
     {

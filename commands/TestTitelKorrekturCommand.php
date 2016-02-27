@@ -1,6 +1,8 @@
 <?php
 
-class TestTitelKorrekturCommand extends CConsoleCommand
+use app\components\RISTools;
+
+class TestTitelKorrekturCommand extends ConsoleCommand
 {
     public function run($args)
     {

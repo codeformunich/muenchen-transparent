@@ -1,6 +1,9 @@
 <?php
 
-class Reindex_Solr_DocumentsCommand extends CConsoleCommand
+use Yii;
+use app\models\Dokument;
+
+class Reindex_Solr_DocumentsCommand extends ConsoleCommand
 {
     public function run($args)
     {
@@ -10,11 +13,11 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
         if ($args[0] > 0) {
             $data = [$args[0]];
         } elseif ($args[0] == "alle") {
-            $sql = Yii::app()->db->createCommand();
+            $sql = Yii::$app->db->createCommand();
             $sql->select("id")->from("dokumente")->where("id >= 0")->order("id");
             $data = $sql->queryColumn(["id"]);
         } elseif (isset(Dokument::$TYPEN_ALLE[$args[0]])) {
-            $sql = Yii::app()->db->createCommand();
+            $sql = Yii::$app->db->createCommand();
             $sql->select("id")->from("dokumente")->where("typ = '" . addslashes($args[0]) . "'")->order("id");
             $data = $sql->queryColumn(["id"]);
         } else {

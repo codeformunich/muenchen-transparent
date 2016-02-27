@@ -1,6 +1,7 @@
 <?php
 
-class Reindex_BA_GremienCommand extends CConsoleCommand
+
+class Reindex_BA_GremienCommand extends ConsoleCommand
 {
     public function run($args)
     {

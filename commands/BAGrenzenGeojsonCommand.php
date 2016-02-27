@@ -1,8 +1,10 @@
 <?php
 
+use app\models\Bezirksausschuss;
+
 //define("VERYFAST", true);
 
-class BAGrenzenGeojsonCommand extends CConsoleCommand
+class BAGrenzenGeojsonCommand extends ConsoleCommand
 {
     public function run($args)
     {

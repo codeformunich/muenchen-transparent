@@ -1,8 +1,9 @@
 <?php
 
+
 //define("VERYFAST", true);
 
-class AddressQueryCommand extends CConsoleCommand
+class AddressQueryCommand extends ConsoleCommand
 {
     public function run($args)
     {

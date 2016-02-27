@@ -1,6 +1,8 @@
 <?php
 
-class Reindex_Antrag_PersonenCommand extends CConsoleCommand
+use app\models\Antrag;
+
+class Reindex_Antrag_PersonenCommand extends ConsoleCommand
 {
     public function run($args)
     {

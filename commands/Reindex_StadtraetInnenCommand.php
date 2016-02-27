@@ -1,6 +1,7 @@
 <?php
 
-class Reindex_StadtraetInnenCommand extends CConsoleCommand
+
+class Reindex_StadtraetInnenCommand extends ConsoleCommand
 {
     public function run($args)
     {

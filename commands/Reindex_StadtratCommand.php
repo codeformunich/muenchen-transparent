@@ -1,8 +1,9 @@
 <?php
 
+
 //define("VERYFAST", true);
 
-class Reindex_StadtratCommand extends CConsoleCommand
+class Reindex_StadtratCommand extends ConsoleCommand
 {
     public function run($args)
     {

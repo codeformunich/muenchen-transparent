@@ -1,6 +1,7 @@
 <?php
 
-class Update_StadtratsantragCommand extends CConsoleCommand
+
+class Update_StadtratsantragCommand extends ConsoleCommand
 {
     public function run($args)
     {

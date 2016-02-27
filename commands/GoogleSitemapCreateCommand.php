@@ -1,6 +1,11 @@
 <?php
 
-class GoogleSitemapCreateCommand extends CConsoleCommand
+use Yii;
+use app\models\Termin;
+use app\models\StadtraetIn;
+use yii\helpers\Html;
+
+class GoogleSitemapCreateCommand extends ConsoleCommand
 {
     public function run($args)
     {
@@ -17,12 +22,12 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
         };
 
 
-        $sitemap_basepath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "html" . DIRECTORY_SEPARATOR;
+        $sitemap_basepath = Yii::$app->getBasePath() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "html" . DIRECTORY_SEPARATOR;
 
 
         // Dokumente
 
-        $sql       = Yii::app()->db->createCommand();
+        $sql       = Yii::$app->db->createCommand();
         $dokumente = $sql->select("id, datum")->from("dokumente")->where("deleted = 0")->order("id")->queryAll();
 
         $sm_num = Ceil(count($dokumente) / 30000);
@@ -51,7 +56,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 
         // Anträge
 
-        $sql      = Yii::app()->db->createCommand();
+        $sql      = Yii::$app->db->createCommand();
         $antraege = $sql->select("id, datum_letzte_aenderung")->from("antraege")->order("id")->queryAll();
 
         $sm_num = Ceil(count($antraege) / 30000);
@@ -80,7 +85,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
 
         // Termine
 
-        $sql     = Yii::app()->db->createCommand();
+        $sql     = Yii::$app->db->createCommand();
         $termine = $sql->select("id, datum_letzte_aenderung")->from("termine")->where("typ = " . Termin::$TYP_AUTO)->order("id")->queryAll();
 
         $sm_num = Ceil(count($termine) / 30000);
@@ -134,7 +139,7 @@ class GoogleSitemapCreateCommand extends CConsoleCommand
         fwrite($fp, '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
 
         foreach ($sitemap_files as $file) fwrite($fp, '<sitemap>
-      <loc>' . CHtml::encode($file) . '</loc>
+      <loc>' . Html::encode($file) . '</loc>
       <lastmod>' . date("Y-m-d") . '</lastmod>
    </sitemap>' . "\n");
 

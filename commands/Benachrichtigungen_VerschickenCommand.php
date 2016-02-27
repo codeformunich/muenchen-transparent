@@ -1,6 +1,10 @@
 <?php
 
-class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
+use Yii;
+use app\components\RISTools;
+use app\models\BenutzerIn;
+
+class Benachrichtigungen_VerschickenCommand extends ConsoleCommand
 {
 
     /**
@@ -50,7 +54,7 @@ class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
         $mail_html = $this->verschickeNeueBenachrichtigungen_html($benutzerIn, $ergebnisse);
         RISTools::send_email($benutzerIn->email, "Neues auf München Transparent", $mail_txt, $mail_html, "newsletter");
 
-        $benutzerIn->datum_letzte_benachrichtigung = new CDbExpression("NOW()");
+        $benutzerIn->datum_letzte_benachrichtigung = new DbExpression("NOW()");
         $benutzerIn->save();
     }
 

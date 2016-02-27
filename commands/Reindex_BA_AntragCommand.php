@@ -1,6 +1,8 @@
 <?php
 
-class Reindex_BA_AntragCommand extends CConsoleCommand
+use app\models\Antrag;
+
+class Reindex_BA_AntragCommand extends ConsoleCommand
 {
     public function run($args)
     {

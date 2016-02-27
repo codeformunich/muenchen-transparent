@@ -1,6 +1,9 @@
 <?php
 
-class ImportStatistikCommand extends CConsoleCommand
+use Yii;
+use app\models\StatistikDatensatz;
+
+class ImportStatistikCommand extends ConsoleCommand
 {
     public function csv_to_array($filename = '', $delimiter = ',')
     {
@@ -27,7 +30,7 @@ class ImportStatistikCommand extends CConsoleCommand
             echo "./yiic importstatistik [dateiname]\n";
             die();
         }
-        $sql = Yii::app()->db->createCommand();
+        $sql = Yii::$app->db->createCommand();
         $sql->delete('statistik_datensaetze', ["quelle = " . StatistikDatensatz::QUELLE_BEVOELKERUNG]);
         $arr = $this->csv_to_array($args[0]);
 

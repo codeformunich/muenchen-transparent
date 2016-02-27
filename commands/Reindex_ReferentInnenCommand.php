@@ -1,6 +1,7 @@
 <?php
 
-class Reindex_ReferentInnenCommand extends CConsoleCommand
+
+class Reindex_ReferentInnenCommand extends ConsoleCommand
 {
     public function run($args)
     {

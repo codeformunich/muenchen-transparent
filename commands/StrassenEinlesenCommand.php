@@ -1,6 +1,9 @@
 <?php
 
-class StrassenEinlesenCommand extends CConsoleCommand
+use app\components\RISTools;
+use app\models\Strasse;
+
+class StrassenEinlesenCommand extends ConsoleCommand
 {
 
     public function run($args)

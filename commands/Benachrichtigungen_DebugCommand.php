@@ -1,6 +1,8 @@
 <?php
 
-class Benachrichtigungen_DebugCommand extends CConsoleCommand
+use app\models\BenutzerIn;
+
+class Benachrichtigungen_DebugCommand extends ConsoleCommand
 {
     public function run($args)
     {

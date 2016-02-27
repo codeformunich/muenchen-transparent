@@ -1,6 +1,9 @@
 <?php
 
-class Recalc_Ort2BACommand extends CConsoleCommand
+use app\models\OrtGeo;
+use app\models\Bezirksausschuss;
+
+class Recalc_Ort2BACommand extends ConsoleCommand
 {
     public function run($args)
     {

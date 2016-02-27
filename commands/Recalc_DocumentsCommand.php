@@ -1,6 +1,10 @@
 <?php
 
-class Recalc_DocumentsCommand extends CConsoleCommand
+use Yii;
+use app\models\Dokument;
+use app\components\RISPDF2Text;
+
+class Recalc_DocumentsCommand extends ConsoleCommand
 {
     public function run($args)
     {
@@ -10,7 +14,7 @@ class Recalc_DocumentsCommand extends CConsoleCommand
         if (count($args) == 0) die("./yii recalc_documents [Dokument-ID|alle]\n");
 
         if ($args[0] == "alle") {
-            $sql = Yii::app()->db->createCommand();
+            $sql = Yii::$app->db->createCommand();
             $sql->select("id")->from("dokumente")->where("id >= 579866")->order("id");
             $data = $sql->queryColumn(["id"]);
         } else {

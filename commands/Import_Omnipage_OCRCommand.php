@@ -1,6 +1,8 @@
 <?php
 
-class Import_Omnipage_OCRCommand extends CConsoleCommand
+use app\models\Dokument;
+
+class Import_Omnipage_OCRCommand extends ConsoleCommand
 {
     private function importFile($filename)
     {

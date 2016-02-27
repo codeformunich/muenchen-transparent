@@ -1,6 +1,8 @@
 <?php
 
-class Delete_DocumentsCommand extends CConsoleCommand
+use Yii;
+
+class Delete_DocumentsCommand extends ConsoleCommand
 {
     public function run($args)
     {
@@ -12,7 +14,7 @@ class Delete_DocumentsCommand extends CConsoleCommand
             $parser->checkAndDeleteDocument($args[0]);
         }
         if ($args[0] == "alle") {
-            $sql = Yii::app()->db->createCommand();
+            $sql = Yii::$app->db->createCommand();
             $sql->select("id")->from("dokumente")->order("id DESC");
             $data = $sql->queryColumn(["id"]);
 

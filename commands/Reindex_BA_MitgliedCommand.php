@@ -1,6 +1,7 @@
 <?php
 
-class Reindex_BA_MitgliedCommand extends CConsoleCommand
+
+class Reindex_BA_MitgliedCommand extends ConsoleCommand
 {
     public function run($args)
     {

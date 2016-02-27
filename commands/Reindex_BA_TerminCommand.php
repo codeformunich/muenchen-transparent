@@ -1,8 +1,9 @@
 <?php
 
+
 define("VERYFAST", true);
 
-class Reindex_BA_TerminCommand extends CConsoleCommand
+class Reindex_BA_TerminCommand extends ConsoleCommand
 {
     public function run($args)
     {

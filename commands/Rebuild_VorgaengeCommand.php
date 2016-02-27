@@ -1,6 +1,9 @@
 <?php
 
-class Rebuild_VorgaengeCommand extends CConsoleCommand
+use Yii;
+use app\models\Antrag;
+
+class Rebuild_VorgaengeCommand extends ConsoleCommand
 {
     public function run($args)
     {
@@ -9,7 +12,7 @@ class Rebuild_VorgaengeCommand extends CConsoleCommand
             die();
         }
         if ($args[0] == "alle") {
-            $sql = Yii::app()->db->createCommand();
+            $sql = Yii::$app->db->createCommand();
             //$sql->select("id")->from("antraege")->where("id < 1245865 AND (seiten_anzahl = 0 OR seiten_anzahl = 9)")->order("id");
             $sql->select("id")->from("antraege")->where("id < 10561")->order("id DESC");
             $data = $sql->queryColumn(["id"]);

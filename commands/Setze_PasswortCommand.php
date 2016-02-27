@@ -1,6 +1,8 @@
 <?php
 
-class Setze_PasswortCommand extends CConsoleCommand
+use app\models\BenutzerIn;
+
+class Setze_PasswortCommand extends ConsoleCommand
 {
     public function run($args)
     {

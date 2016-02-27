@@ -1,9 +1,11 @@
 <?php
 
-class ClearDBCacheCommand extends CConsoleCommand
+use Yii;
+
+class ClearDBCacheCommand extends ConsoleCommand
 {
     public function run($args)
     {
-        Yii::app()->cache->flush();
+        Yii::$app->cache->flush();
     }
 }
