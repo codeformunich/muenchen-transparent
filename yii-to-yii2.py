@@ -3,7 +3,7 @@ import argparse, os, re, glob, fnmatch, sys, subprocess, shutil
 
 ## Settings
 
-default_code_paths = ["controllers/", "views/", "models/", "components/", "RISParser/", "tests/acceptance/"]
+default_code_paths = ["controllers/", "commands/", "views/", "models/", "components/", "RISParser/", "tests/acceptance/"]
 
 ## Constants (alter if necessary)
 
@@ -132,6 +132,24 @@ def do_replace(filepath, yii1_classes, replacements):
     if "static-table-name" in replacements:
         contents = contents.replace("public function tableName()", "public static function tableName()")
     
+    if "active-query" in replacements:
+        contents = contents.replace("::model()", "::find()")
+        # Replace functions of CAtiveRecord
+        # This does not replace expressions with nested parentheses
+        contents = contents.replace("::find()->findAll()", "::findAll()")
+        
+        contents = re.sub(r"::find\(\)->findByPk\(([^\(\)]+)\)", r"::findOne(\1)", contents)
+        if "::find()->findByPk(" in contents:
+            print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
+    
+        contents = re.sub(r"::find\(\)->findByAttributes\(\[([^\(\)\[\]]+)\]\)", r"::findOne([\1])", contents)
+        if "::find()->findByAttributes(" in contents:
+            print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
+        
+        contents = re.sub(r"::find\(\)->findAllByAttributes\(\[([^\(\)\[\]]+)\]\)", r"::findAll([\1])", contents)
+        if "::find()->findByAttributes(" in contents:
+            print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
+        
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
 
