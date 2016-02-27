@@ -8,7 +8,7 @@ use yii\helpers\Html;
  * @var string $message
  */
 
-$this->pageTitle = "Fehler";
+$this->title = "Fehler";
 
 switch ($code) {
 	case 404:

@@ -10,7 +10,7 @@ use Yii;
  */
 
 
-$this->pageTitle = "Termine des Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
+$this->title = "Termine des Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
 ?>
 

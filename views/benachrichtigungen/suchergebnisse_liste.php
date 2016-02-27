@@ -26,11 +26,11 @@ if (count($dokumente) == 0) {
         foreach ($dokumente as $dokument) {
             $dok = Dokument::getDocumentBySolrId($dokument->id, true);
             if (!$dok) {
-                if ($this->binContentAdmin()) {
+                if ($this->context->binContentAdmin()) {
                     echo "<li class='list-group-item'>Dokument nicht gefunden: " . $dokument->id . "</li>";
                 }
             } elseif (!$dok->getRISItem()) {
-                if ($this->binContentAdmin()) {
+                if ($this->context->binContentAdmin()) {
                     echo "<li class='list-group-item'>Dokument-Zuordnung nicht gefunden: " . $dokument->typ . " / " . $dokument->id . "</li>";
                 }
             } else {

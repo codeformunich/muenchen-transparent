@@ -9,7 +9,7 @@ use app\components\AntiXSS;
  * @var IndexController $this
  */
 
-$this->pageTitle = "Bearbeiten: " . $person->getName();
+$this->title = "Bearbeiten: " . $person->getName();
 
 $x = explode("-", $person->geburtstag);
 if (count($x) == 3 && $x[1] > 0) {

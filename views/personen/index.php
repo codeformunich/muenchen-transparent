@@ -18,7 +18,7 @@ $curr_ba = null;
 if ($ba_nr > 0) foreach ($bas as $ba) if ($ba->ba_nr == $ba_nr) $curr_ba = $ba;
 
 $personen_typ_name = ($personen_typ == 'str' ? 'StadträtInnen' : 'Mitglieder des Bezirksausschuss ' . $ba_nr . ' (' . $curr_ba->name . ')');
-$this->pageTitle   = $personen_typ_name;
+$this->title   = $personen_typ_name;
 
 ?>
 <section class="well personen_liste">

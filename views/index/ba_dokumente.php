@@ -19,7 +19,7 @@ use Yii;
  * @var int $tage_vergangenheit_dokumente
  */
 
-$this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
+$this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
 ?>
 

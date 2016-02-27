@@ -12,8 +12,8 @@ use app\models\Dokument;
  * @var IndexController $this
  */
 
-$this->pageTitle = $person->getName();
-$this->html_itemprop = "http://schema.org/Person";
+$this->title = $person->getName();
+$this->context->html_itemprop = "http://schema.org/Person";
 
 ?>
 <section class="well">
@@ -128,11 +128,11 @@ $this->html_itemprop = "http://schema.org/Person";
                         foreach ($dokumente as $dokument) {
                             $dok = Dokument::getDocumentBySolrId($dokument->id, true);
                             if (!$dok) {
-                                if ($this->binContentAdmin()) {
+                                if ($this->context->binContentAdmin()) {
                                     echo "<li>Dokument nicht gefunden: " . $dokument->id . "</li>";
                                 }
                             } elseif (!$dok->getRISItem()) {
-                                if ($this->binContentAdmin()) {
+                                if ($this->context->binContentAdmin()) {
                                     echo "<li>Dokument-Zuordnung nicht gefunden: " . $dokument->typ . " / " . $dokument->id . "</li>";
                                 }
                             } else {
@@ -198,7 +198,7 @@ $this->html_itemprop = "http://schema.org/Person";
                 ?>
             </dl>
             <?
-            $ich = $this->aktuelleBenutzerIn();
+            $ich = $this->context->aktuelleBenutzerIn();
             if ($ich && $ich->id == $person->benutzerIn_id) {
                 $editlink = Yii::$app->createUrl("personen/personBearbeiten", array("id" => $person->id));
                 echo '<a href="' . Html::encode($editlink) . '"><span class="mdi-content-create"></span> Eintrag bearbeiten</a>';

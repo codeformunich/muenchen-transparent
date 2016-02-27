@@ -21,7 +21,7 @@ use yii\helpers\Url;
  * @var Rathausumschau[] $rathausumschauen
  */
 
-$this->pageTitle = Yii::$app->name;
+$this->title = Yii::$app->name;
 $ba_links = [];
 /** @var Bezirksausschuss[] $bas */
 $bas = Bezirksausschuss::findAll();
@@ -30,7 +30,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 ?>
 
 <section class="well">
-    <h1 class="sr-only"><?= Html::encode($this->pageTitle) ?></h1>
+    <h1 class="sr-only"><?= Html::encode($this->title) ?></h1>
 
     <?
     $this->renderPartial("/index/map", array(

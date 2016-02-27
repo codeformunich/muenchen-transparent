@@ -18,9 +18,9 @@ use app\models\Vorgang;
 
 $risitem = $dokument->getRISItem();
 if ($risitem) {
-    $this->pageTitle = $risitem->getName(true) . ": " . $dokument->getName();
+    $this->title = $risitem->getName(true) . ": " . $dokument->getName();
 } else {
-    $this->pageTitle = $dokument->getName();
+    $this->title = $dokument->getName();
 }
 ?>
 

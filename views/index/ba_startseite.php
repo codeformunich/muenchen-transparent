@@ -27,9 +27,9 @@ use yii\helpers\Url;
  * @var Gremium[] $gremien
  */
 
-$this->layout = "//layouts/width_wide";
+$this->context->layout = "//layouts/width_wide";
 
-$this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
+$this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
 ?>
 

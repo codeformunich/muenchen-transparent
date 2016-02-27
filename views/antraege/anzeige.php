@@ -14,9 +14,9 @@ use yii\helpers\Url;
  * @var bool $tag_mode
  */
 
-$this->pageTitle         = $antrag->getName(true);
-$this->load_selectize_js = true;
-$this->load_shariff      = true;
+$this->title         = $antrag->getName(true);
+$this->context->load_selectize_js = true;
+$this->context->load_shariff      = true;
 
 $personen = [
     AntragPerson::$TYP_GESTELLT_VON => [],
@@ -83,7 +83,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 <tbody>
                 <tr id="schlagworte">
                     <th><?
-                        if ($this->aktuelleBenutzerIn()) echo '<label for="antrag_tags">Schlagworte:</label>';
+                        if ($this->context->aktuelleBenutzerIn()) echo '<label for="antrag_tags">Schlagworte:</label>';
                         else echo 'Schlagworte:';
                         ?></th>
                     <td><?
@@ -93,7 +93,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                             foreach ($antrag->tags as $tag) echo '<li>' . $tag->getNameLink() . '</li>';
                             echo '</ul>';
                         }
-                        if ($this->aktuelleBenutzerIn()) {
+                        if ($this->context->aktuelleBenutzerIn()) {
                             ?>
                             &nbsp; &nbsp;
                             <a href="#tag_add_form" class="tag_add_opener"><span
@@ -320,7 +320,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
 
             <form method="POST" action="<?= Yii::$app->createUrl("antraege/anzeigen", ["id" => $antrag->id]) ?>"
                   class="abo_button row_head" style="min-height: 80px; text-align: center;">
-                <? if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) { ?>
+                <? if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->context->aktuelleBenutzerIn())) { ?>
                     <button type="submit" name="<?= AntiXSS::createToken("deabonnieren") ?>"
                             class="btn btn-success btn-raised btn-lg">
                         <span class="glyphicon">@</span> Abonniert

@@ -8,7 +8,7 @@ use yii\helpers\Url;
  * @var AdminController $this
  */
 
-$user = $this->aktuelleBenutzerIn();
+$user = $this->context->aktuelleBenutzerIn();
 
 ?>
 

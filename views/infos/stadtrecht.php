@@ -10,7 +10,7 @@ use app\models\Rechtsdokument;
 
 
 
-$this->pageTitle = "Stadtrecht";
+$this->title = "Stadtrecht";
 
 ?>
 

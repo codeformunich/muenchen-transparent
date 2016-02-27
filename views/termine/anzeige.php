@@ -11,7 +11,7 @@ use app\components\RISTools;
  * @var null|Tagesordnungspunkt[] $to_db
  */
 
-$this->pageTitle = $termin->getName(true);
+$this->title = $termin->getName(true);
 $geodata         = [];
 
 function zeile_anzeigen($feld, $name, $callback)

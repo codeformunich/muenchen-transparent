@@ -13,7 +13,7 @@ use yii\helpers\Url;
  * @var int $tage_zukunft
  * @var int $tage_vergangenheit
  */
-$this->pageTitle = "Termine";
+$this->title = "Termine";
 ?>
 
 <section class="well">

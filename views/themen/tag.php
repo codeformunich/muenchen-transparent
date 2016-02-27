@@ -8,7 +8,7 @@ use Yii;
  * @var $antraege_tag
  */
 
-$this->pageTitle = $tag->name;
+$this->title = $tag->name;
 ?>
 
 	<section class="well two_cols">

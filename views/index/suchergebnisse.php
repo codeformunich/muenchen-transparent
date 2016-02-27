@@ -17,7 +17,7 @@ use app\models\Antrag;
  * @var null|array $geodata_overflow
  */
 
-$this->pageTitle = "Suchergebnisse";
+$this->title = "Suchergebnisse";
 
 ?>
 <section class="well suchergebnisse">

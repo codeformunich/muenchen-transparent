@@ -8,7 +8,7 @@ use Yii;
  * @var $antraege_referat
  */
 
-$this->pageTitle = $referat->getName();
+$this->title = $referat->getName();
 ?>
 
 <section class="well">

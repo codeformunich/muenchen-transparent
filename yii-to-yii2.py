@@ -149,7 +149,12 @@ def do_replace(filepath, yii1_classes, replacements):
         contents = re.sub(r"::find\(\)->findAllByAttributes\(\[([^\(\)\[\]]+)\]\)", r"::findAll([\1])", contents)
         if "::find()->findByAttributes(" in contents:
             print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
-        
+    
+    if "this-context" in replacements:
+        contents = re.sub(r"\$this->(context->)*", "$this->context->", contents)
+        contents = contents.replace("$this->context->pageTitle", "$this->title")
+        contents = re.sub(r"\$this->context->(title|render)", r"$this->\1", contents)
+    
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
 

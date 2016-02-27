@@ -14,7 +14,7 @@ use app\models\Bezirksausschuss;
  * @var BenutzerIn $ich
  */
 
-$this->pageTitle = "Benachrichtigungen";
+$this->title = "Benachrichtigungen";
 
 $bens                 = $ich->getBenachrichtigungen();
 $abo_vorgaenge        = $ich->abonnierte_vorgaenge;

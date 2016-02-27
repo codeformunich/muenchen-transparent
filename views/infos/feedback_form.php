@@ -8,7 +8,7 @@ use app\components\AntiXSS;
  * @var InfosController $this
  * @var string $current_url
  */
-$this->pageTitle = "Feedback an uns";
+$this->title = "Feedback an uns";
 
 if (Yii::$app->user)
     $email_default = 'value = "' . Yii::$app->user->id . '"';

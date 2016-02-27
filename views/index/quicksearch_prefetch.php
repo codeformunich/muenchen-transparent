@@ -6,7 +6,7 @@
  * @var StadtraetIn[] $stadtraetInnen
  */
 
-$this->layout=false;
+$this->context->layout=false;
 header('Content-type: application/json; charset=UTF-8');
 
 

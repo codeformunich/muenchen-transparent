@@ -8,8 +8,8 @@ use Yii;
  * @var IndexController $this
  */
 
-$this->pageTitle = "Ich bin: " . $person->getName();
-$ich             = $this->aktuelleBenutzerIn();
+$this->title = "Ich bin: " . $person->getName();
+$ich             = $this->context->aktuelleBenutzerIn();
 
 ?>
 <section class="col-md-8 col-md-offset-2">

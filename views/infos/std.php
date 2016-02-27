@@ -9,7 +9,7 @@ use Yii;
  * @var bool $show_title
  */
 
-$this->pageTitle = $text->titel;
+$this->title = $text->titel;
 
 $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
     return Html::encode(Yii::$app->createUrl($matches["url"]));

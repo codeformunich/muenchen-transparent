@@ -9,7 +9,7 @@ use yii\helpers\Url;
  * @var InfosController $this
  * @var Text $eintrag
  */
-$this->pageTitle = "Glossar bearbeiten";
+$this->title = "Glossar bearbeiten";
 
 ?>
 	<h2>Eintrag bearbeiten</h2>

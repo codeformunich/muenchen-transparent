@@ -18,7 +18,7 @@ use yii\helpers\Url;
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?
-    if ($this->html_description != "") echo Html::encode($this->html_description);
+    if ($this->context->html_description != "") echo Html::encode($this->context->html_description);
     else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
     ?>">
     <meta name="author" content="Tobias Hößl, Konstantin Schütze">
@@ -43,38 +43,38 @@ use yii\helpers\Url;
     <link rel="icon" type="image/png" href="/favicon-96x96.png?1">
 
     <title><?php
-        echo Html::encode($this->pageTitle);
-        if (strpos($this->pageTitle, "Transparent") === false) echo " (" . Html::encode(Yii::$app->params['projectTitle']) . ")";
+        echo Html::encode($this->title);
+        if (strpos($this->title, "Transparent") === false) echo " (" . Html::encode(Yii::$app->params['projectTitle']) . ")";
         ?></title>
 
 
     <link rel="stylesheet" href="/css/build/website.css">
 
     <?
-    if ($this->load_mediaelement)     echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
-    if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
-    if ($this->load_calendar)         echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
-    if ($this->load_selectize_js)     echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
+    if ($this->context->load_mediaelement)     echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
+    if ($this->context->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
+    if ($this->context->load_calendar)         echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
+    if ($this->context->load_selectize_js)     echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
 
-    if ($this->load_pdf_js) { ?>
+    if ($this->context->load_pdf_js) { ?>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta name="google" content="notranslate">
         <link rel="stylesheet" href="/pdfjs/viewer.css"/>
     <? } ?>
 
-    <? if ($this->inline_css != "") {
-        echo '<style>' . $this->inline_css . '</style>';
+    <? if ($this->context->inline_css != "") {
+        echo '<style>' . $this->context->inline_css . '</style>';
     } ?>
 
     <script src="/bower/jquery/dist/jquery.min.js"></script>
 
-    <? if ($this->load_pdf_js) { ?>
+    <? if ($this->context->load_pdf_js) { ?>
         <link rel="resource" type="application/l10n" href="/pdfjs/locale/locale.properties"/>
         <script src="/pdfjs/viewer.min.js" defer></script>
     <? }
-    if ($this->load_mediaelement) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
-    if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
-    if ($this->load_shariff) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
+    if ($this->context->load_mediaelement) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
+    if ($this->context->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
+    if ($this->context->load_shariff) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
     ?>
     <script src="/js/build/std.js" defer></script>
 </head>
@@ -102,7 +102,7 @@ use yii\helpers\Url;
             <div class="navbar-collapse collapse">
                 <form class="navbar-form navbar-right" method="POST" action="<?= Html::encode(Url::to("index/suche")) ?>" id="quicksearch_form">
                     <label for="quicksearch_form_input" style="display: none;">Volltextsuche - Suchbegriff:</label>
-                    <input type="text" name="suchbegriff" value="<?= Html::encode($this->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
+                    <input type="text" name="suchbegriff" value="<?= Html::encode($this->context->suche_pre) ?>" placeholder="Volltextsuche" class="form-control"
                            id="quicksearch_form_input" required
                            data-prefetch-url="<?= Html::encode(Url::to("index/quickSearchPrefetch")) ?>"
                            data-search-url="<?= Html::encode(Url::to("index/suche", ["suchbegriff" => "SUCHBEGRIFF"])) ?>">
@@ -124,16 +124,16 @@ use yii\helpers\Url;
                         </ul>
                     </li>
                     <!-- Mobiler BA-wähler-->
-                    <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= Html::link("Bezirksausschüsse", Url::to("index/bezirksausschuss")) ?></li>
-                    <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= Html::link("Benachrichtigungen", Url::to("benachrichtigungen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= Html::link("Themen", Url::to("themen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= Html::link("Termine", Url::to("termine/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= Html::link("Personen", Url::to("personen/index")) ?></li>
+                    <li class="ba-wahl-link <? if ($this->context->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= Html::link("Bezirksausschüsse", Url::to("index/bezirksausschuss")) ?></li>
+                    <li  <? if ($this->context->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= Html::link("Benachrichtigungen", Url::to("benachrichtigungen/index")) ?></li>
+                    <li class="<? if ($this->context->top_menu == "themen") echo ' active'; ?>"><?= Html::link("Themen", Url::to("themen/index")) ?></li>
+                    <li class="<? if ($this->context->top_menu == "termine") echo ' active'; ?>"><?= Html::link("Termine", Url::to("termine/index")) ?></li>
+                    <li class="<? if ($this->context->top_menu == "personen") echo ' active'; ?>"><?= Html::link("Personen", Url::to("personen/index")) ?></li>
                     <?
-                    $user = $this->aktuelleBenutzerIn();
+                    $user = $this->context->aktuelleBenutzerIn();
                     if ($user && ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER))) {
                         ?>
-                        <li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
+                        <li class="dropdown  <? if ($this->context->top_menu == "admin") echo 'active'; ?>">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <?
@@ -158,15 +158,15 @@ use yii\helpers\Url;
         </div>
     </div>
 
-    <? if ($this->msg_ok != "") { ?>
+    <? if ($this->context->msg_ok != "") { ?>
     <div class="alert alert-success alert-dismissable " style="text-align: center">
-        <?php echo $this->msg_ok; ?>
+        <?php echo $this->context->msg_ok; ?>
         <button type="button" class="close" data-dismiss="alert">×</button>
     </div>
     <? } ?>
-    <? if ($this->msg_err != "") { ?>
+    <? if ($this->context->msg_err != "") { ?>
     <div class="alert alert-danger alert-dismissable " style="text-align: center">
-        <?php echo $this->msg_err; ?>
+        <?php echo $this->context->msg_err; ?>
         <button type="button" class="close" data-dismiss="alert">×</button>
     </div>
     <? } ?>
@@ -174,7 +174,7 @@ use yii\helpers\Url;
     <div id="print_header">München Transparent - www.muenchen-transparent.de</div>
 
     <main class="container center-block row" id="page_main_content" <?
-    if ($this->html_itemprop != "") echo 'itemscope itemtype="' . Html::encode($this->html_itemprop) . '"';
+    if ($this->context->html_itemprop != "") echo 'itemscope itemtype="' . Html::encode($this->context->html_itemprop) . '"';
     ?>>
         <?php echo $content; ?>
     </main>

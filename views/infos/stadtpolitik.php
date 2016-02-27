@@ -9,8 +9,8 @@ use Yii;
  * @var string $my_url
  */
 
-$this->pageTitle = "So funktioniert Stadtpolitik";
-$this->load_mediaelement = true;
+$this->title = "So funktioniert Stadtpolitik";
+$this->context->load_mediaelement = true;
 
 ?>
 
@@ -53,7 +53,7 @@ $this->load_mediaelement = true;
     <div class="col col-md-8">
         <section class="start_berichte well std_fliesstext">
             <?
-            if ($this->binContentAdmin()) { ?>
+            if ($this->context->binContentAdmin()) { ?>
                 <a href="#" style="display: inline; float: right;" id="text_edit_caller">
                     <span class="mdi-content-create"></span> Bearbeiten
                 </a>

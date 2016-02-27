@@ -11,8 +11,8 @@ use app\models\Rechtsdokument;
 
 
 
-$this->pageTitle = $dokument->titel_lang();
-$this->inline_css .= $dokument->css;
+$this->title = $dokument->titel_lang();
+$this->context->inline_css .= $dokument->css;
 
 ?>
 <section class="well">

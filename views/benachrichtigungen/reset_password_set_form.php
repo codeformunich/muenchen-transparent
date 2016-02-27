@@ -7,7 +7,7 @@ use app\components\AntiXSS;
 * @var IndexController $this
 * @var string $current_url
 */
-$this->pageTitle = "Passwort zurücksetzen";
+$this->title = "Passwort zurücksetzen";
 ?>
 
 

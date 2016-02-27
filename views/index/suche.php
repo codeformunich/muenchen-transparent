@@ -10,7 +10,7 @@ use app\models\Referat;
  * @var IndexController $this
  */
 
-$this->pageTitle = "Suche";
+$this->title = "Suche";
 
 
 ?>

@@ -18,7 +18,7 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
 if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);
 ?>
 
-<? if ($this->binContentAdmin()) { ?>
+<? if ($this->context->binContentAdmin()) { ?>
     <a href="#" style="display: inline; float: right;" id="text_edit_caller">
         <span class="mdi-content-create"></span> Bearbeiten
     </a>
@@ -29,7 +29,7 @@ if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);
 
 if ($show_title) echo '<h1>' . Html::encode($text->titel) . '</h1>';
 
-if ($this->binContentAdmin()) { ?>
+if ($this->context->binContentAdmin()) { ?>
     <script src="/bower/ckeditor/ckeditor.js"></script>
     <div id="text_content_holder" style="border: dotted 1px transparent;">
         <?=$html_text?>

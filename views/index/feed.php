@@ -11,7 +11,7 @@ use Yii;
  * @var string $feed_description
  */
 
-$this->layout=false;
+$this->context->layout=false;
 header('Content-type: application/xml; charset=UTF-8');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>';

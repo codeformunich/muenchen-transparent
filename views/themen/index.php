@@ -9,7 +9,7 @@ use Yii;
  * @var Tag[] $tags
  */
 
-$this->pageTitle = "Themen";
+$this->title = "Themen";
 
 ?>
 

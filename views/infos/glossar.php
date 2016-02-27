@@ -9,7 +9,7 @@ use yii\helpers\Url;
  * @var InfosController $this
  * @var Text[] $eintraege
  */
-$this->pageTitle = "Glossar";
+$this->title = "Glossar";
 
 ?>
 <section class="well">
@@ -28,7 +28,7 @@ $this->pageTitle = "Glossar";
 		<?
 		foreach ($eintraege as $eintrag) {
 			echo '<dt id="eintrag_' . str_replace(' ', '-', $eintrag->titel) . '">';
-			if ($this->binContentAdmin()) echo ' <a href="' . Html::encode(Url::to("infos/glossarBearbeiten", array("id" => $eintrag->id))) . '" title="Bearbeiten"><span class="glyphicon glyphicon-pencil"></span></a>';
+			if ($this->context->binContentAdmin()) echo ' <a href="' . Html::encode(Url::to("infos/glossarBearbeiten", array("id" => $eintrag->id))) . '" title="Bearbeiten"><span class="glyphicon glyphicon-pencil"></span></a>';
 			echo Html::encode($eintrag->titel);
 			echo '</dt>';
 			echo '<dd>' . $eintrag->text . '</dd>';
@@ -37,7 +37,7 @@ $this->pageTitle = "Glossar";
 	</dl>
 	<?
 
-	if ($this->binContentAdmin()) {
+	if ($this->context->binContentAdmin()) {
 		?>
 		<div style="text-align: center;"><a href="#" id="glossar_anlegen_caller">
 				<span class="glyphicon glyphicon-plus"></span> Neuen Eintrag anlegen

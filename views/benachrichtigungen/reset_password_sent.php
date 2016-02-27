@@ -5,7 +5,7 @@
  * @var IndexController $this
  */
 
-$this->pageTitle = "Passwort zurückgesetzen";
+$this->title = "Passwort zurückgesetzen";
 ?>
 
 <section class="col-md-6 col-md-offset-3">

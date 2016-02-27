@@ -4,7 +4,7 @@
 /**
  * @var InfosController $this
  */
-$this->pageTitle = "Danke für die Nachricht";
+$this->title = "Danke für die Nachricht";
 
 ?>
 <section class="well">
