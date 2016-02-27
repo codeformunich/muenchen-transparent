@@ -62,7 +62,7 @@ class RISBaseController extends Controller
         if ($code != "") {
             $x = explode("-", $code);
             /** @var BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::model()->findByPk($x[0]);
+            $benutzerIn = BenutzerIn::findOne($x[0]);
             if (!$benutzerIn) $this->msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
             elseif ($benutzerIn->email_bestaetigt) $this->msg_err = "Dieser Zugang wurde bereits bestätigt.";
             elseif (!$benutzerIn->emailBestaetigen($code)) $this->msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist.";
@@ -80,7 +80,7 @@ class RISBaseController extends Controller
 
         if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && !isset($_REQUEST["register"])) {
             /** @var BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $_REQUEST["email"]]);
+            $benutzerIn = BenutzerIn::find()->findByAttributes(["email" => $_REQUEST["email"]]);
             if ($benutzerIn) {
                 if ($benutzerIn->validate_password($_REQUEST["password"])) {
                     $identity = new RISUserIdentity($benutzerIn);
@@ -95,7 +95,7 @@ class RISBaseController extends Controller
 
         if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && isset($_REQUEST["register"])) {
             /** @var BenutzerIn[] $gefundene_benutzerInnen */
-            $gefundene_benutzerInnen = BenutzerIn::model()->findAll([
+            $gefundene_benutzerInnen = BenutzerIn::find()->findAll([
                 "condition" => "email='" . addslashes($_REQUEST["email"]) . "'"
             ]);
             if (count($gefundene_benutzerInnen) > 0) {
@@ -153,7 +153,7 @@ class RISBaseController extends Controller
         $user = Yii::$app->getUser();
         if ($user->isGuest) return null;
         /** @var BenutzerIn $ich */
-        $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::$app->user->id]);
+        $ich = BenutzerIn::findOne(["email" => Yii::$app->user->id]);
         return $ich;
     }
 

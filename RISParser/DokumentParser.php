@@ -10,7 +10,7 @@ class DokumentParser
     public function checkAndDeleteDocument($doc_id)
     {
         /** @var Dokument $dokument */
-        $dokument = Dokument::model()->disableDefaultScope()->findByPk($doc_id);
+        $dokument = Dokument::find()->disableDefaultScope()->findByPk($doc_id);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $dokument->getLink());

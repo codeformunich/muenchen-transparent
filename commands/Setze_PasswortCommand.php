@@ -7,7 +7,7 @@ class Setze_PasswortCommand extends CConsoleCommand
         if (count($args) != 2) die("./yii setze_passwort E-Mail-Adresse Neues-Passwort\n");
 
         /** @var BenutzerIn $benutzerIn */
-        $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $args[0]]);
+        $benutzerIn = BenutzerIn::find()->findByAttributes(["email" => $args[0]]);
         if (!$benutzerIn) {
             echo "KeinE BenutzerIn mit dieser E-Mail-Adresse gefunden.\n";
             return;

@@ -15,7 +15,7 @@ class ExportController extends RISBaseController
 		Header("Content-Type: application/json; charset=UTF-8");
 
 		/** @var Fraktion $fraktion */
-		$fraktion = Fraktion::model()->findByPk( $fraktion_id );
+		$fraktion = Fraktion::findOne( $fraktion_id );
 		$strIds   = [ ];
 		foreach ( $fraktion->stadtraetInnenFraktionen as $strFrakt ) {
 			$strIds[] = $strFrakt->stadtraetIn_id;
@@ -32,7 +32,7 @@ class ExportController extends RISBaseController
 		$return = [ ];
 		foreach ( $antragIds as $antragId ) {
 			/** @var StadtraetInFraktion[] $strs */
-			$antrag = Antrag::model()->findByPk( $antragId );
+			$antrag = Antrag::findOne( $antragId );
 
 			$antragData = [
 				'id'                 => IntVal( $antrag->id ),

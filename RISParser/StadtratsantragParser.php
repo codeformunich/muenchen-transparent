@@ -128,7 +128,7 @@ class StadtratsantragParser extends RISParser
         $aenderungen = "";
 
         /** @var Antrag $alter_eintrag */
-        $alter_eintrag = Antrag::model()->findByPk($antrag_id);
+        $alter_eintrag = Antrag::findOne($antrag_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -181,7 +181,7 @@ class StadtratsantragParser extends RISParser
             $aend->save();
 
             /** @var Antrag $antrag */
-            $antrag                         = Antrag::model()->findByPk($antrag_id);
+            $antrag                         = Antrag::findOne($antrag_id);
             $antrag->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();
@@ -235,7 +235,7 @@ class StadtratsantragParser extends RISParser
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 
         /** @var array|Antrag[] $antraege */
-        $antraege = Antrag::model()->findAll($crit);
+        $antraege = Antrag::find()->findAll($crit);
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
 

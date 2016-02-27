@@ -24,7 +24,7 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::$app->name;
 $ba_links = [];
 /** @var Bezirksausschuss[] $bas */
-$bas = Bezirksausschuss::model()->findAll();
+$bas = Bezirksausschuss::findAll();
 foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
 ?>

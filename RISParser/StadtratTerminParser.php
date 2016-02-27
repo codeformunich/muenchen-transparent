@@ -43,7 +43,7 @@ class StadtratTerminParser extends RISParser
 
         if (preg_match("/ris_gremien_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->gremium_id = IntVal($matches[1]);
         if ($daten->gremium_id) {
-            $gr = Gremium::model()->findByPk($daten->gremium_id);
+            $gr = Gremium::findOne($daten->gremium_id);
             if (!$gr) {
                 echo "Lege Gremium an: " . $daten->gremium_id . "\n";
                 Gremium::parse_stadtrat_gremien($daten->gremium_id);
@@ -118,7 +118,7 @@ class StadtratTerminParser extends RISParser
         $aenderungen = "";
 
         /** @var Termin $alter_eintrag */
-        $alter_eintrag = Termin::model()->findByPk($termin_id);
+        $alter_eintrag = Termin::findOne($termin_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -178,7 +178,7 @@ class StadtratTerminParser extends RISParser
             $vorlage_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
 
             if ($vorlage_id) {
-                $vorlage = Antrag::model()->findByPk($vorlage_id);
+                $vorlage = Antrag::findOne($vorlage_id);
                 if (!$vorlage) {
                     echo "Creating: $vorlage_id\n";
                     $p = new StadtratsvorlageParser();
@@ -215,9 +215,9 @@ class StadtratTerminParser extends RISParser
 
             /** @var Tagesordnungspunkt $alter_top */
             if (is_null($vorlage_id)) {
-                $alter_top = Tagesordnungspunkt::model()->findByAttributes(["sitzungstermin_id" => $termin_id, "top_betreff" => $betreff]);
+                $alter_top = Tagesordnungspunkt::findOne(["sitzungstermin_id" => $termin_id, "top_betreff" => $betreff]);
             } else {
-                $alter_top = Tagesordnungspunkt::model()->findByAttributes(["sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id]);
+                $alter_top = Tagesordnungspunkt::findOne(["sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id]);
             }
 
             $top_aenderungen = "";
@@ -267,7 +267,7 @@ class StadtratTerminParser extends RISParser
             if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
                 $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_BESCHLUSS, $top, ["url" => $matches2["url"][0], "name" => $matches2["title"][0], "name_title" => ""]);
                 /** @var Dokument $dok */
-                $dok = Dokument::model()->findByAttributes(["tagesordnungspunkt_id" => $top->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]]);
+                $dok = Dokument::find()->findByAttributes(["tagesordnungspunkt_id" => $top->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]]);
                 if ($dok && $dok->tagesordnungspunkt_id != $top->id) {
                     echo "Korrgiere ID\n";
                     $dok->tagesordnungspunkt_id = $top->id;
@@ -287,7 +287,7 @@ class StadtratTerminParser extends RISParser
 
             /** @var Tagesordnungspunkt $top */
             $krits = ["sitzungstermin_id" => $termin_id, "status" => "geheim", "top_betreff" => $betreff];
-            $top   = Tagesordnungspunkt::model()->findByAttributes($krits);
+            $top   = Tagesordnungspunkt::find()->findByAttributes($krits);
             if (is_null($top)) {
                 $top = new Tagesordnungspunkt();
                 $aenderungen .= "Neuer geheimer Tagesordnungspunkt: " . $betreff . "\n";
@@ -319,7 +319,7 @@ class StadtratTerminParser extends RISParser
                 } catch (DbException $e) {
                     $str = "Vermutlich verwaiste Dokumente (war zuvor: \"" . $top->getName() . "\" in " . $daten->getLink() . ":\n";
                     /** @var Dokument[] $doks */
-                    $doks = Dokument::model()->findAllByAttributes(["tagesordnungspunkt_id" => $top->id]);
+                    $doks = Dokument::findAll(["tagesordnungspunkt_id" => $top->id]);
                     foreach ($doks as $dok) {
                         $dok->tagesordnungspunkt_id = null;
                         $dok->save(false);
@@ -390,7 +390,7 @@ class StadtratTerminParser extends RISParser
             $aend->save();
 
             /** @var Termin $termin */
-            $termin                         = Termin::model()->findByPk($termin_id);
+            $termin                         = Termin::findOne($termin_id);
             $termin->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $termin->save();
         }

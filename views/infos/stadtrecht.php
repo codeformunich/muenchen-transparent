@@ -29,7 +29,7 @@ $this->pageTitle = "Stadtrecht";
         <ul class="list list-unstyled">
         <?
         /** @var Rechtsdokument[] $dokumente */
-        $dokumente = Rechtsdokument::model()->alle_sortiert();
+        $dokumente = Rechtsdokument::find()->alle_sortiert();
         foreach ($dokumente as $dok) {
             echo '<li><span class="list-name">' . Html::link($dok->titel_lang(), Yii::$app->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '<span style="display: none;">' . Html::encode($dok->titel) . '</span></span></li>' . "\n";
         }

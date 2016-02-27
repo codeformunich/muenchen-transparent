@@ -175,7 +175,7 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
         $str = "Vorgang Merge: von $vorgang_von_id => $vorgang_zu_id\n";
         try {
             /** @var Vorgang $vorgang_von */
-            $vorgang_von = Vorgang::model()->findByPk($vorgang_von_id);
+            $vorgang_von = Vorgang::findOne($vorgang_von_id);
             if (!$vorgang_von) throw new Exception("Vorgangs-ID nicht gefunden: " . $vorgang_von_id);
 
             foreach ($vorgang_von->antraege as $ant) {

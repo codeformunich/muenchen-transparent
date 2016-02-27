@@ -132,7 +132,7 @@ class Gremium extends ActiveRecord implements IRISItem
         $aenderungen = "";
 
         /** @var Gremium $alter_eintrag */
-        $alter_eintrag = Gremium::model()->findByPk($ris_id);
+        $alter_eintrag = Gremium::findOne($ris_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;

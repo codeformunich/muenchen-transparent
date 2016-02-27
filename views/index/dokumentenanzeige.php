@@ -58,10 +58,10 @@ if ($risitem) {
         }
 
         if ($dokument != null) {
-            if ($dokument->antrag_id) dokumentenliste(Antrag::model()->findByPk($dokument->antrag_id), "Antragsseite", $dokument, true);
-            else if ($dokument->tagesordnungspunkt_id) dokumentenliste(Tagesordnungspunkt::model()->findByPk($dokument->tagesordnungspunkt_id), "Ergebnisseite", $dokument, true);
-            else if ($dokument->termin_id) dokumentenliste(Termin::model()->findByPk($dokument->termin_id), "Terminseite", $dokument, true);
-            else if ($dokument->vorgang_id) dokumentenliste(Vorgang::model()->findByPk($dokument->vorgang_id), "Vorgangsseite", $dokument, false);
+            if ($dokument->antrag_id) dokumentenliste(Antrag::findOne($dokument->antrag_id), "Antragsseite", $dokument, true);
+            else if ($dokument->tagesordnungspunkt_id) dokumentenliste(Tagesordnungspunkt::findOne($dokument->tagesordnungspunkt_id), "Ergebnisseite", $dokument, true);
+            else if ($dokument->termin_id) dokumentenliste(Termin::findOne($dokument->termin_id), "Terminseite", $dokument, true);
+            else if ($dokument->vorgang_id) dokumentenliste(Vorgang::findOne($dokument->vorgang_id), "Vorgangsseite", $dokument, false);
             else     echo "<li class=\"active\">" . Html::encode($dokument->getName()) . "</li>";
         }
         ?>

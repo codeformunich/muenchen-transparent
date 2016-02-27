@@ -316,11 +316,11 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
          * '='M');
          * $criteria = new DbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
          * $criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
-         * $rows = user::model()->findAllByAttributes($u
+         * $rows = user::find()->findAllByAttributes($u
          */
         $criteria = new DbCriteria(['order' => "datum_letzte_aenderung DESC"]);
         $criteria->addCondition("datum_letzte_aenderung >= '2014-05-01 00:00:00'");
-        $his = AntragHistory::model()->findAllByAttributes(["id" => $this->id], $criteria);
+        $his = AntragHistory::find()->findAllByAttributes(["id" => $this->id], $criteria);
         foreach ($his as $alt) {
             $histories[] = new HistorienEintragAntrag($alt, $neu);
             $neu         = $alt;
@@ -336,7 +336,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
     public function resetPersonen()
     {
         /** @var array|AntragPerson[] $alte */
-        $alte = AntragPerson::model()->findAllByAttributes(["antrag_id" => $this->id]);
+        $alte = AntragPerson::findAll(["antrag_id" => $this->id]);
         foreach ($alte as $alt) $alt->delete();
 
         $indexed = [];
@@ -606,7 +606,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
     public function findeAenderungen($von_ts, $bis_ts = 0)
     {
         /** @var RISAenderung[] $aenderungen */
-        $aenderungen = RISAenderung::model()->findAllByAttributes(["typ" => $this->typ, "ris_id" => $this->id]);
+        $aenderungen = RISAenderung::findAll(["typ" => $this->typ, "ris_id" => $this->id]);
         foreach ($aenderungen as $ae) {
             // @TODO var_dump($ae->getAttributes());
         }

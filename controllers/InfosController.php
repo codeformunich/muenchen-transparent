@@ -17,7 +17,7 @@ class InfosController extends RISBaseController
         $this->top_menu = "so_funktioniert";
 
         /** @var Text $text */
-        $text = Text::model()->findByPk(25);
+        $text = Text::findOne(25);
 
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
             if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
@@ -71,7 +71,7 @@ class InfosController extends RISBaseController
     public function actionStadtrechtDokument($id)
     {
         /** @var Rechtsdokument $dok */
-        $dok = Rechtsdokument::model()->findByPk($id);
+        $dok = Rechtsdokument::findOne($id);
         if (!$dok) {
             $this->render('../index/error', ["code" => 404, "message" => "Das Dokument wurde nicht gefunden"]);
             Yii::$app->end();
@@ -88,7 +88,7 @@ class InfosController extends RISBaseController
     public function std_content_page($id, $my_url, $show_title = true, $insert_tooltips = false)
     {
         /** @var Text $text */
-        $text = Text::model()->findByPk($id);
+        $text = Text::findOne($id);
 
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
             if (strlen($_REQUEST["text"]) == 0) die("Kein Text angegeben");
@@ -145,7 +145,7 @@ class InfosController extends RISBaseController
             $text->save();
         }
 
-        $eintraege = Text::model()->findAllByAttributes([
+        $eintraege = Text::find()->findAllByAttributes([
             "typ" => Text::$TYP_GLOSSAR,
         ], ["order" => "titel"]);
 
@@ -166,7 +166,7 @@ class InfosController extends RISBaseController
         $this->top_menu = "so_funktioniert";
 
         /** @var Text $eintrag */
-        $eintrag = Text::model()->findByAttributes([
+        $eintrag = Text::findOne([
             "id"  => $id,
             "typ" => Text::$TYP_GLOSSAR,
         ]);

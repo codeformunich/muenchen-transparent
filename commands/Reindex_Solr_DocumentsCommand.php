@@ -28,7 +28,7 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
             $dok_id = $data[$i];
             echo "$i / $anz => $dok_id\n";
             /** @var Dokument $dokument */
-            $dokument = Dokument::model()->findByPk($dok_id);
+            $dokument = Dokument::findOne($dok_id);
             $dokument->solrIndex();
         }
     }

@@ -33,7 +33,7 @@ class PersonenController extends RISBaseController
         $this->top_menu = "personen";
 
         /** @var StadtraetIn $person */
-        $person = StadtraetIn::model()->findByPk($id);
+        $person = StadtraetIn::findOne($id);
 
         $this->render("person", [
             "person" => $person,
@@ -46,7 +46,7 @@ class PersonenController extends RISBaseController
     public function actionPersonAlt($id)
     {
         /** @var StadtraetIn $person */
-        $person = StadtraetIn::model()->findByPk($id);
+        $person = StadtraetIn::findOne($id);
         $this->redirect($person->getLink());
     }
 
@@ -63,7 +63,7 @@ class PersonenController extends RISBaseController
         if (!$ich) $this->errorMessageAndDie(403, "Du musst eingeloggt sein, um deinen Eintrag zu bearbeiten.");
 
         /** @var StadtraetIn $person */
-        $person = StadtraetIn::model()->findByPk($id);
+        $person = StadtraetIn::findOne($id);
         if ($person->benutzerIn_id != $ich->id) $this->errorMessageAndDie(403, "Du kannst nur deinen eigenen Eintrag bearbeiten.");
 
         if (AntiXSS::isTokenSet("save")) {
@@ -100,7 +100,7 @@ class PersonenController extends RISBaseController
         $this->requireLogin(Url::to("personen/binIch", ["id" => $id]));
 
         /** @var StadtraetIn $person */
-        $person = StadtraetIn::model()->findByPk($id);
+        $person = StadtraetIn::findOne($id);
         if ($person->benutzerIn_id !== null) $this->errorMessageAndDie(403, "Diese Person ist schon einem Account zugeordnet. Falls das ein Fehler ist, schreiben Sie uns bitte per Mail (" . Yii::$app->params["adminEmail"] . ")");
 
         $this->render("person-binich", [

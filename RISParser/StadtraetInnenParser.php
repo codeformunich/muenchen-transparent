@@ -64,7 +64,7 @@ class StadtraetInnenParser extends RISParser
         $aenderungen = "";
 
         /** @var StadtraetIn $alter_eintrag */
-        $alter_eintrag = StadtraetIn::model()->findByPk($stadtraetIn_id);
+        $alter_eintrag = StadtraetIn::findOne($stadtraetIn_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -127,7 +127,7 @@ class StadtraetInnenParser extends RISParser
             $str_fraktion->mitgliedschaft = $matches["mitgliedschaft"][$i];
 
             /** @var array|StadtraetInFraktion[] $bisherige_fraktionen */
-            $bisherige_fraktionen = StadtraetInFraktion::model()->findAllByAttributes(["stadtraetIn_id" => $stadtraetIn_id]);
+            $bisherige_fraktionen = StadtraetInFraktion::findAll(["stadtraetIn_id" => $stadtraetIn_id]);
             /** @var null|StadtraetInFraktion $bisherige */
 
             $bisherige = null;
@@ -138,7 +138,7 @@ class StadtraetInnenParser extends RISParser
             }
 
             if ($bisherige === null) {
-                $fraktion = Fraktion::model()->findByPk($str_fraktion->fraktion_id);
+                $fraktion = Fraktion::findOne($str_fraktion->fraktion_id);
                 if (is_null($fraktion)) {
                     $frakt_parser = new StadtratsfraktionParser();
                     $frakt_parser->parse($str_fraktion->fraktion_id, $str_fraktion->wahlperiode);

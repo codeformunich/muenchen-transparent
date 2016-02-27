@@ -30,7 +30,7 @@ class StadtratsfraktionParser
         $aenderungen = "";
 
         /** @var Fraktion $alter_eintrag */
-        $alter_eintrag = Fraktion::model()->findByPk($fraktion_id);
+        $alter_eintrag = Fraktion::findOne($fraktion_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;

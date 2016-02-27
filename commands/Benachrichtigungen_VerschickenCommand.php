@@ -60,9 +60,9 @@ class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
 
         if (count($args) >= 2) {
             if (is_numeric($args[0])) {
-                $benutzerIn = BenutzerIn::model()->findByPk($args[0]);
+                $benutzerIn = BenutzerIn::findOne($args[0]);
             } else {
-                $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $args[0]]);
+                $benutzerIn = BenutzerIn::find()->findByAttributes(["email" => $args[0]]);
             }
             if (!$benutzerIn) die("BenutzerIn nicht gefunden.\n");
             /** @var BenutzerIn $benutzerIn */

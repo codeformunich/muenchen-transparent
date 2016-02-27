@@ -43,7 +43,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
     function getCalendarsForUser($principalUri)
     {
         /** @var Termin $termin */
-        $termin = Termin::model()->findByPk($this->termin_id);
+        $termin = Termin::findOne($this->termin_id);
         if (!$termin) return [];
 
         list(, $name) = \Sabre\HTTP\URLUtil::splitPath($principalUri);
@@ -148,7 +148,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
     function getCalendarObjects($calendarId)
     {
         /** @var Termin $termin */
-        $termin = Termin::model()->findByPk($calendarId);
+        $termin = Termin::findOne($calendarId);
         if (!$termin) throw new \Sabre\DAV\Exception\NotFound('Calendar not found');
 
         $alle_termine = $termin->alleTermineDerReihe();
@@ -205,7 +205,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
     function getCalendarObject($calendarId, $objectUri)
     {
         /** @var Termin $termin */
-        $termin = Termin::model()->findByPk($objectUri);
+        $termin = Termin::findOne($objectUri);
         if (!$termin) throw new \Sabre\DAV\Exception\NotFound('Calendar not found');
 
         $vcalendar = new \Sabre\VObject\Component\VCalendar();
@@ -244,7 +244,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
         $return = [];
         foreach ($uris as $uri) {
             /** @var Termin $termin */
-            $termin = Termin::model()->findByPk($uri);
+            $termin = Termin::findOne($uri);
             if (!$termin) throw new \Sabre\DAV\Exception\NotFound('Calendar not found');
 
             $vcalendar = new \Sabre\VObject\Component\VCalendar();
@@ -379,7 +379,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
     function calendarQuery($calendarId, array $filters)
     {
         /** @var Termin $termin */
-        $termin = Termin::model()->findByPk($this->termin_id);
+        $termin = Termin::findOne($this->termin_id);
         if (!$termin) throw new \Sabre\DAV\Exception\NotFound('Calendar not found');
 
         $alle_termine = $termin->alleTermineDerReihe();

@@ -65,7 +65,7 @@ class BATerminParser extends RISParser
         if (preg_match("/ba_gremien_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->gremium_id = IntVal($matches[1]);
         if ($daten->gremium_id) {
             /** @var Gremium $gr */
-            $gr = Gremium::model()->findByPk($daten->gremium_id);
+            $gr = Gremium::findOne($daten->gremium_id);
             if (!$gr) {
                 echo "Lege Gremium an: " . $daten->gremium_id . "\n";
                 $parser = new BAGremienParser();
@@ -121,7 +121,7 @@ class BATerminParser extends RISParser
         $aenderungen = "";
 
         /** @var Termin $alter_eintrag */
-        $alter_eintrag = Termin::model()->findByPk($termin_id);
+        $alter_eintrag = Termin::findOne($termin_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -179,7 +179,7 @@ class BATerminParser extends RISParser
             $baantrag_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
 
             if ($vorlage_id) {
-                $vorlage = Antrag::model()->findByPk($vorlage_id);
+                $vorlage = Antrag::findOne($vorlage_id);
                 if (!$vorlage) {
                     echo "Creating: $vorlage_id\n";
                     $p = new StadtratsvorlageParser();
@@ -187,7 +187,7 @@ class BATerminParser extends RISParser
                 }
             }
             if ($baantrag_id) {
-                $baantrag = Antrag::model()->findByPk($baantrag_id);
+                $baantrag = Antrag::findOne($baantrag_id);
                 if (!$baantrag) {
                     echo "Creating: $baantrag_id\n";
                     $p = new BAAntragParser();
@@ -221,11 +221,11 @@ class BATerminParser extends RISParser
 
             /** @var Tagesordnungspunkt[] $alte_tops */
             if ($vorlage_id) {
-                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(["sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id]);
+                $alte_tops = Tagesordnungspunkt::findAll(["sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id]);
             } elseif ($baantrag_id) {
-                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(["sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id]);
+                $alte_tops = Tagesordnungspunkt::findAll(["sitzungstermin_id" => $termin_id, "antrag_id" => $baantrag_id]);
             } else {
-                $alte_tops = Tagesordnungspunkt::model()->findAllByAttributes(["sitzungstermin_id" => $termin_id, "top_betreff" => $betreff]);
+                $alte_tops = Tagesordnungspunkt::findAll(["sitzungstermin_id" => $termin_id, "top_betreff" => $betreff]);
             }
             $alter_top = $this->loescheDoppelteTOPs($alte_tops);
 
@@ -340,7 +340,7 @@ class BATerminParser extends RISParser
             $aend->save();
 
             /** @var Termin $termin */
-            $termin                         = Termin::model()->findByPk($termin_id);
+            $termin                         = Termin::findOne($termin_id);
             $termin->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $termin->save();
         }

@@ -100,7 +100,7 @@ class Person extends ActiveRecord implements IRISItem
     public static function getOrCreate($name, $name_normalized)
     {
         /** @var Person|null $pers */
-        $pers = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
+        $pers = Person::findOne(["name_normalized" => $name_normalized]);
         if (is_null($pers)) {
             $pers                  = new Person();
             $pers->name            = $name;

@@ -135,7 +135,7 @@ class Referat extends ActiveRecord implements IRISItem
     public static function getByHtmlName($name)
     {
         $name = trim(strip_tags($name));
-        $ref  = Referat::model()->findByAttributes(["name" => $name]);
+        $ref  = Referat::findOne(["name" => $name]);
         return $ref;
     }
 

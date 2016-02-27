@@ -28,7 +28,7 @@ class AntraegeController extends RISBaseController
     public function actionAjaxThemenverwandte($id)
     {
         /** @var Antrag $antrag */
-        $antrag = Antrag::model()->findByPk($id);
+        $antrag = Antrag::findOne($id);
         if (!$antrag) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
             return;
@@ -45,7 +45,7 @@ class AntraegeController extends RISBaseController
     public function actionThemenverwandte($id)
     {
         /** @var Antrag $antrag */
-        $antrag = Antrag::model()->findByPk($id);
+        $antrag = Antrag::findOne($id);
         if (!$antrag) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
             return;
@@ -63,7 +63,7 @@ class AntraegeController extends RISBaseController
         $this->performLoginActions();
 
         /** @var Antrag $antrag */
-        $antrag = Antrag::model()->findByPk($id);
+        $antrag = Antrag::findOne($id);
         if (!$antrag) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
             return;
@@ -84,7 +84,7 @@ class AntraegeController extends RISBaseController
 
             foreach ($tags as $tag_name) if (mb_strlen(trim($tag_name)) > 0) try {
                 $tag_name = trim($tag_name);
-                $tag      = Tag::model()->findByAttributes(["name" => $tag_name]);
+                $tag      = Tag::findOne(["name" => $tag_name]);
                 if (!$tag) {
                     $tag                         = new Tag();
                     $tag->name                   = $tag_name;

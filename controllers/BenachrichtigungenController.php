@@ -78,7 +78,7 @@ class BenachrichtigungenController extends RISBaseController
         if (AntiXSS::isTokenSet("del_vorgang_abo")) {
             foreach (AntiXSS::getTokenVal("del_vorgang_abo") as $vorgang_id => $_tmp) {
                 /** @var Vorgang $vorgang */
-                $vorgang = Vorgang::model()->findByPk($vorgang_id);
+                $vorgang = Vorgang::findOne($vorgang_id);
                 $vorgang->deabonnieren($ich);
                 $this->msg_ok = "Der Vorgang wurde entfernt.";
             }
@@ -243,7 +243,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         if (AntiXSS::isTokenSet("reset_password")) {
             /** @var null|BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $_REQUEST["email"]]);
+            $benutzerIn = BenutzerIn::find()->findByAttributes(["email" => $_REQUEST["email"]]);
             if ($benutzerIn) {
                 $ret = $benutzerIn->resetPasswordStart();
                 if ($ret === true) {
@@ -270,7 +270,7 @@ class BenachrichtigungenController extends RISBaseController
         $my_url = Url::to("benachrichtigungen/NeuesPasswortSetzen", ["id" => $id, "code" => $code]);
         if (AntiXSS::isTokenSet("reset_password")) {
             /** @var null|BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::model()->findByPk($id);
+            $benutzerIn = BenutzerIn::findOne($id);
 
             if (!$benutzerIn) {
                 $this->msg_err = "BenutzerIn nicht gefunden";

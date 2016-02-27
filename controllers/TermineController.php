@@ -55,7 +55,7 @@ class TermineController extends RISBaseController
         $margin_end   = date("Y-m-d", $ts_end + $margin_days * 24 * 3600);
 
         /** @var Termin[] $termine_monat */
-        $termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $margin_start, $margin_end, true)->findAll();
+        $termine_monat       = Termin::find()->termine_stadtrat_zeitraum(null, $margin_start, $margin_end, true)->findAll();
         $fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
         return $fullcalendar_struct;
     }
@@ -67,7 +67,7 @@ class TermineController extends RISBaseController
     public function actionFullCalendarFeed($start, $end)
     {
         /** @var Termin[] $termine_monat */
-        $termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $start, $end, true)->findAll();
+        $termine_monat       = Termin::find()->termine_stadtrat_zeitraum(null, $start, $end, true)->findAll();
         $fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
         Header("Content-Type: application/json; charset=UTF-8");
         echo json_encode($fullcalendar_struct["data"]);
@@ -86,9 +86,9 @@ class TermineController extends RISBaseController
         $tage_zukunft       = 30;
         $tage_vergangenheit = 30;
 
-        $termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
-        $termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
-        $termin_dokumente      = Termin::model()->neueste_str_protokolle(0, date("Y-m-d 00:00:00", time() - 60 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+        $termine_zukunft       = Termin::find()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
+        $termine_vergangenheit = Termin::find()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+        $termin_dokumente      = Termin::find()->neueste_str_protokolle(0, date("Y-m-d 00:00:00", time() - 60 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
         /** @var Termin[] $termine_zukunft */
         /** @var Termin[] $termine_vergangenheit */
         /** @var Termin[] $termin_dokumente */
@@ -117,7 +117,7 @@ class TermineController extends RISBaseController
         $this->top_menu = "termine";
 
         /** @var Termin $termin */
-        $termin = Termin::model()->findByPk($termin_id);
+        $termin = Termin::findOne($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
@@ -155,7 +155,7 @@ class TermineController extends RISBaseController
         $termin_id = IntVal($termin_id);
 
         /** @var Termin $termin */
-        $termin = Termin::model()->findByPk($termin_id);
+        $termin = Termin::findOne($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
@@ -174,7 +174,7 @@ class TermineController extends RISBaseController
         $termin_id = IntVal($termin_id);
 
         /** @var Termin $termin */
-        $termin = Termin::model()->findByPk($termin_id);
+        $termin = Termin::findOne($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
@@ -214,7 +214,7 @@ class TermineController extends RISBaseController
     public function actionAboInfo($termin_id)
     {
         /** @var Termin $sitzung */
-        $termin = Termin::model()->findByPk($termin_id);
+        $termin = Termin::findOne($termin_id);
         if (!$termin) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
@@ -269,14 +269,14 @@ class TermineController extends RISBaseController
     public function actionBaTermineAlle($ba_nr)
     {
         /** @var Termin[] $termine */
-        $termine    = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr], ["order" => "termin DESC"]);
+        $termine    = Termin::find()->findAllByAttributes(["ba_nr" => $ba_nr], ["order" => "termin DESC"]);
         $termin_arr = [];
         foreach ($termine as $t) {
             $termin_arr[] = $t->toArr();
         }
 
         /** @var Bezirksausschuss $ba */
-        $ba = Bezirksausschuss::model()->findByPk($ba_nr);
+        $ba = Bezirksausschuss::findOne($ba_nr);
 
         $this->render("ba_termine_alle", [
             "ba"      => $ba,

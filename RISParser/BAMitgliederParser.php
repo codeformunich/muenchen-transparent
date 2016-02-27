@@ -18,7 +18,7 @@ class BAMitgliederParser extends RISParser
 
         if (SITE_CALL_MODE != "cron") echo "- BA $ba_nr\n";
         /** @var Bezirksausschuss $ba */
-        $ba = Bezirksausschuss::model()->findByPk($ba_nr);
+        $ba = Bezirksausschuss::findOne($ba_nr);
 
         $ba_details = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_bezirksausschuesse_details.jsp?Id=" . $ba->ris_id);
 
@@ -40,7 +40,7 @@ class BAMitgliederParser extends RISParser
                 $fraktion_name = "Parteifrei";
 
             /** @var StadtraetIn $strIn */
-            $strIn = StadtraetIn::model()->findByPk($matches["mitglied_id"][$i]);
+            $strIn = StadtraetIn::findOne($matches["mitglied_id"][$i]);
             if (!$strIn) {
                 echo "Neu anlegen: " . $matches["mitglied_id"][$i] . " - " . $name . " (" . $fraktion_name . ")\n";
 
@@ -55,7 +55,7 @@ class BAMitgliederParser extends RISParser
             }
 
             /** @var Fraktion|null $fraktion */
-            $fraktion = Fraktion::model()->findByAttributes(["ba_nr" => $ba_nr, "name" => $fraktion_name]);
+            $fraktion = Fraktion::findOne(["ba_nr" => $ba_nr, "name" => $fraktion_name]);
             if (!$fraktion) {
                 echo "Lege an: " . $fraktion_name . "\n";
                 $min = Yii::$app->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;

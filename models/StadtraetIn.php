@@ -308,7 +308,7 @@ class StadtraetIn extends ActiveRecord implements IRISItem
         }
 
         /** @var StadtraetIn[] $strs_in */
-        $strs_in = StadtraetIn::model()->findAll([
+        $strs_in = StadtraetIn::find()->findAll([
             'alias' => 'a',
             'order' => 'a.name ASC',
             'with'  => [

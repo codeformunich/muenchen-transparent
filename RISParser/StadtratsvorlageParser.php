@@ -150,7 +150,7 @@ class StadtratsvorlageParser extends RISParser
                 if (strpos($link, "/RII/BA-RII/ba_gremien_details.jsp?Id=") === 0) {
                     $x = explode("/RII/BA-RII/ba_gremien_details.jsp?Id=", $link);
                     /** @var Gremium $g */
-                    $g  = Gremium::model()->findByPk($x[1]);
+                    $g  = Gremium::findOne($x[1]);
                     $ba = $g->ba_nr;
                 }
             }
@@ -161,7 +161,7 @@ class StadtratsvorlageParser extends RISParser
         $aenderungen = "";
 
         /** @var Antrag $alter_eintrag */
-        $alter_eintrag = Antrag::model()->findByPk($vorlage_id);
+        $alter_eintrag = Antrag::findOne($vorlage_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -244,12 +244,12 @@ class StadtratsvorlageParser extends RISParser
 
         foreach ($antrag_links as $link) {
             /** @var Antrag $antrag */
-            $antrag = Antrag::model()->findByPk(IntVal($link));
+            $antrag = Antrag::find()->findByPk(IntVal($link));
             if (!$antrag) {
                 $parser = new StadtratsantragParser();
                 $parser->parse($link);
 
-                $antrag = Antrag::model()->findByPk(IntVal($link));
+                $antrag = Antrag::find()->findByPk(IntVal($link));
             }
             if (!$antrag) if (Yii::$app->params['adminEmail'] != "") RISTools::send_email(Yii::$app->params['adminEmail'], "Stadtratsvorlage - Zugordnungs Error", $vorlage_id . " - " . $link, null, "system");
 
@@ -272,7 +272,7 @@ class StadtratsvorlageParser extends RISParser
             $aend->save();
 
             /** @var Antrag $antrag */
-            $antrag                         = Antrag::model()->findByPk($vorlage_id);
+            $antrag                         = Antrag::findOne($vorlage_id);
             $antrag->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();
@@ -326,7 +326,7 @@ class StadtratsvorlageParser extends RISParser
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 
         /** @var array|Antrag[] $antraege */
-        $antraege = Antrag::model()->findAll($crit);
+        $antraege = Antrag::find()->findAll($crit);
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
 

@@ -99,7 +99,7 @@ class OrtGeo extends ActiveRecord
     public static function getOrCreate($name)
     {
         /** @var null|OrtGeo */
-        $ort = OrtGeo::model()->findByAttributes(["ort" => $name]);
+        $ort = OrtGeo::findOne(["ort" => $name]);
         if ($ort) return $ort;
 
         $data = RISGeo::addressToGeo("Deutschland", "", "München", $name);
@@ -128,7 +128,7 @@ class OrtGeo extends ActiveRecord
     public function setzeBA()
     {
         /** @var Bezirksausschuss[] $bas */
-        $bas = Bezirksausschuss::model()->findAll();
+        $bas = Bezirksausschuss::findAll();
 
         $this->ba_nr = null;
         foreach ($bas as $ba) if ($this->ba_nr === null && $ba->pointInBA($this->lon, $this->lat)) {

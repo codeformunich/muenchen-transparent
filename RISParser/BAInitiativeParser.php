@@ -120,7 +120,7 @@ class BAInitiativeParser extends RISParser
         $aenderungen = "";
 
         /** @var Antrag $alter_eintrag */
-        $alter_eintrag = Antrag::model()->findByPk($antrag_id);
+        $alter_eintrag = Antrag::findOne($antrag_id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -170,7 +170,7 @@ class BAInitiativeParser extends RISParser
             $aend->save();
 
             /** @var Antrag $antrag */
-            $antrag                         = Antrag::model()->findByPk($antrag_id);
+            $antrag                         = Antrag::findOne($antrag_id);
             $antrag->datum_letzte_aenderung = new DbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();

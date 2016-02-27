@@ -129,19 +129,19 @@ class RISAenderung extends ActiveRecord
             case RISAenderung::$TYP_STADTRAT_ANTRAG:
             case RISAenderung::$TYP_BA_ANTRAG:
             case RISAenderung::$TYP_BA_INITIATIVE:
-                return Antrag::model()->findByPk($this->ris_id);
+                return Antrag::findOne($this->ris_id);
                 break;
             case RISAenderung::$TYP_BA_GREMIUM:
             case RISAenderung::$TYP_STADTRAT_GREMIUM:
-                return Gremium::model()->findByPk($this->ris_id);
+                return Gremium::findOne($this->ris_id);
                 break;
             case RISAenderung::$TYP_STADTRAT_TERMIN:
             case RISAenderung::$TYP_BA_TERMIN:
-                return Termin::model()->findByPk($this->ris_id);
+                return Termin::findOne($this->ris_id);
                 break;
             case RISAenderung::$TYP_BA_MITGLIED:
             case RISAenderung::$TYP_STADTRAETIN:
-                return StadtraetIn::model()->findByPk($this->ris_id);
+                return StadtraetIn::findOne($this->ris_id);
                 break;
             case RISAenderung::$TYP_RATHAUSUMSCHAU:
                 return null; // @TODO

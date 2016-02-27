@@ -17,16 +17,16 @@ class ThemenController extends RISBaseController
     public function actionReferat($referat_url)
     {
         /** @var Referat $ref */
-        $ref = Referat::model()->findByAttributes(["urlpart" => $referat_url]);
+        $ref = Referat::findOne(["urlpart" => $referat_url]);
         if (!$ref) die("Nicht gefunden");
 
         $this->top_menu = "themen";
 
         $von              = date("Y-m-d H:i:s", time() - 3600 * 24 * 30);
         $bis              = date("Y-m-d H:i:s", time());
-        $antraege_referat = Antrag::model()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
+        $antraege_referat = Antrag::find()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
 
-        $text = Text::model()->findByAttributes(["typ" => Text::$TYP_REFERAT, "titel" => $ref->name]);
+        $text = Text::findOne(["typ" => Text::$TYP_REFERAT, "titel" => $ref->name]);
         $my_url = Yii::$app->createUrl("/themen/referat/" . $referat_url);
 
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {
@@ -51,7 +51,7 @@ class ThemenController extends RISBaseController
     {
         $this->top_menu = "themen";
         $this->render("index", [
-            "referate"   => Referat::model()->findAll(),
+            "referate"   => Referat::findAll(),
             "highlights" => Dokument::getHighlightDokumente(5),
             "tags"       => Tag::getTopTags(10),
         ]);
@@ -68,7 +68,7 @@ class ThemenController extends RISBaseController
         $this->top_menu = "themen";
 
         /** @var Tag $tag */
-        $tag = Tag::model()->findByPk($tag_id);
+        $tag = Tag::findOne($tag_id);
 
         $antraege_tag = $tag->antraege;
 

@@ -183,7 +183,7 @@ class Dokument extends ActiveRecord implements IRISItem
      */
     public static function getCachedByID($dokument_id)
     {
-        if (!isset(static::$_cache[$dokument_id])) static::$_cache[$dokument_id] = Dokument::model()->findByPk($dokument_id);
+        if (!isset(static::$_cache[$dokument_id])) static::$_cache[$dokument_id] = Dokument::findOne($dokument_id);
         return static::$_cache[$dokument_id];
     }
 
@@ -335,7 +335,7 @@ class Dokument extends ActiveRecord implements IRISItem
         $strassen_gefunden = RISGeo::suche_strassen($text);
 
         /** @var array|AntragOrt[] $bisherige */
-        $bisherige     = AntragOrt::model()->findAllByAttributes(["dokument_id" => $this->id]);
+        $bisherige     = AntragOrt::findAll(["dokument_id" => $this->id]);
         $bisherige_ids = [];
         foreach ($bisherige as $i) $bisherige_ids[] = $i->ort_id;
 
@@ -372,10 +372,10 @@ class Dokument extends ActiveRecord implements IRISItem
         }
 
         foreach ($bisherige_ids as $id) if (!in_array($id, $neue_ids)) {
-            AntragOrt::model()->deleteAllByAttributes(["dokument_id" => $this->id, "ort_id" => $id]);
+            AntragOrt::find()->deleteAllByAttributes(["dokument_id" => $this->id, "ort_id" => $id]);
         }
 
-        $this->orte = AntragOrt::model()->findAllByAttributes(["dokument_id" => $this->id]);
+        $this->orte = AntragOrt::findAll(["dokument_id" => $this->id]);
     }
 
 
@@ -404,7 +404,7 @@ class Dokument extends ActiveRecord implements IRISItem
         $dokument_id = IntVal($x[count($x) - 1]);
 
         /** @var Dokument|null $dokument */
-        $dokument = Dokument::model()->disableDefaultScope()->findByPk($dokument_id);
+        $dokument = Dokument::find()->disableDefaultScope()->findByPk($dokument_id);
         if ($dokument) {
             if ($dokument->name != $dok["name"] || $dokument->name_title != $dok["name_title"]) {
                 echo "- Dokumententitel geändert: " . $dokument->name . " (" . $dokument->name_title . ")";
@@ -493,10 +493,10 @@ class Dokument extends ActiveRecord implements IRISItem
         $x  = explode(":", $id);
         $id = IntVal($x[1]);
         if ($cached) {
-            if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = Dokument::model()->with("antrag")->findByPk($id);
+            if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = Dokument::find()->with("antrag")->findByPk($id);
             return static::$dokumente_cache[$id];
         }
-        return Dokument::model()->with(["antrag", "tagesordnungspunkt", "rathausumschau"])->findByPk($id);
+        return Dokument::find()->with(["antrag", "tagesordnungspunkt", "rathausumschau"])->findByPk($id);
     }
 
     /**
@@ -532,7 +532,7 @@ class Dokument extends ActiveRecord implements IRISItem
         foreach ($ergebnisse as $document) {
             $mltResult = $mlt->getResult($document->id);
             if ($mltResult) foreach ($mltResult as $mltDoc) {
-                $mod = Dokument::model()->findByPk(str_replace("Document:", "", $mltDoc->id));
+                $mod = Dokument::find()->findByPk(str_replace("Document:", "", $mltDoc->id));
                 if ($mod) $ret[] = $mod;
             }
         }
@@ -573,7 +573,7 @@ class Dokument extends ActiveRecord implements IRISItem
         $aenderungs_datum = [];
 
         /** @var array|RISAenderung[] $aenderungen */
-        $aenderungen = RISAenderung::model()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
+        $aenderungen = RISAenderung::find()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
         foreach ($aenderungen as $o) {
             $aenderungs_datum[] = RISSolrHelper::mysql2solrDate($o->datum);
             $max_datum          = $o->datum;
@@ -631,7 +631,7 @@ class Dokument extends ActiveRecord implements IRISItem
         $doc->dokument_bas = $dokument_bas;
 
         /** @var array|RISAenderung[] $aenderungen */
-        $aenderungen = RISAenderung::model()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
+        $aenderungen = RISAenderung::find()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
         foreach ($aenderungen as $o) {
             $aenderungs_datum[] = RISSolrHelper::mysql2solrDate($o->datum);
             $max_datum          = $o->datum;
@@ -737,7 +737,7 @@ class Dokument extends ActiveRecord implements IRISItem
      */
     public static function getHighlightDokumente($limit = 3)
     {
-        return Dokument::model()->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit]);
+        return Dokument::find()->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit]);
     }
 
     /**

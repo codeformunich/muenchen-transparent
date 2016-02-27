@@ -75,8 +75,8 @@ class StadtrechtParser extends RISParser
         $titel = html_entity_decode($titel, ENT_COMPAT, "UTF-8");;
 
         /** @var Rechtsdokument $rechtsdokument */
-        if ($id > 0) $rechtsdokument = Rechtsdokument::model()->findByAttributes(["id" => $id]);
-        else $rechtsdokument = Rechtsdokument::model()->findByAttributes(["titel" => $titel]);
+        if ($id > 0) $rechtsdokument = Rechtsdokument::findOne(["id" => $id]);
+        else $rechtsdokument = Rechtsdokument::findOne(["titel" => $titel]);
         if (!$rechtsdokument) $rechtsdokument = new Rechtsdokument();
 
         $rechtsdokument->url_base = $url_base;

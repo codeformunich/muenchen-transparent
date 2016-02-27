@@ -60,7 +60,7 @@ class RISGeo
         $maxlength         = 0;
 
         /** @var array|Strasse[] $strassen */
-        $strassen = Strasse::model()->findAll();
+        $strassen = Strasse::findAll();
         foreach ($strassen as $strasse) {
             $norm                     = static::ris_street_cleanstring($strasse->name);
             $strasse->name_normalized = $norm;

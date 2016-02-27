@@ -307,7 +307,7 @@ class RISSucheKrits
                 return "Volltextsuche nach \"" . $such . "\"";
             case "ba":
                 /** @var Bezirksausschuss $ba */
-                $ba = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $this->krits[0]["ba_nr"]]);
+                $ba = Bezirksausschuss::find()->findByAttributes(["ba_nr" => $this->krits[0]["ba_nr"]]);
                 return "Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
             case "geo":
                 $ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
@@ -329,7 +329,7 @@ class RISSucheKrits
                 return $title;
             case "referat":
                 /** @var Referat $ref */
-                $ref = Referat::model()->findByPk($this->krits[0]["referat_id"]);
+                $ref = Referat::findOne($this->krits[0]["referat_id"]);
                 return $ref->name;
                 break;
             case "antrag_wahlperiode":
@@ -351,7 +351,7 @@ class RISSucheKrits
                     break;
                 case "ba":
                     /** @var Bezirksausschuss $ba */
-                    $ba      = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $cr["ba_nr"]]);
+                    $ba      = Bezirksausschuss::find()->findByAttributes(["ba_nr" => $cr["ba_nr"]]);
                     $krits[] = "aus dem Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
                     break;
                 case "geo":
@@ -363,7 +363,7 @@ class RISSucheKrits
                     break;
                 case "referat":
                     /** @var Referat $ref */
-                    $ref     = Referat::model()->findByPk($cr["referat_id"]);
+                    $ref     = Referat::findOne($cr["referat_id"]);
                     $krits[] = "im Zuständigkeitsbereich des " . $ref->name;
                     break;
                 case "antrag_wahlperiode":

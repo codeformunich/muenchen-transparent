@@ -126,7 +126,7 @@ class IndexController extends RISBaseController
         } else {
             $data = [];
             /** @var array|RISAenderung[] $aenderungen */
-            $aenderungen = RISAenderung::model()->findAll(["order" => "id DESC", "limit" => 100]);
+            $aenderungen = RISAenderung::find()->findAll(["order" => "id DESC", "limit" => 100]);
             foreach ($aenderungen as $aenderung) $data[] = $aenderung->toFeedData();
             $titel = Yii::$app->params['projectTitle'] . ' Änderungen';
         }
@@ -157,7 +157,7 @@ class IndexController extends RISBaseController
 
         if (!$user->isGuest) {
             /** @var BenutzerIn $ich */
-            $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::$app->user->id]);
+            $ich = BenutzerIn::findOne(["email" => Yii::$app->user->id]);
 
             if ($do_benachrichtigung_add) {
                 $ich->addBenachrichtigung($curr_krits);
@@ -180,7 +180,7 @@ class IndexController extends RISBaseController
         } else {
             $eingeloggt = true;
             /** @var BenutzerIn $ich */
-            if (!$ich) $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::$app->user->id]);
+            if (!$ich) $ich = BenutzerIn::findOne(["email" => Yii::$app->user->id]);
             if ($ich->email == "") {
                 $email_angegeben  = false;
                 $email_bestaetigt = false;
@@ -263,7 +263,7 @@ class IndexController extends RISBaseController
             $result     = Yii::$app->db->createCommand($SQL)->queryAll();
             foreach ($result as $geo) {
                 /** @var Dokument $dokument */
-                $dokument = Dokument::model()->findByPk($geo["dokument_id"]);
+                $dokument = Dokument::findOne($geo["dokument_id"]);
 
                 if ($dokument->antrag) {
                     $link = $dokument->antrag->getLink();
@@ -381,7 +381,7 @@ class IndexController extends RISBaseController
         }
         foreach ($dokument_ids as $dok_id) {
             /** @var Dokument $ant */
-            $ant = Dokument::model()->with([
+            $ant = Dokument::find()->with([
                 "antrag"           => [],
                 "antrag.dokumente" => [
                     "alias"     => "dokumente_2",
@@ -509,7 +509,7 @@ class IndexController extends RISBaseController
     public function actionDocumentProxy($id)
     {
         /** @var Dokument $dokument */
-        $dokument = Dokument::model()->findByPk($id);
+        $dokument = Dokument::findOne($id);
         try {
             $data = ris_download_string($dokument->getLink());
 
@@ -547,9 +547,9 @@ class IndexController extends RISBaseController
         }
 
         /** @var array|Antrag[] $antraege1 */
-        $antraege1 = Antrag::model()->neueste_stadtratsantragsdokumente($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
+        $antraege1 = Antrag::find()->neueste_stadtratsantragsdokumente($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
         /** @var array|Antrag[] $antraege2 */
-        $antraege2 = Antrag::model()->neueste_stadtratsantragsdokumente_geo($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
+        $antraege2 = Antrag::find()->neueste_stadtratsantragsdokumente_geo($ba_nr, $datum_von . " 00:00:00", $datum_bis . " 23:59:59")->findAll();
 
         $antraege = $antraege1;
         $a_ids    = [];
@@ -624,18 +624,18 @@ class IndexController extends RISBaseController
 
         $antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
-        $termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll(['order' => 'termin DESC']);
-        $termin_dokumente = Termin::model()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
+        $termine          = Termin::find()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll(['order' => 'termin DESC']);
+        $termin_dokumente = Termin::find()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
         $termine          = Termin::groupAppointments($termine);
 
         /** @var Termin[] $bvs */
-        $bvs     = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
+        $bvs     = Termin::find()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
         $bvs_arr = [];
         foreach ($bvs as $bv) $bvs_arr[] = $bv->toArr();
 
 
         /** @var Bezirksausschuss $ba */
-        $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
+        $ba      = Bezirksausschuss::findOne($ba_nr);
         $gremien = $ba->gremien;
 
         $this->render("ba_startseite", array_merge([
@@ -660,7 +660,7 @@ class IndexController extends RISBaseController
         $this->top_menu = "ba";
 
         /** @var Bezirksausschuss $ba */
-        $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
+        $ba      = Bezirksausschuss::findOne($ba_nr);
 
         $antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max, static::$BA_DOKUMENTE_TAGE_PRO_SEITE * 2);
         $this->render("ba_dokumente", array_merge([
@@ -687,17 +687,17 @@ class IndexController extends RISBaseController
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d H:i:s");
                 if ($i == 1) {
-                    $ru = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d")]);
+                    $ru = Rathausumschau::find()->findByAttributes(["datum" => date("Y-m-d")]);
                     if ($ru) $rus[] = $ru;
                 }
             } else {
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
             }
-            $ru = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)]);
+            $ru = Rathausumschau::find()->findByAttributes(["datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)]);
             if ($ru) $rus[] = $ru;
             /** @var array|Antrag[] $antraege */
-            $antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
+            $antraege          = Antrag::find()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
             $antraege_stadtrat = $antraege_sonstige = [];
             foreach ($antraege as $ant) {
                 if ($ant->ba_nr === null) $antraege_stadtrat[] = $ant;
@@ -798,7 +798,7 @@ class IndexController extends RISBaseController
     public function actionStadtraetIn($id)
     {
         /** @var StadtraetIn $stadtraetIn */
-        $stadtraetIn = StadtraetIn::model()->findByPk($id);
+        $stadtraetIn = StadtraetIn::findOne($id);
 
         $this->render("stadtraetIn", [
             "stadtraetIn" => $stadtraetIn,
@@ -808,7 +808,7 @@ class IndexController extends RISBaseController
 
     public function actionHighlights()
     {
-        $dokumente = Dokument::model()->with("antrag")->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC"]);
+        $dokumente = Dokument::find()->with("antrag")->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC"]);
         $this->render("dokumentenliste", ["dokumente" => $dokumente]);
     }
 
@@ -818,7 +818,7 @@ class IndexController extends RISBaseController
         header( 'Cache-Control: max-age=' . 7 * 24 * 3600);
 
         /** @var StadtraetIn[] $stadtraetInnen */
-        $stadtraetInnen = StadtraetIn::model()->findAll();
+        $stadtraetInnen = StadtraetIn::findAll();
 
         $this->render('quicksearch_prefetch', [
             'stadtraetInnen' => $stadtraetInnen,
@@ -878,6 +878,6 @@ class IndexController extends RISBaseController
 
     public function actionBaListe()
     {
-        $this->render('ba_liste', ["bas" => Bezirksausschuss::model()->findAll()]);
+        $this->render('ba_liste', ["bas" => Bezirksausschuss::findAll()]);
     }
 }

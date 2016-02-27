@@ -54,7 +54,7 @@ use app\models\Bezirksausschuss;
                         <option value=""></option>
                         <?
                         /** @var Bezirksausschuss[] $bas */
-                        $bas = Bezirksausschuss::model()->findAll(array("order" => "ba_nr"));
+                        $bas = Bezirksausschuss::find()->findAll(array("order" => "ba_nr"));
                         foreach ($bas as $ba) {
                             echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ': ' . Html::encode($ba->name) . '</option>' . "\n";
                         }

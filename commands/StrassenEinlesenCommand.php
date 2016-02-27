@@ -16,7 +16,7 @@ class StrassenEinlesenCommand extends CConsoleCommand
                 $strassenname = preg_replace("/(s)tra(ß|ss)e$/siu", "\\1tr.", trim(strip_tags($y[0])));
                 $plz          = trim(strip_tags($y[1]));
 
-                $str = Strasse::model()->findByAttributes(["name" => $strassenname]);
+                $str = Strasse::findOne(["name" => $strassenname]);
                 if (!$str) {
                     echo "Neu: " . $plz . " - " . $strassenname . "\n";
                     $str          = new Strasse();

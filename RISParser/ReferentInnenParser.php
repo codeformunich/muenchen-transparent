@@ -41,7 +41,7 @@ class ReferentInnenParser extends RISParser
             $referat_name = $matches["referat"][$i];
 
             /** @var StadtraetIn $str */
-            $str = StadtraetIn::model()->findByPk($id);
+            $str = StadtraetIn::findOne($id);
             if ($str) {
                 if ($str->name != $name) {
                     RISTools::send_email(Yii::$app->params['adminEmail'], "ReferentIn Änderung", $str->name . " => " . $name, null, "system");
@@ -57,7 +57,7 @@ class ReferentInnenParser extends RISParser
             }
 
             /** @var Referat $referat */
-            $referat = Referat::model()->findByAttributes(["name" => $referat_name]);
+            $referat = Referat::findOne(["name" => $referat_name]);
             if (!$referat) {
                 RISTools::send_email(Yii::$app->params['adminEmail'], "Referat nicht gefunden", $referat_name, null, "system");
                 return;

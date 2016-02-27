@@ -21,7 +21,7 @@ class AdminController extends RISBaseController
 
         if (AntiXSS::isTokenSet("save")) {
             /** @var Person $person */
-            $person = Person::model()->findByPk($_REQUEST["person"]);
+            $person = Person::findOne($_REQUEST["person"]);
             if ($person) {
                 if (isset($_REQUEST["fraktion"])) {
                     $person->typ             = Person::$TYP_FRAKTION;
@@ -36,10 +36,10 @@ class AdminController extends RISBaseController
         }
 
         /** @var Person[] $personen */
-        $personen = Person::model()->findAll(["order" => "name"]);
+        $personen = Person::find()->findAll(["order" => "name"]);
 
         /** @var StadtraetIn[] $stadtraetInnen */
-        $stadtraetInnen = StadtraetIn::model()->findAll(["order" => "name"]);
+        $stadtraetInnen = StadtraetIn::find()->findAll(["order" => "name"]);
 
         $this->render("stadtraetInnenPersonen", [
             "personen"       => $personen,
@@ -57,7 +57,7 @@ class AdminController extends RISBaseController
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["twitter"])) {
             foreach ($_REQUEST["twitter"] as $str_id => $twitter) {
                 /** @var StadtraetIn $str */
-                $str                    = StadtraetIn::model()->findByPk($str_id);
+                $str                    = StadtraetIn::findOne($str_id);
                 $str->twitter           = (trim($twitter) == "" ? null : trim($twitter));
                 $str->facebook          = (trim($_REQUEST["facebook"][$str_id]) == "" ? null : trim($_REQUEST["facebook"][$str_id]));
                 $str->abgeordnetenwatch = (trim($_REQUEST["abgeordnetenwatch"][$str_id]) == "" ? null : trim($_REQUEST["abgeordnetenwatch"][$str_id]));
@@ -85,7 +85,7 @@ class AdminController extends RISBaseController
 
             foreach ($_REQUEST["geburtstag"] as $str_id => $geburtstag) {
                 /** @var StadtraetIn $str */
-                $str               = StadtraetIn::model()->findByPk($str_id);
+                $str               = StadtraetIn::findOne($str_id);
                 $str->geburtstag   = ($geburtstag != "" ? $geburtstag : null);
                 $str->beschreibung = $_REQUEST["beschreibung"][$str_id];
                 $str->quellen      = $_REQUEST["quellen"][$str_id];
@@ -114,7 +114,7 @@ class AdminController extends RISBaseController
         if (AntiXSS::isTokenSet("save") && isset($_REQUEST["BenutzerIn"])) {
             foreach ($_REQUEST["BenutzerIn"] as $strIn_id => $benutzerIn_id) {
                 /** @var StadtraetIn $strIn */
-                $strIn = StadtraetIn::model()->findByPk($strIn_id);
+                $strIn = StadtraetIn::findOne($strIn_id);
                 if ($benutzerIn_id > 0) $strIn->benutzerIn_id = IntVal($benutzerIn_id);
                 else $strIn->benutzerIn_id = null;
                 $strIn->save();
@@ -123,7 +123,7 @@ class AdminController extends RISBaseController
         }
 
         /** @var StadtraetIn[] $stadtraetInnen */
-        $stadtraetInnen = StadtraetIn::model()->findAll();
+        $stadtraetInnen = StadtraetIn::findAll();
         $stadtraetInnen = StadtraetIn::sortByName($stadtraetInnen);
 
         $this->render("stadtraetInnenBenutzerInnen", [
@@ -149,8 +149,8 @@ class AdminController extends RISBaseController
         $this->top_menu = "admin";
 
         if (AntiXSS::isTokenSet("tag_umbennen")) {
-            $tag_alt     = Tag::model()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
-            $gleichnamig = Tag::model()->findByAttributes(["name" => $_REQUEST["neuer_name"]]);
+            $tag_alt     = Tag::find()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
+            $gleichnamig = Tag::find()->findByAttributes(["name" => $_REQUEST["neuer_name"]]);
 
             if ($gleichnamig != null) { // Tag mit neuem Namen existiert bereits-> merge
                 // Zuerst bei allen Anträgen mit beiden tags den Eintrag für den alten tag löschen
@@ -174,7 +174,7 @@ class AdminController extends RISBaseController
         }
 
         if (AntiXSS::isTokenSet("tag_loeschen")) {
-            $tag = Tag::model()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
+            $tag = Tag::find()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
 
             Yii::$app->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id')
                 ->bindValues([':tag_id' => $tag->id])
@@ -186,7 +186,7 @@ class AdminController extends RISBaseController
         }
 
         if (AntiXSS::isTokenSet("einzelnen_tag_loeschen")) {
-            $tag = Tag::model()->findByAttributes(["name" => $_REQUEST["tag_name"]]);
+            $tag = Tag::find()->findByAttributes(["name" => $_REQUEST["tag_name"]]);
 
             Yii::$app->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id AND antrag_id=:antrag_id')
                 ->bindValues([':tag_id' => $tag->id, ':antrag_id' => $_REQUEST["antrag_id"]])
@@ -195,7 +195,7 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Einzelner Tag gelöscht";
         }
 
-        $tags = Tag::model()->findAll();
+        $tags = Tag::findAll();
         usort($tags, function ($tag1, $tag2) {
             /**
             * @var Tag $dok1
@@ -222,7 +222,7 @@ class AdminController extends RISBaseController
 
         if (AntiXSS::isTokenSet("delete")) {
             /** @var Termin $termin */
-            $termin = Termin::model()->findByPk(AntiXSS::getTokenVal("delete"));
+            $termin = Termin::find()->findByPk(AntiXSS::getTokenVal("delete"));
             $termin->delete();
             $this->msg_ok = "Gelöscht.";
         }
@@ -247,7 +247,7 @@ class AdminController extends RISBaseController
             }
             if (isset($_REQUEST["termin"])) foreach ($_REQUEST["termin"] as $id => $save) {
                 /** @var Termin $termin */
-                $termin              = Termin::model()->findByPk($id);
+                $termin              = Termin::findOne($id);
                 $termin->sitzungsort = $save["ort"];
                 $termin->termin      = $save["datum"];
                 $termin->save();
@@ -255,7 +255,7 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Gespeichert";
         }
 
-        $termine = Termin::model()->findAllByAttributes(["typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
+        $termine = Termin::find()->findAllByAttributes(["typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
         $this->render("buergerInnenversammlungen", [
             "termine" => $termine,
         ]);

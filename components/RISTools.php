@@ -296,7 +296,7 @@ class RISTools
     public function ris_get_person_by_name($name_normalized, $name)
     {
         /** @var Person $p */
-        $p = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
+        $p = Person::findOne(["name_normalized" => $name_normalized]);
         if ($p) return $p;
         echo "$name / $name_normalized \n";
 
@@ -495,7 +495,7 @@ class RISTools
     public static function insertTooltips($text_html)
     {
         /** @var Text[] $eintraege */
-        $eintraege    = Text::model()->findAllByAttributes([
+        $eintraege    = Text::findAll([
             "typ" => Text::$TYP_GLOSSAR,
         ]);
         $regexp_parts = [];

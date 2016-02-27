@@ -389,11 +389,11 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
             if (isset($alle_termine[$termin->id])) return;
             $alle_termine[$termin->id] = $termin;
             if ($termin->termin_next_id > 0) {
-                $next = Termin::model()->findByPk($termin->termin_next_id);
+                $next = Termin::findOne($termin->termin_next_id);
                 if ($next) termine_add($alle_termine, $next);
             }
             if ($termin->termin_prev_id > 0) {
-                $prev = Termin::model()->findByPk($termin->termin_prev_id);
+                $prev = Termin::findOne($termin->termin_prev_id);
                 if ($prev) termine_add($alle_termine, $prev);
             }
         }

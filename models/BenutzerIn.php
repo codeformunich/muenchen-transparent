@@ -45,7 +45,7 @@ class BenutzerIn extends ActiveRecord
      */
     public static function alleAktiveAccounts()
     {
-        return BenutzerIn::model()->findAllByAttributes(["email_bestaetigt" => "1"], ["order" => "email"]);
+        return BenutzerIn::find()->findAllByAttributes(["email_bestaetigt" => "1"], ["order" => "email"]);
     }
 
     /**
@@ -330,7 +330,7 @@ class BenutzerIn extends ActiveRecord
     public static function heuteZuBenachrichtigendeBenutzerInnen()
     {
         /** @var BenutzerIn[] $benutzerInnen */
-        $benutzerInnen = BenutzerIn::model()->findAllByAttributes(["email_bestaetigt" => 1]);
+        $benutzerInnen = BenutzerIn::findAll(["email_bestaetigt" => 1]);
         $todo          = [];
         foreach ($benutzerInnen as $benutzerIn) {
             $wochentag = $benutzerIn->getEinstellungen()->benachrichtigungstag;
@@ -427,7 +427,7 @@ class BenutzerIn extends ActiveRecord
                         }
                         if (!isset($ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id])) {
                             $ergebnisse["antraege"][$dokument->antrag_id]["dokumente"][$dokument_id] = [
-                                "dokument" => Dokument::model()->findByPk($dokument_id),
+                                "dokument" => Dokument::findOne($dokument_id),
                                 "queries"  => []
                             ];
                         }
@@ -441,7 +441,7 @@ class BenutzerIn extends ActiveRecord
                         }
                         if (!isset($ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id])) {
                             $ergebnisse["termine"][$dokument->termin_id]["dokumente"][$dokument_id] = [
-                                "dokument" => Dokument::model()->findByPk($dokument_id),
+                                "dokument" => Dokument::findOne($dokument_id),
                                 "queries"  => []
                             ];
                         }
@@ -483,7 +483,7 @@ class BenutzerIn extends ActiveRecord
         $x = explode("-", $code);
         if (count($x) != 2) return null;
         /** @var BenutzerIn $benutzerIn */
-        $benutzerIn = BenutzerIn::model()->findByPk($x[0]);
+        $benutzerIn = BenutzerIn::findOne($x[0]);
         if (!$benutzerIn) return null;
         elseif ($code == $benutzerIn->getFeedCode()) return $benutzerIn;
         else return null;

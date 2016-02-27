@@ -16,12 +16,12 @@ class Rebuild_VorgaengeCommand extends CConsoleCommand
             foreach ($data as $id) {
                 echo $id . "\n";
                 /** @var Antrag $antrag */
-                $antrag = Antrag::model()->findByPk($id);
+                $antrag = Antrag::findOne($id);
                 $antrag->rebuildVorgaenge();
             }
         } else {
             /** @var Antrag $antrag */
-            $antrag = Antrag::model()->findByPk($args[0]);
+            $antrag = Antrag::findOne($args[0]);
             $antrag->rebuildVorgaenge();
         }
 

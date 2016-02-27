@@ -18,7 +18,7 @@ class Reindex_DocumentsCommand extends CConsoleCommand
         foreach ($data as $nr => $dok_id) {
             echo "$nr / $anz => $dok_id\n";
             /** @var Dokument $dokument */
-            $dokument = Dokument::model()->findByPk($dok_id);
+            $dokument = Dokument::findOne($dok_id);
             if (!$dokument) continue;
 
             //$dokument->reDownloadIndex();
