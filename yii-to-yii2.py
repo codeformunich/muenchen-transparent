@@ -155,6 +155,24 @@ def do_replace(filepath, yii1_classes, replacements):
         contents = contents.replace("$this->context->pageTitle", "$this->title")
         contents = re.sub(r"\$this->context->(title|render)", r"$this->\1", contents)
     
+    if "relations" in replacements:
+        relation_regex = r"(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public function relations\(\)[\ \n]*{[^}]*})"
+        if re.search(relation_regex, contents):
+            print("found relations() in " + filepath)
+            splitted = re.split(relation_regex, contents)
+            assert len(splitted) == 3
+            content = splitted[0]
+            
+            relation = splitted[1]
+            #print(relation)
+            word = r"\s*['\"](\w+)['\"]\s*"
+            single_relation = word + r"=>\s*(?:array\(|\[)self::HAS_MANY," + word + r"," + word + r"\s*(?:\)|\])"
+            
+            print(re.findall(single_relation, relation))
+            
+            content = splitted[2]
+            return
+    
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
 
