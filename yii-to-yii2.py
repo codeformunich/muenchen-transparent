@@ -5,9 +5,8 @@ import argparse, os, re, glob, fnmatch, sys, subprocess, shutil
 
 default_code_paths = ["controllers/", "commands/", "views/", "models/", "components/", "RISParser/", "tests/acceptance/"]
 
-## Constants (alter if necessary)
+## Some constants (alter if necessary)
 
-fnmatch_pattern = '*.php'
 php_class = "[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*"
 
 searcher = [
@@ -18,6 +17,23 @@ searcher = [
     # finds the names of the baseclasses for files defining inherited classes
     re.compile("class " + php_class + " extends (" + php_class + ")"),
 ]
+
+activequery_head = """
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function get{}()
+    {{
+        return """
+
+activequery_tail = """
+    }}
+
+"""
+
+activequery_one       = activequery_head + "$this->hasOne({}::className(), ['id' => '{}']);" + activequery_tail
+activequery_many      = activequery_head + "$this->hasMany({}::className(), ['id' => '{}']);" + activequery_tail
+activequery_many_many = activequery_head + "$this->hasMany({}::className(), ['id' => '{}'])->viaTable('{}', ['{}' => 'id']);" + activequery_tail
 
 def generate_namespace_mapping():
     namespaces = {
@@ -164,11 +180,12 @@ def do_replace(filepath, yii1_classes, replacements):
             content = splitted[0]
             
             relation = splitted[1]
-            #print(relation)
             word = r"\s*['\"](\w+)['\"]\s*"
             single_relation = word + r"=>\s*(?:array\(|\[)self::HAS_MANY," + word + r"," + word + r"\s*(?:\)|\])"
             
-            print(re.findall(single_relation, relation))
+            all_relations = re.findall(single_relation, relation)
+            for i in all_relations:
+                print(activequery_many.format(i[0].title(), i[1], i[2]))
             
             content = splitted[2]
             return
@@ -191,7 +208,7 @@ def find_yii1_classes():
 
 def get_all_files(paths):
     """
-    Yields all files in `paths` that match `fnmatch_pattern`.
+    Yields all files in `paths` that match "*.php"
     
     `paths` might contain anarbitrary count of files and folders.
     """
@@ -204,7 +221,7 @@ def get_all_files(paths):
             yield path
         else:
             for root, dirnames, filenames in os.walk(path):
-                for filename in fnmatch.filter(filenames, fnmatch_pattern):
+                for filename in fnmatch.filter(filenames, "*.php"):
                     yield os.path.join(root, filename)
 
 def find_usages_for_import(filepath, sources):
