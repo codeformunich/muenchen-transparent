@@ -28,11 +28,10 @@ activequery_head = """
 
 activequery_tail = """
     }}
-
 """
 
 activequery_one       = activequery_head + "$this->hasOne({}::className(), ['id' => '{}']);" + activequery_tail
-activequery_many      = activequery_head + "$this->hasMany({}::className(), ['id' => '{}']);" + activequery_tail
+activequery_many      = activequery_head + "$this->hasMany({}::className(), ['{}' => 'id']);" + activequery_tail
 activequery_many_many = activequery_head + "$this->hasMany({}::className(), ['id' => '{}'])->viaTable('{}', ['{}' => 'id']);" + activequery_tail
 
 def generate_namespace_mapping():
@@ -142,8 +141,9 @@ def do_replace(filepath, yii1_classes, replacements):
             contents = re.sub("([^\\w\\d])" + i, "\\1" + i[1:], contents)
     
     if "create-url" in replacements:
-        contents = contents.replace("Yii::\$app\->createUrl\(", "Url::to(")
-        contents = contents.replace("$this->createUrl(",        "Url::to(")
+        contents = contents.replace("Yii::$app->createUrl(", "Url::to(")
+        contents = contents.replace("$this->createUrl(",     "Url::to(")
+        contents = contents.replace("Html::link(",           "Html::a(")
     
     if "static-table-name" in replacements:
         contents = contents.replace("public function tableName()", "public static function tableName()")
@@ -169,26 +169,57 @@ def do_replace(filepath, yii1_classes, replacements):
     if "this-context" in replacements:
         contents = re.sub(r"\$this->(context->)*", "$this->context->", contents)
         contents = contents.replace("$this->context->pageTitle", "$this->title")
-        contents = re.sub(r"\$this->context->(title|render)", r"$this->\1", contents)
+        contents = re.sub(r"\$this->context->(title|render|beginContent|endContent)", r"$this->\1", contents)
+    
+    if "render" in replacements:
+        contents = contents.replace("$this->render(", "return $this->render(")
+        contents = contents.replace("$this->renderPartial(", "echo $this->render(")
+        # Catch replacing correct recnder() call
+        contents = contents.replace("echo return $this->render(", "echo $this->render(")
     
     if "relations" in replacements:
-        relation_regex = r"(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public function relations\(\)[\ \n]*{[^}]*})"
+        function_regex = r"\n(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public *function *{}\(\)[\ \n]*{{[^}}]*}})\ *\n"
+        relation_regex = function_regex.format("relations")
+        
         if re.search(relation_regex, contents):
             print("found relations() in " + filepath)
+
+            word = r"\s*['\"](\w+)['\"]\s*"
+            relation_belongs_to = word + r"=>\s*(?:array\(|\[)self::BELONGS_TO," + word + r"," + word + r"\s*(?:\)|\])"
+            relation_has_many   = word + r"=>\s*(?:array\(|\[)self::HAS_MANY,"   + word + r"," + word + r"\s*(?:\)|\])"
+            relation_many_many  = word + r"=>\s*(?:array\(|\[)self::MANY_MANY,"  + word + r"," + r"\s*['\"](\w+)\((\w+),\s*(\w+)\)['\"]\s*" + r"\s*(?:\)|\])"
+            
+            for i in re.findall(relation_belongs_to, contents):
+                contents = re.sub(function_regex.format("get" + i[0].capitalize()), "", contents)
+            
+            for i in re.findall(relation_has_many, contents):
+                contents = re.sub(function_regex.format("get" + i[0].capitalize()), "", contents)
+            
+            for i in re.findall(relation_many_many, contents):
+                contents = re.sub(function_regex.format("get" + i[0].capitalize()), "", contents)
+            
             splitted = re.split(relation_regex, contents)
             assert len(splitted) == 3
-            content = splitted[0]
+            contents = splitted[0]
             
             relation = splitted[1]
-            word = r"\s*['\"](\w+)['\"]\s*"
-            single_relation = word + r"=>\s*(?:array\(|\[)self::HAS_MANY," + word + r"," + word + r"\s*(?:\)|\])"
             
-            all_relations = re.findall(single_relation, relation)
-            for i in all_relations:
-                print(activequery_many.format(i[0].title(), i[1], i[2]))
+            def upperfirst(x):
+                return x[0].upper() + x[1:]
             
-            content = splitted[2]
-            return
+            for i in re.findall(relation_belongs_to, relation):
+                print(i)
+                contents += "".join(activequery_one.format(upperfirst(i[0]), i[1], i[2]))
+            
+            for i in re.findall(relation_has_many, relation):
+                print(i)
+                contents += "".join(activequery_many.format(upperfirst(i[0]), i[1], i[2]))
+            
+            for i in re.findall(relation_many_many, relation):
+                print(i)
+                contents += "".join(activequery_many_many.format(upperfirst(i[0]), i[1], i[2], i[3], i[4]))
+            
+            contents += splitted[2]
     
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
