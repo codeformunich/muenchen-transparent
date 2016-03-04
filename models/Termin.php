@@ -80,19 +80,43 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getGremium()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'antraegeDokumente'   => [self::HAS_MANY, 'Dokument', 'termin_id'],
-            'tagesordnungspunkte' => [self::HAS_MANY, 'Tagesordnungspunkt', 'sitzungstermin_id'],
-            'antraegeOrte'        => [self::HAS_MANY, 'AntragOrt', 'termin_id'],
-            'gremium'             => [self::BELONGS_TO, 'Gremium', 'gremium_id'],
-            'ba'                  => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
-        ];
+        return $this->hasOne(Gremium::className(), ['id' => 'gremium_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBa()
+    {
+        return $this->hasOne(Bezirksausschuss::className(), ['id' => 'ba_nr']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraegeDokumente()
+    {
+        return $this->hasMany(Dokument::className(), ['termin_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagesordnungspunkte()
+    {
+        return $this->hasMany(Tagesordnungspunkt::className(), ['sitzungstermin_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraegeOrte()
+    {
+        return $this->hasMany(AntragOrt::className(), ['termin_id' => 'id']);
     }
 
     /**

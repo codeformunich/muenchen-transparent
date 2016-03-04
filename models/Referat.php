@@ -62,16 +62,19 @@ class Referat extends ActiveRecord implements IRISItem
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getAntraege()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'antraege'               => [self::HAS_MANY, 'Antrag', 'referat_id'],
-            'stadtraetInnenReferate' => [self::HAS_MANY, 'StadtraetInReferat', 'referat_id'],
-        ];
+        return $this->hasMany(Antrag::className(), ['referat_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetInnenReferate()
+    {
+        return $this->hasMany(StadtraetInReferat::className(), ['referat_id' => 'id']);
     }
 
     /**

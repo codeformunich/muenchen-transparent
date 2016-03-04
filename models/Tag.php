@@ -57,14 +57,19 @@ class Tag extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getAngelegt_benutzerIn()
     {
-        return [
-            'angelegt_benutzerIn' => [self::BELONGS_TO, 'BenutzerIn', 'angelegt_benutzerIn_id'],
-            'antraege'            => [self::MANY_MANY, 'Antrag', 'antraege_tags(tag_id, antrag_id)'],
-        ];
+        return $this->hasOne(BenutzerIn::className(), ['id' => 'angelegt_benutzerIn_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraege()
+    {
+        return $this->hasMany(Antrag::className(), ['id' => 'antraege_tags'])->viaTable('tag_id', ['antrag_id' => 'id']);
     }
 
     /**

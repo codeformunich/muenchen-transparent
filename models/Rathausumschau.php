@@ -49,13 +49,11 @@ class Rathausumschau extends ActiveRecord implements IRISItem
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getDokumente()
     {
-        return [
-            'dokumente' => [self::HAS_MANY, 'Dokument', 'rathausumschau_id'],
-        ];
+        return $this->hasMany(Dokument::className(), ['rathausumschau_id' => 'id']);
     }
 
     /**

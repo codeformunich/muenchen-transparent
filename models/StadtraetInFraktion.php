@@ -54,16 +54,19 @@ class StadtraetInFraktion extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getFraktion()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'fraktion'    => [self::BELONGS_TO, 'Fraktion', 'fraktion_id'],
-            'stadtraetIn' => [self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'],
-        ];
+        return $this->hasOne(Fraktion::className(), ['id' => 'fraktion_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetIn()
+    {
+        return $this->hasOne(StadtraetIn::className(), ['id' => 'stadtraetIn_id']);
     }
 
     /**

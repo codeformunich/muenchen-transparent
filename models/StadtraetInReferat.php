@@ -51,16 +51,19 @@ class StadtraetInReferat extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getReferat()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'referat'     => [self::BELONGS_TO, 'Referat', 'referat_id'],
-            'stadtraetIn' => [self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'],
-        ];
+        return $this->hasOne(Referat::className(), ['id' => 'referat_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetIn()
+    {
+        return $this->hasOne(StadtraetIn::className(), ['id' => 'stadtraetIn_id']);
     }
 
     /**

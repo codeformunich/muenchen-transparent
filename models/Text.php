@@ -60,13 +60,11 @@ class Text extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getEdit_benutzerIn()
     {
-        return [
-            'edit_benutzerIn' => [self::BELONGS_TO, 'Person', 'edit_benutzerIn_id'],
-        ];
+        return $this->hasOne(Person::className(), ['id' => 'edit_benutzerIn_id']);
     }
 
     /**

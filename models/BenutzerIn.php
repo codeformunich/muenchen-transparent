@@ -114,14 +114,19 @@ class BenutzerIn extends ActiveRecord
     }
 
     /**
-     * @return array
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getStadtraetInnen()
     {
-        return [
-            'abonnierte_vorgaenge' => [self::MANY_MANY, 'Vorgang', 'benutzerInnen_vorgaenge_abos(benutzerInnen_id, vorgaenge_id)'],
-            'stadtraetInnen'       => [self::HAS_MANY, 'StadtraetIn', 'benutzerIn_id'],
-        ];
+        return $this->hasMany(StadtraetIn::className(), ['benutzerIn_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAbonnierte_vorgaenge()
+    {
+        return $this->hasMany(Vorgang::className(), ['id' => 'benutzerInnen_vorgaenge_abos'])->viaTable('benutzerInnen_id', ['vorgaenge_id' => 'id']);
     }
 
     /**

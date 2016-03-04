@@ -49,15 +49,11 @@ class BezirksausschussBudget extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getBezirksausschuss()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'bezirksausschuss' => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
-        ];
+        return $this->hasOne(Bezirksausschuss::className(), ['id' => 'ba_nr']);
     }
 
     /**

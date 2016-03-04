@@ -65,15 +65,27 @@ class Person extends ActiveRecord implements IRISItem
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getStadtraetIn()
     {
-        return [
-            'antraegePersonen' => [self::HAS_MANY, 'AntragPerson', 'person_id'],
-            'stadtraetIn'      => [self::BELONGS_TO, 'StadtraetIn', 'ris_stadtraetIn'],
-            'fraktion'         => [self::BELONGS_TO, 'Fraktion', 'ris_fraktion'],
-        ];
+        return $this->hasOne(StadtraetIn::className(), ['id' => 'ris_stadtraetIn']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFraktion()
+    {
+        return $this->hasOne(Fraktion::className(), ['id' => 'ris_fraktion']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraegePersonen()
+    {
+        return $this->hasMany(AntragPerson::className(), ['person_id' => 'id']);
     }
 
     /**

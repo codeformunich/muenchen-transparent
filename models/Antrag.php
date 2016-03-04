@@ -110,27 +110,107 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getBa()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'ba'               => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
-            'dokumente'        => [self::HAS_MANY, 'Dokument', 'antrag_id'],
-            'ergebnisse'       => [self::HAS_MANY, 'Tagesordnungspunkt', 'antrag_id'],
-            //'antraege_links_in' => array(self::HAS_MANY, 'Antrag', 'antrag1'),
-            //'antraege_links_out' => array(self::HAS_MANY, 'AntraegeLinks', 'antrag2'),
-            'orte'             => [self::HAS_MANY, 'AntragOrt', 'antrag_id'],
-            'antraegePersonen' => [self::HAS_MANY, 'AntragPerson', 'antrag_id'],
-            'stadtraetInnen'   => [self::MANY_MANY, 'StadtraetIn', 'antraege_stadtraetInnen(antrag_id, stadtraetIn_id)'],
-            'vorlage2antraege' => [self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag1, antrag2)'],
-            'antrag2vorlagen'  => [self::MANY_MANY, 'Antrag', 'antraege_vorlagen(antrag2, antrag1)'],
-            'abos'             => [self::MANY_MANY, 'AntragAbo', 'antraege_abos(antrag_id, benutzerIn_id)'],
-            'vorgang'          => [self::BELONGS_TO, 'Vorgang', 'vorgang_id'],
-            'tags'             => [self::MANY_MANY, 'Tag', 'antraege_tags(antrag_id, tag_id)'],
-        ];
+        return $this->hasOne(Bezirksausschuss::className(), ['id' => 'ba_nr']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVorgang()
+    {
+        return $this->hasOne(Vorgang::className(), ['id' => 'vorgang_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDokumente()
+    {
+        return $this->hasMany(Dokument::className(), ['antrag_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getErgebnisse()
+    {
+        return $this->hasMany(Tagesordnungspunkt::className(), ['antrag_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraege_links_in()
+    {
+        return $this->hasMany(Antrag::className(), ['antrag1' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraege_links_out()
+    {
+        return $this->hasMany(AntraegeLinks::className(), ['antrag2' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrte()
+    {
+        return $this->hasMany(AntragOrt::className(), ['antrag_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraegePersonen()
+    {
+        return $this->hasMany(AntragPerson::className(), ['antrag_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetInnen()
+    {
+        return $this->hasMany(StadtraetIn::className(), ['id' => 'antraege_stadtraetInnen'])->viaTable('antrag_id', ['stadtraetIn_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVorlage2antraege()
+    {
+        return $this->hasMany(Antrag::className(), ['id' => 'antraege_vorlagen'])->viaTable('antrag1', ['antrag2' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntrag2vorlagen()
+    {
+        return $this->hasMany(Antrag::className(), ['id' => 'antraege_vorlagen'])->viaTable('antrag2', ['antrag1' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAbos()
+    {
+        return $this->hasMany(AntragAbo::className(), ['id' => 'antraege_abos'])->viaTable('antrag_id', ['benutzerIn_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'antraege_tags'])->viaTable('antrag_id', ['tag_id' => 'id']);
     }
 
 
@@ -445,14 +525,6 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @return Dokument[]
-     */
-    public function getDokumente()
-    {
-        return $this->dokumente;
-    }
-
-    /**
      * @param int $anz
      * @return Dokument[]
      */
@@ -577,16 +649,6 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
             $gefunden->save();
         }
         if (SITE_CALL_MODE == "shell") echo "Fertig";
-    }
-
-    /**
-     * @return Vorgang
-     */
-    public function getVorgang()
-    {
-        if ($this->vorgang === null) $this->rebuildVorgaenge();
-        $this->refresh();
-        return $this->vorgang;
     }
 
     /**

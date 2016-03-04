@@ -63,15 +63,11 @@ class OrtGeo extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getAntraegeOrte()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'antraegeOrte' => [self::HAS_MANY, 'AntragOrt', 'ort_id'],
-        ];
+        return $this->hasMany(AntragOrt::className(), ['ort_id' => 'id']);
     }
 
     /**

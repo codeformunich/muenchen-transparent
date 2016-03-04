@@ -59,14 +59,19 @@ class AntragPerson extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getPerson()
     {
-        return [
-            'person' => [self::BELONGS_TO, 'Person', 'person_id'],
-            'antrag' => [self::BELONGS_TO, 'Antrag', 'antrag_id'],
-        ];
+        return $this->hasOne(Person::className(), ['id' => 'person_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntrag()
+    {
+        return $this->hasOne(Antrag::className(), ['id' => 'antrag_id']);
     }
 
     /**

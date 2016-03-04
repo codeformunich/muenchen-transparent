@@ -77,15 +77,11 @@ class AntragHistory extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getBa()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'ba' => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
-        ];
+        return $this->hasOne(Bezirksausschuss::className(), ['id' => 'ba_nr']);
     }
 
     /**

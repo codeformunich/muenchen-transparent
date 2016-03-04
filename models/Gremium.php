@@ -61,18 +61,35 @@ class Gremium extends ActiveRecord implements IRISItem
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getBa()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'tagesordnungspunkte' => [self::HAS_MANY, 'Tagesordnungspunkt', 'gremium_id'],
-            'ba'                  => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
-            'termine'             => [self::HAS_MANY, 'Termin', 'gremium_id'],
-            'mitgliedschaften'    => [self::HAS_MANY, 'StadtraetInGremium', 'gremium_id'],
-        ];
+        return $this->hasOne(Bezirksausschuss::className(), ['id' => 'ba_nr']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagesordnungspunkte()
+    {
+        return $this->hasMany(Tagesordnungspunkt::className(), ['gremium_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTermine()
+    {
+        return $this->hasMany(Termin::className(), ['gremium_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMitgliedschaften()
+    {
+        return $this->hasMany(StadtraetInGremium::className(), ['gremium_id' => 'id']);
     }
 
     /**

@@ -54,17 +54,27 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getAntraege()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'antraege'   => [self::HAS_MANY, 'Antrag', 'vorgang_id'],
-            'ergebnisse' => [self::HAS_MANY, 'Tagesordnungspunkt', 'vorgang_id'],
-            'dokumente'  => [self::HAS_MANY, 'Dokument', 'vorgang_id'],
-        ];
+        return $this->hasMany(Antrag::className(), ['vorgang_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getErgebnisse()
+    {
+        return $this->hasMany(Tagesordnungspunkt::className(), ['vorgang_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDokumente()
+    {
+        return $this->hasMany(Dokument::className(), ['vorgang_id' => 'id']);
     }
 
     /**
@@ -101,14 +111,6 @@ class Vorgang extends ActiveRecord implements IRISItemHasDocuments
         });
 
         return $items;
-    }
-
-    /**
-     * @return Dokument[]
-     */
-    public function getDokumente()
-    {
-        return $this->dokumente;
     }
 
     /**

@@ -70,19 +70,43 @@ class Tagesordnungspunkt extends ActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getSitzungstermin()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'sitzungstermin' => [self::BELONGS_TO, 'Termin', 'sitzungstermin_id'],
-            'gremium'        => [self::BELONGS_TO, 'Gremium', 'gremium_id'],
-            'antrag'         => [self::BELONGS_TO, 'Antrag', 'antrag_id'],
-            'dokumente'      => [self::HAS_MANY, 'Dokument', 'tagesordnungspunkt_id'],
-            'vorgang'        => [self::BELONGS_TO, 'Vorgang', 'vorgang_id'],
-        ];
+        return $this->hasOne(Termin::className(), ['id' => 'sitzungstermin_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGremium()
+    {
+        return $this->hasOne(Gremium::className(), ['id' => 'gremium_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntrag()
+    {
+        return $this->hasOne(Antrag::className(), ['id' => 'antrag_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVorgang()
+    {
+        return $this->hasOne(Vorgang::className(), ['id' => 'vorgang_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDokumente()
+    {
+        return $this->hasMany(Dokument::className(), ['tagesordnungspunkt_id' => 'id']);
     }
 
     /**
@@ -193,14 +217,6 @@ class Tagesordnungspunkt extends ActiveRecord implements IRISItemHasDocuments
         } else {
             return RISTools::korrigiereTitelZeichen($this->top_betreff);
         }
-    }
-
-    /**
-     * @return Dokument[]
-     */
-    public function getDokumente()
-    {
-        return $this->dokumente;
     }
 
     /**

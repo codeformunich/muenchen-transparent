@@ -61,22 +61,67 @@ class Bezirksausschuss extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getAntraege()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'antraege'          => [self::HAS_MANY, 'Antrag', 'ba_nr'],
-            'antraegeHistories' => [self::HAS_MANY, 'AntragHistory', 'ba_nr'],
-            'gremien'           => [self::HAS_MANY, 'Gremium', 'ba_nr'],
-            'gremienHistories'  => [self::HAS_MANY, 'GremiumHistory', 'ba_nr'],
-            'RISAenderungen'    => [self::HAS_MANY, 'RisAenderung', 'ba_nr'],
-            'stadtraetInnen'    => [self::HAS_MANY, 'StadtraetIn', 'ba_nr'],
-            'fraktionen'        => [self::HAS_MANY, 'Fraktion', 'ba_nr'],
-            'budgets'           => [self::HAS_MANY, 'BezirksausschussBudget', 'ba_nr'],
-        ];
+        return $this->hasMany(Antrag::className(), ['ba_nr' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntraegeHistories()
+    {
+        return $this->hasMany(AntragHistory::className(), ['ba_nr' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGremien()
+    {
+        return $this->hasMany(Gremium::className(), ['ba_nr' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGremienHistories()
+    {
+        return $this->hasMany(GremiumHistory::className(), ['ba_nr' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRISAenderungen()
+    {
+        return $this->hasMany(RisAenderung::className(), ['ba_nr' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetInnen()
+    {
+        return $this->hasMany(StadtraetIn::className(), ['ba_nr' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFraktionen()
+    {
+        return $this->hasMany(Fraktion::className(), ['ba_nr' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBudgets()
+    {
+        return $this->hasMany(BezirksausschussBudget::className(), ['ba_nr' => 'id']);
     }
 
     /**

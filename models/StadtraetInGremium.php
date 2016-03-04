@@ -51,16 +51,19 @@ class StadtraetInGremium extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getGremium()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'gremium'     => [self::BELONGS_TO, 'Gremium', 'gremium_id'],
-            'stadtraetIn' => [self::BELONGS_TO, 'StadtraetIn', 'stadtraetIn_id'],
-        ];
+        return $this->hasOne(Gremium::className(), ['id' => 'gremium_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetIn()
+    {
+        return $this->hasOne(StadtraetIn::className(), ['id' => 'stadtraetIn_id']);
     }
 
     /**

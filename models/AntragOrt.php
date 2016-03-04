@@ -61,19 +61,43 @@ class AntragOrt extends ActiveRecord
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getDokument()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'dokument'       => [self::BELONGS_TO, 'Dokument', 'dokument_id'],
-            'antrag'         => [self::BELONGS_TO, 'Antrag', 'antrag_id'],
-            'termin'         => [self::BELONGS_TO, 'Tagesordnungspunkt', 'termin_id'],
-            'rathausumschau' => [self::BELONGS_TO, 'Rathausumschau', 'rathausumschau_id'],
-            'ort'            => [self::BELONGS_TO, 'OrtGeo', 'ort_id'],
-        ];
+        return $this->hasOne(Dokument::className(), ['id' => 'dokument_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAntrag()
+    {
+        return $this->hasOne(Antrag::className(), ['id' => 'antrag_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTermin()
+    {
+        return $this->hasOne(Tagesordnungspunkt::className(), ['id' => 'termin_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRathausumschau()
+    {
+        return $this->hasOne(Rathausumschau::className(), ['id' => 'rathausumschau_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrt()
+    {
+        return $this->hasOne(OrtGeo::className(), ['id' => 'ort_id']);
     }
 
     /**

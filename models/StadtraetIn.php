@@ -76,20 +76,27 @@ class StadtraetIn extends ActiveRecord implements IRISItem
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getPersonen()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'antraege'                 => [self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antrag_id)', 'order' => 'gestellt_am DESC'],
-            'personen'                 => [self::HAS_MANY, 'Person', 'ris_stadtraetIn'],
-            'stadtraetInnenFraktionen' => [self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'],
-            'mitgliedschaften'         => [self::HAS_MANY, 'StadtraetInGremium', 'stadtraetIn_id'],
-            'stadtraetInnenReferate'   => [self::HAS_MANY, 'StadtraetInReferat', 'stadtraetIn_id'],
-            'benutzerIn'               => [self::HAS_ONE, 'BenutzerIn', 'benutzerIn_id'],
-        ];
+        return $this->hasMany(Person::className(), ['ris_stadtraetIn' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMitgliedschaften()
+    {
+        return $this->hasMany(StadtraetInGremium::className(), ['stadtraetIn_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetInnenReferate()
+    {
+        return $this->hasMany(StadtraetInReferat::className(), ['stadtraetIn_id' => 'id']);
     }
 
     /**

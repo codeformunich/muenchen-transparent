@@ -55,17 +55,27 @@ class Fraktion extends ActiveRecord implements IRISItem
     }
 
     /**
-     * @return array relational rules.
+     * @return \yii\db\ActiveQuery
      */
-    public function relations()
+    public function getBezirksausschuss()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return [
-            'stadtraetInnenFraktionen' => [self::HAS_MANY, 'StadtraetInFraktion', 'fraktion_id'],
-            'bezirksausschuss'         => [self::BELONGS_TO, 'Bezirksausschuss', 'ba_nr'],
-            'personen'                 => [self::HAS_MANY, 'Person', 'ris_fraktion'],
-        ];
+        return $this->hasOne(Bezirksausschuss::className(), ['id' => 'ba_nr']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStadtraetInnenFraktionen()
+    {
+        return $this->hasMany(StadtraetInFraktion::className(), ['fraktion_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPersonen()
+    {
+        return $this->hasMany(Person::className(), ['ris_fraktion' => 'id']);
     }
 
     /**
