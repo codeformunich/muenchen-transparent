@@ -174,9 +174,14 @@ def do_replace(filepath, yii1_classes, replacements):
     if "render" in replacements:
         contents = contents.replace("$this->render(", "return $this->render(")
         contents = contents.replace("$this->renderPartial(", "echo $this->render(")
-        # Catch replacing correct recnder() call
+        # Catch replacing correct render() call
         contents = contents.replace("echo return $this->render(", "echo $this->render(")
         contents = contents.replace("return return $this->render(", "return $this->render(")
+    
+    if "layout" in replacements:
+        contents = re.sub(r"public *\$layout *= *(['\"])//layouts/", r"public $layout = \1@app/views/layouts/", contents)
+        contents = re.sub(r"\$this->context->layout *= *(['\"])//layouts/", r"$this->context->layout = \1@app/views/layouts/", contents)
+        contents = re.sub(r"\$this->(begin|end)Content\((['\"])//layouts/", r"$this->\1Content(\2//layouts/")
     
     if "relations" in replacements:
         function_regex = r"\n(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public *function *{}\(\)[\ \n]*{{[^}}]*}})\ *\n"
