@@ -39,7 +39,6 @@ install:
   
   # Create yii-environment
   - mkdir protected/runtime
-  - mkdir html/assets
 
   # Set up mysql
   - mysql -e 'create database ristest;'
