@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\Referat;
+use app\models\StadtraetIn;
 use yii\db\ActiveRecord;
 
 /**

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\Person;
 use yii\db\ActiveRecord;
 
 /**

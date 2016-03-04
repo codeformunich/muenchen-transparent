@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use Yii;
+use yii\helpers\Url;
 use app\models\Antrag;
 use app\models\Tagesordnungspunkt;
 use app\models\Termin;

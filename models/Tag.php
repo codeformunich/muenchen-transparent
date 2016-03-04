@@ -2,9 +2,11 @@
 
 namespace app\models;
 
-use Yii;
+use app\models\Antrag;
+use app\models\BenutzerIn;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "texte".

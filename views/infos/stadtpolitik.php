@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use Yii;
+use yii\helpers\Url;
 
 /**
  * @var InfosController $this

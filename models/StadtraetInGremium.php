@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\Gremium;
+use app\models\StadtraetIn;
 use yii\db\ActiveRecord;
 
 /**

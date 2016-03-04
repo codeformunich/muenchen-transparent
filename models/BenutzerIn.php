@@ -6,7 +6,10 @@ use Yii;
 use app\components\RISSolrHelper;
 use app\components\RISTools;
 use app\models\Dokument;
+use app\models\StadtraetIn;
+use app\models\Vorgang;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * @property integer $id

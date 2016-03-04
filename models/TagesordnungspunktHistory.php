@@ -3,6 +3,11 @@
 namespace app\models;
 
 use app\components\RISTools;
+use app\models\Antrag;
+use app\models\Dokument;
+use app\models\Gremium;
+use app\models\Termin;
+use app\models\Vorgang;
 use yii\db\ActiveRecord;
 
 /**

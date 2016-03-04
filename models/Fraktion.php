@@ -3,6 +3,9 @@
 namespace app\models;
 
 use app\components\RISTools;
+use app\models\Bezirksausschuss;
+use app\models\Person;
+use app\models\StadtraetInFraktion;
 use yii\db\ActiveRecord;
 
 /**

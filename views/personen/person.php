@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use Yii;
+use yii\helpers\Url;
 use app\components\HTMLTools;
 use app\components\RISSolrHelper;
 use app\components\RISTools;

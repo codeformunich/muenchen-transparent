@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use app\components\RISTools;
 use app\models\Antrag;
+use app\models\Dokument;
+use app\models\Tagesordnungspunkt;
 use yii\db\ActiveRecord;
 
 /**

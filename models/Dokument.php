@@ -7,10 +7,16 @@ use app\components\RISGeo;
 use app\components\RISPDF2Text;
 use app\components\RISSolrHelper;
 use app\components\RISTools;
+use app\models\Antrag;
 use app\models\AntragOrt;
 use app\models\OrtGeo;
 use app\models\RISAenderung;
+use app\models\Rathausumschau;
+use app\models\Tagesordnungspunkt;
+use app\models\Termin;
+use app\models\Vorgang;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "dokumente".

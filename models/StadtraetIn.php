@@ -2,9 +2,12 @@
 
 namespace app\models;
 
-use Yii;
+use app\models\Person;
 use app\models\StadtraetInFraktionOverrides;
+use app\models\StadtraetInGremium;
+use app\models\StadtraetInReferat;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * @property integer $id

@@ -2,7 +2,7 @@
 
 namespace app\components;
 
-use Yii;
+use yii\helpers\Url;
 
 class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\AbstractBackend
 {

@@ -1,9 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use Yii;
-use app\components\RISTools;
 use yii\helpers\Url;
+use app\components\RISTools;
 
 /**
  * @var array $termine_zukunft

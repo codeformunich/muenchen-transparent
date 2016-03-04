@@ -6,6 +6,7 @@ use Yii;
 use app\components\RISBaseController;
 use app\models\Bezirksausschuss;
 use app\models\Termin;
+use yii\helpers\Url;
 
 class TermineController extends RISBaseController
 {

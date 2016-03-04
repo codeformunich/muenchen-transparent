@@ -4,7 +4,11 @@ namespace app\models;
 
 use Yii;
 use app\components\RISTools;
+use app\models\AntragPerson;
+use app\models\Fraktion;
+use app\models\StadtraetIn;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "personen".

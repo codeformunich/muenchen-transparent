@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\Antrag;
+use app\models\Person;
 use yii\db\ActiveRecord;
 
 /**

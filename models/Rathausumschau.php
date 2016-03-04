@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\Dokument;
 use yii\db\ActiveRecord;
 
 /**

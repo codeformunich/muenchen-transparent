@@ -2,6 +2,11 @@
 
 namespace app\models;
 
+use app\models\Antrag;
+use app\models\Dokument;
+use app\models\OrtGeo;
+use app\models\Rathausumschau;
+use app\models\Tagesordnungspunkt;
 use yii\db\ActiveRecord;
 
 /**
