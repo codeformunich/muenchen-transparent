@@ -81,7 +81,7 @@ $this->context->load_mediaelement = true;
             <br><br>
 
             <?
-            $this->renderPartial("/index/ckeditable_text", array(
+            echo $this->render("/index/ckeditable_text", array(
                 "text"            => $text,
                 "my_url"          => $my_url,
                 "show_title"      => false,

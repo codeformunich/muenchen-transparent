@@ -40,7 +40,7 @@ $this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
     </h1>
 
     <?
-    $this->renderPartial("/index/map", array(
+    echo $this->render("/index/map", array(
         "ortsbezugszahlgrenze" => 20,
         "geodata_overflow"     => $geodata_overflow
     ));
@@ -68,7 +68,7 @@ $this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 <div class="row <? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
     <div class="col col-md-5" id="stadtratsdokumente_holder">
         <div class="well" style="overflow: auto;">
-            <? $this->renderPartial("index_antraege_liste", array(
+            <? echo $this->render("index_antraege_liste", array(
                 "aeltere_url_std"   => $aeltere_url_std,
                 "neuere_url_std"    => $neuere_url_std,
                 "antraege"          => $antraege,
@@ -121,7 +121,7 @@ $this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             <?
             if (count($bvs) > 0) {
                 echo '<h3>BürgerInnenversammlung</h3><br>';
-                $this->renderPartial("../termine/termin_liste", array(
+                echo $this->render("../termine/termin_liste", array(
                     "termine"     => $bvs,
                     "gremienname" => false,
                 ));
@@ -132,7 +132,7 @@ $this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             <h3>Termine</h3>
             <br>
             <?
-            $this->renderPartial("../termine/termin_liste", array(
+            echo $this->render("../termine/termin_liste", array(
                 "termine"     => $termine,
                 "gremienname" => false,
             ));
@@ -163,7 +163,7 @@ $this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             <?
         }
 
-        $this->renderPartial("../personen/fraktionen", array(
+        echo $this->render("../personen/fraktionen", array(
             "fraktionen" => $fraktionen,
             "title"      => "BA-Mitglieder",
         ));
@@ -188,7 +188,7 @@ $this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
         <?
         }
 
-        $this->renderPartial("../personen/ausschuss_mitglieder", array(
+        echo $this->render("../personen/ausschuss_mitglieder", array(
             "gremien" => $gremien,
             "title"   => "Unterausschüsse",
         ));

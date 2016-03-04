@@ -131,7 +131,7 @@ class IndexController extends RISBaseController
             $titel = Yii::$app->params['projectTitle'] . ' Änderungen';
         }
 
-        $this->render("feed", [
+        return $this->render("feed", [
             "feed_title"       => $titel,
             "feed_description" => $titel,
             "data"             => $data,
@@ -397,7 +397,7 @@ class IndexController extends RISBaseController
         $naechster_ort = OrtGeo::findClosest($lng, $lat);
         ob_start();
 
-        $this->renderPartial('index_antraege_liste', [
+        echo $this->render('index_antraege_liste', [
             "aeltere_url_ajax"  => Url::to("index/antraegeAjaxGeo", ["lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1)]),
             "aeltere_url_std"   => Url::to("index/antraegeStdGeo", ["lat" => $lat, "lng" => $lng, "radius" => $radius, "seite" => ($seite + 1)]),
             "neuere_url_ajax"   => null,
@@ -488,17 +488,17 @@ class IndexController extends RISBaseController
                 if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
                 else $geodata = null;
 
-                $this->render("suchergebnisse", array_merge([
+                return $this->render("suchergebnisse", array_merge([
                     "krits"      => $krits,
                     "ergebnisse" => $ergebnisse,
                     "geodata"    => $geodata,
                 ], $benachrichtigungen_optionen));
             } catch (Exception $e) {
-                $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
+                return $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
                 Yii::$app->end(500);
             }
         } else {
-            $this->render("suche");
+            return $this->render("suche");
         }
     }
 
@@ -592,7 +592,7 @@ class IndexController extends RISBaseController
         $data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
         ob_start();
-        $this->renderPartial('index_antraege_liste', array_merge([
+        echo $this->render('index_antraege_liste', array_merge([
             "weiter_links_oben" => true,
         ], $data));
 
@@ -638,7 +638,7 @@ class IndexController extends RISBaseController
         $ba      = Bezirksausschuss::findOne($ba_nr);
         $gremien = $ba->gremien;
 
-        $this->render("ba_startseite", array_merge([
+        return $this->render("ba_startseite", array_merge([
             "ba"                           => $ba,
             "gremien"                      => $gremien,
             "termine"                      => $termine,
@@ -663,7 +663,7 @@ class IndexController extends RISBaseController
         $ba      = Bezirksausschuss::findOne($ba_nr);
 
         $antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max, static::$BA_DOKUMENTE_TAGE_PRO_SEITE * 2);
-        $this->render("ba_dokumente", array_merge([
+        return $this->render("ba_dokumente", array_merge([
             "ba"                           => $ba,
             "tage_vergangenheit_dokumente" => static::$BA_DOKUMENTE_TAGE_PRO_SEITE * 2,
             "explizites_datum"             => ($datum_max != ""),
@@ -721,7 +721,7 @@ class IndexController extends RISBaseController
         $gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von . " 00:00:00") - 1);
 
         ob_start();
-        $this->renderPartial('index_antraege_liste', [
+        echo $this->render('index_antraege_liste', [
             "aeltere_url_ajax"  => Url::to("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
             "aeltere_url_std"   => Url::to("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
             "neuere_url_ajax"   => null,
@@ -765,7 +765,7 @@ class IndexController extends RISBaseController
         list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
         $gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von) - 1);
 
-        $this->render('startseite', [
+        return $this->render('startseite', [
             "aeltere_url_ajax"  => Url::to("index/stadtratAntraegeAjaxDatum", ["datum_max" => $gestern]),
             "aeltere_url_std"   => Url::to("index/startseite", ["datum_max" => $gestern]) . "#stadtratsdokumente_holder",
             "neuere_url_ajax"   => null,
@@ -785,7 +785,7 @@ class IndexController extends RISBaseController
     {
         $this->top_menu = "personen";
 
-        $this->render('personen', [
+        return $this->render('personen', [
             "stadtraetInnen" => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
             "personen_typ"   => ($ba > 0 ? "ba" : "str"),
             "ba_nr"          => $ba
@@ -800,7 +800,7 @@ class IndexController extends RISBaseController
         /** @var StadtraetIn $stadtraetIn */
         $stadtraetIn = StadtraetIn::findOne($id);
 
-        $this->render("stadtraetIn", [
+        return $this->render("stadtraetIn", [
             "stadtraetIn" => $stadtraetIn,
         ]);
     }
@@ -809,7 +809,7 @@ class IndexController extends RISBaseController
     public function actionHighlights()
     {
         $dokumente = Dokument::find()->with("antrag")->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC"]);
-        $this->render("dokumentenliste", ["dokumente" => $dokumente]);
+        return $this->render("dokumentenliste", ["dokumente" => $dokumente]);
     }
 
 
@@ -820,7 +820,7 @@ class IndexController extends RISBaseController
         /** @var StadtraetIn[] $stadtraetInnen */
         $stadtraetInnen = StadtraetIn::findAll();
 
-        $this->render('quicksearch_prefetch', [
+        return $this->render('quicksearch_prefetch', [
             'stadtraetInnen' => $stadtraetInnen,
         ]);
     }
@@ -835,9 +835,9 @@ class IndexController extends RISBaseController
             if (Yii::$app->request->isAjaxRequest)
                 echo $error['message'];
             else
-                $this->render('error', $error);
+                return $this->render('error', $error);
         } else {
-            $this->render('error', ["code" => 400, "message" => "Ein Fehler ist aufgetreten"]);
+            return $this->render('error', ["code" => 400, "message" => "Ein Fehler ist aufgetreten"]);
         }
     }
 
@@ -848,9 +848,9 @@ class IndexController extends RISBaseController
         /** @var Dokument $dokument */
         $dokument = Dokument::getCachedByID($id);
         if (!$dokument) {
-            $this->render('error', ["code" => 404, "message" => "Das Dokument wurde leider nicht gefunden."]);
+            return $this->render('error', ["code" => 404, "message" => "Das Dokument wurde leider nicht gefunden."]);
         } else {
-            $this->render('dokumentenanzeige', [
+            return $this->render('dokumentenanzeige', [
                 "id"       => $id,
                 "dokument" => $dokument
             ]);
@@ -878,6 +878,6 @@ class IndexController extends RISBaseController
 
     public function actionBaListe()
     {
-        $this->render('ba_liste', ["bas" => Bezirksausschuss::findAll()]);
+        return $this->render('ba_liste', ["bas" => Bezirksausschuss::findAll()]);
     }
 }

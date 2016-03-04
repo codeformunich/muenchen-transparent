@@ -30,11 +30,11 @@ class AntraegeController extends RISBaseController
         /** @var Antrag $antrag */
         $antrag = Antrag::findOne($id);
         if (!$antrag) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
+            return $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
             return;
         }
 
-        $this->render("related_list", [
+        return $this->render("related_list", [
             "related" => $antrag->errateThemenverwandteAntraege(10),
         ]);
     }
@@ -47,10 +47,10 @@ class AntraegeController extends RISBaseController
         /** @var Antrag $antrag */
         $antrag = Antrag::findOne($id);
         if (!$antrag) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
+            return $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
             return;
         }
-        $this->render("themenverwandte", [
+        return $this->render("themenverwandte", [
             "antrag" => $antrag,
         ]);
     }
@@ -65,7 +65,7 @@ class AntraegeController extends RISBaseController
         /** @var Antrag $antrag */
         $antrag = Antrag::findOne($id);
         if (!$antrag) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
+            return $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
             return;
         }
 
@@ -94,7 +94,7 @@ class AntraegeController extends RISBaseController
                     $tag->save();
 
                     if (count($tag->getErrors()) > 0) {
-                        $this->render('/index/error', ["code" => 500, "message" => "Ein Fehler beim Anlegen des Schlagworts trat auf"]);
+                        return $this->render('/index/error', ["code" => 500, "message" => "Ein Fehler beim Anlegen des Schlagworts trat auf"]);
                     }
                 }
 
@@ -106,7 +106,7 @@ class AntraegeController extends RISBaseController
             }
         }
 
-        $this->render("anzeige", [
+        return $this->render("anzeige", [
             "antrag"   => $antrag,
             "tag_mode" => (isset($_REQUEST["tag_mode"]) && $_REQUEST["tag_mode"] == "1"),
         ]);

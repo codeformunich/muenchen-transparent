@@ -36,7 +36,7 @@ class ThemenController extends RISBaseController
             $this->msg_ok = "Gespeichert.";
         }
 
-        $this->render("referat", [
+        return $this->render("referat", [
             "referat"          => $ref,
             "antraege_referat" => $antraege_referat,
             "text"             => $text,
@@ -50,7 +50,7 @@ class ThemenController extends RISBaseController
     public function actionIndex()
     {
         $this->top_menu = "themen";
-        $this->render("index", [
+        return $this->render("index", [
             "referate"   => Referat::findAll(),
             "highlights" => Dokument::getHighlightDokumente(5),
             "tags"       => Tag::getTopTags(10),
@@ -72,7 +72,7 @@ class ThemenController extends RISBaseController
 
         $antraege_tag = $tag->antraege;
 
-        $this->render("tag", [
+        return $this->render("tag", [
             "tag"          => $tag,
             "antraege_tag" => $antraege_tag,
         ]);

@@ -132,11 +132,11 @@ class BenachrichtigungenController extends RISBaseController
                     $this->msg_err = "Die beiden Passwörter stimmen nicht überein";
                 }
             } else {
-                $this->render('/index/error', ["code" => 403, "message" => "Sie sind nicht angemeldet."]);
+                return $this->render('/index/error', ["code" => 403, "message" => "Sie sind nicht angemeldet."]);
             }
         }
 
-        $this->render("index", [
+        return $this->render("index", [
             "ich" => $ich,
         ]);
     }
@@ -182,7 +182,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         $benutzerIn = BenutzerIn::getByFeedCode($code);
         if (!$benutzerIn) {
-            $this->render('../index/error', ["code" => 400, "message" => "Das Feed konnte leider nicht gefunden werden."]);
+            return $this->render('../index/error', ["code" => 400, "message" => "Das Feed konnte leider nicht gefunden werden."]);
             return;
         }
 
@@ -196,7 +196,7 @@ class BenachrichtigungenController extends RISBaseController
         $ergebnisse = $solr->select($select);
         $data       = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
 
-        $this->render("../index/feed", [
+        return $this->render("../index/feed", [
             "feed_title"       => $titel,
             "feed_description" => $description,
             "data"             => $data,
@@ -222,7 +222,7 @@ class BenachrichtigungenController extends RISBaseController
         $ergebnisse = $solr->select($select);
 
 
-        $this->render("alle_suchergebnisse", [
+        return $this->render("alle_suchergebnisse", [
             "ergebnisse" => $ergebnisse,
         ]);
     }
@@ -247,17 +247,17 @@ class BenachrichtigungenController extends RISBaseController
             if ($benutzerIn) {
                 $ret = $benutzerIn->resetPasswordStart();
                 if ($ret === true) {
-                    $this->render('reset_password_sent');
+                    return $this->render('reset_password_sent');
                 } else {
                     $this->msg_err = $ret;
-                    $this->render('reset_password_form');
+                    return $this->render('reset_password_form');
                 }
             } else {
                 $this->msg_err = "Es gibt keinen Zugang mit dieser E-Mail-Adresse";
-                $this->render('reset_password_form');
+                return $this->render('reset_password_form');
             }
         } else {
-            $this->render('reset_password_form');
+            return $this->render('reset_password_form');
         }
     }
 
@@ -274,7 +274,7 @@ class BenachrichtigungenController extends RISBaseController
 
             if (!$benutzerIn) {
                 $this->msg_err = "BenutzerIn nicht gefunden";
-                $this->render('reset_password_form', [
+                return $this->render('reset_password_form', [
                     "current_url" => Url::to("benachrichtigungen/PasswortZuruecksetzen"),
                 ]);
                 return;
@@ -282,7 +282,7 @@ class BenachrichtigungenController extends RISBaseController
 
             if ($_REQUEST["password"] != $_REQUEST["password2"]) {
                 $this->msg_err = "Die beiden Passwörter stimmen nicht überein";
-                $this->render('reset_password_set_form', [
+                return $this->render('reset_password_set_form', [
                     "current_url" => $my_url,
                 ]);
                 return;
@@ -290,15 +290,15 @@ class BenachrichtigungenController extends RISBaseController
 
             $ret = $benutzerIn->resetPasswordDo($code, $_REQUEST["password"]);
             if ($ret === true) {
-                $this->render('reset_password_done');
+                return $this->render('reset_password_done');
             } else {
                 $this->msg_err = $ret;
-                $this->render('reset_password_set_form', [
+                return $this->render('reset_password_set_form', [
                     "current_url" => $my_url,
                 ]);
             }
         } else {
-            $this->render('reset_password_set_form', [
+            return $this->render('reset_password_set_form', [
                 "current_url" => $my_url,
             ]);
         }

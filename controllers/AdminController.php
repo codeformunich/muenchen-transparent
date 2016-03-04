@@ -41,7 +41,7 @@ class AdminController extends RISBaseController
         /** @var StadtraetIn[] $stadtraetInnen */
         $stadtraetInnen = StadtraetIn::find()->findAll(["order" => "name"]);
 
-        $this->render("stadtraetInnenPersonen", [
+        return $this->render("stadtraetInnenPersonen", [
             "personen"       => $personen,
             "stadtraetInnen" => $stadtraetInnen,
         ]);
@@ -70,7 +70,7 @@ class AdminController extends RISBaseController
         /** @var array[] $fraktionen */
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
-        $this->render("stadtraetInnenSocialMedia", [
+        return $this->render("stadtraetInnenSocialMedia", [
             "fraktionen" => $fraktionen,
         ]);
     }
@@ -98,7 +98,7 @@ class AdminController extends RISBaseController
         /** @var array[] $fraktionen */
         $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
 
-        $this->render("stadtraetInnenBeschreibungen", [
+        return $this->render("stadtraetInnenBeschreibungen", [
             "fraktionen" => $fraktionen,
         ]);
     }
@@ -126,7 +126,7 @@ class AdminController extends RISBaseController
         $stadtraetInnen = StadtraetIn::findAll();
         $stadtraetInnen = StadtraetIn::sortByName($stadtraetInnen);
 
-        $this->render("stadtraetInnenBenutzerInnen", [
+        return $this->render("stadtraetInnenBenutzerInnen", [
             "stadtraetInnen" => $stadtraetInnen,
         ]);
     }
@@ -138,7 +138,7 @@ class AdminController extends RISBaseController
 
         $this->top_menu = "admin";
 
-        $this->render("index");
+        return $this->render("index");
     }
 
     public function actionTags()
@@ -209,7 +209,7 @@ class AdminController extends RISBaseController
             return ($name1 > $name2) ? +1 : -1;
         });
 
-        $this->render("tags", [
+        return $this->render("tags", [
             "tags" => $tags,
         ]);
     }
@@ -256,7 +256,7 @@ class AdminController extends RISBaseController
         }
 
         $termine = Termin::find()->findAllByAttributes(["typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
-        $this->render("buergerInnenversammlungen", [
+        return $this->render("buergerInnenversammlungen", [
             "termine" => $termine,
         ]);
     }

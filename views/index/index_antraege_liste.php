@@ -150,7 +150,7 @@ if (count($antraege) > 0) {
             echo Html::encode($titel) . '</span></a></div>';
             echo '<div class="panel-body">';
 
-            $this->renderPartial("/antraege/metainformationen", array(
+            echo $this->render("/antraege/metainformationen", array(
                 "antrag" => $entry,
                 "zeige_ba_orte" => $zeige_ba_orte
             ));

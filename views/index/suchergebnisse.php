@@ -23,7 +23,7 @@ $this->title = "Suchergebnisse";
 <section class="well suchergebnisse">
     <div class="pull-right" style="text-align: center;">
         <?
-        $this->renderPartial("suchergebnisse_benachrichtigungen", array(
+        echo $this->render("suchergebnisse_benachrichtigungen", array(
             "eingeloggt"          => $eingeloggt,
             "email_angegeben"     => $email_angegeben,
             "email_bestaetigt"    => $email_bestaetigt,
@@ -124,7 +124,7 @@ $this->title = "Suchergebnisse";
 
     echo '<br style="clear: both;">';
 
-    if ($krits->getKritsCount() > 0) $this->renderPartial("../benachrichtigungen/suchergebnisse_liste", array(
+    if ($krits->getKritsCount() > 0) echo $this->render("../benachrichtigungen/suchergebnisse_liste", array(
         "ergebnisse" => $ergebnisse,
     ));
     ?>

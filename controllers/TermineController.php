@@ -97,7 +97,7 @@ class TermineController extends RISBaseController
 
         $fullcalendar_struct = $this->getFullCalendarStructByMonth(date("Y"), date("m"));
 
-        $this->render("index", [
+        return $this->render("index", [
             "termine_zukunft"       => $gruppiert_zukunft,
             "termine_vergangenheit" => $gruppiert_vergangenheit,
             "termin_dokumente"      => $termin_dokumente,
@@ -119,7 +119,7 @@ class TermineController extends RISBaseController
         /** @var Termin $termin */
         $termin = Termin::findOne($termin_id);
         if (!$termin) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+            return $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
@@ -139,7 +139,7 @@ class TermineController extends RISBaseController
             }
         }
 
-        $this->render("anzeige", [
+        return $this->render("anzeige", [
             "termin" => $termin,
             "to_pdf" => $to_pdf,
             "to_db"  => $to_db,
@@ -157,11 +157,11 @@ class TermineController extends RISBaseController
         /** @var Termin $termin */
         $termin = Termin::findOne($termin_id);
         if (!$termin) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+            return $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
-        $this->renderPartial("ics_all", [
+        echo $this->render("ics_all", [
             "alle_termine" => $termin->alleTermineDerReihe(),
         ]);
     }
@@ -176,11 +176,11 @@ class TermineController extends RISBaseController
         /** @var Termin $termin */
         $termin = Termin::findOne($termin_id);
         if (!$termin) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+            return $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
-        $this->renderPartial("ics_single", [
+        echo $this->render("ics_single", [
             "termin" => $termin,
         ]);
     }
@@ -192,7 +192,7 @@ class TermineController extends RISBaseController
         $sql = Yii::$app->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
-        $this->render("ba_zukunft_html", [
+        return $this->render("ba_zukunft_html", [
             "termine" => $termine
         ]);
     }
@@ -203,7 +203,7 @@ class TermineController extends RISBaseController
         $sql = Yii::$app->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
         $termine = $sql->queryAll();
-        $this->renderPartial("ba_zukunft_csv", [
+        echo $this->render("ba_zukunft_csv", [
             "termine" => $termine
         ]);
     }
@@ -216,11 +216,11 @@ class TermineController extends RISBaseController
         /** @var Termin $sitzung */
         $termin = Termin::findOne($termin_id);
         if (!$termin) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
+            return $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
             return;
         }
 
-        $this->render("abo_info", [
+        return $this->render("abo_info", [
             "termin" => $termin,
         ]);
     }
@@ -278,7 +278,7 @@ class TermineController extends RISBaseController
         /** @var Bezirksausschuss $ba */
         $ba = Bezirksausschuss::findOne($ba_nr);
 
-        $this->render("ba_termine_alle", [
+        return $this->render("ba_termine_alle", [
             "ba"      => $ba,
             "termine" => $termin_arr,
         ]);

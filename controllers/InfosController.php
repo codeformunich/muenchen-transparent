@@ -26,7 +26,7 @@ class InfosController extends RISBaseController
             $this->msg_ok = "Gespeichert.";
         }
 
-        $this->render("stadtpolitik", [
+        return $this->render("stadtpolitik", [
             "text"   => $text,
             "my_url" => Url::to("infos/soFunktioniertStadtpolitik"),
         ]);
@@ -65,7 +65,7 @@ class InfosController extends RISBaseController
     public function actionStadtrecht()
     {
         $this->top_menu = "so_funktioniert";
-        $this->render("stadtrecht");
+        return $this->render("stadtrecht");
     }
 
     public function actionStadtrechtDokument($id)
@@ -73,10 +73,10 @@ class InfosController extends RISBaseController
         /** @var Rechtsdokument $dok */
         $dok = Rechtsdokument::findOne($id);
         if (!$dok) {
-            $this->render('../index/error', ["code" => 404, "message" => "Das Dokument wurde nicht gefunden"]);
+            return $this->render('../index/error', ["code" => 404, "message" => "Das Dokument wurde nicht gefunden"]);
             Yii::$app->end();
         }
-        $this->render("stadtrecht_dokument", ["dokument" => $dok]);
+        return $this->render("stadtrecht_dokument", ["dokument" => $dok]);
     }
 
     /**
@@ -97,7 +97,7 @@ class InfosController extends RISBaseController
             $this->msg_ok = "Gespeichert.";
         }
 
-        $this->render("std", [
+        return $this->render("std", [
             "text"            => $text,
             "my_url"          => $my_url,
             "show_title"      => $show_title,
@@ -122,9 +122,9 @@ class InfosController extends RISBaseController
 
             RISTools::send_email(Yii::$app->params['adminEmail'], "[München Transparent] Feedback", $text, null, "feedback");
 
-            $this->render('feedback_done', []);
+            return $this->render('feedback_done', []);
         } else {
-            $this->render('feedback_form', [
+            return $this->render('feedback_form', [
                 "current_url" => Url::to("infos/feedback"),
             ]);
         }
@@ -149,7 +149,7 @@ class InfosController extends RISBaseController
             "typ" => Text::$TYP_GLOSSAR,
         ], ["order" => "titel"]);
 
-        $this->render('glossar', [
+        return $this->render('glossar', [
             "eintraege" => $eintraege,
         ]);
     }
@@ -187,7 +187,7 @@ class InfosController extends RISBaseController
             $this->redirect(Url::to("infos/glossar"));
         }
 
-        $this->render('glossar_bearbeiten', [
+        return $this->render('glossar_bearbeiten', [
             "eintrag" => $eintrag,
         ]);
     }

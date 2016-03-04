@@ -69,7 +69,7 @@ if ($risitem) {
     <div class="pdf_download_holder"><a href="<?= Html::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= Html::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></div>
 
     <?
-    $this->renderPartial("pdf_embed", array(
+    echo $this->render("pdf_embed", array(
         "url" => '/dokumente/' . $id . '.pdf',
     ));
     ?>

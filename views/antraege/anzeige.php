@@ -110,7 +110,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                             <form method="POST" action="<?= Html::encode($antrag->getLink(["tag_mode" => 1])) ?>"
                                   class="login_modal_form">
                                 <?
-                                $this->renderPartial("../index/login_modal");
+                                echo $this->render("../index/login_modal");
                                 ?>
                                 &nbsp; &nbsp;
                                 <a href="#tag_add_form" data-toggle="modal" data-target="#benachrichtigung_login"><span
@@ -345,7 +345,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
 
                 <ul class="list-group">
                     <?
-                    $this->renderPartial("related_list", [
+                    echo $this->render("related_list", [
                         "related" => $related,
                         "narrow"  => true,
                     ]);

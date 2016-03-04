@@ -23,7 +23,7 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
     </ul>
 
     <?
-    $this->renderPartial("/index/ckeditable_text", array(
+    echo $this->render("/index/ckeditable_text", array(
         "text"            => $text,
         "my_url"          => $my_url,
         "show_title"      => $show_title,

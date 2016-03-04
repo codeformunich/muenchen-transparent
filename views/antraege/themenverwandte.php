@@ -28,7 +28,7 @@ $related         = $antrag->errateThemenverwandteAntraege(50);
 
     <ul class="list-group">
         <?
-        $this->renderPartial("related_list", array(
+        echo $this->render("related_list", array(
             "related" => $related,
             "narrow" => false,
         ));

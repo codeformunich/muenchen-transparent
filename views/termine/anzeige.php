@@ -178,7 +178,7 @@ function zeile_anzeigen($feld, $name, $callback)
             });
         </script>
     <? } elseif ($to_pdf) {
-        $this->renderPartial("../index/pdf_embed", array(
+        echo $this->render("../index/pdf_embed", array(
             "url" => '/dokumente/' . $to_pdf->id . '.pdf',
         ));
     } else {

@@ -19,7 +19,7 @@ $this->title = $tag->name;
 		</ul>
 		<h1>Anträge und Vorlagen mit dem Schlagwort "<?= Html::encode($tag->name) ?>"</h1>
 		<?
-		$this->renderPartial("../index/index_antraege_liste", array(
+		echo $this->render("../index/index_antraege_liste", array(
 			"title"             => "",
 			"antraege"          => $antraege_tag,
 			"weiter_links_oben" => false,

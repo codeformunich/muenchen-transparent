@@ -132,7 +132,7 @@ class RISBaseController extends Controller
         $this->performLoginActions($code);
 
         if (Yii::$app->getUser()->isGuest) {
-            $this->render("../index/login", [
+            return $this->render("../index/login", [
                 "current_url" => $target_url,
             ]);
             Yii::$app->end();
@@ -173,7 +173,7 @@ class RISBaseController extends Controller
      */
     public function errorMessageAndDie($error_code, $error_message)
     {
-        $this->render("../index/error", [
+        return $this->render("../index/error", [
             "code"    => $error_code,
             "message" => $error_message,
         ]);

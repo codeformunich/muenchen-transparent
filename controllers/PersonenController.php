@@ -18,7 +18,7 @@ class PersonenController extends RISBaseController
     {
         $this->top_menu = "personen";
 
-        $this->render('index', [
+        return $this->render('index', [
             "personen"     => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
             "personen_typ" => ($ba > 0 ? "ba" : "str"),
             "ba_nr"        => $ba
@@ -35,7 +35,7 @@ class PersonenController extends RISBaseController
         /** @var StadtraetIn $person */
         $person = StadtraetIn::findOne($id);
 
-        $this->render("person", [
+        return $this->render("person", [
             "person" => $person,
         ]);
     }
@@ -84,7 +84,7 @@ class PersonenController extends RISBaseController
             $this->msg_ok = "Gespeichert";
         }
 
-        $this->render("person-bearbeiten", [
+        return $this->render("person-bearbeiten", [
             "person" => $person,
         ]);
     }
@@ -103,7 +103,7 @@ class PersonenController extends RISBaseController
         $person = StadtraetIn::findOne($id);
         if ($person->benutzerIn_id !== null) $this->errorMessageAndDie(403, "Diese Person ist schon einem Account zugeordnet. Falls das ein Fehler ist, schreiben Sie uns bitte per Mail (" . Yii::$app->params["adminEmail"] . ")");
 
-        $this->render("person-binich", [
+        return $this->render("person-binich", [
             "person" => $person,
         ]);
     }

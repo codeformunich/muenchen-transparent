@@ -49,7 +49,7 @@ use app\components\AntiXSS;
         </button>
     <input type="hidden" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" value="1">
     <?
-        $this->renderPartial("login_modal");
+        echo $this->render("login_modal");
     }
     ?>
 </form>

@@ -13,6 +13,6 @@
 
 <?
 
-$this->renderPartial("suchergebnisse_liste", array(
+echo $this->render("suchergebnisse_liste", array(
 	"ergebnisse"  => $ergebnisse,
 ));

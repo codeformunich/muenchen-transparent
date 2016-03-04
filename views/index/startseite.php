@@ -33,7 +33,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
     <h1 class="sr-only"><?= Html::encode($this->title) ?></h1>
 
     <?
-    $this->renderPartial("/index/map", array(
+    echo $this->render("/index/map", array(
         "ortsbezugszahlgrenze" => 10,
         "geodata_overflow"     => $geodata_overflow
     ));
@@ -175,7 +175,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
     <div id="stadtratsdokumente_holder">
         <?
 
-        $this->renderPartial("index_antraege_liste", array(
+        echo $this->render("index_antraege_liste", array(
             "antraege"          => $antraege_stadtrat,
             "datum"             => $datum,
             "neuere_url_ajax"   => $neuere_url_ajax,
@@ -185,7 +185,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
             "weiter_links_oben" => $explizites_datum,
             "rathausumschauen"  => $rathausumschauen,
         ));
-        $this->renderPartial("index_antraege_liste", array(
+        echo $this->render("index_antraege_liste", array(
             "title"             => "Sonstige neue Dokumente",
             "antraege"          => $antraege_sonstige,
             "datum"             => $datum,

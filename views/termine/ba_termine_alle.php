@@ -24,7 +24,7 @@ $this->title = "Termine des Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
     <br>
     <br>
     <?
-    $this->renderPartial("termin_liste", array(
+    echo $this->render("termin_liste", array(
         "termine"     => $termine,
         "gremienname" => false,
         "twoCols"     => true,

@@ -20,7 +20,7 @@ $this->title = $referat->getName();
     <h1><?= Html::encode($referat->getName()) ?></h1>
 
     <?
-    $this->renderPartial("/index/ckeditable_text", array(
+    echo $this->render("/index/ckeditable_text", array(
         "text"            => $text,
         "my_url"          => $my_url,
         "show_title"      => false,
@@ -33,7 +33,7 @@ $this->title = $referat->getName();
     <div class="col col-md-8">
         <section class="well">
             <?
-            $this->renderPartial("../index/index_antraege_liste", array(
+            echo $this->render("../index/index_antraege_liste", array(
                 "title"             => "Aktuelle Dokumente",
                 "antraege"          => $antraege_referat,
                 "weiter_links_oben" => false,
