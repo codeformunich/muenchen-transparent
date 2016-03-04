@@ -116,7 +116,7 @@ class GoogleSitemapCreateCommand extends ConsoleCommand
 
         echo "StadträtInnen\n";
         /** @var StadtraetIn[] $strs */
-        $strs         = StadtraetIn::findAll();
+        $strs         = StadtraetIn::find()->all();
         $sitemap_file = "sitemap-stadtraetinnen.xml";
         $fp           = fopen($sitemap_basepath . $sitemap_file, "w");
         fwrite($fp, '<?xml version="1.0" encoding="UTF-8"?>' . "\n");

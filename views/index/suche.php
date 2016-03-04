@@ -57,7 +57,7 @@ $this->title = "Suche";
 					<option>- egal -</option>
 					<?
 					/** @var Referat[] $referate */
-					$referate = Referat::findAll();
+					$referate = Referat::find()->all();
 					foreach ($referate as $ref) {
 						?>
 						<option value="<?= $ref->id ?>"><?= Html::encode($ref->name) ?></option>

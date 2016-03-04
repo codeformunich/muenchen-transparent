@@ -108,7 +108,7 @@ class Tag extends ActiveRecord
         // @TODO
 
         /** @var Tag[] $tags */
-        $tags     = Tag::findAll();
+        $tags     = Tag::find()->all();
         $tags_out = [];
         foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
         return $tags_out;

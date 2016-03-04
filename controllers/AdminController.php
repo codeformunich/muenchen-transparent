@@ -123,7 +123,7 @@ class AdminController extends RISBaseController
         }
 
         /** @var StadtraetIn[] $stadtraetInnen */
-        $stadtraetInnen = StadtraetIn::findAll();
+        $stadtraetInnen = StadtraetIn::find()->all();
         $stadtraetInnen = StadtraetIn::sortByName($stadtraetInnen);
 
         return $this->render("stadtraetInnenBenutzerInnen", [
@@ -195,7 +195,7 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Einzelner Tag gelöscht";
         }
 
-        $tags = Tag::findAll();
+        $tags = Tag::find()->all();
         usort($tags, function ($tag1, $tag2) {
             /**
             * @var Tag $dok1

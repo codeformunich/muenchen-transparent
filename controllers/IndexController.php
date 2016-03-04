@@ -818,7 +818,7 @@ class IndexController extends RISBaseController
         header( 'Cache-Control: max-age=' . 7 * 24 * 3600);
 
         /** @var StadtraetIn[] $stadtraetInnen */
-        $stadtraetInnen = StadtraetIn::findAll();
+        $stadtraetInnen = StadtraetIn::find()->all();
 
         return $this->render('quicksearch_prefetch', [
             'stadtraetInnen' => $stadtraetInnen,
@@ -878,6 +878,6 @@ class IndexController extends RISBaseController
 
     public function actionBaListe()
     {
-        return $this->render('ba_liste', ["bas" => Bezirksausschuss::findAll()]);
+        return $this->render('ba_liste', ["bas" => Bezirksausschuss::find()->all()]);
     }
 }

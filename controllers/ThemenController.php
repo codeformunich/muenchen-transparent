@@ -51,7 +51,7 @@ class ThemenController extends RISBaseController
     {
         $this->top_menu = "themen";
         return $this->render("index", [
-            "referate"   => Referat::findAll(),
+            "referate"   => Referat::find()->all(),
             "highlights" => Dokument::getHighlightDokumente(5),
             "tags"       => Tag::getTopTags(10),
         ]);

@@ -152,7 +152,7 @@ def do_replace(filepath, yii1_classes, replacements):
         contents = contents.replace("::model()", "::find()")
         # Replace functions of CAtiveRecord
         # This does not replace expressions with nested parentheses
-        contents = contents.replace("::find()->findAll()", "::findAll()")
+        contents = contents.replace("::find()->findAll()", "::find()->all()")
         
         contents = re.sub(r"::find\(\)->findByPk\(([^\(\)]+)\)", r"::findOne(\1)", contents)
         if "::find()->findByPk(" in contents:
@@ -176,6 +176,7 @@ def do_replace(filepath, yii1_classes, replacements):
         contents = contents.replace("$this->renderPartial(", "echo $this->render(")
         # Catch replacing correct recnder() call
         contents = contents.replace("echo return $this->render(", "echo $this->render(")
+        contents = contents.replace("return return $this->render(", "return $this->render(")
     
     if "relations" in replacements:
         function_regex = r"\n(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public *function *{}\(\)[\ \n]*{{[^}}]*}})\ *\n"

@@ -125,7 +125,7 @@ class OrtGeo extends ActiveRecord
     public function setzeBA()
     {
         /** @var Bezirksausschuss[] $bas */
-        $bas = Bezirksausschuss::findAll();
+        $bas = Bezirksausschuss::find()->all();
 
         $this->ba_nr = null;
         foreach ($bas as $ba) if ($this->ba_nr === null && $ba->pointInBA($this->lon, $this->lat)) {

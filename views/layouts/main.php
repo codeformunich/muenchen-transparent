@@ -118,7 +118,7 @@ use yii\helpers\Url;
                         <ul class="dropdown-menu" id="ba_nav_list">
                             <?
                             /** @var Bezirksausschuss[] $bas */
-                            $bas = Bezirksausschuss::findAll();
+                            $bas = Bezirksausschuss::find()->all();
                             foreach ($bas as $ba) echo "<li>" . Html::a($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
                             ?>
                         </ul>

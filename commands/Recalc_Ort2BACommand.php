@@ -19,7 +19,7 @@ class Recalc_Ort2BACommand extends ConsoleCommand
 
 
         /** @var Bezirksausschuss[] $bas */
-        $bas = Bezirksausschuss::findAll();
+        $bas = Bezirksausschuss::find()->all();
 
         foreach ($orte as $ort) {
             $found_ba = null;
