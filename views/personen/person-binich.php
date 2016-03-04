@@ -16,8 +16,8 @@ $ich             = $this->context->aktuelleBenutzerIn();
 
     <section class="well">
         <ul class="breadcrumb" style="margin-bottom: 5px;">
-            <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-            <li><a href="<?= Html::encode(Yii::$app->createUrl("personen/index")) ?>">Personen</a><br></li>
+            <li><a href="<?= Html::encode(Url::to("index/startseite")) ?>">Startseite</a><br></li>
+            <li><a href="<?= Html::encode(Url::to("personen/index")) ?>">Personen</a><br></li>
             <li><a href="<?= Html::encode($person->getLink()) ?>"><?= Html::encode($person->getName()) ?></a><br></li>
             <li class="active">Bin ich</li>
         </ul>

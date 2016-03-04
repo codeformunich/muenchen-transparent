@@ -242,7 +242,7 @@ class TermineController extends RISBaseController
         ];
 
         $server = new TermineCalDAVServerBugfix($tree);
-        $server->setBaseUri(Yii::$app->createUrl("termine/dav", ["termin_id" => $termin_id]));
+        $server->setBaseUri(Url::to("termine/dav", ["termin_id" => $termin_id]));
 
         $authBackend = new TermineCalDAVAuthBackend();
         $authPlugin  = new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV');

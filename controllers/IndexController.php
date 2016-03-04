@@ -222,12 +222,12 @@ class IndexController extends RISBaseController
                 $link = $name = "";
             }
             if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
-            if ($link != "") $link = "<div class='antraglink'>" . Html::link($name, $link) . "</div>";
+            if ($link != "") $link = "<div class='antraglink'>" . Html::a($name, $link) . "</div>";
             foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0 && ($filter_krits === null || $filter_krits->filterGeo($ort->ort))) {
                 $str = $link;
                 $str .= "<div class='ort_dokument'>";
                 $str .= "<div class='ort'>" . Html::encode($ort->ort->ort) . "</div>";
-                $str .= "<div class='dokument'>" . Html::link($dokument->name, Url::to("index/dokument", ["id" => $dokument->id])) . "</div>";
+                $str .= "<div class='dokument'>" . Html::a($dokument->name, Url::to("index/dokument", ["id" => $dokument->id])) . "</div>";
                 $str .= "</div>";
                 $geodata[] = [
                     FloatVal($ort->ort->lat),
@@ -275,11 +275,11 @@ class IndexController extends RISBaseController
                     $link = $name = "";
                 }
                 if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
-                if ($link != "") $link = "<div class='antraglink'>" . Html::link($name, $link) . "</div>";
+                if ($link != "") $link = "<div class='antraglink'>" . Html::a($name, $link) . "</div>";
                 $str = $link;
                 $str .= "<div class='ort_dokument'>";
                 $str .= "<div class='ort'>" . Html::encode($geo["ort"]) . "</div>";
-                $str .= "<div class='dokument'>" . Html::link($dokument->name, Url::to("index/dokument", ["id" => $dokument->id])) . "</div>";
+                $str .= "<div class='dokument'>" . Html::a($dokument->name, Url::to("index/dokument", ["id" => $dokument->id])) . "</div>";
                 $str .= "</div>";
                 $geodata[] = [
                     FloatVal($geo["lat"]),
@@ -307,10 +307,10 @@ class IndexController extends RISBaseController
                 foreach ($dokument->orte as $ort) if ($ort->ort->to_hide == 0) {
                     $name = $ant->getName();
                     if (strlen($name) > 150) $name = mb_substr($name, 0, 148) . "...";
-                    $str = "<div class='antraglink'>" . Html::link($name, $ant->getLink()) . "</div>";
+                    $str = "<div class='antraglink'>" . Html::a($name, $ant->getLink()) . "</div>";
                     $str .= "<div class='ort_dokument'>";
                     $str .= "<div class='ort'>" . Html::encode($ort->ort->ort) . "</div>";
-                    $str .= "<div class='dokument'>" . Html::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</div>";
+                    $str .= "<div class='dokument'>" . Html::a($dokument->getName(), $dokument->getLinkZumDokument()) . "</div>";
                     $str .= "</div>";
                     $str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
 

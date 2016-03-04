@@ -15,7 +15,7 @@ class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\Abstra
 
     public function getPrincipalsByPrefix($prefixPath)
     {
-        $base = Yii::$app->createUrl("termine/dav", ["termin_id" => $this->termin_id]);
+        $base = Url::to("termine/dav", ["termin_id" => $this->termin_id]);
         return [
             [
                 '{DAV:}displayname' => 'Gast',
@@ -26,7 +26,7 @@ class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\Abstra
 
     public function getPrincipalByPath($path)
     {
-        $base = Yii::$app->createUrl("termine/dav", ["termin_id" => $this->termin_id]);
+        $base = Url::to("termine/dav", ["termin_id" => $this->termin_id]);
         if ($path == 'principals/guest') return [
             '{DAV:}displayname' => 'Gast',
             'uri'               => "principals/guest",

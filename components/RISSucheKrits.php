@@ -130,7 +130,7 @@ class RISSucheKrits
                     break;
             }
         }
-        return Yii::$app->createUrl($path) . "/?" . $str;
+        return Url::to($path) . "/?" . $str;
     }
 
     /**

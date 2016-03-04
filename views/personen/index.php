@@ -23,7 +23,7 @@ $this->title   = $personen_typ_name;
 ?>
 <section class="well personen_liste">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Url::to("index/startseite")) ?>">Startseite</a><br></li>
         <li class="active">Personen</li>
     </ul>
 
@@ -44,12 +44,12 @@ $this->title   = $personen_typ_name;
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <?
-                            $str_link = Yii::$app->createUrl("personen/index");
+                            $str_link = Url::to("personen/index");
                             if ($ba_nr === null) echo '<li class="stadtrat active"><a href="' . Html::encode($str_link) . '">Stadtrat <span class="sr-only">(aktuell)</span></a></li>';
                             else echo '<li class="stadtrat"><a href="' . Html::encode($str_link) . '">Stadtrat</a></li>';
 
                             foreach ($bas as $ba) {
-                                $str_link = Yii::$app->createUrl("personen/index", array("ba" => $ba->ba_nr));
+                                $str_link = Url::to("personen/index", array("ba" => $ba->ba_nr));
                                 $name     = "BA " . $ba->ba_nr . " <small>(" . $ba->name . ")</small>";
                                 if ($ba_nr === $ba->ba_nr) echo '<li class="active"><a href="' . Html::encode($str_link) . '">' . $name . ' <span class="sr-only">(aktuell)</span></a></li>';
                                 else echo '<li><a href="' . Html::encode($str_link) . '">' . $name . '</a></li>';

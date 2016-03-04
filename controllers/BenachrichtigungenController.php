@@ -115,7 +115,7 @@ class BenachrichtigungenController extends RISBaseController
                 $this->msg_err = "Sie sind nicht angemeldet";
             }
 
-            $this->redirect(Yii::$app->createUrl("index/startseite"));
+            $this->redirect(Url::to("index/startseite"));
 
             Yii::$app->end();
         }

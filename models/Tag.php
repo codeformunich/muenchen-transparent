@@ -94,7 +94,7 @@ class Tag extends ActiveRecord
     public function getNameLink()
     {
         $link_name = $this->name;
-        return Html::link($this->name, Yii::$app->createUrl("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
+        return Html::a($this->name, Url::to("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
     }
 
     /**

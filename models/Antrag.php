@@ -456,7 +456,7 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
      */
     public function getLink($add_params = [])
     {
-        return Yii::$app->createUrl("antraege/anzeigen", array_merge(["id" => $this->id], $add_params));
+        return Url::to("antraege/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
     /**

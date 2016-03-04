@@ -47,7 +47,7 @@ function zeile_anzeigen($feld, $name, $callback)
 ?>
 <section class="well pdfjs_long" itemscope itemtype="http://schema.org/Event">
     <div class="original_ris_link"><?
-        echo Html::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $termin->getSourceLink());
+        echo Html::a("<span class='fontello-right-open'></span>Original-Seite im RIS", $termin->getSourceLink());
         ?></div>
     <h1 itemprop="name"><?= Html::encode($termin->getName()) ?></h1>
     <br>
@@ -56,14 +56,14 @@ function zeile_anzeigen($feld, $name, $callback)
     if ($termin->termin_next_id > 0 || $termin->termin_prev_id > 0) {
         echo '<div style="text-align: center; overflow: auto;">';
         if ($termin->termin_next_id > 0) {
-            $url = Yii::$app->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
+            $url = Url::to("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
             echo '<a href="' . Html::encode($url) . '" style="float: right;">Nächster Termin <span class="fontello-right-open"></span></a>';
         }
         if ($termin->termin_prev_id > 0) {
-            $url = Yii::$app->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
+            $url = Url::to("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
             echo '<a href="' . Html::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
         }
-        echo '<a href="' . Html::encode(Yii::$app->createUrl("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
+        echo '<a href="' . Html::encode(Url::to("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
         echo '</div>';
     }
     ?>
@@ -97,7 +97,7 @@ function zeile_anzeigen($feld, $name, $callback)
         <?
         zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", function ($dok) {
             /** @var Dokument $dok */
-            echo Html::encode($dok->getDisplayDate()) . ": " . Html::link($dok->getName(false), $dok->getLinkZumDokument());
+            echo Html::encode($dok->getDisplayDate()) . ": " . Html::a($dok->getName(false), $dok->getLinkZumDokument());
         });
         ?>
         </tbody>
@@ -133,11 +133,11 @@ function zeile_anzeigen($feld, $name, $callback)
                     echo "<ul class='doks'>";
                     $antrag_ids = array();
                     if (is_object($ergebnis->antrag)) {
-                        echo "<li>" . Html::link("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
+                        echo "<li>" . Html::a("Sitzungsvorlage", $ergebnis->antrag->getLink()) . "</li>\n";
                         $antrag_ids[] = $ergebnis->antrag->id;
                     }
                     foreach ($ergebnis->dokumente as $dokument) {
-                        echo "<li>" . Html::link($dokument->name, $dokument->getLinkZumDokument());
+                        echo "<li>" . Html::a($dokument->name, $dokument->getLinkZumDokument());
                         $x = explode("Beschluss:", $dokument->text_pdf);
                         if (count($x) > 1) echo " (" . Html::encode(trim($x[1])) . ")";
                         echo "</li>\n";
@@ -146,7 +146,7 @@ function zeile_anzeigen($feld, $name, $callback)
                         /** @var Antrag $ant */
                         if (in_array($ant->id, $antrag_ids)) continue;
                         $antrag_ids[] = $ant->id;
-                        echo "<li>Verwandter Antrag: " . Html::link($ant->getName(true), $ant->getLink()) . "</li>\n";
+                        echo "<li>Verwandter Antrag: " . Html::a($ant->getName(true), $ant->getLink()) . "</li>\n";
                     } else {
                         echo "<li>Verwandter Antrag: " . Html::encode(RISTools::korrigiereTitelZeichen($ant)) . "</li>\n";
                     }

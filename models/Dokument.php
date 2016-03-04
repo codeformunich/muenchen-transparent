@@ -508,7 +508,7 @@ class Dokument extends ActiveRecord implements IRISItem
      */
     public function getLinkZumDokument()
     {
-        return Yii::$app->createUrl("index/dokumente", ["id" => $this->id]);
+        return Url::to("index/dokumente", ["id" => $this->id]);
     }
 
 

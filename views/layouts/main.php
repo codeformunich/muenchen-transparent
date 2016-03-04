@@ -111,7 +111,7 @@ use yii\helpers\Url;
                 </form>
 
                 <ul class="nav navbar-nav">
-                    <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
+                    <li><a href="<?= Html::encode(Url::to("index/startseite")) ?>" style="font-weight: bold; color: white;">Startseite</a></li>
                     <!-- Desktop BA-wähler-->
                     <li class="dropdown ba-wahl-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <span class="caret"></span></a>
@@ -119,16 +119,16 @@ use yii\helpers\Url;
                             <?
                             /** @var Bezirksausschuss[] $bas */
                             $bas = Bezirksausschuss::findAll();
-                            foreach ($bas as $ba) echo "<li>" . Html::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
+                            foreach ($bas as $ba) echo "<li>" . Html::a($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
                             ?>
                         </ul>
                     </li>
                     <!-- Mobiler BA-wähler-->
-                    <li class="ba-wahl-link <? if ($this->context->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= Html::link("Bezirksausschüsse", Url::to("index/bezirksausschuss")) ?></li>
-                    <li  <? if ($this->context->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= Html::link("Benachrichtigungen", Url::to("benachrichtigungen/index")) ?></li>
-                    <li class="<? if ($this->context->top_menu == "themen") echo ' active'; ?>"><?= Html::link("Themen", Url::to("themen/index")) ?></li>
-                    <li class="<? if ($this->context->top_menu == "termine") echo ' active'; ?>"><?= Html::link("Termine", Url::to("termine/index")) ?></li>
-                    <li class="<? if ($this->context->top_menu == "personen") echo ' active'; ?>"><?= Html::link("Personen", Url::to("personen/index")) ?></li>
+                    <li class="ba-wahl-link <? if ($this->context->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= Html::a("Bezirksausschüsse", Url::to("index/bezirksausschuss")) ?></li>
+                    <li  <? if ($this->context->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= Html::a("Benachrichtigungen", Url::to("benachrichtigungen/index")) ?></li>
+                    <li class="<? if ($this->context->top_menu == "themen") echo ' active'; ?>"><?= Html::a("Themen", Url::to("themen/index")) ?></li>
+                    <li class="<? if ($this->context->top_menu == "termine") echo ' active'; ?>"><?= Html::a("Termine", Url::to("termine/index")) ?></li>
+                    <li class="<? if ($this->context->top_menu == "personen") echo ' active'; ?>"><?= Html::a("Personen", Url::to("personen/index")) ?></li>
                     <?
                     $user = $this->context->aktuelleBenutzerIn();
                     if ($user && ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER))) {
@@ -138,16 +138,16 @@ use yii\helpers\Url;
                             <ul class="dropdown-menu">
                                 <?
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
-                                    <li><?= Html::link("StadträtInnen/Personen", Url::to("admin/stadtraetInnenPersonen")) ?></li>
-                                    <li><?= Html::link("StadträtInnen: Social-Media-Daten", Url::to("admin/stadtraetInnenSocialMedia")) ?></li>
-                                    <li><?= Html::link("StadträtInnen: Beschreibungen", Url::to("admin/stadtraetInnenBeschreibungen")) ?></li>
-                                    <li><?= Html::link("BürgerInnenversammlungen", Url::to("admin/buergerInnenversammlungen")) ?></li>
+                                    <li><?= Html::a("StadträtInnen/Personen", Url::to("admin/stadtraetInnenPersonen")) ?></li>
+                                    <li><?= Html::a("StadträtInnen: Social-Media-Daten", Url::to("admin/stadtraetInnenSocialMedia")) ?></li>
+                                    <li><?= Html::a("StadträtInnen: Beschreibungen", Url::to("admin/stadtraetInnenBeschreibungen")) ?></li>
+                                    <li><?= Html::a("BürgerInnenversammlungen", Url::to("admin/buergerInnenversammlungen")) ?></li>
                                 <? }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) { ?>
-                                    <li><?= Html::link("StadträtInnen: Accounts", Url::to("admin/stadtraetInnenBenutzerInnen")) ?></li>
+                                    <li><?= Html::a("StadträtInnen: Accounts", Url::to("admin/stadtraetInnenBenutzerInnen")) ?></li>
                                 <? }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) { ?>
-                                    <li><?= Html::link("Tags", Url::to("admin/tags")) ?></li>
+                                    <li><?= Html::a("Tags", Url::to("admin/tags")) ?></li>
                                 <? }
                                 ?>
                             </ul>
@@ -188,13 +188,13 @@ use yii\helpers\Url;
 <footer>
     <p class="container">
         <span class="pull-left">
-            <?= Html::link("Über München-Transparent", Yii::$app->createUrl("infos/ueber")) ?> /
-            <?= Html::link("Anregungen?", Yii::$app->createUrl("infos/feedback")) ?>
+            <?= Html::a("Über München-Transparent", Url::to("infos/ueber")) ?> /
+            <?= Html::a("Anregungen?", Url::to("infos/feedback")) ?>
         </span>
         <span class="pull-right">
-            <?= Html::link("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
-            <?= Html::link("Datenschutz", Yii::$app->createUrl("infos/datenschutz")) ?> /
-            <?= Html::link("Impressum", Yii::$app->createUrl("infos/impressum")) ?>
+            <?= Html::a("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
+            <?= Html::a("Datenschutz", Url::to("infos/datenschutz")) ?> /
+            <?= Html::a("Impressum", Url::to("infos/impressum")) ?>
         </span>
     </p>
 </footer>

@@ -17,7 +17,7 @@ $this->context->inline_css .= $dokument->css;
 ?>
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Url::to("index/startseite")) ?>">Startseite</a><br></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stadtrecht<span class="caret"></span></a>
             <ul class="dropdown-menu" id="list-js-container" style="padding: 5px 10px;">
@@ -27,7 +27,7 @@ $this->context->inline_css .= $dokument->css;
                     /** @var Rechtsdokument[] $dokumente */
                     $dokumente = Rechtsdokument::find()->alle_sortiert();
                     foreach ($dokumente as $dok) {
-                        echo '<li><span class="list-name">' . Html::link($dok->titel_lang(), Yii::$app->createUrl("infos/stadtrechtDokument", array("id" => $dok->id))) . '<span style="display: none">' . $dok->titel . '</span></span></li>' . "\n";
+                        echo '<li><span class="list-name">' . Html::a($dok->titel_lang(), Url::to("infos/stadtrechtDokument", array("id" => $dok->id))) . '<span style="display: none">' . $dok->titel . '</span></span></li>' . "\n";
                     }
                     ?>
                 </ul></li>

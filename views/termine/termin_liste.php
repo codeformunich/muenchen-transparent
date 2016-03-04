@@ -33,7 +33,7 @@ use yii\helpers\Html;
 			echo '<div class="termindetails">';
 			$gremien = array();
 			foreach ($termin["gremien"] as $name => $links) {
-				foreach ($links as $link) $gremien[] = Html::link($name, $link);
+				foreach ($links as $link) $gremien[] = Html::a($name, $link);
 			}
 			echo implode(", ", $gremien);
 			echo '</div>';
@@ -45,7 +45,7 @@ use yii\helpers\Html;
 			echo '<ul class="dokumentenliste_small">';
 			foreach ($termin["dokumente"] as $dokument) {
 				/** @var Dokument $dokument */
-				echo '<li>' . Html::link('<span class="glyphicon glyphicon-file"></span> ' . $dokument->getName(true), $dokument->getLinkZumDokument()) . '</li>';
+				echo '<li>' . Html::a('<span class="glyphicon glyphicon-file"></span> ' . $dokument->getName(true), $dokument->getLinkZumDokument()) . '</li>';
 			}
 			echo "</ul>";
 		}

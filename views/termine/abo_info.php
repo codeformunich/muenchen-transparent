@@ -12,9 +12,9 @@ use Yii;
 
     <section class="well">
         <ul class="breadcrumb" style="margin-bottom: 5px;">
-            <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-            <li><a href="<?= Html::encode(Yii::$app->createUrl("termine/index")) ?>">Termine</a><br></li>
-            <li><a href="<?= Html::encode(Yii::$app->createUrl("termine/anzeigen", ["termin_id" => $termin->id])) ?>">Termin</a><br></li>
+            <li><a href="<?= Html::encode(Url::to("index/startseite")) ?>">Startseite</a><br></li>
+            <li><a href="<?= Html::encode(Url::to("termine/index")) ?>">Termine</a><br></li>
+            <li><a href="<?= Html::encode(Url::to("termine/anzeigen", ["termin_id" => $termin->id])) ?>">Termin</a><br></li>
             <li class="active">Export</li>
         </ul>
 
@@ -27,21 +27,21 @@ use Yii;
             <tr>
                 <th>Einzeltermin (ICS):</th>
                 <td><?
-                    $link = Html::encode(Yii::$app->createUrl("termine/icsExportSingle", array("termin_id" => $termin->id)));
+                    $link = Html::encode(Url::to("termine/icsExportSingle", array("termin_id" => $termin->id)));
                     echo '<a href="' . $link . '">' . SITE_BASE_URL . $link . '</a>';
                     ?></td>
             </tr>
             <tr>
                 <th>Terminreihe (ICS):</th>
                 <td><?
-                    $link = Html::encode(Yii::$app->createUrl("termine/icsExportAll", array("termin_id" => $termin->id)));
+                    $link = Html::encode(Url::to("termine/icsExportAll", array("termin_id" => $termin->id)));
                     echo '<a href="' . $link . '" rel="nofollow">' . SITE_BASE_URL . $link . '</a>';
                     ?></td>
             </tr>
             <tr>
                 <th>Terminreihe (CalDAV):</th>
                 <td><?
-                    $link = Html::encode(Yii::$app->createUrl("termine/dav", array("termin_id" => $termin->id)));
+                    $link = Html::encode(Url::to("termine/dav", array("termin_id" => $termin->id)));
                     echo '<a href="' . $link . '" rel="nofollow">' . SITE_BASE_URL . $link . '</a>';
                     ?></td>
             </tr>

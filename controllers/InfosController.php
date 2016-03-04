@@ -125,7 +125,7 @@ class InfosController extends RISBaseController
             $this->render('feedback_done', []);
         } else {
             $this->render('feedback_form', [
-                "current_url" => Yii::$app->createUrl("infos/feedback"),
+                "current_url" => Url::to("infos/feedback"),
             ]);
         }
     }

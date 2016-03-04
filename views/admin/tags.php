@@ -63,7 +63,7 @@ $user = $this->context->aktuelleBenutzerIn();
                 <? foreach($tag->antraege as $antrag) { ?>
                     <tr>
                         <td class="tag-name" ><?= $tag->name ?></td>
-                        <td class="antrag-id"><?= Html::link($antrag->id, $antrag->getLink()) ?></td>
+                        <td class="antrag-id"><?= Html::a($antrag->id, $antrag->getLink()) ?></td>
                         <td class="email"    ><?= $tag->angelegt_benutzerIn->email ?></td>
                         <td class="fontello-cancel tag-delete"></td>
                     </tr>

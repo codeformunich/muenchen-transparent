@@ -110,7 +110,7 @@ $this->title = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                         $name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
                         echo '<li>';
                         echo "<div class='metainformationen_antraege'>" . Html::encode($dokument->getDisplayDate()) . "</div>";
-                        echo Html::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkZumDokument());
+                        echo Html::a('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkZumDokument());
                         echo '</li>';
                     } ?>
                 </ul>

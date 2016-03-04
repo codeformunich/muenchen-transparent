@@ -15,7 +15,7 @@ $this->title = "Suche";
 
 ?>
 <section class="well">
-	<form class="form-horizontal form-signin" method="POST" action="<?= Html::encode(Yii::$app->createUrl("index/suche")) ?>">
+	<form class="form-horizontal form-signin" method="POST" action="<?= Html::encode(Url::to("index/suche")) ?>">
 		<fieldset>
 			<legend class="form_row">Suche</legend>
 		</fieldset>

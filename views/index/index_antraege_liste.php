@@ -124,7 +124,7 @@ if (count($antraege) > 0) {
             $inhalt = $entry->inhaltsverzeichnis();
             if (count($inhalt) > 0) echo '<ul class="toc">';
             foreach ($inhalt as $inh) {
-                if ($inh["link"]) echo '<li>' . Html::link($inh["titel"], $inh["link"]) . '</li>';
+                if ($inh["link"]) echo '<li>' . Html::a($inh["titel"], $inh["link"]) . '</li>';
                 else echo '<li>' . Html::encode($inh["titel"]) . '</li>';
             }
             if (count($inhalt) > 0) echo '</ul>';

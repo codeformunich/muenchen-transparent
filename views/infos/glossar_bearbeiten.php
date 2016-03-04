@@ -13,9 +13,9 @@ $this->title = "Glossar bearbeiten";
 
 ?>
 	<h2>Eintrag bearbeiten</h2>
-	<a href="<?= Html::encode(Yii::$app->createUrl("infos/glossar")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
+	<a href="<?= Html::encode(Url::to("infos/glossar")) ?>"><span class="glyphicon glyphicon-arrow-left"></span> Zurück</a><br>
 
-	<form method="POST" action="<?= Html::encode(Yii::$app->createUrl("infos/glossarBearbeiten", ["id" => $eintrag->id])) ?>" role="form" class="well"
+	<form method="POST" action="<?= Html::encode(Url::to("infos/glossarBearbeiten", ["id" => $eintrag->id])) ?>" role="form" class="well"
 		  style="max-width: 850px; margin-top: 50px; margin-left: auto; margin-right: auto;">
 
 		<div class="form-group">

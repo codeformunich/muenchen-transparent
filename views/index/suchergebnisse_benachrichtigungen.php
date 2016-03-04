@@ -15,7 +15,7 @@ use app\components\AntiXSS;
  */
 
 ?>
-<form method="POST" action="<?= Html::encode(Yii::$app->createUrl("index/suche")) ?>" id="login_ben_form">
+<form method="POST" action="<?= Html::encode(Url::to("index/suche")) ?>" id="login_ben_form">
     <?
     $krits = $krits->getUrlArray();
     for ($i = 0; $i < count($krits["krit_typ"]); $i++) {

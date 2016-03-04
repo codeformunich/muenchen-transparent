@@ -171,7 +171,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
      */
     public function getLink($add_params = [])
     {
-        return Yii::$app->createUrl("termine/anzeigen", array_merge(["id" => $this->id], $add_params));
+        return Url::to("termine/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
 
@@ -362,7 +362,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
         foreach ($appointments as $appointment) {
             $key = $appointment->termin . $appointment->sitzungsort;
             if (!isset($data[$key])) $data[$key] = $appointment->toArr();
-            $url = Yii::$app->createUrl("termine/anzeigen", ["termin_id" => $appointment->id]);
+            $url = Url::to("termine/anzeigen", ["termin_id" => $appointment->id]);
             if ($appointment->gremium) {
                 if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = [];
                 $data[$key]["gremien"][$appointment->gremium->name][] = $url;
@@ -449,7 +449,7 @@ class Termin extends ActiveRecord implements IRISItemHasDocuments
      */
     public function getVEventParams()
     {
-        $description = "Infoseite: " . SITE_BASE_URL . Yii::$app->createUrl("termine/anzeigen", ["termin_id" => $this->id]);
+        $description = "Infoseite: " . SITE_BASE_URL . Url::to("termine/anzeigen", ["termin_id" => $this->id]);
         foreach ($this->antraegeDokumente as $dok) {
             $description .= "\n" . $dok->getName() . ": " . $dok->getLink();
         }

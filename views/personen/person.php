@@ -18,13 +18,13 @@ $this->context->html_itemprop = "http://schema.org/Person";
 ?>
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
-        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
-        <li><a href="<?= Html::encode(Yii::$app->createUrl("personen/index")) ?>">Personen</a><br></li>
+        <li><a href="<?= Html::encode(Url::to("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Url::to("personen/index")) ?>">Personen</a><br></li>
         <li class="active"><?= Html::encode($person->getName()) ?></li>
     </ul>
 
     <div style="float: right;"><?
-        echo Html::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $person->getSourceLink());
+        echo Html::a("<span class='fontello-right-open'></span>Original-Seite im RIS", $person->getSourceLink());
         ?></div>
     <h1 itemprop="name"><?= Html::encode($person->getName()) ?></h1>
 </section>
@@ -70,7 +70,7 @@ $this->context->html_itemprop = "http://schema.org/Person";
                                     echo "<li class='" . ($mitgliedschaft->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>";
                                     echo Html::encode($gremium->getName(true));
                                     if ($gremium->ba_nr > 0) {
-                                        echo " (Bezirksausschuss " . Html::link($gremium->ba->name, $gremium->ba->getLink()) . ")";
+                                        echo " (Bezirksausschuss " . Html::a($gremium->ba->name, $gremium->ba->getLink()) . ")";
                                     }
                                     if ($mitgliedschaft->datum_bis != "") {
                                         echo '<br><small>(' . RISTools::datumstring($mitgliedschaft->datum_von);
@@ -141,7 +141,7 @@ $this->context->html_itemprop = "http://schema.org/Person";
 
                                 $dokurl = $dok->getLinkZumDokument();
                                 echo '<li style="margin-bottom: 10px;">';
-                                echo Html::link($risitem->getName(true), $risitem->getLink()) . '<br>';
+                                echo Html::a($risitem->getName(true), $risitem->getLink()) . '<br>';
                                 echo '<a href="' . Html::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . Html::encode($dok->name) . '</a>';
                                 echo '</li>';
                             }
@@ -200,10 +200,10 @@ $this->context->html_itemprop = "http://schema.org/Person";
             <?
             $ich = $this->context->aktuelleBenutzerIn();
             if ($ich && $ich->id == $person->benutzerIn_id) {
-                $editlink = Yii::$app->createUrl("personen/personBearbeiten", array("id" => $person->id));
+                $editlink = Url::to("personen/personBearbeiten", array("id" => $person->id));
                 echo '<a href="' . Html::encode($editlink) . '"><span class="mdi-content-create"></span> Eintrag bearbeiten</a>';
             } else {
-                $binichlink = Yii::$app->createUrl("personen/binIch", array("id" => $person->id));
+                $binichlink = Url::to("personen/binIch", array("id" => $person->id));
                 $login_add = ($ich ? '' : ' <small>(Login)</small>');
                 echo '<a href="' . Html::encode($binichlink) . '" style="font-size: 0.9em; color: gray; font-style: italic;">Sie Sind ' . Html::encode($person->getName()) . '?' . $login_add . '</a>';
             }

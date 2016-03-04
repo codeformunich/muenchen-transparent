@@ -195,7 +195,7 @@ class Gremium extends ActiveRecord implements IRISItem
      */
     public function getLink($add_params = [])
     {
-        return Yii::$app->createUrl("gremium/anzeigen", array_merge(["id" => $this->id], $add_params));
+        return Url::to("gremium/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
 

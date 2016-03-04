@@ -13,7 +13,7 @@ use yii\helpers\Url;
 ?>
 <h1><?= Html::encode($dokument->name) ?></h1>
 
-<?= Html::link("Original", $dokument->getLinkZumDokument()) ?><br><br>
+<?= Html::a("Original", $dokument->getLinkZumDokument()) ?><br><br>
 
 <div style="float: right; max-width: 300px;" class="well">
 	<h3>Ähnliche Dokumente</h3>
@@ -24,7 +24,7 @@ use yii\helpers\Url;
 			$name = $doc->name;
 			if ($doc->antrag) $name = $doc->antrag->getName() . " - " . $name;
 			if ($doc->termin) $name = $doc->termin->termin . " - " . $name;
-			echo Html::link($name, Url::to("index/dokument", array("id" => $doc->id)));
+			echo Html::a($name, Url::to("index/dokument", array("id" => $doc->id)));
 			echo "</li>";
 		}
 		echo "</ul>";

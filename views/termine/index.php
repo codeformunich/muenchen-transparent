@@ -18,7 +18,7 @@ $this->title = "Termine";
 
 <section class="well">
 	<ul class="breadcrumb" style="margin-bottom: 5px;">
-		<li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+		<li><a href="<?= Html::encode(Url::to("index/startseite")) ?>">Startseite</a><br></li>
 		<li class="active">Termine</li>
 	</ul>
 	<h1 class="sr-only">Termine</h1>
@@ -41,7 +41,7 @@ $this->title = "Termine";
 				timeFormat: 'H:mm',
 				weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
 				eventSources: [
-					"<?=Html::encode(Yii::$app->createUrl("termine/fullCalendarFeed"))?>"
+					"<?=Html::encode(Url::to("termine/fullCalendarFeed"))?>"
 				],
 				eventRender: function (event, element) {
 					element.attr("title", event["title"]);
@@ -86,7 +86,7 @@ $this->title = "Termine";
 						$max_date = 0;
 						$doklist  = "";
 						foreach ($termin->antraegeDokumente as $dokument) {
-							//$doklist .= "<li>" . Html::link($dokument->name, Url::to("index/dokument", array("id" => $dokument->id))) . "</li>";
+							//$doklist .= "<li>" . Html::a($dokument->name, Url::to("index/dokument", array("id" => $dokument->id))) . "</li>";
 							$dokurl = $dokument->getLinkZumDokument();
 							$doklist .= "<li><a href='" . Html::encode($dokurl) . "'";
 							if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';

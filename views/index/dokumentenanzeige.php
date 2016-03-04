@@ -27,7 +27,7 @@ if ($risitem) {
 
 <section class="well pdfjs">
     <ul class="breadcrumb">
-        <li><a href="<?= Html::encode(Yii::$app->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= Html::encode(Url::to("index/startseite")) ?>">Startseite</a><br></li>
         <?
 
         /**
@@ -39,7 +39,7 @@ if ($risitem) {
         function dokumentenliste($uebergruppe, $name, $dokument, $link)
         {
             if ($link && $uebergruppe) {
-                echo "<li>" . Html::link($name, $uebergruppe->getLink()) . "<br></li>";
+                echo "<li>" . Html::a($name, $uebergruppe->getLink()) . "<br></li>";
             } else {
                 echo "<li class=\"active\">" . Html::encode($name) . "<br></li>";
             }
@@ -49,11 +49,11 @@ if ($risitem) {
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::encode($dokument->getName()) ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . Html::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
+                        <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . Html::a($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
                     </ul>
                 </li> <?
             } else {
-                echo "<li>" . Html::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</li>\n";
+                echo "<li>" . Html::a($dokument->getName(), $dokument->getLinkZumDokument()) . "</li>\n";
             }
         }
 

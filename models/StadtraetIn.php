@@ -130,7 +130,7 @@ class StadtraetIn extends ActiveRecord implements IRISItem
     public function getLink($add_params = [])
     {
         $name = $this->getName();
-        return Yii::$app->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $name], $add_params));
+        return Url::to("personen/person", array_merge(["id" => $this->id, "name" => $name], $add_params));
     }
 
 

@@ -148,7 +148,7 @@ class Person extends ActiveRecord implements IRISItem
      */
     public function getLink($add_params = [])
     {
-        return Yii::$app->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $this->name], $add_params));
+        return Url::to("personen/person", array_merge(["id" => $this->id, "name" => $this->name], $add_params));
     }
 
     /** @return string */

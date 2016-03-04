@@ -14,7 +14,7 @@ use app\models\Bezirksausschuss;
 <section class="well">
     <h1>BürgerInnenversammlungen</h1>
 
-    <form method="POST" action="<?=Html::encode(Yii::$app->createUrl("admin/buergerInnenversammlungen"))?>">
+    <form method="POST" action="<?=Html::encode(Url::to("admin/buergerInnenversammlungen"))?>">
         <table>
             <thead>
             <tr>
@@ -27,7 +27,7 @@ use app\models\Bezirksausschuss;
             <tbody>
             <? foreach ($termine as $termin) {
                 $id      = $termin->id;
-                $del_url = Yii::$app->createUrl("admin/buergerInnenversammlungen", array(AntiXSS::createToken("delete") => $id));
+                $del_url = Url::to("admin/buergerInnenversammlungen", array(AntiXSS::createToken("delete") => $id));
                 ?>
                 <tr>
                     <td>

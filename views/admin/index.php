@@ -21,19 +21,19 @@ $user = $this->context->aktuelleBenutzerIn();
                 <?
                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) {
                     ?>
-                    <li><?= Html::link("StadträtInnen/Personen verknüpfen", Url::to("admin/stadtraetInnenPersonen")) ?></li>
-                    <li><?= Html::link("StadträtInnen: Social-Media-Daten", Url::to("admin/stadtraetInnenSocialMedia")) ?></li>
-                    <li><?= Html::link("StadträtInnen: Beschreibungen", Url::to("admin/stadtraetInnenBeschreibungen")) ?></li>
-                    <li><?= Html::link("BürgerInnenversammlungen", Url::to("admin/buergerInnenversammlungen")) ?></li>
+                    <li><?= Html::a("StadträtInnen/Personen verknüpfen", Url::to("admin/stadtraetInnenPersonen")) ?></li>
+                    <li><?= Html::a("StadträtInnen: Social-Media-Daten", Url::to("admin/stadtraetInnenSocialMedia")) ?></li>
+                    <li><?= Html::a("StadträtInnen: Beschreibungen", Url::to("admin/stadtraetInnenBeschreibungen")) ?></li>
+                    <li><?= Html::a("BürgerInnenversammlungen", Url::to("admin/buergerInnenversammlungen")) ?></li>
                 <? }
                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) {
                     ?>
-                    <li><?= Html::link("StadträtInnen: Accounts", Url::to("admin/stadtraetInnenBenutzerInnen")) ?></li>
+                    <li><?= Html::a("StadträtInnen: Accounts", Url::to("admin/stadtraetInnenBenutzerInnen")) ?></li>
                 <?
                 }
                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) {
                     ?>
-                    <li><?= Html::link("Tags", Url::to("admin/tags")) ?></li>
+                    <li><?= Html::a("Tags", Url::to("admin/tags")) ?></li>
                 <?
                 }
                 ?>

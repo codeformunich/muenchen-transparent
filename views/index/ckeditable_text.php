@@ -13,7 +13,7 @@ use app\components\RISTools;
  */
 
 $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
-    return Html::encode(Yii::$app->createUrl($matches["url"]));
+    return Html::encode(Url::to($matches["url"]));
 }, $text->text);
 if ($insert_tooltips) $html_text = RISTools::insertTooltips($html_text);
 ?>
