@@ -12,7 +12,7 @@ class RISBaseController extends Controller
     /**
      * Alternative: //layouts/width_wide
      */
-    public $layout = '//layouts/width_std';
+    public $layout = '@app/views/layouts/width_std';
 
     /**
      * @var string

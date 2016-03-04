@@ -181,7 +181,7 @@ def do_replace(filepath, yii1_classes, replacements):
     if "layout" in replacements:
         contents = re.sub(r"public *\$layout *= *(['\"])//layouts/", r"public $layout = \1@app/views/layouts/", contents)
         contents = re.sub(r"\$this->context->layout *= *(['\"])//layouts/", r"$this->context->layout = \1@app/views/layouts/", contents)
-        contents = re.sub(r"\$this->(begin|end)Content\((['\"])//layouts/", r"$this->\1Content(\2//layouts/")
+        contents = re.sub(r"\$this->(begin|end)Content\((['\"])//layouts/", r"$this->\1Content(\2//layouts/", contents)
     
     if "relations" in replacements:
         function_regex = r"\n(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public *function *{}\(\)[\ \n]*{{[^}}]*}})\ *\n"
