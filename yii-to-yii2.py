@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Script to convert a standard yii1 project into a yii2 project
+"""
+
 import argparse, os, re, glob, fnmatch, sys, subprocess, shutil
 
 ## Settings
@@ -122,6 +126,53 @@ def convert_folderstructure():
     with open(".gitignore", 'w') as gitignore:
         gitignore.writelines(ignores)
 
+def relations(filepath):
+    with open_wrapper(filepath, 'r') as file:
+        contents = file.read()
+    
+    # matches the a function with a preceeding well-formatted comment
+    function_regex = r"\n(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public *function *{}\(\)[\ \n]*{{[^}}]*}})\ *\n"
+    
+    # matches the relations function
+    relation_regex = function_regex.format("relations")
+    
+    if not re.search(relation_regex, contents):
+        return
+    
+    print("Found relations in " + filepath)
+
+    # Those regex match the three different types of old relations
+    word = r"\s*['\"](\w+)['\"]\s*"
+    relation_belongs_to = word + r"=>\s*(?:array\(|\[)self::BELONGS_TO," + word + r"," + word + r"\s*(?:\)|\])"
+    relation_has_many   = word + r"=>\s*(?:array\(|\[)self::HAS_MANY,"   + word + r"," + word + r"\s*(?:\)|\])"
+    relation_many_many  = word + r"=>\s*(?:array\(|\[)self::MANY_MANY,"  + word + r"," + r"\s*['\"](\w+)\((\w+),\s*(\w+)\)['\"]\s*" + r"\s*(?:\)|\])"
+    
+    # Remove old getters that would conflict with the new ones
+    for relation in [relation_belongs_to, relation_has_many, relation_many_many]:
+        for i in re.findall(relation, contents):
+            contents = re.sub(function_regex.format("get" + i[0][0].upper() + i[0][1:]), "", contents)
+    
+    # Remove the old relations method by splitting
+    splitted = re.split(relation_regex, contents)
+    assert len(splitted) == 3
+    contents = splitted[0]
+    
+    relation_function = splitted[1]
+    
+    def upperfirst(x):
+        return x[0].upper() + x[1:]
+    
+    for relation, activequery in [(relation_belongs_to, activequery_one), (relation_has_many, activequery_many), (relation_many_many, activequery_many_many)]:
+        for i in re.findall(relation, relation_function):
+            i = list(i)
+            i[0] = i[0][0].upper() + i[0][1:] # capitalize first letter
+            contents += "".join(activequery.format(*i))
+
+    contents += splitted[2]
+
+    with open_wrapper(filepath, 'w') as file:
+        file.write(contents)
+
 def do_replace(filepath, yii1_classes, replacements):
     """
     Applies the replacements named in `replacements` in the the file `filepath`
@@ -182,50 +233,6 @@ def do_replace(filepath, yii1_classes, replacements):
         contents = re.sub(r"public *\$layout *= *(['\"])//layouts/", r"public $layout = \1@app/views/layouts/", contents)
         contents = re.sub(r"\$this->context->layout *= *(['\"])//layouts/", r"$this->context->layout = \1@app/views/layouts/", contents)
         contents = re.sub(r"\$this->(begin|end)Content\((['\"])//layouts/", r"$this->\1Content(\2//layouts/", contents)
-    
-    if "relations" in replacements:
-        function_regex = r"\n(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public *function *{}\(\)[\ \n]*{{[^}}]*}})\ *\n"
-        relation_regex = function_regex.format("relations")
-        
-        if re.search(relation_regex, contents):
-            print("found relations() in " + filepath)
-
-            word = r"\s*['\"](\w+)['\"]\s*"
-            relation_belongs_to = word + r"=>\s*(?:array\(|\[)self::BELONGS_TO," + word + r"," + word + r"\s*(?:\)|\])"
-            relation_has_many   = word + r"=>\s*(?:array\(|\[)self::HAS_MANY,"   + word + r"," + word + r"\s*(?:\)|\])"
-            relation_many_many  = word + r"=>\s*(?:array\(|\[)self::MANY_MANY,"  + word + r"," + r"\s*['\"](\w+)\((\w+),\s*(\w+)\)['\"]\s*" + r"\s*(?:\)|\])"
-            
-            for i in re.findall(relation_belongs_to, contents):
-                contents = re.sub(function_regex.format("get" + i[0].capitalize()), "", contents)
-            
-            for i in re.findall(relation_has_many, contents):
-                contents = re.sub(function_regex.format("get" + i[0].capitalize()), "", contents)
-            
-            for i in re.findall(relation_many_many, contents):
-                contents = re.sub(function_regex.format("get" + i[0].capitalize()), "", contents)
-            
-            splitted = re.split(relation_regex, contents)
-            assert len(splitted) == 3
-            contents = splitted[0]
-            
-            relation = splitted[1]
-            
-            def upperfirst(x):
-                return x[0].upper() + x[1:]
-            
-            for i in re.findall(relation_belongs_to, relation):
-                print(i)
-                contents += "".join(activequery_one.format(upperfirst(i[0]), i[1], i[2]))
-            
-            for i in re.findall(relation_has_many, relation):
-                print(i)
-                contents += "".join(activequery_many.format(upperfirst(i[0]), i[1], i[2]))
-            
-            for i in re.findall(relation_many_many, relation):
-                print(i)
-                contents += "".join(activequery_many_many.format(upperfirst(i[0]), i[1], i[2], i[3], i[4]))
-            
-            contents += splitted[2]
     
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
@@ -342,26 +349,32 @@ def insert_imports(filepath, imports):
     file.close()
 
 def main():
-    parser = argparse.ArgumentParser(description='Semi-automatically converts a yii1 to a yii2 project')
+    parser = argparse.ArgumentParser(description='Yii1 to Yii2 conversion helper. This tool offer the most changes required to update as commands.')
     parser.add_argument('--yii2-template', action='store_true', help='Initial-step. Changes the folderstrucuture to the yii2 basic template and also updates .gitignore so you commit the changes')
-    parser.add_argument('--replace', nargs='+')
-    parser.add_argument('--import-usages', action='store_true')
-    parser.add_argument('--path', default=None)
+    parser.add_argument('--relations', action='store_true', help='Replaces the old relations() method with new yii2 style relations.')
+    parser.add_argument('--import-usages', action='store_true', help='Adds the namespace and most required `use` directives at the beginning of all php files')
+    parser.add_argument('--replace', nargs='+', help='Apply named replaces FIXME: list of the available replaces')
+    parser.add_argument('--path', default=None, help='A directory or a file to which actions will be applied. Doesn\'t apply on --yii2-template')
     args = parser.parse_args()
+    
     paths = [args.path] if args.path else default_code_paths
     
-    if not args.yii2_template and not args.import_usages and not args.replace:
+    if not args.yii2_template and not args.import_usages and not args.replace and not args.relations:
         parser.print_help()
-    
-    print(sys.version_info)
     
     if args.yii2_template:
         convert_folderstructure()
+    
     if args.replace:
         with open("yii1-classes.txt", 'r') as file:
             yii1_classes = [i.strip() for i in file.readlines()]
         for filepath in get_all_files(paths):
             do_replace(filepath, yii1_classes, args.replace)
+    
+    if args.relations:
+        for filepath in get_all_files(paths):
+            relations(filepath)
+    
     if args.import_usages:
         sources = generate_namespace_mapping()
         for filepath in get_all_files(paths):
