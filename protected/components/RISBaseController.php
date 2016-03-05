@@ -3,7 +3,7 @@
 class RISBaseController extends CController
 {
     /**
-     * Alternative: //layouts/width_wide
+     * Alternative: //layouts/width_wide.
      */
     public $layout = '//layouts/width_std';
 
@@ -11,13 +11,12 @@ class RISBaseController extends CController
      * @var string
      */
     public $html_description = "";
-    public $html_itemprop = "";
+    public $html_itemprop    = "";
 
     /**
      * @var string
      */
     public $inline_css = "";
-
 
     /**
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
@@ -25,8 +24,8 @@ class RISBaseController extends CController
     public $menu = [];
     /**
      * @var array the breadcrumbs of the current page. The value of this property will
-     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
-     * for more details on how to specify this property.
+     *            be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
+     *            for more details on how to specify this property.
      */
     public $breadcrumbs = [];
 
@@ -55,17 +54,16 @@ class RISBaseController extends CController
         if ($code != "") {
             $x = explode("-", $code);
             /** @var BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::model()->findByPk($x[0]);
-            if (!$benutzerIn) $this->msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
-            elseif ($benutzerIn->email_bestaetigt) $this->msg_err = "Dieser Zugang wurde bereits bestätigt.";
+            $benutzerIn                                                   = BenutzerIn::model()->findByPk($x[0]);
+            if (!$benutzerIn) $this->msg_err                              = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert?";
+            elseif ($benutzerIn->email_bestaetigt) $this->msg_err         = "Dieser Zugang wurde bereits bestätigt.";
             elseif (!$benutzerIn->emailBestaetigen($code)) $this->msg_err = "Diese Seite existiert nicht. Vielleicht wurde der Bestätigungslink falsch kopiert? (Beachte, dass der Link in der E-Mail nur 2-3 Tage lang gültig ist.";
             else {
                 $this->msg_ok   = "Der Zugang wurde bestätigt. Ab jetzt erhältst du Benachrichtigungen per E-Mail, wenn du das so eingestellt hast.";
-                $identity = new RISUserIdentity($benutzerIn);
+                $identity       = new RISUserIdentity($benutzerIn);
                 Yii::app()->user->login($identity);
             }
         }
-
 
         if (AntiXSS::isTokenSet("abmelden") && !$user->isGuest) {
             $user->logout();
@@ -89,7 +87,7 @@ class RISBaseController extends CController
         if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && isset($_REQUEST["register"])) {
             /** @var BenutzerIn[] $gefundene_benutzerInnen */
             $gefundene_benutzerInnen = BenutzerIn::model()->findAll([
-                "condition" => "email='" . addslashes($_REQUEST["email"]) . "'"
+                "condition" => "email='".addslashes($_REQUEST["email"])."'",
             ]);
             if (count($gefundene_benutzerInnen) > 0) {
                 $this->msg_err = "Es existiert bereits ein Zugang für diese E-Mail-Adresse";
@@ -108,7 +106,7 @@ class RISBaseController extends CController
                     $this->msg_ok = "Der Zugang wurde angelegt. Es wurde eine Bestätigungs-Mail an die angegebene Adresse geschickt. Bitte klicke auf den Link in dieser Mail an, um E-Mail-Benachrichtigungen zu erhalten.";
                 } else {
                     $this->msg_err = "Leider ist ein (ungewöhnlicher) Fehler aufgetreten.";
-                    $errs    = $benutzerIn->getErrors();
+                    $errs          = $benutzerIn->getErrors();
                     foreach ($errs as $err) foreach ($err as $e) $this->msg_err .= $e;
                 }
             }
@@ -118,6 +116,7 @@ class RISBaseController extends CController
     /**
      * @param string $target_url
      * @param string $code
+     *
      * @return array
      */
     protected function requireLogin($target_url, $code = "")
@@ -144,9 +143,10 @@ class RISBaseController extends CController
     public function aktuelleBenutzerIn()
     {
         $user = Yii::app()->getUser();
-        if ($user->isGuest) return null;
+        if ($user->isGuest) return;
         /** @var BenutzerIn $ich */
         $ich = BenutzerIn::model()->findByAttributes(["email" => Yii::app()->user->id]);
+
         return $ich;
     }
 
@@ -157,11 +157,12 @@ class RISBaseController extends CController
     {
         $curr = $this->aktuelleBenutzerIn();
         if ($curr === null) return false;
+
         return $curr->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT);
     }
 
     /**
-     * @param int $error_code
+     * @param int    $error_code
      * @param string $error_message
      */
     public function errorMessageAndDie($error_code, $error_message)

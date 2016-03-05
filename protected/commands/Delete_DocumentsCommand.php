@@ -17,7 +17,7 @@ class Delete_DocumentsCommand extends CConsoleCommand
             $data = $sql->queryColumn(["id"]);
 
             for ($i = 0; $i < count($data); $i++) {
-                if (($i % 100) == 0) echo $i . " / " . count($data) . "\n";
+                if (($i % 100) == 0) echo $i." / ".count($data)."\n";
                 $parser->checkAndDeleteDocument($data[$i]);
             }
         }

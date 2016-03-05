@@ -15,10 +15,10 @@ class BenachrichtigungenController extends RISBaseController
         $this->load_leaflet_draw_css = true;
 
         if (AntiXSS::isTokenSet("einstellungen_speichern")) {
-            $einstellungen = $ich->getEinstellungen();
+            $einstellungen                                                                                             = $ich->getEinstellungen();
             if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "tag") $einstellungen->benachrichtigungstag = null;
             if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "woche") {
-                if (isset($_REQUEST["wochentag"])) $einstellungen->benachrichtigungstag = IntVal($_REQUEST["wochentag"]);
+                if (isset($_REQUEST["wochentag"])) $einstellungen->benachrichtigungstag = intval($_REQUEST["wochentag"]);
             }
             $ich->setEinstellungen($einstellungen);
             $ich->save();
@@ -79,15 +79,15 @@ class BenachrichtigungenController extends RISBaseController
             $ich = $this->aktuelleBenutzerIn();
             $id  = $ich->id;
 
-            if ($ich != NULL) {
-                $ich->email                         = NULL;
+            if ($ich != null) {
+                $ich->email                         = null;
                 $ich->email_bestaetigt              = 0;
-                $ich->pwd_enc                       = NULL;
-                $ich->datum_angelegt                = NULL;
-                $ich->datum_letzte_benachrichtigung = NULL;
+                $ich->pwd_enc                       = null;
+                $ich->datum_angelegt                = null;
+                $ich->datum_letzte_benachrichtigung = null;
                 $ich->berechtigungen_flags          = 0;
-                $ich->einstellungen_object          = NULL;
-                $ich->einstellungen                 = NULL;
+                $ich->einstellungen_object          = null;
+                $ich->einstellungen                 = null;
                 $ich->save(false);
 
                 Yii::app()->db
@@ -132,7 +132,8 @@ class BenachrichtigungenController extends RISBaseController
 
     /**
      * @param Solarium\Client $solr
-     * @param BenutzerIn $benutzerIn
+     * @param BenutzerIn      $benutzerIn
+     *
      * @return \Solarium\QueryType\Select\Query\Query
      */
     protected function getAlleSuchergebnisse(&$solr, $benutzerIn)
@@ -150,8 +151,8 @@ class BenachrichtigungenController extends RISBaseController
         $benachrichtigungen = $benutzerIn->getBenachrichtigungen();
         $krits_solr         = [];
 
-        foreach ($benachrichtigungen as $ben) $krits_solr[] = "(" . $ben->getSolrQueryStr($select) . ")";
-        $querystr = implode(" OR ", $krits_solr);
+        foreach ($benachrichtigungen as $ben) $krits_solr[] = "(".$ben->getSolrQueryStr($select).")";
+        $querystr                                           = implode(" OR ", $krits_solr);
 
         $select->setQuery($querystr);
 
@@ -172,13 +173,14 @@ class BenachrichtigungenController extends RISBaseController
         $benutzerIn = BenutzerIn::getByFeedCode($code);
         if (!$benutzerIn) {
             $this->render('../index/error', ["code" => 400, "message" => "Das Feed konnte leider nicht gefunden werden."]);
+
             return;
         }
 
         $titel       = "Suchergebnisse";
         $description = "Neue Dokumente, die einem der folgenden Kriterien entsprechen:<br>";
         $bens        = $benutzerIn->getBenachrichtigungen();
-        foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getTitle()) . "<br>";
+        foreach ($bens as $ben) $description .= "- ".CHtml::encode($ben->getTitle())."<br>";
 
         $solr       = RISSolrHelper::getSolrClient("ris");
         $select     = $this->getAlleSuchergebnisse($solr, $benutzerIn);
@@ -192,7 +194,6 @@ class BenachrichtigungenController extends RISBaseController
         ]);
 
     }
-
 
     public function actionAlleSuchergebnisse()
     {
@@ -210,21 +211,19 @@ class BenachrichtigungenController extends RISBaseController
 
         $ergebnisse = $solr->select($select);
 
-
         $this->render("alle_suchergebnisse", [
             "ergebnisse" => $ergebnisse,
         ]);
     }
-
 
     public function actionNewsletterHTMLTest()
     {
         $benutzerIn = $this->aktuelleBenutzerIn();
         $data       = $benutzerIn->benachrichtigungsErgebnisse(31);
 
-        $path = Yii::getPathOfAlias('application.views.benachrichtigungen') . '/suchergebnisse_email_html.php';
-        if (!file_exists($path)) throw new Exception('Template ' . $path . ' does not exist.');
-        require($path);
+        $path = Yii::getPathOfAlias('application.views.benachrichtigungen').'/suchergebnisse_email_html.php';
+        if (!file_exists($path)) throw new Exception('Template '.$path.' does not exist.');
+        require $path;
         Yii::app()->end();
     }
 
@@ -251,9 +250,9 @@ class BenachrichtigungenController extends RISBaseController
     }
 
     /**
-    * @param string $id
-    * @param string $code
-    */
+     * @param string $id
+     * @param string $code
+     */
     public function actionNeuesPasswortSetzen($id = "", $code = "")
     {
         $my_url = $this->createUrl("benachrichtigungen/NeuesPasswortSetzen", ["id" => $id, "code" => $code]);
@@ -266,6 +265,7 @@ class BenachrichtigungenController extends RISBaseController
                 $this->render('reset_password_form', [
                     "current_url" => $this->createUrl("benachrichtigungen/PasswortZuruecksetzen"),
                 ]);
+
                 return;
             }
 
@@ -274,6 +274,7 @@ class BenachrichtigungenController extends RISBaseController
                 $this->render('reset_password_set_form', [
                     "current_url" => $my_url,
                 ]);
+
                 return;
             }
 
@@ -292,7 +293,4 @@ class BenachrichtigungenController extends RISBaseController
             ]);
         }
     }
-
-
-
 }

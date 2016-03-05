@@ -4,15 +4,16 @@
  * This is the model class for table "termine".
  *
  * The followings are the available columns in table 'termine':
- * @property integer $id
- * @property integer $typ
+ *
+ * @property int $id
+ * @property int $typ
  * @property string $datum_letzte_aenderung
- * @property integer $termin_reihe
- * @property integer $gremium_id
- * @property integer $ba_nr
+ * @property int $termin_reihe
+ * @property int $gremium_id
+ * @property int $ba_nr
  * @property string $termin
- * @property integer $termin_prev_id
- * @property integer $termin_next_id
+ * @property int $termin_prev_id
+ * @property int $termin_next_id
  * @property string $sitzungsort
  * @property string $referat
  * @property string $referent
@@ -30,17 +31,18 @@
  */
 class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
-    public static $TYP_AUTO   = 0;
+    public static $TYP_AUTO                   = 0;
     public static $TYP_BUERGERVERSAMMLUNG     = 1;
-    public static $TYPEN_ALLE = [
+    public static $TYPEN_ALLE                 = [
         0 => "Automatisch vom RIS",
         1 => "BürgerInnenversammlung",
     ];
 
-
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Termin the static model class
      */
     public static function model($className = __CLASS__)
@@ -122,7 +124,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         $history = new TerminHistory();
         $history->setAttributes($this->getAttributes(), false);
         if ($history->wahlperiode == "") $history->wahlperiode = "?";
-        if ($history->status == "") $history->status = "?";
+        if ($history->status == "") $history->status           = "?";
         if ($history->sitzungsort == "") $history->sitzungsort = "?";
         try {
             if (!$history->save()) {
@@ -137,13 +139,13 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
     {
         return Yii::app()->createUrl("termine/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
-
 
     /** @return string */
     public function getTypName()
@@ -154,6 +156,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -163,7 +166,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         if (!$this->gremium) return "Unbekanntes Gremium";
 
         if ($kurzfassung) return $this->gremium->name;
-        else return $this->gremium->name . " (" . $this->termin . ")";
+        else return $this->gremium->name." (".$this->termin.")";
     }
 
     /**
@@ -174,37 +177,37 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         return $this->datum_letzte_aenderung;
     }
 
-
     /**
      * @return string
      */
     public function getSourceLink()
     {
-        if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
-        else return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
+        if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=".$this->id;
+        else return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=".$this->id;
     }
-
 
     /**
      * @param null|int $ba_nr
-     * @param string $zeit_von
-     * @param string $zeit_bis
-     * @param bool $aufsteigend
-     * @param int $limit
+     * @param string   $zeit_von
+     * @param string   $zeit_bis
+     * @param bool     $aufsteigend
+     * @param int      $limit
+     *
      * @return $this
      */
     public function termine_stadtrat_zeitraum($ba_nr, $zeit_von, $zeit_bis, $aufsteigend = true, $limit = 0)
     {
-        $ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
+        $ba_sql = ($ba_nr > 0 ? " = ".intval($ba_nr) : " IS NULL ");
         $params = [
-            'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin.typ = ' . IntVal(Termin::$TYP_AUTO) .
-                ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
-            'order'     => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
+            'condition' => 'termin.ba_nr '.$ba_sql.' AND termin.typ = '.intval(self::$TYP_AUTO).
+                ' AND termin >= "'.addslashes($zeit_von).'" AND termin <= "'.addslashes($zeit_bis).'"',
+            'order'     => 'termin '.($aufsteigend ? "ASC" : "DESC"),
             'with'      => ["gremium"],
-            'alias'     => 'termin'
+            'alias'     => 'termin',
         ];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
+
         return $this;
     }
 
@@ -217,10 +220,11 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     }
 
     /**
-     * @param int $ba_nr
+     * @param int    $ba_nr
      * @param string $zeit_von
      * @param string $zeit_bis
-     * @param int $limit
+     * @param int    $limit
+     *
      * @return $this
      */
     public function neueste_str_protokolle($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
@@ -228,39 +232,42 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         $ba_sql = "ba_nr IS NULL";
 
         $params = [
-            'condition' => $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+            'condition' => $ba_sql.' AND datum_letzte_aenderung >= "'.addslashes($zeit_von).'" AND datum_letzte_aenderung <= "'.addslashes($zeit_bis).'"',
             'order'     => 'datum DESC',
             'with'      => [
                 'antraegeDokumente' => [
-                    'condition' => 'name like "%protokoll%" AND datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
+                    'condition' => 'name like "%protokoll%" AND datum >= "'.addslashes($zeit_von).'" AND datum <= "'.addslashes($zeit_bis).'"',
                 ],
-            ]];
+            ], ];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
+
         return $this;
     }
 
     /**
-     * @param int $ba_nr
+     * @param int    $ba_nr
      * @param string $zeit_von
      * @param string $zeit_bis
-     * @param int $limit
+     * @param int    $limit
+     *
      * @return $this
      */
     public function neueste_ba_dokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
     {
-        $ba_sql = "ba_nr = " . IntVal($ba_nr);
+        $ba_sql = "ba_nr = ".intval($ba_nr);
 
         $params = [
-            'condition' => $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND datum_letzte_aenderung <= "' . addslashes($zeit_bis) . '"',
+            'condition' => $ba_sql.' AND datum_letzte_aenderung >= "'.addslashes($zeit_von).'" AND datum_letzte_aenderung <= "'.addslashes($zeit_bis).'"',
             'order'     => 'datum DESC',
             'with'      => [
                 'antraegeDokumente' => [
-                    'condition' => 'datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
+                    'condition' => 'datum >= "'.addslashes($zeit_von).'" AND datum <= "'.addslashes($zeit_bis).'"',
                 ],
-            ]];
+            ], ];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
+
         return $this;
     }
 
@@ -273,7 +280,6 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         usort($tagesordnungspunkte, function ($ergebnis1, $ergebnis2) {
             /** @var Tagesordnungspunkt $ergebnis1 */
             /** @var Tagesordnungspunkt $ergebnis2 */
-
             if ($ergebnis1->status == "geheim" && $ergebnis2->status != "geheim") return 1;
             if ($ergebnis1->status != "geheim" && $ergebnis2->status == "geheim") return -1;
 
@@ -291,11 +297,12 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             if (count($nr1) == 2 && count($nr2) >= 3) return -1;
             if ($nr1[2] > $nr2[2]) return 1;
             if ($nr1[2] < $nr2[2]) return -1;
+
             return 0;
         });
+
         return $tagesordnungspunkte;
     }
-
 
     public function toArr()
     {
@@ -305,6 +312,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         } else {
             $datum_long = strftime("%e. %B %Y, %H:%M Uhr", $ts);
         }
+
         return [
             "id"         => $this->id,
             "typ"        => $this->typ,
@@ -321,24 +329,25 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         ];
     }
 
-
     /**
-     * @var Termin[] $appointments
+     * @var Termin[]
+     *
      * @return array[]
      */
     public static function groupAppointments($appointments)
     {
         $data = [];
         foreach ($appointments as $appointment) {
-            $key = $appointment->termin . $appointment->sitzungsort;
+            $key                                 = $appointment->termin.$appointment->sitzungsort;
             if (!isset($data[$key])) $data[$key] = $appointment->toArr();
-            $url = Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $appointment->id]);
+            $url                                 = Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $appointment->id]);
             if ($appointment->gremium) {
                 if (!isset($data[$key]["gremien"][$appointment->gremium->name])) $data[$key]["gremien"][$appointment->gremium->name] = [];
-                $data[$key]["gremien"][$appointment->gremium->name][] = $url;
+                $data[$key]["gremien"][$appointment->gremium->name][]                                                                = $url;
             }
         }
         foreach ($data as $key => $val) ksort($data[$key]["gremien"]);
+
         return $data;
     }
 
@@ -349,19 +358,21 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     {
         $tos = [];
         foreach ($this->antraegeDokumente as $dok) {
-            $name = $dok->getName(true);
+            $name                                                                                         = $dok->getName(true);
             if (stripos($name, "tagesordnung") !== false || stripos($name, "einladung") !== false) $tos[] = $dok;
         }
-        if (count($tos) == 0) return null;
+        if (count($tos) == 0) return;
         usort($tos, function ($to1, $to2) {
-            /** @var Dokument $to1 */
-            /** @var Dokument $to2 */
+            /* @var Dokument $to1 */
+            /* @var Dokument $to2 */
             $ts1 = RISTools::date_iso2timestamp($to1->datum);
             $ts2 = RISTools::date_iso2timestamp($to2->datum);
             if ($ts1 < $ts2) return 1;
             if ($ts1 > $ts2) return -1;
+
             return 0;
         });
+
         return $tos[0];
     }
 
@@ -376,42 +387,42 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 
         /**
          * @param Termin[] $alle_termine
-         * @param Termin $termin
+         * @param Termin   $termin
          */
         function termine_add(&$alle_termine, $termin)
         {
             if (isset($alle_termine[$termin->id])) return;
             $alle_termine[$termin->id] = $termin;
             if ($termin->termin_next_id > 0) {
-                $next = Termin::model()->findByPk($termin->termin_next_id);
+                $next = self::model()->findByPk($termin->termin_next_id);
                 if ($next) termine_add($alle_termine, $next);
             }
             if ($termin->termin_prev_id > 0) {
-                $prev = Termin::model()->findByPk($termin->termin_prev_id);
+                $prev = self::model()->findByPk($termin->termin_prev_id);
                 if ($prev) termine_add($alle_termine, $prev);
             }
         }
 
         termine_add($alle_termine, $this);
         usort($alle_termine, function ($termin1, $termin2) {
-            /** @var Termin $termin1 */
-            /** @var Termin $termin2 */
+            /* @var Termin $termin1 */
+            /* @var Termin $termin2 */
             $ts1 = RISTools::date_iso2timestamp($termin1->termin);
             $ts2 = RISTools::date_iso2timestamp($termin2->termin);
             if ($ts1 < $ts2) return 1;
             if ($ts1 > $ts2) return -1;
+
             return 0;
         });
 
         return $alle_termine;
     }
 
-
     /**
      * @return bool
      */
     public function istAbgesagt() {
-        return ($this->sitzungsstand == "Entfällt");
+        return $this->sitzungsstand == "Entfällt";
     }
 
     /**
@@ -419,11 +430,12 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getVEventParams()
     {
-        $description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $this->id]);
+        $description = "Infoseite: ".SITE_BASE_URL.Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $this->id]);
         foreach ($this->antraegeDokumente as $dok) {
-            $description .= "\n" . $dok->getName() . ": " . $dok->getLink();
+            $description .= "\n".$dok->getName().": ".$dok->getLink();
         }
         $ende = date("Y-m-d H:i:s", RISTools::date_iso2timestamp($this->termin) + 3600);
+
         return [
             'SUMMARY'     => $this->getName(true),
             'DTSTART'     => new \DateTime($this->termin, new DateTimeZone("Europe/Berlin")),

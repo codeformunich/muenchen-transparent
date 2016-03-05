@@ -70,10 +70,10 @@ class InfosController extends RISBaseController
     }
 
     /**
-     * @param int $id
+     * @param int    $id
      * @param string $my_url
-     * @param bool $show_titles
-     * @param bool $insert_tooltips
+     * @param bool   $show_titles
+     * @param bool   $insert_tooltips
      */
     public function std_content_page($id, $my_url, $show_title = true, $insert_tooltips = false)
     {
@@ -95,18 +95,17 @@ class InfosController extends RISBaseController
         ]);
     }
 
-
     public function actionFeedback()
     {
         $this->top_menu = "";
 
         if (AntiXSS::isTokenSet("send")) {
-            $fp = fopen(EMAIL_LOG_FILE . "." . date("YmdHis"), "a");
-            fwrite($fp, date("Y-m-d H:i:s") . "\n");
+            $fp = fopen(EMAIL_LOG_FILE.".".date("YmdHis"), "a");
+            fwrite($fp, date("Y-m-d H:i:s")."\n");
             fwrite($fp, print_r($_REQUEST, true));
             fclose($fp);
 
-            $text = "E-Mail: " . $_REQUEST["email"] . "\n";
+            $text = "E-Mail: ".$_REQUEST["email"]."\n";
             $text .= "\n\n";
             $text .= $_REQUEST["message"];
 
@@ -144,9 +143,9 @@ class InfosController extends RISBaseController
         ]);
     }
 
-
     /**
      * @param int $id
+     *
      * @throws Exception
      */
     public function actionGlossarBearbeiten($id)

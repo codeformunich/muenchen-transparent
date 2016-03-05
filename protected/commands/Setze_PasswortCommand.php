@@ -10,6 +10,7 @@ class Setze_PasswortCommand extends CConsoleCommand
         $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $args[0]]);
         if (!$benutzerIn) {
             echo "KeinE BenutzerIn mit dieser E-Mail-Adresse gefunden.\n";
+
             return;
         }
 

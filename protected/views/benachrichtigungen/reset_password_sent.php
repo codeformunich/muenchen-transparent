@@ -1,9 +1,8 @@
 <?php
 
 /**
- * @var IndexController $this
+ * @var IndexController
  */
-
 $this->pageTitle = "Passwort zurückgesetzen";
 ?>
 

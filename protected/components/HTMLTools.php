@@ -3,6 +3,7 @@
 class HTMLTools {
     /**
      * @param $text
+     *
      * @return string
      */
     public static function textToHtmlWithLink($text)

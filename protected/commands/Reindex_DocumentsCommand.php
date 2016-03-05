@@ -11,7 +11,7 @@ class Reindex_DocumentsCommand extends CConsoleCommand
         $sql = Yii::app()->db->createCommand();
         //$sql->select("id")->from("dokumente")->where("datum < NOW() - INTERVAL 2 MONTH AND datum > NOW() - INTERVAL 3 MONTH")->order("id");
         //$sql->select("id")->from("dokumente")->where("text_pdf = '' AND url LIKE '%pdf'")->order("id");
-        $sql->select("id")->from("dokumente")->where("id <= " . IntVal($max_id))->order("id DESC");
+        $sql->select("id")->from("dokumente")->where("id <= ".intval($max_id))->order("id DESC");
         $data = $sql->queryColumn(["id"]);
 
         $anz = count($data);

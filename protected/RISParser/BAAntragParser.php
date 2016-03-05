@@ -7,12 +7,13 @@ class BAAntragParser extends RISParser
 
     public function parse($antrag_id)
     {
-        $antrag_id = IntVal($antrag_id);
+        $antrag_id = intval($antrag_id);
 
         if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
-        
+
         if ($antrag_id == 0) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Antrag-ID 0\n" . print_r(debug_backtrace(), true), null, "system");
+            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Antrag-ID 0\n".print_r(debug_backtrace(), true), null, "system");
+
             return;
         }
 
@@ -53,7 +54,7 @@ class BAAntragParser extends RISParser
         }
 
         if (!$betreff_gefunden) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Kein Betreff\n" . $html_details, null, "system");
+            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Kein Betreff\n".$html_details, null, "system");
             throw new Exception("Betreff nicht gefunden");
         }
 
@@ -62,7 +63,7 @@ class BAAntragParser extends RISParser
 
         preg_match("/<h3.*>(.*) +(.*)<\/h3/siU", $dat_details[0], $matches);
         if (count($matches) == 3) {
-            $daten->antrags_nr = Antrag::cleanAntragNr($matches[2]);;
+            $daten->antrags_nr = Antrag::cleanAntragNr($matches[2]);
             switch ($matches[1]) {
                 case "BA-Antrags-Nummer:":
                     $daten->typ = Antrag::$TYP_BA_ANTRAG;
@@ -71,11 +72,11 @@ class BAAntragParser extends RISParser
                     $daten->typ = Antrag::$TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG;
                     break;
                 default:
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $matches[1], null, "system");
+                    RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: ".$antrag_id, $matches[1], null, "system");
                     die();
             }
         } else {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $dat_details[0], null, "system");
+            RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: ".$antrag_id, $dat_details[0], null, "system");
             die();
         }
 
@@ -99,7 +100,7 @@ class BAAntragParser extends RISParser
                 $daten->registriert_am = $this->date_de2mysql($matches[3][$i]);
                 break;
             case "Bezirksausschuss:":
-                $daten->ba_nr = IntVal($matches[3][$i]);
+                $daten->ba_nr = intval($matches[3][$i]);
                 break;
         }
 
@@ -120,8 +121,9 @@ class BAAntragParser extends RISParser
         */
 
         if (!($daten->ba_nr > 0)) {
-            echo "BA-Antrag $antrag_id:" . "Keine BA-Angabe";
+            echo "BA-Antrag $antrag_id:"."Keine BA-Angabe";
             $GLOBALS["RIS_PARSE_ERROR_LOG"][] = "Keine BA-Angabe (Antrag): $antrag_id";
+
             return;
         }
 
@@ -132,20 +134,20 @@ class BAAntragParser extends RISParser
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
-            if ($alter_eintrag->betreff != $daten->betreff) $aenderungen .= "Betreff: " . $alter_eintrag->betreff . " => " . $daten->betreff . "\n";
-            if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
-            if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
-            if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
-            if ($alter_eintrag->typ != $daten->typ) $aenderungen .= "Typ: " . $alter_eintrag->typ . " => " . $daten->typ . "\n";
-            if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
-            if ($alter_eintrag->referat_id != $daten->referat_id) $aenderungen .= "Referats-ID: " . $alter_eintrag->referat_id . " => " . $daten->referat_id . "\n";
+            if ($alter_eintrag->betreff != $daten->betreff) $aenderungen .= "Betreff: ".$alter_eintrag->betreff." => ".$daten->betreff."\n";
+            if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: ".$alter_eintrag->bearbeitungsfrist." => ".$daten->bearbeitungsfrist."\n";
+            if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: ".$alter_eintrag->status." => ".$daten->status."\n";
+            if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: ".$alter_eintrag->fristverlaengerung." => ".$daten->fristverlaengerung."\n";
+            if ($alter_eintrag->typ != $daten->typ) $aenderungen .= "Typ: ".$alter_eintrag->typ." => ".$daten->typ."\n";
+            if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: ".$alter_eintrag->referat." => ".$daten->referat."\n";
+            if ($alter_eintrag->referat_id != $daten->referat_id) $aenderungen .= "Referats-ID: ".$alter_eintrag->referat_id." => ".$daten->referat_id."\n";
             if ($aenderungen != "") $changed = true;
         }
 
         if ($changed) {
             if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
 
-            echo "BA-Antrag $antrag_id: " . $aenderungen;
+            echo "BA-Antrag $antrag_id: ".$aenderungen;
 
             if ($alter_eintrag) {
                 $alter_eintrag->copyToHistory();
@@ -203,8 +205,9 @@ class BAAntragParser extends RISParser
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);
         } catch (Exception $e) {
-            echo " EXCEPTION! " . $e . "\n";
+            echo " EXCEPTION! ".$e."\n";
         }
+
         return $matches[1];
     }
 
@@ -214,7 +217,7 @@ class BAAntragParser extends RISParser
         $first = true;
         //$anz = 800;
         for ($i = $anz; $i >= 0; $i -= 10) {
-            if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
+            if (SITE_CALL_MODE != "cron") echo($anz - $i)." / $anz\n";
             $this->parseSeite($i, $first);
             $first = false;
         }
@@ -232,7 +235,7 @@ class BAAntragParser extends RISParser
         }
 
         $crit            = new CDbCriteria();
-        $crit->condition = "typ='" . addslashes(Antrag::$TYP_BA_ANTRAG) . "' AND status != 'erledigt' AND gestellt_am > NOW() - INTERVAL 2 YEAR AND ((TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) < 14 AND TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) > -14) OR ((TO_DAYS(CURRENT_DATE()) - TO_DAYS(gestellt_am)) % 3) = 0)";
+        $crit->condition = "typ='".addslashes(Antrag::$TYP_BA_ANTRAG)."' AND status != 'erledigt' AND gestellt_am > NOW() - INTERVAL 2 YEAR AND ((TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) < 14 AND TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) > -14) OR ((TO_DAYS(CURRENT_DATE()) - TO_DAYS(gestellt_am)) % 3) = 0)";
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 
         /** @var array|Antrag[] $antraege */
@@ -244,5 +247,4 @@ class BAAntragParser extends RISParser
     {
 
     }
-
 }

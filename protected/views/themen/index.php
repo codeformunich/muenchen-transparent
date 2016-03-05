@@ -1,10 +1,9 @@
 <?php
 /**
- * @var Dokument[] $highlights
- * @var Referat[] $referate
- * @var Tag[] $tags
+ * @var Dokument[]
+ * @var Referat[]  $referate
+ * @var Tag[]      $tags
  */
-
 $this->pageTitle = "Themen";
 
 ?>

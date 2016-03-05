@@ -1,10 +1,9 @@
 <?php
 
 /**
-* @var IndexController $this
-* @var string $current_url
-*/
-
+ * @var IndexController
+ * @var string          $current_url
+ */
 ?>
 
 <section class="col-md-4 col-md-offset-4">

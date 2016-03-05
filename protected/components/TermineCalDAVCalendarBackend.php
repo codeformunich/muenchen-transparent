@@ -1,11 +1,9 @@
 <?php
 
 use Sabre\DAV;
-use Sabre\DAVACL;
 
 class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterface
 {
-
     /**
      * Returns a list of calendars for a principal.
      *
@@ -29,9 +27,9 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      * ACL will automatically be put in read-only mode.
      *
      * @param string $principalUri
+     *
      * @return array
      */
-
     private $termin_id;
 
     public function __construct($termin_id)
@@ -39,7 +37,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
         $this->termin_id = $termin_id;
     }
 
-    function getCalendarsForUser($principalUri)
+    public function getCalendarsForUser($principalUri)
     {
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($this->termin_id);
@@ -54,12 +52,12 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
                 'uri'                                                                       => $this->termin_id,
                 'principaluri'                                                              => $principalUri,
                 '{DAV:}displayname'                                                         => $termin->gremium->getName(),
-                '{' . \Sabre\CalDAV\Plugin::NS_CALENDARSERVER . '}getctag'                  => rand(0, 100000000),
+                '{'.\Sabre\CalDAV\Plugin::NS_CALENDARSERVER.'}getctag'                      => rand(0, 100000000),
                 '{http://sabredav.org/ns}sync-token'                                        => '0',
-                '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}supported-calendar-component-set' => new \Sabre\CalDAV\Property\SupportedCalendarComponentSet(["VEVENT", "VJOURNAL", "VTODO"]),
-                '{' . \Sabre\CalDAV\Plugin::NS_CALDAV . '}schedule-calendar-transp'         => new \Sabre\CalDAV\Property\ScheduleCalendarTransp('opaque'),
+                '{'.\Sabre\CalDAV\Plugin::NS_CALDAV.'}supported-calendar-component-set'     => new \Sabre\CalDAV\Property\SupportedCalendarComponentSet(["VEVENT", "VJOURNAL", "VTODO"]),
+                '{'.\Sabre\CalDAV\Plugin::NS_CALDAV.'}schedule-calendar-transp'             => new \Sabre\CalDAV\Property\ScheduleCalendarTransp('opaque'),
                 '{http://sabredav.org/ns}read-only'                                         => '1',
-            ]
+            ],
         ];
     }
 
@@ -71,10 +69,11 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      *
      * @param string $principalUri
      * @param string $calendarUri
-     * @param array $properties
+     * @param array  $properties
+     *
      * @throws DAV\Exception\NotImplemented
      */
-    function createCalendar($principalUri, $calendarUri, array $properties)
+    public function createCalendar($principalUri, $calendarUri, array $properties)
     {
         throw new \Sabre\DAV\Exception\NotImplemented('Not Implemented');
     }
@@ -93,21 +92,24 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      *
      * @param $calendarId
      * @param \Sabre\DAV\PropPatch $propPatch
+     *
      * @throws DAV\Exception\NotImplemented
+     *
      * @internal param string $path
      */
-    function updateCalendar($calendarId, \Sabre\DAV\PropPatch $propPatch)
+    public function updateCalendar($calendarId, \Sabre\DAV\PropPatch $propPatch)
     {
         throw new \Sabre\DAV\Exception\NotImplemented('Not Implemented');
     }
 
     /**
-     * Delete a calendar and all it's objects
+     * Delete a calendar and all it's objects.
      *
      * @param mixed $calendarId
+     *
      * @throws DAV\Exception\NotImplemented
      */
-    function deleteCalendar($calendarId)
+    public function deleteCalendar($calendarId)
     {
         throw new \Sabre\DAV\Exception\NotImplemented('Not Implemented');
     }
@@ -141,10 +143,12 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      * amount of times this is needed is reduced by a great degree.
      *
      * @param mixed $calendarId
-     * @return array
+     *
      * @throws DAV\Exception\NotFound
+     *
+     * @return array
      */
-    function getCalendarObjects($calendarId)
+    public function getCalendarObjects($calendarId)
     {
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($calendarId);
@@ -158,12 +162,13 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
                 'id'           => $akt_termin->id,
                 'uri'          => $akt_termin->id,
                 'lastmodified' => $akt_termin->datum_letzte_aenderung,
-                'etag'         => '"' . addslashes($akt_termin->datum_letzte_aenderung) . '"',
+                'etag'         => '"'.addslashes($akt_termin->datum_letzte_aenderung).'"',
                 'calendarid'   => $calendarId,
-                'size'         => (int)10, // Dummywert
+                'size'         => (int) 10, // Dummywert
                 'component'    => 'VEVENT',
             ];
         }
+
         return $dav_termine;
         /*
         list(,$name) = \Sabre\HTTP\URLUtil::splitPath($principalUri);
@@ -196,12 +201,14 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      *
      * This method must return null if the object did not exist.
      *
-     * @param mixed $calendarId
+     * @param mixed  $calendarId
      * @param string $objectUri
-     * @return array|null
+     *
      * @throws DAV\Exception\NotFound
+     *
+     * @return array|null
      */
-    function getCalendarObject($calendarId, $objectUri)
+    public function getCalendarObject($calendarId, $objectUri)
     {
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($objectUri);
@@ -210,7 +217,6 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
         $vcalendar = new \Sabre\VObject\Component\VCalendar();
         $vcalendar->add('VEVENT', $termin->getVEventParams());
         $calendardata = $vcalendar->serialize();
-
 
         return [
             'id'           => $termin->id,
@@ -235,10 +241,12 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      *
      * @param mixed $calendarId
      * @param array $uris
-     * @return array
+     *
      * @throws DAV\Exception\NotFound
+     *
+     * @return array
      */
-    function getMultipleCalendarObjects($calendarId, array $uris)
+    public function getMultipleCalendarObjects($calendarId, array $uris)
     {
         $return = [];
         foreach ($uris as $uri) {
@@ -262,6 +270,7 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
                 'component'    => 'VEVENT',
             ];
         }
+
         return $return;
     }
 
@@ -278,12 +287,13 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param mixed $calendarId
+     * @param mixed  $calendarId
      * @param string $objectUri
      * @param string $calendarData
+     *
      * @return string|null
      */
-    function createCalendarObject($calendarId, $objectUri, $calendarData)
+    public function createCalendarObject($calendarId, $objectUri, $calendarData)
     {
         // TODO: Implement createCalendarObject() method.
     }
@@ -301,12 +311,13 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param mixed $calendarId
+     * @param mixed  $calendarId
      * @param string $objectUri
      * @param string $calendarData
+     *
      * @return string|null
      */
-    function updateCalendarObject($calendarId, $objectUri, $calendarData)
+    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
         // TODO: Implement updateCalendarObject() method.
     }
@@ -316,11 +327,12 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      *
      * The object uri is only the basename, or filename and not a full path.
      *
-     * @param mixed $calendarId
+     * @param mixed  $calendarId
      * @param string $objectUri
+     *
      * @return void
      */
-    function deleteCalendarObject($calendarId, $objectUri)
+    public function deleteCalendarObject($calendarId, $objectUri)
     {
         // TODO: Implement deleteCalendarObject() method.
     }
@@ -372,10 +384,12 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      *
      * @param mixed $calendarId
      * @param array $filters
-     * @return array
+     *
      * @throws DAV\Exception\NotFound
+     *
+     * @return array
      */
-    function calendarQuery($calendarId, array $filters)
+    public function calendarQuery($calendarId, array $filters)
     {
         /** @var Termin $termin */
         $termin = Termin::model()->findByPk($this->termin_id);
@@ -408,9 +422,10 @@ class TermineCalDAVCalendarBackend implements Sabre\CalDAV\Backend\BackendInterf
      *
      * @param string $principalUri
      * @param string $uid
+     *
      * @return string|null
      */
-    function getCalendarObjectByUID($principalUri, $uid)
+    public function getCalendarObjectByUID($principalUri, $uid)
     {
         die("8");
         // TODO: Implement getCalendarObjectByUID() method.

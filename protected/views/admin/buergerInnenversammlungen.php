@@ -1,9 +1,8 @@
 <?php
 /**
- * @var AdminController $this
- * @var Termin[] $termine
+ * @var AdminController
+ * @var Termin[]        $termine
  */
-
 ?>
 <section class="well">
     <h1>BürgerInnenversammlungen</h1>
@@ -25,7 +24,7 @@
                 ?>
                 <tr>
                     <td>
-                        <?= CHtml::encode("BA " . $termin->ba->ba_nr . ": " . $termin->ba->name) ?>
+                        <?= CHtml::encode("BA ".$termin->ba->ba_nr.": ".$termin->ba->name) ?>
                     </td>
                     <td>
                         <input type="text" name="termin[<?= $id ?>][datum]" placeholder="YYYY-MM-DD HH:II:SS" size="20" value="<?= CHtml::encode($termin->termin) ?>">

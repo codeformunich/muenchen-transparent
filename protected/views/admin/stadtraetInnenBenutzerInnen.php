@@ -1,9 +1,8 @@
 <?php
 /**
- * @var AdminController $this
- * @var StadtraetIn $stadtraetInnen
+ * @var AdminController
+ * @var StadtraetIn     $stadtraetInnen
  */
-
 
 /** @var BenutzerIn[] $benutzerInnen */
 $benutzerInnen = BenutzerIn::alleAktiveAccounts();

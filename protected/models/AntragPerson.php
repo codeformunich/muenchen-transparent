@@ -4,27 +4,27 @@
  * This is the model class for table "antraege_personen".
  *
  * The followings are the available columns in table 'antraege_personen':
- * @property integer $antrag_id
- * @property integer $person_id
- * @property string $typ
  *
+ * @property int $antrag_id
+ * @property int $person_id
+ * @property string $typ
  * @property Person $person
  * @property Antrag $antrag
  */
 class AntragPerson extends CActiveRecord
 {
-
     public static $TYP_GESTELLT_VON = "gestellt_von";
-    public static $TYP_INITIATORIN = "initiator";
-    public static $TYPEN_ALLE = [
+    public static $TYP_INITIATORIN  = "initiator";
+    public static $TYPEN_ALLE       = [
         "gestellt_von" => "Gestellt von",
-        "initiator"    => "InitiatorIn"
+        "initiator"    => "InitiatorIn",
     ];
-
 
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return AntragPerson the static model class
      */
     public static function model($className = __CLASS__)

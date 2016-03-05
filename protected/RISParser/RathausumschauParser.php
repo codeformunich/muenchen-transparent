@@ -2,7 +2,6 @@
 
 class RathausumschauParser extends RISParser
 {
-
     public function parse($id)
     {
         /** @var Rathausumschau $ru */
@@ -13,8 +12,8 @@ class RathausumschauParser extends RISParser
             if ($ru->dokumente[0]->text_pdf != "") return;
             $dokument = $ru->dokumente[0];
         } else {
-            $result = Yii::app()->db->createCommand("SELECT MIN(id) minid FROM dokumente")->queryAll();
-            $id     = $result[0]["minid"];
+            $result           = Yii::app()->db->createCommand("SELECT MIN(id) minid FROM dokumente")->queryAll();
+            $id               = $result[0]["minid"];
             if ($id >= 0) $id = 0;
             $id--;
             $dokument                    = new Dokument();
@@ -26,7 +25,7 @@ class RathausumschauParser extends RISParser
         $dokument->url            = $ru->url;
         $dokument->datum          = $ru->datum;
         $dokument->datum_dokument = $ru->datum;
-        $dokument->name           = "Rathausumschau " . $ru->nr . "/" . substr($ru->datum, 0, 4);
+        $dokument->name           = "Rathausumschau ".$ru->nr."/".substr($ru->datum, 0, 4);
         $dokument->text_pdf       = "";
         if (!$dokument->save()) {
             var_dump($dokument->getErrors());
@@ -35,7 +34,7 @@ class RathausumschauParser extends RISParser
 
         $dokument->reDownloadIndex();
 
-        echo "Load: " . $ru->url . "\n";
+        echo "Load: ".$ru->url."\n";
     }
 
     public function parseSeite($seite, $first)
@@ -48,14 +47,13 @@ class RathausumschauParser extends RISParser
         $this->parseArchive3(date("Y"));
     }
 
-
     /* 2012, 2013, 2014 */
     public function parseArchive3($jahr)
     {
-        $url = ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/" . $jahr . ".html");
+        $url = ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/".$jahr.".html");
         if ($jahr == 2012) $url .= ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/2012/2012--Jan-bis-Juni.html");
         if ($jahr == 2013) $url .= ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/2013/2013--Jan-bis-Juni.html");
-        if ($jahr == 2014) $url = ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/" . $jahr . ".html");
+        if ($jahr == 2014) $url = ris_download_string("http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service/Presse-Archiv/".$jahr.".html");
         //preg_match_all("/Rathaus Umschau (?<nr>[0-9]+) vom (?<datum>[0-9\.]+)&nbsp[^<]+<a href=\"(?<url>[^\"]+)\"/siu", $url, $matches);
         preg_match_all("/<a href=\"(?<url>[^\"]+\.pdf)\"[^>]*>(Rathaus Umschau )?(?<nr>[0-9]+)[^0-9].+vom (?<datum>[0-9\.]+)&/siuU", $url, $matches);
 
@@ -67,13 +65,12 @@ class RathausumschauParser extends RISParser
                 $ru->nr    = $matches["nr"][$i];
                 $ru->url   = $matches["url"][$i];
                 $ru->jahr  = $datum[2];
-                $ru->datum = $datum[2] . "-" . $datum[1] . "-" . $datum[0];
+                $ru->datum = $datum[2]."-".$datum[1]."-".$datum[0];
                 $ru->save();
             }
             $this->parse($ru->id);
         }
     }
-
 
     public static $MON_MAPPING = [
         "Jan"  => 1,
@@ -101,13 +98,13 @@ class RathausumschauParser extends RISParser
         preg_match_all("/Rathaus Umschau (?<nr>[0-9]+)[abc]?\.pdf vom (?<tag>[0-9]+)\. (?<mon>[a-z]+)\./siu", $site, $matches);
 
         for ($i = 0; $i < count($matches["nr"]); $i++) {
-            $datum = $jahr . "-" . static::$MON_MAPPING[$matches["mon"][$i]] . "-" . $matches["tag"][$i];
+            $datum = $jahr."-".static::$MON_MAPPING[$matches["mon"][$i]]."-".$matches["tag"][$i];
 
-            $ru = Rathausumschau::model()->findByAttributes(["jahr" => $jahr, "nr" => IntVal($matches["nr"][$i])]);
+            $ru = Rathausumschau::model()->findByAttributes(["jahr" => $jahr, "nr" => intval($matches["nr"][$i])]);
             if (!$ru) {
                 $ru        = new Rathausumschau();
-                $ru->nr    = IntVal($matches["nr"][$i]);
-                $ru->url   = $url . $matches["nr"][$i] . ".pdf";
+                $ru->nr    = intval($matches["nr"][$i]);
+                $ru->url   = $url.$matches["nr"][$i].".pdf";
                 $ru->jahr  = $jahr;
                 $ru->datum = $datum;
                 $ru->save();
@@ -134,21 +131,21 @@ class RathausumschauParser extends RISParser
     /* 2005, 2006, 2007, 2008 */
     public function parseArchive1($jahr)
     {
-        $dir = PATH_PDF_RU . $jahr . "/";
+        $dir = PATH_PDF_RU.$jahr."/";
         if ($dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) if (is_file($dir . $file) && $file > 0) {
-                $content = RISPDF2Text::document_text_pdf($dir . $file);
+            while (($file = readdir($dh)) !== false) if (is_file($dir.$file) && $file > 0) {
+                $content = RISPDF2Text::document_text_pdf($dir.$file);
                 preg_match("/(?<tag>[0-9]+)\. (?<monat>Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember) $jahr/siu", $content, $datum);
 
                 if (!isset($datum["monat"])) continue;
 
-                $ru = Rathausumschau::model()->findByAttributes(["jahr" => $jahr, "nr" => IntVal($file)]);
+                $ru = Rathausumschau::model()->findByAttributes(["jahr" => $jahr, "nr" => intval($file)]);
                 if (!$ru) {
                     $ru        = new Rathausumschau();
-                    $ru->nr    = IntVal($file);
+                    $ru->nr    = intval($file);
                     $ru->url   = $file;
                     $ru->jahr  = $jahr;
-                    $ru->datum = $jahr . "-" . static::$MONAT_MAPPING[$datum["monat"]] . "-" . $datum["tag"];
+                    $ru->datum = $jahr."-".static::$MONAT_MAPPING[$datum["monat"]]."-".$datum["tag"];
                     $ru->save();
                 }
                 $this->parse($ru->id);

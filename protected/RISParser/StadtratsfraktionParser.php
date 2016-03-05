@@ -2,12 +2,11 @@
 
 class StadtratsfraktionParser
 {
-
     public function parse($fraktion_id, $wahlperiode_id)
     {
 
-        $fraktion_id    = IntVal($fraktion_id);
-        $wahlperiode_id = IntVal($wahlperiode_id);
+        $fraktion_id    = intval($fraktion_id);
+        $wahlperiode_id = intval($wahlperiode_id);
 
         if (SITE_CALL_MODE != "cron") echo "- Fraktion $fraktion_id\n";
 
@@ -28,7 +27,7 @@ class StadtratsfraktionParser
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
-            if ($alter_eintrag->name != $daten->name) $aenderungen .= "Name: " . $alter_eintrag->name . " => " . $daten->name . "\n";
+            if ($alter_eintrag->name != $daten->name) $aenderungen .= "Name: ".$alter_eintrag->name." => ".$daten->name."\n";
             if ($aenderungen != "") $changed = true;
         }
 
@@ -52,7 +51,7 @@ class StadtratsfraktionParser
             }
         }
 
-        if ($aenderungen != "") echo "Fraktion $fraktion_id: Verändert: " . $aenderungen . "\n";
+        if ($aenderungen != "") echo "Fraktion $fraktion_id: Verändert: ".$aenderungen."\n";
 
         if ($aenderungen != "") {
             $aend              = new RISAenderung();
@@ -65,5 +64,4 @@ class StadtratsfraktionParser
         }
 
     }
-
 }

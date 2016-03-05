@@ -1,7 +1,7 @@
 <?php
 /**
- * @var InfosController $this
- * @var Text $eintrag
+ * @var InfosController
+ * @var Text            $eintrag
  */
 $this->pageTitle = "Glossar bearbeiten";
 

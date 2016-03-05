@@ -1,7 +1,7 @@
 <?php
 /**
- * @var BenutzerIn $benutzerIn
- * @var array $data
+ * @var BenutzerIn
+ * @var array      $data
  */
 ?>Hallo,
 seit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:

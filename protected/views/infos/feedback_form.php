@@ -1,12 +1,12 @@
 <?php
 /**
- * @var InfosController $this
- * @var string $current_url
+ * @var InfosController
+ * @var string          $current_url
  */
 $this->pageTitle = "Feedback an uns";
 
 if (Yii::app()->user)
-    $email_default = 'value = "' . Yii::app()->user->id . '"';
+    $email_default = 'value = "'.Yii::app()->user->id.'"';
 else
     $email_default = 'placeholder="meine@email.de"';
 ?>

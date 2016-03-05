@@ -1,8 +1,7 @@
 <?php
 /**
- * @var Termin $termin
+ * @var Termin
  */
-
 ?>
 
 

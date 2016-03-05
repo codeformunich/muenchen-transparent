@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @var TermineController $this
- * @var array $termine
+ * @var TermineController
+ * @var array             $termine
  */
-
 ?>
 <section class="well">
     <table style="width: 100%;">

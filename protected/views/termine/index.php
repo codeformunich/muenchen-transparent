@@ -1,11 +1,11 @@
 <?php
 /**
- * @var array $termine_zukunft
- * @var array $termine_vergangenheit
+ * @var array
+ * @var array    $termine_vergangenheit
  * @var Termin[] $termin_dokumente
- * @var array $fullcalendar_struct
- * @var int $tage_zukunft
- * @var int $tage_vergangenheit
+ * @var array    $fullcalendar_struct
+ * @var int      $tage_zukunft
+ * @var int      $tage_vergangenheit
  */
 $this->pageTitle = "Termine";
 ?>

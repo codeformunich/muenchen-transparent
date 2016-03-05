@@ -2,7 +2,6 @@
 
 
 use Sabre\DAV;
-use Sabre\DAVACL;
 
 class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\AbstractBackend
 {
@@ -16,6 +15,7 @@ class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\Abstra
     public function getPrincipalsByPrefix($prefixPath)
     {
         $base = Yii::app()->createUrl("termine/dav", ["termin_id" => $this->termin_id]);
+
         return [
             [
                 '{DAV:}displayname' => 'Gast',
@@ -31,15 +31,16 @@ class TermineCalDAVPrincipalBackend extends Sabre\DAVACL\PrincipalBackend\Abstra
             '{DAV:}displayname' => 'Gast',
             'uri'               => "principals/guest",
         ];
-        return null;
+
+        return;
     }
 
-    function updatePrincipal($path, \Sabre\DAV\PropPatch $propPatch)
+    public function updatePrincipal($path, \Sabre\DAV\PropPatch $propPatch)
     {
         throw new \Sabre\DAV\Exception\NotImplemented('Not Implemented');
     }
 
-    function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof')
+    public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof')
     {
         throw new \Sabre\DAV\Exception\NotImplemented('Not Implemented');
     }

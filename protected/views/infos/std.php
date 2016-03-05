@@ -1,13 +1,12 @@
 <?php
 /**
- * @var string $my_url
- * @var Text $text
- * @var bool $show_title
+ * @var string
+ * @var Text   $text
+ * @var bool   $show_title
  */
-
 $this->pageTitle = $text->titel;
 
-$html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function($matches) {
+$html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function ($matches) {
     return CHtml::encode(Yii::app()->createUrl($matches["url"]));
 }, $text->text);
 ?>

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var RISBaseController $this
- * @var string $content
+ * @var RISBaseController
+ * @var string            $content
  */
 ?>
 
@@ -37,7 +37,7 @@
 
     <title><?php
         echo CHtml::encode($this->pageTitle);
-        if (strpos($this->pageTitle, "Transparent") === false) echo " (" . CHtml::encode(Yii::app()->params['projectTitle']) . ")";
+        if (strpos($this->pageTitle, "Transparent") === false) echo " (".CHtml::encode(Yii::app()->params['projectTitle']).")";
         ?></title>
 
 

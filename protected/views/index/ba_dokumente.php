@@ -1,22 +1,21 @@
 <?php
 
 /**
- * @var IndexController $this
+ * @var IndexController
  * @var Bezirksausschuss $ba
- * @var Antrag[] $antraege
- * @var string|null $aeltere_url_ajax
- * @var string|null $aeltere_url_std
- * @var string|null $neuere_url_ajax
- * @var string|null $neuere_url_std
- * @var bool $explizites_datum
- * @var array $geodata
- * @var array $geodata_overflow
- * @var string $datum_von
- * @var string $datum_bis
- * @var int $tage_vergangenheit_dokumente
+ * @var Antrag[]         $antraege
+ * @var string|null      $aeltere_url_ajax
+ * @var string|null      $aeltere_url_std
+ * @var string|null      $neuere_url_ajax
+ * @var string|null      $neuere_url_std
+ * @var bool             $explizites_datum
+ * @var array            $geodata
+ * @var array            $geodata_overflow
+ * @var string           $datum_von
+ * @var string           $datum_bis
+ * @var int              $tage_vergangenheit_dokumente
  */
-
-$this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
+$this->pageTitle = "Bezirksausschuss ".$ba->ba_nr.", ".$ba->name;
 
 ?>
 

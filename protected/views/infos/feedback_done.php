@@ -1,6 +1,6 @@
 <?php
 /**
- * @var InfosController $this
+ * @var InfosController
  */
 $this->pageTitle = "Danke für die Nachricht";
 

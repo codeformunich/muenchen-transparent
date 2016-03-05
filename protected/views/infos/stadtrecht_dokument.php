@@ -1,11 +1,8 @@
 <?php
 /**
- * @var Rechtsdokument $dokument
+ * @var Rechtsdokument
  * @var InfosController $this
  */
-
-
-
 $this->pageTitle = $dokument->titel_lang();
 $this->inline_css .= $dokument->css;
 

@@ -1,11 +1,9 @@
 <?php
 
 use Sabre\DAV;
-use Sabre\HTTP;
 
 class TermineCalDAVAuthBackend implements \Sabre\DAV\Auth\Backend\BackendInterface
 {
-
     /**
      * Returns information about the currently logged in username.
      *
@@ -13,11 +11,10 @@ class TermineCalDAVAuthBackend implements \Sabre\DAV\Auth\Backend\BackendInterfa
      *
      * @return string|null
      */
-    function getCurrentUser()
+    public function getCurrentUser()
     {
         return "guest";
     }
-
 
     /**
      * Authenticates the user based on the current request.
@@ -26,15 +23,14 @@ class TermineCalDAVAuthBackend implements \Sabre\DAV\Auth\Backend\BackendInterfa
      * If authentication fails, an exception must be thrown.
      *
      * @param DAV\Server $server
-     * @param string $realm
+     * @param string     $realm
+     *
      * @throws DAV\Exception\NotAuthenticated
+     *
      * @return bool
      */
-    function authenticate(DAV\Server $server, $realm)
+    public function authenticate(DAV\Server $server, $realm)
     {
         return true;
     }
-
-
 }
-

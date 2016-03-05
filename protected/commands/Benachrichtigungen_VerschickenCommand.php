@@ -2,43 +2,48 @@
 
 class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
 {
-
     /**
      * @param BenutzerIn $benutzerIn
-     * @param array $data
+     * @param array      $data
+     *
      * @throws Exception
+     *
      * @return string
      */
     private function verschickeNeueBenachrichtigungen_txt(&$benutzerIn, $data)
     {
-        $path = Yii::getPathOfAlias('application.views.benachrichtigungen') . '/suchergebnisse_email_txt.php';
-        if (!file_exists($path)) throw new Exception('Template ' . $path . ' does not exist.');
+        $path = Yii::getPathOfAlias('application.views.benachrichtigungen').'/suchergebnisse_email_txt.php';
+        if (!file_exists($path)) throw new Exception('Template '.$path.' does not exist.');
         ob_start();
         ob_implicit_flush(false);
-        require($path);
+        require $path;
+
         return ob_get_clean();
 
     }
 
     /**
      * @param BenutzerIn $benutzerIn
-     * @param array $data
-     * @return string
+     * @param array      $data
+     *
      * @throws Exception
+     *
+     * @return string
      */
     private function verschickeNeueBenachrichtigungen_html($benutzerIn, $data)
     {
-        $path = Yii::getPathOfAlias('application.views.benachrichtigungen') . '/suchergebnisse_email_html.php';
-        if (!file_exists($path)) throw new Exception('Template ' . $path . ' does not exist.');
+        $path = Yii::getPathOfAlias('application.views.benachrichtigungen').'/suchergebnisse_email_html.php';
+        if (!file_exists($path)) throw new Exception('Template '.$path.' does not exist.');
         ob_start();
         ob_implicit_flush(false);
-        require($path);
+        require $path;
+
         return ob_get_clean();
     }
 
     /**
      * @param BenutzerIn $benutzerIn
-     * @param int $zeitspanne
+     * @param int        $zeitspanne
      */
     private function benachrichtigeBenutzerIn($benutzerIn, $zeitspanne = 0)
     {
@@ -65,7 +70,7 @@ class Benachrichtigungen_VerschickenCommand extends CConsoleCommand
                 $benutzerIn = BenutzerIn::model()->findByAttributes(["email" => $args[0]]);
             }
             if (!$benutzerIn) die("BenutzerIn nicht gefunden.\n");
-            /** @var BenutzerIn $benutzerIn */
+            /* @var BenutzerIn $benutzerIn */
             $this->benachrichtigeBenutzerIn($benutzerIn, $args[1]);
         } else {
             $benutzerInnen = BenutzerIn::heuteZuBenachrichtigendeBenutzerInnen();

@@ -4,11 +4,12 @@
  * This is the model class for table "antraege".
  *
  * The followings are the available columns in table 'antraege':
- * @property integer $id
- * @property integer $vorgang_id
+ *
+ * @property int $id
+ * @property int $vorgang_id
  * @property string $typ
  * @property string $datum_letzte_aenderung
- * @property integer $ba_nr
+ * @property int $ba_nr
  * @property string $gestellt_am
  * @property string $gestellt_von
  * @property string $antrags_nr
@@ -42,12 +43,11 @@
  */
 class Antrag extends CActiveRecord implements IRISItemHasDocuments
 {
-
-    public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
-    public static $TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
-    public static $TYP_STADTRAT_VORLAGE_GEHEIM = "stadtrat_vorlage_geheim";
-    public static $TYP_BA_ANTRAG = "ba_antrag";
-    public static $TYP_BA_INITIATIVE = "ba_initiative";
+    public static $TYP_STADTRAT_ANTRAG               = "stadtrat_antrag";
+    public static $TYP_STADTRAT_VORLAGE              = "stadtrat_vorlage";
+    public static $TYP_STADTRAT_VORLAGE_GEHEIM       = "stadtrat_vorlage_geheim";
+    public static $TYP_BA_ANTRAG                     = "ba_antrag";
+    public static $TYP_BA_INITIATIVE                 = "ba_initiative";
     public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
 
     public static $TYPEN_ALLE = [
@@ -61,7 +61,9 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Antrag the static model class
      */
     public static function model($className = __CLASS__)
@@ -121,7 +123,6 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             'tags'             => [self::MANY_MANY, 'Tag', 'antraege_tags(antrag_id, tag_id)'],
         ];
     }
-
 
     /**
      * @param Antrag $vorlage
@@ -183,80 +184,85 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * @param null|int $ba_nr
-     * @param string $zeit_von
-     * @param string $zeit_bis
-     * @param int $limit
+     * @param string   $zeit_von
+     * @param string   $zeit_bis
+     * @param int      $limit
+     *
      * @return $this
      */
     public function neueste_stadtratsantragsdokumente($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
     {
-        $ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL");
+        $ba_sql = ($ba_nr > 0 ? " = ".intval($ba_nr) : " IS NULL");
         $params = [
-            'condition' => 'ba_nr ' . $ba_sql . ' AND datum_letzte_aenderung >= "' . addslashes($zeit_von) . '"',
+            'condition' => 'ba_nr '.$ba_sql.' AND datum_letzte_aenderung >= "'.addslashes($zeit_von).'"',
             'order'     => 'datum DESC',
             'with'      => [
                 'dokumente' => [
-                    'condition' => 'datum >= "' . addslashes($zeit_von) . '" AND datum <= "' . addslashes($zeit_bis) . '"',
+                    'condition' => 'datum >= "'.addslashes($zeit_von).'" AND datum <= "'.addslashes($zeit_bis).'"',
                 ],
-            ]];
+            ], ];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
+
         return $this;
     }
 
     /**
      * @param null|int $ba_nr
-     * @param string $zeit_von
-     * @param string $zeit_bis
-     * @param int $limit
+     * @param string   $zeit_von
+     * @param string   $zeit_bis
+     * @param int      $limit
+     *
      * @return $this
      */
     public function neueste_stadtratsantragsdokumente_geo($ba_nr, $zeit_von, $zeit_bis, $limit = 0)
     {
         $params = [
             'alias'     => 'a',
-            'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '"',
+            'condition' => 'a.datum_letzte_aenderung >= "'.addslashes($zeit_von).'"',
             'order'     => 'b.datum DESC',
             'with'      => [
                 'dokumente'          => [
                     'alias'     => 'b',
-                    'condition' => 'b.datum >= "' . addslashes($zeit_von) . '" AND b.datum <= "' . addslashes($zeit_bis) . '"',
+                    'condition' => 'b.datum >= "'.addslashes($zeit_von).'" AND b.datum <= "'.addslashes($zeit_bis).'"',
                 ],
                 'dokumente.orte'     => [],
                 'dokumente.orte.ort' => [
                     'alias'     => 'c',
-                    'condition' => 'c.ba_nr = ' . IntVal($ba_nr) . ' AND c.to_hide = 0'
-                ]
-            ]];
+                    'condition' => 'c.ba_nr = '.intval($ba_nr).' AND c.to_hide = 0',
+                ],
+            ], ];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
+
         return $this;
     }
 
     /**
-     * @param int $referat_id
+     * @param int    $referat_id
      * @param string $zeit_von
      * @param string $zeit_bis
-     * @param int $limit
+     * @param int    $limit
+     *
      * @return $this
      */
     public function neueste_stadtratsantragsdokumente_referat($referat_id, $zeit_von, $zeit_bis, $limit = 0)
     {
         $params = [
             'alias'     => 'a',
-            'condition' => 'a.datum_letzte_aenderung >= "' . addslashes($zeit_von) . '" AND a.referat_id = ' . IntVal($referat_id),
+            'condition' => 'a.datum_letzte_aenderung >= "'.addslashes($zeit_von).'" AND a.referat_id = '.intval($referat_id),
             'order'     => 'b.datum DESC',
             'with'      => [
                 'dokumente' => [
                     'alias'     => 'b',
-                    'condition' => 'b.datum >= "' . addslashes($zeit_von) . '" AND b.datum <= "' . addslashes($zeit_bis) . '"',
+                    'condition' => 'b.datum >= "'.addslashes($zeit_von).'" AND b.datum <= "'.addslashes($zeit_bis).'"',
                 ],
-            ]];
+            ], ];
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
+
         return $this;
     }
-
 
     /**
      * @return int
@@ -265,12 +271,12 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     {
         $ret = 0;
         foreach ($this->dokumente as $dok) {
-            $ts = RISTools::date_iso2timestamp($dok->datum);
+            $ts                  = RISTools::date_iso2timestamp($dok->datum);
             if ($ts > $ret) $ret = $ts;
         }
+
         return $ret;
     }
-
 
     /**
      * @throws CDbException|Exception
@@ -301,11 +307,11 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         $neu->setAttributes($this->getAttributes());
 
         /**
-         * @var AntragHistory[] $his
-         * '='M');
-         * $criteria = new CDbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
-         * $criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
-         * $rows = user::model()->findAllByAttributes($u
+         * @var AntragHistory[]
+         *                      '='M');
+         *                      $criteria = new CDbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
+         *                      $criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
+         *                      $rows = user::model()->findAllByAttributes($u
          */
         $criteria = new CDbCriteria(['order' => "datum_letzte_aenderung DESC"]);
         $criteria->addCondition("datum_letzte_aenderung >= '2014-05-01 00:00:00'");
@@ -317,7 +323,6 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
         return $histories;
     }
-
 
     /**
      * @throws Exception
@@ -361,6 +366,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
@@ -374,27 +380,30 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     public function getSourceLink()
     {
         switch ($this->typ) {
-            case Antrag::$TYP_BA_ANTRAG:
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
-            case Antrag::$TYP_BA_INITIATIVE:
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $this->id;
-            case Antrag::$TYP_STADTRAT_ANTRAG:
-                return "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $this->id;
-            case Antrag::$TYP_STADTRAT_VORLAGE:
-                return "http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $this->id;
+            case self::$TYP_BA_ANTRAG:
+                return "http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=".$this->id."&selTyp=BA-Antrag";
+            case self::$TYP_BA_INITIATIVE:
+                return "http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=".$this->id;
+            case self::$TYP_STADTRAT_ANTRAG:
+                return "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=".$this->id;
+            case self::$TYP_STADTRAT_VORLAGE:
+                return "http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=".$this->id;
         }
+
         return "";
     }
 
     /** @return string */
     public function getTypName()
     {
-        $str = explode("|", Antrag::$TYPEN_ALLE[$this->typ]);
+        $str = explode("|", self::$TYPEN_ALLE[$this->typ]);
+
         return $str[0];
     }
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -406,6 +415,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $x       = explode("<strong>Antrag: </strong>", $x[0]);
             $x       = explode(" Empfehlung Nr.", $x[0]);
             $x       = explode(" BA-Antrags-", $x[0]);
+
             return RISTools::korrigiereTitelZeichen($x[0]);
         } else {
             return RISTools::korrigiereTitelZeichen($this->betreff);
@@ -427,9 +437,10 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     {
         $max_date = 0;
         foreach ($this->dokumente as $dokument) {
-            $dat = RISTools::date_iso2timestamp($dokument->getDate());
+            $dat                            = RISTools::date_iso2timestamp($dokument->getDate());
             if ($dat > $max_date) $max_date = $dat;
         }
+
         return $max_date;
     }
 
@@ -443,6 +454,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
     /**
      * @param int $anz
+     *
      * @return Dokument[]
      */
     public function errateThemenverwandteDokumente($anz)
@@ -466,14 +478,16 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
         arsort($dokumente_count);
 
-        $ret = [];
-        $i   = 0;
+        $ret                                                                  = [];
+        $i                                                                    = 0;
         foreach ($dokumente_count as $dok_id => $anz) if ($i++ < $anz) $ret[] = $dokumente[$dok_id];
+
         return $ret;
     }
 
     /**
      * @param int $limit
+     *
      * @return Antrag[]
      */
     public function errateThemenverwandteAntraege($limit)
@@ -501,15 +515,17 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             if (!ris_intern_antrag_ist_relevant_mlt($this, $rel_antraege[$ant_id])) continue;
             if ($i++ < $limit) $ret[] = $rel_antraege[$ant_id];
         }
+
         return $ret;
     }
 
     /**
-     * @param Antrag $curr_antrag
-     * @param Antrag[] $gefundene_antraege
+     * @param Antrag               $curr_antrag
+     * @param Antrag[]             $gefundene_antraege
      * @param Tagesordnungspunkt[] $gefundene_tops
-     * @param Dokument[] $gefundene_dokumente
-     * @param int $vorgang_id
+     * @param Dokument[]           $gefundene_dokumente
+     * @param int                  $vorgang_id
+     *
      * @throws Exception
      */
     private static function rebuildVorgaengeRekursiv($curr_antrag, &$gefundene_antraege, &$gefundene_tops, &$gefundene_dokumente, &$vorgang_id)
@@ -522,11 +538,11 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
                 $ant->save(false);
             }
             if ($ant->vorgang_id > 0) $vorgang_id = $ant->vorgang_id;
-            $gefundene_antraege[$ant->id] = $ant;
+            $gefundene_antraege[$ant->id]         = $ant;
             static::rebuildVorgaengeRekursiv($ant, $gefundene_antraege, $gefundene_tops, $gefundene_dokumente, $vorgang_id);
         }
         foreach ($curr_antrag->ergebnisse as $ergebnis) {
-            $gefundene_ergebnisse[$ergebnis->id] = $ergebnis;
+            $gefundene_ergebnisse[$ergebnis->id]                                            = $ergebnis;
             foreach ($ergebnis->dokumente as $dokument) $gefundene_dokumente[$dokument->id] = $dokument;
         }
         foreach ($curr_antrag->dokumente as $dokument) $gefundene_dokumente[$dokument->id] = $dokument;
@@ -549,6 +565,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             static::rebuildVorgaengeRekursiv($this, $gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente, $vorgang_id);
         } catch (Exception $e) {
             var_dump($e);
+
             return;
         }
         if ($vorgang_id == 0) {
@@ -559,7 +576,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
             $gefundene_antraege[] = $this;
         }
-        
+
         // Allen gefundenen Objekten den richtigen Vorgang zuordnen
         foreach (array_merge($gefundene_antraege, $gefundene_ergebnisse, $gefundene_dokumente) as $gefunden) {
             $gefunden->vorgang_id = $vorgang_id;
@@ -575,11 +592,13 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     {
         if ($this->vorgang === null) $this->rebuildVorgaenge();
         $this->refresh();
+
         return $this->vorgang;
     }
 
     /**
      * @param string $antrags_nr
+     *
      * @return string
      */
     public static function cleanAntragNr($antrags_nr)
@@ -590,6 +609,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     /**
      * @param int $von_ts
      * @param int $bis_ts
+     *
      * @return RISAenderung[]
      */
     public function findeAenderungen($von_ts, $bis_ts = 0)
@@ -605,18 +625,18 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     {
         $parteien = [];
         foreach ($this->antraegePersonen as $person) {
-            $name   = $person->person->getName(true);
-            $partei = $person->person->ratePartei($this->gestellt_am);
-            $key    = ($partei ? $partei : $name);
+            $name                                        = $person->person->getName(true);
+            $partei                                      = $person->person->ratePartei($this->gestellt_am);
+            $key                                         = ($partei ? $partei : $name);
             if (!isset($parteien[$key])) $parteien[$key] = [];
-            $parteien[$key][] = $name;
+            $parteien[$key][]                            = $name;
         }
 
         $ergebniss = [];
         foreach ($parteien as $partei => $personen) {
-            $personen_net = [];
+            $personen_net                                                = [];
             foreach ($personen as $p) if ($p != $partei) $personen_net[] = $p;
-            $ergebniss[] = ["name" => $partei, "mitglieder" => $personen_net];
+            $ergebniss[]                                                 = ["name" => $partei, "mitglieder" => $personen_net];
         }
 
         return $ergebniss;

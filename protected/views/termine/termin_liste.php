@@ -1,10 +1,9 @@
 <?php
 /**
- * @var array $termine
- * @var bool $gremienname
- * @var bool $twoCols
+ * @var array
+ * @var bool  $gremienname
+ * @var bool  $twoCols
  */
-
 ?>
 <ul class="terminliste2 list-group<? if ($gremienname) echo " mit_gremienname"; if (isset($twoCols) && $twoCols) echo " termine_twocols"; ?>"><?
 	foreach ($termine as $termin) {

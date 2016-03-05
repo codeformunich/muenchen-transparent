@@ -4,27 +4,29 @@
  * This is the model class for table "texte".
  *
  * The followings are the available columns in table 'texte':
- * @property integer $id
- * @property integer $typ
- * @property integer $pos
+ *
+ * @property int $id
+ * @property int $typ
+ * @property int $pos
  * @property string $text
  * @property string $titel
  * @property string $edit_datum
- * @property integer $edit_benutzerIn_id
+ * @property int $edit_benutzerIn_id
  *
  * The followings are the available model relations:
  * @property BenutzerIn $edit_benutzerIn
  */
 class Text extends CActiveRecord
 {
-
-    public static $TYP_STD = 0;
+    public static $TYP_STD     = 0;
     public static $TYP_GLOSSAR = 1;
     public static $TYP_REFERAT = 2;
 
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return Text the static model class
      */
     public static function model($className = __CLASS__)
@@ -81,5 +83,4 @@ class Text extends CActiveRecord
             'edit_benutzerIn_id' => 'Zuletzt bearbeitet: BenutzerIn-ID',
         ];
     }
-
 }

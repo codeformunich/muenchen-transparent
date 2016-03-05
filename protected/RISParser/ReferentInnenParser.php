@@ -2,16 +2,13 @@
 
 class ReferentInnenParser extends RISParser
 {
-
     public function parse($stadtraetIn_id)
     {
     }
 
-
     public function parseSeite($seite, $first)
     {
     }
-
 
     public function parseAlle()
     {
@@ -27,16 +24,16 @@ class ReferentInnenParser extends RISParser
 
             $x    = explode("\n", $name);
             $y    = explode(", ", $x[1]);
-            $name = trim($x[0]) . " " . trim($y[1]) . " " . trim($y[0]);
+            $name = trim($x[0])." ".trim($y[1])." ".trim($y[0]);
 
-            $id           = IntVal($matches["id"][$i]);
+            $id           = intval($matches["id"][$i]);
             $referat_name = $matches["referat"][$i];
 
             /** @var StadtraetIn $str */
             $str = StadtraetIn::model()->findByPk($id);
             if ($str) {
                 if ($str->name != $name) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "ReferentIn Änderung", $str->name . " => " . $name, null, "system");
+                    RISTools::send_email(Yii::app()->params['adminEmail'], "ReferentIn Änderung", $str->name." => ".$name, null, "system");
                     $str->name = $name;
                     $str->save();
                 }
@@ -52,10 +49,11 @@ class ReferentInnenParser extends RISParser
             $referat = Referat::model()->findByAttributes(["name" => $referat_name]);
             if (!$referat) {
                 RISTools::send_email(Yii::app()->params['adminEmail'], "Referat nicht gefunden", $referat_name, null, "system");
+
                 return;
             }
 
-            $gefunden = false;
+            $gefunden                                                                                      = false;
             foreach ($str->stadtraetInnenReferate as $ref) if ($ref->referat_id == $referat->id) $gefunden = true;
 
             if (!$gefunden) {
@@ -63,7 +61,7 @@ class ReferentInnenParser extends RISParser
                 $zuo->referat_id     = $referat->id;
                 $zuo->stadtraetIn_id = $str->id;
                 $zuo->save();
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Neue ReferentInnen/Referat-Zuordnung", $referat_name . " / " . $str->name, null, "system");
+                RISTools::send_email(Yii::app()->params['adminEmail'], "Neue ReferentInnen/Referat-Zuordnung", $referat_name." / ".$str->name, null, "system");
             }
         }
 

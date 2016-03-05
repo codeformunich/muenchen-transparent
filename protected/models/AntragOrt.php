@@ -4,13 +4,14 @@
  * This is the model class for table "antraege_orte".
  *
  * The followings are the available columns in table 'antraege_orte':
- * @property integer $id
- * @property integer $antrag_id
- * @property integer $termin_id
- * @property integer $rathausumschau_id
- * @property integer $dokument_id
+ *
+ * @property int $id
+ * @property int $antrag_id
+ * @property int $termin_id
+ * @property int $rathausumschau_id
+ * @property int $dokument_id
  * @property string $ort_name
- * @property integer $ort_id
+ * @property int $ort_id
  * @property string $source
  * @property string $datum
  *
@@ -25,7 +26,9 @@ class AntragOrt extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return AntragOrt the static model class
      */
     public static function model($className = __CLASS__)

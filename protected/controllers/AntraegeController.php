@@ -2,12 +2,11 @@
 
 class AntraegeController extends RISBaseController
 {
-
     public function actionAjaxTagsSuggest($term)
     {
-        $sqlterm = addslashes($term);
-        $found   = Yii::app()->db->createCommand("SELECT id, name, LOCATE(\"$sqlterm\", name) firstpos FROM tags WHERE name LIKE \"%$sqlterm%\" ORDER BY firstpos, LENGTH(name), name LIMIT 0,10")->queryAll();
-        $tags    = [];
+        $sqlterm                       = addslashes($term);
+        $found                         = Yii::app()->db->createCommand("SELECT id, name, LOCATE(\"$sqlterm\", name) firstpos FROM tags WHERE name LIKE \"%$sqlterm%\" ORDER BY firstpos, LENGTH(name), name LIMIT 0,10")->queryAll();
+        $tags                          = [];
         foreach ($found as $f) $tags[] = ["text" => $f["name"], "value" => $f["name"]];
         header('Content-type: application/json; charset=UTF-8');
         echo json_encode($tags);
@@ -22,6 +21,7 @@ class AntraegeController extends RISBaseController
         $antrag = Antrag::model()->findByPk($id);
         if (!$antrag) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
+
             return;
         }
 
@@ -39,6 +39,7 @@ class AntraegeController extends RISBaseController
         $antrag = Antrag::model()->findByPk($id);
         if (!$antrag) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
+
             return;
         }
         $this->render("themenverwandte", [
@@ -57,6 +58,7 @@ class AntraegeController extends RISBaseController
         $antrag = Antrag::model()->findByPk($id);
         if (!$antrag) {
             $this->render('/index/error', ["code" => 404, "message" => "Der Antrag wurde nicht gefunden"]);
+
             return;
         }
 
@@ -90,7 +92,7 @@ class AntraegeController extends RISBaseController
                 }
 
                 Yii::app()->db->createCommand()->insert("antraege_tags", [
-                    "antrag_id" => $antrag->id, "tag_id" => $tag->id, "zugeordnet_datum" => date("Y-m-d H:i:s"), "zugeordnet_benutzerIn_id" => $this->aktuelleBenutzerIn()->id
+                    "antrag_id" => $antrag->id, "tag_id" => $tag->id, "zugeordnet_datum" => date("Y-m-d H:i:s"), "zugeordnet_benutzerIn_id" => $this->aktuelleBenutzerIn()->id,
                 ]);
             } catch (Exception $e) {
                 // Sind hauptsächlich doppelte Einträge -> ignorieren
@@ -102,5 +104,4 @@ class AntraegeController extends RISBaseController
             "tag_mode" => (isset($_REQUEST["tag_mode"]) && $_REQUEST["tag_mode"] == "1"),
         ]);
     }
-
 }

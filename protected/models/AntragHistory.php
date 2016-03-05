@@ -4,11 +4,12 @@
  * This is the model class for table "antraege_history".
  *
  * The followings are the available columns in table 'antraege_history':
- * @property integer $id
- * @property integer $vorgang_id
+ *
+ * @property int $id
+ * @property int $vorgang_id
  * @property string $typ
  * @property string $datum_letzte_aenderung
- * @property integer $ba_nr
+ * @property int $ba_nr
  * @property string $gestellt_am
  * @property string $gestellt_von
  * @property string $antrags_nr
@@ -35,7 +36,9 @@ class AntragHistory extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
+     *
      * @param string $className active record class name.
+     *
      * @return AntragHistory the static model class
      */
     public static function model($className = __CLASS__)

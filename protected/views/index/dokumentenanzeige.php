@@ -1,4 +1,4 @@
-﻿<?
+<?
 /**
  * @var int $id
  * @var IndexController $this

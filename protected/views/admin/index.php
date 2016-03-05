@@ -1,8 +1,7 @@
 <?php
 /**
- * @var AdminController $this
+ * @var AdminController
  */
-
 $user = $this->aktuelleBenutzerIn();
 
 ?>

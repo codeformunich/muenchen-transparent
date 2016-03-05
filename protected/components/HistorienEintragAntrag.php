@@ -3,11 +3,10 @@
 class HistorienEintragAntrag implements HistorienEintrag
 {
     /**
-     * @var AntragHistory $antrag_alt
+     * @var AntragHistory
      * @var AntragHistory $antrag_neu
      */
     private $antrag_alt, $antrag_neu;
-
 
     /**
      * @param AntragHistory $antrag_alt
@@ -34,7 +33,7 @@ class HistorienEintragAntrag implements HistorienEintrag
      */
     public function getFormattedDiff()
     {
-        $felder = [];
+        $felder                                                                 = [];
         if ($this->antrag_alt->betreff != $this->antrag_neu->betreff) $felder[] = new HistorienEintragFeld(
             "Betreff", CHtml::encode($this->antrag_alt->betreff), CHtml::encode($this->antrag_neu->betreff)
         );
@@ -83,6 +82,7 @@ class HistorienEintragAntrag implements HistorienEintrag
         if ($this->antrag_alt->initiative_to_aufgenommen != $this->antrag_neu->initiative_to_aufgenommen) $felder[] = new HistorienEintragFeld(
             "TO Aufgenommen", CHtml::encode($this->antrag_alt->initiative_to_aufgenommen), CHtml::encode($this->antrag_neu->initiative_to_aufgenommen)
         );
+
         return $felder;
     }
 }

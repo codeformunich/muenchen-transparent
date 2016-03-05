@@ -2,7 +2,6 @@
 
 class PersonenController extends RISBaseController
 {
-
     /**
      * @param null|int $ba
      */
@@ -13,7 +12,7 @@ class PersonenController extends RISBaseController
         $this->render('index', [
             "personen"     => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
             "personen_typ" => ($ba > 0 ? "ba" : "str"),
-            "ba_nr"        => $ba
+            "ba_nr"        => $ba,
         ]);
     }
 
@@ -42,8 +41,6 @@ class PersonenController extends RISBaseController
         $this->redirect($person->getLink());
     }
 
-
-
     /**
      * @param int $id
      */
@@ -67,10 +64,10 @@ class PersonenController extends RISBaseController
             $person->quellen      = "Selbstauskunft";
             $x                    = explode(".", $_REQUEST["geburtstag"]);
             if (count($x) == 3) {
-                $person->geburtstag = $x[2] . "-" . $x[1] . "-" . $x[0];
+                $person->geburtstag = $x[2]."-".$x[1]."-".$x[0];
             } else {
-                if ($x[0] > 1900) $person->geburtstag = $x[0] . "-00:00";
-                else $person->geburtstag = null;
+                if ($x[0] > 1900) $person->geburtstag = $x[0]."-00:00";
+                else $person->geburtstag              = null;
             }
             $person->save();
             $this->msg_ok = "Gespeichert";
@@ -80,7 +77,6 @@ class PersonenController extends RISBaseController
             "person" => $person,
         ]);
     }
-
 
     /**
      * @param int $id
@@ -93,12 +89,10 @@ class PersonenController extends RISBaseController
 
         /** @var StadtraetIn $person */
         $person = StadtraetIn::model()->findByPk($id);
-        if ($person->benutzerIn_id !== null) $this->errorMessageAndDie(403, "Diese Person ist schon einem Account zugeordnet. Falls das ein Fehler ist, schreiben Sie uns bitte per Mail (" . Yii::app()->params["adminEmail"] . ")");
+        if ($person->benutzerIn_id !== null) $this->errorMessageAndDie(403, "Diese Person ist schon einem Account zugeordnet. Falls das ein Fehler ist, schreiben Sie uns bitte per Mail (".Yii::app()->params["adminEmail"].")");
 
         $this->render("person-binich", [
             "person" => $person,
         ]);
     }
-
-
 }

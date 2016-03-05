@@ -1,9 +1,9 @@
 <?php
 
 /**
-* @var IndexController $this
-* @var string $current_url
-*/
+ * @var IndexController
+ * @var string          $current_url
+ */
 $this->pageTitle = "Passwort zurücksetzen";
 ?>
 

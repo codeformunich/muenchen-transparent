@@ -1,7 +1,7 @@
 <?php
 /**
- * @var StadtraetIn[][] $fraktionen
- * @var string $title
+ * @var StadtraetIn[][]
+ * @var string          $title
  */
 ?>
 <section class="well"><?

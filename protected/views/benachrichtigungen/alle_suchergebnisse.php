@@ -1,12 +1,9 @@
 <?php
 
 /**
- * @var BenachrichtigungenController $this
+ * @var BenachrichtigungenController
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
  */
-
-
-
 ?>
 <h1>Alle Suchergebnisse</h1>
 

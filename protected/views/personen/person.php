@@ -1,10 +1,9 @@
 <?php
 /**
- * @var StadtraetIn $person
+ * @var StadtraetIn
  * @var IndexController $this
  */
-
-$this->pageTitle = $person->getName();
+$this->pageTitle     = $person->getName();
 $this->html_itemprop = "http://schema.org/Person";
 
 ?>

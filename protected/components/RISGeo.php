@@ -2,7 +2,6 @@
 
 class RISGeo
 {
-
     public static $STREETS_INITIALIZED = false;
 
     /** @var null|array|Strasse[] */
@@ -57,13 +56,13 @@ class RISGeo
         /** @var array|Strasse[] $strassen */
         $strassen = Strasse::model()->findAll();
         foreach ($strassen as $strasse) {
-            $norm                     = static::ris_street_cleanstring($strasse->name);
-            $strasse->name_normalized = $norm;
-            $streets_by_norm[$norm]   = $strasse;
-            $l                        = mb_strlen($norm);
+            $norm                                                      = static::ris_street_cleanstring($strasse->name);
+            $strasse->name_normalized                                  = $norm;
+            $streets_by_norm[$norm]                                    = $strasse;
+            $l                                                         = mb_strlen($norm);
             if (!isset($streets_by_length[$l])) $streets_by_length[$l] = [];
-            $streets_by_length[$l][] = $norm;
-            if ($l > $maxlength) $maxlength = $l;
+            $streets_by_length[$l][]                                   = $norm;
+            if ($l > $maxlength) $maxlength                            = $l;
         }
         static::$STREETS = [];
         for ($i = $maxlength; $i > 0; $i--) if (isset($streets_by_length[$i])) foreach ($streets_by_length[$i] as $n) {
@@ -106,7 +105,6 @@ class RISGeo
         return $name;
     }
 
-
     public static function suche_strassen($str)
     {
         static::init_streets();
@@ -122,18 +120,18 @@ class RISGeo
                 }
 
                 $danach = mb_substr($antragtext, $offset + mb_strlen($street->name_normalized), 10);
-                $nr     = IntVal($danach);
-                $ort    = ($nr > 0 && $nr < 1000 ? $street->name . " $nr" : $street->name);
+                $nr     = intval($danach);
+                $ort    = ($nr > 0 && $nr < 1000 ? $street->name." $nr" : $street->name);
 
-                $falsepositive = false;
-                if (mb_substr($antragtext, $offset - 11, 11) == "haltestelle") $falsepositive = true;
+                $falsepositive                                                                                   = false;
+                if (mb_substr($antragtext, $offset - 11, 11) == "haltestelle") $falsepositive                    = true;
                 if ($street->name_normalized == "richardstr" && mb_substr($danach, 0, 2) == "au") $falsepositive = true;
 
                 if (!$falsepositive && !in_array($ort, $streets_found)) {
                     $streets_found[] = RISTools::toutf8($ort);
                 }
                 for ($i = $offset; $i < $offset + mb_strlen($street->name_normalized); $i++) $antragtext[$i] = "#";
-                $last_offset = $offset;
+                $last_offset                                                                                 = $offset;
             }
         }
 
@@ -150,15 +148,14 @@ class RISGeo
             if ($laengeres_gefunden) continue;
             if (preg_match("/[0-9]/siu", $street)) $streets_found_consolidated[] = $street;
             else {
-                $mit_hausnummer_gefunden = false;
-                foreach ($streets_found as $street2) if (mb_strpos($street2, $street . " ") === 0 && preg_match("/[0-9]/siu", $street2)) $mit_hausnummer_gefunden = true;
-                if (!$mit_hausnummer_gefunden) $streets_found_consolidated[] = $street;
+                $mit_hausnummer_gefunden                                                                                                                        = false;
+                foreach ($streets_found as $street2) if (mb_strpos($street2, $street." ") === 0 && preg_match("/[0-9]/siu", $street2)) $mit_hausnummer_gefunden = true;
+                if (!$mit_hausnummer_gefunden) $streets_found_consolidated[]                                                                                    = $street;
             }
         }
 
         return $streets_found_consolidated;
     }
-
 
     public static function getDistanceFormula($lon, $lat, $feldl = "laenge", $feldb = "breite")
     {
@@ -168,6 +165,7 @@ class RISGeo
         $formula .= "(ACOS((SIN($brad)*SIN(RADIANS($feldb))) + ";
         $formula .= "(COS($brad)*COS(RADIANS($feldb))*COS(RADIANS($feldl)-$lrad))) * 6371)";
         $formula .= ',0)';
+
         return $formula;
     }
 
@@ -176,6 +174,7 @@ class RISGeo
      * @param float $lon1
      * @param float $lat2
      * @param float $lon2
+     *
      * @return float
      */
     public static function getDistance($lat1, $lon1, $lat2, $lon2)
@@ -184,8 +183,8 @@ class RISGeo
         $dist  = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
         $dist  = acos($dist);
         $dist  = rad2deg($dist);
-        $km = $dist * 60 * 1.1515 * 1.609344;
+        $km    = $dist * 60 * 1.1515 * 1.609344;
+
         return $km;
     }
-
 }

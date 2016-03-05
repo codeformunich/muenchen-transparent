@@ -7,14 +7,14 @@ class StadtratsantragParser extends RISParser
 
     public function parse($antrag_id)
     {
-        $antrag_id = IntVal($antrag_id);
+        $antrag_id = intval($antrag_id);
 
         if (in_array($antrag_id, [3258272])) return;
 
         if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
-        $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id);
-        $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_dokumente.jsp?risid=" . $antrag_id);
+        $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=".$antrag_id);
+        $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_dokumente.jsp?risid=".$antrag_id);
         //$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         if (trim($html_details) == "" || trim($html_dokumente) == "") return;
@@ -34,8 +34,9 @@ class StadtratsantragParser extends RISParser
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
         if (!isset($dat_details[1])) {
-            echo $antrag_id . " - " . "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
+            echo $antrag_id." - "."http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=".$antrag_id."\n";
             var_dump($dat_details);
+
             return;
         }
         $dat_details = explode("<!-- detailbereich -->", $dat_details[1]);
@@ -59,7 +60,7 @@ class StadtratsantragParser extends RISParser
         }
 
         if (!$betreff_gefunden) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsantragParser", "Kein Betreff\n" . $html_details, null, "system");
+            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsantragParser", "Kein Betreff\n".$html_details, null, "system");
             throw new Exception("Betreff nicht gefunden");
         }
 
@@ -122,34 +123,34 @@ class StadtratsantragParser extends RISParser
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
-            if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
-            if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
-            if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
-            if (isset($daten->initiatorInnen) && $alter_eintrag->initiatorInnen != $daten->initiatorInnen) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatorInnen . " => " . $daten->initiatorInnen . "\n";
-            if ($alter_eintrag->gestellt_von != $daten->gestellt_von) $aenderungen .= "Gestellt von: " . $alter_eintrag->gestellt_von . " => " . $daten->gestellt_von . "\n";
-            if ($alter_eintrag->antrags_nr != $daten->antrags_nr) $aenderungen .= "Antrags-Nr: " . $alter_eintrag->antrags_nr . " => " . $daten->antrags_nr . "\n";
-            if ($alter_eintrag->erledigt_am != $daten->erledigt_am) $aenderungen .= "Erledigt am: " . $alter_eintrag->erledigt_am . " => " . $daten->erledigt_am . "\n";
-            if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: " . $alter_eintrag->referat . " => " . $daten->referat . "\n";
-            if ($alter_eintrag->referat_id != $daten->referat_id) $aenderungen .= "Referats-ID: " . $alter_eintrag->referat_id . " => " . $daten->referat_id . "\n";
+            if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: ".$alter_eintrag->bearbeitungsfrist." => ".$daten->bearbeitungsfrist."\n";
+            if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: ".$alter_eintrag->status." => ".$daten->status."\n";
+            if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: ".$alter_eintrag->fristverlaengerung." => ".$daten->fristverlaengerung."\n";
+            if (isset($daten->initiatorInnen) && $alter_eintrag->initiatorInnen != $daten->initiatorInnen) $aenderungen .= "Initiatoren: ".$alter_eintrag->initiatorInnen." => ".$daten->initiatorInnen."\n";
+            if ($alter_eintrag->gestellt_von != $daten->gestellt_von) $aenderungen .= "Gestellt von: ".$alter_eintrag->gestellt_von." => ".$daten->gestellt_von."\n";
+            if ($alter_eintrag->antrags_nr != $daten->antrags_nr) $aenderungen .= "Antrags-Nr: ".$alter_eintrag->antrags_nr." => ".$daten->antrags_nr."\n";
+            if ($alter_eintrag->erledigt_am != $daten->erledigt_am) $aenderungen .= "Erledigt am: ".$alter_eintrag->erledigt_am." => ".$daten->erledigt_am."\n";
+            if ($alter_eintrag->referat != $daten->referat) $aenderungen .= "Referat: ".$alter_eintrag->referat." => ".$daten->referat."\n";
+            if ($alter_eintrag->referat_id != $daten->referat_id) $aenderungen .= "Referats-ID: ".$alter_eintrag->referat_id." => ".$daten->referat_id."\n";
             if ($aenderungen != "") $changed = true;
         }
 
         if ($changed) {
             if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
 
-            echo "Antrag $antrag_id: Verändert: " . $aenderungen . "\n";
+            echo "Antrag $antrag_id: Verändert: ".$aenderungen."\n";
 
             if ($alter_eintrag) {
                 $alter_eintrag->copyToHistory();
                 $alter_eintrag->setAttributes($daten->getAttributes(), false);
                 if (!$alter_eintrag->save()) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 1", "Antrag $antrag_id\n".print_r($alter_eintrag->getErrors(), true)."\n\n".$html_details, null, "system");
                     throw new \Exception("StadtratAntrag 1");
                 }
                 $daten = $alter_eintrag;
             } else {
                 if (!$daten->save()) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 2", "Antrag $antrag_id\n" . print_r($daten->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 2", "Antrag $antrag_id\n".print_r($daten->getErrors(), true)."\n\n".$html_details, null, "system");
                     throw new \Exception("StadtratAntrag 2");
                 }
             }
@@ -178,13 +179,13 @@ class StadtratsantragParser extends RISParser
         }
     }
 
-
     public function parseSeite($seite, $first)
     {
         $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_trefferliste.jsp?txtPosition=$seite");
         $txt  = explode("<!-- ergebnisreihen -->", $text);
         if (!isset($txt[1])) {
             if (SITE_CALL_MODE != "cron") echo "- nichts\n";
+
             return [];
         }
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
@@ -195,8 +196,9 @@ class StadtratsantragParser extends RISParser
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);
         } catch (Exception $e) {
-            echo " EXCEPTION! " . $e . "\n";
+            echo " EXCEPTION! ".$e."\n";
         }
+
         return $matches[1];
     }
 
@@ -204,7 +206,7 @@ class StadtratsantragParser extends RISParser
     {
         $first = true;
         for ($i = static::$MAX_OFFSET; $i >= 0; $i -= 10) {
-            if (SITE_CALL_MODE != "cron") echo (static::$MAX_OFFSET - $i) . " / " . static::$MAX_OFFSET . "\n";
+            if (SITE_CALL_MODE != "cron") echo(static::$MAX_OFFSET - $i)." / ".static::$MAX_OFFSET."\n";
             $this->parseSeite($i, $first);
             $first = false;
         }
@@ -221,7 +223,7 @@ class StadtratsantragParser extends RISParser
         }
 
         $crit            = new CDbCriteria();
-        $crit->condition = "typ='" . addslashes(Antrag::$TYP_STADTRAT_ANTRAG) . "' AND status != 'erledigt' AND gestellt_am > NOW() - INTERVAL 2 YEAR AND ((TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) < 14 AND TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) > -14) OR ((TO_DAYS(CURRENT_DATE()) - TO_DAYS(gestellt_am)) % 3) = 0)";
+        $crit->condition = "typ='".addslashes(Antrag::$TYP_STADTRAT_ANTRAG)."' AND status != 'erledigt' AND gestellt_am > NOW() - INTERVAL 2 YEAR AND ((TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) < 14 AND TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) > -14) OR ((TO_DAYS(CURRENT_DATE()) - TO_DAYS(gestellt_am)) % 3) = 0)";
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 
         /** @var array|Antrag[] $antraege */

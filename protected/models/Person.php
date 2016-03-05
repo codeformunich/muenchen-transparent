@@ -4,12 +4,13 @@
  * This is the model class for table "personen".
  *
  * The followings are the available columns in table 'personen':
- * @property integer $id
+ *
+ * @property int $id
  * @property string $name_normalized
  * @property string $typ
  * @property string $name
- * @property integer $ris_stadtraetIn
- * @property integer $ris_fraktion
+ * @property int $ris_stadtraetIn
+ * @property int $ris_fraktion
  *
  * The followings are the available model relations:
  * @property AntragPerson[] $antraegePersonen
@@ -18,18 +19,18 @@
  */
 class Person extends CActiveRecord implements IRISItem
 {
-
     public static $TYP_SONSTIGES = "sonstiges";
-    public static $TYP_PERSON = "person";
-    public static $TYP_FRAKTION = "fraktion";
-    public static $TYPEN_ALLE = [
+    public static $TYP_PERSON    = "person";
+    public static $TYP_FRAKTION  = "fraktion";
+    public static $TYPEN_ALLE    = [
         "sonstiges" => "Sonstiges / Unbekannt",
         "person"    => "Person",
-        "fraktion"  => "Fraktion"
+        "fraktion"  => "Fraktion",
     ];
 
     /**
      * @param string $className active record class name.
+     *
      * @return Person the static model class
      */
     public static function model($className = __CLASS__)
@@ -88,15 +89,17 @@ class Person extends CActiveRecord implements IRISItem
     /**
      * @param string $name
      * @param string $name_normalized
-     * @return Person
+     *
      * @throws Exception
+     *
+     * @return Person
      */
     public static function getOrCreate($name, $name_normalized)
     {
         /** @var Person|null $pers */
-        $pers = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
+        $pers = self::model()->findByAttributes(["name_normalized" => $name_normalized]);
         if (is_null($pers)) {
-            $pers                  = new Person();
+            $pers                  = new self();
             $pers->name            = $name;
             $pers->name_normalized = $name_normalized;
             $pers->typ             = static::$TYP_SONSTIGES;
@@ -105,27 +108,31 @@ class Person extends CActiveRecord implements IRISItem
                 throw new Exception("Fehler beim Speichern: Person");
             }
         }
+
         return $pers;
     }
 
     /**
      * @param string $datum
+     *
      * @return string|null
      */
     public function ratePartei($datum = "")
     {
         if (isset($this->fraktion) && $this->fraktion) return $this->fraktion->getName(true);
-        if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return null;
-        if (!isset($this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion)) return null;
+        if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return;
+        if (!isset($this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion)) return;
         if ($datum != "") foreach ($this->stadtraetIn->stadtraetInnenFraktionen as $fraktionsZ) {
             $dat = str_replace("-", "", $datum);
             if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) return $fraktionsZ->fraktion->getName(true);
         }
+
         return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->getName(true);
     }
 
     /**
      * @param array $add_params
+     *
      * @return string
      */
     public function getLink($add_params = [])
@@ -141,6 +148,7 @@ class Person extends CActiveRecord implements IRISItem
 
     /**
      * @param bool $kurzfassung
+     *
      * @return string
      */
     public function getName($kurzfassung = false)
@@ -148,6 +156,7 @@ class Person extends CActiveRecord implements IRISItem
         if ($kurzfassung) {
             if (in_array($this->id, [279])) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
         }
+
         return $this->name;
     }
 
@@ -158,6 +167,4 @@ class Person extends CActiveRecord implements IRISItem
     {
         return "0000-00-00 00:00:00";
     }
-
-
 }
