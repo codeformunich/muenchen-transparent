@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to convert a standard yii1 project into a yii2 project
+Script to convert a yii1 project into a yii2 project
 """
 
 import argparse, os, re, glob, fnmatch, sys, subprocess, shutil
@@ -72,7 +72,7 @@ def open_wrapper(filepath, flags):
 def convert_folderstructure():
     if not os.path.isdir("protected/") or not os.path.isdir("web/"):
         raise Exception("The directories protected/ and web/ have to exist for the conversion to work.")
-    
+
     print("running composer commands ...\n")
     commands = [
         "composer global require 'fxp/composer-asset-plugin:~1.1.1'",
@@ -81,12 +81,12 @@ def convert_folderstructure():
         "composer require --dev yiisoft/yii2-debug"
         "composer require --dev yiisoft/yii2-gii"
     ]
-    
+
     for command in commands:
         print(subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read())
-    
+
     print("finished running composer commands.\n")
-    
+
     # get all the interesting files form the yii2 basic app template
     shutil.move("html/", "web/")
     shutil.move("yii2-template/web/index.php", "web/index.php")
@@ -102,7 +102,7 @@ def convert_folderstructure():
         path = os.path.join("protected/", i)
         if os.path.isdir(path):
             shutil.move(path, i)
-    
+
     shutil.rmtree("protected/")
     created_assets_dir = False
     if not os.path.exists("web/assets"):
@@ -129,16 +129,16 @@ def convert_folderstructure():
 def relations(filepath):
     with open_wrapper(filepath, 'r') as file:
         contents = file.read()
-    
+
     # matches the a function with a preceeding well-formatted comment
     function_regex = r"\n(?: */\*(?:[^\*]|\*[^/])*\*/\n)?([\ \n]*public *function *{}\(\)[\ \n]*{{[^}}]*}})\ *\n"
-    
+
     # matches the relations function
     relation_regex = function_regex.format("relations")
-    
+
     if not re.search(relation_regex, contents):
         return
-    
+
     print("Found relations in " + filepath)
 
     # Those regex match the three different types of old relations
@@ -146,22 +146,22 @@ def relations(filepath):
     relation_belongs_to = word + r"=>\s*(?:array\(|\[)self::BELONGS_TO," + word + r"," + word + r"\s*(?:\)|\])"
     relation_has_many   = word + r"=>\s*(?:array\(|\[)self::HAS_MANY,"   + word + r"," + word + r"\s*(?:\)|\])"
     relation_many_many  = word + r"=>\s*(?:array\(|\[)self::MANY_MANY,"  + word + r"," + r"\s*['\"](\w+)\((\w+),\s*(\w+)\)['\"]\s*" + r"\s*(?:\)|\])"
-    
+
     # Remove old getters that would conflict with the new ones
     for relation in [relation_belongs_to, relation_has_many, relation_many_many]:
         for i in re.findall(relation, contents):
             contents = re.sub(function_regex.format("get" + i[0][0].upper() + i[0][1:]), "", contents)
-    
+
     # Remove the old relations method by splitting
     splitted = re.split(relation_regex, contents)
     assert len(splitted) == 3
     contents = splitted[0]
-    
+
     relation_function = splitted[1]
-    
+
     def upperfirst(x):
         return x[0].upper() + x[1:]
-    
+
     for relation, activequery in [(relation_belongs_to, activequery_one), (relation_has_many, activequery_many), (relation_many_many, activequery_many_many)]:
         for i in re.findall(relation, relation_function):
             i = list(i)
@@ -173,6 +173,57 @@ def relations(filepath):
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
 
+def activequery(filepath):
+
+    with open_wrapper(filepath, 'r') as file:
+        contents = file.read()
+    if contents.find("::find()->findByPk(") == -1: #REMOVE
+        return
+    print("Processing " + filepath)
+    contents = contents.replace("::model()", "::find()")
+    # Replace functions of CAtiveRecord
+    # This does not replace expressions with nested parentheses
+    contents = contents.replace("::find()->findAll()", "::find()->all()")
+
+    activequeries = [("::find()->findByPk(",            "::findOne("),
+                     ("::find()->findByAttributes(",    "::findOne("),
+                     ("::find()->findAllByAttributes(", "::findAll(")]
+    for (expression, replacement_expression) in activequeries:
+        begin = contents.find(expression)
+        while begin != -1:
+            brackets = 1
+            end = begin + len(expression)
+            while brackets > 0:
+                if contents[end] == '(':
+                    brackets += 1
+                elif contents[end] == ')':
+                    brackets -= 1
+                end += 1
+
+            old = contents[begin:end]
+            new = replacement_expression + contents[begin + len(expression):end]
+            print("Replaced " + old + " with " + new)
+            contents = contents.replace(old, new)
+
+            begin = contents.find(expression)
+
+    return
+
+    contents = re.sub(r"::find\(\)->findByPk\(([^\(\)]+)\)", r"::findOne(\1)", contents)
+    if "::find()->findByPk(" in contents:
+        print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
+
+    contents = re.sub(r"::find\(\)->findByAttributes\(\[([^\(\)\[\]]+)\]\)", r"::findOne([\1])", contents)
+    if "::find()->findByAttributes(" in contents:
+        print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
+
+    contents = re.sub(r"::find\(\)->findAllByAttributes\(\[([^\(\)\[\]]+)\]\)", r"::findAll([\1])", contents)
+    if "::find()->findByAttributes(" in contents:
+        print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
+
+    with open_wrapper(filepath, 'w') as file:
+        file.write(contents)
+
 def do_replace(filepath, yii1_classes, replacements):
     """
     Applies the replacements named in `replacements` in the the file `filepath`
@@ -180,60 +231,42 @@ def do_replace(filepath, yii1_classes, replacements):
     print("Processing " + filepath)
     with open_wrapper(filepath, 'r') as file:
         contents = file.read()
-    
+
     if "yii-app" in replacements:
         contents = contents.replace("Yii::app()", "Yii::$app")
-    
+
     if "html-web" in replacements:
         contents = contents.replace("html/", "web/")
-    
+
     if "yii1-classes" in replacements:
         for i in yii1_classes:
             contents = re.sub("([^\\w\\d])" + i, "\\1" + i[1:], contents)
-    
+
     if "create-url" in replacements:
         contents = contents.replace("Yii::$app->createUrl(", "Url::to(")
         contents = contents.replace("$this->createUrl(",     "Url::to(")
         contents = contents.replace("Html::link(",           "Html::a(")
-    
+
     if "static-table-name" in replacements:
         contents = contents.replace("public function tableName()", "public static function tableName()")
-    
-    if "active-query" in replacements:
-        contents = contents.replace("::model()", "::find()")
-        # Replace functions of CAtiveRecord
-        # This does not replace expressions with nested parentheses
-        contents = contents.replace("::find()->findAll()", "::find()->all()")
-        
-        contents = re.sub(r"::find\(\)->findByPk\(([^\(\)]+)\)", r"::findOne(\1)", contents)
-        if "::find()->findByPk(" in contents:
-            print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
-    
-        contents = re.sub(r"::find\(\)->findByAttributes\(\[([^\(\)\[\]]+)\]\)", r"::findOne([\1])", contents)
-        if "::find()->findByAttributes(" in contents:
-            print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
-        
-        contents = re.sub(r"::find\(\)->findAllByAttributes\(\[([^\(\)\[\]]+)\]\)", r"::findAll([\1])", contents)
-        if "::find()->findByAttributes(" in contents:
-            print("warn: occurences of findByPk() were not replace, probably because of nested parentheses.")
-    
+
     if "this-context" in replacements:
         contents = re.sub(r"\$this->(context->)*", "$this->context->", contents)
         contents = contents.replace("$this->context->pageTitle", "$this->title")
         contents = re.sub(r"\$this->context->(title|render|beginContent|endContent)", r"$this->\1", contents)
-    
+
     if "render" in replacements:
         contents = contents.replace("$this->render(", "return $this->render(")
         contents = contents.replace("$this->renderPartial(", "echo $this->render(")
         # Catch replacing correct render() call
         contents = contents.replace("echo return $this->render(", "echo $this->render(")
         contents = contents.replace("return return $this->render(", "return $this->render(")
-    
+
     if "layout" in replacements:
         contents = re.sub(r"public *\$layout *= *(['\"])//layouts/", r"public $layout = \1@app/views/layouts/", contents)
         contents = re.sub(r"\$this->context->layout *= *(['\"])//layouts/", r"$this->context->layout = \1@app/views/layouts/", contents)
         contents = re.sub(r"\$this->(begin|end)Content\((['\"])//layouts/", r"$this->\1Content(\2//layouts/", contents)
-    
+
     with open_wrapper(filepath, 'w') as file:
         file.write(contents)
 
@@ -241,7 +274,7 @@ def find_yii1_classes():
     """
     Finds the names of the classes that are specific to yii1 and stores them in
     a file called "yii1-classes". You shouldn't need to run that script.
-    
+
     Requirement: Yii1 can be found in ../yii1/
     """
     with open_wrapper("yii1-classes.txt", 'w') as file:
@@ -253,13 +286,13 @@ def find_yii1_classes():
 def get_all_files(paths):
     """
     Yields all files in `paths` that match "*.php"
-    
+
     `paths` might contain anarbitrary count of files and folders.
     """
     # Pretty python >= 3.5 solution:
     #for filename in glob.iglob(path + "**/*.php", recursive=True):
     #    yield filename
-    
+
     for path in paths:
         if os.path.isfile(path):
             yield path
@@ -272,18 +305,18 @@ def find_usages_for_import(filepath, sources):
     """
     Searches for all classes to be imported using the `searcher` and finds the
     matching namespace. It returns a list of lines that should be inserted at
-    the top of the PHP file to declare the right namespace and the required 
+    the top of the PHP file to declare the right namespace and the required
     import those classes.
     """
     with open_wrapper(filepath, 'r') as f:
         contents = f.read()
-    
+
     results = []
     for regex in searcher:
         results += regex.findall(contents)
-    
+
     imports = []
-    
+
     # If required, declare a namespace
     defined_class = os.path.splitext(os.path.basename(filepath))[0]
     for namespace, classes in sources.items():
@@ -309,7 +342,7 @@ def find_usages_for_import(filepath, sources):
 
         if not found:
             print("failed to find namespace in " + filepath + ": " + classname)
-    
+
     imports[2:] = sorted(imports[2:])
     return imports
 
@@ -320,9 +353,9 @@ def insert_imports(filepath, imports):
     """
     with open_wrapper(filepath, 'r') as file:
         contents = file.readlines()
-    
+
     file = open_wrapper(filepath, 'w')
-    
+
     # ensure the first line starts with "<?php"
     if contents[0].startswith("<?php"):
         file.write(contents.pop(0))
@@ -333,19 +366,19 @@ def insert_imports(filepath, imports):
         file.write("<?php\n\n")
         file.writelines(imports)
         file.write("\n?>\n\n")
-    
+
     # write back the old file contents minus imports and some newlines at the top
     contents = list(filter(lambda line: not line.startswith("use ") and not line.startswith("namespace "),  contents))
-    
+
     while len(contents) > 0 and contents[0].strip() == "":
         contents.pop(0)
-    
+
     if len(contents) == 0:
         print("Warn: File '" + filepath + "' is empty")
         return
-    
+
     file.writelines(contents)
-    
+
     file.close()
 
 def main():
@@ -353,33 +386,38 @@ def main():
     parser.add_argument('--yii2-template', action='store_true', help='Initial-step. Changes the folderstrucuture to the yii2 basic template and also updates .gitignore so you commit the changes')
     parser.add_argument('--relations', action='store_true', help='Replaces the old relations() method with new yii2 style relations.')
     parser.add_argument('--import-usages', action='store_true', help='Adds the namespace and most required `use` directives at the beginning of all php files')
+    parser.add_argument('--activequery', action='store_true', help='TODO')
     parser.add_argument('--replace', nargs='+', help='Apply named replaces FIXME: list of the available replaces')
     parser.add_argument('--path', default=None, help='A directory or a file to which actions will be applied. Doesn\'t apply on --yii2-template')
     args = parser.parse_args()
-    
+
     paths = [args.path] if args.path else default_code_paths
-    
+
     if not args.yii2_template and not args.import_usages and not args.replace and not args.relations:
         parser.print_help()
-    
+
     if args.yii2_template:
         convert_folderstructure()
-    
+
+    if args.relations:
+        for filepath in get_all_files(paths):
+            relations(filepath)
+
+    if args.activequery:
+        for filepath in get_all_files(paths):
+            activequery(filepath)
+
     if args.replace:
         with open("yii1-classes.txt", 'r') as file:
             yii1_classes = [i.strip() for i in file.readlines()]
         for filepath in get_all_files(paths):
             do_replace(filepath, yii1_classes, args.replace)
-    
-    if args.relations:
-        for filepath in get_all_files(paths):
-            relations(filepath)
-    
+
     if args.import_usages:
         sources = generate_namespace_mapping()
         for filepath in get_all_files(paths):
             imports = find_usages_for_import(filepath, sources)
             insert_imports(filepath, imports)
-    
+
 if __name__ == "__main__":
     main()
