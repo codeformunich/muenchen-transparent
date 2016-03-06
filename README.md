@@ -30,9 +30,12 @@ JS- & CSS-Dateien zusammenfügen und minimieren:
 gulp
 ```
 
-Webserver-Konfiguration:
-* [nginx-full.conf](docs/nginx-full.conf) und [nginx-travis.conf](docs/nginx-travis.conf) zeigen die Konfigurationen, die für https://www.muenchen-transparent.de und für Travis CI verwendet werden.
-* Der Hostname des Webservers muss auch als SITE_BASE_URL bei protected/config/main.php gesetzt werden.
+nginx-Konfiguration:
+* Der Hostname der gleiche wie SITE_BASE_URL in protected/config/main.php sein.
+* `root` muss auf den `html/`-Ordner gesetzt werden;
+* `$yii_bootstrap` muss auf  `index.php` gesetzt werden; 
+* Die Einstellungen aus [nginx-minimal.conf](docs/nginx-minimal.conf) müssen übernommen werden, entweder mit `include` oder mit copy&paste.
+* Zwei erweiterte Besipiele einer vollständigen Konfiguration finden sich in [nginx-full.conf](docs/nginx-full.conf) und [nginx-travis.conf](docs/nginx-travis.conf).
 
 MariaDB/MySQL-Konfiguration
 * Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "muenchen_transparent", Benutzer "ris", Passwort "sec"

@@ -36,10 +36,6 @@ install:
   - phpenv config-add docs/travis.php.ini
   - ln -s `pwd` /tmp/muenchen-transparent
   - java -version
-  
-  # Create yii-environment
-  - mkdir protected/runtime
-  - mkdir web/assets
 
   # Set up mysql
   - mysql -e 'create database ristest;'
