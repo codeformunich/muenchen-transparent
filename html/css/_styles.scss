@@ -116,13 +116,19 @@
     margin-right: -19px;
     width: auto;
   }
-
-  .pdf_download_holder {
-    float: right;
-    
+  
+  .kein-slash-davor {
     &:before {
         content: none;
     }
+  }
+
+  .weitere-dokumente {
+    float: right;
+  }
+
+  .pdf-download-holder {
+    float: right;
   }
 
   #print {
@@ -137,13 +143,11 @@
     height: auto !important;
     overflow: visible;
 
-    .pdf_download_holder {
-      display: none;
-    }
     #mainContainer {
       height: auto !important;
       width: auto;
     }
+    
     #viewerContextMenu {
       display: none;
     }

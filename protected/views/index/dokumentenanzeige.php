@@ -16,38 +16,42 @@ if ($risitem) {
 
 <section class="well pdfjs">
     <ul class="breadcrumb">
-        <li><a href="<?= CHtml::encode(Yii::app()->createUrl("index/startseite")) ?>">Startseite</a><br></li>
+        <li><a href="<?= CHtml::encode(Yii::app()->createUrl('index/startseite')) ?>">Startseite</a><br></li>
         <?
-
-        /**
-         * @param IRISItemHasDocuments $uebergruppe
-         * @param string $name
-         * @param Dokument $dokument
-         * @param string $link
-         */
-        function dokumentenliste($uebergruppe, $name, $dokument)
-        {
-            echo "<li>" . CHtml::link($name, $uebergruppe->getLink()) . "<br></li>";
-
-            if (count($uebergruppe->getDokumente()) > 1) {
-                ?>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= CHtml::encode($dokument->getName()) ?><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
-                    </ul>
-                </li> <?
-            } else {
-                echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
-            }
+        $uebergruppe = null;
+        $uebergruppe_title = null;
+        if ($dokument->antrag_id) {
+            $uebergruppe = Antrag::model()->findByPk($dokument->antrag_id);
+            $uebergruppe_title = 'Antragsseite';
+        } else if ($dokument->tagesordnungspunkt_id) {
+            $uebergruppe = Tagesordnungspunkt::model()->findByPk($dokument->tagesordnungspunkt_id);
+            $uebergruppe_title = 'Ergebnisseite';
+        } else if ($dokument->termin_id) { 
+            $uebergruppe = Termin::model()->findByPk($dokument->termin_id);
+            $uebergruppe_title = 'Terminseite';
         }
 
-        if      ($dokument->antrag_id) dokumentenliste(Antrag::model()->findByPk($dokument->antrag_id), "Antragsseite", $dokument);
-        else if ($dokument->tagesordnungspunkt_id) dokumentenliste(Tagesordnungspunkt::model()->findByPk($dokument->tagesordnungspunkt_id), "Ergebnisseite", $dokument);
-        else if ($dokument->termin_id) dokumentenliste(Termin::model()->findByPk($dokument->termin_id), "Terminseite", $dokument);
-        else     echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
+        if ($uebergruppe) {
+            echo "<li>" . CHtml::link($uebergruppe_title, $uebergruppe->getLink()) . "<br></li>";
+        }
+        
+        $weitere = $uebergruppe && count($uebergruppe->getDokumente()) > 1;
         ?>
-        <li class="pdf_download_holder"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
+        
+        <li class="active"><?= CHtml::encode($dokument->getName()) ?></li>
+        
+        <? // Rechter Bereich ?>
+        
+        <li class="pdf-download-holder <? if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
+        <? if ($weitere) { ?>
+            <li class="dropdown weitere-dokumente kein-slash-davor">
+                
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-file"></span> Weitere Dokumente<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
+                </ul>
+            </li>
+        <? } ?>
     </ul>
 
     <?
