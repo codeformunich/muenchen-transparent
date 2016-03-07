@@ -2,7 +2,7 @@
 /**
  * @var int $id
  * @var IndexController $this
- * @var Dokument|null $dokument
+ * @var Dokument $dokument
  */
 
 $risitem = $dokument->getRISItem();
@@ -25,15 +25,11 @@ if ($risitem) {
          * @param Dokument $dokument
          * @param string $link
          */
-        function dokumentenliste($uebergruppe, $name, $dokument, $link)
+        function dokumentenliste($uebergruppe, $name, $dokument)
         {
-            if ($link && $uebergruppe) {
-                echo "<li>" . CHtml::link($name, $uebergruppe->getLink()) . "<br></li>";
-            } else {
-                echo "<li class=\"active\">" . CHtml::encode($name) . "<br></li>";
-            }
+            echo "<li>" . CHtml::link($name, $uebergruppe->getLink()) . "<br></li>";
 
-            if ($uebergruppe && count($uebergruppe->getDokumente()) > 1) {
+            if (count($uebergruppe->getDokumente()) > 1) {
                 ?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= CHtml::encode($dokument->getName()) ?><span class="caret"></span></a>
@@ -42,20 +38,17 @@ if ($risitem) {
                     </ul>
                 </li> <?
             } else {
-                echo "<li>" . CHtml::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</li>\n";
+                echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
             }
         }
 
-        if ($dokument != null) {
-            if ($dokument->antrag_id) dokumentenliste(Antrag::model()->findByPk($dokument->antrag_id), "Antragsseite", $dokument, true);
-            else if ($dokument->tagesordnungspunkt_id) dokumentenliste(Tagesordnungspunkt::model()->findByPk($dokument->tagesordnungspunkt_id), "Ergebnisseite", $dokument, true);
-            else if ($dokument->termin_id) dokumentenliste(Termin::model()->findByPk($dokument->termin_id), "Terminseite", $dokument, true);
-            else if ($dokument->vorgang_id) dokumentenliste(Vorgang::model()->findByPk($dokument->vorgang_id), "Vorgangsseite", $dokument, false);
-            else     echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
-        }
+        if      ($dokument->antrag_id) dokumentenliste(Antrag::model()->findByPk($dokument->antrag_id), "Antragsseite", $dokument);
+        else if ($dokument->tagesordnungspunkt_id) dokumentenliste(Tagesordnungspunkt::model()->findByPk($dokument->tagesordnungspunkt_id), "Ergebnisseite", $dokument);
+        else if ($dokument->termin_id) dokumentenliste(Termin::model()->findByPk($dokument->termin_id), "Terminseite", $dokument);
+        else     echo "<li class=\"active\">" . CHtml::encode($dokument->getName()) . "</li>";
         ?>
+        <li class="pdf_download_holder"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
     </ul>
-    <div class="pdf_download_holder"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></div>
 
     <?
     $this->renderPartial("pdf_embed", array(

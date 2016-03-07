@@ -27,3 +27,4 @@ tests/_data/dump.sql
 
 # YII2_TODO
 config/web.php
+web/

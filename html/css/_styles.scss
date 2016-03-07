@@ -118,9 +118,11 @@
   }
 
   .pdf_download_holder {
-    position: absolute;
-    top: 10px;
-    right: 14px;
+    float: right;
+    
+    &:before {
+        content: none;
+    }
   }
 
   #print {
