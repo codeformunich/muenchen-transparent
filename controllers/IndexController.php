@@ -629,7 +629,7 @@ class IndexController extends RISBaseController
         $termine          = Termin::groupAppointments($termine);
 
         /** @var Termin[] $bvs */
-        $bvs     = Termin::find()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
+        $bvs     = Termin::find()->all(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG])->orderBy(['termin' => SORT_DESC]);
         $bvs_arr = [];
         foreach ($bvs as $bv) $bvs_arr[] = $bv->toArr();
 
@@ -687,14 +687,14 @@ class IndexController extends RISBaseController
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d H:i:s");
                 if ($i == 1) {
-                    $ru = Rathausumschau::find()->findByAttributes(["datum" => date("Y-m-d")]);
+                    $ru = Rathausumschau::findOne(["datum" => date("Y-m-d")]);
                     if ($ru) $rus[] = $ru;
                 }
             } else {
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
             }
-            $ru = Rathausumschau::find()->findByAttributes(["datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)]);
+            $ru = Rathausumschau::findOne(["datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)]);
             if ($ru) $rus[] = $ru;
             /** @var array|Antrag[] $antraege */
             $antraege          = Antrag::find()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();

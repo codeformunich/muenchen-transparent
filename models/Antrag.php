@@ -403,11 +403,11 @@ class Antrag extends ActiveRecord implements IRISItemHasDocuments
          * '='M');
          * $criteria = new DbCriteria(array('order'=>'user_date_created DESC','limit'=>10));
          * $criteria->addBetweenCondition('user_date_created', $date['date_start'], $date['date_end']);
-         * $rows = user::find()->findAllByAttributes($u
+         * $rows = user::findAll($u
          */
         $criteria = new DbCriteria(['order' => "datum_letzte_aenderung DESC"]);
         $criteria->addCondition("datum_letzte_aenderung >= '2014-05-01 00:00:00'");
-        $his = AntragHistory::find()->findAllByAttributes(["id" => $this->id], $criteria);
+        $his = AntragHistory::findAll(["id" => $this->id], $criteria);
         foreach ($his as $alt) {
             $histories[] = new HistorienEintragAntrag($alt, $neu);
             $neu         = $alt;

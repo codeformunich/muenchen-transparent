@@ -569,7 +569,7 @@ class Dokument extends ActiveRecord implements IRISItem
         foreach ($ergebnisse as $document) {
             $mltResult = $mlt->getResult($document->id);
             if ($mltResult) foreach ($mltResult as $mltDoc) {
-                $mod = Dokument::find()->findByPk(str_replace("Document:", "", $mltDoc->id));
+                $mod = Dokument::findOne(str_replace("Document:", "", $mltDoc->id));
                 if ($mod) $ret[] = $mod;
             }
         }
@@ -610,7 +610,7 @@ class Dokument extends ActiveRecord implements IRISItem
         $aenderungs_datum = [];
 
         /** @var array|RISAenderung[] $aenderungen */
-        $aenderungen = RISAenderung::find()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
+        $aenderungen = RISAenderung::find()->all(["ris_id" => $this->antrag_id])->orderBy(['datum' => SORT_DESC]);
         foreach ($aenderungen as $o) {
             $aenderungs_datum[] = RISSolrHelper::mysql2solrDate($o->datum);
             $max_datum          = $o->datum;
@@ -668,7 +668,7 @@ class Dokument extends ActiveRecord implements IRISItem
         $doc->dokument_bas = $dokument_bas;
 
         /** @var array|RISAenderung[] $aenderungen */
-        $aenderungen = RISAenderung::find()->findAllByAttributes(["ris_id" => $this->antrag_id], ["order" => "datum DESC"]);
+        $aenderungen = RISAenderung::find()->all(["ris_id" => $this->antrag_id])->orderBy(['datum' => SORT_DESC]);
         foreach ($aenderungen as $o) {
             $aenderungs_datum[] = RISSolrHelper::mysql2solrDate($o->datum);
             $max_datum          = $o->datum;

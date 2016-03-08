@@ -267,7 +267,7 @@ class StadtratTerminParser extends RISParser
             if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
                 $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_BESCHLUSS, $top, ["url" => $matches2["url"][0], "name" => $matches2["title"][0], "name_title" => ""]);
                 /** @var Dokument $dok */
-                $dok = Dokument::find()->findByAttributes(["tagesordnungspunkt_id" => $top->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]]);
+                $dok = Dokument::findOne(["tagesordnungspunkt_id" => $top->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]]);
                 if ($dok && $dok->tagesordnungspunkt_id != $top->id) {
                     echo "Korrgiere ID\n";
                     $dok->tagesordnungspunkt_id = $top->id;
@@ -287,7 +287,7 @@ class StadtratTerminParser extends RISParser
 
             /** @var Tagesordnungspunkt $top */
             $krits = ["sitzungstermin_id" => $termin_id, "status" => "geheim", "top_betreff" => $betreff];
-            $top   = Tagesordnungspunkt::find()->findByAttributes($krits);
+            $top   = Tagesordnungspunkt::findOne($krits);
             if (is_null($top)) {
                 $top = new Tagesordnungspunkt();
                 $aenderungen .= "Neuer geheimer Tagesordnungspunkt: " . $betreff . "\n";

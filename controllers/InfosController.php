@@ -145,9 +145,9 @@ class InfosController extends RISBaseController
             $text->save();
         }
 
-        $eintraege = Text::find()->findAllByAttributes([
+        $eintraege = Text::find()->all([
             "typ" => Text::$TYP_GLOSSAR,
-        ], ["order" => "titel"]);
+        ])->orderBy(['titel' => SORT_ASC]);
 
         return $this->render('glossar', [
             "eintraege" => $eintraege,

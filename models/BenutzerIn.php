@@ -48,7 +48,7 @@ class BenutzerIn extends ActiveRecord
      */
     public static function alleAktiveAccounts()
     {
-        return BenutzerIn::find()->findAllByAttributes(["email_bestaetigt" => "1"], ["order" => "email"]);
+        return BenutzerIn::find()->all(["email_bestaetigt" => "1"])->orderBy(['email' => SORT_ASC]);
     }
 
     /**

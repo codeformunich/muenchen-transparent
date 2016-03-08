@@ -270,7 +270,7 @@ class TermineController extends RISBaseController
     public function actionBaTermineAlle($ba_nr)
     {
         /** @var Termin[] $termine */
-        $termine    = Termin::find()->findAllByAttributes(["ba_nr" => $ba_nr], ["order" => "termin DESC"]);
+        $termine    = Termin::find()->all(["ba_nr" => $ba_nr])->orderBy(['termin' => SORT_DESC]);
         $termin_arr = [];
         foreach ($termine as $t) {
             $termin_arr[] = $t->toArr();

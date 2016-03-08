@@ -149,8 +149,8 @@ class AdminController extends RISBaseController
         $this->top_menu = "admin";
 
         if (AntiXSS::isTokenSet("tag_umbennen")) {
-            $tag_alt     = Tag::find()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
-            $gleichnamig = Tag::find()->findByAttributes(["name" => $_REQUEST["neuer_name"]]);
+            $tag_alt     = Tag::findOne(["id" => $_REQUEST["tag_id"]]);
+            $gleichnamig = Tag::findOne(["name" => $_REQUEST["neuer_name"]]);
 
             if ($gleichnamig != null) { // Tag mit neuem Namen existiert bereits-> merge
                 // Zuerst bei allen Anträgen mit beiden tags den Eintrag für den alten tag löschen
@@ -174,7 +174,7 @@ class AdminController extends RISBaseController
         }
 
         if (AntiXSS::isTokenSet("tag_loeschen")) {
-            $tag = Tag::find()->findByAttributes(["id" => $_REQUEST["tag_id"]]);
+            $tag = Tag::findOne(["id" => $_REQUEST["tag_id"]]);
 
             Yii::$app->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id')
                 ->bindValues([':tag_id' => $tag->id])
@@ -186,7 +186,7 @@ class AdminController extends RISBaseController
         }
 
         if (AntiXSS::isTokenSet("einzelnen_tag_loeschen")) {
-            $tag = Tag::find()->findByAttributes(["name" => $_REQUEST["tag_name"]]);
+            $tag = Tag::findOne(["name" => $_REQUEST["tag_name"]]);
 
             Yii::$app->db->createCommand('DELETE FROM antraege_tags WHERE tag_id=:tag_id AND antrag_id=:antrag_id')
                 ->bindValues([':tag_id' => $tag->id, ':antrag_id' => $_REQUEST["antrag_id"]])
@@ -222,7 +222,7 @@ class AdminController extends RISBaseController
 
         if (AntiXSS::isTokenSet("delete")) {
             /** @var Termin $termin */
-            $termin = Termin::find()->findByPk(AntiXSS::getTokenVal("delete"));
+            $termin = Termin::findOne(AntiXSS::getTokenVal("delete"));
             $termin->delete();
             $this->msg_ok = "Gelöscht.";
         }
@@ -255,7 +255,7 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Gespeichert";
         }
 
-        $termine = Termin::find()->findAllByAttributes(["typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC"]);
+        $termine = Termin::find()->all(["typ" => Termin::$TYP_BUERGERVERSAMMLUNG])->orderBy(['termin' => SORT_DESC]);
         return $this->render("buergerInnenversammlungen", [
             "termine" => $termine,
         ]);

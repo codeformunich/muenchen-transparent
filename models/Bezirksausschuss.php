@@ -283,7 +283,7 @@ class Bezirksausschuss extends ActiveRecord
 
         $statistiken = [];
 
-        $daten = StatistikDatensatz::find()->findByAttributes(["gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"], ["order" => "jahr DESC"]);
+        $daten = StatistikDatensatz::find()->one(["gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"])->orderBy(['jahr' => SORT_DESC]);
         if ($daten) {
             $statistiken[] = [
                 "name" => "EinwohnerInnen",

@@ -69,7 +69,7 @@ class RathausumschauParser extends RISParser
 
         for ($i = 0; $i < count($matches["url"]); $i++) {
             $datum = explode(".", $matches["datum"][$i]);
-            $ru    = Rathausumschau::find()->findByAttributes(["jahr" => $datum[2], "nr" => $matches["nr"][$i]]);
+            $ru    = Rathausumschau::findOne(["jahr" => $datum[2], "nr" => $matches["nr"][$i]]);
             if (!$ru) {
                 $ru        = new Rathausumschau();
                 $ru->nr    = $matches["nr"][$i];
@@ -111,7 +111,7 @@ class RathausumschauParser extends RISParser
         for ($i = 0; $i < count($matches["nr"]); $i++) {
             $datum = $jahr . "-" . static::$MON_MAPPING[$matches["mon"][$i]] . "-" . $matches["tag"][$i];
 
-            $ru = Rathausumschau::find()->findByAttributes(["jahr" => $jahr, "nr" => IntVal($matches["nr"][$i])]);
+            $ru = Rathausumschau::findOne(["jahr" => $jahr, "nr" => IntVal($matches["nr"][$i])]);
             if (!$ru) {
                 $ru        = new Rathausumschau();
                 $ru->nr    = IntVal($matches["nr"][$i]);
@@ -150,7 +150,7 @@ class RathausumschauParser extends RISParser
 
                 if (!isset($datum["monat"])) continue;
 
-                $ru = Rathausumschau::find()->findByAttributes(["jahr" => $jahr, "nr" => IntVal($file)]);
+                $ru = Rathausumschau::findOne(["jahr" => $jahr, "nr" => IntVal($file)]);
                 if (!$ru) {
                     $ru        = new Rathausumschau();
                     $ru->nr    = IntVal($file);

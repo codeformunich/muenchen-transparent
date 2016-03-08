@@ -307,7 +307,7 @@ class RISSucheKrits
                 return "Volltextsuche nach \"" . $such . "\"";
             case "ba":
                 /** @var Bezirksausschuss $ba */
-                $ba = Bezirksausschuss::find()->findByAttributes(["ba_nr" => $this->krits[0]["ba_nr"]]);
+                $ba = Bezirksausschuss::findOne(["ba_nr" => $this->krits[0]["ba_nr"]]);
                 return "Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
             case "geo":
                 $ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
@@ -351,7 +351,7 @@ class RISSucheKrits
                     break;
                 case "ba":
                     /** @var Bezirksausschuss $ba */
-                    $ba      = Bezirksausschuss::find()->findByAttributes(["ba_nr" => $cr["ba_nr"]]);
+                    $ba      = Bezirksausschuss::findOne(["ba_nr" => $cr["ba_nr"]]);
                     $krits[] = "aus dem Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
                     break;
                 case "geo":

@@ -182,7 +182,7 @@ class Tagesordnungspunkt extends ActiveRecord implements IRISItemHasDocuments
         $antraege = [];
         foreach ($matches[0] as $match) {
             /** @var Antrag $antrag */
-            $antrag = Antrag::find()->findByAttributes(["antrags_nr" => Antrag::cleanAntragNr($match)]);
+            $antrag = Antrag::findOne(["antrags_nr" => Antrag::cleanAntragNr($match)]);
             if ($antrag) $antraege[] = $antrag;
             else $antraege[] = "Nr. " . $match;
         }

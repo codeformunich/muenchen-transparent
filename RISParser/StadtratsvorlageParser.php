@@ -244,12 +244,12 @@ class StadtratsvorlageParser extends RISParser
 
         foreach ($antrag_links as $link) {
             /** @var Antrag $antrag */
-            $antrag = Antrag::find()->findByPk(IntVal($link));
+            $antrag = Antrag::findOne(IntVal($link));
             if (!$antrag) {
                 $parser = new StadtratsantragParser();
                 $parser->parse($link);
 
-                $antrag = Antrag::find()->findByPk(IntVal($link));
+                $antrag = Antrag::findOne(IntVal($link));
             }
             if (!$antrag) if (Yii::$app->params['adminEmail'] != "") RISTools::send_email(Yii::$app->params['adminEmail'], "Stadtratsvorlage - Zugordnungs Error", $vorlage_id . " - " . $link, null, "system");
 

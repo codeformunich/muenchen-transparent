@@ -243,7 +243,7 @@ class BenachrichtigungenController extends RISBaseController
     {
         if (AntiXSS::isTokenSet("reset_password")) {
             /** @var null|BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::find()->findByAttributes(["email" => $_REQUEST["email"]]);
+            $benutzerIn = BenutzerIn::findOne(["email" => $_REQUEST["email"]]);
             if ($benutzerIn) {
                 $ret = $benutzerIn->resetPasswordStart();
                 if ($ret === true) {

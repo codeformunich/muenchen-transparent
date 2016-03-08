@@ -66,7 +66,7 @@ class Benachrichtigungen_VerschickenCommand extends ConsoleCommand
             if (is_numeric($args[0])) {
                 $benutzerIn = BenutzerIn::findOne($args[0]);
             } else {
-                $benutzerIn = BenutzerIn::find()->findByAttributes(["email" => $args[0]]);
+                $benutzerIn = BenutzerIn::findOne(["email" => $args[0]]);
             }
             if (!$benutzerIn) die("BenutzerIn nicht gefunden.\n");
             /** @var BenutzerIn $benutzerIn */

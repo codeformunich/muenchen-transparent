@@ -31,7 +31,7 @@ class Import_Omnipage_OCRCommand extends ConsoleCommand
         */
 
         /** @var Dokument $dokument */
-        $dokument = Dokument::find()->findByPk(IntVal($filename));
+        $dokument = Dokument::findOne(IntVal($filename));
         if (!$dokument)  {
             rename(OMNIPAGE_DST_DIR . $filename, OMNIPAGE_IMPORTED_DIR . $filename);
             if (file_exists(OMNIPAGE_PDF_DIR . IntVal($filename) . ".pdf")) unlink(OMNIPAGE_PDF_DIR . IntVal($filename) . ".pdf");

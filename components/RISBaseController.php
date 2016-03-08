@@ -80,7 +80,7 @@ class RISBaseController extends Controller
 
         if (AntiXSS::isTokenSet("login_anlegen") && $user->isGuest && !isset($_REQUEST["register"])) {
             /** @var BenutzerIn $benutzerIn */
-            $benutzerIn = BenutzerIn::find()->findByAttributes(["email" => $_REQUEST["email"]]);
+            $benutzerIn = BenutzerIn::findOne(["email" => $_REQUEST["email"]]);
             if ($benutzerIn) {
                 if ($benutzerIn->validate_password($_REQUEST["password"])) {
                     $identity = new RISUserIdentity($benutzerIn);
