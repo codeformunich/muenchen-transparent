@@ -24,3 +24,7 @@ web/js/ba_grenzen_geojson.js
 # Codeception
 tests/_output/*
 tests/_data/dump.sql
+
+# YII2_TODO
+html/
+protected/
