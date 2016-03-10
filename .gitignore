@@ -19,7 +19,6 @@ composer.phar
 /html/pdfjs/web/build.js
 /.idea
 
-/protected/runtime/
 /protected/config/main.php
 
 # Codeception

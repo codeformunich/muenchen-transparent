@@ -41,8 +41,6 @@ setlocale(LC_NUMERIC, "C"); // Scheint in manchen Umgebungen (HHVM?) sonst bei d
 
 require_once(__DIR__ . "/urls.php");
 
-$GLOBALS["SOLR_CONFIG"] = null;
-/*
 $GLOBALS["SOLR_CONFIG"] = array(
     'endpoint' => array(
         'localhost' => array(
@@ -53,7 +51,6 @@ $GLOBALS["SOLR_CONFIG"] = array(
         )
     )
 );
-*/
 
 function ris_intern_address2geo($land, $plz, $ort, $strasse)
 {

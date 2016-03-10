@@ -1,9 +1,7 @@
-How to include new icons into this font:
-----------------------------------------
+## How to include new icons into this font:
 
-* Download [config.json](config.json)
 * Go to [Fontello](http://fontello.com/)
-* Import the config.json (Config -> Import)
+* Import the [config.json](docs/fontello/config.json) (Config -> Import)
 * Select the new icons
 * Download the new package
 * Replace the following files / directories:

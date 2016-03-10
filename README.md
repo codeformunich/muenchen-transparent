@@ -2,15 +2,15 @@
 =========================================
 
 [![Build Status](https://travis-ci.org/codeformunich/Muenchen-Transparent.svg?branch=master)](https://travis-ci.org/codeformunich/Muenchen-Transparent)
+[![Dependencies](https://david-dm.org/codeformunich/Muenchen-Transparent.svg)](https://travis-ci.org/codeformunich/Muenchen-Transparent)
 
 ## Entwicklungs-Setup
 
-Vorausgesetzt wird nginx mit PHP und MySQL/MariaDB
+Vorausgesetzt werden nginx mit PHP und MySQL/MariaDB, npm und composer.
 
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
-curl -sS https://getcomposer.org/installer | php
-php composer.phar install
+composer install
 
 mkdir protected/runtime
 chown -R www-data:www-data protected/runtime
@@ -31,15 +31,14 @@ gulp
 ```
 
 nginx-Konfiguration:
-* Der Hostname der gleiche wie SITE_BASE_URL in protected/config/main.php sein.
+* `server_name` muss der gleiche sein wie SITE_BASE_URL in protected/config/main.php sein.
 * `root` muss auf den `html/`-Ordner gesetzt werden;
-* `$yii_bootstrap` muss auf  `index.php` gesetzt werden; 
-* Die Einstellungen aus [nginx-minimal.conf](docs/nginx-minimal.conf) müssen übernommen werden, entweder mit `include` oder mit copy&paste.
+* `$yii_bootstrap` muss auf `index.php` gesetzt werden; 
+* Die Einstellungen aus [nginx-minimal.conf](docs/nginx-minimal.conf) müssen übernommen werden, entweder durch ein `include` oder mit copy&paste.
 * Zwei erweiterte Besipiele einer vollständigen Konfiguration finden sich in [nginx-full.conf](docs/nginx-full.conf) und [nginx-travis.conf](docs/nginx-travis.conf).
 
 MariaDB/MySQL-Konfiguration
 * Eine Datenbank und einen zugehörigen Nutzer anlegen. Hier im Beispiel: Datenbank "muenchen_transparent", Benutzer "ris", Passwort "sec"
-* `cat docs/schema.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql  | mysql -u ris -psec muenchen_transparent`
 * Der zugehörige Abschnitt in der protected/config/main.php wäre dann:
 ```php
 'db'           => array(
@@ -52,12 +51,35 @@ MariaDB/MySQL-Konfiguration
             'schemaCachingDuration' => 3600,
         ),
 ```
+* Beispieldaten in die Datenbank importieren: `cat docs/schema.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql | mysql -u ris -psec muenchen_transparent`
 
 PHP-Konfiguration:
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
 * Das Modul für curl muss installiert sein (`php5-curl`)
 
-[TODO: Solr]
+## Tests
+
+Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet.
+
+Zum lokalen ausführen der Test muss ein 2. Server-Block in der nginx-Konfiguration angelegt werden. Diese unterschiedet sich von der normalen in drei Punkten:
+* `server_name` muss `localhost` sein.
+* `listen` muss `8080` gesetzt werden;
+* `$yii_bootstrap` muss auf `index_codeception.php` gesetzt werden; 
+
+Die Tests können dann mit
+```
+vendor/bin/codeception run
+```
+ausgeführt werden.
+
+Es ist zu beachten, dass die Tests im Moment noch im PhpBrowser statt über selenium laufen, d.h. es können u.a. noch keine auf javascript basierenden Funktionen getestet werden.
+
+## Solr
+* Solr 4.10 herunterladen und in ein beliebiges Verzeichnis mit dem Namen `solr` entpacken.
+* `docs/solr_config/solr.xml` kommt in den Ordner `solr/example/solr/collection1`
+* `docs/solr_config/collections1` kommt in den Ordner `solr/example/solr/`
+* solr kann dann mit `solr/bin/solr start -p 8983` gestartet werden.
+
 
 ## Code-Organisation
 
@@ -72,20 +94,13 @@ PHP-Konfiguration:
 * __protected/controllers/__: Controller
 * __protected/views/__: View
 
-## Tests
-
-Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet. Die Tests werden automatisch von Travis CI ausgeführt. Es ist zu beachten, dass die Tests im Moment noch im PhpBrowser statt über selenium laufen, d.h. es können u.a. noch keine auf javascript basierenden Funktionen getestet werden.
-
-[TODO: Test lokal ausführen und Struktur erklären]
-
 ## Weitere Dokumentation
 * [Icon-Font bearbeiten](docs/fontello/updating.txt)
 * Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
 
 ### pdf.js  Updaten:
-* Neuste Pre-built Version von pdf.hs herunterladen und in html/pdfjs entpacken
+* Neuste Pre-built Version von pdf.js herunterladen und in `html/pdfjs` entpacken
 * `docs/pdfjs.patch` oder `docs/pdfjs.diff` darauf anwenden
-* Mit `gulp` die Dateien komprimieren
 
 ## Eingesetzte Shell-Programme
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.
