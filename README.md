@@ -83,7 +83,9 @@ Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet
 * Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
 
 ### pdf.js  Updaten:
-* [TODO]
+* Neuste Pre-built Version von pdf.hs herunterladen und in html/pdfjs entpacken
+* `docs/pdfjs.patch` oder `docs/pdfjs.diff` darauf anwenden
+* Mit `gulp` die Dateien komprimieren
 
 ## Eingesetzte Shell-Programme
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.
