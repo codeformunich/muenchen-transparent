@@ -1,3 +1,11 @@
+/*
+Gulp is used to managed all sass/css and javascript resources.
+
+You can use `gulp watch` to rebuild the custom css and js on change and
+`gulp brwosersync` for automatically pushing changed reqources to the browser
+*/
+
+
 var gulp       = require('gulp'),
     concat     = require('gulp-concat'),
     gulpif     = require('gulp-if'),
@@ -37,13 +45,22 @@ var paths = {
         "html/js/leaflet.spiderfy.js",
         "html/js/leaflet.textmarkers.js",
     ],
+    pdfjs_js: [
+        "html/pdfjs/compatibility.js",
+        "html/pdfjs/l10n.js",
+        "html/pdfjs/pdf.js",
+        "html/pdfjs/viewer.js",
+    ],
+    pdfjs_css: [
+        "html/pdfjs/viewer.css",
+    ],
 }
 
-gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'ba_grenzen_geojson']);
+gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'ba-grenzen-geojson', 'pdfjs']);
 
 gulp.task('watch', function () {
-    use_uglify = false; // much better performance 
-    gulp.watch(paths.source_js, ['std.js', 'leaflet.js']);
+    use_uglify = false; // much better performance
+    gulp.watch(paths.source_js, ['std.js']);
     gulp.watch(paths.source_styles, ['sass']);
 });
 
@@ -84,6 +101,27 @@ gulp.task('sass', function () {
         .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
 });
 
-gulp.task('ba_grenzen_geojson', function () {
-    return exec('protected/yiic bagrenzengeojson html/js/ba_grenzen_geojson.js');
+gulp.task('ba-grenzen-geojson', function () {
+    return exec('protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js');
+});
+
+gulp.task('pdfjs', ['pdfjs-js', 'pdfjs-css'])
+
+gulp.task('pdfjs-js', function () {
+    return gulp.src(paths.pdfjs_js)
+        .pipe(concat('build.js'))
+        .pipe(gulpif(use_uglify, uglify()))
+        .pipe(gulp.dest('html/pdfjs/'));
+});
+
+gulp.task('pdfjs-css', function () {
+    return gulp.src(paths.pdfjs_css)
+        .pipe(concat('build.css'))
+        .pipe(sourcemaps.init())
+        .pipe(sass({
+            outputStyle: 'compressed'
+        }).on('error', sass.logError))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('html/pdfjs/'))
+        .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
 });

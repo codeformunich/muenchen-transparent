@@ -26,7 +26,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
         yepnope({
             load: [
                 "/js/build/leaflet.js",
-                "/js/ba_grenzen_geojson.js"
+                "/js/build/ba-grenzen-geojson.js"
             ],
             complete: function () {
                 var attrib = '<a href="http://openstreetmap.org">OpenStreetMap</a>, <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a> | <a href="http://developer.skobbler.com/" target="_blank">Scout</a>';

@@ -14,12 +14,14 @@ html/piwik/
 html/sitemap-*
 html/google*
 html/BingSiteAuth.xml
+html/pdfjs/build.css
+html/pdfjs/build.css.map
+html/pdfjs/build.js
 
 .idea
 
 protected/runtime/
 protected/config/main.php
-html/js/ba_grenzen_geojson.js
 
 # Codeception
 tests/_output/*

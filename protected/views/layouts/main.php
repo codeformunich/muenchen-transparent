@@ -52,7 +52,7 @@
     if ($this->load_pdf_js) { ?>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta name="google" content="notranslate">
-        <link rel="stylesheet" href="/pdfjs/viewer.css"/>
+        <link rel="stylesheet" href="/pdfjs/build.css"/>
     <? } ?>
 
     <? if ($this->inline_css != "") {
@@ -62,8 +62,8 @@
     <script src="/bower/jquery/dist/jquery.min.js"></script>
 
     <? if ($this->load_pdf_js) { ?>
-        <link rel="resource" type="application/l10n" href="/pdfjs/locale/locale.properties"/>
-        <script src="/pdfjs/viewer.min.js" defer></script>
+        <link type="application/l10n" href="/pdfjs/locale/locale.properties"/>
+        <script src="/pdfjs/build.js" defer></script>
     <? }
     if ($this->load_mediaelement) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
     if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
