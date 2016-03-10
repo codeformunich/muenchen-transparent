@@ -1,5 +1,9 @@
 <?php
 
+define("SITE_BASE_URL", "https://www.muenchen-transparent.de");
+
+if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
+
 define("RIS_DATA_DIR", "/data/ris3-data/");
 define("RIS_OMNIPAGE_DIR", "/data/nuance/");
 define("PATH_IDENTIFY", "/usr/bin/identify");
@@ -9,7 +13,6 @@ define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
 define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.10.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
-define("PATH_PDFTOHTML", "/usr/bin/pdftohtml");
 
 define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");
 define("PATH_PDF_RU", RIS_DATA_DIR . "data/ru-pdf/");
@@ -24,9 +27,8 @@ define("EMAIL_LOG_FILE", "/tmp/email.log");
 
 define("RIS_BASE_URL", "http://www.ris-muenchen.de/RII/RII/");
 define("RIS_BA_BASE_URL", "http://www.ris-muenchen.de/RII/BA-RII/");
+define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 
-define("SITE_BASE_URL", "https://www.muenchen-transparent.de");
-if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 define("DOCUMENT_DATE_ACCURATE_SINCE", 1388530800); // 1. Januar 2014
 define("DOCUMENT_DATE_UNKNOWN_BEFORE", 1212271200); // 1. Juni 2008
 
