@@ -83,9 +83,7 @@ Zum automatisierten Testen wird [codeception](http://codeception.com/) verwendet
 * Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
 
 ### pdf.js  Updaten:
-* Ggf. uglify-js installieren (`npm install -g uglify-js`)
-* Entweder mit `diff` `docs/pdfjs_v[version].diff` oder mit `git patch apply` `pdfjs_v[version].patch` anwenden
-* Im Ordner `html/pdfjs/`: `uglifyjs compatibility.js l10n.js pdf.js debugger.js viewer.js > viewer.min.js`
+* [TODO]
 
 ## Eingesetzte Shell-Programme
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.

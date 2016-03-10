@@ -46,13 +46,13 @@ var paths = {
         "html/js/leaflet.textmarkers.js",
     ],
     pdfjs_js: [
-        "html/pdfjs/compatibility.js",
-        "html/pdfjs/l10n.js",
-        "html/pdfjs/pdf.js",
-        "html/pdfjs/viewer.js",
+        "html/pdfjs/web/compatibility.js",
+        "html/pdfjs/web/l10n.js",
+        "html/pdfjs/build/pdf.js",
+        "html/pdfjs/web/viewer.js",
     ],
     pdfjs_css: [
-        "html/pdfjs/viewer.css",
+        "html/pdfjs/web/viewer.css",
     ],
 }
 
@@ -111,7 +111,7 @@ gulp.task('pdfjs-js', function () {
     return gulp.src(paths.pdfjs_js)
         .pipe(concat('build.js'))
         .pipe(gulpif(use_uglify, uglify()))
-        .pipe(gulp.dest('html/pdfjs/'));
+        .pipe(gulp.dest('html/pdfjs/web/'));
 });
 
 gulp.task('pdfjs-css', function () {
@@ -122,6 +122,6 @@ gulp.task('pdfjs-css', function () {
             outputStyle: 'compressed'
         }).on('error', sass.logError))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('html/pdfjs/'))
+        .pipe(gulp.dest('html/pdfjs/web/'))
         .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
 });

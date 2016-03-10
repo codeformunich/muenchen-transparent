@@ -14,9 +14,9 @@ html/piwik/
 html/sitemap-*
 html/google*
 html/BingSiteAuth.xml
-html/pdfjs/build.css
-html/pdfjs/build.css.map
-html/pdfjs/build.js
+html/pdfjs/web/build.css
+html/pdfjs/web/build.css.map
+html/pdfjs/web/build.js
 
 .idea
 
