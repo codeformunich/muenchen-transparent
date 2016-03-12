@@ -102,7 +102,15 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                 <br>
                 <ul class="dokumentenliste_small">
                     <? foreach ($dokumente as $dokument) {
-                        $name = str_replace(" (oeff)", "", $dokument->getName(true));
+                        $replaces = [
+                            " (oeff)"       => "",
+                            " (öffentlich)" => "",
+                            " Oeffentlich"  => "",
+                        ];
+                        $name = str_replace(array_keys($replaces), array_values($replaces), $dokument->getName(true));
+                        $name = preg_replace('/^TO (BA[0-9]+)?( [0-9-]+)?/', 'Tagesordnung', $name); // TO BA24 02-02-2016 mit Ergänzungen zur Sitzung am 02.02.2016
+                        $name = preg_replace('/prot[0-9]+(öf|Oeff)?/siu', 'Protokoll', $name);
+                        $name = preg_replace('/[0-9]+nto[0-9]+(öf|eff)?/siu', 'Tagesordnung', $name);
                         $name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
                         echo '<li>';
                         echo "<div class='metainformationen_antraege'>" . CHtml::encode($dokument->getDisplayDate()) . "</div>";
