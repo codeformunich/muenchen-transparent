@@ -34,7 +34,7 @@ class StadtratTerminParser extends RISParser
             $gr = Gremium::model()->findByPk($daten->gremium_id);
             if (!$gr) {
                 echo "Lege Gremium an: " . $daten->gremium_id . "\n";
-                Gremium::parse_stadtrat_gremien($daten->gremium_id);
+                StadtratGremiumParser::parse($daten->gremium_id);
             }
         }
 
