@@ -180,11 +180,11 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         </div>
         <? if (count($bens) > 0) { ?>
             <div class="row">
-                <div class="ben_alle_holder col col-lg-8">
-                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="ben_alle_suche"><span
+                <div class="benachrichtigung_alle_holder col col-lg-8">
+                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="benachrichtigung_alle_suche"><span
                             class="glyphicon glyphicon-chevron-right"></span>
                         Alle Suchergebnisse</a>
-                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", ["code" => $ich->getFeedCode()])) ?>" class="ben_alle_feed"><span
+                    <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleFeed", ["code" => $ich->getFeedCode()])) ?>" class="benachrichtigung_alle_feed"><span
                             class="fontello-rss"></span>
                         Alle Suchergebnisse als Feed</a>
                 </div>
@@ -202,7 +202,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
             <div class="input-group col col-lg-8" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
                 <input type="text" placeholder="Suchbegriff" id="suchbegriff" name="suchbegriff" class="form-control">
             <span class="input-group-btn">
-                <button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_text") ?>" type="submit">Benachrichtigen!</button>
+                <button class="btn btn-primary" name="<?= AntiXSS::createToken("benachrichtigung_add_text") ?>" type="submit">Benachrichtigen!</button>
             </span>
             </div>
         </fieldset>
@@ -220,12 +220,12 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                     ?>
                 </select>
             <span class="input-group-btn">
-                <button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_ba") ?>" type="submit">Benachrichtigen!</button>
+                <button class="btn btn-primary" name="<?= AntiXSS::createToken("benachrichtigung_add_ba") ?>" type="submit">Benachrichtigen!</button>
             </span>
                 <!--
             <input type="text" placeholder="Suchbegriff" id="suchbegriff" name="suchbegriff" class="form-control">
             <span class="input-group-btn">
-                <button class="btn btn-primary" name="<?= AntiXSS::createToken("ben_add_text") ?>" type="submit">Benachrichtigen!</button>
+                <button class="btn btn-primary" name="<?= AntiXSS::createToken("benachrichtigung_add_text") ?>" type="submit">Benachrichtigen!</button>
             </span>
             -->
             </div>
@@ -240,8 +240,8 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
             <br style="clear: both;">
 
             <div class="input-group col col-lg-8" style="padding: 10px; margin-left: 23px;">
-                <div id="ben_mapholder">
-                    <div id="ben_map"></div>
+                <div id="benachrichtigung_mapholder">
+                    <div id="benachrichtigung_map"></div>
                 </div>
 
                 <hr style="margin-top: 10px; margin-bottom: 10px;">
@@ -252,7 +252,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                     <input type="hidden" name="geo_radius" value="">
                     <input type="text" placeholder="noch kein Ort ausgewählt" id="ort_auswahl" class="form-control" disabled>
                 <span class="input-group-btn">
-                    <button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
+                    <button class="btn btn-primary benachrichtigung_add_geo" disabled name="<?= AntiXSS::createToken("benachrichtigung_add_geo") ?>" type="submit">Benachrichtigen!</button>
                 </span>
                 </div>
             </div>
@@ -261,8 +261,8 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
         <script>
             $(function () {
-                var $ben_holder = $("#benachrichtigung_hinweis_text");
-                $("#ben_map").AntraegeKarte({
+                var $benachrichtigung_hinweis = $("#benachrichtigung_hinweis_text");
+                $("#benachrichtigung_map").AntraegeKarte({
                     benachrichtigungen_widget: true,
                     show_BAs: false,
                     benachrichtigungen_widget_zoom: 9,
@@ -272,13 +272,13 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                             "url": "<?=CHtml::encode($this->createUrl("index/geo2Address"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat,
                             "success": function (ret) {
                                 $("#benachrichtigung_hinweis_text").find("input[type=text]").val("Etwa " + parseInt(rad) + "m um " + ret["ort_name"]);
-                                $(".ben_add_geo").prop("disabled", false);
+                                $(".benachrichtigung_add_geo").prop("disabled", false);
 
                             }
                         });
-                        $ben_holder.find("input[name=geo_lng]").val(latlng.lng);
-                        $ben_holder.find("input[name=geo_lat]").val(latlng.lat);
-                        $ben_holder.find("input[name=geo_radius]").val(rad);
+                        $benachrichtigung_hinweis.find("input[name=geo_lng]").val(latlng.lng);
+                        $benachrichtigung_hinweis.find("input[name=geo_lat]").val(latlng.lat);
+                        $benachrichtigung_hinweis.find("input[name=geo_radius]").val(rad);
                     }
                 });
             });

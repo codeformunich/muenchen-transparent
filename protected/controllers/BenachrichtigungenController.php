@@ -34,7 +34,7 @@ class BenachrichtigungenController extends RISBaseController
             }
         }
 
-        if (AntiXSS::isTokenSet("ben_add_text")) {
+        if (AntiXSS::isTokenSet("benachrichtigung_add_text")) {
             $suchbegriff = trim($_REQUEST["suchbegriff"]);
             if ($suchbegriff == "") {
                 $this->msg_err = "Bitte gib einen Suchausdruck an.";
@@ -46,14 +46,14 @@ class BenachrichtigungenController extends RISBaseController
             }
         }
 
-        if (AntiXSS::isTokenSet("ben_add_ba")) {
+        if (AntiXSS::isTokenSet("benachrichtigung_add_ba")) {
             $ben = new RISSucheKrits();
             $ben->addBAKrit($_REQUEST["ba"]);
             $ich->addBenachrichtigung($ben);
             $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
         }
 
-        if (AntiXSS::isTokenSet("ben_add_geo")) {
+        if (AntiXSS::isTokenSet("benachrichtigung_add_geo")) {
             if ($_REQUEST["geo_lng"] == 0 || $_REQUEST["geo_lat"] == 0 || $_REQUEST["geo_radius"] <= 0) {
                 $this->msg_err = "Ungültige Eingabe.";
             } else {

@@ -44,7 +44,7 @@ $user = $this->aktuelleBenutzerIn();
     </form>
 
     <h3>Alle Tags</h3>
-    <div id="tag-liste" class="sortiert">
+    <div id="tag-liste" class="table_sortiert">
         <input class="search" placeholder="Filtern" style="margin-bottom: 10px;"/>
         <table style="width: 100%">
             <tr>

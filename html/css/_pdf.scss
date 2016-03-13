@@ -1,0 +1,94 @@
+
+#content > section.well.pdfjs_long {
+  #outerContainer {
+    margin-left: -19px;
+    margin-right: -19px;
+    width: auto;
+  }
+
+  #viewerContainer {
+    height: auto !important;
+    position: relative;
+  }
+
+  #mainContainer {
+    overflow: visible;
+    position: relative;
+    height: auto;
+
+    > .toolbar {
+      display: none;
+    }
+  }
+}
+
+
+#content > section.well.pdfjs {
+  padding-bottom: 0;
+  //overflow: hidden; // Sonst verschiebt sich das Breadcrumb, wenn das PDF auf Seite 2 runtergescrollt wird. Logik?
+  margin-top: 0;
+  margin-bottom: 0;
+  position: relative;
+
+  #outerContainer {
+    margin-left: -19px;
+    margin-right: -19px;
+    width: auto;
+  }
+  
+  .kein-slash-davor {
+    &:before {
+        content: none;
+    }
+  }
+
+  .weitere-dokumente {
+    float: right;
+  }
+
+  .pdf-download-holder {
+    float: right;
+  }
+
+  .toolbar {
+    z-index: 999;
+  }
+
+  @media print {
+    height: auto !important;
+    overflow: visible;
+
+    #mainContainer {
+      height: auto !important;
+      width: auto;
+    }
+    
+    #viewerContextMenu {
+      display: none;
+    }
+
+    body[data-mozPrintCallback] & #outerContainer {
+      display: block;
+    }
+
+    .pdfViewer .page {
+      page-break-after: always;
+      page-break-inside: avoid;
+      overflow: hidden;
+    }
+  }
+}
+
+#pdf_rechtsvermerk {
+  position: absolute;
+  bottom: -22px;
+  left: 21px;
+  font-size: 11px;
+  color: gray;
+  body[data-mozPrintCallback] & {
+    display: none;
+  }
+  @media screen and (max-height: 620px) {
+    display: none;
+  }
+}

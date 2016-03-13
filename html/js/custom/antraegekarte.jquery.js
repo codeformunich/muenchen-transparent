@@ -251,7 +251,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             editer = null,
             circle = null;
 
-        function ben_show() {
+        function benachrichtigung_show() {
             if (shown) return;
             if ($info.length > 0) {
                 $info.addClass("half_visible");
@@ -263,7 +263,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             shown = true;
         }
 
-        function ben_hide() {
+        function benachrichtigung_hide() {
             if (!shown) return;
             if ($info.length > 0) {
                 $info.removeClass("half_visible_tmp1").addClass("half_visible_tmp2").removeClass("visible").addClass("half_visible");
@@ -283,15 +283,15 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             shown = false;
         }
 
-        function ben_onZoom() {
+        function benachrichtigung_onZoom() {
             if ($widget.map.getZoom() >= $widget.options["benachrichtigungen_widget_zoom"]) {
-                ben_show();
+                benachrichtigung_show();
             } else {
-                ben_hide();
+                benachrichtigung_hide();
             }
         }
 
-        function ben_onClick(e) {
+        function benachrichtigung_onClick(e) {
             if (editer !== null) return;
             if ($widget.map.getZoom() < $widget.options["benachrichtigungen_widget_zoom"]) return;
 
@@ -330,10 +330,10 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             if (typeof($widget.options["onSelect"]) == "function") $widget.options["onSelect"](e.latlng, 500, $widget.map.getZoom());
         }
 
-        $widget.map.on("zoomend", ben_onZoom);
-        $widget.map.on("click", ben_onClick);
+        $widget.map.on("zoomend", benachrichtigung_onZoom);
+        $widget.map.on("click", benachrichtigung_onClick);
 
-        ben_onZoom();
+        benachrichtigung_onZoom();
     },
 
     initBAsWidget: function () {

@@ -27,17 +27,17 @@ function index_datum_dokumente_load(node, url_ajax) {
 function index_geo_dokumente_load(url, lng, lat, radius) {
     var $holder = $("#stadtratsdokumente_holder"),
         topc = $("#main_navbar").height() * -1,
-        $ben_holder = $("#benachrichtigung_hinweis_text");
+        $benachrichtigung_hinweis = $("#benachrichtigung_hinweis_text");
 
-    $ben_holder.find(".nichts").hide();
-    $ben_holder.find(".infos").show();
-    $(".ben_add_geo").prop("disabled", false);
+    $benachrichtigung_hinweis.find(".nichts").hide();
+    $benachrichtigung_hinweis.find(".infos").show();
+    $(".benachrichtigung_add_geo").prop("disabled", false);
 
-    $ben_holder.find("input[name=geo_lng]").val(lng);
-    $ben_holder.find("input[name=geo_lat]").val(lat);
-    $ben_holder.find("input[name=geo_radius]").val(radius);
+    $benachrichtigung_hinweis.find("input[name=geo_lng]").val(lng);
+    $benachrichtigung_hinweis.find("input[name=geo_lat]").val(lat);
+    $benachrichtigung_hinweis.find("input[name=geo_radius]").val(radius);
 
-    $ben_holder.find(".radius_m").text(parseInt(radius));
+    $benachrichtigung_hinweis.find(".radius_m").text(parseInt(radius));
 
     if (url == "")
         return false;
@@ -59,8 +59,8 @@ function index_geo_dokumente_load(url, lng, lat, radius) {
         else done = true;
         $holder.html(data["html"]);
         $holder.removeClass("loading");
-        $ben_holder.find(".zentrum_ort").text(data["naechster_ort"]);
-        $ben_holder.find("input[name=krit_str]").val(data["krit_str"]);
+        $benachrichtigung_hinweis.find(".zentrum_ort").text(data["naechster_ort"]);
+        $benachrichtigung_hinweis.find("input[name=krit_str]").val(data["krit_str"]);
         $("#map").AntraegeKarte("setAntraegeData", data["geodata"], data["geodata_overflow"]);
     });
 

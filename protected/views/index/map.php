@@ -35,7 +35,7 @@
                 <input type="hidden" name="krit_str" value="">
 
                 <div>
-                    <button class="btn btn-primary ben_add_geo" disabled name="<?= AntiXSS::createToken("ben_add_geo") ?>" type="submit">Benachrichtigen!</button>
+                    <button class="btn btn-primary benachrichtigung_add_geo" disabled name="<?= AntiXSS::createToken("benachrichtigung_add_geo") ?>" type="submit">Benachrichtigen!</button>
                 </div>
             </form>
         </div>

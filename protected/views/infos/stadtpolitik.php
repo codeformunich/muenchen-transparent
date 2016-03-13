@@ -47,7 +47,7 @@ $this->load_mediaelement = true;
 
 <div class="row" id="listen_holder">
     <div class="col col-md-8">
-        <section class="start_berichte well std_fliesstext">
+        <section class="start_berichte well fliesstext">
             <?
             if ($this->binContentAdmin()) { ?>
                 <a href="#" style="display: inline; float: right;" id="text_edit_caller">
