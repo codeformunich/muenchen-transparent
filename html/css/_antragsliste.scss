@@ -1,15 +1,14 @@
 /*
   Hinweis: kein > benutzen, wg. CssToInlineStyles
 */
-
-
 .antragsliste2 {
   overflow: hidden;
   padding: 0;
   margin: 0;
 
   @media screen and (min-width: $screen-md) {
-    &.two_cols, .two_cols & {
+    &.two_cols,
+    .two_cols & {
       -moz-column-count: 2;
       -moz-column-gap: 40px;
       -webkit-column-count: 2;
@@ -21,10 +20,12 @@
 
   .panel-primary {
     border: solid 1px #4285f4;
+
     .panel-heading {
       background-color: #428bca;
     }
   }
+
   .panel-success {
     border: solid 1px #3c763d;
   }
@@ -34,28 +35,28 @@
     margin-left: 3px;
     margin-right: 3px;
     border-radius: 3px;
-
-    -webkit-column-break-inside:avoid;
-    -moz-column-break-inside:avoid;
-    -o-column-break-inside:avoid;
-    -ms-column-break-inside:avoid;
-    column-break-inside:avoid;
-    -webkit-break-inside:avoid;
-    -moz-break-inside:avoid;
-    break-inside:avoid;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    -o-column-break-inside: avoid;
+    -ms-column-break-inside: avoid;
+    column-break-inside: avoid;
+    -webkit-break-inside: avoid;
+    -moz-break-inside: avoid;
+    break-inside: avoid;
     page-break-inside: avoid;
-    overflow: hidden; /* Hack for Firefox to prevent preaking the element */
-
+    overflow: hidden;
+    /* Hack for Firefox to prevent preaking the element */
     .panel-heading {
       margin-left: -1px;
       margin-right: -1px;
       margin-top: -1px;
     }
+
     .panel-heading a {
-      &:link, &:visited {
+      &:link,
+      &:visited {
         color: white;
       }
-
       display: block;
       max-height: 77px;
       overflow: hidden;
@@ -103,6 +104,7 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
+
     li {
       margin-top: 5px;
       margin-bottom: 5px;
@@ -131,13 +133,13 @@ ul.antragsliste {
     column-count: 2;
     column-gap: 40px;
   }
+
   .loading & {
     opacity: 0.5;
   }
 
   li.listitem {
-    margin: 0;
-    margin-top: 6px;
+    margin: 6px 0 0;
     border: solid 1px #ccc;
     border-radius: 5px;
     background-color: #eee;
@@ -145,7 +147,6 @@ ul.antragsliste {
     break-inside: avoid-column;
     display: inline-block;
     width: 100%;
-
 
     .metainformationen_antraege {
       float: right;
@@ -155,7 +156,8 @@ ul.antragsliste {
       margin-top: 3px;
       font-weight: bold;
 
-      .partei, .ba {
+      .partei,
+      .ba {
         border-bottom: dotted 1px gray;
         font-weight: normal;
       }
@@ -164,6 +166,7 @@ ul.antragsliste {
     .antraglink {
       position: relative;
       overflow: hidden;
+
       a {
         padding: 1px;
         font-weight: bold;
@@ -179,6 +182,7 @@ ul.antragsliste {
           width: 100px;
           height: 10px;
         }
+
         &:after {
           content: ' ';
           position: absolute;
@@ -186,16 +190,22 @@ ul.antragsliste {
           right: 99px;
           height: 21px;
           width: 50px;
-
           /* IE9 SVG, needs conditional override of 'filter' to 'none' */
-          background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VlZWVlZSIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjcyJSIgc3RvcC1jb2xvcj0iI2VlZWVlZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZWVlZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-          background: -moz-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%); /* FF3.6+ */
-          background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(66, 139, 202, 0)), color-stop(72%, rgba(66, 139, 202, 1)), color-stop(100%, rgba(66, 139, 202, 1))); /* Chrome,Safari4+ */
-          background: -webkit-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%); /* Chrome10+,Safari5.1+ */
-          background: -o-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%); /* Opera 11.10+ */
-          background: -ms-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%); /* IE10+ */
-          background: linear-gradient(to right, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%); /* W3C */
-          filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00eeeeee', endColorstr='#eeeeee', GradientType=1); /* IE6-8 */
+          background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VlZWVlZSIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjcyJSIgc3RvcC1jb2xvcj0iI2VlZWVlZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZWVlZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+");
+          background: -moz-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%);
+          /* FF3.6+ */
+          background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(66, 139, 202, 0)), color-stop(72%, rgba(66, 139, 202, 1)), color-stop(100%, rgba(66, 139, 202, 1)));
+          /* Chrome,Safari4+ */
+          background: -webkit-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%);
+          /* Chrome10+,Safari5.1+ */
+          background: -o-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%);
+          /* Opera 11.10+ */
+          background: -ms-linear-gradient(left, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%);
+          /* IE10+ */
+          background: linear-gradient(to right, rgba(66, 139, 202, 0) 0%, rgba(66, 139, 202, 1) 72%, rgba(66, 139, 202, 1) 100%);
+          /* W3C */
+          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#00eeeeee', endColorstr='#eeeeee', GradientType=1);
+          /* IE6-8 */
         }
       }
     }
@@ -228,17 +238,18 @@ ul.dokumente {
     margin: 1px;
     padding: 1px;
     font-weight: bold;
+
     &:before {
       content: '| ';
       color: #428BCA;
     }
+
     &:first-child:before {
       content: '';
       font-weight: normal;
     }
   }
 }
-
 
 .suchergebnisse {
   .suchkrit_beschreibung {
@@ -249,15 +260,18 @@ ul.dokumente {
     a.overflow-fadeout-white {
       max-height: 66px;
     }
+
     .border {
       display: block;
       margin: 10px auto;
       border-top: 1px solid rgba(0, 0, 0, .1);
     }
+
     .dokument {
       display: inline-block;
       margin-bottom: 7px;
     }
+
     .row-content {
       .least-content {
         font-size: 12px;
@@ -266,6 +280,7 @@ ul.dokumente {
         padding-left: 20px;
       }
     }
+
     .gefunden_ueber {
       color: gray;
       font-size: 12px;
@@ -274,5 +289,5 @@ ul.dokumente {
 }
 
 .metainformationen_verbundene {
-    color: gray;
+  color: gray;
 }

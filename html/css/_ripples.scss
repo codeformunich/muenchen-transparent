@@ -1,6 +1,7 @@
 .withripple {
   position: relative;
 }
+
 .ripple-wrapper {
   position: absolute;
   top: 0;
@@ -12,6 +13,7 @@
   border-radius: inherit;
   pointer-events: none;
 }
+
 .ripple {
   position: absolute;
   width: 20px;
@@ -21,19 +23,21 @@
   border-radius: 100%;
   background-color: rgba(0, 0, 0, 0.05);
   -webkit-transform: scale(1);
-      -ms-transform: scale(1);
-          transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
   -webkit-transform-origin: 50%;
-      -ms-transform-origin: 50%;
-          transform-origin: 50%;
+  -ms-transform-origin: 50%;
+  transform-origin: 50%;
   opacity: 0;
   pointer-events: none;
 }
+
 .ripple.ripple-on {
   transition: opacity 0.15s ease-in 0s, -webkit-transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
   transition: opacity 0.15s ease-in 0s, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
   opacity: 0.1;
 }
+
 .ripple.ripple-out {
   transition: opacity 0.1s linear 0s !important;
   opacity: 0;
