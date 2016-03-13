@@ -9,9 +9,9 @@ class StadtratsvorlageParser extends RISParser
     {
         if (SITE_CALL_MODE != "cron") echo "- Beschlussvorlage $vorlage_id\n";
 
-        $html_details    = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $vorlage_id);
-        $html_dokumente  = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_dokumente.jsp?risid=" . $vorlage_id);
-        $html_ergebnisse = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=" . $vorlage_id);
+        $html_details    = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $vorlage_id);
+        $html_dokumente  = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_dokumente.jsp?risid=" . $vorlage_id);
+        $html_ergebnisse = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=" . $vorlage_id);
 
         $daten                         = new Antrag();
         $daten->id                     = $vorlage_id;
@@ -29,7 +29,7 @@ class StadtratsvorlageParser extends RISParser
         $ergebnisse = [];
 
         if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
-            $html_kurzinfo = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
+            $html_kurzinfo = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
             $txt           = explode("introtext_border\">", $html_kurzinfo);
             if (count($txt) < 2) {
                 RISTools::send_email(Yii::app()->params['adminEmail'], "Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo, null, "system");
@@ -271,7 +271,7 @@ class StadtratsvorlageParser extends RISParser
     public function parseSeite($seite, $first)
     {
         if (SITE_CALL_MODE != "cron") echo "Seite: $seite\n";
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
+        $text = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
         $txt  = explode("<!-- ergebnisreihen -->", $text);
         if (count($txt) == 1) return [];
 

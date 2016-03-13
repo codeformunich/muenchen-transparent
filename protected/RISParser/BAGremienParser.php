@@ -11,7 +11,7 @@ class BAGremienParser extends RISParser
         $gremien_id     = IntVal($gremien_id);
         if (SITE_CALL_MODE != "cron") echo "- Gremium $gremien_id\n";
 
-        $html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_gremien_details.jsp?Id=" . $gremien_id . "&Wahlperiode=" . $wahlperiode_id);
+        $html_details = RISTools::load_file(RIS_BA_BASE_URL . "ba_gremien_details.jsp?Id=" . $gremien_id . "&Wahlperiode=" . $wahlperiode_id);
 
         $daten                         = new Gremium();
         $daten->id                     = $gremien_id;
@@ -152,7 +152,7 @@ class BAGremienParser extends RISParser
     public function parseSeite($seite, $first)
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Gremien Seite $seite\n";
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_gremien.jsp?selWahlperiode=" . static::$WAHLPERIODE_ID . "&Trf=n&Start=$seite");
+        $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_gremien.jsp?selWahlperiode=" . static::$WAHLPERIODE_ID . "&Trf=n&Start=$seite");
 
         $txt = explode("<!-- tabellenkopf -->", $text);
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
@@ -183,4 +183,3 @@ class BAGremienParser extends RISParser
 
     }
 }
-

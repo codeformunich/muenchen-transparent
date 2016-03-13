@@ -10,10 +10,10 @@ class StadtratTerminParser extends RISParser
         $termin_id = IntVal($termin_id);
         if (SITE_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
-        $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=$termin_id");
-        $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_dokumente.jsp?risid=$termin_id");
-        $html_to        = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_to.jsp?risid=$termin_id");
-        $html_to_geheim = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_nto.jsp?risid=$termin_id");
+        $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=$termin_id");
+        $html_dokumente = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_dokumente.jsp?risid=$termin_id");
+        $html_to        = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_to.jsp?risid=$termin_id");
+        $html_to_geheim = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_nto.jsp?risid=$termin_id");
 
         $daten                         = new Termin();
         $daten->typ                    = Termin::$TYP_AUTO;
@@ -191,7 +191,7 @@ class StadtratTerminParser extends RISParser
             $top->beschluss_text   = "";
 
             if (!is_null($vorlage_id)) {
-                $html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
+                $html_vorlage_ergebnis = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
                 preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
                 if (isset($matches3["beschluss"]) && count($matches3["beschluss"]) > 0) $beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
                 else {
@@ -388,7 +388,7 @@ class StadtratTerminParser extends RISParser
     public function parseSeite($seite, $first, $alle = false)
     {
         $add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
+        $text = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
 
         $txt = explode("<!-- ergebnistabellen-bereich -->", $text);
         if ($seite > 4790 && count($txt) == 1) return;

@@ -13,8 +13,8 @@ class StadtratsantragParser extends RISParser
 
         if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
 
-        $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id);
-        $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_dokumente.jsp?risid=" . $antrag_id);
+        $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $antrag_id);
+        $html_dokumente = RISTools::load_file(RIS_BASE_URL . "ris_antrag_dokumente.jsp?risid=" . $antrag_id);
         //$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         if (trim($html_details) == "" || trim($html_dokumente) == "") return;
@@ -184,7 +184,7 @@ class StadtratsantragParser extends RISParser
 
     public function parseSeite($seite, $first)
     {
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_trefferliste.jsp?txtPosition=$seite");
+        $text = RISTools::load_file(RIS_BASE_URL . "ris_antrag_trefferliste.jsp?txtPosition=$seite");
         $txt  = explode("<!-- ergebnisreihen -->", $text);
         if (!isset($txt[1])) {
             if (SITE_CALL_MODE != "cron") echo "- nichts\n";

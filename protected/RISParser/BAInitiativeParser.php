@@ -15,8 +15,8 @@ class BAInitiativeParser extends RISParser
                 return;
         }
 
-        $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=$antrag_id");
-        $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_dokumente.jsp?Id=$antrag_id");
+        $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=$antrag_id");
+        $html_dokumente = RISTools::load_file(RIS_BA_BASE_URL . "ba_initiativen_dokumente.jsp?Id=$antrag_id");
         //$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         $daten                         = new Antrag();
@@ -171,7 +171,7 @@ class BAInitiativeParser extends RISParser
     public function parseSeite($seite, $first)
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Initiativen Seite $seite\n";
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen.jsp?Trf=n&Start=$seite");
+        $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_initiativen.jsp?Trf=n&Start=$seite");
 
         $txt = explode("<!-- tabellenkopf -->", $text);
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);

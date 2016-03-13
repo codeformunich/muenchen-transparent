@@ -16,8 +16,8 @@ class BAAntragParser extends RISParser
             return;
         }
 
-        $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
-        $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
+        $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
+        $html_dokumente = RISTools::load_file(RIS_BA_BASE_URL . "ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
         //$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         $daten                         = new Antrag();
@@ -194,7 +194,7 @@ class BAAntragParser extends RISParser
     public function parseSeite($seite, $first)
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_antraege.jsp?Start=$seite");
+        $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_antraege.jsp?Start=$seite");
 
         $txt = explode("<!-- tabellenkopf -->", $text);
         if (!isset($txt[1])) return [];

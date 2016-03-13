@@ -16,7 +16,7 @@ class StadtraetInnenParser extends RISParser
 
     public function parse_antraege($stadtraetIn_id, $seite)
     {
-        $antr_text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_trefferliste.jsp?nav=2&selWahlperiode=0&steller=$stadtraetIn_id&txtPosition=" . ($seite * 10));
+        $antr_text = RISTools::load_file(RIS_BASE_URL . "ris_antrag_trefferliste.jsp?nav=2&selWahlperiode=0&steller=$stadtraetIn_id&txtPosition=" . ($seite * 10));
 
         preg_match_all("/ris_antrag_detail\.jsp\?risid=(?<antrag_id>[0-9]+)[\"'& ]/siU", $antr_text, $matches);
         foreach ($matches["antrag_id"] as $antrag_id) try {
@@ -32,7 +32,7 @@ class StadtraetInnenParser extends RISParser
 
         if (SITE_CALL_MODE != "cron") echo "- StadträtIn $stadtraetIn_id\n";
 
-        $html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
+        $html_details = RISTools::load_file(RIS_BASE_URL . "ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
 
         $daten             = new StadtraetIn();
         $daten->id         = $stadtraetIn_id;
@@ -160,7 +160,7 @@ class StadtraetInnenParser extends RISParser
         }
 
         if ($this->antraege_alle) {
-            $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_trefferliste.jsp?nav=2&selWahlperiode=0&steller=$stadtraetIn_id&txtPosition=0");
+            $text = RISTools::load_file(RIS_BASE_URL . "ris_antrag_trefferliste.jsp?nav=2&selWahlperiode=0&steller=$stadtraetIn_id&txtPosition=0");
             if (preg_match("/Suchergebnisse:.* ([0-9]+)<\/p>/siU", $text, $matches)) {
                 $seiten = Ceil($matches[1] / 10);
                 for ($i = 0; $i < $seiten; $i++) $this->parse_antraege($stadtraetIn_id, $i);
@@ -173,7 +173,7 @@ class StadtraetInnenParser extends RISParser
 
     public function parseSeite($seite, $first)
     {
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
+        $text = RISTools::load_file(RIS_BASE_URL . "ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
         $txt  = explode("<!-- tabellenkopf -->", $text);
         if (!isset($txt[1])) {
             if (SITE_CALL_MODE != "cron") echo "- leer\n";

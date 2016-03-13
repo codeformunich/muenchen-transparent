@@ -108,7 +108,7 @@ class Gremium extends CActiveRecord implements IRISItem
         $ris_id = IntVal($ris_id);
         echo "- Gremium $ris_id\n";
 
-        $html_details = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_gremien_detail.jsp?risid=" . $ris_id);
+        $html_details = RISTools::load_file(RIS_BASE_URL . "ris_gremien_detail.jsp?risid=" . $ris_id);
 
         $daten                         = new Gremium();
         $daten->id                     = $ris_id;

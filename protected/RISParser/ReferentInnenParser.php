@@ -15,7 +15,7 @@ class ReferentInnenParser extends RISParser
 
     public function parseAlle()
     {
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_referenten_trefferliste.jsp?nav=1");
+        $text = RISTools::load_file(RIS_BASE_URL . "ris_referenten_trefferliste.jsp?nav=1");
         $txt  = explode("<!-- ergebnisreihen -->", $text);
         $txt  = explode("<div class=\"ergebnisfuss\">", $txt[1]);
 

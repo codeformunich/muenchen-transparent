@@ -22,6 +22,8 @@ define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
 
+define("RIS_BASE_URL", "http://www.ris-muenchen.de/RII/RII/");
+define("RIS_BA_BASE_URL", "http://www.ris-muenchen.de/RII/BA-RII/");
 
 define("SITE_BASE_URL", "https://www.muenchen-transparent.de");
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");

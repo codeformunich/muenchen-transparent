@@ -35,9 +35,9 @@ class BATerminParser extends RISParser
         $termin_id = IntVal($termin_id);
         if (SITE_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
-        $html_details   = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=$termin_id");
-        $html_dokumente = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=$termin_id");
-        $html_to        = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
+        $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=$termin_id");
+        $html_dokumente = RISTools::load_file(RIS_BA_BASE_URL . "ba_sitzungen_dokumente.jsp?Id=$termin_id");
+        $html_to        = RISTools::load_file(RIS_BA_BASE_URL . "ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
 
         $daten                         = new Termin();
         $daten->typ                    = Termin::$TYP_AUTO;
@@ -263,7 +263,7 @@ class BATerminParser extends RISParser
 
             /*
             if (!is_null($vorlage_id)) {
-                $html_vorlage_ergebnis = RISTools::load_file("http://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
+                $html_vorlage_ergebnis = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
                 preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
                 $beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
                 if ($tagesordnungspunkt->beschluss_text != $beschluss) {
@@ -340,7 +340,7 @@ class BATerminParser extends RISParser
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Termin Seite $seite\n";
         $add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
-        $text = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen.jsp?Start=$seite" . $add);
+        $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_sitzungen.jsp?Start=$seite" . $add);
         $txt  = explode("<table class=\"ergebnistab\" ", $text);
         if (count($txt) == 1) return;
         $txt  = explode("<!-- tabellenfuss", $txt[1]);

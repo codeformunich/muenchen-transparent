@@ -11,7 +11,7 @@ class BAMitgliederParser extends RISParser
         /** @var Bezirksausschuss $ba */
         $ba = Bezirksausschuss::model()->findByPk($ba_nr);
 
-        $ba_details = RISTools::load_file("http://www.ris-muenchen.de/RII/BA-RII/ba_bezirksausschuesse_details.jsp?Id=" . $ba->ris_id);
+        $ba_details = RISTools::load_file(RIS_BA_BASE_URL . "ba_bezirksausschuesse_details.jsp?Id=" . $ba->ris_id);
 
         preg_match("/Wahlperiode.*detail_div\">(?<wahlperiode>[^<]*)</siuU", $ba_details, $matches);
         $wahlperiode = $matches["wahlperiode"];
