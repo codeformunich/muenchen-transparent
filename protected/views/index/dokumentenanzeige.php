@@ -42,7 +42,7 @@ if ($risitem) {
         
         <? // Rechter Bereich ?>
         
-        <li class="pdf-download-holder <? if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
+        <li class="pdf-download-button <? if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLink()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
         <? if ($weitere) { ?>
             <li class="dropdown weitere-dokumente kein-slash-davor">
                 
