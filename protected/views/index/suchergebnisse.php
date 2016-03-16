@@ -59,7 +59,7 @@ $this->pageTitle = "Suchergebnisse";
                     lng: <?=$geokrit["lng"]?>,
                     size: 14,
                     onInit: function ($map) {
-                        $map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
+                        $map.setAntraegeData(<?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
                     }
                 });
             });

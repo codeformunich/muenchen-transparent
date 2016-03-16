@@ -53,7 +53,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                     }
                 },
                 onInit: function ($map) {
-                    $map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
+                    $map.setAntraegeData(<?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
                 }
             });
         });

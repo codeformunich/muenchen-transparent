@@ -165,7 +165,7 @@ function zeile_anzeigen($feld, $name, $callback)
                     var $map = $("#map").AntraegeKarte({
                         outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
                         onInit: function ($map) {
-                            $map.AntraegeKarte("setAntraegeData", geodata, null);
+                            $map.setAntraegeData(geodata, null);
                         }
                     });
                 });
