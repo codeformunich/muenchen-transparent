@@ -37,6 +37,7 @@ var paths = {
         "html/js/custom/*.js",
     ],
     leaflet_js: [
+        "html/js/build/ba-grenzen-geojson.js",
         "html/bower/leaflet/dist/leaflet.js",
         "html/bower/Leaflet.draw/dist/leaflet.draw.js",
         "html/bower/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
@@ -44,6 +45,7 @@ var paths = {
         "html/js/Leaflet.Control.Geocoder/Control.Geocoder.js",
         "html/js/leaflet.spiderfy.js",
         "html/js/leaflet.textmarkers.js",
+        "html/js/antraegekarte.jquery.js",
     ],
     pdfjs_js: [
         "html/pdfjs/web/compatibility.js",
@@ -56,7 +58,7 @@ var paths = {
     ],
 }
 
-gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'ba-grenzen-geojson', 'pdfjs']);
+gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'pdfjs']);
 
 gulp.task('watch', function () {
     use_uglify = false; // much better performance
@@ -83,7 +85,7 @@ gulp.task('std.js', function () {
         .pipe(gulp.dest('html/js/build/'));
 });
 
-gulp.task('leaflet.js', function () {
+gulp.task('leaflet.js', ['ba-grenzen-geojson'], function () {
     return gulp.src(paths.leaflet_js)
         .pipe(concat('leaflet.js'))
         .pipe(gulpif(use_uglify, uglify()))
@@ -105,16 +107,16 @@ gulp.task('ba-grenzen-geojson', function () {
     return exec('protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js');
 });
 
-gulp.task('pdfjs', ['pdfjs-js', 'pdfjs-css'])
+gulp.task('pdfjs', ['pdfjs.js', 'pdfjs.css'])
 
-gulp.task('pdfjs-js', function () {
+gulp.task('pdfjs.js', function () {
     return gulp.src(paths.pdfjs_js)
         .pipe(concat('build.js'))
         .pipe(gulpif(use_uglify, uglify()))
         .pipe(gulp.dest('html/pdfjs/web/'));
 });
 
-gulp.task('pdfjs-css', function () {
+gulp.task('pdfjs.css', function () {
     return gulp.src(paths.pdfjs_css)
         .pipe(concat('build.css'))
         .pipe(sourcemaps.init())

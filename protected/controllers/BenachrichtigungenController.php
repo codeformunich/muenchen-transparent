@@ -11,8 +11,7 @@ class BenachrichtigungenController extends RISBaseController
         /** @var BenutzerIn $ich */
         $ich = $this->aktuelleBenutzerIn();
 
-        $this->load_leaflet_css      = true;
-        $this->load_leaflet_draw_css = true;
+        $this->load_leaflet = true;
 
         if (AntiXSS::isTokenSet("einstellungen_speichern")) {
             $einstellungen = $ich->getEinstellungen();

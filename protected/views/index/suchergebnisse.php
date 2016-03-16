@@ -58,7 +58,7 @@ $this->pageTitle = "Suchergebnisse";
                     lat: <?=$geokrit["lat"]?>,
                     lng: <?=$geokrit["lng"]?>,
                     size: 14,
-                    onInit: function () {
+                    onInit: function ($map) {
                         $map.AntraegeKarte("setAntraegeData", <?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
                     }
                 });

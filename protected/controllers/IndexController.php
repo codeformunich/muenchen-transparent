@@ -435,8 +435,6 @@ class IndexController extends RISBaseController
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
         }
 
-        $this->load_leaflet_css = true;
-
         if ($krits->getKritsCount() > 0) {
 
             $benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
@@ -595,8 +593,7 @@ class IndexController extends RISBaseController
     {
         $this->top_menu = "ba";
 
-        $this->load_leaflet_css      = true;
-        $this->load_leaflet_draw_css = true;
+        $this->load_leaflet = true;
 
         $tage_zukunft       = 60;
         $tage_vergangenheit = 60;
@@ -730,9 +727,7 @@ class IndexController extends RISBaseController
         $this->top_menu = "stadtrat";
         $this->performLoginActions();
 
-        $this->load_leaflet_css      = true;
-        $this->load_leaflet_draw_css = true;
-
+        $this->load_leaflet = true;
 
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
             $ts = RISTools::date_iso2timestamp($datum_max);

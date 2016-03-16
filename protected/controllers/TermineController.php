@@ -117,7 +117,6 @@ class TermineController extends RISBaseController
         }
 
         if (count($termin->tagesordnungspunkte) > 0) {
-            $this->load_leaflet_css = true;
             $to_pdf                 = null;
             $to_db                  = $termin->tagesordnungspunkte;
         } else {

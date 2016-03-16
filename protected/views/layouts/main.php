@@ -39,14 +39,15 @@
         if (strpos($this->pageTitle, "Transparent") === false) echo " (" . CHtml::encode(Yii::app()->params['projectTitle']) . ")";
         ?></title>
 
+    <!-- css -->
 
     <link rel="stylesheet" href="/css/build/website.css">
 
     <?
     if ($this->load_mediaelement)     echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
-    if ($this->load_leaflet_draw_css) echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
     if ($this->load_calendar)         echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
     if ($this->load_selectize_js)     echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
+    if ($this->load_leaflet)          echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
 
     if ($this->load_pdf_js) { ?>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -58,17 +59,26 @@
         echo '<style>' . $this->inline_css . '</style>';
     } ?>
 
+    <!-- javascript -->
+
     <script src="/bower/jquery/dist/jquery.min.js"></script>
+    <script src="/js/build/std.js"></script>
+
+    <?
+    if ($this->load_mediaelement) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
+    if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
+    if ($this->load_shariff)      echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
+    ?>
 
     <? if ($this->load_pdf_js) { ?>
         <link rel="preload" type="application/l10n" href="/pdfjs/web/locale/locale.properties"/>
         <script src="/pdfjs/web/build.js" defer></script>
     <? }
-    if ($this->load_mediaelement) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
-    if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
-    if ($this->load_shariff) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
-    ?>
-    <script src="/js/build/std.js" defer></script>
+    
+    if ($this->load_leaflet) { ?>
+        <script src="/js/build/leaflet.js"></script>
+    <? } ?>
+
 </head>
 
 <body>
