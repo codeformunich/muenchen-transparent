@@ -1,25 +1,30 @@
+---
 engines:
-  duplication:
-    enabled: true
-  eslint:
-    enabled: true
   scss-lint:
     enabled: true
-  fixme:
+  duplication:
     enabled: true
-  phpcodesniffer:
+    config:
+      languages:
+      - javascript
+      - php
+  fixme:
     enabled: true
   phpmd:
     enabled: true
+    config:
+      file_extensions: "php"
+      rulesets: "cleancode,codesize,design,naming,unusedcode"
+
 ratings:
   paths:
-  - html/**
-  - protected/**
+  - "html/css/*.scss"
+  - "protected/**.php"
+
 exclude_paths:
-- html/css/material/**
-- html/js/Leaflet.Control.Geocoder/**
-- html/js/material/**
-- html/js/selectize.js-0.11.2/**
-- html/pdfjs/**
-- docs/**
-- tests/** # TODO Nur automatisch generierte Dateien ausschließen
+- config/
+- node_modules/
+- tests/
+- vendor/
+- html/bower/
+- html/css/build/
