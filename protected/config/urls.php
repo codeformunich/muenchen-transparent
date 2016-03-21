@@ -30,13 +30,14 @@ $GLOBALS["RIS_URL_RULES"] = [
     SITE_BASE_URL . '/themen/'                                            => 'themen/index',
     SITE_BASE_URL . '/infos/stadtrechtDokument/<id:\w+>'                  => 'infos/stadtrechtDokument',
     SITE_BASE_URL . '/export/fraktionantraege/<fraktion_id:\w+>'          => 'export/fraktionantraege',
-
+    
+    // Oparl
     OPARL_10_ROOT                                                         => 'oparl10/system',
     OPARL_10_ROOT . '/body/<id:\d+>'                                      => 'oparl10/body',
-    OPARL_10_ROOT . '/body'                                               => 'oparl10/bodyList',
     OPARL_10_ROOT . '/body/<body:\d+>/<typ:\w+>/<id:\d+>'                 => 'oparl10/object',
-    OPARL_10_ROOT . '/body/<body:\d+>/<typ:\w+>'                          => 'oparl10/pagination',
-
+    OPARL_10_ROOT . '/body/<body:\d+>/<action:\w+>'                       => 'oparl10/<action>',
+    OPARL_10_ROOT . '/<action:\w+>'                                       => 'oparl10/<action>',
+    
     SITE_BASE_URL . '/<action:\w+>'                                       => 'index/<action>',
     SITE_BASE_URL . '/<controller:\w+>/<id:\d+>'                          => '<controller>/anzeigen',
     SITE_BASE_URL . '/<controller:\w+>/<action:\w+>/<id:\d+>'             => '<controller>/<action>',
