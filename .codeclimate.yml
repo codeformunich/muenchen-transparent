@@ -14,7 +14,7 @@ engines:
     enabled: true
     config:
       file_extensions: "php"
-      rulesets: "cleancode,codesize,design,naming,unusedcode"
+      rulesets: "codesize,design,unusedcode,docs/phpmd-ruleset.xml"
 
 ratings:
   paths:
