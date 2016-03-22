@@ -1,12 +1,12 @@
 {
   "name": "München Transparent",
   "dependencies": {
-    "list.js": "~1.1",
+    "list.js": "~1.2",
     "isotope": "~2.2",
     "fullcalendar": "~2.4",
     "leaflet.locatecontrol": "~0.45",
     "leaflet.draw": "~0.2.4",
-    "mediaelement": "~2.18",
+    "mediaelement": "~2.20",
     "shariff": "~1.21",
     "typeahead.js": "~0.11",
     "bootstrap-sass": "~3.3.6",

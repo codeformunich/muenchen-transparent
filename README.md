@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/codeformunich/Muenchen-Transparent.svg?branch=master)](https://travis-ci.org/codeformunich/Muenchen-Transparent)
 [![Code Climate](https://codeclimate.com/github/codeformunich/Muenchen-Transparent/badges/gpa.svg)](https://codeclimate.com/github/codeformunich/Muenchen-Transparent)
-[![Dependencies](https://david-dm.org/codeformunich/Muenchen-Transparent.svg)](https://travis-ci.org/codeformunich/Muenchen-Transparent)
+[![Dependencies](https://gemnasium.com/codeformunich/Muenchen-Transparent.svg)](https://gemnasium.com/codeformunich/Muenchen-Transparent)
 
 ## Entwicklungs-Setup
 
