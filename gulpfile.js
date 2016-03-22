@@ -60,7 +60,7 @@ var paths = {
 
 gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'pdfjs']);
 
-gulp.task('watch', function () {
+gulp.task('watch', ['default'], function () {
     use_uglify = false; // much better performance
     gulp.watch(paths.source_js, ['std.js']);
     gulp.watch(paths.source_styles, ['sass']);

@@ -510,7 +510,7 @@ class Dokument extends CActiveRecord implements IRISItem
     public function solrMoreLikeThis($limit = 10)
     {
         if ($GLOBALS["SOLR_CONFIG"] === null) return [];
-        $solr   = RISSolrHelper::getSolrClient("ris");
+        $solr   = RISSolrHelper::getSolrClient();
         $select = $solr->createSelect();
         $select->setQuery("id:\"Document:" . $this->id . "\"");
         $select->getMoreLikeThis()->setFields("text")->setMinimumDocumentFrequency(1)->setMinimumTermFrequency(1)->setCount($limit);
@@ -693,7 +693,7 @@ class Dokument extends CActiveRecord implements IRISItem
 
         $tries = 3;
         while ($tries > 0) try {
-            $solr   = RISSolrHelper::getSolrClient("ris");
+            $solr   = RISSolrHelper::getSolrClient();
             $update = $solr->createUpdate();
 
             if ($this->deleted == 1) {

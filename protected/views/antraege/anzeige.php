@@ -229,7 +229,12 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 zeile_anzeigen($docs, "Dokumente:", "dokumente",  function ($dokument) {
                     /** @var Dokument $dok */
                     echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
-                    ?> <a class="fontello-download antrag-herunterladen" href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf" title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>"></a> <?
+                    ?>
+                    <a class="fontello-download antrag-herunterladen"
+                       href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" 
+                       download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf"
+                       title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>">
+                    </a> <?
                 });
                 $angezeigte_dokumente = [];
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;

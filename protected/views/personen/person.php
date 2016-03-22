@@ -98,7 +98,7 @@ $this->html_itemprop = "http://schema.org/Person";
                 } else {
                     $suche = new RISSucheKrits();
                     $suche->addVolltextsucheKrit("\"" . $person->getName() . "\"");
-                    $solr   = RISSolrHelper::getSolrClient("ris");
+                    $solr   = RISSolrHelper::getSolrClient();
                     $select = $solr->createSelect();
                     $suche->addKritsToSolr($select);
                     $select->setRows(50);
@@ -111,32 +111,44 @@ $this->html_itemprop = "http://schema.org/Person";
                     $hl->setSimplePostfix('</b>');
 
                     /** @var \Solarium\QueryType\Select\Result\Result $ergebnisse */
-                    $ergebnisse = $solr->select($select);
-                    $dokumente  = $ergebnisse->getDocuments();
+                    $ergebnisse     = $solr->select($select);
+                    $solr_dokumente = $ergebnisse->getDocuments();
 
-                    if (count($dokumente) > 0) {
+                    if (count($solr_dokumente) > 0) {
                         echo '<tr><th>Namentlich erwähnt in:</th><td><ul>';
                         $highlighting = $ergebnisse->getHighlighting();
-                        foreach ($dokumente as $dokument) {
-                            $dok = Dokument::getDocumentBySolrId($dokument->id, true);
-                            if (!$dok) {
-                                if ($this->binContentAdmin()) {
-                                    echo "<li>Dokument nicht gefunden: " . $dokument->id . "</li>";
-                                }
-                            } elseif (!$dok->getRISItem()) {
-                                if ($this->binContentAdmin()) {
-                                    echo "<li>Dokument-Zuordnung nicht gefunden: " . $dokument->typ . " / " . $dokument->id . "</li>";
-                                }
-                            } else {
-                                $risitem = $dok->getRISItem();
-                                if (!$risitem) continue;
-
-                                $dokurl = $dok->getLinkZumDokument();
-                                echo '<li style="margin-bottom: 10px;">';
-                                echo CHtml::link($risitem->getName(true), $risitem->getLink()) . '<br>';
-                                echo '<a href="' . CHtml::encode($dokurl) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dok->name) . '</a>';
-                                echo '</li>';
+                        foreach ($solr_dokumente as $solr_dokument) {
+                            $dokument = Dokument::getDocumentBySolrId($solr_dokument->id, true);
+                            
+                            // Fehlerfälle abfangen
+                            if (!$dokument) {
+                                if ($this->binContentAdmin())
+                                    echo "<li>Dokument nicht gefunden: " . $solr_dokument->id . "</li>";
+                                continue;
+                            } elseif (!$dokument->getRISItem()) {
+                                if ($this->binContentAdmin())
+                                    echo "<li>Dokument-Zuordnung nicht gefunden: " . $solr_dokument->typ . " / " . $solr_dokument->id . "</li>";
+                                continue;
                             }
+                            
+                            $risitem = $dokument->getRISItem();
+                            if (!$risitem) continue;
+                            
+                            /**
+                             * Design eines Eintrags:
+                             *  Oben: Der Titel des Antrags/Termins/etc.
+                             *  Unten: [Download-Button] Name des Dokuments
+                             */
+                            ?>
+                            <li style="margin-bottom: 10px;">
+                                <?= CHtml::link($risitem->getName(true), $risitem->getLink()) ?> <br>
+                                <a class="fontello-download antrag-herunterladen"
+                                   href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" 
+                                   download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName(true)) ?>.pdf"
+                                   title="Herunterladen: <?= CHtml::encode($dokument->getName(true)) ?>">
+                                </a>
+                                <?= CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument()) ?>
+                            </li> <?
                         }
                         echo '</ul></td></tr>';
                     }

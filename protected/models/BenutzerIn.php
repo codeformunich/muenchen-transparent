@@ -338,7 +338,7 @@ class BenutzerIn extends CActiveRecord
      */
     public function queryBenachrichtigungen($document_ids, $benachrichtigung)
     {
-        $solr = RISSolrHelper::getSolrClient("ris");
+        $solr = RISSolrHelper::getSolrClient();
 
         $select = $solr->createSelect();
 

@@ -179,7 +179,7 @@ class BenachrichtigungenController extends RISBaseController
         $bens        = $benutzerIn->getBenachrichtigungen();
         foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getTitle()) . "<br>";
 
-        $solr       = RISSolrHelper::getSolrClient("ris");
+        $solr       = RISSolrHelper::getSolrClient();
         $select     = $this->getAlleSuchergebnisse($solr, $benutzerIn);
         $ergebnisse = $solr->select($select);
         $data       = RISSolrHelper::ergebnisse2FeedData($ergebnisse);
@@ -200,7 +200,7 @@ class BenachrichtigungenController extends RISBaseController
         /** @var BenutzerIn $ich */
         $ich = $this->aktuelleBenutzerIn();
 
-        $solr   = RISSolrHelper::getSolrClient("ris");
+        $solr   = RISSolrHelper::getSolrClient();
         $select = $this->getAlleSuchergebnisse($solr, $ich);
 
         $facetSet = $select->getFacetSet();

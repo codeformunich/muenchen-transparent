@@ -85,7 +85,7 @@ class IndexController extends RISBaseController
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
             $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getTitle();
 
-            $solr   = RISSolrHelper::getSolrClient("ris");
+            $solr   = RISSolrHelper::getSolrClient();
             $select = $solr->createSelect();
 
             $krits->addKritsToSolr($select);
@@ -338,7 +338,7 @@ class IndexController extends RISBaseController
         $krits = new RISSucheKrits();
         $krits->addGeoKrit($lng, $lat, $radius);
 
-        $solr   = RISSolrHelper::getSolrClient("ris");
+        $solr   = RISSolrHelper::getSolrClient();
         $select = $solr->createSelect();
 
         $krits->addKritsToSolr($select);
@@ -440,7 +440,7 @@ class IndexController extends RISBaseController
             $benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
 
 
-            $solr   = RISSolrHelper::getSolrClient("ris");
+            $solr   = RISSolrHelper::getSolrClient();
             $select = $solr->createSelect();
 
             $krits->addKritsToSolr($select);
