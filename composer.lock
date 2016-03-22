@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "233941b809d05d33a2d890cb481ae67d",
-    "content-hash": "9cb393bc37326da3829bc1b94db414d2",
+    "hash": "a3477f8dc0087872324a766e7c954165",
+    "content-hash": "cdf3e61b27c5b9a4ed496d50fbaae47d",
     "packages": [
         {
             "name": "codeception/codeception",
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/4bf8532fac87aa89139b3982dfb4ac0738e93cfc",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/50bd4ab0af8645564827db3d08204e59c91f3a7c",
                 "reference": "4bf8532fac87aa89139b3982dfb4ac0738e93cfc",
                 "shasum": ""
             },
@@ -222,7 +222,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/30f8346719d2ba1da9b2799f60b3dea360d908f4",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d094e337976dff9d8e2424e8485872194e768662",
                 "reference": "30f8346719d2ba1da9b2799f60b3dea360d908f4",
                 "shasum": ""
             },
@@ -284,7 +284,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/976e0f50981f845dcee1c25bfcac2304a7bb5583",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/bb9024c526b22f3fe6ae55a561fd70653d470aa8",
                 "reference": "976e0f50981f845dcee1c25bfcac2304a7bb5583",
                 "shasum": ""
             },
@@ -385,16 +385,16 @@
         },
         {
             "name": "heise/shariff",
-            "version": "5.0.0",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/heiseonline/shariff-backend-php.git",
-                "reference": "8a535897b64ba1bf4ca612be5cfca0d0ec560432"
+                "reference": "c32f74bf58affd8ee02cc777fa0173f80c2b6118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heiseonline/shariff-backend-php/zipball/8a535897b64ba1bf4ca612be5cfca0d0ec560432",
-                "reference": "8a535897b64ba1bf4ca612be5cfca0d0ec560432",
+                "url": "https://api.github.com/repos/heiseonline/shariff-backend-php/zipball/c32f74bf58affd8ee02cc777fa0173f80c2b6118",
+                "reference": "c32f74bf58affd8ee02cc777fa0173f80c2b6118",
                 "shasum": ""
             },
             "require": {
@@ -435,7 +435,7 @@
                 "shariff",
                 "social buttons"
             ],
-            "time": "2016-02-02 14:34:09"
+            "time": "2016-02-24 11:48:32"
         },
         {
             "name": "mandrill/mandrill",
@@ -841,7 +841,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/264188ddf4d3586c80ea615f8ec8eaea34e652a1",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1a1b63266c046e1856fd03812a4e0ac2b51aa2d5",
                 "reference": "264188ddf4d3586c80ea615f8ec8eaea34e652a1",
                 "shasum": ""
             },
@@ -1056,7 +1056,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/275e7fdabb1f4b209e0c90159e646407975f6833",
+                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/9f8c1939a3f66eb7170489fc48579ffd1461af62",
                 "reference": "275e7fdabb1f4b209e0c90159e646407975f6833",
                 "shasum": ""
             },
@@ -1781,7 +1781,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/8412f1e1650c27758908c584f63f05bfba3f0314",
+                "url": "https://api.github.com/repos/symfony/console/zipball/6b1175135bc2a74c08a28d89761272de8beed8cd",
                 "reference": "8412f1e1650c27758908c584f63f05bfba3f0314",
                 "shasum": ""
             },
@@ -1894,7 +1894,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/a5a2d27385655d34fd08557f8a315b6f27cbc5cf",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/70364f3c8e42ef324f6436b923b7cad274511c88",
                 "reference": "a5a2d27385655d34fd08557f8a315b6f27cbc5cf",
                 "shasum": ""
             },
@@ -1950,7 +1950,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/9116263e778f720dcdecffb8e66c4d6b8b1cfc49",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/47d2d8cade9b1c3987573d2943bb9352536cdb87",
                 "reference": "9116263e778f720dcdecffb8e66c4d6b8b1cfc49",
                 "shasum": ""
             },
@@ -2010,7 +2010,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/623bda0abd9aa29e529c8e9c08b3b84171914723",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/c54e407b35bc098916704e9fd090da21da4c4f52",
                 "reference": "623bda0abd9aa29e529c8e9c08b3b84171914723",
                 "shasum": ""
             },
@@ -3208,7 +3208,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "tijsverkoyen/css-to-inline-styles": 20,
         "mandrill/mandrill": 20,
         "sabre/dav": 20
     },
