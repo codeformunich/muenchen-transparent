@@ -1,46 +1,56 @@
 <?php
 
 class OParl10Object {
-    const VERSION           = 'https://oparl.org/specs/1.0/';
-
-    const TYPE_BODY         = 'https://oparl.org/schema/1.0/Body';
-    const TYPE_ORGANIZATION = 'https://oparl.org/schema/1.0/Organization';
-    const TYPE_PAPER        = 'https://oparl.org/schema/1.0/Paper';
-    const TYPE_PERSON       = 'https://oparl.org/schema/1.0/Person';
-    const TYPE_SYSTEM       = 'https://oparl.org/schema/1.0/System';
+    const TYPE_AGENDAITEM      = 'https://oparl.org/schema/1.0/AgendaItem';
+    const TYPE_BODY            = 'https://oparl.org/schema/1.0/Body';
+    const TYPE_CONSULTATION    = 'https://oparl.org/schema/1.0/Consulta­tion';
+    const TYPE_FILE            = 'https://oparl.org/schema/1.0/File';
+    const TYPE_LEGISLATIVETERM = 'https://oparl.org/schema/1.0/Legis­lat­iveTerm';
+    const TYPE_LOCATION        = 'https://oparl.org/schema/1.0/Loca­tion';
+    const TYPE_MEETING         = 'https://oparl.org/schema/1.0/Meet­ing';
+    const TYPE_MEMBERSHIP      = 'https://oparl.org/schema/1.0/Member­ship';
+    const TYPE_ORGANIZATION    = 'https://oparl.org/schema/1.0/Organ­iz­a­tion';
+    const TYPE_PAPER           = 'https://oparl.org/schema/1.0/Paper';
+    const TYPE_PERSON          = 'https://oparl.org/schema/1.0/Person';
+    const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
     
-    public static function getOparlObjectUrl($route, $body = null, $id = null) {
-        if ($body == null) $body = 0;
-        
-        if ($route == 'system') {
-            return OPARL_10_ROOT;
-        } else if ($route == 'body') {
-            return OPARL_10_ROOT . '/body/' . $body;
-        }
-
-        $url = OPARL_10_ROOT . '/body/' . $body . '/' . $route . '/' . $id;
-
-        return $url;
-    }
-    
-    public static function getOparlListUrl($route, $body = null, $id = null) {
-        $url = OPARL_10_ROOT;
-        if ($body !== null) $url .= '/body/' . $body;
-        $url .= '/' . $route;
-        if ($id !== null) $url .= '/' . $id;
-
-        return $url;
+    /*
+     * Gibt ein belibiges Objekt als array zurück
+     */
+    public function object($typ, $id = null, $body = null) {
+        if      ($typ == 'system'  ) return self::system();
+        else if ($typ == 'fraktion') return self::fraktion($id);
+        else if ($typ == 'gremium' ) return self::gremium($id);
+        else if ($typ == 'person'  ) return self::person($id, $body);
+        else if ($typ == 'term'    ) return self::terms($body)[$id];
+        else if ($typ == 'body'    ) {
+            // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
+            if ($id == 0) {
+                $body = 0;
+                $name = 'Stadrat der Landeshauptstadt München';
+                $shortName = 'Stadtrat';
+                $website = 'http://www.muenchen.de/';
+            } else {
+                $ba = Bezirksausschuss::model()->findByPk($id);
+                $body = $ba->ba_nr;
+                $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
+                $shortName = 'BA ' . $ba->ba_nr;
+                $website = Yii::app()->createAbsoluteUrl($ba->getLink());
+            }
+            return OParl10Object::body($body, $name, $shortName, $website);
+        } else return ['error' => 'Object of typ ' . $typ . ' (and id=' . $id . ') not found.'];
     }
     
     /**
+     * Erzeugt das 'oparl:System'-Objekt, also den API-Einstiegspunkt
      */
     public static function system() {
         return [
-            'id'                 => static::getOparlObjectUrl('system'),
-            'type'               => static::TYPE_SYSTEM,
+            'id'                 => OParl10Controller::getOparlObjectUrl('system'),
+            'type'               => self::TYPE_SYSTEM,
             'oparlVersion'       => static::VERSION,
             'otherOparlVersions' => [],
-            'body'               => static::getOparlListUrl('bodies'),
+            'body'               => OParl10Controller::getOparlListUrl('bodies'),
             'name'               => Yii::app()->params['projectTitle'],
             'contactEmail'       => Yii::app()->params['adminEmail'],
             'contactName'        => Yii::app()->params['adminEmailName'],
@@ -51,64 +61,67 @@ class OParl10Object {
     }
 
     /**
-     * @param int $id
+     * Erzeugt ein 'oparl:Body'-Objekt, also den Stadtrat oder die Bezirksauschüsse
      */
     public static function body($body, $name, $shortName, $website) {
         return [
-            'id'              => static::getOparlObjectUrl('body', $body),
-            'type'            => static::TYPE_BODY,
-            'system'          => static::getOparlObjectUrl('system'),
+            'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
+            'type'            => self::TYPE_BODY,
+            'system'          => OParl10Controller::getOparlObjectUrl('system'),
             'contactEmail'    => Yii::app()->params['adminEmail'],
             'contactName'     => Yii::app()->params['adminEmailName'],
             'name'            => $name,
             'shortName'       => $shortName,
             'website'         => $website,
-            'organization'    => static::getOparlListUrl('organizations', $body),
-            'person'          => static::getOparlListUrl('persons',       $body),
-            'meeting'         => static::getOparlListUrl('meetings',      $body),
-            'paper'           => static::getOparlListUrl('papers',        $body),
-            'terms'           => static::getOparlListUrl('terms',         $body),
+            'organization'    => OParl10Controller::getOparlListUrl('organizations', $body),
+            'person'          => OParl10Controller::getOparlListUrl('persons',       $body),
+            'meeting'         => OParl10Controller::getOparlListUrl('meetings',      $body),
+            'paper'           => OParl10Controller::getOparlListUrl('papers',        $body),
+            'terms'           => OParl10Controller::getOparlListUrl('terms',         $body),
         ];
     }
     
     /**
-     * @param int $ba_nr
-     *
-     * @return array
+     * Erzeugt die statische Liste mit allen 'oparl:LegislativeTerm'-Objekten, also den Legislaturperioden
      */
     public static function terms($body) {
         return [
             0 => [
-                'id'        => static::getOparlObjectUrl('term', $body, 0),
-                'body'      => static::getOparlObjectUrl('body', $body),
+                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 0),
+                'type'      => TYPE_LEGISLATIVETERM,
+                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => 'Unbekannt',
                 'startDate' => '0000-00-00',
                 'endDate'   => '0000-00-00',
             ],
             1 => [
-                'id'        => static::getOparlObjectUrl('term', $body, 1),
-                'body'      => static::getOparlObjectUrl('body', $body),
+                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 1),
+                'type'      => TYPE_LEGISLATIVETERM,
+                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '1996-2002',
                 'startDate' => '1996-12-03',
                 'endDate'   => '2002-12-03',
             ],
             2 => [
-                'id'        => static::getOparlObjectUrl('term', $body, 2),
-                'body'      => static::getOparlObjectUrl('body', $body),
+                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 2),
+                'type'      => TYPE_LEGISLATIVETERM,
+                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '2002-2008',
                 'startDate' => '2002-12-03',
                 'endDate'   => '2008-12-03',
             ],
             3 => [
-                'id'        => static::getOparlObjectUrl('term', $body, 3),
-                'body'      => static::getOparlObjectUrl('body', $body),
+                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 3),
+                'type'      => TYPE_LEGISLATIVETERM,
+                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '2008-2014',
                 'startDate' => '2008-12-03',
                 'endDate'   => '2014-12-03',
             ],
             4 => [
-                'id'        => static::getOparlObjectUrl('term', $body, 4),
-                'body'      => static::getOparlObjectUrl('body', $body),
+                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 4),
+                'type'      => TYPE_LEGISLATIVETERM,
+                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '2014-2020',
                 'startDate' => '2014-12-03',
                 'endDate'   => '2020-12-03',
@@ -117,9 +130,7 @@ class OParl10Object {
     }
 
     /**
-     * @param int $id
-     *
-     * @return array
+     * Erzeugt ein 'oparl:Organization'-Objekt, das ein Germium abbildet
      */
     public static function gremium($id) {
         $gremium     = Gremium::model()->findByPk($id);
@@ -127,9 +138,9 @@ class OParl10Object {
         $memberships = [];
 
         return [
-            'id'             => static::getOparlObjectUrl('gremium', $gremium->ba_nr, $gremium->id),
-            'type'           => static::TYPE_ORGANIZATION,
-            'body'           => static::getOparlObjectUrl('body', $gremium->ba_nr),
+            'id'             => OParl10Controller::getOparlObjectUrl('gremium', $gremium->ba_nr, $gremium->id),
+            'type'           => self::TYPE_ORGANIZATION,
+            'body'           => OParl10Controller::getOparlObjectUrl('body', $gremium->ba_nr),
             'name'           => $gremium->getName(false),
             'shortName'      => $gremium->getName(true),
             'meeting'        => $meetings,
@@ -139,9 +150,7 @@ class OParl10Object {
     }
 
     /**
-     * @param int $id
-     *
-     * @return array
+     * Erzeugt ein 'oparl:Organization'-Objekt, das ein Fraktion abbildet
      */
     public static function fraktion($id) {
         $fraktion    = Fraktion::model()->findByPk($id);
@@ -149,9 +158,9 @@ class OParl10Object {
         $memberships = [];
 
         return [
-            'id'             => static::getOparlObjectUrl('fraktion', $fraktion->ba_nr, $fraktion->id),
-            'type'           => static::TYPE_ORGANIZATION,
-            'body'           => static::getOparlObjectUrl('body', $fraktion->ba_nr),
+            'id'             => OParl10Controller::getOparlObjectUrl('fraktion', $fraktion->ba_nr, $fraktion->id),
+            'type'           => self::TYPE_ORGANIZATION,
+            'body'           => OParl10Controller::getOparlObjectUrl('body', $fraktion->ba_nr),
             'name'           => $fraktion->getName(false),
             'shortName'      => $fraktion->getName(true),
             'meeting'        => $meetings,
@@ -159,16 +168,21 @@ class OParl10Object {
             'classification' => 'Fraktion',
         ];
     }
-
+    
+    /**
+     * Erzeugt ein 'oparl:Person'-Objekt, das StadträtInnen abbildet
+     */
     public static function person($id, $body) {
         $stadtraetin = StadtraetIn::model()->findByPk($id);
         
+        // Zwingende Attribute
         $data = [
-            'id'   => static::getOparlObjectUrl('person', $body, $stadtraetin->id),
-            'type' => static::TYPE_PERSON,
+            'id'   => OParl10Controller::getOparlObjectUrl('person', $body, $stadtraetin->id),
+            'type' => self::TYPE_PERSON,
             'name' => $stadtraetin->name,
         ];
         
+        // Das Geschlecht übersetzen
         if ($stadtraetin->geschlecht) {
             if ($stadtraetin->geschlecht == 'weiblich')
                 $data['gender'] = 'female';
@@ -177,6 +191,8 @@ class OParl10Object {
             else
                 $data['gender'] = 'other';
         }
+        
+        // optionale Attribute
         $optional_properties = [
             'life'                                   => $stadtraetin->beschreibung,
             'lifeSource'                             => $stadtraetin->quellen,
@@ -192,9 +208,8 @@ class OParl10Object {
         ];
         
         foreach ($optional_properties as $key => $value) {
-            if ($value && $value != "") {
+            if ($value && $value != "")
                 $data[$key] = $value;
-            }
         }
         
         return $data;
