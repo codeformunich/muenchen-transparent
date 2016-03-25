@@ -1,5 +1,7 @@
 <?php
 
+use Zend\Mail\Message;
+
 class RISTools
 {
 
@@ -42,7 +44,9 @@ class RISTools
         do {
             $ch = curl_init();
 
-            if ($username != "" || $password != "") curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+            if ($username != "" || $password != "") {
+                curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+            }
 
             curl_setopt($ch, CURLOPT_URL, $url_to_read);
             curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -59,7 +63,9 @@ class RISTools
 
             $text = RISTools::toutf8($text);
 
-            if (!defined("VERYFAST")) sleep(1);
+            if (!defined("VERYFAST")) {
+                sleep(1);
+            }
             $i++;
         } while (strpos($text, "localhost:8118") !== false && $i < 10);
 
@@ -77,7 +83,9 @@ class RISTools
     {
         $ch = curl_init();
 
-        if ($username != "" || $password != "") curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+        if ($username != "" || $password != "") {
+            curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url_to_read);
@@ -96,7 +104,7 @@ class RISTools
             return;
         }
 
-        $fp = fopen($filename, "w");
+        $fp  = fopen($filename, "w");
         $ch2 = curl_init();
         curl_setopt($ch2, CURLOPT_URL, $url_to_read);
         curl_setopt($ch2, CURLOPT_HEADER, 0);
@@ -113,7 +121,9 @@ class RISTools
         //file_put_contents($filename, $text);
         fclose($fp);
 
-        if (!defined("VERYFAST")) sleep(1);
+        if (!defined("VERYFAST")) {
+            sleep(1);
+        }
     }
 
 
@@ -126,8 +136,11 @@ class RISTools
         $x    = explode(" ", $input);
         $date = explode("-", $x[0]);
 
-        if (count($x) == 2) $time = explode(":", $x[1]);
-        else $time = [0, 0, 0];
+        if (count($x) == 2) {
+            $time = explode(":", $x[1]);
+        } else {
+            $time = [0, 0, 0];
+        }
 
         return mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
     }
@@ -141,9 +154,15 @@ class RISTools
     {
         $ts  = static::date_iso2timestamp($input);
         $tag = date("d.m.Y", $ts);
-        if ($tag == date("d.m.Y")) return "Heute";
-        if ($tag == date("d.m.Y", time() - 3600 * 24)) return "Gestern";
-        if ($tag == date("d.m.Y", time() - 2 * 3600 * 24)) return "Vorgestern";
+        if ($tag == date("d.m.Y")) {
+            return "Heute";
+        }
+        if ($tag == date("d.m.Y", time() - 3600 * 24)) {
+            return "Gestern";
+        }
+        if ($tag == date("d.m.Y", time() - 2 * 3600 * 24)) {
+            return "Vorgestern";
+        }
         return $tag;
     }
 
@@ -187,31 +206,59 @@ class RISTools
     {
         $titel = trim(str_replace("_", " ", $titel));
 
-        if (preg_match("/^[0-9]+to[0-9]+$/siu", $titel)) return "Tagesordnung"; // 25to13012015
-        if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) return "Tagesordnung"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
-        if (preg_match("/^to [0-9\. ]+$/siu", $titel)) return "Tagesordnung"; // 2014 01 to
-        if (preg_match("/^[0-9\. ]+ to$/siu", $titel)) return "Tagesordnung"; // to 150108
-        if (preg_match("/^(?<name>Einladung.*) [0-9\.]+( \(oeff\))?$/siu", $titel, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
-        if (preg_match("/^(?<name>Nachtrag.*) [0-9\.]+( \(oeff\))?$/siu", $titel, $matches)) return $matches["name"]; // Einladung UA BSB 10.12.2014 (oeff)
-        if (preg_match("/^[0-9]+(sondersitzung )?prot[0-9]+(oeff)?$/siu", $titel)) return "Protokoll";  // 25prot13012015, 23sondersitzung prot1114öff,  23prot1114öff
-        if (preg_match("/^[0-9]+n?v?to[0-9]+oeff$/siu", $titel)) return "Tagesordnung";  // 21vto0115oeff
-        if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) return "Protokoll"; // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
-        if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $titel)) return "Protokoll"; // pro140918 oeff
-        if (preg_match("/^Einladung [0-9-]+$/siu", $titel)) return "Einladung"; // Einladung 02-15
+        if (preg_match("/^[0-9]+to[0-9]+$/siu", $titel)) {
+            return "Tagesordnung";
+        } // 25to13012015
+        if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) {
+            return "Tagesordnung";
+        } // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
+        if (preg_match("/^to [0-9\. ]+$/siu", $titel)) {
+            return "Tagesordnung";
+        } // 2014 01 to
+        if (preg_match("/^[0-9\. ]+ to$/siu", $titel)) {
+            return "Tagesordnung";
+        } // to 150108
+        if (preg_match("/^(?<name>Einladung.*) [0-9\.]+( \(oeff\))?$/siu", $titel, $matches)) {
+            return $matches["name"];
+        } // Einladung UA BSB 10.12.2014 (oeff)
+        if (preg_match("/^(?<name>Nachtrag.*) [0-9\.]+( \(oeff\))?$/siu", $titel, $matches)) {
+            return $matches["name"];
+        } // Einladung UA BSB 10.12.2014 (oeff)
+        if (preg_match("/^[0-9]+(sondersitzung )?prot[0-9]+(oeff)?$/siu", $titel)) {
+            return "Protokoll";
+        }  // 25prot13012015, 23sondersitzung prot1114öff,  23prot1114öff
+        if (preg_match("/^[0-9]+n?v?to[0-9]+oeff$/siu", $titel)) {
+            return "Tagesordnung";
+        }  // 21vto0115oeff
+        if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) {
+            return "Protokoll";
+        } // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
+        if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $titel)) {
+            return "Protokoll";
+        } // pro140918 oeff
+        if (preg_match("/^Einladung [0-9-]+$/siu", $titel)) {
+            return "Einladung";
+        } // Einladung 02-15
 
         $titel = preg_replace("/^( vom)? \\d\\d\.\\d\\d\.\\d{4}$/siu", "", $titel);
         $titel = preg_replace("/ \(oeff\)$/", "", $titel);
 
-        if ($titel == "to") return "Tagesordnung";
-        if ($titel == "Einladung oeffentlich") return "Einladung";
-        if (preg_match("/^to [0-9\-]+ nachtrag/siu", $titel)) return "Nachtrag";
+        if ($titel == "to") {
+            return "Tagesordnung";
+        }
+        if ($titel == "Einladung oeffentlich") {
+            return "Einladung";
+        }
+        if (preg_match("/^to [0-9\-]+ nachtrag/siu", $titel)) {
+            return "Nachtrag";
+        }
 
-        $titel = preg_replace("/^V [0-9]+ /",                        "", $titel);
+        $titel = preg_replace("/^V [0-9]+ /", "", $titel);
         $titel = preg_replace("/^(VV|VPA|KVA) ?[0-9 \.\-]+ (TOP)?/", "", $titel);
-        $titel = preg_replace("/^OE V[0-9]+ /",                      "", $titel);
-        $titel = preg_replace("/^[0-9]{2}\-[0-9]{2}\-[0-9]{2} +/",   "", $titel);
+        $titel = preg_replace("/^OE V[0-9]+ /", "", $titel);
+        $titel = preg_replace("/^[0-9]{2}\-[0-9]{2}\-[0-9]{2} +/", "", $titel);
         $titel = preg_replace("/ vom [0-9]{2}\.[0-9]{2}\.[0-9]{4}/", "", $titel);
-        $titel = preg_replace("/[-_ ]?ris/i",                        "", $titel);
+        $titel = preg_replace("/[-_ ]?ris/i", "", $titel);
         $titel = preg_replace("/^(CSU|SPD|B90GrueneRL|OeDP|DIE LINKE|AfD) \-? ?Antrag/siU", "Antrag", $titel);
 
         $titel = preg_replace_callback("/(?<jahr>20[0-9]{2})(?<monat>[0-1][0-9])(?<tag>[0-9]{2})/siu", function ($matches) {
@@ -225,8 +272,12 @@ class RISTools
         }, $titel);
 
         // Der Name der Anfrage/des Antrags steht schon im Titel des Antrags => Redundant
-        if (preg_match("/^Antrag[ \.]/", $titel)) $titel = "Antrag";
-        if (preg_match("/^Anfrage[ \.]/", $titel)) $titel = "Anfrage";
+        if (preg_match("/^Antrag[ \.]/", $titel)) {
+            $titel = "Antrag";
+        }
+        if (preg_match("/^Anfrage[ \.]/", $titel)) {
+            $titel = "Anfrage";
+        }
 
         $titel = preg_replace_callback("/^(?<anfang>Anlage [0-9]+ )(?<name>.+)$/", function ($matches) {
             return $matches["anfang"] . " (" . trim($matches["name"]) . ")";
@@ -236,8 +287,12 @@ class RISTools
         $titel = preg_replace("/(n)eü/siu", "$1eue", $titel);
         $titel = preg_replace("/aü/siu", "aue", $titel);
 
-        if ($titel == "Deckblatt VV") return "Deckblatt";
-        if ($titel == "Niederschrift (oeff)") return "Niederschrift";
+        if ($titel == "Deckblatt VV") {
+            return "Deckblatt";
+        }
+        if ($titel == "Niederschrift (oeff)") {
+            return "Niederschrift";
+        }
 
         return trim($titel);
     }
@@ -253,7 +308,9 @@ class RISTools
         $ret = [];
         foreach ($a as $y) {
             $z = explode(";", $y);
-            if (count($z) == 2) $y = $z[1] . " " . $z[0];
+            if (count($z) == 2) {
+                $y = $z[1] . " " . $z[0];
+            }
             $name_orig = $y;
 
             $y = mb_strtolower($y);
@@ -269,13 +326,21 @@ class RISTools
 
             $y = trim($y);
 
-            if (mb_substr($y, 0, 3) == "ob ") $y = mb_substr($y, 3);
-            if (mb_substr($y, 0, 3) == "bm ") $y = mb_substr($y, 3);
+            if (mb_substr($y, 0, 3) == "ob ") {
+                $y = mb_substr($y, 3);
+            }
+            if (mb_substr($y, 0, 3) == "bm ") {
+                $y = mb_substr($y, 3);
+            }
 
-            for ($i = 0; $i < 10; $i++) $y = str_replace("  ", " ", $y);
+            for ($i = 0; $i < 10; $i++) {
+                $y = str_replace("  ", " ", $y);
+            }
             $y = str_replace("Zeilhofer-Rath", "Zeilnhofer-Rath", $y);
 
-            if (trim($y) != "") $ret[] = ["name" => $name_orig, "name_normalized" => $y];
+            if (trim($y) != "") {
+                $ret[] = ["name" => $name_orig, "name_normalized" => $y];
+            }
         }
         return $ret;
     }
@@ -290,7 +355,9 @@ class RISTools
     {
         /** @var Person $p */
         $p = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
-        if ($p) return $p;
+        if ($p) {
+            return $p;
+        }
         echo "$name / $name_normalized \n";
 
         $p                  = new Person();
@@ -373,61 +440,37 @@ class RISTools
      */
     public static function send_email($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
     {
-        if (defined("MANDRILL_API_KEY") && strlen(MANDRILL_API_KEY) > 0 && $mail_tag != "system") {
-            static::send_email_mandrill($email, $betreff, $text_plain, $text_html, $mail_tag);
+        if (defined("MAILGUN_API_KEY") && strlen(MAILGUN_API_KEY) > 0 && $mail_tag != "system") {
+            $message = new \SlmMail\Mail\Message\Mailgun();
+            $message->setOption('tracking', false);
+            $client = new \Zend\Http\Client();
+            $client->setAdapter(new \Zend\Http\Client\Adapter\Curl());
+            $service = new \SlmMail\Service\MailgunService(MAILGUN_DOMAIN, MAILGUN_API_KEY);
+            $service->setClient($client);
+            $transport = new \SlmMail\Mail\Transport\HttpTransport($service);
         } else {
-            static::send_email_zend($email, $betreff, $text_plain, $text_html, $mail_tag);
+            $message   = new Zend\Mail\Message();
+            $transport = new Zend\Mail\Transport\Sendmail();
         }
+        static::set_zend_email_data($message, $email, $betreff, $text_plain, $text_html);
+
+        $transport->send($message);
     }
 
-
-    public static function send_email_mandrill($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
+    /**
+     * @param Message $message
+     * @param string $email
+     * @param string $betreff
+     * @param string $text_plain
+     * @param string|null $text_html
+     */
+    private static function set_zend_email_data($message, $email, $betreff, $text_plain, $text_html = null)
     {
-        $mandrill = new Mandrill(MANDRILL_API_KEY);
-        $tags     = [];
-        if ($mail_tag !== null) $tags[] = $mail_tag;
+        $message->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
+        $message->addTo($email, $email);
+        $message->setSubject($betreff);
 
-        $headers = [];
-        if ($mail_tag == 'newsletter') {
-            $headers['Precedence']     = 'bulk';
-            $headers['Auto-Submitted'] = 'auto-generated';
-        }
-
-        $message = [
-            'html'         => $text_html,
-            'text'         => $text_plain,
-            'subject'      => $betreff,
-            'from_email'   => Yii::app()->params["adminEmail"],
-            'from_name'    => Yii::app()->params["adminEmailName"],
-            'to'           => [
-                [
-                    "name"  => null,
-                    "email" => $email,
-                    "type"  => "to",
-                ]
-            ],
-            'important'    => false,
-            'tags'         => $tags,
-            'track_clicks' => false,
-            'track_opens'  => false,
-            'inline_css'   => true,
-            'headers'      => $headers,
-        ];
-
-        if (in_array($mail_tag, ["email", "password"])) $message["view_content_link"] = false;
-
-        $mandrill->messages->send($message, false);
-    }
-
-
-    public static function send_email_zend($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
-    {
-        $mail = new Zend\Mail\Message();
-        $mail->setFrom(Yii::app()->params["adminEmail"], Yii::app()->params["adminEmailName"]);
-        $mail->addTo($email, $email);
-        $mail->setSubject($betreff);
-
-        $mail->setEncoding("UTF-8");
+        $message->setEncoding("UTF-8");
 
         if ($text_html !== null) {
             $converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles($text_html);
@@ -447,17 +490,14 @@ class RISTools
             $mimem              = new Zend\Mime\Message();
             $mimem->setParts([$text_part, $html_part]);
 
-            $mail->setBody($mimem);
-            $mail->getHeaders()->get('content-type')->setType('multipart/alternative');
+            $message->setBody($mimem);
+            $message->getHeaders()->get('content-type')->setType('multipart/alternative');
         } else {
-            $mail->setBody($text_plain);
-            $headers = $mail->getHeaders();
+            $message->setBody($text_plain);
+            $headers = $message->getHeaders();
             $headers->removeHeader('Content-Type');
             $headers->addHeaderLine('Content-Type', 'text/plain; charset=UTF-8');
         }
-
-        $transport = new Zend\Mail\Transport\Sendmail();
-        $transport->send($mail);
     }
 
     /**
@@ -468,14 +508,22 @@ class RISTools
     {
         $val_count = [];
         foreach ($arr as $elem) {
-            if (isset($val_count[$elem])) $val_count[$elem]++;
-            else $val_count[$elem] = 1;
+            if (isset($val_count[$elem])) {
+                $val_count[$elem]++;
+            } else {
+                $val_count[$elem] = 1;
+            }
         }
         $vals_used = [];
         foreach ($arr as $i => $elem) {
-            if ($val_count[$elem] == 1) continue;
-            if (isset($vals_used[$elem])) $vals_used[$elem]++;
-            else $vals_used[$elem] = 1;
+            if ($val_count[$elem] == 1) {
+                continue;
+            }
+            if (isset($vals_used[$elem])) {
+                $vals_used[$elem]++;
+            } else {
+                $vals_used[$elem] = 1;
+            }
             $arr[$i] = $elem . " (" . $vals_used[$elem] . ")";
         }
         return $arr;
@@ -496,8 +544,12 @@ class RISTools
         $tooltip_replaces = [];
         foreach ($eintraege as $ein) {
             $aliases = [strtolower($ein->titel)];
-            if ($ein->titel == "Fraktion") $aliases[] = "fraktionen";
-            if ($ein->titel == "Ausschuss") $aliases[] = "aussch&uuml;ssen";
+            if ($ein->titel == "Fraktion") {
+                $aliases[] = "fraktionen";
+            }
+            if ($ein->titel == "Ausschuss") {
+                $aliases[] = "aussch&uuml;ssen";
+            }
 
             foreach ($aliases as $alias) {
                 $regexp_parts[]           = preg_quote($alias);
@@ -507,7 +559,9 @@ class RISTools
         $text_html = preg_replace_callback("/(?<pre>[^\\w])(?<word>" . implode("|", $regexp_parts) . ")(?<post>[^\\w])/siu", function ($matches) use ($tooltip_replaces) {
             $eintrag = $tooltip_replaces[strtolower($matches["word"])];
             $text    = strip_tags(html_entity_decode($eintrag->text, ENT_COMPAT, "UTF-8"));
-            if (strlen($text) > 200) $text = substr($text, 0, 198) . "... [weiter]";
+            if (strlen($text) > 200) {
+                $text = substr($text, 0, 198) . "... [weiter]";
+            }
             $link         = CHtml::encode(Yii::app()->createUrl("infos/glossar") . "#" . $eintrag->titel);
             $replace_html = '<a href="' . $link . '" class="tooltip_link" data-toggle="tooltip" data-placement="top" title="" data-original-title="' . CHtml::encode($text) . '">' . $matches["word"] . '</a>';
             return $matches["pre"] . $replace_html . $matches["post"];
