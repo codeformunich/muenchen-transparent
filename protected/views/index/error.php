@@ -5,7 +5,7 @@
  * @var string $message
  */
 
-$this->pageTitle = "Fehler";
+$this->pageTitle = "Fehler " . $code;
 
 switch ($code) {
 	case 404:
