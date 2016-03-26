@@ -15,8 +15,6 @@ require_once(dirname(__FILE__) . "/../vendor/autoload.php");
 $yii    = dirname(__FILE__) . '/../vendor/yiisoft/yii/framework/yii.php';
 $config = dirname(__FILE__) . '/../protected/config/main.php';
 
-
-
 require_once($yii);
 
 Yii::setPathOfAlias("composer", __DIR__ . "/../vendor/");
