@@ -15,6 +15,103 @@
 $this->pageTitle = "Suchergebnisse";
 
 ?>
+
+<script src="bower/Chart.js/Chart.min.js"></script>
+
+<script>
+$(function() {
+
+var data = [
+    {
+        value: 0,
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: "Termine"
+    },
+    {
+        value: 0,
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: "Antraege"
+    },
+    {
+        value: 0,
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: "Andere"
+    }
+]
+
+for (current of $(".suchergebnisse > ul h4 > a").toArray()) {
+    var link = $(current).attr("href");
+    if (link.indexOf("/termine/") > -1) {
+        data[0].value += 1;
+    } else if (link.indexOf("/antraege/") > -1) {
+        data[1].value += 1;
+    } else {
+        data[2].value += 1;
+    }
+};
+
+var chart = $("#dokumentenzugehoerigkeit").get(0).getContext("2d");
+var dokumentenzugehoerigkeit = new Chart(chart).Pie(data, {responsive: true, animation: false});
+
+});
+</script>
+
+<section>
+    <h3>Dokumentenzugehörigkeit</h3>
+    <canvas id="dokumentenzugehoerigkeit" style="width: 100%; max-height: 200px"></canvas>
+</section>
+
+<script>
+$(function(){
+
+var data = {
+    labels: ["January", "February", "March",
+             "April", "May", "June",
+             "July", "August", "September",
+             "October","November", "December"],
+    datasets: [
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: [0, 0, 0,
+                   0, 0, 0,
+                   0, 0, 0,
+                   0, 0, 0]
+        }
+    ]
+};
+
+
+for (current of $(".suchergebnisse > ul h4 span.least-content").toArray()) {
+    var month = parseInt($(current).text().split('.')[1]);
+    if (month - 1 < 12) {
+        data.datasets[0].data[month - 1] += 1;
+    } else {
+        console.log("Illegal month found: " + month);
+    }
+};
+
+console.log(data.datasets[0].data);
+
+var chart = $("#nach_datum").get(0).getContext("2d");
+var nachdatum = new Chart(chart).Line(data, {responsive: true, animation: false});
+
+});
+</script>
+
+<section>
+    <h3>Dokumente nach Datum der letzten Änderung des Vorgangs</h3>
+    <canvas id="nach_datum" style="width: 100%; max-height: 200px"></canvas>
+</section>
+
 <section class="well suchergebnisse">
     <div class="pull-right" style="text-align: center;">
         <?
