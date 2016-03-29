@@ -48,7 +48,7 @@ install:
   - composer install --prefer-source # --prefer-source fixes github's limits
   - npm install
   - npm install bower
-  - node_modules/bower/bin/bower install
+  - node_modules/bower/bin/bower install --force-latest
   - gulp
 
 script:
