@@ -12,7 +12,7 @@
     "bootstrap-sass": "~3.3.6",
     "jquery": "~2.2.0",
     "ckeditor": "~4.5.7",
-    "Chart.js": "^1.0.2"
+    "Chart.js": "1.0.2"
   },
   "resolutions": {
     "jquery": "~2.2.0"

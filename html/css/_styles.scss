@@ -1353,7 +1353,7 @@ section.impressum {
     > li {
       display: inline-block;
       width: 180px;
-      height: 55px;
+      height: 235px;
       margin: 5px;
       padding: 5px;
       background: #eaeaea url("/images/noisy-texture-100x50-o8-d10-c-dddddd-t1.png");
@@ -1439,6 +1439,14 @@ section.impressum {
     }
   }
 }
+
+.personen-antraege-diagram {
+  width: 160px;
+  height: 160px;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+
 
 .fliesstext {
   h3 {

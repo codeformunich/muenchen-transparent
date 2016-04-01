@@ -10,7 +10,7 @@ class PersonenController extends RISBaseController
     {
         $this->top_menu = "personen";
 
-        $this->render('index', [
+        $this->render('stat', [
             "personen"     => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
             "personen_typ" => ($ba > 0 ? "ba" : "str"),
             "ba_nr"        => $ba
