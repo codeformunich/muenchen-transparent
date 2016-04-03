@@ -33,10 +33,8 @@ $GLOBALS["RIS_URL_RULES"] = [
     
     // Oparl
     OPARL_10_ROOT                                                         => 'oparl10/system',
-    OPARL_10_ROOT . '/body/<id:\d+>'                                      => 'oparl10/body',
-    OPARL_10_ROOT . '/body/<body:\d+>/<typ:\w+>/<id:\d+>'                 => 'oparl10/object',
+    OPARL_10_ROOT . '/<typ:\w+>/<id:\d+>'                                 => 'oparl10/object',
     OPARL_10_ROOT . '/body/<body:\d+>/<action:\w+>'                       => 'oparl10/<action>',
-    OPARL_10_ROOT . '/<action:\w+>'                                       => 'oparl10/<action>',
     
     SITE_BASE_URL . '/<action:\w+>'                                       => 'index/<action>',
     SITE_BASE_URL . '/<controller:\w+>/<id:\d+>'                          => '<controller>/anzeigen',

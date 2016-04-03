@@ -256,15 +256,15 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getDisplayDate($fallback = "")
     {
-        if ($fallback == "") $fallback = "Vor 2008";
-
         $ts = RISTools::date_iso2timestamp($this->datum);
         if ($ts > DOCUMENT_DATE_ACCURATE_SINCE) return date("d.m.Y", $ts);
 
         $ts = RISTools::date_iso2timestamp($this->datum_dokument);
         if ($ts > DOCUMENT_DATE_UNKNOWN_BEFORE) return date("d.m.Y", $ts);
 
-        return $fallback;
+        if ($fallback != "") return $fallback;
+
+        return "Vor 2008";
     }
 
     /**
@@ -496,11 +496,6 @@ class Dokument extends CActiveRecord implements IRISItem
         if (in_array($this->typ, [static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN])) return $this->termin;
         if (in_array($this->typ, [static::$TYP_RATHAUSUMSCHAU])) return $this->rathausumschau;
         return $this->antrag;
-    }
-
-    public function getDokumente()
-    {
-        return $this->dokumente;
     }
 
     /**

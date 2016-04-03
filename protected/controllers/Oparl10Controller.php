@@ -44,16 +44,7 @@ class OParl10Controller extends CController {
     }
     
     /*
-     * Gibt eine 'oparl:Body'-Objekt als JSON aus
-     */
-    public function actionBody($id) {
-        Header('Content-Type: application/json');
-        $object = OParl10Object::object('body', $id);
-        echo json_encode($object);
-    }
-
-    /*
-     * Gibt ein beliebiges Objekt außer 'oparl:System' und 'oparl:Body' als JSON aus
+     * Gibt ein beliebiges Objekt außer 'oparl:System' als JSON aus
      */
     public function actionObject($typ, $id) {
         Header('Content-Type: application/json');
@@ -112,7 +103,7 @@ class OParl10Controller extends CController {
     /**
      * Die externe Objektliste mit allen 'oparl:LegislativeTerm'-Objekten
      */
-    public function actionterms($body) {
+    public function actionTerms($body) {
         Header('Content-Type: application/json');
         
         echo json_encode([

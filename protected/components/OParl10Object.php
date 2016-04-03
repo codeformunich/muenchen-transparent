@@ -17,12 +17,12 @@ class OParl10Object {
     /*
      * Gibt ein belibiges Objekt als array zurück
      */
-    public function object($typ, $id = null, $body = null) {
+    public function object($typ, $id = null) {
         if      ($typ == 'system'  ) return self::system();
         else if ($typ == 'fraktion') return self::fraktion($id);
         else if ($typ == 'gremium' ) return self::gremium($id);
-        else if ($typ == 'person'  ) return self::person($id, $body);
-        else if ($typ == 'term'    ) return self::terms($body)[$id];
+        else if ($typ == 'person'  ) return self::person($id);
+        else if ($typ == 'term'    ) return self::terms()[$id];
         else if ($typ == 'body'    ) {
             // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
             if ($id == 0) {
@@ -84,12 +84,11 @@ class OParl10Object {
     /**
      * Erzeugt die statische Liste mit allen 'oparl:LegislativeTerm'-Objekten, also den Legislaturperioden
      */
-    public static function terms($body) {
+    public static function terms() {
         return [
             0 => [
                 'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 0),
                 'type'      => TYPE_LEGISLATIVETERM,
-                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => 'Unbekannt',
                 'startDate' => '0000-00-00',
                 'endDate'   => '0000-00-00',
@@ -97,7 +96,6 @@ class OParl10Object {
             1 => [
                 'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 1),
                 'type'      => TYPE_LEGISLATIVETERM,
-                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '1996-2002',
                 'startDate' => '1996-12-03',
                 'endDate'   => '2002-12-03',
@@ -105,7 +103,6 @@ class OParl10Object {
             2 => [
                 'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 2),
                 'type'      => TYPE_LEGISLATIVETERM,
-                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '2002-2008',
                 'startDate' => '2002-12-03',
                 'endDate'   => '2008-12-03',
@@ -113,7 +110,6 @@ class OParl10Object {
             3 => [
                 'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 3),
                 'type'      => TYPE_LEGISLATIVETERM,
-                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '2008-2014',
                 'startDate' => '2008-12-03',
                 'endDate'   => '2014-12-03',
@@ -121,7 +117,6 @@ class OParl10Object {
             4 => [
                 'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 4),
                 'type'      => TYPE_LEGISLATIVETERM,
-                'body'      => OParl10Controller::getOparlObjectUrl('body', $body),
                 'name'      => '2014-2020',
                 'startDate' => '2014-12-03',
                 'endDate'   => '2020-12-03',
@@ -172,13 +167,22 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Person'-Objekt, das StadträtInnen abbildet
      */
-    public static function person($id, $body) {
+    public static function person($id) {
         $stadtraetin = StadtraetIn::model()->findByPk($id);
+        
+        $body = 0; // fallback
+        
+        if (count($stadtraetin->getFraktionsMitgliedschaften()) > 0) {
+            $body = $stadtraetin->getFraktionsMitgliedschaften()[0]->fraktion->ba_nr;
+            if ($body == null)
+                $body = 0;
+        }
         
         // Zwingende Attribute
         $data = [
             'id'   => OParl10Controller::getOparlObjectUrl('person', $body, $stadtraetin->id),
             'type' => self::TYPE_PERSON,
+            'body' => $body,
             'name' => $stadtraetin->name,
         ];
         
@@ -214,4 +218,25 @@ class OParl10Object {
         
         return $data;
     }
+    
+    /**
+     * Erzeugt ein 'oparl:File'-Objekt, das Dokumente abbildet
+     */
+     public function file($id) {
+         $dokument = Dokumente::model()->findByPk($id);
+         
+         $data = [
+             'id'        => OParl10Controller::getOparlObjectUrl('id', $dokument->id),
+             'type'      => TYPE_FILE,
+             'fileName'  => $dokument->getName(true) . '.pdf',
+             'name'      => $dokument->getName(),
+             'mimeType'  => 'application/pdf',
+             'accessUrl' => $dokument->getLinkZumDokument(),
+         ];
+         
+         if ($dokument->deleted)
+            $data['delted'] = true;
+        
+        return true;
+     }
 }
