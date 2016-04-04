@@ -1,5 +1,9 @@
 <?php
 
+define("SITE_BASE_URL", "http://localhost:8080");
+
+if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
+
 define("RIS_DATA_DIR", "/data/ris3-data/");
 define("RIS_OMNIPAGE_DIR", "/data/nuance/");
 define("PATH_IDENTIFY", "/usr/bin/identify");
@@ -21,16 +25,18 @@ define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
 
+define("RIS_BASE_URL", "http://www.ris-muenchen.de/RII/RII/");
+define("RIS_BA_BASE_URL", "http://www.ris-muenchen.de/RII/BA-RII/");
+define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 
-define("SITE_BASE_URL", "http://localhost:8080");
-if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 define("DOCUMENT_DATE_ACCURATE_SINCE", 1388530800); // 1. Januar 2014
 define("DOCUMENT_DATE_UNKNOWN_BEFORE", 1212271200); // 1. Juni 2008
 
 ini_set("memory_limit", "256M");
 
 define("SEED_KEY", "RANDOMKEY");
-define("MANDRILL_API_KEY", "");
+define("MAILGUN_DOMAIN", "");
+define("MAILGUN_API_KEY", "");
 
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");

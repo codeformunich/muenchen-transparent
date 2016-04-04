@@ -1,0 +1,8 @@
+class_name: ApiTester
+modules:
+    enabled:
+        - \Helper\Api
+        - REST:
+              depends: PhpBrowser
+              url: http://localhost:8080/oparl/v1.0
+              part: Json
