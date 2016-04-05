@@ -22,6 +22,7 @@ class OParl10Object {
         else if ($typ == 'fraktion') return self::fraktion($id);
         else if ($typ == 'gremium' ) return self::gremium($id);
         else if ($typ == 'person'  ) return self::person($id);
+        else if ($typ == 'file'    ) return self::file($id);
         else if ($typ == 'term'    ) return self::terms()[$id];
         else if ($typ == 'body'    ) {
             // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
@@ -223,11 +224,11 @@ class OParl10Object {
      * Erzeugt ein 'oparl:File'-Objekt, das Dokumente abbildet
      */
      public function file($id) {
-         $dokument = Dokumente::model()->findByPk($id);
+         $dokument = Dokument::model()->findByPk($id);
          
          $data = [
              'id'        => OParl10Controller::getOparlObjectUrl('id', $dokument->id),
-             'type'      => TYPE_FILE,
+             'type'      => self::TYPE_FILE,
              'fileName'  => $dokument->getName(true) . '.pdf',
              'name'      => $dokument->getName(),
              'mimeType'  => 'application/pdf',
@@ -237,6 +238,6 @@ class OParl10Object {
          if ($dokument->deleted)
             $data['delted'] = true;
         
-        return true;
+        return $data;
      }
 }

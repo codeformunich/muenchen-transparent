@@ -28,6 +28,7 @@ addons:
 branches:
   only:
     - master
+    - oparl
 
 install:
   # Create environment for the webserver running in travis ci
