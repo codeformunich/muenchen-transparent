@@ -702,7 +702,6 @@ class Dokument extends CActiveRecord implements IRISItem
                 } else {
                     $update->addDeleteQuery("id:\"Document:" . $this->id . "\"");
                 }
-
             } else {
                 if (in_array($this->typ, [static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN])) $this->solrIndex_termin_do($update);
                 elseif (in_array($this->typ, [static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS])) $this->solrIndex_beschluss_do($update);
