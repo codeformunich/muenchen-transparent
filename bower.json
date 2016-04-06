@@ -1,5 +1,5 @@
 {
-  "name": "München Transparent",
+  "name": "muenchen-transparent",
   "dependencies": {
     "list.js": "~1.2",
     "isotope": "~2.2",
