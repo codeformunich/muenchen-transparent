@@ -17,7 +17,7 @@ class OParl10Object {
     /*
      * Gibt ein belibiges Objekt als array zurück
      */
-    public function object($typ, $id = null) {
+    public static function object($typ, $id = null) {
         if      ($typ == 'system'  ) return self::system();
         else if ($typ == 'fraktion') return self::fraktion($id);
         else if ($typ == 'gremium' ) return self::gremium($id);
@@ -49,7 +49,7 @@ class OParl10Object {
         return [
             'id'                 => OParl10Controller::getOparlObjectUrl('system'),
             'type'               => self::TYPE_SYSTEM,
-            'oparlVersion'       => static::VERSION,
+            'oparlVersion'       => OParl10Controller::VERSION,
             'otherOparlVersions' => [],
             'body'               => OParl10Controller::getOparlListUrl('bodies'),
             'name'               => Yii::app()->params['projectTitle'],
