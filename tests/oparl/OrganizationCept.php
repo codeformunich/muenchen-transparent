@@ -1,5 +1,5 @@
 <?php 
-$I = new ApiTester($scenario);
+$I = new OparlTester($scenario);
 $I->wantTo('get two oparl:organization objects (a Gremium and a Fraktion)');
 $I->sendGET('/fraktion/1');
 $I->seeOparl('{

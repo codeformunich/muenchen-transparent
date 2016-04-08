@@ -183,7 +183,7 @@ class OParl10Object {
         $data = [
             'id'   => OParl10Controller::getOparlObjectUrl('person', $body, $stadtraetin->id),
             'type' => self::TYPE_PERSON,
-            'body' => $body,
+            'body' => OParl10Controller::getOparlObjectUrl('body', $body),
             'name' => $stadtraetin->name,
         ];
         

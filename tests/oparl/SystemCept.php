@@ -1,5 +1,5 @@
 <?php 
-$I = new ApiTester($scenario);
+$I = new OparlTester($scenario);
 $I->wantTo('get the oparl:system object');
 $I->sendGET('/');
 $I->seeOparl('{

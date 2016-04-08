@@ -16,9 +16,9 @@
  *
  * @SuppressWarnings(PHPMD)
 */
-class ApiTester extends \Codeception\Actor
+class OparlTester extends \Codeception\Actor
 {
-    use _generated\ApiTesterActions;
+    use _generated\OparlTesterActions;
 
    /**
     * Checks if the generic requirements for every OParl-response are met

@@ -1,7 +1,7 @@
-class_name: ApiTester
+class_name: OparlTester
 modules:
     enabled:
-        - \Helper\Api
+        - \Helper\Oparl
         - REST:
               depends: PhpBrowser
               url: http://localhost:8080/oparl/v1.0
