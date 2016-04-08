@@ -459,7 +459,6 @@ class Dokument extends CActiveRecord implements IRISItem
         }
     }
 
-
     /**
      * @return string
      */
@@ -467,7 +466,6 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
     }
-
 
     private static $dokumente_cache = [];
 

@@ -114,6 +114,7 @@ INSERT INTO `dokumente` VALUES (6,NULL,NULL,NULL,NULL,NULL,NULL,'',0,'Dokument o
 
 /*!40000 ALTER TABLE `fraktionen` DISABLE KEYS */;
 INSERT INTO `fraktionen` VALUES (1,'Fraktion der Politiker',1,'https://www.example.org/fraktion-der-politiker');
+INSERT INTO `fraktionen` VALUES (2,'Fraktion des Stadtrat',NULL,'');
 /*!40000 ALTER TABLE `fraktionen` ENABLE KEYS */;
 
 --
@@ -191,6 +192,8 @@ INSERT INTO `metadaten` VALUES ('letzte_aktualisierung','2014-09-15 04:04:33');
 --
 
 /*!40000 ALTER TABLE `stadtraetInnen` DISABLE KEYS */;
+INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Stadtrat mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~');
+INSERT INTO `stadtraetInnen` VALUES (2,NULL,0,NULL,'',NULL,'','Stadträtin mit möglichst wenigen Eigenschaften',NULL,NULL,NULL,NULL,NULL,NULL,'','','');
 /*!40000 ALTER TABLE `stadtraetInnen` ENABLE KEYS */;
 
 --
@@ -198,6 +201,8 @@ INSERT INTO `metadaten` VALUES ('letzte_aktualisierung','2014-09-15 04:04:33');
 --
 
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` DISABLE KEYS */;
+INSERT INTO `stadtraetInnen_fraktionen` VALUES (1,1,1,'[TODO]','2000-01-01','2004-01-01','von 01.01.2000 bis 01.01.2004','Mitglied');
+INSERT INTO `stadtraetInnen_fraktionen` VALUES (2,1,1,'[TODO]','2004-01-01',NULL,'seit 01.01.2014','Vorsitzender');
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` ENABLE KEYS */;
 
 --
@@ -287,4 +292,4 @@ INSERT INTO `vorgaenge` VALUES (1,NULL,NULL);
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-04 21:38:23
+-- Dump completed on 2016-04-08 20:51:46

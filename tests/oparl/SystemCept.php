@@ -2,7 +2,8 @@
 $I = new OparlTester($scenario);
 $I->wantTo('get the oparl:system object');
 $I->sendGET('/');
-$I->seeOparl('{
+$I->seeOparl('
+{
   "id": "http://localhost:8080/oparl/v1.0",
   "type": "https://oparl.org/schema/1.0/System",
   "oparlVersion": "https://oparl.org/specs/1.0/",
@@ -14,4 +15,5 @@ $I->seeOparl('{
   "website": "http://localhost:8080",
   "vendor": "https://github.com/codeformunich/Muenchen-Transparent",
   "product": "https://github.com/codeformunich/Muenchen-Transparent"
-}');
+}'
+);

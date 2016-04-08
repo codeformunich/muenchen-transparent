@@ -13,7 +13,7 @@ class OParl10Object {
     const TYPE_PAPER           = 'https://oparl.org/schema/1.0/Paper';
     const TYPE_PERSON          = 'https://oparl.org/schema/1.0/Person';
     const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
-    
+
     /*
      * Gibt ein belibiges Objekt als array zurück
      */
@@ -41,7 +41,7 @@ class OParl10Object {
             return OParl10Object::body($body, $name, $shortName, $website);
         } else return ['error' => 'Object of typ ' . $typ . ' (and id=' . $id . ') not found.'];
     }
-    
+
     /**
      * Erzeugt das 'oparl:System'-Objekt, also den API-Einstiegspunkt
      */
@@ -81,7 +81,7 @@ class OParl10Object {
             'terms'           => OParl10Controller::getOparlListUrl('terms',         $body),
         ];
     }
-    
+
     /**
      * Erzeugt die statische Liste mit allen 'oparl:LegislativeTerm'-Objekten, also den Legislaturperioden
      */
@@ -164,21 +164,21 @@ class OParl10Object {
             'classification' => 'Fraktion',
         ];
     }
-    
+
     /**
      * Erzeugt ein 'oparl:Person'-Objekt, das StadträtInnen abbildet
      */
     public static function person($id) {
         $stadtraetin = StadtraetIn::model()->findByPk($id);
-        
+
         $body = 0; // fallback
-        
+
         if (count($stadtraetin->getFraktionsMitgliedschaften()) > 0) {
             $body = $stadtraetin->getFraktionsMitgliedschaften()[0]->fraktion->ba_nr;
             if ($body == null)
                 $body = 0;
         }
-        
+
         // Zwingende Attribute
         $data = [
             'id'   => OParl10Controller::getOparlObjectUrl('person', $body, $stadtraetin->id),
@@ -186,7 +186,7 @@ class OParl10Object {
             'body' => OParl10Controller::getOparlObjectUrl('body', $body),
             'name' => $stadtraetin->name,
         ];
-        
+
         // Das Geschlecht übersetzen
         if ($stadtraetin->geschlecht) {
             if ($stadtraetin->geschlecht == 'weiblich')
@@ -196,7 +196,7 @@ class OParl10Object {
             else
                 $data['gender'] = 'other';
         }
-        
+
         // optionale Attribute
         $optional_properties = [
             'life'                                   => $stadtraetin->beschreibung,
@@ -211,33 +211,33 @@ class OParl10Object {
             'muenchen-transparent:facebook'          => $stadtraetin->facebook,
             'muenchen-transparent:abgeordnetenwatch' => $stadtraetin->abgeordnetenwatch,
         ];
-        
+
         foreach ($optional_properties as $key => $value) {
             if ($value && $value != "")
                 $data[$key] = $value;
         }
-        
+
         return $data;
     }
-    
+
     /**
      * Erzeugt ein 'oparl:File'-Objekt, das Dokumente abbildet
      */
-     public function file($id) {
-         $dokument = Dokument::model()->findByPk($id);
-         
-         $data = [
-             'id'        => OParl10Controller::getOparlObjectUrl('id', $dokument->id),
-             'type'      => self::TYPE_FILE,
-             'fileName'  => $dokument->getName(true) . '.pdf',
-             'name'      => $dokument->getName(),
-             'mimeType'  => 'application/pdf',
-             'accessUrl' => $dokument->getLinkZumDokument(),
-         ];
-         
-         if ($dokument->deleted)
+    public function file($id) {
+        $dokument = Dokument::model()->findByPk($id);
+
+        $data = [
+            'id'        => OParl10Controller::getOparlObjectUrl('id', $dokument->id),
+            'type'      => self::TYPE_FILE,
+            'fileName'  => $dokument->getName(true) . '.pdf',
+            'name'      => $dokument->getName(),
+            'mimeType'  => 'application/pdf', // FIXME: Es gibt auch tiff's! vgl. https://github.com/codeformunich/Muenchen-Transparent/issues/137
+            'accessUrl' => $dokument->getLinkZumDokument() . '.pdf',
+        ];
+
+        if ($dokument->deleted)
             $data['delted'] = true;
-        
+
         return $data;
      }
 }
