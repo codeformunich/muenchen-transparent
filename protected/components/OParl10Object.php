@@ -9,7 +9,7 @@ class OParl10Object {
     const TYPE_LOCATION        = 'https://oparl.org/schema/1.0/Loca­tion';
     const TYPE_MEETING         = 'https://oparl.org/schema/1.0/Meet­ing';
     const TYPE_MEMBERSHIP      = 'https://oparl.org/schema/1.0/Member­ship';
-    const TYPE_ORGANIZATION    = 'https://oparl.org/schema/1.0/Organ­iz­a­tion';
+    const TYPE_ORGANIZATION    = 'https://oparl.org/schema/1.0/Organ­ization';
     const TYPE_PAPER           = 'https://oparl.org/schema/1.0/Paper';
     const TYPE_PERSON          = 'https://oparl.org/schema/1.0/Person';
     const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
@@ -18,13 +18,17 @@ class OParl10Object {
      * Gibt ein belibiges Objekt als array zurück
      */
     public static function object($typ, $id = null) {
-        if      ($typ == 'system'  ) return self::system();
-        else if ($typ == 'fraktion') return self::fraktion($id);
-        else if ($typ == 'gremium' ) return self::gremium($id);
-        else if ($typ == 'person'  ) return self::person($id);
-        else if ($typ == 'file'    ) return self::file($id);
-        else if ($typ == 'term'    ) return self::terms()[$id];
-        else if ($typ == 'body'    ) {
+        if      ($typ == 'system'                ) return self::system();
+        else if ($typ == 'person'                ) return self::person($id);
+        else if ($typ == 'file'                  ) return self::file($id);
+        else if ($typ == 'organization_fraktion' ) return self::organization_fraktion($id);
+        else if ($typ == 'organization_gremium'  ) return self::organization_gremium($id);
+        else if ($typ == 'organization_referat'  ) return self::organization_referat($id);
+        else if ($typ == 'membership_fraktion'   ) return self::membership_fraktion($id);
+        else if ($typ == 'membership_gremium'    ) return self::membership_gremium($id);
+        else if ($typ == 'membership_referat'    ) return self::membership_referat($id);
+        else if ($typ == 'term'                  ) return self::terms($id);
+        else if ($typ == 'body'                  ) {
             // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
             if ($id == 0) {
                 $body = 0;
@@ -85,8 +89,8 @@ class OParl10Object {
     /**
      * Erzeugt die statische Liste mit allen 'oparl:LegislativeTerm'-Objekten, also den Legislaturperioden
      */
-    public static function terms() {
-        return [
+    public static function terms($id) {
+        $data = [
             0 => [
                 'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 0),
                 'type'      => TYPE_LEGISLATIVETERM,
@@ -123,18 +127,20 @@ class OParl10Object {
                 'endDate'   => '2020-12-03',
             ],
         ];
+
+        return $data[$id];
     }
 
     /**
      * Erzeugt ein 'oparl:Organization'-Objekt, das ein Germium abbildet
      */
-    public static function gremium($id) {
+    public static function organization_gremium($id) {
         $gremium     = Gremium::model()->findByPk($id);
         $meetings    = [];
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('gremium', $gremium->ba_nr, $gremium->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization_gremium', $gremium->ba_nr, $gremium->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $gremium->ba_nr),
             'name'           => $gremium->getName(false),
@@ -148,13 +154,13 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Organization'-Objekt, das ein Fraktion abbildet
      */
-    public static function fraktion($id) {
+    public static function organization_fraktion($id) {
         $fraktion    = Fraktion::model()->findByPk($id);
         $meetings    = [];
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('fraktion', $fraktion->ba_nr, $fraktion->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization_fraktion', $fraktion->ba_nr, $fraktion->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $fraktion->ba_nr),
             'name'           => $fraktion->getName(false),
@@ -197,6 +203,11 @@ class OParl10Object {
                 $data['gender'] = 'other';
         }
 
+        if ($stadtraetin->referentIn)
+            $data['status'] = "Berufsmäßiger Stadtrat";
+        else
+            $data['status'] = "Ehrenamtlicher Stadtrat";
+
         // optionale Attribute
         $optional_properties = [
             'life'                                   => $stadtraetin->beschreibung,
@@ -227,7 +238,7 @@ class OParl10Object {
         $dokument = Dokument::model()->findByPk($id);
 
         $data = [
-            'id'        => OParl10Controller::getOparlObjectUrl('id', $dokument->id),
+            'id'        => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
             'type'      => self::TYPE_FILE,
             'fileName'  => $dokument->getName(true) . '.pdf',
             'name'      => $dokument->getName(),
@@ -239,5 +250,29 @@ class OParl10Object {
             $data['delted'] = true;
 
         return $data;
-     }
+    }
+
+    /**
+     * Erzeugt ein 'oparl:Membership'-Objekt, das die Mitgliedschaften eines Stadrats in einer Fraktion abbildet
+     */
+    public function membership_fraktion($id) {
+        $mitgliedschaft = StadtraetInFraktion::model()->findByPk($id);
+
+        $data = [
+            'id'                        => OParl10Controller::getOparlObjectUrl('membership_fraktion', $mitgliedschaft->id),
+            'type'                      => self::TYPE_MEMBERSHIP,
+            'organization'              => OParl10Controller::getOparlObjectUrl('organization_fraktion', $mitgliedschaft->fraktion->id),
+            'person'                    => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
+            'role'                      => $mitgliedschaft->funktion,
+            'startDate'                 => $mitgliedschaft->datum_von,
+            'votingRight'               => true,
+            'muenchen-transparent:term' => OParl10Controller::getOparlObjectUrl('term', $mitgliedschaft->wahlperiode),
+        ];
+
+        if ($mitgliedschaft->datum_bis !== null)
+            $data['endDate'] = $mitgliedschaft->datum_bis;
+
+        return $data;
+    }
+
 }

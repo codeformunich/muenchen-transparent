@@ -2,7 +2,7 @@
 
 class OParl10Controller extends CController {
     const VERSION = 'https://oparl.org/specs/1.0/';
-    
+
     const ITEMS_PER_PAGE = 100;
 
     /*
@@ -10,7 +10,7 @@ class OParl10Controller extends CController {
      */
     public static function getOparlObjectUrl($typ, $body = null, $id = null) {
         if ($body == null) $body = 0;
-        
+
         if ($typ == 'system') {
             return OPARL_10_ROOT;
         } else if ($typ == 'body') {
@@ -21,7 +21,7 @@ class OParl10Controller extends CController {
 
         return $url;
     }
-    
+
     /*
      * Erzeugt die URL zu einer externen Objektliste
      */
@@ -33,16 +33,15 @@ class OParl10Controller extends CController {
 
         return $url;
     }
-    
+
     /*
      * Gibt das 'oparl:System'-Objekt als JSON aus
      */
     public function actionSystem() {
         Header('Content-Type: application/json');
-        $object = OParl10Object::object('system', null);
-        echo json_encode($object);
+        echo json_encode(OParl10Object::object('system', null));
     }
-    
+
     /*
      * Gibt ein beliebiges Objekt außer 'oparl:System' als JSON aus
      */
@@ -85,12 +84,12 @@ class OParl10Controller extends CController {
 
         $gremien = Gremium::model()->findAll($query);
         foreach ($gremien as $gremium)
-            $organizations[] = OParl10Object::object('gremium', $gremium->id);
-        
+            $organizations[] = OParl10Object::object('organization_gremium', $gremium->id);
+
         $fraktionen = Fraktion::model()->findAll($query);
         foreach ($fraktionen as $fraktion)
-            $organizations[] = OParl10Object::object('fraktion', $fraktion->id);
-        
+            $organizations[] = OParl10Object::object('organization_fraktion', $fraktion->id);
+
         echo json_encode([
             'items'         => $organizations,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
@@ -105,7 +104,7 @@ class OParl10Controller extends CController {
      */
     public function actionTerms($body) {
         Header('Content-Type: application/json');
-        
+
         echo json_encode([
             'items'         => OParl10Object::terms($body),
             'itemsPerPage'  => static::ITEMS_PER_PAGE,

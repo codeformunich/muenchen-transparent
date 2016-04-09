@@ -1,4 +1,4 @@
-<?php 
+<?php
 $I = new OparlTester($scenario);
 $I->wantTo('get two oparl:person objects (one with all attributes and one with few attributes)');
 $I->sendGET('/person/1');
@@ -9,6 +9,7 @@ $I->seeOparl('
   "body": "http://localhost:8080/oparl/v1.0/body/1",
   "name": "Stadtrat mit allen Eigenschaften",
   "gender": "male",
+  "status": "Ehrenamtlicher Stadtrat",
   "life": "„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“",
   "lifeSource": "~",
   "email": "meine.email@gmail.com",
@@ -28,6 +29,7 @@ $I->seeOparl('
   "id": "http://localhost:8080/oparl/v1.0/body/0/person/2",
   "type": "https://oparl.org/schema/1.0/Person",
   "body": "http://localhost:8080/oparl/v1.0/body/0",
-  "name": "Stadträtin mit möglichst wenigen Eigenschaften"
+  "name": "Stadträtin mit möglichst wenigen Eigenschaften",
+  "status": "Ehrenamtlicher Stadtrat"
 }
 ');
