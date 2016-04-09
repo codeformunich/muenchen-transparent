@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('get two oparl:person objects (one with all attributes and one with few attributes)');
+$I->wantTo('get three oparl:person objects (one with all attributes, one with few attributes and one Referent)');
 $I->sendGET('/person/1');
 $I->seeOparl('
 {
@@ -31,5 +31,15 @@ $I->seeOparl('
   "body": "http://localhost:8080/oparl/v1.0/body/0",
   "name": "Stadträtin mit möglichst wenigen Eigenschaften",
   "status": "Ehrenamtlicher Stadtrat"
+}
+');
+$I->sendGET('/person/3');
+$I->seeOparl('
+{
+  "id": "http://localhost:8080/oparl/v1.0/body/0/person/3",
+  "type": "https://oparl.org/schema/1.0/Person",
+  "body": "http://localhost:8080/oparl/v1.0/body/0",
+  "name": "Referent für Städtische Aufgaben",
+  "status": "Berufsmäßiger Stadtrat"
 }
 ');

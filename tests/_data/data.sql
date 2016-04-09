@@ -89,6 +89,7 @@ INSERT INTO `metadaten` VALUES ('letzte_aktualisierung','2014-09-15 04:04:33');
 /*!40000 ALTER TABLE `rechtsdokument` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `referate` DISABLE KEYS */;
+INSERT INTO `referate` VALUES (1,'Referat für städtische Aufgaben','aufg','Münchnerstr. 1','12345','München','aufg@example.com','089132456','http://aufg.example.com','Verantwortlich für Staädtische Aufgaben',1);
 /*!40000 ALTER TABLE `referate` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ris_aenderungen` DISABLE KEYS */;
@@ -97,17 +98,19 @@ INSERT INTO `metadaten` VALUES ('letzte_aktualisierung','2014-09-15 04:04:33');
 /*!40000 ALTER TABLE `stadtraetInnen` DISABLE KEYS */;
 INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Stadtrat mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~');
 INSERT INTO `stadtraetInnen` VALUES (2,NULL,0,NULL,'',NULL,'','Stadträtin mit möglichst wenigen Eigenschaften',NULL,NULL,NULL,NULL,NULL,NULL,'','','');
+INSERT INTO `stadtraetInnen` VALUES (3,NULL,1,NULL,'',NULL,'','Referent für Städtische Aufgaben',NULL,NULL,NULL,NULL,NULL,NULL,'','','');
 /*!40000 ALTER TABLE `stadtraetInnen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` DISABLE KEYS */;
-INSERT INTO `stadtraetInnen_fraktionen` VALUES (1,1,1,'[TODO]','2000-01-01','2004-01-01','von 01.01.2000 bis 01.01.2004','Mitglied');
-INSERT INTO `stadtraetInnen_fraktionen` VALUES (2,1,1,'[TODO]','2004-01-01',NULL,'seit 01.01.2014','Vorsitzender');
+INSERT INTO `stadtraetInnen_fraktionen` VALUES (1,1,1,'2','2000-01-01','2004-01-01','von 01.01.2000 bis 01.01.2004','Mitglied');
+INSERT INTO `stadtraetInnen_fraktionen` VALUES (2,1,1,'3','2004-01-01',NULL,'seit 01.01.2014','Vorsitzender');
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_gremien` DISABLE KEYS */;
 /*!40000 ALTER TABLE `stadtraetInnen_gremien` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_referate` DISABLE KEYS */;
+INSERT INTO `stadtraetInnen_referate` VALUES (1,3,1,NULL,NULL);
 /*!40000 ALTER TABLE `stadtraetInnen_referate` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `statistik_datensaetze` DISABLE KEYS */;
