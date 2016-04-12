@@ -4,10 +4,10 @@ $I->wantTo('get two oparl:membership object (one with end date and one without)'
 $I->sendGET('/membership_referat/1');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/body/1/membership_referat/",
+  "id": "http://localhost:8080/oparl/v1.0/membership_referat/1",
   "type": "https://oparl.org/schema/1.0/Member­ship",
-  "organization": "http://localhost:8080/oparl/v1.0/body/1/organization_referat/",
-  "person": "http://localhost:8080/oparl/v1.0/body/3/person/",
+  "organization": "http://localhost:8080/oparl/v1.0/organization_referat/1",
+  "person": "http://localhost:8080/oparl/v1.0/person/3",
   "role": "Referent"
 }
 ');

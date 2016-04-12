@@ -4,7 +4,7 @@ $I->wantTo('get three oparl:person objects (one with all attributes, one with fe
 $I->sendGET('/person/1');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/body/1/person/1",
+  "id": "http://localhost:8080/oparl/v1.0/person/1",
   "type": "https://oparl.org/schema/1.0/Person",
   "body": "http://localhost:8080/oparl/v1.0/body/1",
   "name": "Stadtrat mit allen Eigenschaften",
@@ -26,7 +26,7 @@ $I->seeOparl('
 $I->sendGET('/person/2');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/body/0/person/2",
+  "id": "http://localhost:8080/oparl/v1.0/person/2",
   "type": "https://oparl.org/schema/1.0/Person",
   "body": "http://localhost:8080/oparl/v1.0/body/0",
   "name": "Stadträtin mit möglichst wenigen Eigenschaften",
@@ -36,7 +36,7 @@ $I->seeOparl('
 $I->sendGET('/person/3');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/body/0/person/3",
+  "id": "http://localhost:8080/oparl/v1.0/person/3",
   "type": "https://oparl.org/schema/1.0/Person",
   "body": "http://localhost:8080/oparl/v1.0/body/0",
   "name": "Referent für Städtische Aufgaben",

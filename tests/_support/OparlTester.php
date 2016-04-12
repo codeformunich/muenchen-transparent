@@ -20,13 +20,24 @@ class OparlTester extends \Codeception\Actor
 {
     use _generated\OparlTesterActions;
 
-   /**
-    * Checks if the generic requirements for every OParl-response are met
-    */
+    /**
+     * Checks if the generic requirements for every OParl-response are met
+     */
     function seeOparl($oparl_object) {
         $this->seeResponseCodeIs(200);
         // TODO: CORS
         $this->seeResponseIsJson();
-        $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
-    }
+
+        // grab the url used in the config and build an url regex based on it
+        $config = \Codeception\Configuration::config();
+        $apiSettings = \Codeception\Configuration::suiteSettings('oparl', $config);
+        $base_url = $apiSettings['modules']['enabled'][1]['REST']['url'];
+        $oparl_url = '/"(' . preg_quote($base_url, '/') . '[^\"]*)"/';
+
+        preg_match_all($oparl_url, $this->getResponseContent(), $matches);
+        foreach ($matches[1] as $key => $value) {
+            $this->sendGET($value);
+            $this->seeResponseCodeIs(200);
+        }
+     }
 }

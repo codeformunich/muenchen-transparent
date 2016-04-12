@@ -8,16 +8,12 @@ class OParl10Controller extends CController {
     /*
      * Erzeugt die URL zu einem einzelnen OParl-Objekt
      */
-    public static function getOparlObjectUrl($typ, $body = null, $id = null) {
-        if ($body == null) $body = 0;
-
+    public static function getOparlObjectUrl($typ, $id = null) {
         if ($typ == 'system') {
             return OPARL_10_ROOT;
-        } else if ($typ == 'body') {
-            return OPARL_10_ROOT . '/body/' . $body;
         }
 
-        $url = OPARL_10_ROOT . '/body/' . $body . '/' . $typ . '/' . $id;
+        $url = OPARL_10_ROOT . '/' . $typ . '/' . $id;
 
         return $url;
     }

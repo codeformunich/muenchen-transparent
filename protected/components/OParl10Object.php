@@ -140,7 +140,7 @@ class OParl10Object {
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization_gremium', $gremium->ba_nr, $gremium->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization_gremium', $gremium->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $gremium->ba_nr),
             'name'           => $gremium->getName(false),
@@ -160,7 +160,7 @@ class OParl10Object {
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization_fraktion', $fraktion->ba_nr, $fraktion->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization_fraktion', $fraktion->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $fraktion->ba_nr),
             'name'           => $fraktion->getName(false),
@@ -187,7 +187,7 @@ class OParl10Object {
 
         // Zwingende Attribute
         $data = [
-            'id'   => OParl10Controller::getOparlObjectUrl('person', $body, $stadtraetin->id),
+            'id'   => OParl10Controller::getOparlObjectUrl('person', $stadtraetin->id),
             'type' => self::TYPE_PERSON,
             'body' => OParl10Controller::getOparlObjectUrl('body', $body),
             'name' => $stadtraetin->name,
