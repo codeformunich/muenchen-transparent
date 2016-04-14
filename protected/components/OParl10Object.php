@@ -91,37 +91,32 @@ class OParl10Object {
      */
     public static function terms($id) {
         $data = [
-            0 => [
-                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 0),
-                'type'      => TYPE_LEGISLATIVETERM,
+            [
+                'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => 'Unbekannt',
                 'startDate' => '0000-00-00',
                 'endDate'   => '0000-00-00',
             ],
-            1 => [
-                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 1),
-                'type'      => TYPE_LEGISLATIVETERM,
+            [
+                'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '1996-2002',
                 'startDate' => '1996-12-03',
                 'endDate'   => '2002-12-03',
             ],
-            2 => [
-                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 2),
-                'type'      => TYPE_LEGISLATIVETERM,
+            [
+                'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '2002-2008',
                 'startDate' => '2002-12-03',
                 'endDate'   => '2008-12-03',
             ],
-            3 => [
-                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 3),
-                'type'      => TYPE_LEGISLATIVETERM,
+            [
+                'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '2008-2014',
                 'startDate' => '2008-12-03',
                 'endDate'   => '2014-12-03',
             ],
-            4 => [
-                'id'        => OParl10Controller::getOparlObjectUrl('term', $body, 4),
-                'type'      => TYPE_LEGISLATIVETERM,
+            [
+                'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '2014-2020',
                 'startDate' => '2014-12-03',
                 'endDate'   => '2020-12-03',

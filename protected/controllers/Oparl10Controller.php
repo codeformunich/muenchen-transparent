@@ -98,11 +98,11 @@ class OParl10Controller extends CController {
     /**
      * Die externe Objektliste mit allen 'oparl:LegislativeTerm'-Objekten
      */
-    public function actionTerms($body) {
+    public function actionTerms() {
         Header('Content-Type: application/json');
 
         echo json_encode([
-            'items'         => OParl10Object::terms($body),
+            'items'         => OParl10Object::terms(),
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
             'firstPage'     => static::getOparlListUrl('bodies'),
             'lastPage'      => static::getOparlListUrl('bodies'),
