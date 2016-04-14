@@ -25,7 +25,7 @@ class OParl10Controller extends CController {
         $url = OPARL_10_ROOT;
         if ($body !== null) $url .= '/body/' . $body;
         $url .= '/' . $typ;
-        if ($id !== null) $url .= '/' . $id;
+        if ($id !== null) $url .= '?id=' . $id;
 
         return $url;
     }
@@ -93,6 +93,41 @@ class OParl10Controller extends CController {
             'lastPage'      => static::getOparlListUrl('organizations', $body),
             'numberOfPages' => 1,
         ]);
+    }
+    /**
+     * Die externe Objektliste mit allen 'oparl:person'-Objekten
+     */
+    public function actionPersons($body, $id = null) {
+        Header('Content-Type: application/json');
+
+        // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
+        $criteria = new CDbCriteria(['order' => 'id ASC', 'limit' => static::ITEMS_PER_PAGE]);
+
+        if ($id !== null) {
+            $criteria->condition = 'id > :id';
+            $criteria->params = ["id" => $id];
+        }
+
+        $entries = StadtraetIn::model()->findAll($criteria);
+
+        $oparl_entries = [];
+        foreach ($entries as $person)
+            $oparl_entries[] = OParl10Object::object('person', $person->id);
+
+        $last_entry = StadtraetIn::model()->find(['order' => 'id DESC', "limit" => static::ITEMS_PER_PAGE]);
+
+        $data = [
+            'items'         => $oparl_entries,
+            'itemsPerPage'  => static::ITEMS_PER_PAGE,
+            'firstPage'     => static::getOparlListUrl('persons', $body),
+            'last'          => $last_entry->id,
+            'numberOfPages' => StadtraetIn::model()->count(),
+        ];
+
+        if ($entries[count($entries)-1]->id != $last_entry->id)
+            $data['nextPage'] = static::getOparlListUrl('persons', $body, $entries[count($entries)-1]->id);
+
+        echo json_encode($data);
     }
 
     /**
