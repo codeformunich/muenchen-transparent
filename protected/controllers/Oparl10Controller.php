@@ -94,40 +94,67 @@ class OParl10Controller extends CController {
             'numberOfPages' => 1,
         ]);
     }
-    /**
-     * Die externe Objektliste mit allen 'oparl:person'-Objekten
+
+    /*
+     * Eine allgemeine externe Objektliste, die für verschiedene Objekte genutzt werden kann
      */
-    public function actionListPerson($body, $id = null) {
+    public static function externalList($model, $name, $body, $ba_check, $id = null) {
         Header('Content-Type: application/json');
 
         // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
         $criteria = new CDbCriteria(['order' => 'id ASC', 'limit' => static::ITEMS_PER_PAGE]);
 
         if ($id !== null) {
-            $criteria->condition = 'id > :id';
-            $criteria->params = ["id" => $id];
+            $criteria->addCondition('id > :id');
+            $criteria->params["id"] = $id;
         }
 
-        $entries = StadtraetIn::model()->findAll($criteria);
+        if ($ba_check) {
+            $criteria->addCondition('ba_nr = :ba_nr');
+            $criteria->params["ba_nr"] = $body;
+        }
+
+        $entries = $model->findAll($criteria);
 
         $oparl_entries = [];
-        foreach ($entries as $person)
-            $oparl_entries[] = OParl10Object::object('person', $person->id);
+        foreach ($entries as $entry)
+            $oparl_entries[] = OParl10Object::object($name, $entry->id);
 
-        $last_entry = StadtraetIn::model()->find(['order' => 'id DESC', "limit" => static::ITEMS_PER_PAGE]);
+        $last_entry = $model->find(['order' => 'id DESC', "limit" => static::ITEMS_PER_PAGE]);
 
         $data = [
             'items'         => $oparl_entries,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => static::getOparlListUrl('person', $body),
+            'firstPage'     => static::getOparlListUrl($name, $body),
             'last'          => $last_entry->id,
             'numberOfPages' => StadtraetIn::model()->count(),
         ];
 
-        if ($entries[count($entries)-1]->id != $last_entry->id)
-            $data['nextPage'] = static::getOparlListUrl('person', $body, $entries[count($entries)-1]->id);
+        if (count($entries) > 0 && end($entries)->id != $last_entry->id)
+            $data['nextPage'] = static::getOparlListUrl($name, $body, end($entries)->id);
 
         echo json_encode($data);
+    }
+
+    /**
+     * Die externe Objektliste mit allen 'oparl:person'-Objekten
+     */
+    public function actionListPerson($body, $id = null) {
+        self::externalList(StadtraetIn::model(), 'person', $body, false, $id);
+    }
+
+    /**
+     * Die externe Objektliste mit allen 'oparl:person'-Objekten
+     */
+    public function actionListMeeting($body, $id = null) {
+        self::externalList(Termin::model(), 'meeting', $body, true, $id);
+    }
+
+    /**
+     * Die externe Objektliste mit allen 'oparl:person'-Objekten
+     */
+    public function actionListPaper($body, $id = null) {
+        self::externalList(Antrag::model(), 'paper', $body, true, $id);
     }
 
     /**
