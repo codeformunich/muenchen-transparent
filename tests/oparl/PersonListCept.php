@@ -1,7 +1,7 @@
 <?php
 $I = new OparlTester($scenario);
 $I->wantTo('get the oparl:person list');
-$I->sendGET('/body/0/persons');
+$I->sendGET('/body/0/list/person');
 $I->seeOparl('
 {
   "items": [
@@ -40,12 +40,12 @@ $I->seeOparl('
     }
   ],
   "itemsPerPage": 100,
-  "firstPage": "http://localhost:8080/oparl/v1.0/body/0/persons",
+  "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
   "last": "3",
   "numberOfPages": "3"
 }
 ');
-$I->sendGET('/body/0/persons?id=2');
+$I->sendGET('/body/0/list/person?id=2');
 $I->seeOparl('
 {
   "items": [
@@ -58,7 +58,7 @@ $I->seeOparl('
     }
   ],
   "itemsPerPage": 100,
-  "firstPage": "http://localhost:8080/oparl/v1.0/body/0/persons",
+  "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
   "last": "3",
   "numberOfPages": "3"
 }

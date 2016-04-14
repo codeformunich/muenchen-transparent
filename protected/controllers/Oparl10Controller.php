@@ -24,7 +24,7 @@ class OParl10Controller extends CController {
     public static function getOparlListUrl($typ, $body = null, $id = null) {
         $url = OPARL_10_ROOT;
         if ($body !== null) $url .= '/body/' . $body;
-        $url .= '/' . $typ;
+        $url .= '/list/' . $typ;
         if ($id !== null) $url .= '?id=' . $id;
 
         return $url;
@@ -49,7 +49,7 @@ class OParl10Controller extends CController {
     /**
      * Die externe Objektliste mit allen 'oparl:Body'-Objekten
      */
-    public function actionBodies() {
+    public function actionListBody() {
         Header('Content-Type: application/json');
 
         $bodies = [OParl10Object::object('body', 0)];
@@ -61,8 +61,8 @@ class OParl10Controller extends CController {
         echo json_encode([
             'items'         => $bodies,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => static::getOparlListUrl('bodies'),
-            'lastPage'      => static::getOparlListUrl('bodies'),
+            'firstPage'     => static::getOparlListUrl('body'),
+            'lastPage'      => static::getOparlListUrl('body'),
             'numberOfPages' => 1,
         ]);
     }
@@ -70,7 +70,7 @@ class OParl10Controller extends CController {
     /**
      * Die externe Objektliste mit allen 'oparl:Organization'-Objekten
      */
-    public function actionOrganizations($body) {
+    public function actionListOrganization($body) {
         Header('Content-Type: application/json');
 
         // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
@@ -89,15 +89,15 @@ class OParl10Controller extends CController {
         echo json_encode([
             'items'         => $organizations,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => static::getOparlListUrl('organizations', $body),
-            'lastPage'      => static::getOparlListUrl('organizations', $body),
+            'firstPage'     => static::getOparlListUrl('organization', $body),
+            'lastPage'      => static::getOparlListUrl('organization', $body),
             'numberOfPages' => 1,
         ]);
     }
     /**
      * Die externe Objektliste mit allen 'oparl:person'-Objekten
      */
-    public function actionPersons($body, $id = null) {
+    public function actionListPerson($body, $id = null) {
         Header('Content-Type: application/json');
 
         // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
@@ -119,13 +119,13 @@ class OParl10Controller extends CController {
         $data = [
             'items'         => $oparl_entries,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => static::getOparlListUrl('persons', $body),
+            'firstPage'     => static::getOparlListUrl('person', $body),
             'last'          => $last_entry->id,
             'numberOfPages' => StadtraetIn::model()->count(),
         ];
 
         if ($entries[count($entries)-1]->id != $last_entry->id)
-            $data['nextPage'] = static::getOparlListUrl('persons', $body, $entries[count($entries)-1]->id);
+            $data['nextPage'] = static::getOparlListUrl('person', $body, $entries[count($entries)-1]->id);
 
         echo json_encode($data);
     }
@@ -133,14 +133,14 @@ class OParl10Controller extends CController {
     /**
      * Die externe Objektliste mit allen 'oparl:LegislativeTerm'-Objekten
      */
-    public function actionTerms() {
+    public function actionListTerm($body) {
         Header('Content-Type: application/json');
 
         echo json_encode([
             'items'         => OParl10Object::terms(-1),
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => static::getOparlListUrl('terms'),
-            'lastPage'      => static::getOparlListUrl('terms'),
+            'firstPage'     => static::getOparlListUrl('term', $body),
+            'lastPage'      => static::getOparlListUrl('term', $body),
             'numberOfPages' => 1,
         ]);
     }

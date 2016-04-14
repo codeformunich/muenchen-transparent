@@ -55,7 +55,7 @@ class OParl10Object {
             'type'               => self::TYPE_SYSTEM,
             'oparlVersion'       => OParl10Controller::VERSION,
             'otherOparlVersions' => [],
-            'body'               => OParl10Controller::getOparlListUrl('bodies'),
+            'body'               => OParl10Controller::getOparlListUrl('body'),
             'name'               => Yii::app()->params['projectTitle'],
             'contactEmail'       => Yii::app()->params['adminEmail'],
             'contactName'        => Yii::app()->params['adminEmailName'],
@@ -78,11 +78,11 @@ class OParl10Object {
             'name'            => $name,
             'shortName'       => $shortName,
             'website'         => $website,
-            'organization'    => OParl10Controller::getOparlListUrl('organizations', $body),
-            'person'          => OParl10Controller::getOparlListUrl('persons',       $body),
-            'meeting'         => OParl10Controller::getOparlListUrl('meetings',      $body),
-            'paper'           => OParl10Controller::getOparlListUrl('papers',        $body),
-            'terms'           => OParl10Controller::getOparlListUrl('terms',         $body),
+            'organization'    => OParl10Controller::getOparlListUrl('organization', $body),
+            'person'          => OParl10Controller::getOparlListUrl('person',       $body),
+            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
+            'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
+            'terms'           => OParl10Controller::getOparlListUrl('term',         $body),
         ];
     }
 

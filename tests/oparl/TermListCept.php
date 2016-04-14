@@ -1,7 +1,7 @@
 <?php
 $I = new OparlTester($scenario);
 $I->wantTo('get the oparl:term list');
-$I->sendGET('/terms');
+$I->sendGET('/body/0/list/term');
 $I->seeOparl('
 {
   "items": [
@@ -37,8 +37,8 @@ $I->seeOparl('
     }
   ],
   "itemsPerPage": 100,
-  "firstPage": "http://localhost:8080/oparl/v1.0/terms",
-  "lastPage": "http://localhost:8080/oparl/v1.0/terms",
+  "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/term",
+  "lastPage": "http://localhost:8080/oparl/v1.0/body/0/list/term",
   "numberOfPages": 1
 }
 ');
