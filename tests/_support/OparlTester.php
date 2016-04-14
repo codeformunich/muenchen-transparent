@@ -27,6 +27,7 @@ class OparlTester extends \Codeception\Actor
         $this->seeResponseCodeIs(200);
         // TODO: CORS
         $this->seeResponseIsJson();
+        $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
 
         // grab the url used in the config and build an url regex based on it
         $config = \Codeception\Configuration::config();
@@ -36,6 +37,7 @@ class OparlTester extends \Codeception\Actor
 
         preg_match_all($oparl_url, $this->getResponseContent(), $matches);
         foreach ($matches[1] as $key => $value) {
+            codecept_debug("URL validity check for " . $value);
             $this->sendGET($value);
             $this->seeResponseCodeIs(200);
         }
