@@ -137,10 +137,10 @@ class OParl10Controller extends CController {
         Header('Content-Type: application/json');
 
         echo json_encode([
-            'items'         => OParl10Object::terms(),
+            'items'         => OParl10Object::terms(-1),
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => static::getOparlListUrl('bodies'),
-            'lastPage'      => static::getOparlListUrl('bodies'),
+            'firstPage'     => static::getOparlListUrl('terms'),
+            'lastPage'      => static::getOparlListUrl('terms'),
             'numberOfPages' => 1,
         ]);
     }

@@ -88,6 +88,8 @@ class OParl10Object {
 
     /**
      * Erzeugt die statische Liste mit allen 'oparl:LegislativeTerm'-Objekten, also den Legislaturperioden
+     *
+     * Wenn als id -1 übergeben wird, dann wird die gesammte Liste zurückgegeben
      */
     public static function terms($id) {
         $data = [
@@ -123,7 +125,10 @@ class OParl10Object {
             ],
         ];
 
-        return $data[$id];
+        if ($id == -1)
+            return $data;
+        else
+            return $data[$id];
     }
 
     /**
