@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('get two oparl:organization objects (a Gremium and a Fraktion)');
+$I->wantTo('validate oparl:organization objects (a Gremium and a Fraktion)');
 $I->sendGET('/organization_fraktion/1');
 $I->seeOparl('
 {

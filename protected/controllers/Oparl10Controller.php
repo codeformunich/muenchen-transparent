@@ -126,8 +126,7 @@ class OParl10Controller extends CController {
             'items'         => $oparl_entries,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
             'firstPage'     => static::getOparlListUrl($name, $body),
-            'last'          => $last_entry->id,
-            'numberOfPages' => StadtraetIn::model()->count(),
+            'numberOfPages' => (int) ($model->count() / static::ITEMS_PER_PAGE) + 1,
         ];
 
         if (count($entries) > 0 && end($entries)->id != $last_entry->id)

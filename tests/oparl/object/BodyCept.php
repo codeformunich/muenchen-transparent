@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('get two oparl:body objects (the Stadtrat and one BA)');
+$I->wantTo('validate oparl:body objects (the Stadtrat and one BA)');
 $I->sendGET('/body/0');
 $I->seeOparl('
 {

@@ -142,7 +142,7 @@ class OParl10Object {
         return [
             'id'             => OParl10Controller::getOparlObjectUrl('organization_gremium', $gremium->id),
             'type'           => self::TYPE_ORGANIZATION,
-            'body'           => OParl10Controller::getOparlObjectUrl('body', $gremium->ba_nr),
+            'body'           => OParl10Controller::getOparlObjectUrl('body', $gremium->ba_nr == null ? 0 : $gremium->ba_nr),
             'name'           => $gremium->getName(false),
             'shortName'      => $gremium->getName(true),
             'meeting'        => $meetings,
@@ -162,7 +162,7 @@ class OParl10Object {
         return [
             'id'             => OParl10Controller::getOparlObjectUrl('organization_fraktion', $fraktion->id),
             'type'           => self::TYPE_ORGANIZATION,
-            'body'           => OParl10Controller::getOparlObjectUrl('body', $fraktion->ba_nr),
+            'body'           => OParl10Controller::getOparlObjectUrl('body', $fraktion->ba_nr == null ? 0 : $fraktion->ba_nr),
             'name'           => $fraktion->getName(false),
             'shortName'      => $fraktion->getName(true),
             'meeting'        => $meetings,

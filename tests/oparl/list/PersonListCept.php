@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('get the oparl:person list');
+$I->wantTo('validate the external list oparl:person');
 $I->sendGET('/body/0/list/person');
 $I->seeOparl('
 {
@@ -41,8 +41,7 @@ $I->seeOparl('
   ],
   "itemsPerPage": 100,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
-  "last": "3",
-  "numberOfPages": "3"
+  "numberOfPages": 1
 }
 ');
 $I->sendGET('/body/0/list/person?id=2');
@@ -59,7 +58,6 @@ $I->seeOparl('
   ],
   "itemsPerPage": 100,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
-  "last": "3",
-  "numberOfPages": "3"
+  "numberOfPages": 1
 }
 ');

@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('get two oparl:membership object (one with end date and one without)');
+$I->wantTo('validate oparl:membership objects (one with end date and one without)');
 $I->sendGET('/membership_fraktion/1');
 $I->seeOparl('
 {

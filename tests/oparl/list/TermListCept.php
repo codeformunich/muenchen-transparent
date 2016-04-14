@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('get the oparl:term list');
+$I->wantTo('validate the external list oparl:term');
 $I->sendGET('/body/0/list/term');
 $I->seeOparl('
 {

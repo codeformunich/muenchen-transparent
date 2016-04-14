@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('get three oparl:person objects (one with all attributes, one with few attributes and one Referent)');
+$I->wantTo('validate oparl:person objects (one with all attributes, one with few attributes and one Referent)');
 $I->sendGET('/person/1');
 $I->seeOparl('
 {
