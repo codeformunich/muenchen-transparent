@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('validate oparl:system objects');
+$I->wantTo('validate oparl:system');
 $I->sendGET('/');
 $I->seeOparl('
 {

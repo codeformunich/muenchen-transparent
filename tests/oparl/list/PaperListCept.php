@@ -10,3 +10,12 @@ $I->seeOparl('
   "numberOfPages": 1
 }
 ');
+$I->sendGET('/body/1/list/paper');
+$I->seeOparl('
+{
+  "items": [],
+  "itemsPerPage": 100,
+  "firstPage": "http://localhost:8080/oparl/v1.0/body/1/list/paper",
+  "numberOfPages": 1
+}
+');

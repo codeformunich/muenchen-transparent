@@ -19,7 +19,7 @@ class OParl10Controller extends CController {
     }
 
     /*
-     * Erzeugt die URL zu einer externen Objektliste
+     * Erzeugt die URL zu einer externen Liste mit OParl-Objekten
      */
     public static function getOparlListUrl($typ, $body = null, $id = null) {
         $url = OPARL_10_ROOT;
@@ -86,6 +86,12 @@ class OParl10Controller extends CController {
         foreach ($fraktionen as $fraktion)
             $organizations[] = OParl10Object::object('organization_fraktion', $fraktion->id);
 
+        if ($body == 0) {
+            $referate = Referat::model()->findAll();
+            foreach ($referate as $referat)
+                $organizations[] = OParl10Object::object('organization_referat', $referat->id);
+        }
+
         echo json_encode([
             'items'         => $organizations,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
@@ -101,7 +107,6 @@ class OParl10Controller extends CController {
     public static function externalList($model, $name, $body, $ba_check, $id = null) {
         Header('Content-Type: application/json');
 
-        // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
         $criteria = new CDbCriteria(['order' => 'id ASC', 'limit' => static::ITEMS_PER_PAGE]);
 
         if ($id !== null) {
@@ -109,6 +114,7 @@ class OParl10Controller extends CController {
             $criteria->params["id"] = $id;
         }
 
+        // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
         if ($ba_check) {
             $criteria->addCondition('ba_nr = :ba_nr');
             $criteria->params["ba_nr"] = $body;
@@ -126,7 +132,7 @@ class OParl10Controller extends CController {
             'items'         => $oparl_entries,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
             'firstPage'     => static::getOparlListUrl($name, $body),
-            'numberOfPages' => (int) ($model->count() / static::ITEMS_PER_PAGE) + 1,
+            'numberOfPages' => ceil($model->count() / static::ITEMS_PER_PAGE),
         ];
 
         if (count($entries) > 0 && end($entries)->id != $last_entry->id)
@@ -143,14 +149,14 @@ class OParl10Controller extends CController {
     }
 
     /**
-     * Die externe Objektliste mit allen 'oparl:person'-Objekten
+     * Die externe Objektliste mit allen 'oparl:meeting'-Objekten
      */
     public function actionListMeeting($body, $id = null) {
         self::externalList(Termin::model(), 'meeting', $body, true, $id);
     }
 
     /**
-     * Die externe Objektliste mit allen 'oparl:person'-Objekten
+     * Die externe Objektliste mit allen 'oparl:paper'-Objekten
      */
     public function actionListPaper($body, $id = null) {
         self::externalList(Antrag::model(), 'paper', $body, true, $id);

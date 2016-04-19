@@ -42,3 +42,4 @@ $I->seeOparl('
   "numberOfPages": 1
 }
 ');
+// There's no need to check for a second body as the data doesn't depend on the body
