@@ -6,3 +6,5 @@ modules:
               depends: PhpBrowser
               url: http://localhost:8080/oparl/v1.0
               part: Json
+        - Asserts
+        - PhpBrowser
