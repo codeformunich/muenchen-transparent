@@ -3,13 +3,13 @@
 class OParl10Object {
     const TYPE_AGENDAITEM      = 'https://oparl.org/schema/1.0/AgendaItem';
     const TYPE_BODY            = 'https://oparl.org/schema/1.0/Body';
-    const TYPE_CONSULTATION    = 'https://oparl.org/schema/1.0/Consulta­tion';
+    const TYPE_CONSULTATION    = 'https://oparl.org/schema/1.0/Consultation';
     const TYPE_FILE            = 'https://oparl.org/schema/1.0/File';
-    const TYPE_LEGISLATIVETERM = 'https://oparl.org/schema/1.0/Legis­lat­iveTerm';
-    const TYPE_LOCATION        = 'https://oparl.org/schema/1.0/Loca­tion';
-    const TYPE_MEETING         = 'https://oparl.org/schema/1.0/Meet­ing';
-    const TYPE_MEMBERSHIP      = 'https://oparl.org/schema/1.0/Member­ship';
-    const TYPE_ORGANIZATION    = 'https://oparl.org/schema/1.0/Organ­ization';
+    const TYPE_LEGISLATIVETERM = 'https://oparl.org/schema/1.0/LegislativeTerm';
+    const TYPE_LOCATION        = 'https://oparl.org/schema/1.0/Location';
+    const TYPE_MEETING         = 'https://oparl.org/schema/1.0/Meeting';
+    const TYPE_MEMBERSHIP      = 'https://oparl.org/schema/1.0/Membership';
+    const TYPE_ORGANIZATION    = 'https://oparl.org/schema/1.0/Organization';
     const TYPE_PAPER           = 'https://oparl.org/schema/1.0/Paper';
     const TYPE_PERSON          = 'https://oparl.org/schema/1.0/Person';
     const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
