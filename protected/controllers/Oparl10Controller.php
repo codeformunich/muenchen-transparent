@@ -68,7 +68,10 @@ class OParl10Controller extends CController {
     }
 
     /**
-     * Die externe Objektliste mit allen 'oparl:Organization'-Objekten
+     * Die externe Objektliste mit allen 'oparl:Organization'-Objekten, d.h.
+     * - die Gremien
+     * - die Frakionen
+     * - nur beim Stadtrat: die Referate
      */
     public function actionListOrganization($body) {
         Header('Content-Type: application/json');
@@ -109,6 +112,7 @@ class OParl10Controller extends CController {
 
         $criteria = new CDbCriteria(['order' => 'id ASC', 'limit' => static::ITEMS_PER_PAGE]);
 
+        // Stabile Paginierung: Nur Elemente ausgeben, deren id größer als $id ist
         if ($id !== null) {
             $criteria->addCondition('id > :id');
             $criteria->params["id"] = $id;
@@ -121,7 +125,6 @@ class OParl10Controller extends CController {
         }
 
         $entries = $model->findAll($criteria);
-
         $oparl_entries = [];
         foreach ($entries as $entry)
             $oparl_entries[] = OParl10Object::object($name, $entry->id);

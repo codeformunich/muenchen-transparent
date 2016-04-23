@@ -7,9 +7,9 @@ namespace Helper;
 class Oparl extends \Codeception\Module
 {
     /*
-     * expose PhpBrowser's "_getResponseContent()" and remove the escape sequences
+     * returns the unescaped response content
      */
     public function getResponseContent() {
-        return $this->getModule('REST')->response;
+        return stripslashes($this->getModule('REST')->response);
     }
 }

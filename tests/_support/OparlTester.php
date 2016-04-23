@@ -42,7 +42,7 @@ class OparlTester extends \Codeception\Actor
         $config = \Codeception\Configuration::config();
         $apiSettings = \Codeception\Configuration::suiteSettings('oparl', $config);
         $base_url = $apiSettings['modules']['enabled'][1]['REST']['url'];
-        $oparl_url_regex = '/"(' . preg_quote($base_url, '/') . '[^\']*)"/';
+        $oparl_url_regex = '~"(' . $base_url . '[^"]*)"~';
 
         // Check that the returned json object is either an external list or an oparl object
         $tree = json_decode($this->getResponseContent());
@@ -61,7 +61,7 @@ class OparlTester extends \Codeception\Actor
             // There's an exception for the system object as it is the entry object
             if ($type == "/oparl/v1.0/")
                 $type = "system";
-            $this->assertRegExp('~https://oparl.org/schema/1.0/' . $type . '~i',  $tree->type);
+            $this->assertRegExp('~https:\/\/oparl.org\/schema\/1.0\/' . $type . '~i',  $tree->type);
         } else {
             $this->fail('Returned JSON was neither an obejct nor an external list');
         }

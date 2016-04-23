@@ -11,6 +11,7 @@ INSERT INTO `antraege` VALUES (2,1,'stadtrat_antrag','2016-01-23 15:26:49',NULL,
 INSERT INTO `antraege` VALUES (3,1,'stadtrat_antrag','2016-01-23 15:28:24',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Ein verwandter Antrag','','','',NULL,'',NULL);
 INSERT INTO `antraege` VALUES (4,NULL,'stadtrat_antrag','2016-03-07 20:16:45',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Antrag mit mehreren Dokumenten','','','',NULL,'',NULL);
 INSERT INTO `antraege` VALUES (5,NULL,'stadtrat_antrag','2016-03-07 20:27:15',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Ein Antrag mit einem Dokument','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (6,NULL,'stadtrat_antrag','2016-04-23 16:26:01',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Antrag mit Dokument mit vielen Eigenschaften','','','',NULL,'',NULL);
 /*!40000 ALTER TABLE `antraege` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `antraege_history` DISABLE KEYS */;
@@ -53,6 +54,9 @@ INSERT INTO `dokumente` VALUES (3,'stadtrat_antrag',4,NULL,NULL,NULL,NULL,'',0,'
 INSERT INTO `dokumente` VALUES (4,'stadtrat_antrag',4,NULL,NULL,NULL,NULL,'',0,'Ein anderes Dokument von mehreren in einem Antrag','','2016-03-07 20:18:22',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `dokumente` VALUES (5,NULL,5,NULL,NULL,NULL,NULL,'',0,'Ein Dokument von einem Antrag mit einem Dokument','','2016-03-07 20:27:52',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `dokumente` VALUES (6,NULL,NULL,NULL,NULL,NULL,NULL,'',0,'Dokument ohne Antrag','','2016-03-07 20:32:58',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `dokumente` VALUES (7,NULL,6,4,1,2,NULL,'/RII/RII/7.pdf',0,'Dokument mit vielen Eigenschaften','Dokument viele Eigenschaften','2016-04-23 16:30:20','2016-04-21 22:00:00',NULL,NULL,NULL,NULL,10,'omnipage',NULL);
+INSERT INTO `dokumente` VALUES (8,NULL,NULL,NULL,NULL,NULL,NULL,'/RII/RII/8.tiff',0,'Dokument (tiff) mit wenig Eigenschaften','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `dokumente` VALUES (9,NULL,NULL,NULL,NULL,NULL,1,'http://example.org/rathausumschau/1-rathaus.pdf',0,'Rathausumschau','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `dokumente` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `fraktionen` DISABLE KEYS */;
@@ -83,6 +87,7 @@ INSERT INTO `metadaten` VALUES ('letzte_aktualisierung','2014-09-15 04:04:33');
 /*!40000 ALTER TABLE `personen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `rathausumschau` DISABLE KEYS */;
+INSERT INTO `rathausumschau` VALUES (1,'2016-04-23','http://example.org/rathausumschau/1-rathaus.pdf',2016,1);
 /*!40000 ALTER TABLE `rathausumschau` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `rechtsdokument` DISABLE KEYS */;
@@ -120,6 +125,7 @@ INSERT INTO `stadtraetInnen_referate` VALUES (1,3,1,NULL,NULL);
 /*!40000 ALTER TABLE `strassen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `tagesordnungspunkte` DISABLE KEYS */;
+INSERT INTO `tagesordnungspunkte` VALUES (1,NULL,'2016-04-23 16:28:45',NULL,'',NULL,4,'2016-04-23','Tagesorgdnungspunkt mit Dokument mit vielen Eigenschaften',NULL,NULL,0,NULL,NULL);
 /*!40000 ALTER TABLE `tagesordnungspunkte` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `tagesordnungspunkte_history` DISABLE KEYS */;
@@ -132,6 +138,7 @@ INSERT INTO `stadtraetInnen_referate` VALUES (1,3,1,NULL,NULL);
 INSERT INTO `termine` VALUES (1,0,'2016-01-31 16:27:28',0,1,NULL,'2016-01-01 08:00:00',3,2,'Raum für einen Termin','','','','','','',0);
 INSERT INTO `termine` VALUES (2,0,'2016-01-31 16:27:28',0,1,NULL,'2016-02-01 08:00:00',NULL,NULL,'Raum für einen Termin','','','','','','',0);
 INSERT INTO `termine` VALUES (3,0,'2016-01-31 16:27:28',0,1,NULL,'2015-12-01 08:00:00',NULL,NULL,'Raum für einen Termin','','','','','','',0);
+INSERT INTO `termine` VALUES (4,0,'2016-04-23 16:27:45',0,NULL,NULL,NULL,NULL,NULL,'','','','','','Termin mit Dokument mit vielen Eigenschaften','',0);
 /*!40000 ALTER TABLE `termine` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `termine_history` DISABLE KEYS */;
@@ -142,6 +149,7 @@ INSERT INTO `termine` VALUES (3,0,'2016-01-31 16:27:28',0,1,NULL,'2015-12-01 08:
 
 /*!40000 ALTER TABLE `vorgaenge` DISABLE KEYS */;
 INSERT INTO `vorgaenge` VALUES (1,NULL,NULL);
+INSERT INTO `vorgaenge` VALUES (2,NULL,'Vorgang mit Dokument mit vielen Eigenschaften');
 /*!40000 ALTER TABLE `vorgaenge` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

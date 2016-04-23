@@ -15,7 +15,7 @@ class OParl10Object {
     const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
 
     /*
-     * Gibt ein belibiges Objekt als array zurück
+     * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
     public static function object($typ, $id = null) {
         if      ($typ == 'system'                ) return self::system();
@@ -43,7 +43,10 @@ class OParl10Object {
                 $website = Yii::app()->createAbsoluteUrl($ba->getLink());
             }
             return OParl10Object::body($body, $name, $shortName, $website);
-        } else return ['error' => 'Object of typ ' . $typ . ' (and id=' . $id . ') not found.'];
+        } else {
+            header("HTTP/1.0 404 Not Found");
+            return ['error' => 'No such type "' . $typ. '"'];
+        }
     }
 
     /**
@@ -87,7 +90,7 @@ class OParl10Object {
     }
 
     /**
-     * Erzeugt die statische Liste mit allen 'oparl:LegislativeTerm'-Objekten, also den Legislaturperioden
+     * Erzeugt ein 'oparl:LegislativeTerm'-Objekten, also eine Legislaturperiode
      *
      * Wenn als id -1 übergeben wird, dann wird die gesammte Liste zurückgegeben
      */
@@ -230,17 +233,17 @@ class OParl10Object {
 
         // optionale Attribute
         $optional_properties = [
-            'life'                                   => $stadtraetin->beschreibung,
-            'lifeSource'                             => $stadtraetin->quellen,
-            'email'                                  => $stadtraetin->email,
-            'muenchen-transparent:elected'           => $stadtraetin->gewaehlt_am,
-            'muenchen-transparent:dateOfBirth'       => $stadtraetin->geburtstag,
-            'muenchen-transparent:beruf'             => $stadtraetin->beruf,
-            'muenchen-transparent:bio'               => $stadtraetin->bio,
-            'muenchen-transparent:website'           => $stadtraetin->web,
-            'muenchen-transparent:twitter'           => $stadtraetin->twitter,
-            'muenchen-transparent:facebook'          => $stadtraetin->facebook,
-            'muenchen-transparent:abgeordnetenwatch' => $stadtraetin->abgeordnetenwatch,
+            'life'                                  => $stadtraetin->beschreibung,
+            'lifeSource'                            => $stadtraetin->quellen,
+            'email'                                 => $stadtraetin->email,
+            'muenchenTransparent:elected'           => $stadtraetin->gewaehlt_am,
+            'muenchenTransparent:dateOfBirth'       => $stadtraetin->geburtstag,
+            'muenchenTransparent:beruf'             => $stadtraetin->beruf,
+            'muenchenTransparent:bio'               => $stadtraetin->bio,
+            'muenchenTransparent:website'           => $stadtraetin->web,
+            'muenchenTransparent:twitter'           => $stadtraetin->twitter,
+            'muenchenTransparent:facebook'          => $stadtraetin->facebook,
+            'muenchenTransparent:abgeordnetenwatch' => $stadtraetin->abgeordnetenwatch,
         ];
 
         foreach ($optional_properties as $key => $value) {
@@ -258,16 +261,41 @@ class OParl10Object {
         $dokument = Dokument::model()->findByPk($id);
 
         $data = [
-            'id'        => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
-            'type'      => self::TYPE_FILE,
-            'fileName'  => $dokument->getName(true) . '.pdf',
-            'name'      => $dokument->getName(),
-            'mimeType'  => 'application/pdf', // FIXME: Es gibt auch tiff's! vgl. https://github.com/codeformunich/Muenchen-Transparent/issues/137
-            'accessUrl' => $dokument->getLinkZumDokument() . '.pdf',
+            'id'   => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
+            'type' => self::TYPE_FILE,
+            'name' => $dokument->getName(),
+            'muenchenTransparent:orignalAccessUrl' => $dokument->getLink(),
         ];
 
+        if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
+            $data['fileName' ] = $dokument->getName(true) . '.pdf';
+            $data['mimeType' ] = 'application/pdf';
+            $data['accessUrl'] = SITE_BASE_URL . $dokument->getLinkZumDokument() . '.pdf';
+        } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff') {
+            $data['fileName' ] = $dokument->getName(true) . '.tiff';
+            $data['mimeType' ] = 'image/tiff';
+            $data['accessUrl'] =  SITE_BASE_URL . $dokument->getLinkZumDokument() . '.tiff'; // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/137
+        } else {
+            $data['fileName' ] = $dokument->getName(true);
+            $data['accessUrl'] = $dokument->getLink(); // FIXME: Da der Dateityp unbekannt ist gibt es auch keinen proxy
+        }
+
+        /*
+        if ($dokument->antrag)
+            $data['paper'] = [OParl10Controller::getOparlObjectUrl('paper', $dokument->antrag->id)];
+
+        if ($dokument->termin)
+            $data['meeting'] = [OParl10Controller::getOparlObjectUrl('meeting', $dokument->termin->id)];
+
+        if ($dokument->tagesordnungspunkt)
+            $data['agendaItem'] = [OParl10Controller::getOparlObjectUrl('agendaItem', $dokument->tagesordnungspunkt->id)];
+        */
+
+        if ($dokument->ocr_von)
+            $data['muenchenTransparent:ocrCreator'] = $dokument->ocr_von;
+
         if ($dokument->deleted)
-            $data['delted'] = true;
+            $data['deleted'] = true;
 
         return $data;
     }
@@ -286,7 +314,7 @@ class OParl10Object {
             'role'                      => $mitgliedschaft->funktion,
             'startDate'                 => $mitgliedschaft->datum_von,
             'votingRight'               => true,
-            'muenchen-transparent:term' => OParl10Controller::getOparlObjectUrl('term', $mitgliedschaft->wahlperiode),
+            'muenchenTransparent:term' => OParl10Controller::getOparlObjectUrl('term', $mitgliedschaft->wahlperiode),
         ];
 
         if ($mitgliedschaft->datum_bis !== null)
@@ -302,11 +330,11 @@ class OParl10Object {
         $mitgliedschaft = StadtraetInReferat::model()->findByPk($id);
 
         $data = [
-            'id'                        => OParl10Controller::getOparlObjectUrl('membership_referat', $mitgliedschaft->id),
-            'type'                      => self::TYPE_MEMBERSHIP,
-            'organization'              => OParl10Controller::getOparlObjectUrl('organization_referat', $mitgliedschaft->referat->id),
-            'person'                    => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
-            'role'                      => 'Referent',
+            'id'           => OParl10Controller::getOparlObjectUrl('membership_referat', $mitgliedschaft->id),
+            'type'         => self::TYPE_MEMBERSHIP,
+            'organization' => OParl10Controller::getOparlObjectUrl('organization_referat', $mitgliedschaft->referat->id),
+            'person'       => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
+            'role'         => 'Referent',
         ];
 
         if ($mitgliedschaft->datum_von !== null)

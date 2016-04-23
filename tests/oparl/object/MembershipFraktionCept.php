@@ -11,7 +11,7 @@ $I->seeOparl('
   "role": "Mitglied",
   "startDate": "2000-01-01",
   "votingRight": true,
-  "muenchen-transparent:term": "http://localhost:8080/oparl/v1.0/term/2",
+  "muenchenTransparent:term": "http://localhost:8080/oparl/v1.0/term/2",
   "endDate": "2004-01-01"
 }
 ');
@@ -25,6 +25,6 @@ $I->seeOparl('
   "role": "Vorsitzender",
   "startDate": "2004-01-01",
   "votingRight": true,
-  "muenchen-transparent:term": "http://localhost:8080/oparl/v1.0/term/3"
+  "muenchenTransparent:term": "http://localhost:8080/oparl/v1.0/term/3"
 }
 ');
