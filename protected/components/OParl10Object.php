@@ -210,10 +210,12 @@ class OParl10Object {
 
         // Zwingende Attribute
         $data = [
-            'id'   => OParl10Controller::getOparlObjectUrl('person', $stadtraetin->id),
-            'type' => self::TYPE_PERSON,
-            'body' => OParl10Controller::getOparlObjectUrl('body', $body),
-            'name' => $stadtraetin->name,
+            'id'         => OParl10Controller::getOparlObjectUrl('person', $stadtraetin->id),
+            'type'       => self::TYPE_PERSON,
+            'body'       => OParl10Controller::getOparlObjectUrl('body', $body),
+            'name'       => $stadtraetin->name,
+            'familyName' => $stadtraetin->errateNachname(),
+            'givenName'  => $stadtraetin->errateVorname(),
         ];
 
         // Das Geschlecht übersetzen

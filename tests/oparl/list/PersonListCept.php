@@ -9,7 +9,9 @@ $I->seeOparl('
       "id": "http://localhost:8080/oparl/v1.0/person/1",
       "type": "https://oparl.org/schema/1.0/Person",
       "body": "http://localhost:8080/oparl/v1.0/body/1",
-      "name": "Stadtrat mit allen Eigenschaften",
+      "name": "Dr. Stadtrat, mit allen Eigenschaften",
+      "familyName": "Stadtrat",
+      "givenName": "mit allen Eigenschaften",
       "gender": "male",
       "status": "Ehrenamtlicher Stadtrat",
       "life": "„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“",
@@ -29,6 +31,8 @@ $I->seeOparl('
       "type": "https://oparl.org/schema/1.0/Person",
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Stadträtin mit möglichst wenigen Eigenschaften",
+      "familyName": "Eigenschaften",
+      "givenName": "Stadträtin mit möglichst wenigen",
       "status": "Ehrenamtlicher Stadtrat"
     },
     {
@@ -36,6 +40,8 @@ $I->seeOparl('
       "type": "https://oparl.org/schema/1.0/Person",
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Referent für Städtische Aufgaben",
+      "familyName": "Aufgaben",
+      "givenName": "Referent für Städtische",
       "status": "Berufsmäßiger Stadtrat"
     }
   ],
@@ -53,6 +59,8 @@ $I->seeOparl('
       "type": "https://oparl.org/schema/1.0/Person",
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Referent für Städtische Aufgaben",
+      "familyName": "Aufgaben",
+      "givenName": "Referent für Städtische",
       "status": "Berufsmäßiger Stadtrat"
     }
   ],
@@ -69,7 +77,9 @@ $I->seeOparl('
       "id": "http://localhost:8080/oparl/v1.0/person/1",
       "type": "https://oparl.org/schema/1.0/Person",
       "body": "http://localhost:8080/oparl/v1.0/body/1",
-      "name": "Stadtrat mit allen Eigenschaften",
+      "name": "Dr. Stadtrat, mit allen Eigenschaften",
+      "familyName": "Stadtrat",
+      "givenName": "mit allen Eigenschaften",
       "gender": "male",
       "status": "Ehrenamtlicher Stadtrat",
       "life": "„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“",
@@ -89,6 +99,8 @@ $I->seeOparl('
       "type": "https://oparl.org/schema/1.0/Person",
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Stadträtin mit möglichst wenigen Eigenschaften",
+      "familyName": "Eigenschaften",
+      "givenName": "Stadträtin mit möglichst wenigen",
       "status": "Ehrenamtlicher Stadtrat"
     },
     {
@@ -96,6 +108,8 @@ $I->seeOparl('
       "type": "https://oparl.org/schema/1.0/Person",
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Referent für Städtische Aufgaben",
+      "familyName": "Aufgaben",
+      "givenName": "Referent für Städtische",
       "status": "Berufsmäßiger Stadtrat"
     }
   ],

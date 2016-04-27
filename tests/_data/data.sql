@@ -101,7 +101,7 @@ INSERT INTO `referate` VALUES (1,'Referat für städtische Aufgaben','aufg','Mü
 /*!40000 ALTER TABLE `ris_aenderungen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen` DISABLE KEYS */;
-INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Stadtrat mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~');
+INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Dr. Stadtrat, mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~');
 INSERT INTO `stadtraetInnen` VALUES (2,NULL,0,NULL,'',NULL,'','Stadträtin mit möglichst wenigen Eigenschaften',NULL,NULL,NULL,NULL,NULL,NULL,'','','');
 INSERT INTO `stadtraetInnen` VALUES (3,NULL,1,NULL,'',NULL,'','Referent für Städtische Aufgaben',NULL,NULL,NULL,NULL,NULL,NULL,'','','');
 /*!40000 ALTER TABLE `stadtraetInnen` ENABLE KEYS */;
