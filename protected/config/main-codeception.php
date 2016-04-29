@@ -32,12 +32,13 @@ define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 define("DOCUMENT_DATE_ACCURATE_SINCE", 1388530800); // 1. Januar 2014
 define("DOCUMENT_DATE_UNKNOWN_BEFORE", 1212271200); // 1. Juni 2008
 
-ini_set("memory_limit", "256M");
+define("OPARL_10_ITEMS_PER_PAGE", 3); // Macht das Testen einfacher
 
 define("SEED_KEY", "RANDOMKEY");
 define("MAILGUN_DOMAIN", "");
 define("MAILGUN_API_KEY", "");
 
+ini_set("memory_limit", "256M");
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");
 ini_set('mbstring.substitute_character', "none");

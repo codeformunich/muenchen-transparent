@@ -36,7 +36,7 @@ $I->seeOparl('
       "endDate": "2020-12-03"
     }
   ],
-  "itemsPerPage": 100,
+  "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/term",
   "lastPage": "http://localhost:8080/oparl/v1.0/body/0/list/term",
   "numberOfPages": 1

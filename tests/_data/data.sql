@@ -138,7 +138,7 @@ INSERT INTO `tagesordnungspunkte` VALUES (1,NULL,'2016-04-23 16:28:45',NULL,'',N
 INSERT INTO `termine` VALUES (1,0,'2016-01-31 16:27:28',0,1,NULL,'2016-01-01 08:00:00',3,2,'Raum für einen Termin','','','','','','',0);
 INSERT INTO `termine` VALUES (2,0,'2016-01-31 16:27:28',0,1,NULL,'2016-02-01 08:00:00',NULL,NULL,'Raum für einen Termin','','','','','','',0);
 INSERT INTO `termine` VALUES (3,0,'2016-01-31 16:27:28',0,1,NULL,'2015-12-01 08:00:00',NULL,NULL,'Raum für einen Termin','','','','','','',0);
-INSERT INTO `termine` VALUES (4,0,'2016-04-23 16:27:45',0,NULL,NULL,NULL,NULL,NULL,'','','','','','Termin mit Dokument mit vielen Eigenschaften','',0);
+INSERT INTO `termine` VALUES (4,0,'2016-04-23 16:27:45',0,1,NULL,'2016-04-11 22:00:00',NULL,NULL,'Ort','','','','','Termin zu Dokument mit vielen Eigenschaften','',0);
 /*!40000 ALTER TABLE `termine` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `termine_history` DISABLE KEYS */;

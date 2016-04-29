@@ -45,7 +45,7 @@ $I->seeOparl('
       "status": "Berufsmäßiger Stadtrat"
     }
   ],
-  "itemsPerPage": 100,
+  "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
   "numberOfPages": 1
 }
@@ -64,7 +64,7 @@ $I->seeOparl('
       "status": "Berufsmäßiger Stadtrat"
     }
   ],
-  "itemsPerPage": 100,
+  "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
   "numberOfPages": 1
 }
@@ -113,7 +113,7 @@ $I->seeOparl('
       "status": "Berufsmäßiger Stadtrat"
     }
   ],
-  "itemsPerPage": 100,
+  "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/1/list/person",
   "numberOfPages": 1
 }

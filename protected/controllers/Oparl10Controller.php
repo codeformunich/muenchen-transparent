@@ -1,9 +1,13 @@
 <?php
 
+/**
+ * Enhält alle actions für OParl 1.0, Hilfmethoden zum Erzeugen von OParl-URLs
+ * sowie Methoden zum Erzeugen externer Listen
+ */
 class OParl10Controller extends CController {
     const VERSION = 'https://oparl.org/specs/1.0/';
 
-    const ITEMS_PER_PAGE = 100;
+    const ITEMS_PER_PAGE = OPARL_10_ITEMS_PER_PAGE;
 
     /*
      * Erzeugt die URL zu einem einzelnen OParl-Objekt
@@ -28,6 +32,13 @@ class OParl10Controller extends CController {
         if ($id !== null) $url .= '?id=' . $id;
 
         return $url;
+    }
+
+    /*
+     * Erzeugt einen String mit Datum und Zeit im richtigen Format
+     */
+    public static function oparlDateTime($in) {
+        return date(DateTime::ATOM, strtotime($in));
     }
 
     /*
@@ -110,18 +121,26 @@ class OParl10Controller extends CController {
     public static function externalList($model, $name, $body, $ba_check, $id = null) {
         Header('Content-Type: application/json');
 
-        $criteria = new CDbCriteria(['order' => 'id ASC', 'limit' => static::ITEMS_PER_PAGE]);
-
-        // Stabile Paginierung: Nur Elemente ausgeben, deren id größer als $id ist
-        if ($id !== null) {
-            $criteria->addCondition('id > :id');
-            $criteria->params["id"] = $id;
-        }
+        $criteria = new CDbCriteria();
 
         // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
         if ($ba_check) {
-            $criteria->addCondition('ba_nr = :ba_nr');
-            $criteria->params["ba_nr"] = $body;
+            if ($body > 0) {
+                $criteria->addCondition('ba_nr = :ba_nr');
+                $criteria->params["ba_nr"] = $body;
+            } else {
+                $criteria->addCondition('ba_nr IS NULL');
+            }
+        }
+
+        $count = $model->count($criteria);
+
+        // Stabile Paginierung: Nur eine bestimmte Anzahl an Elementen ausgeben, deren id größer als $id ist
+        $criteria->order = 'id ASC';
+        $criteria->limit = static::ITEMS_PER_PAGE;
+        if ($id !== null) {
+            $criteria->addCondition('id > :id');
+            $criteria->params["id"] = $id;
         }
 
         $entries = $model->findAll($criteria);
@@ -129,13 +148,13 @@ class OParl10Controller extends CController {
         foreach ($entries as $entry)
             $oparl_entries[] = OParl10Object::object($name, $entry->id);
 
-        $last_entry = $model->find(['order' => 'id DESC', "limit" => static::ITEMS_PER_PAGE]);
+        $last_entry = $model->find(['order' => 'id DESC']);
 
         $data = [
             'items'         => $oparl_entries,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
             'firstPage'     => static::getOparlListUrl($name, $body),
-            'numberOfPages' => ceil($model->count() / static::ITEMS_PER_PAGE),
+            'numberOfPages' => ceil($count / static::ITEMS_PER_PAGE),
         ];
 
         if (count($entries) > 0 && end($entries)->id != $last_entry->id)

@@ -26,7 +26,7 @@ $I->seeOparl('
       "classification": "Referat"
     }
   ],
-  "itemsPerPage": 100,
+  "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/organization",
   "lastPage": "http://localhost:8080/oparl/v1.0/body/0/list/organization",
   "numberOfPages": 1
@@ -57,7 +57,7 @@ $I->seeOparl('
       "classification": "Fraktion"
     }
   ],
-  "itemsPerPage": 100,
+  "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/1/list/organization",
   "lastPage": "http://localhost:8080/oparl/v1.0/body/1/list/organization",
   "numberOfPages": 1
