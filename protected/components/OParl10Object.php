@@ -18,16 +18,21 @@ class OParl10Object {
      * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
     public static function object($typ, $id = null) {
-        if      ($typ == 'system'                ) return self::system();
-        else if ($typ == 'person'                ) return self::person($id);
-        else if ($typ == 'file'                  ) return self::file($id);
-        else if ($typ == 'organization_fraktion' ) return self::organization_fraktion($id);
-        else if ($typ == 'organization_gremium'  ) return self::organization_gremium($id);
-        else if ($typ == 'organization_referat'  ) return self::organization_referat($id);
+        if      ($typ == 'file'                  ) return self::file($id);
+        else if ($typ == 'meeting'               ) return self::meeting($id);
         else if ($typ == 'membership_fraktion'   ) return self::membership_fraktion($id);
         else if ($typ == 'membership_gremium'    ) return self::membership_gremium($id);
         else if ($typ == 'membership_referat'    ) return self::membership_referat($id);
+        else if ($typ == 'organization_fraktion' ) return self::organization_fraktion($id);
+        else if ($typ == 'organization_gremium'  ) return self::organization_gremium($id);
+        else if ($typ == 'organization_referat'  ) return self::organization_referat($id);
+        else if ($typ == 'person'                ) return self::person($id);
+        else if ($typ == 'system'                ) return self::system();
         else if ($typ == 'term'                  ) return self::terms($id);
+        else if ($typ == 'paper'                 ) return ["note:" => "not implemented yet"];
+        else if ($typ == 'agendaitem'            ) return ["note:" => "not implemented yet"];
+        else if ($typ == 'location'              ) return ["note:" => "not implemented yet"];
+        else if ($typ == 'consultation'          ) return ["note:" => "not implemented yet"];
         else if ($typ == 'body'                  ) {
             // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
             if ($id == 0) {
@@ -348,4 +353,28 @@ class OParl10Object {
         return $data;
     }
 
+    /**
+     * Erzeugt ein 'oparl:Meeting'-Objekt, das einen Termin abbildet
+     */
+    public static function meeting($id) {
+        $termin = Termin::model()->findByPk($id);
+
+        $data = [
+            'id'           => OParl10Controller::getOparlObjectUrl('meeting', $termin->id),
+            'type'         => self::TYPE_MEETING,
+            'name'         => $termin->gremium->name,
+            'meetingState' => $termin->sitzungsstand,
+            'start'        => OParl10Controller::oparlDateTime($termin->termin),
+            'organization' => OParl10Controller::getOparlObjectUrl('organization_gremium', $termin->gremium->id),
+            'modified'     => OParl10Controller::oparlDateTime($termin->datum_letzte_aenderung),
+        ];
+
+        $data['auxiliaryFile'] = [];
+        foreach ($termin->antraegeDokumente as $dokument)
+            $data['auxiliaryFile'][] = OParl10Controller::getOparlObjectUrl('file', $dokument->id);
+
+        if ($termin->abgesetzt)
+            $data['cancelled'] = true;
+        return $data;
+    }
 }
