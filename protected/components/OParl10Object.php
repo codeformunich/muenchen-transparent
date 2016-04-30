@@ -382,15 +382,15 @@ class OParl10Object {
         $antrag = Antrag::model()->findByPk($id);
 
         $data = [
-            'id' => OParl10Controller::getOparlObjectUrl('paper', $antrag->id),
-            'type' => self::TYPE_PAPER,
-            'body' => OParl10Controller::getOparlObjectUrl('body', ($antrag->ba_nr != null ? $antrag->ba_nr : 0)),
-            'name' => $antrag->getName(),
-            'reference' => $antrag->antrags_nr,
-            'paperType' => $antrag->getTypName(),
-            'auxiliaryFile' => [],
+            'id'               => OParl10Controller::getOparlObjectUrl('paper', $antrag->id),
+            'type'             => self::TYPE_PAPER,
+            'body'             => OParl10Controller::getOparlObjectUrl('body', ($antrag->ba_nr != null ? $antrag->ba_nr : 0)),
+            'name'             => $antrag->getName(),
+            'reference'        => $antrag->antrags_nr,
+            'paperType'        => $antrag->getTypName(),
+            'auxiliaryFile'    => [],
             'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization_referat', $antrag->referat_id)],
-            'keyword' => [],
+            'keyword'          => [],
         ];
 
         foreach ($antrag->dokumente as $dokument)

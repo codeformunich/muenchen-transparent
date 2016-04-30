@@ -41,6 +41,8 @@ define("MAILGUN_API_KEY", "");
 ini_set("memory_limit", "256M");
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");
+define("DEFAULT_TIMEZONE", "Europe/Berlin");
+date_default_timezone_set(DEFAULT_TIMEZONE);
 ini_set('mbstring.substitute_character', "none");
 setlocale(LC_TIME, "de_DE.UTF-8");
 setlocale(LC_NUMERIC, "C"); // Scheint in manchen Umgebungen (HHVM?) sonst bei de_DE Probleme mit FloatVal zu machen

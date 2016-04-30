@@ -38,7 +38,7 @@ class OParl10Controller extends CController {
      * Erzeugt einen String mit Datum und Zeit im richtigen Format
      */
     public static function toOparlDateTime($in) {
-        return (new DateTime($in, new DateTimeZone('Europe/Berlin')))->format(DateTime::ATOM);
+        return (new DateTime($in, new DateTimeZone(DEFAULT_TIMEZONE)))->format(DateTime::ATOM);
     }
 
     /*
