@@ -6,12 +6,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `antraege` DISABLE KEYS */;
-INSERT INTO `antraege` VALUES (1,NULL,'stadtrat_antrag','2016-01-23 15:13:14',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Antrag ohne Vorgang','','','',NULL,'',NULL);
-INSERT INTO `antraege` VALUES (2,1,'stadtrat_antrag','2016-01-23 15:26:49',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Antrag mit verwandten Seiten','','','',NULL,'',NULL);
-INSERT INTO `antraege` VALUES (3,1,'stadtrat_antrag','2016-01-23 15:28:24',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Ein verwandter Antrag','','','',NULL,'',NULL);
-INSERT INTO `antraege` VALUES (4,NULL,'stadtrat_antrag','2016-03-07 20:16:45',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Antrag mit mehreren Dokumenten','','','',NULL,'',NULL);
-INSERT INTO `antraege` VALUES (5,NULL,'stadtrat_antrag','2016-03-07 20:27:15',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Ein Antrag mit einem Dokument','','','',NULL,'',NULL);
-INSERT INTO `antraege` VALUES (6,NULL,'stadtrat_antrag','2016-04-23 16:26:01',NULL,NULL,'',NULL,'',NULL,NULL,'','',NULL,'','','Antrag mit Dokument mit vielen Eigenschaften','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (1,NULL,'stadtrat_antrag','2016-04-30 20:01:04',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag ohne Vorgang','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (2,1,'stadtrat_antrag','2016-04-30 20:01:08',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit verwandten Seiten','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (3,1,'stadtrat_antrag','2016-04-30 20:01:19',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Ein verwandter Antrag','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (4,NULL,'stadtrat_antrag','2016-04-30 20:01:15',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit mehreren Dokumenten','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (5,NULL,'stadtrat_antrag','2016-04-30 20:01:12',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Ein Antrag mit einem Dokument','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (6,NULL,'stadtrat_antrag','2016-04-30 20:01:10',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit Dokument mit vielen Eigenschaften','','','',NULL,'',NULL);
+INSERT INTO `antraege` VALUES (7,NULL,'stadtrat_antrag','2016-04-30 20:12:37',NULL,'2015-01-01','Antragssteller','1999-04-01','','2026-01-01','2015-01-15','Referat für einen Antrag mit vielen Antraegen','Referent für einen Antrag mit vielen Antraegen',1,'1','Antrag','betreff','kurzinfo','status','lange','2036-01-01','StrIn. Dr. A. B. C.','2016-04-01');
+INSERT INTO `antraege` VALUES (8,NULL,'ba_antrag','2016-04-30 20:14:03',1,NULL,'',NULL,'',NULL,NULL,'','',1,'','','','','','',NULL,'',NULL);
 /*!40000 ALTER TABLE `antraege` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `antraege_history` DISABLE KEYS */;

@@ -29,7 +29,7 @@ class OParl10Object {
         else if ($typ == 'person'                ) return self::person($id);
         else if ($typ == 'system'                ) return self::system();
         else if ($typ == 'term'                  ) return self::terms($id);
-        else if ($typ == 'paper'                 ) return ["note:" => "not implemented yet"];
+        else if ($typ == 'paper'                 ) return self::paper($id);
         else if ($typ == 'agendaitem'            ) return ["note:" => "not implemented yet"];
         else if ($typ == 'location'              ) return ["note:" => "not implemented yet"];
         else if ($typ == 'consultation'          ) return ["note:" => "not implemented yet"];
@@ -314,13 +314,13 @@ class OParl10Object {
         $mitgliedschaft = StadtraetInFraktion::model()->findByPk($id);
 
         $data = [
-            'id'                        => OParl10Controller::getOparlObjectUrl('membership_fraktion', $mitgliedschaft->id),
-            'type'                      => self::TYPE_MEMBERSHIP,
-            'organization'              => OParl10Controller::getOparlObjectUrl('organization_fraktion', $mitgliedschaft->fraktion->id),
-            'person'                    => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
-            'role'                      => $mitgliedschaft->funktion,
-            'startDate'                 => $mitgliedschaft->datum_von,
-            'votingRight'               => true,
+            'id'                       => OParl10Controller::getOparlObjectUrl('membership_fraktion', $mitgliedschaft->id),
+            'type'                     => self::TYPE_MEMBERSHIP,
+            'organization'             => OParl10Controller::getOparlObjectUrl('organization_fraktion', $mitgliedschaft->fraktion->id),
+            'person'                   => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
+            'role'                     => $mitgliedschaft->funktion,
+            'startDate'                => $mitgliedschaft->datum_von,
+            'votingRight'              => true,
             'muenchenTransparent:term' => OParl10Controller::getOparlObjectUrl('term', $mitgliedschaft->wahlperiode),
         ];
 
@@ -364,9 +364,9 @@ class OParl10Object {
             'type'         => self::TYPE_MEETING,
             'name'         => $termin->gremium->name,
             'meetingState' => $termin->sitzungsstand,
-            'start'        => OParl10Controller::oparlDateTime($termin->termin),
+            'start'        => OParl10Controller::toOparlDateTime($termin->termin),
             'organization' => OParl10Controller::getOparlObjectUrl('organization_gremium', $termin->gremium->id),
-            'modified'     => OParl10Controller::oparlDateTime($termin->datum_letzte_aenderung),
+            'modified'     => OParl10Controller::toOparlDateTime($termin->datum_letzte_aenderung),
         ];
 
         $data['auxiliaryFile'] = [];
@@ -375,6 +375,36 @@ class OParl10Object {
 
         if ($termin->abgesetzt)
             $data['cancelled'] = true;
+        return $data;
+    }
+
+    public static function paper($id) {
+        $antrag = Antrag::model()->findByPk($id);
+
+        $data = [
+            'id' => OParl10Controller::getOparlObjectUrl('paper', $antrag->id),
+            'type' => self::TYPE_PAPER,
+            'body' => OParl10Controller::getOparlObjectUrl('body', ($antrag->ba_nr != null ? $antrag->ba_nr : 0)),
+            'name' => $antrag->getName(),
+            'reference' => $antrag->antrags_nr,
+            'paperType' => $antrag->getTypName(),
+            'auxiliaryFile' => [],
+            'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization_referat', $antrag->referat_id)],
+            'keyword' => [],
+        ];
+
+        foreach ($antrag->dokumente as $dokument)
+            $data['auxiliaryFile'][] = OParl10Controller::getOparlObjectUrl('file', $dokument->id);
+
+        foreach ($antrag->tags as $tags)
+            $data['auxiliaryFile'][] = $tags->name;
+
+        if ($antrag->vorgang != null) {
+            $data['relatedPaper'] = [];
+            foreach ($antrag->vorgang->antraege as $verwandt)
+                $data['relatedPaper'][] = OParl10Controller::getOparlObjectUrl('paper', $verwandt->id);
+        }
+
         return $data;
     }
 }
