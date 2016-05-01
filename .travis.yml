@@ -39,8 +39,9 @@ install:
 
   # Set up mysql
   - mysql -e 'create database ristest;'
-  - mysql -uroot --execute="SET GLOBAL time_zone = '+1:00'";
-  - cat docs/schema.sql tests/_data/data.sql >  tests/_data/dump.sql
+  - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql # load timezone names
+  - mysql -uroot --execute="SET GLOBAL time_zone = 'Europe/Berlin'"; # set the correct timezone (this has to match DEFAULT_TIMEZONE in the yii config)
+  - cat docs/schema.sql tests/_data/data.sql > tests/_data/dump.sql
   - mysql -utravis ristest < tests/_data/dump.sql
 
   # Install dependencies
@@ -61,9 +62,7 @@ after_failure:
   - cat protected/runtime/application.log
   - cat /tmp/error.log
   - cat /tmp/access.log
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - cat tests/_output/*.html
-  - find /home/travis/.phpenv/ -printf "%TY-%Tm-%Td\t%s\t%p\n"
 
 after_script:
   - nginx -c `pwd`/docs/nginx-codeception.conf -s stop

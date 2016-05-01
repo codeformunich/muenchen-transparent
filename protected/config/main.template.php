@@ -163,7 +163,7 @@ return [
             'charset'               => 'utf8mb4',
             'queryCacheID'          => 'apcCache',
             'schemaCachingDuration' => 3600,
-            'initSQLs'              => ["SET time_zone = '+1:00'"],
+            'initSQLs'              => ['SET time_zone = "' . DEFAULT_TIMEZONE . '"'],
         ],
         'errorHandler' => [
             // use 'site/error' action to display errors
