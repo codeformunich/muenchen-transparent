@@ -97,16 +97,16 @@ class OParl10Controller extends CController {
 
         $gremien = Gremium::model()->findAll($query);
         foreach ($gremien as $gremium)
-            $organizations[] = OParl10Object::object('organization/gremium', $gremium->id);
+            $organizations[] = OParl10Object::object('organization', $gremium->id, 'gremium');
 
         $fraktionen = Fraktion::model()->findAll($query);
         foreach ($fraktionen as $fraktion)
-            $organizations[] = OParl10Object::object('organization/fraktion', $fraktion->id);
+            $organizations[] = OParl10Object::object('organization', $fraktion->id, 'fraktion');
 
         if ($body == 0) {
             $referate = Referat::model()->findAll();
             foreach ($referate as $referat)
-                $organizations[] = OParl10Object::object('organization/referat', $referat->id);
+                $organizations[] = OParl10Object::object('organization', $referat->id, 'referat');
         }
 
         echo json_encode([

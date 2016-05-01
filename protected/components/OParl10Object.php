@@ -18,16 +18,10 @@ class OParl10Object {
      * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
     public static function object($typ, $id, $subtype = null) {
-        if ($subtype != null)
-            $typ = $typ . '/' . $subtype;
         if      ($typ == 'file'                  ) return self::file($id);
         else if ($typ == 'meeting'               ) return self::meeting($id);
-        else if ($typ == 'membership/fraktion'   ) return self::membership($id, 'fraktion');
-        else if ($typ == 'membership/gremium'    ) return self::membership($id, 'gremium');
-        else if ($typ == 'membership/referat'    ) return self::membership($id, 'referat');
-        else if ($typ == 'organization/fraktion' ) return self::organization($id, 'fraktion');
-        else if ($typ == 'organization/gremium'  ) return self::organization($id, 'gremium');
-        else if ($typ == 'organization/referat'  ) return self::organization($id, 'referat');
+        else if ($typ == 'membership'            ) return self::membership($id, $subtype);
+        else if ($typ == 'organization'          ) return self::organization($id, $subtype);
         else if ($typ == 'person'                ) return self::person($id);
         else if ($typ == 'system'                ) return self::system($id);
         else if ($typ == 'term'                  ) return self::terms($id);
