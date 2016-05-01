@@ -1,10 +1,10 @@
 <?php
 $I = new OparlTester($scenario);
 $I->wantTo('validate oparl:organization objects (one "Fraktion", one "BA-Gremium" and one "Referat")');
-$I->sendGET('/organization_fraktion/1');
+$I->sendGET('/organization/fraktion/1');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/organization_fraktion/1",
+  "id": "http://localhost:8080/oparl/v1.0/organization/fraktion/1",
   "type": "https://oparl.org/schema/1.0/Organization",
   "body": "http://localhost:8080/oparl/v1.0/body/1",
   "name": "Fraktion der Politiker",
@@ -14,10 +14,10 @@ $I->seeOparl('
   "classification": "Fraktion"
 }
 ');
-$I->sendGET('/organization_gremium/1');
+$I->sendGET('/organization/gremium/1');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/organization_gremium/1",
+  "id": "http://localhost:8080/oparl/v1.0/organization/gremium/1",
   "type": "https://oparl.org/schema/1.0/Organization",
   "body": "http://localhost:8080/oparl/v1.0/body/1",
   "name": "Ausschuss mit Terminen",
@@ -27,10 +27,10 @@ $I->seeOparl('
   "classification": "BA-Gremium"
 }
 ');
-$I->sendGET('/organization_referat/1');
+$I->sendGET('/organization/referat/1');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/organization_referat/1",
+  "id": "http://localhost:8080/oparl/v1.0/organization/referat/1",
   "type": "https://oparl.org/schema/1.0/Organization",
   "body": "http://localhost:8080/oparl/v1.0/body/0",
   "name": "Referat für städtische Aufgaben",

@@ -55,9 +55,9 @@ class OparlTester extends \Codeception\Actor
             $this->assertEquals($query_url, $tree->id);
 
             // Check that the typ is a OParl type
-            // The url either ends with /[type]/[id] or with /[type]_[subtype]/[id],
-            // so we can easily extract the lower case type from the url
-            $type = preg_replace('~^.*/([a-z]+)(_[a-z]+)?/\d+$~', '$1', $this->grabFromCurrentUrl());
+            // The url either ends with /[type]/[id] or with /[type]/[subtype]/[id],
+            // so we can easily extract the type (in lower case) from the url
+            $type = preg_replace('~^.*?/([a-z]+)(/[a-z]+)?/\d+$~', '$1', $this->grabFromCurrentUrl());
             // There's an exception for the system object as it is the entry object
             if ($type == "/oparl/v1.0/")
                 $type = "system";

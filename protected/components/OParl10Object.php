@@ -17,17 +17,19 @@ class OParl10Object {
     /*
      * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
-    public static function object($typ, $id = null) {
+    public static function object($typ, $id, $subtype = null) {
+        if ($subtype != null)
+            $typ = $typ . '/' . $subtype;
         if      ($typ == 'file'                  ) return self::file($id);
         else if ($typ == 'meeting'               ) return self::meeting($id);
-        else if ($typ == 'membership_fraktion'   ) return self::membership_fraktion($id);
-        else if ($typ == 'membership_gremium'    ) return self::membership_gremium($id);
-        else if ($typ == 'membership_referat'    ) return self::membership_referat($id);
-        else if ($typ == 'organization_fraktion' ) return self::organization_fraktion($id);
-        else if ($typ == 'organization_gremium'  ) return self::organization_gremium($id);
-        else if ($typ == 'organization_referat'  ) return self::organization_referat($id);
+        else if ($typ == 'membership/fraktion'   ) return self::membership_fraktion($id);
+        else if ($typ == 'membership/gremium'    ) return self::membership_gremium($id);
+        else if ($typ == 'membership/referat'    ) return self::membership_referat($id);
+        else if ($typ == 'organization/fraktion' ) return self::organization_fraktion($id);
+        else if ($typ == 'organization/gremium'  ) return self::organization_gremium($id);
+        else if ($typ == 'organization/referat'  ) return self::organization_referat($id);
         else if ($typ == 'person'                ) return self::person($id);
-        else if ($typ == 'system'                ) return self::system();
+        else if ($typ == 'system'                ) return self::system($id);
         else if ($typ == 'term'                  ) return self::terms($id);
         else if ($typ == 'paper'                 ) return self::paper($id);
         else if ($typ == 'agendaitem'            ) return ["note:" => "not implemented yet"];
@@ -57,9 +59,9 @@ class OParl10Object {
     /**
      * Erzeugt das 'oparl:System'-Objekt, also den API-Einstiegspunkt
      */
-    public static function system() {
+    public static function system($id) {
         return [
-            'id'                 => OParl10Controller::getOparlObjectUrl('system'),
+            'id'                 => OParl10Controller::getOparlObjectUrl('system', null),
             'type'               => self::TYPE_SYSTEM,
             'oparlVersion'       => OParl10Controller::VERSION,
             'otherOparlVersions' => [],
@@ -80,7 +82,7 @@ class OParl10Object {
         return [
             'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
             'type'            => self::TYPE_BODY,
-            'system'          => OParl10Controller::getOparlObjectUrl('system'),
+            'system'          => OParl10Controller::getOparlObjectUrl('system', null),
             'contactEmail'    => Yii::app()->params['adminEmail'],
             'contactName'     => Yii::app()->params['adminEmailName'],
             'name'            => $name,
@@ -148,7 +150,7 @@ class OParl10Object {
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization_gremium', $object->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization/gremium', $object->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $object->ba_nr == null ? 0 : $object->ba_nr),
             'name'           => $object->getName(false),
@@ -168,7 +170,7 @@ class OParl10Object {
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization_fraktion', $object->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization/fraktion', $object->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $object->ba_nr == null ? 0 : $object->ba_nr),
             'name'           => $object->getName(false),
@@ -188,7 +190,7 @@ class OParl10Object {
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization_referat', $object->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization/referat', $object->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', 0),
             'name'           => $object->getName(false),
@@ -314,9 +316,9 @@ class OParl10Object {
         $mitgliedschaft = StadtraetInFraktion::model()->findByPk($id);
 
         $data = [
-            'id'                       => OParl10Controller::getOparlObjectUrl('membership_fraktion', $mitgliedschaft->id),
+            'id'                       => OParl10Controller::getOparlObjectUrl('membership/fraktion', $mitgliedschaft->id),
             'type'                     => self::TYPE_MEMBERSHIP,
-            'organization'             => OParl10Controller::getOparlObjectUrl('organization_fraktion', $mitgliedschaft->fraktion->id),
+            'organization'             => OParl10Controller::getOparlObjectUrl('organization/fraktion', $mitgliedschaft->fraktion->id),
             'person'                   => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
             'role'                     => $mitgliedschaft->funktion,
             'startDate'                => $mitgliedschaft->datum_von,
@@ -337,9 +339,9 @@ class OParl10Object {
         $mitgliedschaft = StadtraetInReferat::model()->findByPk($id);
 
         $data = [
-            'id'           => OParl10Controller::getOparlObjectUrl('membership_referat', $mitgliedschaft->id),
+            'id'           => OParl10Controller::getOparlObjectUrl('membership/referat', $mitgliedschaft->id),
             'type'         => self::TYPE_MEMBERSHIP,
-            'organization' => OParl10Controller::getOparlObjectUrl('organization_referat', $mitgliedschaft->referat->id),
+            'organization' => OParl10Controller::getOparlObjectUrl('organization/referat', $mitgliedschaft->referat->id),
             'person'       => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
             'role'         => 'Referent',
         ];
@@ -365,7 +367,7 @@ class OParl10Object {
             'name'         => $termin->gremium->name,
             'meetingState' => $termin->sitzungsstand,
             'start'        => OParl10Controller::toOparlDateTime($termin->termin),
-            'organization' => OParl10Controller::getOparlObjectUrl('organization_gremium', $termin->gremium->id),
+            'organization' => OParl10Controller::getOparlObjectUrl('organization/gremium', $termin->gremium->id),
             'modified'     => OParl10Controller::toOparlDateTime($termin->datum_letzte_aenderung),
         ];
 
@@ -389,7 +391,7 @@ class OParl10Object {
             'reference'        => $antrag->antrags_nr,
             'paperType'        => $antrag->getTypName(),
             'auxiliaryFile'    => [],
-            'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization_referat', $antrag->referat_id)],
+            'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization/referat', $antrag->referat_id)],
             'keyword'          => [],
         ];
 

@@ -14,7 +14,7 @@ $I->seeOparl('
       "paperType": "Stadtratsantrag",
       "auxiliaryFile": [],
       "underDirectionof": [
-        "http://localhost:8080/oparl/v1.0/organization_referat/1"
+        "http://localhost:8080/oparl/v1.0/organization/referat/1"
       ],
       "keyword": []
     },
@@ -29,7 +29,7 @@ $I->seeOparl('
         "http://localhost:8080/oparl/v1.0/file/2"
       ],
       "underDirectionof": [
-        "http://localhost:8080/oparl/v1.0/organization_referat/1"
+        "http://localhost:8080/oparl/v1.0/organization/referat/1"
       ],
       "keyword": [],
       "relatedPaper": [
@@ -48,7 +48,7 @@ $I->seeOparl('
         "http://localhost:8080/oparl/v1.0/file/1"
       ],
       "underDirectionof": [
-        "http://localhost:8080/oparl/v1.0/organization_referat/1"
+        "http://localhost:8080/oparl/v1.0/organization/referat/1"
       ],
       "keyword": [],
       "relatedPaper": [
@@ -79,7 +79,7 @@ $I->seeOparl('
         "http://localhost:8080/oparl/v1.0/file/4"
       ],
       "underDirectionof": [
-        "http://localhost:8080/oparl/v1.0/organization_referat/1"
+        "http://localhost:8080/oparl/v1.0/organization/referat/1"
       ],
       "keyword": []
     },
@@ -94,7 +94,7 @@ $I->seeOparl('
         "http://localhost:8080/oparl/v1.0/file/5"
       ],
       "underDirectionof": [
-        "http://localhost:8080/oparl/v1.0/organization_referat/1"
+        "http://localhost:8080/oparl/v1.0/organization/referat/1"
       ],
       "keyword": []
     },
@@ -109,7 +109,7 @@ $I->seeOparl('
         "http://localhost:8080/oparl/v1.0/file/7"
       ],
       "underDirectionof": [
-        "http://localhost:8080/oparl/v1.0/organization_referat/1"
+        "http://localhost:8080/oparl/v1.0/organization/referat/1"
       ],
       "keyword": []
     }
@@ -133,7 +133,7 @@ $I->seeOparl('
       "paperType": "BA-Antrag",
       "auxiliaryFile": [],
       "underDirectionof": [
-        "http://localhost:8080/oparl/v1.0/organization_referat/1"
+        "http://localhost:8080/oparl/v1.0/organization/referat/1"
       ],
       "keyword": []
     }

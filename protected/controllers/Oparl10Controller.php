@@ -12,14 +12,17 @@ class OParl10Controller extends CController {
     /*
      * Erzeugt die URL zu einem einzelnen OParl-Objekt
      */
-    public static function getOparlObjectUrl($typ, $id = null) {
+    public static function getOparlObjectUrl($typ, $id, $subtype = null) {
+
         if ($typ == 'system') {
             return OPARL_10_ROOT;
         }
 
-        $url = OPARL_10_ROOT . '/' . $typ . '/' . $id;
+        if ($subtype != null) {
+            return OPARL_10_ROOT . '/' . $typ . '/' . $subtype . '/' . $id;
+        }
 
-        return $url;
+        return OPARL_10_ROOT . '/' . $typ . '/' . $id;
     }
 
     /*
@@ -52,9 +55,9 @@ class OParl10Controller extends CController {
     /*
      * Gibt ein beliebiges Objekt außer 'oparl:System' als JSON aus
      */
-    public function actionObject($typ, $id) {
+    public function actionObject($typ, $id, $subtype = null) {
         Header('Content-Type: application/json');
-        echo json_encode(OParl10Object::object($typ, $id));
+        echo json_encode(OParl10Object::object($typ, $id, $subtype));
     }
 
     /**
@@ -94,16 +97,16 @@ class OParl10Controller extends CController {
 
         $gremien = Gremium::model()->findAll($query);
         foreach ($gremien as $gremium)
-            $organizations[] = OParl10Object::object('organization_gremium', $gremium->id);
+            $organizations[] = OParl10Object::object('organization/gremium', $gremium->id);
 
         $fraktionen = Fraktion::model()->findAll($query);
         foreach ($fraktionen as $fraktion)
-            $organizations[] = OParl10Object::object('organization_fraktion', $fraktion->id);
+            $organizations[] = OParl10Object::object('organization/fraktion', $fraktion->id);
 
         if ($body == 0) {
             $referate = Referat::model()->findAll();
             foreach ($referate as $referat)
-                $organizations[] = OParl10Object::object('organization_referat', $referat->id);
+                $organizations[] = OParl10Object::object('organization/referat', $referat->id);
         }
 
         echo json_encode([

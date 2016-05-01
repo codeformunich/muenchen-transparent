@@ -6,7 +6,7 @@ $I->seeOparl('
 {
   "items": [
     {
-      "id": "http://localhost:8080/oparl/v1.0/organization_fraktion/2",
+      "id": "http://localhost:8080/oparl/v1.0/organization/fraktion/2",
       "type": "https://oparl.org/schema/1.0/Organization",
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Fraktion des Stadtrat",
@@ -16,7 +16,7 @@ $I->seeOparl('
       "classification": "Fraktion"
     },
     {
-      "id": "http://localhost:8080/oparl/v1.0/organization_referat/1",
+      "id": "http://localhost:8080/oparl/v1.0/organization/referat/1",
       "type": "https://oparl.org/schema/1.0/Organization",
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Referat für städtische Aufgaben",
@@ -37,7 +37,7 @@ $I->seeOparl('
 {
   "items": [
     {
-      "id": "http://localhost:8080/oparl/v1.0/organization_gremium/1",
+      "id": "http://localhost:8080/oparl/v1.0/organization/gremium/1",
       "type": "https://oparl.org/schema/1.0/Organization",
       "body": "http://localhost:8080/oparl/v1.0/body/1",
       "name": "Ausschuss mit Terminen",
@@ -47,7 +47,7 @@ $I->seeOparl('
       "classification": "BA-Gremium"
     },
     {
-      "id": "http://localhost:8080/oparl/v1.0/organization_fraktion/1",
+      "id": "http://localhost:8080/oparl/v1.0/organization/fraktion/1",
       "type": "https://oparl.org/schema/1.0/Organization",
       "body": "http://localhost:8080/oparl/v1.0/body/1",
       "name": "Fraktion der Politiker",

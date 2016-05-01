@@ -34,6 +34,7 @@ $GLOBALS["RIS_URL_RULES"] = [
     // Oparl
     OPARL_10_ROOT                                                         => 'oparl10/system',
     OPARL_10_ROOT . '/<typ:\w+>/<id:\d+>'                                 => 'oparl10/object',
+    OPARL_10_ROOT . '/<typ:\w+>/<subtype:\w+>/<id:\d+>'                   => 'oparl10/object',
     OPARL_10_ROOT . '/list/body'                                          => 'oparl10/listBody',
     OPARL_10_ROOT . '/body/<body:\d+>/list/<action:\w+>'                  => 'oparl10/list<action>',
 
