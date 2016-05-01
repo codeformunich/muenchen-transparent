@@ -25,9 +25,9 @@ class OParl10Object {
         else if ($typ == 'membership/fraktion'   ) return self::membership_fraktion($id);
         else if ($typ == 'membership/gremium'    ) return self::membership_gremium($id);
         else if ($typ == 'membership/referat'    ) return self::membership_referat($id);
-        else if ($typ == 'organization/fraktion' ) return self::organization_fraktion($id);
-        else if ($typ == 'organization/gremium'  ) return self::organization_gremium($id);
-        else if ($typ == 'organization/referat'  ) return self::organization_referat($id);
+        else if ($typ == 'organization/fraktion' ) return self::organization($id, "fraktion");
+        else if ($typ == 'organization/gremium'  ) return self::organization($id, "gremium");
+        else if ($typ == 'organization/referat'  ) return self::organization($id, "referat");
         else if ($typ == 'person'                ) return self::person($id);
         else if ($typ == 'system'                ) return self::system($id);
         else if ($typ == 'term'                  ) return self::terms($id);
@@ -142,57 +142,27 @@ class OParl10Object {
     }
 
     /**
-     * Erzeugt ein 'oparl:Organization'-Objekt, das ein Germium abbildet
+     * Erzeugt ein 'oparl:Organization'-Objekt, das ein Germium, eine Fraktion oder ein Referat abbildet
      */
-    public static function organization_gremium($id) {
-        $object      = Gremium::model()->findByPk($id);
+    public static function organization($id, $subtype) {
+        if ($subtype == "fraktion") {
+            $object = Fraktion::model()->findByPk($id);
+        } else if ($subtype == "gremium") {
+            $object = Gremium::model()->findByPk($id);
+        } else if ($subtype == "referat") {
+            $object = Referat::model()->findByPk($id);
+        } else {
+            header("HTTP/1.0 404 Not Found");
+            return ['error' => 'No such subtype "' . $subtype . '"'];
+        }
+
         $meetings    = [];
         $memberships = [];
 
         return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization/gremium', $object->id),
+            'id'             => OParl10Controller::getOparlObjectUrl('organization/' . $subtype, $object->id),
             'type'           => self::TYPE_ORGANIZATION,
-            'body'           => OParl10Controller::getOparlObjectUrl('body', $object->ba_nr == null ? 0 : $object->ba_nr),
-            'name'           => $object->getName(false),
-            'shortName'      => $object->getName(true),
-            'meeting'        => $meetings,
-            'membership'     => $memberships,
-            'classification' => $object->getTypName(),
-        ];
-    }
-
-    /**
-     * Erzeugt ein 'oparl:Organization'-Objekt, das ein Fraktion abbildet
-     */
-    public static function organization_fraktion($id) {
-        $object      = Fraktion::model()->findByPk($id);
-        $meetings    = [];
-        $memberships = [];
-
-        return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization/fraktion', $object->id),
-            'type'           => self::TYPE_ORGANIZATION,
-            'body'           => OParl10Controller::getOparlObjectUrl('body', $object->ba_nr == null ? 0 : $object->ba_nr),
-            'name'           => $object->getName(false),
-            'shortName'      => $object->getName(true),
-            'meeting'        => $meetings,
-            'membership'     => $memberships,
-            'classification' => $object->getTypName(),
-        ];
-    }
-
-    /**
-     * Erzeugt ein 'oparl:Organization'-Objekt, das ein Referat abbildet
-     */
-    public static function organization_referat($id) {
-        $object      = Referat::model()->findByPk($id);
-        $meetings    = [];
-        $memberships = [];
-
-        return [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization/referat', $object->id),
-            'type'           => self::TYPE_ORGANIZATION,
-            'body'           => OParl10Controller::getOparlObjectUrl('body', 0),
+            'body'           => OParl10Controller::getOparlObjectUrl('body', $object->getBaNr()),
             'name'           => $object->getName(false),
             'shortName'      => $object->getName(true),
             'meeting'        => $meetings,

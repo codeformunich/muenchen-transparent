@@ -166,4 +166,9 @@ class Referat extends CActiveRecord implements IRISItem
         $this->getDbCriteria()->mergeWith($params);
         return $this;
     }
+
+    public function getBaNr()
+    {
+        return 0;
+    }
 }

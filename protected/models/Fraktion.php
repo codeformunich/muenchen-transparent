@@ -116,5 +116,8 @@ class Fraktion extends CActiveRecord implements IRISItem
         return "0000-00-00 00:00:00";
     }
 
-
+    public function getBaNr()
+    {
+        return $this->ba_nr == null ? 0 : $this->ba_nr;
+    }
 }

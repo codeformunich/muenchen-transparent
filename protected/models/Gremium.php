@@ -144,5 +144,8 @@ class Gremium extends CActiveRecord implements IRISItem
         return $this->datum_letzte_aenderung;
     }
 
-
+    public function getBaNr()
+    {
+        return $this->ba_nr == null ? 0 : $this->ba_nr;
+    }
 }
