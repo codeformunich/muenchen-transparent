@@ -22,12 +22,12 @@ class OParl10Object {
             $typ = $typ . '/' . $subtype;
         if      ($typ == 'file'                  ) return self::file($id);
         else if ($typ == 'meeting'               ) return self::meeting($id);
-        else if ($typ == 'membership/fraktion'   ) return self::membership_fraktion($id);
-        else if ($typ == 'membership/gremium'    ) return self::membership_gremium($id);
-        else if ($typ == 'membership/referat'    ) return self::membership_referat($id);
-        else if ($typ == 'organization/fraktion' ) return self::organization($id, "fraktion");
-        else if ($typ == 'organization/gremium'  ) return self::organization($id, "gremium");
-        else if ($typ == 'organization/referat'  ) return self::organization($id, "referat");
+        else if ($typ == 'membership/fraktion'   ) return self::membership($id, 'fraktion');
+        else if ($typ == 'membership/gremium'    ) return self::membership($id, 'gremium');
+        else if ($typ == 'membership/referat'    ) return self::membership($id, 'referat');
+        else if ($typ == 'organization/fraktion' ) return self::organization($id, 'fraktion');
+        else if ($typ == 'organization/gremium'  ) return self::organization($id, 'gremium');
+        else if ($typ == 'organization/referat'  ) return self::organization($id, 'referat');
         else if ($typ == 'person'                ) return self::person($id);
         else if ($typ == 'system'                ) return self::system($id);
         else if ($typ == 'term'                  ) return self::terms($id);
@@ -172,6 +172,41 @@ class OParl10Object {
     }
 
     /**
+     * Erzeugt ein 'oparl:Membership'-Objekt, das die Mitgliedschaften eines Stadrats in einer Fraktion, einem Gremium, Referat abbildet
+     */
+    public static function membership($id, $subtype) {
+        if ($subtype == "fraktion") {
+            $object = StadtraetInFraktion::model()->findByPk($id);
+            $organization = $object->fraktion;
+        } else if ($subtype == "gremium") {
+            $object = StadtraetInGremium::model()->findByPk($id);
+            $organization = $object->gremium;
+        } else if ($subtype == "referat") {
+            $object = StadtraetInReferat::model()->findByPk($id);
+            $organization = $object->referat;
+        } else {
+            header("HTTP/1.0 404 Not Found");
+            return ['error' => 'No such subtype "' . $subtype . '"'];
+        }
+
+        $data = [
+            'id'           => OParl10Controller::getOparlObjectUrl('membership/' . $subtype, $object->id),
+            'type'         => self::TYPE_MEMBERSHIP,
+            'organization' => OParl10Controller::getOparlObjectUrl('organization/' . $subtype, $organization->id),
+            'person'       => OParl10Controller::getOparlObjectUrl('person',  $object->stadtraetIn->id),
+            'role'         => $object->getFunktion(),
+        ];
+
+        if ($object->datum_von !== null)
+            $data['startDate'] = $object->datum_von;
+
+        if ($object->datum_bis !== null)
+            $data['endDate'] = $object->datum_bis;
+
+        return $data;
+    }
+
+    /**
      * Erzeugt ein 'oparl:Person'-Objekt, das StadträtInnen abbildet
      */
     public static function person($id) {
@@ -275,52 +310,6 @@ class OParl10Object {
 
         if ($dokument->deleted)
             $data['deleted'] = true;
-
-        return $data;
-    }
-
-    /**
-     * Erzeugt ein 'oparl:Membership'-Objekt, das die Mitgliedschaften eines Stadrats in einer Fraktion abbildet
-     */
-    public static function membership_fraktion($id) {
-        $mitgliedschaft = StadtraetInFraktion::model()->findByPk($id);
-
-        $data = [
-            'id'                       => OParl10Controller::getOparlObjectUrl('membership/fraktion', $mitgliedschaft->id),
-            'type'                     => self::TYPE_MEMBERSHIP,
-            'organization'             => OParl10Controller::getOparlObjectUrl('organization/fraktion', $mitgliedschaft->fraktion->id),
-            'person'                   => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
-            'role'                     => $mitgliedschaft->funktion,
-            'startDate'                => $mitgliedschaft->datum_von,
-            'votingRight'              => true,
-            'muenchenTransparent:term' => OParl10Controller::getOparlObjectUrl('term', $mitgliedschaft->wahlperiode),
-        ];
-
-        if ($mitgliedschaft->datum_bis !== null)
-            $data['endDate'] = $mitgliedschaft->datum_bis;
-
-        return $data;
-    }
-
-    /**
-     * Erzeugt ein 'oparl:Membership'-Objekt, das den Bezug eines Berufsmäßigen Stadrats zu seinem Referat abbildet
-     */
-    public static function membership_referat($id) {
-        $mitgliedschaft = StadtraetInReferat::model()->findByPk($id);
-
-        $data = [
-            'id'           => OParl10Controller::getOparlObjectUrl('membership/referat', $mitgliedschaft->id),
-            'type'         => self::TYPE_MEMBERSHIP,
-            'organization' => OParl10Controller::getOparlObjectUrl('organization/referat', $mitgliedschaft->referat->id),
-            'person'       => OParl10Controller::getOparlObjectUrl('person',  $mitgliedschaft->stadtraetIn->id),
-            'role'         => 'Referent',
-        ];
-
-        if ($mitgliedschaft->datum_von !== null)
-            $data['startDate'] = $mitgliedschaft->datum_von;
-
-        if ($mitgliedschaft->datum_bis !== null)
-            $data['endDate'] = $mitgliedschaft->datum_bis;
 
         return $data;
     }

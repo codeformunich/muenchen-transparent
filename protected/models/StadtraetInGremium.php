@@ -86,4 +86,9 @@ class StadtraetInGremium extends CActiveRecord
 
         return ($bis >= $datum);
     }
+
+    public function getFunktion()
+    {
+        return $this->funktion;
+    }
 }

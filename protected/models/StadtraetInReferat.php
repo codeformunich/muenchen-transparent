@@ -72,4 +72,9 @@ class StadtraetInReferat extends CActiveRecord
             'datum_bis'      => 'Bis',
         ];
     }
+
+    public function getFunktion()
+    {
+        return 'Referent';
+    }
 }
