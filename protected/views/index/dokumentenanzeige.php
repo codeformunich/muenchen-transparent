@@ -61,7 +61,7 @@ if ($risitem) {
     ?>
 
     <div id="pdf_rechtsvermerk">
-        Originaldokument von <a href="http://www.ris-muenchen.de/">www.ris-muenchen.de</a>. München Transparent ist nicht für den Inhalt dieses Dokuments verantwortlich.
+        Originaldokument von <a href="https://www.ris-muenchen.de/">www.ris-muenchen.de</a>. München Transparent ist nicht für den Inhalt dieses Dokuments verantwortlich.
     </div>
 
     <script>

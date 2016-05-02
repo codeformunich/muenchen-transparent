@@ -494,7 +494,7 @@ class IndexController extends RISBaseController
             echo $data;
         } catch (Exception $e) {
             $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
-            fwrite($fp, $id . " - " . "http://www.ris-muenchen.de" . $dokument->url . "\n");
+            fwrite($fp, $id . " - " . "https://www.ris-muenchen.de" . $dokument->url . "\n");
             fclose($fp);
             header("HTTP/1.0 404 Not Found");
             die();

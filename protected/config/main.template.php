@@ -25,9 +25,14 @@ define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
 
+<<<<<<< HEAD
 define("RIS_BASE_URL", "http://www.ris-muenchen.de/RII/RII/");
 define("RIS_BA_BASE_URL", "http://www.ris-muenchen.de/RII/BA-RII/");
 define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
+=======
+define("RIS_BASE_URL", "https://www.ris-muenchen.de/RII/RII/");
+define("RIS_BA_BASE_URL", "https://www.ris-muenchen.de/RII/BA-RII/");
+>>>>>>> master
 
 define("DOCUMENT_DATE_ACCURATE_SINCE", 1388530800); // 1. Januar 2014
 define("DOCUMENT_DATE_UNKNOWN_BEFORE", 1212271200); // 1. Juni 2008

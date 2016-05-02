@@ -17,7 +17,7 @@ class BAInitiativeParser extends RISParser
 
         $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=$antrag_id");
         $html_dokumente = RISTools::load_file(RIS_BA_BASE_URL . "ba_initiativen_dokumente.jsp?Id=$antrag_id");
-        //$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
+        //$html_ergebnisse = load_file("https://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         $daten                         = new Antrag();
         $daten->id                     = $antrag_id;
@@ -99,7 +99,7 @@ class BAInitiativeParser extends RISParser
         $dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
         $dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
         preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-        http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
+        https://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
         */
 
         if ($daten->ba_nr == 0) {

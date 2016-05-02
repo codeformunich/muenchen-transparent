@@ -17,9 +17,9 @@ class Reindex_DocumentCommand extends CConsoleCommand
             $dokument = Dokument::model()->findByPk($dok_id);
             if (!$dokument) continue;
 
-            //$dokument->reDownloadIndex();
-            $dokument->geo_extract();
-            $dokument->solrIndex();
+            $dokument->reDownloadIndex();
+            //$dokument->geo_extract();
+            //$dokument->solrIndex();
         }
     }
 }

@@ -33,7 +33,7 @@ if (count($data["antraege"]) > 0) {
 		foreach ($dat["dokumente"] as $dok) {
 			/** @var Dokument $dokument */
 			$dokument         = $dok["dokument"];
-			$dokumente_strs[] = "    - " . $dokument->name . " (http://www.ris-muenchen.de" . $dokument->url . ")";
+			$dokumente_strs[] = "    - " . $dokument->name . " (https://www.ris-muenchen.de" . $dokument->url . ")";
 			foreach ($dok["queries"] as $qu) {
 				/** @var RISSucheKrits $qu */
 				$name = $qu->getTitle();
@@ -68,7 +68,7 @@ foreach ($data["termine"] as $dat) {
 	foreach ($dat["dokumente"] as $dok) {
 		/** @var Dokument $dokument */
 		$dokument         = $dok["dokument"];
-		$dokumente_strs[] = "    - " . $dokument->name . " (http://www.ris-muenchen.de" . $dokument->url . ")";
+		$dokumente_strs[] = "    - " . $dokument->name . " (https://www.ris-muenchen.de" . $dokument->url . ")";
 		foreach ($dok["queries"] as $qu) {
 			/** @var RISSucheKrits $qu */
 			$name = $qu->getTitle();

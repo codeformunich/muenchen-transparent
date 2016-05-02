@@ -15,7 +15,7 @@ class StadtratsantragParser extends RISParser
 
         $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $antrag_id);
         $html_dokumente = RISTools::load_file(RIS_BASE_URL . "ris_antrag_dokumente.jsp?risid=" . $antrag_id);
-        //$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
+        //$html_ergebnisse = load_file("https://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         if (trim($html_details) == "" || trim($html_dokumente) == "") return;
 
@@ -34,7 +34,7 @@ class StadtratsantragParser extends RISParser
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
         if (!isset($dat_details[1])) {
-            echo $antrag_id . " - " . "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
+            echo $antrag_id . " - " . "https://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
             var_dump($dat_details);
             return;
         }
@@ -112,7 +112,7 @@ class StadtratsantragParser extends RISParser
         $dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
         $dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
         preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-        http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
+        https://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
         */
 
         $aenderungen = "";
