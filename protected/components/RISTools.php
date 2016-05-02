@@ -91,6 +91,7 @@ class RISTools
         curl_setopt($ch, CURLOPT_URL, $url_to_read);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_NOBODY, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD'); // here HTTP request is 'HEAD'
@@ -211,7 +212,7 @@ class RISTools
         } // 25to13012015
         if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) {
             return "Tagesordnung";
-        } // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
+        } // z.B. https://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
         if (preg_match("/^to [0-9\. ]+$/siu", $titel)) {
             return "Tagesordnung";
         } // 2014 01 to
@@ -232,7 +233,7 @@ class RISTools
         }  // 21vto0115oeff
         if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) {
             return "Protokoll";
-        } // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
+        } // z.B. https://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
         if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $titel)) {
             return "Protokoll";
         } // pro140918 oeff
@@ -410,22 +411,22 @@ class RISTools
     {
         switch ($typ) {
             case "ba_antrag":
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
+                return "https://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
                 break;
             case "ba_initiative":
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
+                return "https://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
                 break;
             case "ba_termin":
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
+                return "https://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
                 break;
             case "stadtrat_antrag":
-                return "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $id;
+                return "https://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $id;
                 break;
             case "stadtrat_vorlage":
-                return "http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $id;
+                return "https://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $id;
                 break;
             case "stadtrat_termin":
-                return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $id;
+                return "https://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $id;
                 break;
         }
         return "Unbekannt";

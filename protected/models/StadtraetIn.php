@@ -249,9 +249,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $istBAler = false;
         foreach ($this->stadtraetInnenFraktionen as $frakt) if ($frakt->fraktion->ba_nr > 0) $istBAler = true;
         if ($istBAler) {
-            return "http://www.ris-muenchen.de/RII/BA-RII/ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id;
+            return "https://www.ris-muenchen.de/RII/BA-RII/ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id;
         } else {
-            return "http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+            return "https://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
         }
     }
 
@@ -323,7 +323,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         foreach ($strs_in as $strs) {
             if ($strs->id == 3425214) {
                 continue;
-            } // Seltsamer ristestuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
+            } // Seltsamer ristestuser https://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
             $strs_out[] = $strs;
         }
         return $strs_out;
