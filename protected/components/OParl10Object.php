@@ -18,18 +18,18 @@ class OParl10Object {
      * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
     public static function object($typ, $id, $subtype = null) {
-        if      ($typ == 'file'                  ) return self::file($id);
-        else if ($typ == 'meeting'               ) return self::meeting($id);
-        else if ($typ == 'membership'            ) return self::membership($id, $subtype);
-        else if ($typ == 'organization'          ) return self::organization($id, $subtype);
-        else if ($typ == 'person'                ) return self::person($id);
-        else if ($typ == 'system'                ) return self::system($id);
-        else if ($typ == 'term'                  ) return self::terms($id);
-        else if ($typ == 'paper'                 ) return self::paper($id);
-        else if ($typ == 'agendaitem'            ) return ["note:" => "not implemented yet"];
-        else if ($typ == 'location'              ) return ["note:" => "not implemented yet"];
-        else if ($typ == 'consultation'          ) return ["note:" => "not implemented yet"];
-        else if ($typ == 'body'                  ) {
+        if      ($typ == 'file'         ) return self::file($id);
+        else if ($typ == 'meeting'      ) return self::meeting($id);
+        else if ($typ == 'membership'   ) return self::membership($id, $subtype);
+        else if ($typ == 'organization' ) return self::organization($id, $subtype);
+        else if ($typ == 'person'       ) return self::person($id);
+        else if ($typ == 'system'       ) return self::system($id);
+        else if ($typ == 'term'         ) return self::terms($id);
+        else if ($typ == 'paper'        ) return self::paper($id);
+        else if ($typ == 'agendaitem'   ) return ['note:' => 'not implemented yet'];
+        else if ($typ == 'location'     ) return ['note:' => 'not implemented yet'];
+        else if ($typ == 'consultation' ) return ['note:' => 'not implemented yet'];
+        else if ($typ == 'body'         ) {
             // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
             if ($id == 0) {
                 $body = 0;
@@ -45,8 +45,8 @@ class OParl10Object {
             }
             return OParl10Object::body($body, $name, $shortName, $website);
         } else {
-            header("HTTP/1.0 404 Not Found");
-            return ['error' => 'No such type "' . $typ. '"'];
+            header('HTTP/1.0 404 Not Found');
+            return ['error' => 'No such type ' . $typ];
         }
     }
 
@@ -139,48 +139,62 @@ class OParl10Object {
      * Erzeugt ein 'oparl:Organization'-Objekt, das ein Germium, eine Fraktion oder ein Referat abbildet
      */
     public static function organization($id, $subtype) {
-        if ($subtype == "fraktion") {
+        if ($subtype == 'fraktion') {
             $object = Fraktion::model()->findByPk($id);
-        } else if ($subtype == "gremium") {
+            $memberships = $object->stadtraetInnenFraktionen;
+        } else if ($subtype == 'gremium') {
             $object = Gremium::model()->findByPk($id);
-        } else if ($subtype == "referat") {
+            $memberships = $object->mitgliedschaften;
+        } else if ($subtype == 'referat') {
             $object = Referat::model()->findByPk($id);
+            $memberships = $object->stadtraetInnenReferate;
         } else {
-            header("HTTP/1.0 404 Not Found");
-            return ['error' => 'No such subtype "' . $subtype . '"'];
+            header('HTTP/1.0 404 Not Found');
+            return ['error' => 'No such subtype ' . $subtype];
         }
 
-        $meetings    = [];
-        $memberships = [];
-
-        return [
+        $data =  [
             'id'             => OParl10Controller::getOparlObjectUrl('organization/' . $subtype, $object->id),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $object->getBaNr()),
             'name'           => $object->getName(false),
             'shortName'      => $object->getName(true),
-            'meeting'        => $meetings,
-            'membership'     => $memberships,
+            'membership'     => [],
             'classification' => $object->getTypName(),
         ];
+
+        // Termine gibt es nur bei Gremien
+        if ($subtype == 'gremium') {
+            $data['meetings'] = [];
+            foreach ($object->termine as $termin) {
+                $data['meetings'][] = OParl10Controller::getOparlObjectUrl('meeting', $termin->id);
+            }
+        }
+
+        // Mitgliedschaften
+        foreach ($memberships as $membership) {
+            $data['membership'][] = OParl10Controller::getOparlObjectUrl('membership', $membership->id, $subtype);
+        }
+
+        return $data;
     }
 
     /**
      * Erzeugt ein 'oparl:Membership'-Objekt, das die Mitgliedschaften eines Stadrats in einer Fraktion, einem Gremium, Referat abbildet
      */
     public static function membership($id, $subtype) {
-        if ($subtype == "fraktion") {
+        if ($subtype == 'fraktion') {
             $object = StadtraetInFraktion::model()->findByPk($id);
             $organization = $object->fraktion;
-        } else if ($subtype == "gremium") {
+        } else if ($subtype == 'gremium') {
             $object = StadtraetInGremium::model()->findByPk($id);
             $organization = $object->gremium;
-        } else if ($subtype == "referat") {
+        } else if ($subtype == 'referat') {
             $object = StadtraetInReferat::model()->findByPk($id);
             $organization = $object->referat;
         } else {
-            header("HTTP/1.0 404 Not Found");
-            return ['error' => 'No such subtype "' . $subtype . '"'];
+            header('HTTP/1.0 404 Not Found');
+            return ['error' => 'No such subtype ' . $subtype];
         }
 
         $data = [
@@ -235,9 +249,9 @@ class OParl10Object {
         }
 
         if ($stadtraetin->referentIn)
-            $data['status'] = "Berufsmäßiger Stadtrat";
+            $data['status'] = 'Berufsmäßiger Stadtrat';
         else
-            $data['status'] = "Ehrenamtlicher Stadtrat";
+            $data['status'] = 'Ehrenamtlicher Stadtrat';
 
         // optionale Attribute
         $optional_properties = [
@@ -255,7 +269,7 @@ class OParl10Object {
         ];
 
         foreach ($optional_properties as $key => $value) {
-            if ($value && $value != "")
+            if ($value && $value != '')
                 $data[$key] = $value;
         }
 
@@ -288,13 +302,13 @@ class OParl10Object {
             $data['accessUrl'] = $dokument->getLink(); // FIXME: Da der Dateityp unbekannt ist gibt es auch keinen proxy
         }
 
-        /*
-        if ($dokument->antrag)
-            $data['paper'] = [OParl10Controller::getOparlObjectUrl('paper', $dokument->antrag->id)];
-
         if ($dokument->termin)
             $data['meeting'] = [OParl10Controller::getOparlObjectUrl('meeting', $dokument->termin->id)];
 
+        if ($dokument->antrag)
+            $data['paper'] = [OParl10Controller::getOparlObjectUrl('paper', $dokument->antrag->id)];
+
+        /*
         if ($dokument->tagesordnungspunkt)
             $data['agendaItem'] = [OParl10Controller::getOparlObjectUrl('agendaItem', $dokument->tagesordnungspunkt->id)];
         */

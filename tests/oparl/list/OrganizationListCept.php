@@ -11,7 +11,6 @@ $I->seeOparl('
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Fraktion des Stadtrat",
       "shortName": "Fraktion des Stadtrat",
-      "meeting": [],
       "membership": [],
       "classification": "Fraktion"
     },
@@ -21,8 +20,9 @@ $I->seeOparl('
       "body": "http://localhost:8080/oparl/v1.0/body/0",
       "name": "Referat für städtische Aufgaben",
       "shortName": "Referat für städtische Aufgaben",
-      "meeting": [],
-      "membership": [],
+      "membership": [
+        "http://localhost:8080/oparl/v1.0/membership/referat/1"
+      ],
       "classification": "Referat"
     }
   ],
@@ -42,9 +42,16 @@ $I->seeOparl('
       "body": "http://localhost:8080/oparl/v1.0/body/1",
       "name": "Ausschuss mit Terminen",
       "shortName": "Ausschuss mit Terminen",
-      "meeting": [],
-      "membership": [],
-      "classification": "BA-Gremium"
+      "membership": [
+        "http://localhost:8080/oparl/v1.0/membership/gremium/1"
+      ],
+      "classification": "BA-Gremium",
+      "meetings": [
+        "http://localhost:8080/oparl/v1.0/meeting/1",
+        "http://localhost:8080/oparl/v1.0/meeting/2",
+        "http://localhost:8080/oparl/v1.0/meeting/3",
+        "http://localhost:8080/oparl/v1.0/meeting/4"
+      ]
     },
     {
       "id": "http://localhost:8080/oparl/v1.0/organization/fraktion/1",
@@ -52,8 +59,10 @@ $I->seeOparl('
       "body": "http://localhost:8080/oparl/v1.0/body/1",
       "name": "Fraktion der Politiker",
       "shortName": "Fraktion der Politiker",
-      "meeting": [],
-      "membership": [],
+      "membership": [
+        "http://localhost:8080/oparl/v1.0/membership/fraktion/1",
+        "http://localhost:8080/oparl/v1.0/membership/fraktion/2"
+      ],
       "classification": "Fraktion"
     }
   ],

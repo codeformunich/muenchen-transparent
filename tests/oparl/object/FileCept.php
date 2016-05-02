@@ -11,6 +11,12 @@ $I->seeOparl('
   "fileName": "Dokument mit vielen Eigenschaften.pdf",
   "mimeType": "application/pdf",
   "accessUrl": "http://localhost:8080/dokumente/7.pdf",
+  "meeting": [
+    "http://localhost:8080/oparl/v1.0/meeting/4"
+  ],
+  "paper": [
+    "http://localhost:8080/oparl/v1.0/paper/6"
+  ],
   "muenchenTransparent:ocrCreator": "omnipage"
 }
 ');
