@@ -42,9 +42,7 @@ $I->seeOparl('
       "body": "http://localhost:8080/oparl/v1.0/body/1",
       "name": "Ausschuss mit Terminen",
       "shortName": "Ausschuss mit Terminen",
-      "membership": [
-        "http://localhost:8080/oparl/v1.0/membership/gremium/1"
-      ],
+      "membership": [],
       "classification": "BA-Gremium",
       "meetings": [
         "http://localhost:8080/oparl/v1.0/meeting/1",
