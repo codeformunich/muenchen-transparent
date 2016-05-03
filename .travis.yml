@@ -65,9 +65,7 @@ after_failure:
   - cat protected/runtime/application.log
   - cat /tmp/error.log
   - cat /tmp/access.log
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - cat tests/_output/*.html
-  - find /home/travis/.phpenv/ -printf "%TY-%Tm-%Td\t%s\t%p\n"
 
 after_script:
   - nginx -c `pwd`/docs/travis/nginx-codeception.conf -s stop
