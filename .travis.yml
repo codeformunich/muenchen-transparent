@@ -1,5 +1,5 @@
-language: php
-sudo: false
+sudo: required
+dist: trusty
 
 php:
   - '5.6'
@@ -24,6 +24,9 @@ addons:
   apt:
     packages:
       - nginx
+      - mysql-server-5.6
+      - mysql-client-core-5.6
+      - mysql-client-5.6
 
 branches:
   only:
@@ -40,6 +43,8 @@ install:
   # Set up mysql
   - mysql -e 'create database ristest;'
   - mysql -uroot --execute="SET GLOBAL time_zone = '+1:00'";
+  - mysql -uroot --execute="RENAME USER 'root'@'127.0.0.1' TO 'travis'@'127.0.0.1';" # Work around the travis user not being available (yet)
+  - mysql -uroot --execute="FLUSH PRIVILEGES;"
   - cat docs/schema.sql tests/_data/data.sql >  tests/_data/dump.sql
   - mysql -utravis ristest < tests/_data/dump.sql
 
