@@ -22,7 +22,7 @@ class OparlTester extends \Codeception\Actor
 
     /**
      * Checks if the generic requirements for every OParl-response are met:
-     * - the HTTP status code is 200
+     * - the HTTP status code is 200 and the headers are correctly set
      * - the response is valid json and equals the json given as $oparl_object
      * - it is either an external list or an oparl object
      * - all URLs linked to exist
@@ -36,6 +36,7 @@ class OparlTester extends \Codeception\Actor
         // TODO: CORS
         $this->seeResponseCodeIs(200);
         $this->seeHttpHeader('Content-Type', 'application/json');
+        $this->seeHttpHeader('Access-Control-Allow-Origin', '*');
         $this->seeResponseIsJson();
         $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
 

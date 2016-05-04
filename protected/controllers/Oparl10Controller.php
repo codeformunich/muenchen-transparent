@@ -45,26 +45,32 @@ class OParl10Controller extends CController {
     }
 
     /*
+     * Gibt ein Array als OParl-Objekt mit den korrekten Headern aus.
+     */
+    public static function asOParlJSON($data) {
+        Header('Access-Control-Allow-Origin: *');
+        Header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
+    /*
      * Gibt das 'oparl:System'-Objekt als JSON aus
      */
     public function actionSystem() {
-        Header('Content-Type: application/json');
-        echo json_encode(OParl10Object::object('system', null));
+        self::asOParlJSON(OParl10Object::object('system', null));
     }
 
     /*
      * Gibt ein beliebiges Objekt außer 'oparl:System' als JSON aus
      */
     public function actionObject($typ, $id, $subtype = null) {
-        Header('Content-Type: application/json');
-        echo json_encode(OParl10Object::object($typ, $id, $subtype));
+        self::asOParlJSON(OParl10Object::object($typ, $id, $subtype));
     }
 
     /**
      * Die externe Objektliste mit allen 'oparl:Body'-Objekten
      */
     public function actionListBody() {
-        Header('Content-Type: application/json');
 
         $bodies = [OParl10Object::object('body', 0)];
 
@@ -72,9 +78,8 @@ class OParl10Controller extends CController {
         foreach ($bas as $ba)
             $bodies[] = OParl10Object::object('body', $ba->ba_nr);
 
-        echo json_encode([
+        self::asOParlJSON([
             'items'         => $bodies,
-            'itemsPerPage'  => static::ITEMS_PER_PAGE,
             'firstPage'     => static::getOparlListUrl('body'),
             'lastPage'      => static::getOparlListUrl('body'),
             'numberOfPages' => 1,
@@ -88,7 +93,6 @@ class OParl10Controller extends CController {
      * - nur beim Stadtrat: die Referate
      */
     public function actionListOrganization($body) {
-        Header('Content-Type: application/json');
 
         // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
         $query = ($body > 0 ? 'ba_nr = ' . $body : 'ba_nr IS NULL');
@@ -109,9 +113,8 @@ class OParl10Controller extends CController {
                 $organizations[] = OParl10Object::object('organization', $referat->id, 'referat');
         }
 
-        echo json_encode([
+        self::asOParlJSON([
             'items'         => $organizations,
-            'itemsPerPage'  => static::ITEMS_PER_PAGE,
             'firstPage'     => static::getOparlListUrl('organization', $body),
             'lastPage'      => static::getOparlListUrl('organization', $body),
             'numberOfPages' => 1,
@@ -122,7 +125,6 @@ class OParl10Controller extends CController {
      * Eine allgemeine externe Objektliste, die für verschiedene Objekte genutzt werden kann
      */
     public static function externalList($model, $name, $body, $ba_check, $id = null) {
-        Header('Content-Type: application/json');
 
         $criteria = new CDbCriteria();
 
@@ -163,7 +165,7 @@ class OParl10Controller extends CController {
         if (count($entries) > 0 && end($entries)->id != $last_entry->id)
             $data['nextPage'] = static::getOparlListUrl($name, $body, end($entries)->id);
 
-        echo json_encode($data);
+        self::asOParlJSON($data);
     }
 
     /**
@@ -191,11 +193,9 @@ class OParl10Controller extends CController {
      * Die externe Objektliste mit allen 'oparl:LegislativeTerm'-Objekten
      */
     public function actionListTerm($body) {
-        Header('Content-Type: application/json');
 
-        echo json_encode([
+        self::asOParlJSON([
             'items'         => OParl10Object::terms(-1),
-            'itemsPerPage'  => static::ITEMS_PER_PAGE,
             'firstPage'     => static::getOparlListUrl('term', $body),
             'lastPage'      => static::getOparlListUrl('term', $body),
             'numberOfPages' => 1,
