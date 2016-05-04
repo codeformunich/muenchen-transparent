@@ -74,19 +74,19 @@ class OParl10Object {
      */
     public static function body($body, $name, $shortName, $website) {
         return [
-            'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
-            'type'            => self::TYPE_BODY,
-            'system'          => OParl10Controller::getOparlObjectUrl('system', null),
-            'contactEmail'    => Yii::app()->params['adminEmail'],
-            'contactName'     => Yii::app()->params['adminEmailName'],
-            'name'            => $name,
-            'shortName'       => $shortName,
-            'website'         => $website,
-            'organization'    => OParl10Controller::getOparlListUrl('organization', $body),
-            'person'          => OParl10Controller::getOparlListUrl('person',       $body),
-            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
-            'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
-            'terms'           => OParl10Controller::getOparlListUrl('term',         $body),
+            'id'           => OParl10Controller::getOparlObjectUrl('body', $body),
+            'type'         => self::TYPE_BODY,
+            'system'       => OParl10Controller::getOparlObjectUrl('system', null),
+            'contactEmail' => Yii::app()->params['adminEmail'],
+            'contactName'  => Yii::app()->params['adminEmailName'],
+            'name'         => $name,
+            'shortName'    => $shortName,
+            'website'      => $website,
+            'organization' => OParl10Controller::getOparlListUrl('organization', $body),
+            'person'       => OParl10Controller::getOparlListUrl('person',       $body),
+            'meeting'      => OParl10Controller::getOparlListUrl('meeting',      $body),
+            'paper'        => OParl10Controller::getOparlListUrl('paper',        $body),
+            'terms'        => OParl10Controller::getOparlListUrl('term',         $body),
         ];
     }
 

@@ -35,6 +35,7 @@ class OparlTester extends \Codeception\Actor
 
         // TODO: CORS
         $this->seeResponseCodeIs(200);
+        $this->seeHttpHeader('Content-Type', 'application/json');
         $this->seeResponseIsJson();
         $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
 
