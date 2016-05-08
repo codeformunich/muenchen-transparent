@@ -181,7 +181,6 @@ class IndexController extends RISBaseController
         ];
     }
 
-
     /**
      * @param Dokument[] $dokumente
      * @param null|RISSucheKrits $filter_krits
@@ -479,26 +478,39 @@ class IndexController extends RISBaseController
         }
     }
 
+    /**
+     * @param $id
+     * @return true wenn das Dokument erfolgreich ausgegeben wurde
+     */
+    public static function dokumentAusgeben($id)
+    {
+        /** @var Dokument $dokument */
+        $dokument = Dokument::model()->findByPk($id);
+        try {
+            // TODO content type direkt von curl erfragen
+            if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
+                Header('Content-Type: application/pdf');
+            } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff') {
+                Header('Content-Type: image/tiff');
+            }
+
+            echo ris_download_string($dokument->getLink());
+            return true;
+        } catch (Exception $e) {
+            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
+            fwrite($fp, $id . " - " . $dokument->getLink() . "\n");
+            fclose($fp);
+            header("HTTP/1.0 404 Not Found");
+            return false;
+        }
+    }
 
     /**
      * @param int $id
      */
     public function actionDocumentProxy($id)
     {
-        /** @var Dokument $dokument */
-        $dokument = Dokument::model()->findByPk($id);
-        try {
-            $data = ris_download_string($dokument->getLink());
-
-            Header("Content-Type: application/pdf; charset=UTF-8");
-            echo $data;
-        } catch (Exception $e) {
-            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
-            fwrite($fp, $id . " - " . "https://www.ris-muenchen.de" . $dokument->url . "\n");
-            fclose($fp);
-            header("HTTP/1.0 404 Not Found");
-            die();
-        }
+        self::dokumentAusgeben($id);
         Yii::app()->end();
     }
 

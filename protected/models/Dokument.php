@@ -199,7 +199,7 @@ class Dokument extends CActiveRecord implements IRISItem
         if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
             if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
             else return "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html";
-        } else return "https://www.ris-muenchen.de" . $this->url;
+        } else return RIS_URL_PREFIX . $this->url;
     }
 
     /** @return string */
@@ -441,7 +441,7 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getOriginalLink()
     {
-        return "https://www.ris-muenchen.de" . $this->url;
+        return RIS_URL_PREFIX . $this->url;
     }
 
     /**
@@ -465,6 +465,14 @@ class Dokument extends CActiveRecord implements IRISItem
     public function getLinkZumDokument()
     {
         return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkZurDatei()
+    {
+        return Yii::app()->createUrl("index/dokumentenproxy", ["id" => $this->id]);
     }
 
     private static $dokumente_cache = [];

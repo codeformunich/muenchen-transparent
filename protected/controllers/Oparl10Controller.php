@@ -5,7 +5,7 @@
  */
 class OParl10Controller extends CController {
     const VERSION = 'https://oparl.org/specs/1.0/';
-    
+
     /**
      * Erzeugt die URL zu einem einzelnen OParl-Objekt
      */

@@ -6,9 +6,9 @@ $I->seeOparl('
 {
   "id": "http://localhost:8080/oparl/v1.0/file/7",
   "type": "https://oparl.org/schema/1.0/File",
-  "name": "Dokument mit vielen Eigenschaften",
-  "muenchenTransparent:orignalAccessUrl": "https://www.ris-muenchen.de/RII/RII/7.pdf",
-  "fileName": "Dokument mit vielen Eigenschaften.pdf",
+  "name": "Dokument (pdf) mit vielen Eigenschaften",
+  "muenchenTransparent:orignalAccessUrl": "https://www.ris-muenchen.de/media/testdokument.pdf",
+  "fileName": "Dokument (pdf) mit vielen Eigenschaften.pdf",
   "mimeType": "application/pdf",
   "accessUrl": "http://localhost:8080/dokumente/7.pdf",
   "meeting": [
@@ -26,7 +26,7 @@ $I->seeOparl('
   "id": "http://localhost:8080/oparl/v1.0/file/8",
   "type": "https://oparl.org/schema/1.0/File",
   "name": "Dokument (tiff) mit wenig Eigenschaften",
-  "muenchenTransparent:orignalAccessUrl": "https://www.ris-muenchen.de/RII/RII/8.tiff",
+  "muenchenTransparent:orignalAccessUrl": "https://www.ris-muenchen.de/media/testdokument.tiff",
   "fileName": "Dokument (tiff) mit wenig Eigenschaften.tiff",
   "mimeType": "image/tiff",
   "accessUrl": "http://localhost:8080/dokumente/8.tiff"
