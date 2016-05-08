@@ -1,6 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
-$I->wantTo('validate oparl:term objects (the unknown term and the 1996-2002 one)');
+$I->wantTo('validate oparl:legislativeTerm objects (the unknown term and the 1996-2002 one)');
 $I->sendGET('/legislativeterm/0');
 $I->seeOparl('
 {

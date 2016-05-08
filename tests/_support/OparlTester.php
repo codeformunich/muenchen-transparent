@@ -33,12 +33,11 @@ class OparlTester extends \Codeception\Actor
         $output = new \Codeception\Lib\Console\Output([]);
         //$output->writeln('comment');
 
-        // TODO: CORS
+        $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
         $this->seeResponseCodeIs(200);
         $this->seeHttpHeader('Content-Type', 'application/json');
         $this->seeHttpHeader('Access-Control-Allow-Origin', '*');
         $this->seeResponseIsJson();
-        $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
 
         // Grab the url used in the config and build an url regex based on it
         $config = \Codeception\Configuration::config();
