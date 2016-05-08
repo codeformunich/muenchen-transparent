@@ -106,7 +106,7 @@ class OParl10Object {
             'person'          => OParl10Controller::getOparlListUrl('person',          $body),
             'meeting'         => OParl10Controller::getOparlListUrl('meeting',         $body),
             'paper'           => OParl10Controller::getOparlListUrl('paper',           $body),
-            'legislativeTerm' => OParl10Controller::getOparlListUrl('legislativeterm', $body),
+            'legislativeTerm' => self::legislativeterm(-1),
         ];
     }
 
