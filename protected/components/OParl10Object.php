@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Kapselt die Fnuktionen zum Erzeugen einzelner OParl-Objekte
+ * Kapselt die Funktionen zum Erzeugen einzelner OParl-Objekte
  */
 class OParl10Object {
     const TYPE_AGENDAITEM      = 'https://oparl.org/schema/1.0/AgendaItem';
@@ -20,19 +20,8 @@ class OParl10Object {
     /**
      * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
-    public static function object($typ, $id, $subtype = null) {
-        if      ($typ == 'file'           ) return self::file($id);
-        else if ($typ == 'legislativeterm') return self::legislativeterm($id);
-        else if ($typ == 'meeting'        ) return self::meeting($id);
-        else if ($typ == 'membership'     ) return self::membership($id, $subtype);
-        else if ($typ == 'organization'   ) return self::organization($id, $subtype);
-        else if ($typ == 'paper'          ) return self::paper($id);
-        else if ($typ == 'person'         ) return self::person($id);
-        else if ($typ == 'system'         ) return self::system($id);
-        else if ($typ == 'agendaitem'     ) return ['note:' => 'not implemented yet'];
-        else if ($typ == 'location'       ) return ['note:' => 'not implemented yet'];
-        else if ($typ == 'consultation'   ) return ['note:' => 'not implemented yet'];
-        else if ($typ == 'body'           ) {
+    public static function get($type, $id, $subtype = null) {
+        if ($type == 'body') {
             // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
             if ($id == 0) {
                 $body = 0;
@@ -47,9 +36,21 @@ class OParl10Object {
                 $website = Yii::app()->createAbsoluteUrl($ba->getLink());
             }
             return OParl10Object::body($body, $name, $shortName, $website);
-        } else {
-            header('HTTP/1.0 404 Not Found');
-            return ['error' => 'No such type ' . $typ];
+        }
+        else if ($type == 'file'           ) return self::file($id);
+        else if ($type == 'legislativeterm') return self::legislativeterm($id);
+        else if ($type == 'meeting'        ) return self::meeting($id);
+        else if ($type == 'membership'     ) return self::membership($id, $subtype);
+        else if ($type == 'organization'   ) return self::organization($id, $subtype);
+        else if ($type == 'paper'          ) return self::paper($id);
+        else if ($type == 'person'         ) return self::person($id);
+        else if ($type == 'system'         ) return self::system($id);
+        else if ($type == 'agendaitem'     ) return ['note:' => 'not implemented yet'];
+        else if ($type == 'location'       ) return ['note:' => 'not implemented yet'];
+        else if ($type == 'consultation'   ) return ['note:' => 'not implemented yet'];
+        else {
+            header('HTTP/1.0 400 Bad Request');
+            return ['error' => 'No such object type ' . $typ];
         }
     }
 
@@ -188,8 +189,8 @@ class OParl10Object {
             $object = StadtraetInReferat::model()->findByPk($id);
             $organization = $object->referat;
         } else {
-            header('HTTP/1.0 404 Not Found');
-            return ['error' => 'No such subtype ' . $subtype];
+            header('HTTP/1.0 400 Bad Request');
+            return ['error' => 'No such subtype ' . $subtype . ' for membership'];
         }
 
         $data = [
@@ -223,8 +224,8 @@ class OParl10Object {
             $object = Referat::model()->findByPk($id);
             $memberships = $object->stadtraetInnenReferate;
         } else {
-            header('HTTP/1.0 404 Not Found');
-            return ['error' => 'No such subtype ' . $subtype];
+            header('HTTP/1.0 400 Bad Request');
+            return ['error' => 'No such subtype ' . $subtype . ' for organization'];
         }
 
         $data =  [
@@ -380,10 +381,10 @@ class OParl10Object {
             'name'            => $name,
             'shortName'       => $shortName,
             'website'         => $website,
-            'organization'    => OParl10Controller::getOparlListUrl('organization',    $body),
-            'person'          => OParl10Controller::getOparlListUrl('person',          $body),
-            'meeting'         => OParl10Controller::getOparlListUrl('meeting',         $body),
-            'paper'           => OParl10Controller::getOparlListUrl('paper',           $body),
+            'organization'    => OParl10Controller::getOparlListUrl('organization', $body),
+            'person'          => OParl10Controller::getOparlListUrl('person',       $body),
+            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
+            'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
             'legislativeTerm' => self::legislativeterm(-1),
         ];
     }
