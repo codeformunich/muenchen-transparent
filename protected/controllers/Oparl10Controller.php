@@ -10,6 +10,22 @@ class OParl10Controller extends CController {
     const ITEMS_PER_PAGE = OPARL_10_ITEMS_PER_PAGE;
 
     /**
+     * Erzeugt die URL zu einem einzelnen OParl-Objekt
+     */
+    public static function getOparlObjectUrl($typ, $id, $subtype = null)
+    {
+        if ($typ == 'system') {
+            return OPARL_10_ROOT;
+        }
+
+        if ($subtype != null) {
+            return OPARL_10_ROOT . '/' . $typ . '/' . $subtype . '/' . $id;
+        }
+
+        return OPARL_10_ROOT . '/' . $typ . '/' . $id;
+    }
+
+    /**
      * Erzeugt die URL zu einer externen Liste mit OParl-Objekten
      */
     public static function getOparlListUrl($typ, $body = null, $id = null) {
