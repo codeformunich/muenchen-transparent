@@ -23,14 +23,15 @@ $I->seeOparl('
   "role": "Referent"
 }
 ');
-// FIXME: The table stadtraetInnen_gremien needs a primary key
-/*$I->sendGET('/membership/gremium/1');
+$I->sendGET('/membership/gremium/1');
 $I->seeOparl('
 {
   "id": "http://localhost:8080/oparl/v1.0/membership/gremium/1",
   "type": "https://oparl.org/schema/1.0/Membership",
-  "organization": "http://localhost:8080/oparl/v1.0/organization/gremium/1",
-  "person": "http://localhost:8080/oparl/v1.0/person/3",
-  "role": "Mitglied"
+  "organization": "http://localhost:8080/oparl/v1.0/organization/gremium/2",
+  "person": "http://localhost:8080/oparl/v1.0/person/4",
+  "role": "Mitglied",
+  "startDate": "2016-05-01",
+  "endDate": "2016-05-02"
 }
-');*/
+');

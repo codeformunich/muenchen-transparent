@@ -16,7 +16,7 @@ $I->seeOparl('
   "person": "http://localhost:8080/oparl/v1.0/body/0/list/person",
   "meeting": "http://localhost:8080/oparl/v1.0/body/0/list/meeting",
   "paper": "http://localhost:8080/oparl/v1.0/body/0/list/paper",
-  "terms": "http://localhost:8080/oparl/v1.0/body/0/list/term"
+  "legislativeTerm": "http://localhost:8080/oparl/v1.0/body/0/list/legislativeterm"
 }
 ');
 $I->sendGET('/body/1');
@@ -34,6 +34,6 @@ $I->seeOparl('
   "person": "http://localhost:8080/oparl/v1.0/body/1/list/person",
   "meeting": "http://localhost:8080/oparl/v1.0/body/1/list/meeting",
   "paper": "http://localhost:8080/oparl/v1.0/body/1/list/paper",
-  "terms": "http://localhost:8080/oparl/v1.0/body/1/list/term"
+  "legislativeTerm": "http://localhost:8080/oparl/v1.0/body/1/list/legislativeterm"
 }
 ');

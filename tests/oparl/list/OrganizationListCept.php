@@ -6,6 +6,18 @@ $I->seeOparl('
 {
   "items": [
     {
+      "id": "http://localhost:8080/oparl/v1.0/organization/gremium/2",
+      "type": "https://oparl.org/schema/1.0/Organization",
+      "body": "http://localhost:8080/oparl/v1.0/body/0",
+      "name": "Ausschuss mit Mitgliedern",
+      "shortName": "Ausschuss mit Mitgliedern",
+      "membership": [
+        "http://localhost:8080/oparl/v1.0/membership/gremium/1"
+      ],
+      "classification": "Stadtratsgremium",
+      "meetings": []
+    },
+    {
       "id": "http://localhost:8080/oparl/v1.0/organization/fraktion/2",
       "type": "https://oparl.org/schema/1.0/Organization",
       "body": "http://localhost:8080/oparl/v1.0/body/0",

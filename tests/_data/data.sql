@@ -68,6 +68,7 @@ INSERT INTO `fraktionen` VALUES (2,'Fraktion des Stadtrat',NULL,'','2016-05-02 1
 
 /*!40000 ALTER TABLE `gremien` DISABLE KEYS */;
 INSERT INTO `gremien` VALUES (1,'2016-01-31 16:25:43',1,'Ausschuss mit Terminen','','Ausschuss','','2016-05-02 17:53:08','2016-05-02 17:53:09');
+INSERT INTO `gremien` VALUES (2,'2016-05-08 10:11:31',NULL,'Ausschuss mit Mitgliedern','','','','2016-05-08 10:11:31','2016-05-08 10:11:31');
 /*!40000 ALTER TABLE `gremien` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `gremien_history` DISABLE KEYS */;
@@ -106,6 +107,7 @@ INSERT INTO `referate` VALUES (1,'Referat für städtische Aufgaben','aufg','Mü
 INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Dr. Stadtrat, mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~','2016-05-02 17:53:09','2016-05-02 17:53:09');
 INSERT INTO `stadtraetInnen` VALUES (2,NULL,0,NULL,'',NULL,'','Stadträtin mit möglichst wenigen Eigenschaften',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-02 17:53:09','2016-05-02 17:53:09');
 INSERT INTO `stadtraetInnen` VALUES (3,NULL,1,NULL,'',NULL,'','Referent für Städtische Aufgaben',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-02 17:53:09','2016-05-02 17:53:09');
+INSERT INTO `stadtraetInnen` VALUES (4,NULL,0,NULL,'',NULL,'','Stadtrat in Gremium',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-08 10:09:27','2016-05-08 10:09:27');
 /*!40000 ALTER TABLE `stadtraetInnen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` DISABLE KEYS */;
@@ -114,6 +116,7 @@ INSERT INTO `stadtraetInnen_fraktionen` VALUES (2,1,1,'3','2004-01-01',NULL,'sei
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_gremien` DISABLE KEYS */;
+INSERT INTO `stadtraetInnen_gremien` VALUES (4,2,'2016-05-01','2016-05-02','Mitglied',1,'2016-05-08 10:10:02','2016-05-08 10:11:48');
 /*!40000 ALTER TABLE `stadtraetInnen_gremien` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_referate` DISABLE KEYS */;

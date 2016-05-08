@@ -47,26 +47,8 @@ $I->seeOparl('
   ],
   "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
-  "numberOfPages": 1
-}
-');
-$I->sendGET('/body/0/list/person?id=2');
-$I->seeOparl('
-{
-  "items": [
-    {
-      "id": "http://localhost:8080/oparl/v1.0/person/3",
-      "type": "https://oparl.org/schema/1.0/Person",
-      "body": "http://localhost:8080/oparl/v1.0/body/0",
-      "name": "Referent für Städtische Aufgaben",
-      "familyName": "Aufgaben",
-      "givenName": "Referent für Städtische",
-      "status": "Berufsmäßiger Stadtrat"
-    }
-  ],
-  "itemsPerPage": 3,
-  "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/person",
-  "numberOfPages": 1
+  "numberOfPages": 2,
+  "nextPage": "http://localhost:8080/oparl/v1.0/body/0/list/person?id=3"
 }
 ');
 $I->sendGET('/body/1/list/person');
@@ -115,6 +97,7 @@ $I->seeOparl('
   ],
   "itemsPerPage": 3,
   "firstPage": "http://localhost:8080/oparl/v1.0/body/1/list/person",
-  "numberOfPages": 1
+  "numberOfPages": 2,
+  "nextPage": "http://localhost:8080/oparl/v1.0/body/1/list/person?id=3"
 }
 ');

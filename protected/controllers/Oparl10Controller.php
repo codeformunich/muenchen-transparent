@@ -174,11 +174,11 @@ class OParl10Controller extends CController {
     /**
      * Die externe Objektliste mit allen 'oparl:LegislativeTerm'-Objekten
      */
-    public function actionListTerm($body) {
+    public function actionListLegislativeTerm($body) {
         self::asOParlJSON([
-            'items'         => OParl10Object::object("term", -1),
-            'firstPage'     => static::getOparlListUrl('term', $body),
-            'lastPage'      => static::getOparlListUrl('term', $body),
+            'items'         => OParl10Object::object("legislativeterm", -1),
+            'firstPage'     => static::getOparlListUrl('legislativeterm', $body),
+            'lastPage'      => static::getOparlListUrl('legislativeterm', $body),
             'numberOfPages' => 1,
         ]);
     }
