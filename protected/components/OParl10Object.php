@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Kapselt die Fnuktionen zum Erzeugen einzelner OParl-Objekte
+ */
 class OParl10Object {
     const TYPE_AGENDAITEM      = 'https://oparl.org/schema/1.0/AgendaItem';
     const TYPE_BODY            = 'https://oparl.org/schema/1.0/Body';
@@ -14,7 +17,24 @@ class OParl10Object {
     const TYPE_PERSON          = 'https://oparl.org/schema/1.0/Person';
     const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
 
-    /*
+    /**
+     * Erzeugt die URL zu einem einzelnen OParl-Objekt
+     */
+    public static function getOparlObjectUrl($typ, $id, $subtype = null)
+    {
+
+        if ($typ == 'system') {
+            return OPARL_10_ROOT;
+        }
+
+        if ($subtype != null) {
+            return OPARL_10_ROOT . '/' . $typ . '/' . $subtype . '/' . $id;
+        }
+
+        return OPARL_10_ROOT . '/' . $typ . '/' . $id;
+    }
+
+    /**
      * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
     public static function object($typ, $id, $subtype = null) {
@@ -53,9 +73,9 @@ class OParl10Object {
     /**
      * Erzeugt das 'oparl:System'-Objekt, also den API-Einstiegspunkt
      */
-    public static function system($id) {
+    private static function system($id) {
         return [
-            'id'                 => OParl10Controller::getOparlObjectUrl('system', null),
+            'id'                 => self::getOparlObjectUrl('system', null),
             'type'               => self::TYPE_SYSTEM,
             'oparlVersion'       => OParl10Controller::VERSION,
             'otherOparlVersions' => [],
@@ -72,11 +92,11 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Body'-Objekt, also den Stadtrat oder die Bezirksauschüsse
      */
-    public static function body($body, $name, $shortName, $website) {
+    private static function body($body, $name, $shortName, $website) {
         return [
-            'id'           => OParl10Controller::getOparlObjectUrl('body', $body),
+            'id'           => self::getOparlObjectUrl('body', $body),
             'type'         => self::TYPE_BODY,
-            'system'       => OParl10Controller::getOparlObjectUrl('system', null),
+            'system'       => self::getOparlObjectUrl('system', null),
             'contactEmail' => Yii::app()->params['adminEmail'],
             'contactName'  => Yii::app()->params['adminEmailName'],
             'name'         => $name,
@@ -95,7 +115,7 @@ class OParl10Object {
      *
      * Wenn als id -1 übergeben wird, dann wird die gesammte Liste zurückgegeben
      */
-    public static function terms($id) {
+    private static function terms($id) {
         $data = [
             [
                 'type'      => self::TYPE_LEGISLATIVETERM,
@@ -138,7 +158,7 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Organization'-Objekt, das ein Germium, eine Fraktion oder ein Referat abbildet
      */
-    public static function organization($id, $subtype) {
+    private static function organization($id, $subtype) {
         if ($subtype == 'fraktion') {
             $object = Fraktion::model()->findByPk($id);
             $memberships = $object->stadtraetInnenFraktionen;
@@ -154,9 +174,9 @@ class OParl10Object {
         }
 
         $data =  [
-            'id'             => OParl10Controller::getOparlObjectUrl('organization/' . $subtype, $object->id),
+            'id'             => self::getOparlObjectUrl('organization/' . $subtype, $object->id),
             'type'           => self::TYPE_ORGANIZATION,
-            'body'           => OParl10Controller::getOparlObjectUrl('body', $object->getBaNr()),
+            'body'           => self::getOparlObjectUrl('body', $object->getBaNr()),
             'name'           => $object->getName(false),
             'shortName'      => $object->getName(true),
             'membership'     => [],
@@ -167,13 +187,13 @@ class OParl10Object {
         if ($subtype == 'gremium') {
             $data['meetings'] = [];
             foreach ($object->termine as $termin) {
-                $data['meetings'][] = OParl10Controller::getOparlObjectUrl('meeting', $termin->id);
+                $data['meetings'][] = self::getOparlObjectUrl('meeting', $termin->id);
             }
         }
 
         // Mitgliedschaften
         foreach ($memberships as $membership) {
-            $data['membership'][] = OParl10Controller::getOparlObjectUrl('membership', $membership->id, $subtype);
+            $data['membership'][] = self::getOparlObjectUrl('membership', $membership->id, $subtype);
         }
 
         return $data;
@@ -182,7 +202,7 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Membership'-Objekt, das die Mitgliedschaften eines Stadrats in einer Fraktion, einem Gremium, Referat abbildet
      */
-    public static function membership($id, $subtype) {
+    private static function membership($id, $subtype) {
         if ($subtype == 'fraktion') {
             $object = StadtraetInFraktion::model()->findByPk($id);
             $organization = $object->fraktion;
@@ -198,10 +218,10 @@ class OParl10Object {
         }
 
         $data = [
-            'id'           => OParl10Controller::getOparlObjectUrl('membership/' . $subtype, $object->id),
+            'id'           => self::getOparlObjectUrl('membership/' . $subtype, $object->id),
             'type'         => self::TYPE_MEMBERSHIP,
-            'organization' => OParl10Controller::getOparlObjectUrl('organization/' . $subtype, $organization->id),
-            'person'       => OParl10Controller::getOparlObjectUrl('person',  $object->stadtraetIn->id),
+            'organization' => self::getOparlObjectUrl('organization/' . $subtype, $organization->id),
+            'person'       => self::getOparlObjectUrl('person', $object->stadtraetIn->id),
             'role'         => $object->getFunktion(),
         ];
 
@@ -217,7 +237,7 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Person'-Objekt, das StadträtInnen abbildet
      */
-    public static function person($id) {
+    private static function person($id) {
         $stadtraetin = StadtraetIn::model()->findByPk($id);
 
         $body = 0; // fallback
@@ -230,9 +250,9 @@ class OParl10Object {
 
         // Zwingende Attribute
         $data = [
-            'id'         => OParl10Controller::getOparlObjectUrl('person', $stadtraetin->id),
+            'id'         => self::getOparlObjectUrl('person', $stadtraetin->id),
             'type'       => self::TYPE_PERSON,
-            'body'       => OParl10Controller::getOparlObjectUrl('body', $body),
+            'body'       => self::getOparlObjectUrl('body', $body),
             'name'       => $stadtraetin->name,
             'familyName' => $stadtraetin->errateNachname(),
             'givenName'  => $stadtraetin->errateVorname(),
@@ -279,11 +299,11 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:File'-Objekt, das Dokumente abbildet
      */
-    public static function file($id) {
+    private static function file($id) {
         $dokument = Dokument::model()->findByPk($id);
 
         $data = [
-            'id'   => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
+            'id'   => self::getOparlObjectUrl('file', $dokument->id),
             'type' => self::TYPE_FILE,
             'name' => $dokument->getName(),
             'muenchenTransparent:orignalAccessUrl' => $dokument->getLink(),
@@ -303,10 +323,10 @@ class OParl10Object {
         }
 
         if ($dokument->termin)
-            $data['meeting'] = [OParl10Controller::getOparlObjectUrl('meeting', $dokument->termin->id)];
+            $data['meeting'] = [self::getOparlObjectUrl('meeting', $dokument->termin->id)];
 
         if ($dokument->antrag)
-            $data['paper'] = [OParl10Controller::getOparlObjectUrl('paper', $dokument->antrag->id)];
+            $data['paper'] = [self::getOparlObjectUrl('paper', $dokument->antrag->id)];
 
         /*
         if ($dokument->tagesordnungspunkt)
@@ -325,45 +345,48 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Meeting'-Objekt, das einen Termin abbildet
      */
-    public static function meeting($id) {
+    private static function meeting($id) {
         $termin = Termin::model()->findByPk($id);
 
         $data = [
-            'id'           => OParl10Controller::getOparlObjectUrl('meeting', $termin->id),
+            'id'           => self::getOparlObjectUrl('meeting', $termin->id),
             'type'         => self::TYPE_MEETING,
             'name'         => $termin->gremium->name,
             'meetingState' => $termin->sitzungsstand,
             'start'        => OParl10Controller::toOparlDateTime($termin->termin),
-            'organization' => OParl10Controller::getOparlObjectUrl('organization/gremium', $termin->gremium->id),
+            'organization' => self::getOparlObjectUrl('organization/gremium', $termin->gremium->id),
             'modified'     => OParl10Controller::toOparlDateTime($termin->datum_letzte_aenderung),
         ];
 
         $data['auxiliaryFile'] = [];
         foreach ($termin->antraegeDokumente as $dokument)
-            $data['auxiliaryFile'][] = OParl10Controller::getOparlObjectUrl('file', $dokument->id);
+            $data['auxiliaryFile'][] = self::getOparlObjectUrl('file', $dokument->id);
 
         if ($termin->abgesetzt)
             $data['cancelled'] = true;
         return $data;
     }
 
-    public static function paper($id) {
+    /**
+     * Erzeugt ein 'oparl:Paper'-Objekt, das ein pdf (oder in Ausnahmefällen ein tiff) abbildet
+     */
+    private static function paper($id) {
         $antrag = Antrag::model()->findByPk($id);
 
         $data = [
-            'id'               => OParl10Controller::getOparlObjectUrl('paper', $antrag->id),
+            'id'               => self::getOparlObjectUrl('paper', $antrag->id),
             'type'             => self::TYPE_PAPER,
-            'body'             => OParl10Controller::getOparlObjectUrl('body', ($antrag->ba_nr != null ? $antrag->ba_nr : 0)),
+            'body'             => self::getOparlObjectUrl('body', ($antrag->ba_nr != null ? $antrag->ba_nr : 0)),
             'name'             => $antrag->getName(),
             'reference'        => $antrag->antrags_nr,
             'paperType'        => $antrag->getTypName(),
             'auxiliaryFile'    => [],
-            'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization/referat', $antrag->referat_id)],
+            'underDirectionof' => [self::getOparlObjectUrl('organization/referat', $antrag->referat_id)],
             'keyword'          => [],
         ];
 
         foreach ($antrag->dokumente as $dokument)
-            $data['auxiliaryFile'][] = OParl10Controller::getOparlObjectUrl('file', $dokument->id);
+            $data['auxiliaryFile'][] = self::getOparlObjectUrl('file', $dokument->id);
 
         foreach ($antrag->tags as $tags)
             $data['auxiliaryFile'][] = $tags->name;
@@ -371,7 +394,7 @@ class OParl10Object {
         if ($antrag->vorgang != null) {
             $data['relatedPaper'] = [];
             foreach ($antrag->vorgang->antraege as $verwandt)
-                $data['relatedPaper'][] = OParl10Controller::getOparlObjectUrl('paper', $verwandt->id);
+                $data['relatedPaper'][] = self::getOparlObjectUrl('paper', $verwandt->id);
         }
 
         return $data;

@@ -9,23 +9,7 @@ class OParl10Controller extends CController {
 
     const ITEMS_PER_PAGE = OPARL_10_ITEMS_PER_PAGE;
 
-    /*
-     * Erzeugt die URL zu einem einzelnen OParl-Objekt
-     */
-    public static function getOparlObjectUrl($typ, $id, $subtype = null) {
-
-        if ($typ == 'system') {
-            return OPARL_10_ROOT;
-        }
-
-        if ($subtype != null) {
-            return OPARL_10_ROOT . '/' . $typ . '/' . $subtype . '/' . $id;
-        }
-
-        return OPARL_10_ROOT . '/' . $typ . '/' . $id;
-    }
-
-    /*
+    /**
      * Erzeugt die URL zu einer externen Liste mit OParl-Objekten
      */
     public static function getOparlListUrl($typ, $body = null, $id = null) {
@@ -37,14 +21,14 @@ class OParl10Controller extends CController {
         return $url;
     }
 
-    /*
+    /**
      * Erzeugt einen String mit Datum und Zeit im richtigen Format
      */
     public static function toOparlDateTime($in) {
         return (new DateTime($in, new DateTimeZone(DEFAULT_TIMEZONE)))->format(DateTime::ATOM);
     }
 
-    /*
+    /**
      * Gibt ein Array als OParl-Objekt mit den korrekten Headern aus.
      */
     public static function asOParlJSON($data) {
@@ -53,14 +37,14 @@ class OParl10Controller extends CController {
         echo json_encode($data);
     }
 
-    /*
+    /**
      * Gibt das 'oparl:System'-Objekt als JSON aus
      */
     public function actionSystem() {
         self::asOParlJSON(OParl10Object::object('system', null));
     }
 
-    /*
+    /**
      * Gibt ein beliebiges Objekt außer 'oparl:System' als JSON aus
      */
     public function actionObject($typ, $id, $subtype = null) {
@@ -93,7 +77,6 @@ class OParl10Controller extends CController {
      * - nur beim Stadtrat: die Referate
      */
     public function actionListOrganization($body) {
-
         // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
         $query = ($body > 0 ? 'ba_nr = ' . $body : 'ba_nr IS NULL');
 
@@ -121,11 +104,10 @@ class OParl10Controller extends CController {
         ]);
     }
 
-    /*
+    /**
      * Eine allgemeine externe Objektliste, die für verschiedene Objekte genutzt werden kann
      */
     public static function externalList($model, $name, $body, $ba_check, $id = null) {
-
         $criteria = new CDbCriteria();
 
         // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
@@ -193,9 +175,8 @@ class OParl10Controller extends CController {
      * Die externe Objektliste mit allen 'oparl:LegislativeTerm'-Objekten
      */
     public function actionListTerm($body) {
-
         self::asOParlJSON([
-            'items'         => OParl10Object::terms(-1),
+            'items'         => OParl10Object::object("term", -1),
             'firstPage'     => static::getOparlListUrl('term', $body),
             'lastPage'      => static::getOparlListUrl('term', $body),
             'numberOfPages' => 1,
