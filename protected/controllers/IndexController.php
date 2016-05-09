@@ -477,40 +477,18 @@ class IndexController extends RISBaseController
             $this->render("suche");
         }
     }
-
-    /**
-     * @param $id
-     * @return true wenn das Dokument erfolgreich ausgegeben wurde
-     */
-    public static function dokumentAusgeben($id)
-    {
-        /** @var Dokument $dokument */
-        $dokument = Dokument::model()->findByPk($id);
-        try {
-            // TODO content type direkt von curl erfragen
-            if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
-                Header('Content-Type: application/pdf');
-            } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff') {
-                Header('Content-Type: image/tiff');
-            }
-
-            echo ris_download_string($dokument->getLink());
-            return true;
-        } catch (Exception $e) {
-            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
-            fwrite($fp, $id . " - " . $dokument->getLink() . "\n");
-            fclose($fp);
-            header("HTTP/1.0 404 Not Found");
-            return false;
-        }
-    }
-
+    
     /**
      * @param int $id
      */
     public function actionDocumentProxy($id)
     {
-        self::dokumentAusgeben($id);
+        $content =  Dokument::getCachedByID($id)->getDateiInhalt();
+        if ($content === null) {
+            header("HTTP/1.0 404 Not Found");
+        } else {
+            echo $content;
+        }
         Yii::app()->end();
     }
 

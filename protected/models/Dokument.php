@@ -79,6 +79,28 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
     /**
+     * 
+     */
+    public function getDateiInhalt()
+    {
+        try {
+            // TODO content type direkt von curl erfragen
+            if (substr($this->url, -strlen('.pdf')) === '.pdf') {
+                Header('Content-Type: application/pdf');
+            } else if (substr($this->url, -strlen('.tiff')) === '.tiff') {
+                Header('Content-Type: image/tiff');
+            }
+
+            return ris_download_string($this->getLink());
+        } catch (Exception $e) {
+            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
+            fwrite($fp, $this->id . " - " . $this->getLink() . "\n");
+            fclose($fp);
+            return null;
+        }
+    }
+
+    /**
      * @return string the associated database table name
      */
     public function tableName()
@@ -238,6 +260,11 @@ class Dokument extends CActiveRecord implements IRISItem
             if (preg_match("/^Antwort \\d{2}\-/siu", $name)) return "Antwortschreiben";
         }
         return $name;
+    }
+
+    public function getDateiname()
+    {
+        return $this->id . ' - ' . CHtml::encode($this->getName()) . '.pdf';
     }
 
     /**

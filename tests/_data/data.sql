@@ -58,7 +58,8 @@ INSERT INTO `dokumente` VALUES (5,NULL,5,NULL,NULL,NULL,NULL,'',0,'Ein Dokument 
 INSERT INTO `dokumente` VALUES (6,NULL,NULL,NULL,NULL,NULL,NULL,'',0,'Dokument ohne Antrag','','2016-03-07 20:32:58',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
 INSERT INTO `dokumente` VALUES (7,NULL,6,4,1,2,NULL,'/media/testdokument.pdf',0,'Dokument (pdf) mit vielen Eigenschaften','Dokument viele Eigenschaften','2016-04-23 16:30:20','2016-04-21 22:00:00',NULL,NULL,NULL,NULL,10,'omnipage',NULL,'2016-05-02 17:53:08','2016-05-08 20:57:23');
 INSERT INTO `dokumente` VALUES (8,NULL,NULL,NULL,NULL,NULL,NULL,'/media/testdokument.tiff',0,'Dokument (tiff) mit wenig Eigenschaften','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-08 20:57:28');
-INSERT INTO `dokumente` VALUES (9,NULL,NULL,NULL,NULL,NULL,1,'http://example.org/rathausumschau/1-rathaus.pdf',0,'Rathausumschau','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
+INSERT INTO `dokumente` VALUES (9,NULL,NULL,NULL,NULL,NULL,1,'http://example.org/rathausumschau/1-rathaus.pdf',0,'Rathausumschau','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-09 16:09:15');
+INSERT INTO `dokumente` VALUES (10,NULL,NULL,NULL,NULL,NULL,NULL,'/dev/nowhere',0,'unauffällig gelöschtes Dokument','','2016-05-09 16:08:46',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-09 16:08:46','2016-05-09 16:08:46');
 /*!40000 ALTER TABLE `dokumente` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `fraktionen` DISABLE KEYS */;

@@ -7,10 +7,10 @@ $I->seeOparl('
   "id": "http://localhost:8080/oparl/v1.0/file/7",
   "type": "https://oparl.org/schema/1.0/File",
   "name": "Dokument (pdf) mit vielen Eigenschaften",
-  "muenchenTransparent:orignalAccessUrl": "https://www.ris-muenchen.de/media/testdokument.pdf",
-  "fileName": "Dokument (pdf) mit vielen Eigenschaften.pdf",
+  "accessUrl": "http://localhost:8080/fileaccess/access/7",
+  "downloadUrl": "http://localhost:8080/fileaccess/download/7",
+  "fileName": "7 - Dokument (pdf) mit vielen Eigenschaften.pdf",
   "mimeType": "application/pdf",
-  "accessUrl": "http://localhost:8080/dokumente/7.pdf",
   "meeting": [
     "http://localhost:8080/oparl/v1.0/meeting/4"
   ],
@@ -26,10 +26,10 @@ $I->seeOparl('
   "id": "http://localhost:8080/oparl/v1.0/file/8",
   "type": "https://oparl.org/schema/1.0/File",
   "name": "Dokument (tiff) mit wenig Eigenschaften",
-  "muenchenTransparent:orignalAccessUrl": "https://www.ris-muenchen.de/media/testdokument.tiff",
-  "fileName": "Dokument (tiff) mit wenig Eigenschaften.tiff",
-  "mimeType": "image/tiff",
-  "accessUrl": "http://localhost:8080/dokumente/8.tiff"
+  "accessUrl": "http://localhost:8080/fileaccess/access/8",
+  "downloadUrl": "http://localhost:8080/fileaccess/download/8",
+  "fileName": "8 - Dokument (tiff) mit wenig Eigenschaften.pdf",
+  "mimeType": "image/tiff"
 }
 ');
 $I->sendGET('/file/9');
@@ -38,9 +38,9 @@ $I->seeOparl('
   "id": "http://localhost:8080/oparl/v1.0/file/9",
   "type": "https://oparl.org/schema/1.0/File",
   "name": "Rathausumschau",
-  "muenchenTransparent:orignalAccessUrl": "https://www.ris-muenchen.dehttp://example.org/rathausumschau/1-rathaus.pdf",
-  "fileName": "Rathausumschau.pdf",
-  "mimeType": "application/pdf",
-  "accessUrl": "http://localhost:8080/dokumente/9.pdf"
+  "accessUrl": "http://localhost:8080/fileaccess/access/9",
+  "downloadUrl": "http://localhost:8080/fileaccess/download/9",
+  "fileName": "9 - Rathausumschau.pdf",
+  "mimeType": "application/pdf"
 }
 ');

@@ -45,8 +45,8 @@ class OParl10Controller extends CController {
      * Gibt ein Array als OParl-Objekt mit den korrekten Headern aus.
      */
     public static function asOParlJSON($data) {
-        Header('Access-Control-Allow-Origin: *');
-        Header('Content-Type: application/json');
+        header('Access-Control-Allow-Origin: *');
+        header('Content-Type: application/json');
         echo json_encode($data);
     }
 
@@ -76,5 +76,28 @@ class OParl10Controller extends CController {
      */
     public function actionExternalList($typ, $body, $id = null) {
         self::asOParlJSON(OParl10List::get($typ, $body, $id));
+    }
+
+    /**
+     * Gibt die Datei mit zum Dokument $id mit den zu $mode gehörenden headern aus
+     */
+    public function actionFileaccess($mode, $id) {
+        $dokument = Dokument::model()->findByPk($id);
+        if ($dokument === null) {
+            header('HTTP/1.0 404 Not Found');
+            return;
+        }
+
+        $content = $dokument->getDateiInhalt();
+        if ($content === null) {
+            header('HTTP/1.0 410 Gone');
+            return;
+        } else {
+            echo $content;
+        }
+
+        if ($mode == 'download') {
+            header('Content-Disposition: attachment; filename="' . $dokument->getDateiname() . '"');
+        }
     }
 }

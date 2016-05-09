@@ -21,22 +21,7 @@ class OParl10Object {
      * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
      */
     public static function get($type, $id, $subtype = null) {
-        if ($type == 'body') {
-            // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
-            if ($id == 0) {
-                $body = 0;
-                $name = 'Stadrat der Landeshauptstadt München';
-                $shortName = 'Stadtrat';
-                $website = 'http://www.muenchen.de/';
-            } else {
-                $ba = Bezirksausschuss::model()->findByPk($id);
-                $body = $ba->ba_nr;
-                $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
-                $shortName = 'BA ' . $ba->ba_nr;
-                $website = Yii::app()->createAbsoluteUrl($ba->getLink());
-            }
-            return OParl10Object::body($body, $name, $shortName, $website);
-        }
+        if      ($type == 'body'           ) return self::body($id);
         else if ($type == 'file'           ) return self::file($id);
         else if ($type == 'legislativeterm') return self::legislativeterm($id);
         else if ($type == 'meeting'        ) return self::meeting($id);
@@ -44,40 +29,35 @@ class OParl10Object {
         else if ($type == 'organization'   ) return self::organization($id, $subtype);
         else if ($type == 'paper'          ) return self::paper($id);
         else if ($type == 'person'         ) return self::person($id);
-        else if ($type == 'system'         ) return self::system($id);
+        else if ($type == 'system'         ) return self::system();
         else if ($type == 'agendaitem'     ) return ['note:' => 'not implemented yet'];
         else if ($type == 'location'       ) return ['note:' => 'not implemented yet'];
         else if ($type == 'consultation'   ) return ['note:' => 'not implemented yet'];
         else {
             header('HTTP/1.0 400 Bad Request');
-            return ['error' => 'No such object type ' . $typ];
+            return ['error' => 'No such object type ' . $type];
         }
     }
 
     /**
-     * Erzeugt ein 'oparl:File'-Objekt, das Dokumente abbildet
+     * Erzeugt ein 'oparl:File'-Objekt, das ein Dokument abbildet
      */
     private static function file($id) {
         $dokument = Dokument::model()->findByPk($id);
 
         $data = [
-            'id'   => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
-            'type' => self::TYPE_FILE,
-            'name' => $dokument->getName(),
-            'muenchenTransparent:orignalAccessUrl' => $dokument->getLink(),
+            'id'          => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
+            'type'        => self::TYPE_FILE,
+            'name'        => $dokument->getName(),
+            'accessUrl'   =>  SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
+            'downloadUrl' =>  SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
+            'fileName'    => $dokument->getDateiname(),
         ];
 
         if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
-            $data['fileName' ] = $dokument->getName(true) . '.pdf';
             $data['mimeType' ] = 'application/pdf';
-            $data['accessUrl'] = SITE_BASE_URL . $dokument->getLinkZumDokument() . '.pdf';
         } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff') {
-            $data['fileName' ] = $dokument->getName(true) . '.tiff';
             $data['mimeType' ] = 'image/tiff';
-            $data['accessUrl'] =  SITE_BASE_URL . $dokument->getLinkZumDokument() . '.tiff'; // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/137
-        } else {
-            $data['fileName' ] = $dokument->getName(true);
-            $data['accessUrl'] = $dokument->getLink(); // FIXME: Da der Dateityp unbekannt ist gibt es auch keinen proxy
         }
 
         if ($dokument->termin)
@@ -140,8 +120,8 @@ class OParl10Object {
         ];
 
         // id's setzen
-        foreach ($data as $i => $val) {
-            $data[$i]['id'] = OParl10Controller::getOparlObjectUrl('legislativeterm', $i);
+        foreach ($data as $i => &$val) {
+            $val['id'] = OParl10Controller::getOparlObjectUrl('legislativeterm', $i);
         }
 
         if ($id == -1)
@@ -352,7 +332,7 @@ class OParl10Object {
     /**
      * Erzeugt das 'oparl:System'-Objekt, also den API-Einstiegspunkt
      */
-    private static function system($id) {
+    private static function system() {
         return [
             'id'                 => OParl10Controller::getOparlObjectUrl('system', null),
             'type'               => self::TYPE_SYSTEM,
@@ -371,7 +351,21 @@ class OParl10Object {
     /**
      * Erzeugt ein 'oparl:Body'-Objekt, also den Stadtrat oder die Bezirksauschüsse
      */
-    private static function body($body, $name, $shortName, $website) {
+    private static function body($id) {
+        // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
+        if ($id == 0) {
+            $body = 0;
+            $name = 'Stadrat der Landeshauptstadt München';
+            $shortName = 'Stadtrat';
+            $website = 'http://www.muenchen.de/';
+        } else {
+            $ba = Bezirksausschuss::model()->findByPk($id);
+            $body = $ba->ba_nr;
+            $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
+            $shortName = 'BA ' . $ba->ba_nr;
+            $website = Yii::app()->createAbsoluteUrl($ba->getLink());
+        }
+
         return [
             'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
             'type'            => self::TYPE_BODY,

@@ -10,23 +10,23 @@ class OParl10List
     /**
      * Gibt eine beliebiges externe OParl-Objektliste als array zurück
      */
-    public static function get($typ, $body, $id = null) {
-        if      ($typ == 'body'           ) return self::body($body);
-        else if ($typ == 'organization'   ) return self::organization($body);
-        else if ($typ == 'person'         ) return self::externalList($body, StadtraetIn::model(), $typ, false, $id);
-        else if ($typ == 'meeting'        ) return self::externalList($body, Termin::model(), $typ, true, $id);
-        else if ($typ == 'paper'          ) return self::externalList($body, Antrag::model(), $typ, true, $id);
-        else if ($typ == 'legislativeterm') return self::legislativeTerm($body);
+    public static function get($type, $body, $id = null) {
+        if      ($type == 'body'           ) return self::body();
+        else if ($type == 'organization'   ) return self::organization($body);
+        else if ($type == 'person'         ) return self::externalList($body, $type, StadtraetIn::model(), false, $id);
+        else if ($type == 'meeting'        ) return self::externalList($body, $type, Termin::model(), true, $id);
+        else if ($type == 'paper'          ) return self::externalList($body, $type, Antrag::model(), true, $id);
+        else if ($type == 'legislativeterm') return self::legislativeTerm($body);
         else {
             header('HTTP/1.0 400 Bad Request');
-            return ['error' => 'No external list for type ' . $typ];
+            return ['error' => 'No external list for type ' . $type];
         }
     }
 
     /**
      * Die externe Objektliste mit allen 'oparl:Body'-Objekten
      */
-    private static function body($body)
+    private static function body()
     {
         $bodies = [OParl10Object::get('body', 0)];
 
@@ -49,7 +49,7 @@ class OParl10List
      *  - meeting
      *  - paper
      */
-    private static function externalList($body, $model, $name, $ba_check, $id = null)
+    private static function externalList($body, $type, $model, $ba_check, $id = null)
     {
         $criteria = new CDbCriteria();
 
@@ -76,19 +76,19 @@ class OParl10List
         $entries = $model->findAll($criteria);
         $oparl_entries = [];
         foreach ($entries as $entry)
-            $oparl_entries[] = OParl10Object::get($name, $entry->id);
+            $oparl_entries[] = OParl10Object::get($type, $entry->id);
 
         $last_entry = $model->find(['order' => 'id DESC']);
 
         $data = [
             'items'         => $oparl_entries,
             'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => OParl10Controller::getOparlListUrl($name, $body),
+            'firstPage'     => OParl10Controller::getOparlListUrl($type, $body),
             'numberOfPages' => ceil($count / static::ITEMS_PER_PAGE),
         ];
 
         if (count($entries) > 0 && end($entries)->id != $last_entry->id)
-            $data['nextPage'] = OParl10Controller::getOparlListUrl($name, $body, end($entries)->id);
+            $data['nextPage'] = OParl10Controller::getOparlListUrl($type, $body, end($entries)->id);
 
         return $data;
     }
