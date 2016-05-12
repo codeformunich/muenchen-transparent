@@ -42,7 +42,7 @@ class StadtraetInGremium extends CActiveRecord
             ['stadtraetIn_id, gremium_id, datum_von', 'required'],
             ['stadtraetIn_id, gremium_id', 'numerical', 'integerOnly' => true],
             ['datum_von, datum_bis', 'length', 'max' => 10],
-            ['funktion, datum_von, datum_bis', 'safe'],
+            ['funktion, datum_von, datum_bis, created, modified', 'safe'],
         ];
     }
 

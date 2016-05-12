@@ -4,16 +4,18 @@ $I->wantTo('validate oparl:organization objects (one "Fraktion", one "BA-Gremium
 $I->sendGET('/organization/fraktion/1');
 $I->seeOparl('
 {
-  "id": "http://localhost:8080/oparl/v1.0/organization/fraktion/1",
-  "type": "https://oparl.org/schema/1.0/Organization",
-  "body": "http://localhost:8080/oparl/v1.0/body/1",
-  "name": "Fraktion der Politiker",
-  "shortName": "Fraktion der Politiker",
-  "membership": [
-    "http://localhost:8080/oparl/v1.0/membership/fraktion/1",
-    "http://localhost:8080/oparl/v1.0/membership/fraktion/2"
-  ],
-  "classification": "Fraktion"
+    "id": "http://localhost:8080/oparl/v1.0/organization/fraktion/1",
+    "type": "https://oparl.org/schema/1.0/Organization",
+    "body": "http://localhost:8080/oparl/v1.0/body/1",
+    "name": "Fraktion der Politiker",
+    "shortName": "Fraktion der Politiker",
+    "membership": [
+        "http://localhost:8080/oparl/v1.0/membership/fraktion/1",
+        "http://localhost:8080/oparl/v1.0/membership/fraktion/2"
+    ],
+    "classification": "Fraktion",
+    "created": "2016-05-02T19:53:08+02:00",
+    "modified": "2016-05-02T19:53:08+02:00"
 }
 ');
 $I->sendGET('/organization/gremium/1');

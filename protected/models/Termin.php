@@ -69,7 +69,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             ['referat, referent, vorsitz', 'length', 'max' => 200],
             ['wahlperiode', 'length', 'max' => 20],
             ['status, sitzungsstand', 'length', 'max' => 100],
-            ['termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, sitzungsstand', 'safe'],
+            ['termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, sitzungsstand, created, modified', 'safe'],
         ];
     }
 

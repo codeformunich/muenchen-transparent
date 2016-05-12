@@ -45,7 +45,7 @@ class StadtraetInFraktion extends CActiveRecord
             ['stadtraetIn_id, fraktion_id', 'numerical', 'integerOnly' => true],
             ['wahlperiode', 'length', 'max' => 30],
             ['datum_von, datum_bis', 'length', 'max' => 10],
-            ['funktion', 'safe'],
+            ['funktion, created, modified', 'safe'],
         ];
     }
 

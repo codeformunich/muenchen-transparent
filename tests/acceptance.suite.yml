@@ -25,5 +25,4 @@ modules:
 env:
     nohtmlvalidation:
         # Stub to work around travis ci's problems with java 8
-    asdf:
-        #asrfg
+

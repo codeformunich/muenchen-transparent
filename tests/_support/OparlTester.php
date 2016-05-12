@@ -28,11 +28,6 @@ class OparlTester extends \Codeception\Actor
      * - all URLs linked to exist
      */
     function seeOparl($oparl_object) {
-        // For debugging and developing it's often very usefull to have the
-        // possibility to print something without having to use the debug flag
-        $output = new \Codeception\Lib\Console\Output([]);
-        //$output->writeln('comment');
-
         $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
         $this->seeResponseCodeIs(200);
         $this->seeHttpHeader('Content-Type', 'application/json');

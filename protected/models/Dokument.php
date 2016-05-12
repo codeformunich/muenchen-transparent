@@ -121,7 +121,7 @@ class Dokument extends CActiveRecord implements IRISItem
             ['typ', 'length', 'max' => 25],
             ['url', 'length', 'max' => 500],
             ['name, name_title', 'length', 'max' => 300],
-            ['text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight, name, name_title', 'safe'],
+            ['text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight, name, name_title, created, modified', 'safe'],
         ];
     }
 

@@ -50,6 +50,7 @@ class Gremium extends CActiveRecord implements IRISItem
             ['id, ba_nr', 'numerical', 'integerOnly' => true],
             ['name, gremientyp, referat', 'length', 'max' => 100],
             ['kuerzel', 'length', 'max' => 50],
+            ['created, modified' => 'safe'],
         ];
     }
 
