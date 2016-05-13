@@ -34,7 +34,7 @@ class Oparl extends \Codeception\Module
         if ($url == "/") {
             $url = "/system/0";
         }
-        
+
         $filepath = codecept_data_dir() . 'oparl' . $url . '.json';
         $response = $this->getResponseContent(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 

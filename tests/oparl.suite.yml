@@ -11,9 +11,11 @@ modules:
         - PhpBrowser
         - Filesystem
 env:
+    nohtmlvalidation:
+        # nothing to do here ...
     updatejson:
         # Updates the json
         modules:
-            enabled:
+            config:
                 - \Helper\Oparl:
                     updatejson: true
