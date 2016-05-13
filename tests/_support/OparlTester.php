@@ -27,8 +27,9 @@ class OparlTester extends \Codeception\Actor
      * - it is either an external list or an oparl object
      * - all URLs linked to exist
      */
-    function seeOparl($oparl_object) {
-        $this->seeResponseEquals(json_encode(json_decode($oparl_object)));
+    function getOParl($url) {
+        $this->sendGET($url);
+        $this->validateResponse($url);
         $this->seeResponseCodeIs(200);
         $this->seeHttpHeader('Content-Type', 'application/json');
         $this->seeHttpHeader('Access-Control-Allow-Origin', '*');
@@ -70,4 +71,8 @@ class OparlTester extends \Codeception\Actor
             $this->seeResponseCodeIs(200);
         }
      }
+
+    function seeOparl($stub) {
+
+    }
 }

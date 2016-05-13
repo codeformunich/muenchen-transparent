@@ -1,53 +1,6 @@
 <?php
 $I = new OparlTester($scenario);
 $I->wantTo('validate oparl:person objects (one with all attributes, one with few attributes and one Referent)');
-$I->sendGET('/person/1');
-$I->seeOparl('
-{
-    "id": "http://localhost:8080/oparl/v1.0/person/1",
-    "type": "https://oparl.org/schema/1.0/Person",
-    "body": "http://localhost:8080/oparl/v1.0/body/1",
-    "name": "Dr. Stadtrat, mit allen Eigenschaften",
-    "familyName": "Stadtrat",
-    "givenName": "mit allen Eigenschaften",
-    "created": "2016-05-02T19:53:09+02:00",
-    "modified": "2016-05-02T19:53:09+02:00",
-    "gender": "male",
-    "status": "Ehrenamtlicher Stadtrat",
-    "life": "„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“",
-    "lifeSource": "~",
-    "email": "meine.email@gmail.com",
-    "muenchenTransparent:elected": "2014-05-01",
-    "muenchenTransparent:dateOfBirth": "1971-05-31",
-    "muenchenTransparent:beruf": "Stadtrat",
-    "muenchenTransparent:bio": "Geboren am 31.05.1971 um 18:09:45nnQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`",
-    "muenchenTransparent:website": "https://example.com",
-    "muenchenTransparent:twitter": "@StadtratmitallenEigenschaften",
-    "muenchenTransparent:facebook": "StadtratmitallenEigenschaften_1123410",
-    "muenchenTransparent:abgeordnetenwatch": "Stadtrat mit allen Eigenschaften"
-}
-');
-$I->sendGET('/person/2');
-$I->seeOparl('
-{
-  "id": "http://localhost:8080/oparl/v1.0/person/2",
-  "type": "https://oparl.org/schema/1.0/Person",
-  "body": "http://localhost:8080/oparl/v1.0/body/0",
-  "name": "Stadträtin mit möglichst wenigen Eigenschaften",
-  "familyName": "Eigenschaften",
-  "givenName": "Stadträtin mit möglichst wenigen",
-  "status": "Ehrenamtlicher Stadtrat"
-}
-');
-$I->sendGET('/person/3');
-$I->seeOparl('
-{
-  "id": "http://localhost:8080/oparl/v1.0/person/3",
-  "type": "https://oparl.org/schema/1.0/Person",
-  "body": "http://localhost:8080/oparl/v1.0/body/0",
-  "name": "Referent für Städtische Aufgaben",
-  "familyName": "Aufgaben",
-  "givenName": "Referent für Städtische",
-  "status": "Berufsmäßiger Stadtrat"
-}
-');
+$I->getOParl('/person/1');
+$I->getOParl('/person/2');
+$I->getOParl('/person/3');

@@ -1,0 +1,11 @@
+{
+    "id": "http://localhost:8080/oparl/v1.0/person/2",
+    "type": "https://oparl.org/schema/1.0/Person",
+    "body": "http://localhost:8080/oparl/v1.0/body/0",
+    "name": "Stadträtin mit möglichst wenigen Eigenschaften",
+    "familyName": "Eigenschaften",
+    "givenName": "Stadträtin mit möglichst wenigen",
+    "created": "2016-05-02T19:53:09+02:00",
+    "modified": "2016-05-02T19:53:09+02:00",
+    "status": "Ehrenamtlicher Stadtrat"
+}

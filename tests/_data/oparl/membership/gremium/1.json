@@ -1,0 +1,11 @@
+{
+    "id": "http://localhost:8080/oparl/v1.0/membership/gremium/1",
+    "type": "https://oparl.org/schema/1.0/Membership",
+    "organization": "http://localhost:8080/oparl/v1.0/organization/gremium/2",
+    "person": "http://localhost:8080/oparl/v1.0/person/4",
+    "role": "Mitglied",
+    "created": "2016-05-08T12:10:02+02:00",
+    "modified": "2016-05-08T12:11:48+02:00",
+    "startDate": "2016-05-01",
+    "endDate": "2016-05-02"
+}

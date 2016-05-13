@@ -1,10 +1,19 @@
 class_name: OparlTester
 modules:
     enabled:
-        - \Helper\Oparl
+        - \Helper\Oparl:
+            updatejson: false
         - REST:
-              depends: PhpBrowser
-              url: http://localhost:8080/oparl/v1.0
-              part: Json
+            depends: PhpBrowser
+            url: http://localhost:8080/oparl/v1.0
+            part: Json
         - Asserts
         - PhpBrowser
+        - Filesystem
+env:
+    updatejson:
+        # Updates the json
+        modules:
+            enabled:
+                - \Helper\Oparl:
+                    updatejson: true

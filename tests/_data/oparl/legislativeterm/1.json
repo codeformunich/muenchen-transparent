@@ -1,0 +1,7 @@
+{
+    "type": "https://oparl.org/schema/1.0/LegislativeTerm",
+    "name": "1996-2002",
+    "startDate": "1996-12-03",
+    "endDate": "2002-12-03",
+    "id": "http://localhost:8080/oparl/v1.0/legislativeterm/1"
+}

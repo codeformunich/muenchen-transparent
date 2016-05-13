@@ -1,0 +1,11 @@
+{
+    "id": "http://localhost:8080/oparl/v1.0/meeting/1",
+    "type": "https://oparl.org/schema/1.0/Meeting",
+    "name": "Ausschuss mit Terminen",
+    "meetingState": "",
+    "start": "2016-01-01T09:00:00+01:00",
+    "organization": "http://localhost:8080/oparl/v1.0/organization/gremium/1",
+    "created": "2016-05-02T19:53:09+02:00",
+    "modified": "2016-05-02T19:53:10+02:00",
+    "auxiliaryFile": []
+}
