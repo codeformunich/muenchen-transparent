@@ -71,8 +71,4 @@ class OparlTester extends \Codeception\Actor
             $this->seeResponseCodeIs(200);
         }
      }
-
-    function seeOparl($stub) {
-
-    }
 }

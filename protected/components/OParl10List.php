@@ -94,19 +94,6 @@ class OParl10List
     }
 
     /**
-     * Die externe Objektliste mit allen 'oparl:LegislativeTerm'-Objekten
-     */
-    private static function legislativeTerm($body)
-    {
-        return [
-            'items'         => OParl10Object::get("legislativeterm", -1),
-            'firstPage'     => OParl10Controller::getOparlListUrl('legislativeterm', $body),
-            'lastPage'      => OParl10Controller::getOparlListUrl('legislativeterm', $body),
-            'numberOfPages' => 1,
-        ];
-    }
-
-    /**
      * Die externe Objektliste mit allen 'oparl:Organization'-Objekten, d.h.
      * - die Gremien
      * - die Frakionen

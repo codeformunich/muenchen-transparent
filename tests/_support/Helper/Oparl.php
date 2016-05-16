@@ -41,7 +41,7 @@ class Oparl extends \Codeception\Module
         // Check if an expected result exists
         if (!file_exists($filepath)) {
             if ($this->config['updatejson'] === true) {
-                $this->writeln("\nCreating missing file with expected response...");
+                $this->writeln("\nCreating missing file with expected response ...");
                 if (!file_exists(dirname($filepath)))
                     mkdir(dirname($filepath), 0777, true);
                 file_put_contents($filepath, $response);

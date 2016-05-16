@@ -16,6 +16,6 @@ env:
     updatejson:
         # Updates the json
         modules:
-            config:
+            enabled:
                 - \Helper\Oparl:
                     updatejson: true
