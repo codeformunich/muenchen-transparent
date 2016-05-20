@@ -68,4 +68,4 @@ after_failure:
   - cat tests/_output/*.html
 
 after_script:
-  - nginx -c `pwd`/docs/nginx-codeception.conf -s stop
+  - nginx -c `pwd`/docs/travis/nginx-codeception.conf -s stop
