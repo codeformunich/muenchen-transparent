@@ -28,14 +28,13 @@ class OParl10List
      * Erzeugt ein CDbCriteria-Objekt mit den Filtern für created und modified
      */
     public static function criteria($created_since, $created_until, $modified_since, $modified_until) {
-        // TODO: Weniger Redundanz
         $criteria = new CDbCriteria();
         if ($created_since  !== null) {
-            $criteria->addCondition('created  >= :created_since ');
+            $criteria->addCondition('created  >= :created_since');
             $criteria->params["created_since"] = $created_since;
         }
         if ($created_until  !== null) {
-            $criteria->addCondition('created  <= :created_until ');
+            $criteria->addCondition('created  <= :created_until');
             $criteria->params["created_until"] = $created_until;
         }
         if ($modified_since !== null) {
@@ -124,24 +123,28 @@ class OParl10List
      */
     private static function organization($body, $criteria)
     {
-        // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
-        $query = ($body > 0 ? 'ba_nr = ' . $body : 'ba_nr IS NULL');
-
         $organizations = [];
 
-        $gremien = Gremium::model()->findAll($query);
-        foreach ($gremien as $gremium)
-            $organizations[] = OParl10Object::get('organization', $gremium->id, 'gremium');
-
-        $fraktionen = Fraktion::model()->findAll($query);
-        foreach ($fraktionen as $fraktion)
-            $organizations[] = OParl10Object::get('organization', $fraktion->id, 'fraktion');
-
         if ($body == 0) {
-            $referate = Referat::model()->findAll();
+            $referate = Referat::model()->findAll($criteria);
             foreach ($referate as $referat)
                 $organizations[] = OParl10Object::get('organization', $referat->id, 'referat');
         }
+
+        if ($body == 0) {
+            $criteria->addCondition('ba_nr IS NULL');
+        } else {
+            $criteria->addCondition('ba_nr = :body');
+            $criteria->params['body'] = $body;
+        }
+
+        $gremien = Gremium::model()->findAll($criteria);
+        foreach ($gremien as $gremium)
+            $organizations[] = OParl10Object::get('organization', $gremium->id, 'gremium');
+
+        $fraktionen = Fraktion::model()->findAll($criteria);
+        foreach ($fraktionen as $fraktion)
+            $organizations[] = OParl10Object::get('organization', $fraktion->id, 'fraktion');
 
         return [
             'items'         => $organizations,

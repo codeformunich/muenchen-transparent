@@ -1,6 +1,19 @@
 {
     "items": [
         {
+            "id": "http://localhost:8080/oparl/v1.0/organization/referat/1",
+            "type": "https://oparl.org/schema/1.0/Organization",
+            "body": "http://localhost:8080/oparl/v1.0/body/0",
+            "name": "Referat für städtische Aufgaben",
+            "shortName": "Referat für städtische Aufgaben",
+            "membership": [
+                "http://localhost:8080/oparl/v1.0/membership/referat/1"
+            ],
+            "classification": "Referat",
+            "created": "2016-05-02T19:53:09+02:00",
+            "modified": "2016-05-02T19:53:09+02:00"
+        },
+        {
             "id": "http://localhost:8080/oparl/v1.0/organization/gremium/2",
             "type": "https://oparl.org/schema/1.0/Organization",
             "body": "http://localhost:8080/oparl/v1.0/body/0",
@@ -24,19 +37,6 @@
             "classification": "Fraktion",
             "created": "2016-05-02T19:53:08+02:00",
             "modified": "2016-05-02T19:53:08+02:00"
-        },
-        {
-            "id": "http://localhost:8080/oparl/v1.0/organization/referat/1",
-            "type": "https://oparl.org/schema/1.0/Organization",
-            "body": "http://localhost:8080/oparl/v1.0/body/0",
-            "name": "Referat für städtische Aufgaben",
-            "shortName": "Referat für städtische Aufgaben",
-            "membership": [
-                "http://localhost:8080/oparl/v1.0/membership/referat/1"
-            ],
-            "classification": "Referat",
-            "created": "2016-05-02T19:53:09+02:00",
-            "modified": "2016-05-02T19:53:09+02:00"
         }
     ],
     "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/organization",
