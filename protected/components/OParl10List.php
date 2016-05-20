@@ -10,17 +10,43 @@ class OParl10List
     /**
      * Gibt eine beliebiges externe OParl-Objektliste als array zurück
      */
-    public static function get($type, $body, $id = null) {
+    public static function get($type, $body, $id = null, $created_since = null, $created_until = null, $modified_since = null, $modified_until = null) {
+        $criteria = self::criteria($created_since, $created_until, $modified_since, $modified_until);
+
         if      ($type == 'body'           ) return self::body();
-        else if ($type == 'organization'   ) return self::organization($body);
-        else if ($type == 'person'         ) return self::externalList($body, $type, StadtraetIn::model(), false, $id);
-        else if ($type == 'meeting'        ) return self::externalList($body, $type, Termin::model(), true, $id);
-        else if ($type == 'paper'          ) return self::externalList($body, $type, Antrag::model(), true, $id);
-        else if ($type == 'legislativeterm') return self::legislativeTerm($body);
+        else if ($type == 'organization'   ) return self::organization($body, $criteria);
+        else if ($type == 'person'         ) return self::externalList($body, $criteria, $type, StadtraetIn::model(), false, $id);
+        else if ($type == 'meeting'        ) return self::externalList($body, $criteria, $type, Termin::model(), true, $id);
+        else if ($type == 'paper'          ) return self::externalList($body, $criteria, $type, Antrag::model(), true, $id);
         else {
             header('HTTP/1.0 400 Bad Request');
             return ['error' => 'No external list for type ' . $type];
         }
+    }
+
+    /**
+     * Erzeugt ein CDbCriteria-Objekt mit den Filtern für created und modified
+     */
+    public static function criteria($created_since, $created_until, $modified_since, $modified_until) {
+        // TODO: Weniger Redundanz
+        $criteria = new CDbCriteria();
+        if ($created_since  !== null) {
+            $criteria->addCondition('created  >= :created_since ');
+            $criteria->params["created_since"] = $created_since;
+        }
+        if ($created_until  !== null) {
+            $criteria->addCondition('created  <= :created_until ');
+            $criteria->params["created_until"] = $created_until;
+        }
+        if ($modified_since !== null) {
+            $criteria->addCondition('modified >= :modified_since');
+            $criteria->params["modified_since"] = $modified_since;
+        }
+        if ($modified_until !== null) {
+            $criteria->addCondition('modified <= :modified_until');
+            $criteria->params["modified_until"] = $modified_until;
+        }
+        return $criteria;
     }
 
     /**
@@ -49,10 +75,8 @@ class OParl10List
      *  - meeting
      *  - paper
      */
-    private static function externalList($body, $type, $model, $ba_check, $id = null)
+    private static function externalList($body, $criteria, $type, $model, $ba_check, $id)
     {
-        $criteria = new CDbCriteria();
-
         // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
         if ($ba_check) {
             if ($body > 0) {
@@ -62,7 +86,6 @@ class OParl10List
                 $criteria->addCondition('ba_nr IS NULL');
             }
         }
-
         $count = $model->count($criteria);
 
         // Stabile Paginierung: Nur eine bestimmte Anzahl an Elementen ausgeben, deren id größer als $id ist
@@ -99,7 +122,7 @@ class OParl10List
      * - die Frakionen
      * - nur beim Stadtrat: die Referate
      */
-    private static function organization($body)
+    private static function organization($body, $criteria)
     {
         // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
         $query = ($body > 0 ? 'ba_nr = ' . $body : 'ba_nr IS NULL');

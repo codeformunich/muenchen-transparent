@@ -60,6 +60,6 @@
     ],
     "itemsPerPage": 3,
     "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/paper",
-    "numberOfPages": 3,
+    "numberOfPages": 2,
     "nextPage": "http://localhost:8080/oparl/v1.0/body/0/list/paper?id=3"
 }

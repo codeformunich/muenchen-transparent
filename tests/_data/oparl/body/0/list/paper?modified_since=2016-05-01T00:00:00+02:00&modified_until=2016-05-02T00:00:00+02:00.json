@@ -35,31 +35,10 @@
                 "http://localhost:8080/oparl/v1.0/paper/2",
                 "http://localhost:8080/oparl/v1.0/paper/3"
             ]
-        },
-        {
-            "id": "http://localhost:8080/oparl/v1.0/paper/3",
-            "type": "https://oparl.org/schema/1.0/Paper",
-            "body": "http://localhost:8080/oparl/v1.0/body/0",
-            "name": "Ein verwandter Antrag",
-            "reference": "",
-            "paperType": "Stadtratsantrag",
-            "auxiliaryFile": [
-                "http://localhost:8080/oparl/v1.0/file/1"
-            ],
-            "underDirectionof": [
-                "http://localhost:8080/oparl/v1.0/organization/referat/1"
-            ],
-            "keyword": [],
-            "created": "2016-05-03T00:00:00+02:00",
-            "modified": "2016-05-03T00:00:00+02:00",
-            "relatedPaper": [
-                "http://localhost:8080/oparl/v1.0/paper/2",
-                "http://localhost:8080/oparl/v1.0/paper/3"
-            ]
         }
     ],
     "itemsPerPage": 3,
     "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/paper",
-    "numberOfPages": 3,
-    "nextPage": "http://localhost:8080/oparl/v1.0/body/0/list/paper?id=3"
+    "numberOfPages": 1,
+    "nextPage": "http://localhost:8080/oparl/v1.0/body/0/list/paper?id=2"
 }

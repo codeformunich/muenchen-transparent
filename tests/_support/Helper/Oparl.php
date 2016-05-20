@@ -7,12 +7,21 @@ namespace Helper;
 class Oparl extends \Codeception\Module
 {
     protected $requiredFields = ['updatejson'];
+    private $filepath;
+    private $uglyResponse;
+    private $prettyResponse;
+    private $tree;
 
-    /*
-     * returns the unescaped response content with unicode symbols in it
-     */
-    public function getResponseContent($json_flags = JSON_UNESCAPED_UNICODE) {
-        return stripslashes(json_encode(json_decode($this->getModule('REST')->grabResponse()), $json_flags));
+    public function getPrettyResponse() {
+        return $this->prettyResponse;
+    }
+
+    public function getUglyResponse() {
+        return $this->uglyResponse;
+    }
+
+    public function getTree() {
+        return $this->tree;
     }
 
     /**
@@ -24,40 +33,48 @@ class Oparl extends \Codeception\Module
         $output->writeln($text);
     }
 
+
     /**
-     * Checks that response returned from the api matches the expected response stored in a file in the data directory
-     *
-     * When run with the `updatejson` environment all expected reponses that do not match the actual response overwritten
+     * Sets filepath, uglyResponse, prettyResponse and tree
      */
-    public function validateResponse($url) {
+    public function setVariables($url) {
         // edge case of the oparl:system object
         if ($url == "/") {
             $url = "/system/0";
         }
 
-        $filepath = codecept_data_dir() . 'oparl' . $url . '.json';
-        $response = $this->getResponseContent(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $this->filepath = codecept_data_dir() . 'oparl' . $url . '.json';
+        $this->uglyResponse = stripslashes(json_encode(json_decode($this->getModule('REST')->grabResponse()), JSON_UNESCAPED_UNICODE));
+        $this->prettyResponse = stripslashes(json_encode(json_decode($this->getModule('REST')->grabResponse()), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $this->tree = json_decode($this->getUglyResponse());
+    }
 
+    /**
+     * Checks that response returned from the api matches the expected response stored in a file in the data directory
+     *
+     * When run with the `updatejson` environment all expected reponses that do not match the actual response overwritten
+     */
+    public function seeOParlFile() {
         // Check if an expected result exists
-        if (!file_exists($filepath)) {
+        if (!file_exists($this->filepath)) {
             if ($this->config['updatejson'] === true) {
                 $this->writeln("\nCreating missing file with expected response ...");
-                if (!file_exists(dirname($filepath)))
-                    mkdir(dirname($filepath), 0777, true);
-                file_put_contents($filepath, $response);
+                if (!file_exists(dirname($this->filepath)))
+                    mkdir(dirname($this->filepath), 0777, true);
+                file_put_contents($this->filepath, $this->prettyResponse);
             } else {
-                $this->fail('File with expected json missing in validateResponse(): ' . $filepath);
+                $this->fail('File with expected json missing in validateResponse(): ' . $this->filepath);
             }
         }
 
         // Finally, check if the response matches
-        $expected = file_get_contents($filepath);
+        $expected = file_get_contents($this->filepath);
         if ($this->config['updatejson'] !== true) {
-            $this->assertEquals($expected, $response);
+            $this->assertEquals($expected, $this->prettyResponse);
         } else {
-            if ($response != $expected) {
+            if ($this->prettyResponse != $expected) {
                 $this->writeln("\nTest failed. Updating expected JSON ...");
-                file_put_contents($filepath, $response);
+                file_put_contents($this->filepath, $this->prettyResponse);
             }
         }
     }
@@ -66,12 +83,7 @@ class Oparl extends \Codeception\Module
      * Prints some usefull debug information about a failed test
      */
     public function _failed(\Codeception\TestCase $test, $fail) {
-        $filename    = $test->getTestFileName($test);
-        $pretty_json = $this->getResponseContent(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        $url_full    = $this->getModule('PhpBrowser')->client->getHistory()->current()->getUri();
-
-        $this->writeln($filename);
-        $this->writeln($url_full);
-        $this->writeln($pretty_json);
+        $this->writeln($this->getModule('PhpBrowser')->client->getHistory()->current()->getUri());
+        $this->writeln($this->prettyResponse);
     }
 }

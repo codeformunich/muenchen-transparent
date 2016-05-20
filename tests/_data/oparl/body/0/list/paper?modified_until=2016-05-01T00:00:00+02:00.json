@@ -1,0 +1,23 @@
+{
+    "items": [
+        {
+            "id": "http://localhost:8080/oparl/v1.0/paper/1",
+            "type": "https://oparl.org/schema/1.0/Paper",
+            "body": "http://localhost:8080/oparl/v1.0/body/0",
+            "name": "Antrag ohne Vorgang",
+            "reference": "",
+            "paperType": "Stadtratsantrag",
+            "auxiliaryFile": [],
+            "underDirectionof": [
+                "http://localhost:8080/oparl/v1.0/organization/referat/1"
+            ],
+            "keyword": [],
+            "created": "2016-05-01T00:00:00+02:00",
+            "modified": "2016-05-01T00:00:00+02:00"
+        }
+    ],
+    "itemsPerPage": 3,
+    "firstPage": "http://localhost:8080/oparl/v1.0/body/0/list/paper",
+    "numberOfPages": 1,
+    "nextPage": "http://localhost:8080/oparl/v1.0/body/0/list/paper?id=1"
+}

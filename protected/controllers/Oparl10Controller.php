@@ -35,14 +35,15 @@ class OParl10Controller extends CController {
     }
 
     /**
-     * Erzeugt einen String mit Datum und Zeit im richtigen Format
+     * Wandelt einen MySQL timestamp in einen String mit Datum, Zeit und Zeitzone im dem vom OParl genutzten Format um
+     * (entspricht ISO 8601)
      */
-    public static function toOparlDateTime($in) {
+    public static function mysqlToOparlDateTime($in) {
         return (new DateTime($in, new DateTimeZone(DEFAULT_TIMEZONE)))->format(DateTime::ATOM);
     }
 
     /**
-     * Gibt ein Array als OParl-Objekt mit den korrekten Headern aus.
+     * Gibt das Array $data als OParl-Objekt zusammen mit den korrekten Headern aus.
      */
     public static function asOParlJSON($data) {
         header('Access-Control-Allow-Origin: *');
@@ -74,8 +75,8 @@ class OParl10Controller extends CController {
     /**
      * Gibt ein beliebiges Objekt außer 'oparl:System' als JSON aus
      */
-    public function actionExternalList($typ, $body, $id = null) {
-        self::asOParlJSON(OParl10List::get($typ, $body, $id));
+    public function actionExternalList($typ, $body, $id = null, $created_since = null, $created_until = null, $modified_since = null, $modified_until = null) {
+        self::asOParlJSON(OParl10List::get($typ, $body, $id, $created_since, $created_until, $modified_since, $modified_until));
     }
 
     /**

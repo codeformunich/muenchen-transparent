@@ -52,8 +52,8 @@ class OParl10Object {
             'accessUrl'   =>  SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
             'downloadUrl' =>  SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
             'fileName'    => $dokument->getDateiname(),
-            'created'     => OParl10Controller::toOparlDateTime($dokument->created),
-            'modified'    => OParl10Controller::toOparlDateTime($dokument->modified),
+            'created'     => OParl10Controller::mysqlToOparlDateTime($dokument->created),
+            'modified'    => OParl10Controller::mysqlToOparlDateTime($dokument->modified),
         ];
 
         if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
@@ -143,10 +143,10 @@ class OParl10Object {
             'type'         => self::TYPE_MEETING,
             'name'         => $termin->gremium->name,
             'meetingState' => $termin->sitzungsstand,
-            'start'        => OParl10Controller::toOparlDateTime($termin->termin),
+            'start'        => OParl10Controller::mysqlToOparlDateTime($termin->termin),
             'organization' => OParl10Controller::getOparlObjectUrl('organization', $termin->gremium->id, 'gremium'),
-            'created'      => OParl10Controller::toOparlDateTime($termin->created),
-            'modified'     => OParl10Controller::toOparlDateTime($termin->modified),
+            'created'      => OParl10Controller::mysqlToOparlDateTime($termin->created),
+            'modified'     => OParl10Controller::mysqlToOparlDateTime($termin->modified),
         ];
 
         $data['auxiliaryFile'] = [];
@@ -182,8 +182,8 @@ class OParl10Object {
             'organization' => OParl10Controller::getOparlObjectUrl('organization', $organization->id, $subtype),
             'person'       => OParl10Controller::getOparlObjectUrl('person', $object->stadtraetIn->id),
             'role'         => $object->getFunktion(),
-            'created'      => OParl10Controller::toOparlDateTime($object->created),
-            'modified'     => OParl10Controller::toOparlDateTime($object->modified),
+            'created'      => OParl10Controller::mysqlToOparlDateTime($object->created),
+            'modified'     => OParl10Controller::mysqlToOparlDateTime($object->modified),
         ];
 
         if ($object->datum_von !== null)
@@ -221,8 +221,8 @@ class OParl10Object {
             'shortName'      => $object->getName(true),
             'membership'     => [],
             'classification' => $object->getTypName(),
-            'created'        => OParl10Controller::toOparlDateTime($object->created),
-            'modified'       => OParl10Controller::toOparlDateTime($object->modified),
+            'created'        => OParl10Controller::mysqlToOparlDateTime($object->created),
+            'modified'       => OParl10Controller::mysqlToOparlDateTime($object->modified),
         ];
 
         // Termine gibt es nur bei Gremien
@@ -257,8 +257,8 @@ class OParl10Object {
             'auxiliaryFile'    => [],
             'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization', $antrag->referat_id, 'referat')],
             'keyword'          => [],
-            'created'          => OParl10Controller::toOparlDateTime($antrag->created),
-            'modified'         => OParl10Controller::toOparlDateTime($antrag->modified),
+            'created'          => OParl10Controller::mysqlToOparlDateTime($antrag->created),
+            'modified'         => OParl10Controller::mysqlToOparlDateTime($antrag->modified),
         ];
 
         foreach ($antrag->dokumente as $dokument)
@@ -298,8 +298,8 @@ class OParl10Object {
             'name'       => $stadtraetin->name,
             'familyName' => $stadtraetin->errateNachname(),
             'givenName'  => $stadtraetin->errateVorname(),
-            'created'    => OParl10Controller::toOparlDateTime($stadtraetin->created),
-            'modified'   => OParl10Controller::toOparlDateTime($stadtraetin->modified),
+            'created'    => OParl10Controller::mysqlToOparlDateTime($stadtraetin->created),
+            'modified'   => OParl10Controller::mysqlToOparlDateTime($stadtraetin->modified),
         ];
 
         // Das Geschlecht übersetzen

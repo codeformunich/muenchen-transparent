@@ -15,8 +15,8 @@
                 "http://localhost:8080/oparl/v1.0/organization/referat/1"
             ],
             "keyword": [],
-            "created": "2016-05-02T19:53:08+02:00",
-            "modified": "2016-05-02T19:53:08+02:00"
+            "created": "2016-05-04T00:00:00+02:00",
+            "modified": "2016-05-04T00:00:00+02:00"
         },
         {
             "id": "http://localhost:8080/oparl/v1.0/paper/5",
@@ -32,8 +32,8 @@
                 "http://localhost:8080/oparl/v1.0/organization/referat/1"
             ],
             "keyword": [],
-            "created": "2016-05-02T19:53:08+02:00",
-            "modified": "2016-05-02T19:53:08+02:00"
+            "created": "2016-05-05T00:00:00+02:00",
+            "modified": "2016-05-05T00:00:00+02:00"
         },
         {
             "id": "http://localhost:8080/oparl/v1.0/paper/6",
