@@ -36,7 +36,7 @@ foreach (['modified_', 'created_'] as $field) {
         $checkItemCount($url, '2016-05-02T00:00:00+02:00', $delimiter, 2, $max_item_count);
         $checkItemCount($url, '2016-05-03T00:00:00+02:00', $delimiter, 3, $max_item_count);
 
-        // The Extreme cases
+        // The extreme cases
         $checkItemCount($url, '1016-05-01T00:00:00+02:00', $delimiter, $min_item_count, $max_item_count);
         $checkItemCount($url, '3016-05-01T00:00:00+02:00', $delimiter, $max_item_count, $min_item_count);
     }

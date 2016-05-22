@@ -34,7 +34,6 @@ class OparlTester extends \Codeception\Actor
         $this->seeHttpHeader('Content-Type', 'application/json');
         $this->seeHttpHeader('Access-Control-Allow-Origin', '*');
         $this->seeResponseIsJson();
-        
 
         if ($skip_extended_checks)
             return;
@@ -65,7 +64,7 @@ class OparlTester extends \Codeception\Actor
                 $type = "system";
             $this->assertRegExp('~https:\/\/oparl.org\/schema\/1.0\/' . $type . '~i',  $this->getTree()->type);
         } else {
-            $this->fail('Returned JSON was neither an obejct nor an external list');
+            $this->fail('Returned JSON was neither an object nor an external list');
         }
 
         // Check that all other oparl objects linked to exist

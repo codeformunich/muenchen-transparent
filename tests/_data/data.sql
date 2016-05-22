@@ -42,7 +42,7 @@ INSERT INTO `benutzerInnen` VALUES (47,'user@example.com',0,'2016-01-17 18:12:13
 /*!40000 ALTER TABLE `benutzerInnen_vorgaenge_abos` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `bezirksausschuesse` DISABLE KEYS */;
-INSERT INTO `bezirksausschuesse` VALUES (1,0,'BA mit Ausschuss mit Termin',NULL,NULL,NULL);
+INSERT INTO `bezirksausschuesse` VALUES (1,0,'BA mit Ausschuss mit Termin','http://www.ba1.muenchen.de',13,'[[11.575738191604614,48.13937283176814],[11.574804782867432,48.13723923356946],[11.576242446899414,48.13688123860767],[11.577283143997192,48.13884302035666],[11.575738191604614,48.13937283176814]]\n');
 /*!40000 ALTER TABLE `bezirksausschuesse` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `bezirksausschuss_budget` DISABLE KEYS */;

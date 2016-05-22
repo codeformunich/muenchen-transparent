@@ -49,10 +49,10 @@ install:
   # Install dependencies
   - chmod 644 vendor/heise/shariff/index.php || true # Prevent a weird "has uncommitted changes" error message when updating shariff
   - composer install --prefer-source # --prefer-source fixes github's limits
-  #- npm install
-  #- npm install bower
-  #- node_modules/bower/bin/bower install
-  #- gulp
+  - npm install
+  - npm install bower
+  - node_modules/bower/bin/bower install
+  - gulp
 
 script:
   - nginx -c `pwd`/docs/nginx-codeception.conf

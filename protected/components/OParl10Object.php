@@ -30,8 +30,8 @@ class OParl10Object {
         else if ($type == 'paper'          ) return self::paper($id);
         else if ($type == 'person'         ) return self::person($id);
         else if ($type == 'system'         ) return self::system();
+        else if ($type == 'location'       ) return self::location($id, $subtype);
         else if ($type == 'agendaitem'     ) return ['note:' => 'not implemented yet'];
-        else if ($type == 'location'       ) return ['note:' => 'not implemented yet'];
         else if ($type == 'consultation'   ) return ['note:' => 'not implemented yet'];
         else {
             header('HTTP/1.0 400 Bad Request');
@@ -49,8 +49,9 @@ class OParl10Object {
             'id'          => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
             'type'        => self::TYPE_FILE,
             'name'        => $dokument->getName(),
-            'accessUrl'   =>  SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
-            'downloadUrl' =>  SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
+            
+            'accessUrl'   => SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
+            'downloadUrl' => SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
             'fileName'    => $dokument->getDateiname(),
             'created'     => OParl10Controller::mysqlToOparlDateTime($dokument->created),
             'modified'    => OParl10Controller::mysqlToOparlDateTime($dokument->modified),
@@ -164,17 +165,15 @@ class OParl10Object {
     private static function membership($id, $subtype) {
         if ($subtype == 'fraktion') {
             $object = StadtraetInFraktion::model()->findByPk($id);
-            $organization = $object->fraktion;
         } else if ($subtype == 'gremium') {
             $object = StadtraetInGremium::model()->findByPk($id);
-            $organization = $object->gremium;
         } else if ($subtype == 'referat') {
             $object = StadtraetInReferat::model()->findByPk($id);
-            $organization = $object->referat;
         } else {
             header('HTTP/1.0 400 Bad Request');
             return ['error' => 'No such subtype ' . $subtype . ' for membership'];
         }
+        $organization = $object->$subtype;
 
         $data = [
             'id'           => OParl10Controller::getOparlObjectUrl('membership', $object->id, $subtype),
@@ -369,15 +368,17 @@ class OParl10Object {
             $name = 'Stadrat der Landeshauptstadt München';
             $shortName = 'Stadtrat';
             $website = 'http://www.muenchen.de/';
+            $location = null;
         } else {
             $ba = Bezirksausschuss::model()->findByPk($id);
             $body = $ba->ba_nr;
             $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
             $shortName = 'BA ' . $ba->ba_nr;
-            $website = Yii::app()->createAbsoluteUrl($ba->getLink());
+            $website = $ba->website;
+            $location = self::location($id, 'body');
         }
 
-        return [
+        $data = [
             'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
             'type'            => self::TYPE_BODY,
             'system'          => OParl10Controller::getOparlObjectUrl('system', null),
@@ -391,6 +392,27 @@ class OParl10Object {
             'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
             'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
             'legislativeTerm' => self::legislativeterm(-1),
+        ];
+
+        if ($location)
+            $data['location'] = $location;
+
+        return $data;
+    }
+
+    private static function location($id, $subtype) {
+        if ($subtype != 'body') {
+            header('HTTP/1.0 400 Bad Request');
+            return ['error' => 'No such subtype ' . $subtype . ' for location'];
+        }
+
+        $object = Bezirksausschuss::model()->findByPk($id);
+
+        return [
+            'id'      => OParl10Controller::getOparlObjectUrl('location', $id, 'body'),
+            'type'    => self::TYPE_LOCATION,
+            'bodies'  => [OParl10Controller::getOparlObjectUrl('body', $id)],
+            'geojson' => $object->toGeoJSONArray(),
         ];
     }
 }

@@ -13,11 +13,11 @@ class OParl10List
     public static function get($type, $body, $id = null, $created_since = null, $created_until = null, $modified_since = null, $modified_until = null) {
         $criteria = self::criteria($created_since, $created_until, $modified_since, $modified_until);
 
-        if      ($type == 'body'           ) return self::body();
-        else if ($type == 'organization'   ) return self::organization($body, $criteria);
-        else if ($type == 'person'         ) return self::externalList($body, $criteria, $type, StadtraetIn::model(), false, $id);
-        else if ($type == 'meeting'        ) return self::externalList($body, $criteria, $type, Termin::model(), true, $id);
-        else if ($type == 'paper'          ) return self::externalList($body, $criteria, $type, Antrag::model(), true, $id);
+        if      ($type == 'body'         ) return self::body();
+        else if ($type == 'organization' ) return self::organization($body, $criteria);
+        else if ($type == 'person'       ) return self::externalList($body, $criteria, $type, $id);
+        else if ($type == 'meeting'      ) return self::externalList($body, $criteria, $type, $id);
+        else if ($type == 'paper'        ) return self::externalList($body, $criteria, $type, $id);
         else {
             header('HTTP/1.0 400 Bad Request');
             return ['error' => 'No external list for type ' . $type];
@@ -74,8 +74,19 @@ class OParl10List
      *  - meeting
      *  - paper
      */
-    private static function externalList($body, $criteria, $type, $model, $ba_check, $id)
+    private static function externalList($body, $criteria, $type, $id)
     {
+        $ba_check = true;
+
+        if        ($type == 'person'  ) {
+            $model = StadtraetIn::model();
+            $ba_check = false;
+        } else if ($type == 'meeting' ) {
+            $model = Termin::model();
+        } else if ($type == 'paper'   ) {
+            $model = Antrag::model();
+        }
+
         // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
         if ($ba_check) {
             if ($body > 0) {
