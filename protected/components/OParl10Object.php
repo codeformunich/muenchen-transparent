@@ -264,7 +264,7 @@ class OParl10Object {
             $data['auxiliaryFile'][] = OParl10Controller::getOparlObjectUrl('file', $dokument->id);
 
         foreach ($antrag->tags as $tags)
-            $data['auxiliaryFile'][] = $tags->name;
+            $data['keyword'][] = $tags->name;
 
         if ($antrag->vorgang != null) {
             $data['relatedPaper'] = [];

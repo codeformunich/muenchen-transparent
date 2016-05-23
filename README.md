@@ -47,7 +47,7 @@ gulp
 ```
 * Beispieldaten in die Datenbank importieren:
 ```bash
-cat docs/schema.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql | mysql -u ris -psec muenchen_transparent
+cat docs/schema.sql docs/sql/1.sql docs/sql/2_vorgaenge.sql docs/sql/3_antraege.sql docs/sql/4_termine.sql docs/sql/5_dokumente.sql | mysql -u ris -psec muenchen_transparent
 ```
 
 ### PHP-Konfiguration:

@@ -9,7 +9,9 @@
     "underDirectionof": [
         "http://localhost:8080/oparl/v1.0/organization/referat/1"
     ],
-    "keyword": [],
+    "keyword": [
+        "Fahrradfahrer"
+    ],
     "created": "2016-05-02T19:53:08+02:00",
     "modified": "2016-05-17T22:57:54+02:00"
 }

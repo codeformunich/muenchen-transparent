@@ -29,6 +29,7 @@ INSERT INTO `antraege` VALUES (8,NULL,'ba_antrag','2016-04-30 20:14:03',1,NULL,'
 /*!40000 ALTER TABLE `antraege_stadtraetInnen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `antraege_tags` DISABLE KEYS */;
+INSERT INTO `antraege_tags` VALUES (7,1,'2016-05-23 19:11:08',NULL);
 /*!40000 ALTER TABLE `antraege_tags` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `antraege_vorlagen` DISABLE KEYS */;
@@ -138,6 +139,7 @@ INSERT INTO `tagesordnungspunkte` VALUES (1,NULL,'2016-04-23 16:28:45',NULL,'',N
 /*!40000 ALTER TABLE `tagesordnungspunkte_history` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
+INSERT INTO `tags` VALUES (1,'Fahrradfahrer',NULL,'2016-05-23 19:10:34',1,'2016-05-23 19:10:34','2016-05-23 19:10:51');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `termine` DISABLE KEYS */;
