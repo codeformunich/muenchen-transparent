@@ -6,11 +6,17 @@ namespace Helper;
 
 class Oparl extends \Codeception\Module
 {
+    // magic variable
     protected $requiredFields = ['updatejson'];
-    private $filepath;
+
+    // exposed through getters
     private $uglyResponse;
     private $prettyResponse;
     private $tree;
+
+    // really prrivate
+    private $filepath;
+    private $checked_urls = [];
 
     public function getPrettyResponse() {
         return $this->prettyResponse;
@@ -38,6 +44,8 @@ class Oparl extends \Codeception\Module
      * Sets filepath, uglyResponse, prettyResponse and tree
      */
     public function setVariables($url) {
+        $this->checked_urls[] = $url;
+        
         // edge case of the oparl:system object
         if ($url == "/") {
             $url = "/system/0";
@@ -77,6 +85,17 @@ class Oparl extends \Codeception\Module
                 file_put_contents($this->filepath, $this->prettyResponse);
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function isURLKnown($url)
+    {
+        if (in_array($url, $this->checked_urls))
+            return true;
+        $this->checked_urls[] = $url;
+        return false;
     }
 
     /**

@@ -69,9 +69,11 @@ class OparlTester extends \Codeception\Actor
 
         // Check that all other oparl objects linked to exist
         preg_match_all($oparl_url_regex, $this->getUglyResponse(), $matches);
-        foreach ($matches[1] as $key => $value) {
-            codecept_debug('URL validity check for ' . $value);
-            $this->sendGET($value);
+        foreach ($matches[1] as $url) {
+            if ($this->isURLKnown($url))
+                continue;
+            codecept_debug('URL validity check for ' . $url);
+            $this->sendGET($url);
             $this->seeResponseCodeIs(200);
         }     
     }
