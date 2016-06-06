@@ -2,7 +2,7 @@
 
 class StadtratsvorlageParser extends RISParser
 {
-    private static $MAX_OFFSET        = 32000;
+    private static $MAX_OFFSET        = 34000;
     private static $MAX_OFFSET_UPDATE = 400;
 
     public function parse($vorlage_id)

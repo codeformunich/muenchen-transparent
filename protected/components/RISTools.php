@@ -443,7 +443,7 @@ class RISTools
     {
         if (defined("MAILGUN_API_KEY") && strlen(MAILGUN_API_KEY) > 0 && $mail_tag != "system") {
             $message = new \SlmMail\Mail\Message\Mailgun();
-            $message->setOption('tracking', false);
+            //$message->setOption('tracking', false);
             $client = new \Zend\Http\Client();
             $client->setAdapter(new \Zend\Http\Client\Adapter\Curl());
             $service = new \SlmMail\Service\MailgunService(MAILGUN_DOMAIN, MAILGUN_API_KEY);
@@ -454,6 +454,7 @@ class RISTools
             $transport = new Zend\Mail\Transport\Sendmail();
         }
         static::set_zend_email_data($message, $email, $betreff, $text_plain, $text_html);
+        $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($message, true)); fclose($fp);
 
         $transport->send($message);
     }
