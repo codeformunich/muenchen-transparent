@@ -33,15 +33,18 @@ install:
   # Create environment for the webserver running in travis ci
   - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - phpenv config-rm xdebug.ini # Speeds up build
-  - phpenv config-add docs/travis.php.ini
+  - phpenv config-add docs/travis/custom.php.ini
   - ln -s `pwd` /tmp/muenchen-transparent
   - java -version
 
   # Set up mysql
   - mysql -e 'create database ristest;'
-  - mysql -uroot --execute="SET GLOBAL time_zone = '+1:00'";
-  - cat docs/schema.sql tests/_data/data.sql >  tests/_data/dump.sql
+  - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql # load timezone names
+  - mysql -uroot --execute="SET GLOBAL time_zone = 'Europe/Berlin'"; # set the correct timezone (this has to match DEFAULT_TIMEZONE in the yii config)
+  - docs/travis/mysql-5-5-schema-workaround.sh
+  - cat docs/schema.sql tests/_data/data.sql > tests/_data/dump.sql
   - mysql -utravis ristest < tests/_data/dump.sql
+  - git checkout -- docs/schema.sql # We'll require a clean working tree later
 
   # Install dependencies
   - chmod 644 vendor/heise/shariff/index.php || true # Prevent a weird "has uncommitted changes" error message when updating shariff
@@ -55,16 +58,14 @@ script:
   - nginx -c `pwd`/docs/nginx-codeception.conf
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   - vendor/bin/codecept run --env nohtmlvalidation # nohtmlvalidation is a workaround for the missing java 8
+  - docs/travis/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests
 
 after_failure:
   - vendor/bin/codecept run --debug --env nohtmlvalidation
   - cat protected/runtime/application.log
   - cat /tmp/error.log
   - cat /tmp/access.log
-  - cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - cat tests/_output/*.html
-  - find /home/travis/.phpenv/ -printf "%TY-%Tm-%Td\t%s\t%p\n"
 
 after_script:
-  - nginx -c `pwd`/docs/nginx-codeception.conf -s stop
-  - docs/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests
+  - nginx -c `pwd`/docs/travis/nginx-codeception.conf -s stop

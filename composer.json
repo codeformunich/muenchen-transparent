@@ -22,7 +22,7 @@
     "require": {
         "php": ">=5.5.0",
         "yiisoft/yii": "1.1.17",
-        "solarium/solarium": "3.5.*",
+        "solarium/solarium": "3.6.*",
         "zendframework/zend-config": "2.6.*",
         "zendframework/zend-http": "2.6.*",
         "zendframework/zend-mail": "2.6.*",
