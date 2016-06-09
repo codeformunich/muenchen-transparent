@@ -1,15 +1,15 @@
 {
   "dependencies": {
-    "browser-sync": "^2.10.1",
-    "gulp": "^3.9.0",
+    "browser-sync": "^2.13.0",
+    "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
-    "gulp-if": "^2.0.0",
-    "gulp-sass": "^2.1.1",
+    "gulp-if": "^2.0.1",
+    "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.1",
+    "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "gulp-exec": "^2.1.2",
-    "pa11y": "^3.5.1",
-    "phantomjs-prebuilt": "^2.1.4"
+    "pa11y": "^4.0.0",
+    "phantomjs-prebuilt": "^2.1.7"
   }
 }

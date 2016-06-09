@@ -22,7 +22,7 @@
     "require": {
         "php": ">=5.5.0",
         "yiisoft/yii": "1.1.17",
-        "solarium/solarium": "3.5.*",
+        "solarium/solarium": "3.6.*",
         "zendframework/zend-config": "2.6.*",
         "zendframework/zend-http": "2.6.*",
         "zendframework/zend-mail": "2.6.*",
@@ -31,7 +31,7 @@
         "slm/mail": "~1.6",
         "sabre/dav": "2.1.*@dev",
         "sabre/vobject" : "~3.3",
-        "codeception/codeception": "~2.1.5",
+        "codeception/codeception": "~2.1.1",
         "heise/shariff": "^5.2"
     }
 }

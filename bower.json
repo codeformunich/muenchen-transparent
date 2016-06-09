@@ -2,11 +2,11 @@
   "name": "muenchen-transparent",
   "dependencies": {
     "list.js": "~1.2",
-    "isotope": "~2.2",
+    "isotope": "~3.0",
     "fullcalendar": "~2.4",
-    "leaflet.locatecontrol": "~0.49",
+    "leaflet.locatecontrol": "~0.52",
     "leaflet.draw": "~0.3.0",
-    "mediaelement": "~2.20",
+    "mediaelement": "~2.21",
     "shariff": "~1.23",
     "typeahead.js": "~0.11",
     "bootstrap-sass": "~3.3.6",
@@ -15,6 +15,10 @@
   },
   "resolutions": {
     "jquery": "~2.2.0",
-    "fontawesome": "~4.5.0"
+    "fontawesome": "~4.5.0",
+    "get-size": "^2.0.0",
+    "outlayer": "^2.1.0",
+    "masonry": "^4.1.0",
+    "fizzy-ui-utils": "^2.0.0"
   }
 }

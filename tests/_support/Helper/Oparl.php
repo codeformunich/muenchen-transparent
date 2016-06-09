@@ -102,7 +102,11 @@ class Oparl extends \Codeception\Module
      * Prints some usefull debug information about a failed test
      */
     public function _failed(\Codeception\TestCase $test, $fail) {
-        $this->writeln($this->getModule('PhpBrowser')->client->getHistory()->current()->getUri());
+        /*if (!$this->getModule('PhpBrowser')->client->getHistory()->isEmpty())
+            $this->writeln($this->getModule('PhpBrowser')->client->getHistory()->current()->getUri());
+        else
+            $this->writeln('The page history is empty.');*/
+
         $this->writeln($this->prettyResponse);
     }
 }
