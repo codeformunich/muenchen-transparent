@@ -433,6 +433,26 @@ class RISTools
     }
 
     /**
+     * Meldet einen Fehler beim RIS-Parser. Wenn NO_ERROR_MAIL auf true gesetzt ist, dann wird die Fehlermeldung direkt
+     * ausgegeben, ansonsten wird eine mail verschickt.
+     *
+     * @param $betreff
+     * @param $text_plain
+     * @param null $text_html
+     * @param string $mail_tag
+     */
+    public static function report_ris_parser_error($betreff, $text_plain, $text_html = null, $mail_tag = 'system')
+    {
+        if (defined('NO_ERROR_MAIL') && NO_ERROR_MAIL == true) {
+            echo $betreff;
+            echo $text_plain;
+            return;
+        }
+
+        RISTools::send_email(Yii::app()->params['adminEmail'], $betreff, $text_plain, $text_html, $mail_tag);
+    }
+
+    /**
      * @param string $email
      * @param string $betreff
      * @param string $text_plain

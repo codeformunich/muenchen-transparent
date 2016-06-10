@@ -59,7 +59,7 @@ class StadtratsantragParser extends RISParser
         }
 
         if (!$betreff_gefunden) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsantragParser", "Kein Betreff\n" . $html_details, null, "system");
+            RISTools::report_ris_parser_error("Fehler StadtratsantragParser", "Kein Betreff\n" . $html_details);
             throw new Exception("Betreff nicht gefunden");
         }
 
@@ -146,13 +146,13 @@ class StadtratsantragParser extends RISParser
                 $alter_eintrag->copyToHistory();
                 $alter_eintrag->setAttributes($daten->getAttributes(), false);
                 if (!$alter_eintrag->save()) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details);
                     throw new \Exception("StadtratAntrag 1");
                 }
                 $daten = $alter_eintrag;
             } else {
                 if (!$daten->save()) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 2", "Antrag $antrag_id\n" . print_r($daten->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 2", "Antrag $antrag_id\n" . print_r($daten->getErrors(), true) . "\n\n" . $html_details);
                     throw new \Exception("StadtratAntrag 2");
                 }
             }
@@ -193,7 +193,7 @@ class StadtratsantragParser extends RISParser
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ris_antrag_detail.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-        if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag VOLL", "Erste Seite voll: $seite", null, "system");
+        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("Stadtratsantrag VOLL", "Erste Seite voll: $seite");
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);

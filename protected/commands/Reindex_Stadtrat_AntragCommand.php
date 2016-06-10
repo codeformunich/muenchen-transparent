@@ -4,7 +4,7 @@ class Reindex_Stadtrat_AntragCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        if (count($args) == 0) die("./yii reindex_stadtrat_antrag [Antrags-ID|alle]\n");
+        if (count($args) == 0) die("./yii reindex_stadtrat_antrag [Antrags-ID|alle|ohnereferat]\n");
 
         $parser = new StadtratsantragParser();
         if ($args[0] == "ohnereferat") {

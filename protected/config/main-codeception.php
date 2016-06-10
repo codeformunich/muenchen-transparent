@@ -31,7 +31,10 @@ define("DOCUMENT_DATE_UNKNOWN_BEFORE", 1212271200); // 1. Juni 2008
 ini_set("memory_limit", "256M");
 
 define("SEED_KEY", "RANDOMKEY");
-define("MANDRILL_API_KEY", "");
+define("MAILGUN_DOMAIN", "");
+define("MAILGUN_API_KEY", "");
+define("NO_ERROR_MAIL", true);
+
 
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");

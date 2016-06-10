@@ -35,6 +35,7 @@ ini_set("memory_limit", "256M");
 define("SEED_KEY", "RANDOMKEY");
 define("MAILGUN_DOMAIN", "");
 define("MAILGUN_API_KEY", "");
+define("NO_ERROR_MAIL", false);
 
 mb_internal_encoding("UTF-8");
 mb_regex_encoding("UTF-8");

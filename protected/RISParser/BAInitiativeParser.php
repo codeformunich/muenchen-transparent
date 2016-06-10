@@ -11,7 +11,7 @@ class BAInitiativeParser extends RISParser
 
         if (SITE_CALL_MODE != "cron") echo "- Initiative $antrag_id\n";
 	if ($antrag_id == 0) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Initiative-ID 0\n" . print_r(debug_backtrace(), true), null, "system");
+                RISTools::report_ris_parser_error("Fehler BAInitiativeParser", "Initiative-ID 0\n" . print_r(debug_backtrace(), true));
                 return;
         }
 
@@ -49,7 +49,7 @@ class BAInitiativeParser extends RISParser
         }
 
         if (!$betreff_gefunden) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAInitiativeParser", "Kein Betreff\n" . $html_details, null, "system");
+            RISTools::report_ris_parser_error("Fehler BAInitiativeParser", "Kein Betreff\n" . $html_details);
             throw new Exception("Betreff nicht gefunden");
         }
 
@@ -177,7 +177,7 @@ class BAInitiativeParser extends RISParser
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ba_initiativen_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-        if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Initiativen VOLL", "Erste Seite voll: $seite", null, "system");
+        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("BA-Initiativen VOLL", "Erste Seite voll: $seite");
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);

@@ -281,7 +281,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         $history->setAttributes($this->getAttributes(), false);
         try {
             if (!$history->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Antrag:moveToHistory Error", print_r($history->getErrors(), true));
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
@@ -339,7 +339,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $ap->person_id = $person->id;
             $ap->typ       = AntragPerson::$TYP_GESTELLT_VON;
             if (!$ap->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
                 throw new Exception("Fehler");
             }
         }
@@ -353,7 +353,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $ap->person_id = $person->id;
             $ap->typ       = AntragPerson::$TYP_INITIATORIN;
             if (!$ap->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
                 throw new Exception("Fehler");
             }
         }
