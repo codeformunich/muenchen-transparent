@@ -198,8 +198,8 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
             if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
-            else return "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html";
-        } else return "https://www.ris-muenchen.de" . $this->url;
+            else return RATHAUSUMSCHAU_WEBSITE;
+        } else return RIS_URL_PREFIX . $this->url;
     }
 
     /** @return string */
@@ -279,7 +279,7 @@ class Dokument extends CActiveRecord implements IRISItem
         } elseif ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
             RISTools::download_file("http://www.muenchen.de" . $this->url, $filename);
         } else {
-            RISTools::download_file("https://www.ris-muenchen.de" . $this->url, $filename);
+            RISTools::download_file(RIS_URL_PREFIX . $this->url, $filename);
         }
     }
 
@@ -441,7 +441,7 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getOriginalLink()
     {
-        return "https://www.ris-muenchen.de" . $this->url;
+        return RIS_URL_PREFIX . $this->url;
     }
 
     /**

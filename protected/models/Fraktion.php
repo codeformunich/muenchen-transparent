@@ -83,7 +83,7 @@ class Fraktion extends CActiveRecord implements IRISItem
     {
         if ($this->id < 0) return "#";
         $strs = $this->stadtraetInnenFraktionen;
-        return "https://www.ris-muenchen.de/RII/RII/ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
+        return RIS_BASE_URL . "ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
     }
 
     /** @return string */

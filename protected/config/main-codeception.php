@@ -22,6 +22,11 @@ define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
 
+// Konstanten, die das RIS betreffen
+define("RIS_URL_PREFIX", "https://www.ris-muenchen.de");
+define("RIS_BASE_URL", RIS_URL_PREFIX . "/RII/RII/");
+define("RIS_BA_BASE_URL",  RIS_URL_PREFIX . "/RII/BA-RII/");
+define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");
 
 define("SITE_BASE_URL", "http://localhost:8080");
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");

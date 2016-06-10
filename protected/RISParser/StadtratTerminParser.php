@@ -195,7 +195,7 @@ class StadtratTerminParser extends RISParser
                 preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
                 if (isset($matches3["beschluss"]) && count($matches3["beschluss"]) > 0) $beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
                 else {
-                    RISTools::send_email(Yii::app()->params["adminEmail"], "StadtratTermin Kein Beschluss", "Termin: $termin_id\n" . "https://www.ris-muenchen.de/RII/RII/ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id\n" . $html_vorlage_ergebnis);
+                    RISTools::send_email(Yii::app()->params["adminEmail"], "StadtratTermin Kein Beschluss", "Termin: $termin_id\n" . RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id\n" . $html_vorlage_ergebnis);
                     $beschluss = "";
                 }
                 $top->beschluss_text = $beschluss;

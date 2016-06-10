@@ -411,25 +411,20 @@ class RISTools
     {
         switch ($typ) {
             case "ba_antrag":
-                return "https://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
-                break;
+                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
             case "ba_initiative":
-                return "https://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
-                break;
+                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $id;
             case "ba_termin":
-                return "https://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
-                break;
+                return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $id;
             case "stadtrat_antrag":
-                return "https://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $id;
-                break;
+                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $id;
             case "stadtrat_vorlage":
-                return "https://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $id;
-                break;
+                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $id;
             case "stadtrat_termin":
-                return "https://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $id;
-                break;
+                return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $id;
+            default:
+                return "Unbekannt";
         }
-        return "Unbekannt";
     }
 
     /**

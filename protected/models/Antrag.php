@@ -375,13 +375,13 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     {
         switch ($this->typ) {
             case Antrag::$TYP_BA_ANTRAG:
-                return "https://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
+                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
             case Antrag::$TYP_BA_INITIATIVE:
-                return "https://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $this->id;
+                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $this->id;
             case Antrag::$TYP_STADTRAT_ANTRAG:
-                return "https://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $this->id;
+                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $this->id;
             case Antrag::$TYP_STADTRAT_VORLAGE:
-                return "https://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $this->id;
+                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $this->id;
         }
         return "";
     }

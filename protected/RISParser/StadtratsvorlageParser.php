@@ -247,7 +247,7 @@ class StadtratsvorlageParser extends RISParser
             $data = $sql->queryAll();
             if (count($data) == 0) {
                 $daten->addAntrag($antrag);
-                $aenderungen .= "Neuer Antrag zugeordnet: https://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=$link\n";
+                $aenderungen .= "Neuer Antrag zugeordnet: RIS_BASE_URL . "ris_antrag_detail.jsp?risid=$link\n";
             }
         }
 

@@ -77,7 +77,7 @@ class Rathausumschau extends CActiveRecord implements IRISItem
         if (count($this->dokumente) > 0) {
             return $this->dokumente[0]->getLink();
         } else {
-            return "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html";
+            return RATHAUSUMSCHAU_WEBSITE;
         }
     }
 
