@@ -126,7 +126,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         if ($history->sitzungsort == "") $history->sitzungsort = "?";
         try {
             if (!$history->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Termin:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Termin:moveToHistory Error", print_r($history->getErrors(), true));
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
@@ -180,8 +180,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getSourceLink()
     {
-        if ($this->ba_nr > 0) return "https://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
-        else return "https://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
+        if ($this->ba_nr > 0) return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $this->id;
+        else return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $this->id;
     }
 
 

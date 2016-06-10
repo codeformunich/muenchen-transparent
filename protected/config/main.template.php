@@ -25,9 +25,11 @@ define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", "/tmp/email.log");
 
+// Konstanten, die das RIS betreffen
 define("RIS_URL_PREFIX", "https://www.ris-muenchen.de");
 define("RIS_BASE_URL", RIS_URL_PREFIX . "/RII/RII/");
 define("RIS_BA_BASE_URL",  RIS_URL_PREFIX . "/RII/BA-RII/");
+define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");
 define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 
 define("DOCUMENT_DATE_ACCURATE_SINCE", 1388530800); // 1. Januar 2014
@@ -38,6 +40,7 @@ define("OPARL_10_ITEMS_PER_PAGE", 100);
 define("SEED_KEY", "RANDOMKEY");
 define("MAILGUN_DOMAIN", "");
 define("MAILGUN_API_KEY", "");
+define("NO_ERROR_MAIL", false);
 
 ini_set("memory_limit", "256M");
 mb_internal_encoding("UTF-8");

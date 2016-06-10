@@ -202,7 +202,6 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
         } catch (Exception $e) {
             $str .= $e;
         }
-        //RISTools::send_email(Yii::app()->params['adminEmail'], "Vorgang:vorgangMerge Error", $str, null, "system");
     }
 
     /**

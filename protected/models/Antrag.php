@@ -281,7 +281,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         $history->setAttributes($this->getAttributes(), false);
         try {
             if (!$history->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Antrag:moveToHistory Error", print_r($history->getErrors(), true));
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
@@ -339,7 +339,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $ap->person_id = $person->id;
             $ap->typ       = AntragPerson::$TYP_GESTELLT_VON;
             if (!$ap->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
                 throw new Exception("Fehler");
             }
         }
@@ -353,7 +353,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $ap->person_id = $person->id;
             $ap->typ       = AntragPerson::$TYP_INITIATORIN;
             if (!$ap->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Antrag:resetPersonen Error", print_r($ap->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
                 throw new Exception("Fehler");
             }
         }
@@ -375,13 +375,13 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     {
         switch ($this->typ) {
             case Antrag::$TYP_BA_ANTRAG:
-                return "https://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
+                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
             case Antrag::$TYP_BA_INITIATIVE:
-                return "https://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $this->id;
+                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $this->id;
             case Antrag::$TYP_STADTRAT_ANTRAG:
-                return "https://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $this->id;
+                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $this->id;
             case Antrag::$TYP_STADTRAT_VORLAGE:
-                return "https://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $this->id;
+                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $this->id;
         }
         return "";
     }

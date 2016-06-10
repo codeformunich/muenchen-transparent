@@ -220,7 +220,7 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
             if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
-            else return "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html";
+            else return RATHAUSUMSCHAU_WEBSITE;
         } else return RIS_URL_PREFIX . $this->url;
     }
 
@@ -306,7 +306,7 @@ class Dokument extends CActiveRecord implements IRISItem
         } elseif ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
             RISTools::download_file("http://www.muenchen.de" . $this->url, $filename);
         } else {
-            RISTools::download_file("https://www.ris-muenchen.de" . $this->url, $filename);
+            RISTools::download_file(RIS_URL_PREFIX . $this->url, $filename);
         }
     }
 
@@ -376,7 +376,7 @@ class Dokument extends CActiveRecord implements IRISItem
                 $antragort->datum             = date("Y-m-d H:i:s");
                 try {
                     if (!$antragort->save()) {
-                        RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true), null, "system");
+                        RISTools::report_ris_parser_error("Dokument:geo_extract Error", print_r($antragort->getErrors(), true));
                         throw new Exception("Fehler beim Speichern: geo_extract");
                     }
                 } catch (Exception $e) {
@@ -450,7 +450,7 @@ class Dokument extends CActiveRecord implements IRISItem
         }
 
         if (!$dokument->save()) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true), null, "system");
+            RISTools::report_ris_parser_error("Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
             throw new Exception("Fehler");
         }
 
@@ -744,7 +744,7 @@ class Dokument extends CActiveRecord implements IRISItem
             $tries--;
             sleep(15);
         }
-        RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes(), true), null, "system");
+        RISTools::report_ris_parser_error("Failed Indexing", print_r($this->getAttributes(), true));
     }
 
     /**
