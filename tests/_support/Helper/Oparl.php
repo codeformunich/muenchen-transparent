@@ -15,13 +15,25 @@ class Oparl extends \Codeception\Module
     private $tree;
 
     // really prrivate
+    /** The path to the file with the expected response */
     private $filepath;
+    /** Flag to notify the user about `--env updatejson` in the right situation */
+    private $notify_about_updatejson;
+    /** Stores all URLs that have already gotten the basic checks to avoid redundant work */
     private $checked_urls = [];
 
+    /**
+     * Returns the response as pretty pretty-printed json including decoded umlauts
+     *
+     * @return string
+     */
     public function getPrettyResponse() {
         return $this->prettyResponse;
     }
 
+    /*
+     *
+     */
     public function getUglyResponse() {
         return $this->uglyResponse;
     }
@@ -63,6 +75,7 @@ class Oparl extends \Codeception\Module
      * When run with the `updatejson` environment all expected reponses that do not match the actual response overwritten
      */
     public function seeOParlFile() {
+        $this->notify_about_updatejson = true;
         // Check if an expected result exists
         if (!file_exists($this->filepath)) {
             if ($this->config['updatejson'] === true) {
@@ -71,13 +84,14 @@ class Oparl extends \Codeception\Module
                     mkdir(dirname($this->filepath), 0777, true);
                 file_put_contents($this->filepath, $this->prettyResponse);
             } else {
-                $this->fail('File with expected json missing in validateResponse(): ' . $this->filepath);
+                $this->fail('The file with expected json missing in validateResponse(): ' . $this->filepath);
             }
         }
 
         // Finally, check if the response matches
         $expected = file_get_contents($this->filepath);
         if ($this->config['updatejson'] !== true) {
+            
             $this->assertEquals($expected, $this->prettyResponse);
         } else {
             if ($this->prettyResponse != $expected) {
@@ -85,6 +99,7 @@ class Oparl extends \Codeception\Module
                 file_put_contents($this->filepath, $this->prettyResponse);
             }
         }
+        $this->notify_about_updatejson = false;
     }
 
     /**
@@ -102,11 +117,10 @@ class Oparl extends \Codeception\Module
      * Prints some usefull debug information about a failed test
      */
     public function _failed(\Codeception\TestCase $test, $fail) {
-        /*if (!$this->getModule('PhpBrowser')->client->getHistory()->isEmpty())
-            $this->writeln($this->getModule('PhpBrowser')->client->getHistory()->current()->getUri());
-        else
-            $this->writeln('The page history is empty.');*/
-
         $this->writeln($this->prettyResponse);
+        if ($this->notify_about_updatejson) {
+            $this->writeln("The file with expected json is missing or differs from the real output.");
+            $this->writeln("Run codeception with `--env updatejson` to fix this.");
+        }
     }
 }

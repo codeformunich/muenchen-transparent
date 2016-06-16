@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Kapselt die Funktionen zum Erzeugen einzelner OParl-Objekte
+ * Enthält die Funktionen zum Erzeugen alle OParl-Objekte. Der Zugriff auf die Objekte wird durch die get()-Methode
+ * abstrahiert.
  */
 class OParl10Object {
     const TYPE_AGENDAITEM      = 'https://oparl.org/schema/1.0/AgendaItem';
@@ -18,7 +19,7 @@ class OParl10Object {
     const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
 
     /**
-     * Gibt ein beliebiges Objekt als OParl-Objekt im Form eines arrays zurück
+     * Gibt ein beliebiges OParl-Objekt im Form eines arrays zurück
      */
     public static function get($type, $id, $subtype = null) {
         if      ($type == 'body'           ) return self::body($id);
@@ -69,6 +70,7 @@ class OParl10Object {
         if ($dokument->antrag)
             $data['paper'] = [OParl10Controller::getOparlObjectUrl('paper', $dokument->antrag->id)];
 
+        // TODO
         /*
         if ($dokument->tagesordnungspunkt)
             $data['agendaItem'] = [OParl10Controller::getOparlObjectUrl('agendaItem', $dokument->tagesordnungspunkt->id)];
@@ -212,7 +214,7 @@ class OParl10Object {
             return ['error' => 'No such subtype ' . $subtype . ' for organization'];
         }
 
-        $data =  [
+        $data = [
             'id'             => OParl10Controller::getOparlObjectUrl('organization', $object->id, $subtype),
             'type'           => self::TYPE_ORGANIZATION,
             'body'           => OParl10Controller::getOparlObjectUrl('body', $object->getBaNr()),

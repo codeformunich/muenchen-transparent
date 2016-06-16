@@ -5,6 +5,9 @@
 [![Code Climate](https://codeclimate.com/github/codeformunich/Muenchen-Transparent/badges/gpa.svg)](https://codeclimate.com/github/codeformunich/Muenchen-Transparent)
 [![Dependencies](https://gemnasium.com/codeformunich/Muenchen-Transparent.svg)](https://gemnasium.com/codeformunich/Muenchen-Transparent)
 
+
+München Transparent ist ein alternatives Ratsinformationssystem (RIS) für München.
+
 ## Setup
 
 Vorausgesetzt werden nginx mit PHP und MySQL/MariaDB sowie npm und composer.
@@ -60,6 +63,12 @@ cat docs/schema.sql docs/sql/1.sql docs/sql/2_vorgaenge.sql docs/sql/3_antraege.
 * `docs/solr_config/collections1` kommt in den Ordner `solr/example/solr/`
 * solr kann dann mit `solr/bin/solr start -p 8983` gestartet werden.
 
+## OParl
+
+Zum Zugriff auf die Daten gibt es eine [OParl](https://oparl.org)-Schnittstelle. Damit die API funktioniert, muss
+`OPARL_10_ROOT` in `main.php` auf den gewünschten Wert gesetzt werden. Genauere Hinweise zur Implementierung finden
+sich in `docs/oparl.md`.
+
 ## Tests
 
 Als Testframework wird [codeception](http://codeception.com/) verwendet.
@@ -70,7 +79,7 @@ Zum lokalen Ausführen der Test muss ein 2. Server-Block in der nginx-Konfigurat
 * `$yii_bootstrap` muss auf `index_codeception.php` gesetzt werden.
 
 Die Tests können dann mit
-```
+```bash
 vendor/bin/codeception run
 ```
 ausgeführt werden.
@@ -107,7 +116,7 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 ### Eingesetzte PHP-Bibliotheken
 * [Yii Framework](http://www.yiiframework.com/)
 * [Zend Framework 2](http://framework.zend.com/)
-* [Solarium](http://www.solarium-project.org/) Zur Anbindung von Solr.
+* [Solarium](http://www.solarium-project.org/)
 * [CSS2InlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles) für die HTML-formatierten E-Mails.
 * [sabre/dav](http://sabre.io/) für die Kalender-Synchronisation
 * [Composer](https://getcomposer.org/)
@@ -118,7 +127,6 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * [Sass](http://sass-lang.com/)
 * [jQuery](http://www.jquery.com/)
 * [Leaflet](http://leafletjs.com/) (mit dem Kartenmaterial von [Skobbler](http://www.skobbler.com/))
-* [Modernizr](http://modernizr.com/)
 * [Bootstrap](http://getbootstrap.com/)
 * [Material Design for Bootstrap](http://fezvrasta.github.io/bootstrap-material-design/)
 * [Fontello](http://fontello.com/)
