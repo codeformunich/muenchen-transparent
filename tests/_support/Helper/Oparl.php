@@ -12,9 +12,9 @@ class Oparl extends \Codeception\Module
     protected $requiredFields = ['updatejson'];
 
     // exposed through getters
-    private $uglyResponse;
-    private $prettyResponse;
-    private $tree;
+    private $compressedResponse;
+    private $prettyPrintedResponse;
+    private $responseAsTree;
 
     // really private
     /** The path to the file with the expected response */
@@ -31,8 +31,8 @@ class Oparl extends \Codeception\Module
      *
      * @return string
      */
-    public function getPrettyResponse() {
-        return $this->prettyResponse;
+    public function getPrettyPrintedResponse() {
+        return $this->prettyPrintedResponse;
     }
 
     /**
@@ -40,8 +40,8 @@ class Oparl extends \Codeception\Module
      *
      * @return string
      */
-    public function getUglyResponse() {
-        return $this->uglyResponse;
+    public function getCompressedResponse() {
+        return $this->compressedResponse;
     }
 
     /**
@@ -49,8 +49,8 @@ class Oparl extends \Codeception\Module
      *
      * @return array
      */
-    public function getTree() {
-        return $this->tree;
+    public function getResponseAsTree() {
+        return $this->responseAsTree;
     }
 
     /**
@@ -97,9 +97,9 @@ class Oparl extends \Codeception\Module
         $this->checked_urls[] = $url;
 
         $this->url = $url;
-        $this->uglyResponse = stripslashes(json_encode(json_decode($this->getModule('REST')->grabResponse()), JSON_UNESCAPED_UNICODE));
-        $this->prettyResponse = stripslashes(json_encode(json_decode($this->getModule('REST')->grabResponse()), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        $this->tree = json_decode($this->getUglyResponse());
+        $this->compressedResponse = stripslashes(json_encode(json_decode($this->getModule('REST')->grabResponse()), JSON_UNESCAPED_UNICODE));
+        $this->prettyPrintedResponse = stripslashes(json_encode(json_decode($this->getModule('REST')->grabResponse()), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $this->responseAsTree = json_decode($this->getCompressedResponse());
     }
 
     /**
@@ -113,20 +113,20 @@ class Oparl extends \Codeception\Module
         if ($this->config['updatejson'] === true) {
             if (!array_key_exists($this->url, $this->expectedResults)) {
                 $this->writeln("\nCreating expected response ...");
-            } else if ($this->expectedResults[$this->url] != $this->getPrettyResponse()) {
+            } else if ($this->expectedResults[$this->url] != $this->getPrettyPrintedResponse()) {
                 $this->writeln("\nUpdating expected response ...");
             } else {
                 return;
             }
 
-            $this->expectedResults[$this->url] = $this->getPrettyResponse();
+            $this->expectedResults[$this->url] = $this->getPrettyPrintedResponse();
         }
 
         if (!array_key_exists($this->url, $this->expectedResults)) {
             $this->fail('There\'s no expected response for this url: ' . $this->url);
         }
 
-        $this->assertEquals($this->expectedResults[$this->url], $this->getPrettyResponse());
+        $this->assertEquals($this->expectedResults[$this->url], $this->getPrettyPrintedResponse());
 
         $this->notify_about_updatejson = false;
     }
@@ -146,7 +146,7 @@ class Oparl extends \Codeception\Module
      * Prints some usefull debug information about a failed test
      */
     public function _failed(\Codeception\TestCase $test, $fail) {
-        $this->writeln($this->getPrettyResponse());
+        $this->writeln($this->getPrettyPrintedResponse());
         if ($this->notify_about_updatejson) {
             $this->writeln("The file with expected json is missing or differs from the real output.");
             $this->writeln("Run codeception with `--env updatejson` to fix this.");

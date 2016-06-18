@@ -50,7 +50,6 @@ class OParl10Object {
             'id'          => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
             'type'        => self::TYPE_FILE,
             'name'        => $dokument->getName(),
-            
             'accessUrl'   => SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
             'downloadUrl' => SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
             'fileName'    => $dokument->getDateiname(),

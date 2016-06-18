@@ -47,13 +47,13 @@ class OparlTester extends \Codeception\Actor
         $oparl_url_regex = '~"(' . $base_url . '[^"]*)"~';
 
         // Check that the returned json object is either an external list or an oparl object
-        if (array_key_exists('items', $this->getTree())) {
-            $this->assertTrue(is_array($this->getTree()->items));
-        } else if (array_key_exists('id', $this->getTree()) && array_key_exists('type', $this->getTree())) {
+        if (array_key_exists('items', $this->getResponseAsTree())) {
+            $this->assertTrue(is_array($this->getResponseAsTree()->items));
+        } else if (array_key_exists('id', $this->getResponseAsTree()) && array_key_exists('type', $this->getResponseAsTree())) {
             // check that the id is correct
             $host_url = preg_replace('~^([^/]*//[^/]*).*$~', '$1', $base_url);
             $query_url = rtrim($host_url . $this->grabFromCurrentUrl(), '/');
-            $this->assertEquals($query_url, $this->getTree()->id);
+            $this->assertEquals($query_url, $this->getResponseAsTree()->id);
 
             // Check that the typ is a OParl type
             // The url either ends with /[type]/[id] or with /[type]/[subtype]/[id],
@@ -62,13 +62,13 @@ class OparlTester extends \Codeception\Actor
             // There's an exception for the system object as it is the entry object
             if ($type == "/oparl/v1.0/")
                 $type = "system";
-            $this->assertRegExp('~https:\/\/oparl.org\/schema\/1.0\/' . $type . '~i',  $this->getTree()->type);
+            $this->assertRegExp('~https:\/\/oparl.org\/schema\/1.0\/' . $type . '~i',  $this->getResponseAsTree()->type);
         } else {
             $this->fail('Returned JSON was neither an object nor an external list');
         }
 
         // Check that all other oparl objects linked to exist
-        preg_match_all($oparl_url_regex, $this->getUglyResponse(), $matches);
+        preg_match_all($oparl_url_regex, $this->getCompressedResponse(), $matches);
         foreach ($matches[1] as $url) {
             if ($this->isURLKnown($url))
                 continue;
