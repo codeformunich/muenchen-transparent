@@ -22,7 +22,7 @@ composer.phar
 /protected/config/main.php
 
 # Codeception
-tests/_output/*
+tests/_support/_generated/
 tests/_data/dump.sql
 
 # YII2_TODO
