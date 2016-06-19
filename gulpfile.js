@@ -12,7 +12,6 @@ var gulp       = require('gulp'),
     sass       = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify     = require('gulp-uglify'),
-    gutil      = require('gulp-util'),
     exec       = require('child_process').exec;
 
 // browsersync will only be used with the browsersync task

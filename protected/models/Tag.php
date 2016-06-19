@@ -47,7 +47,7 @@ class Tag extends CActiveRecord
             ['id, angelegt_benutzerIn_id, reviewed', 'numerical', 'integerOnly' => true],
             ['name', 'length', 'max' => 100],
             ['angelegt_datum', 'length', 'max' => 20],
-            ['created, modified' => 'safe'],
+            ['created, modified', 'safe'],
         ];
     }
 

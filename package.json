@@ -7,7 +7,6 @@
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
-    "gulp-util": "^3.0.7",
     "gulp-exec": "^2.1.2",
     "pa11y": "^4.0.0",
     "phantomjs-prebuilt": "^2.1.7"

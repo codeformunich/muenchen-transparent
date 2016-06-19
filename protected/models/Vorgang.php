@@ -43,7 +43,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
             ['id, typ', 'required'],
             ['id, typ', 'numerical', 'integerOnly' => true],
             ['betreff', 'length', 'max' => 200],
-            ['created, modified' => 'safe'],
+            ['created, modified', 'safe'],
         ];
     }
 
