@@ -1,5 +1,9 @@
 <?php
 
+define("SITE_BASE_URL", "https://www.muenchen-transparent.de");
+
+if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
+
 define("RIS_DATA_DIR", "/data/ris3-data/");
 define("RIS_OMNIPAGE_DIR", "/data/nuance/");
 define("PATH_IDENTIFY", "/usr/bin/identify");
@@ -9,7 +13,6 @@ define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
 define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.10.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
-define("PATH_PDFTOHTML", "/usr/bin/pdftohtml");
 
 define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");
 define("PATH_PDF_RU", RIS_DATA_DIR . "data/ru-pdf/");
@@ -27,9 +30,9 @@ define("RIS_URL_PREFIX", "https://www.ris-muenchen.de");
 define("RIS_BASE_URL", RIS_URL_PREFIX . "/RII/RII/");
 define("RIS_BA_BASE_URL",  RIS_URL_PREFIX . "/RII/BA-RII/");
 define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");
+define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 
-if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
-define("SITE_BASE_URL", "https://www.muenchen-transparent.de");
+define("OPARL_10_ITEMS_PER_PAGE", 100);
 
 define("SEED_KEY", "RANDOMKEY");
 define("MAILGUN_DOMAIN", "");
@@ -153,6 +156,7 @@ return [
             'charset'               => 'utf8mb4',
             'queryCacheID'          => 'apcCache',
             'schemaCachingDuration' => 3600,
+            'initSQLs'              => ['SET time_zone = "' . DEFAULT_TIMEZONE . '"'],
         ],
         'errorHandler' => [
             // use 'site/error' action to display errors

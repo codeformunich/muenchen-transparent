@@ -57,6 +57,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             ['antrag_id, gremium_id, sitzungstermin_id, top_ueberschrift, vorgang_id', 'numerical', 'integerOnly' => true],
             ['gremium_name', 'length', 'max' => 100],
             ['beschluss_text', 'length', 'max' => 500],
+            ['created, modified' => 'safe'],
         ];
     }
 

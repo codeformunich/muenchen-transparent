@@ -181,7 +181,6 @@ class IndexController extends RISBaseController
         ];
     }
 
-
     /**
      * @param Dokument[] $dokumente
      * @param null|RISSucheKrits $filter_krits
@@ -478,26 +477,17 @@ class IndexController extends RISBaseController
             $this->render("suche");
         }
     }
-
-
+    
     /**
      * @param int $id
      */
     public function actionDocumentProxy($id)
     {
-        /** @var Dokument $dokument */
-        $dokument = Dokument::model()->findByPk($id);
-        try {
-            $data = ris_download_string($dokument->getLink());
-
-            Header("Content-Type: application/pdf; charset=UTF-8");
-            echo $data;
-        } catch (Exception $e) {
-            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
-            fwrite($fp, $id . " - " . RIS_URL_PREFIX . $dokument->url . "\n");
-            fclose($fp);
+        $content =  Dokument::getCachedByID($id)->getDateiInhalt();
+        if ($content === null) {
             header("HTTP/1.0 404 Not Found");
-            die();
+        } else {
+            echo $content;
         }
         Yii::app()->end();
     }

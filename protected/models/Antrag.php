@@ -93,8 +93,8 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             ['referent', 'length', 'max' => 200],
             ['wahlperiode, antrag_typ, status', 'length', 'max' => 50],
             ['bearbeitung', 'length', 'max' => 100],
-            ['typ, ba_nr, gestellt_am, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe'],
-            ['typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen', 'safe', 'on' => 'insert'],
+            ['typ, ba_nr, gestellt_am, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen, created, modified', 'safe'],
+            ['typ, datum_letzte_aenderung, ba_nr, gestellt_am, gestellt_von, antrags_nr, bearbeitungsfrist, registriert_am, erledigt_am, referat, referent, wahlperiode, antrag_typ, betreff, kurzinfo, status, bearbeitung, fristverlaengerung, initiatorInnen, initiative_to_aufgenommen, created, modified', 'safe', 'on' => 'insert'],
         ];
     }
 

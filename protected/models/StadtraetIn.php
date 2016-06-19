@@ -66,6 +66,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             ['name, email', 'length', 'max' => 100],
             ['twitter', 'length', 'max' => 45],
             ['facebook, abgeordnetenwatch', 'length', 'max' => 200],
+            ['created, modified' => 'safe'],
         ];
     }
 
@@ -314,7 +315,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
                     'alias'     => 'c',
                     'condition' => $ba_where,
                 ]
-            ]]);
+            ]
+        ]);
 
         foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
 

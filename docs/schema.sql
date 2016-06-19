@@ -475,7 +475,7 @@ CREATE TABLE `stadtraetInnen_gremien` (
   KEY `fk_stadtraetIn_gremien_mitgliedschaft_gremien1_idx` (`gremium_id`),
   CONSTRAINT `fk_stadtraetIn_gremien_mitgliedschaft_gremien1` FOREIGN KEY (`gremium_id`) REFERENCES `gremien` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_stadtraetIn_gremien_mitgliedschaft_stadtraetInnen1` FOREIGN KEY (`stadtraetIn_id`) REFERENCES `stadtraetInnen` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;

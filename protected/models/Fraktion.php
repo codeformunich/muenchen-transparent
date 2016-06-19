@@ -46,6 +46,7 @@ class Fraktion extends CActiveRecord implements IRISItem
             ['id, ba_nr', 'numerical', 'integerOnly' => true],
             ['name', 'length', 'max' => 70],
             ['website', 'length', 'max' => 250],
+            ['created, modified' => 'safe'],
         ];
     }
 
@@ -116,5 +117,8 @@ class Fraktion extends CActiveRecord implements IRISItem
         return "0000-00-00 00:00:00";
     }
 
-
+    public function getBaNr()
+    {
+        return $this->ba_nr == null ? 0 : $this->ba_nr;
+    }
 }

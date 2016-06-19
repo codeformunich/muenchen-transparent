@@ -53,6 +53,7 @@ class Referat extends CActiveRecord implements IRISItem
             ['strasse, urlpart', 'length', 'max' => 45],
             ['plz', 'length', 'max' => 10],
             ['ort', 'length', 'max' => 30],
+            ['created, modified' => 'safe'],
         ];
     }
 
@@ -165,5 +166,10 @@ class Referat extends CActiveRecord implements IRISItem
         if ($limit > 0) $params['limit'] = $limit;
         $this->getDbCriteria()->mergeWith($params);
         return $this;
+    }
+
+    public function getBaNr()
+    {
+        return 0;
     }
 }

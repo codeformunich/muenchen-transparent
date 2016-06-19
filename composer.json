@@ -31,7 +31,7 @@
         "slm/mail": "~1.6",
         "sabre/dav": "2.1.*@dev",
         "sabre/vobject" : "~3.3",
-        "codeception/codeception": "~2.2.1",
+        "codeception/codeception": "~2.1.1",
         "heise/shariff": "^5.2"
     }
 }
