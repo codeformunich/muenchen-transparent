@@ -12,6 +12,7 @@ var gulp       = require('gulp'),
     sass       = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify     = require('gulp-uglify'),
+    expect     = require('gulp-expect-file'),
     exec       = require('child_process').exec;
 
 // browsersync will only be used with the browsersync task
@@ -54,7 +55,7 @@ var paths = {
     pdfjs_css: [
         "html/pdfjs/web/viewer.css",
     ],
-}
+};
 
 gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'pdfjs']);
 
@@ -78,6 +79,7 @@ gulp.task('browsersync', ['watch'], function() {
 
 gulp.task('std.js', function () {
     return gulp.src(paths.std_js)
+        .pipe(expect(paths.std_js))
         .pipe(concat('std.js'))
         .pipe(gulpif(use_uglify, uglify()))
         .pipe(gulp.dest('html/js/build/'));
@@ -85,6 +87,7 @@ gulp.task('std.js', function () {
 
 gulp.task('leaflet.js', ['ba-grenzen-geojson'], function () {
     return gulp.src(paths.leaflet_js)
+        .pipe(expect(paths.leaflet_js))
         .pipe(concat('leaflet.js'))
         .pipe(gulpif(use_uglify, uglify()))
         .pipe(gulp.dest('html/js/build/'));
@@ -92,6 +95,7 @@ gulp.task('leaflet.js', ['ba-grenzen-geojson'], function () {
 
 gulp.task('sass', function () {
     return gulp.src(paths.source_styles)
+        .pipe(expect(paths.source_styles))
         .pipe(sourcemaps.init())
         .pipe(sass({
             outputStyle: 'compressed'
@@ -109,6 +113,7 @@ gulp.task('pdfjs', ['pdfjs.js', 'pdfjs.css'])
 
 gulp.task('pdfjs.js', function () {
     return gulp.src(paths.pdfjs_js)
+        .pipe(expect(paths.pdfjs_js))
         .pipe(concat('build.js'))
         .pipe(gulpif(use_uglify, uglify()))
         .pipe(gulp.dest('html/pdfjs/web/'));
@@ -116,6 +121,7 @@ gulp.task('pdfjs.js', function () {
 
 gulp.task('pdfjs.css', function () {
     return gulp.src(paths.pdfjs_css)
+        .pipe(expect(paths.pdfjs_css))
         .pipe(concat('build.css'))
         .pipe(sourcemaps.init())
         .pipe(sass({

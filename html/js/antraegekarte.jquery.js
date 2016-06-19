@@ -37,7 +37,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
         var geojsonFeature = null,
             min_zoom = 10;
         if ($widget.element.width() > 600) min_zoom = 11;
-        
+
         if ($widget.options["outlineBA"] > 0) {
             var min_lon = null, min_lat = null, max_lon = null, max_lat = null;
             for (var i = 0; i < window["BA_GRENZEN_GEOJSON"][$widget.options["outlineBA"] - 1]["geometry"]["coordinates"][0].length; i++) {
@@ -80,7 +80,6 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             [48.4, 11.0],
             [47.9, 11.93]
         ]);
-        
 
         L.Control.geocoder({
             placeholder: "Suche nach Adresse...",
@@ -97,7 +96,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
                 outsideMapBoundsMsg: "Du scheinst außerhalb dieser Karte zu sein"
             }
         }).addTo($widget.map);
-        
+
         L.tileLayer('https://www.muenchen-transparent.de/tiles/' + (L.Browser.retina ? "512" : "256") + '/{z}/{x}/{y}.png', {
             "attribution": attrib,
             "maxZoom": 18,

@@ -74,7 +74,7 @@
         <link rel="preload" type="application/l10n" href="/pdfjs/web/locale/locale.properties"/>
         <script src="/pdfjs/web/build.js" defer></script>
     <? }
-    
+
     if ($this->load_leaflet) { ?>
         <script src="/js/build/leaflet.js"></script>
     <? } ?>
