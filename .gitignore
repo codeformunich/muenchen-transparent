@@ -23,7 +23,6 @@ composer.phar
 
 # Codeception
 tests/_support/_generated/
-tests/_data/dump.sql
 
 # YII2_TODO
 /config/web.php
