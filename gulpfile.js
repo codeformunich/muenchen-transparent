@@ -38,9 +38,8 @@ var paths = {
     leaflet_js: [
         "html/js/build/ba-grenzen-geojson.js",
         "html/bower/leaflet/dist/leaflet.js",
-        "html/bower/Leaflet.draw/dist/leaflet.draw.js",
+        "html/bower/leaflet.draw/dist/leaflet.draw.js",
         "html/bower/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
-        "html/js/Leaflet.Fullscreen/Control.FullScreen.js",
         "html/js/Leaflet.Control.Geocoder/Control.Geocoder.js",
         "html/js/leaflet.spiderfy.js",
         "html/js/leaflet.textmarkers.js",
