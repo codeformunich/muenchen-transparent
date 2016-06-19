@@ -79,6 +79,28 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
     /**
+     * 
+     */
+    public function getDateiInhalt()
+    {
+        try {
+            // TODO content type direkt von curl erfragen
+            if (substr($this->url, -strlen('.pdf')) === '.pdf') {
+                Header('Content-Type: application/pdf');
+            } else if (substr($this->url, -strlen('.tiff')) === '.tiff') {
+                Header('Content-Type: image/tiff');
+            }
+
+            return ris_download_string($this->getLink());
+        } catch (Exception $e) {
+            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
+            fwrite($fp, $this->id . " - " . $this->getLink() . "\n");
+            fclose($fp);
+            return null;
+        }
+    }
+
+    /**
      * @return string the associated database table name
      */
     public function tableName()
@@ -99,7 +121,7 @@ class Dokument extends CActiveRecord implements IRISItem
             ['typ', 'length', 'max' => 25],
             ['url', 'length', 'max' => 500],
             ['name, name_title', 'length', 'max' => 300],
-            ['text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight, name, name_title', 'safe'],
+            ['text_ocr_raw, text_ocr_corrected, text_ocr_garbage_seiten, text_pdf, ocr_von, highlight, name, name_title, created, modified', 'safe'],
         ];
     }
 
@@ -198,8 +220,8 @@ class Dokument extends CActiveRecord implements IRISItem
     {
         if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
             if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
-            else return "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html";
-        } else return "https://www.ris-muenchen.de" . $this->url;
+            else return RATHAUSUMSCHAU_WEBSITE;
+        } else return RIS_URL_PREFIX . $this->url;
     }
 
     /** @return string */
@@ -240,6 +262,11 @@ class Dokument extends CActiveRecord implements IRISItem
         return $name;
     }
 
+    public function getDateiname()
+    {
+        return $this->id . ' - ' . CHtml::encode($this->getName()) . '.pdf';
+    }
+
     /**
      * @return string
      */
@@ -256,15 +283,15 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getDisplayDate($fallback = "")
     {
-        if ($fallback == "") $fallback = "Vor 2008";
-
         $ts = RISTools::date_iso2timestamp($this->datum);
         if ($ts > DOCUMENT_DATE_ACCURATE_SINCE) return date("d.m.Y", $ts);
 
         $ts = RISTools::date_iso2timestamp($this->datum_dokument);
         if ($ts > DOCUMENT_DATE_UNKNOWN_BEFORE) return date("d.m.Y", $ts);
 
-        return $fallback;
+        if ($fallback != "") return $fallback;
+
+        return "Vor 2008";
     }
 
     /**
@@ -279,7 +306,7 @@ class Dokument extends CActiveRecord implements IRISItem
         } elseif ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
             RISTools::download_file("http://www.muenchen.de" . $this->url, $filename);
         } else {
-            RISTools::download_file("https://www.ris-muenchen.de" . $this->url, $filename);
+            RISTools::download_file(RIS_URL_PREFIX . $this->url, $filename);
         }
     }
 
@@ -349,7 +376,7 @@ class Dokument extends CActiveRecord implements IRISItem
                 $antragort->datum             = date("Y-m-d H:i:s");
                 try {
                     if (!$antragort->save()) {
-                        RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:geo_extract Error", print_r($antragort->getErrors(), true), null, "system");
+                        RISTools::report_ris_parser_error("Dokument:geo_extract Error", print_r($antragort->getErrors(), true));
                         throw new Exception("Fehler beim Speichern: geo_extract");
                     }
                 } catch (Exception $e) {
@@ -423,7 +450,7 @@ class Dokument extends CActiveRecord implements IRISItem
         }
 
         if (!$dokument->save()) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true), null, "system");
+            RISTools::report_ris_parser_error("Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
             throw new Exception("Fehler");
         }
 
@@ -441,7 +468,7 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getOriginalLink()
     {
-        return "https://www.ris-muenchen.de" . $this->url;
+        return RIS_URL_PREFIX . $this->url;
     }
 
     /**
@@ -459,7 +486,6 @@ class Dokument extends CActiveRecord implements IRISItem
         }
     }
 
-
     /**
      * @return string
      */
@@ -468,6 +494,13 @@ class Dokument extends CActiveRecord implements IRISItem
         return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
     }
 
+    /**
+     * @return string
+     */
+    public function getLinkZurDatei()
+    {
+        return Yii::app()->createUrl("index/dokumentenproxy", ["id" => $this->id]);
+    }
 
     private static $dokumente_cache = [];
 
@@ -496,11 +529,6 @@ class Dokument extends CActiveRecord implements IRISItem
         if (in_array($this->typ, [static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN])) return $this->termin;
         if (in_array($this->typ, [static::$TYP_RATHAUSUMSCHAU])) return $this->rathausumschau;
         return $this->antrag;
-    }
-
-    public function getDokumente()
-    {
-        return $this->dokumente;
     }
 
     /**
@@ -716,7 +744,7 @@ class Dokument extends CActiveRecord implements IRISItem
             $tries--;
             sleep(15);
         }
-        RISTools::send_email(Yii::app()->params['adminEmail'], "Failed Indexing", print_r($this->getAttributes(), true), null, "system");
+        RISTools::report_ris_parser_error("Failed Indexing", print_r($this->getAttributes(), true));
     }
 
     /**

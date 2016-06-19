@@ -236,5 +236,4 @@ class Bezirksausschuss extends CActiveRecord
         return $statistiken;
 
     }
-
 }

@@ -42,7 +42,7 @@ class StadtraetInReferat extends CActiveRecord
             ['stadtraetIn_id, referat_id', 'required'],
             ['stadtraetIn_id, referat_id, id', 'numerical', 'integerOnly' => true],
             ['datum_von, datum_bis', 'length', 'max' => 10],
-            ['datum_von, datum_bis', 'safe'],
+            ['datum_von, datum_bis, created, modified', 'safe'],
         ];
     }
 
@@ -71,5 +71,10 @@ class StadtraetInReferat extends CActiveRecord
             'datum_von'      => 'Von',
             'datum_bis'      => 'Bis',
         ];
+    }
+
+    public function getFunktion()
+    {
+        return 'Referent';
     }
 }

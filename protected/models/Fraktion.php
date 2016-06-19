@@ -46,6 +46,7 @@ class Fraktion extends CActiveRecord implements IRISItem
             ['id, ba_nr', 'numerical', 'integerOnly' => true],
             ['name', 'length', 'max' => 70],
             ['website', 'length', 'max' => 250],
+            ['created, modified' => 'safe'],
         ];
     }
 
@@ -83,7 +84,7 @@ class Fraktion extends CActiveRecord implements IRISItem
     {
         if ($this->id < 0) return "#";
         $strs = $this->stadtraetInnenFraktionen;
-        return "https://www.ris-muenchen.de/RII/RII/ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
+        return RIS_BASE_URL . "ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
     }
 
     /** @return string */
@@ -116,5 +117,8 @@ class Fraktion extends CActiveRecord implements IRISItem
         return "0000-00-00 00:00:00";
     }
 
-
+    public function getBaNr()
+    {
+        return $this->ba_nr == null ? 0 : $this->ba_nr;
+    }
 }

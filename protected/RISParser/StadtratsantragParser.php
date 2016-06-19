@@ -15,7 +15,7 @@ class StadtratsantragParser extends RISParser
 
         $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $antrag_id);
         $html_dokumente = RISTools::load_file(RIS_BASE_URL . "ris_antrag_dokumente.jsp?risid=" . $antrag_id);
-        //$html_ergebnisse = load_file("https://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
+        //$html_ergebnisse = load_file(RIS_BASE_URL . "ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         if (trim($html_details) == "" || trim($html_dokumente) == "") return;
 
@@ -34,7 +34,7 @@ class StadtratsantragParser extends RISParser
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
         if (!isset($dat_details[1])) {
-            echo $antrag_id . " - " . "https://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
+            echo $antrag_id . " - " . RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
             var_dump($dat_details);
             return;
         }
@@ -59,7 +59,7 @@ class StadtratsantragParser extends RISParser
         }
 
         if (!$betreff_gefunden) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler StadtratsantragParser", "Kein Betreff\n" . $html_details, null, "system");
+            RISTools::report_ris_parser_error("Fehler StadtratsantragParser", "Kein Betreff\n" . $html_details);
             throw new Exception("Betreff nicht gefunden");
         }
 
@@ -112,7 +112,7 @@ class StadtratsantragParser extends RISParser
         $dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
         $dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
         preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-        https://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
+        RIS_BASE_URL . "ris_antrag_ergebnisse.jsp?risid=6127
         */
 
         $aenderungen = "";
@@ -146,13 +146,13 @@ class StadtratsantragParser extends RISParser
                 $alter_eintrag->copyToHistory();
                 $alter_eintrag->setAttributes($daten->getAttributes(), false);
                 if (!$alter_eintrag->save()) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details);
                     throw new \Exception("StadtratAntrag 1");
                 }
                 $daten = $alter_eintrag;
             } else {
                 if (!$daten->save()) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag Fehler 2", "Antrag $antrag_id\n" . print_r($daten->getErrors(), true) . "\n\n" . $html_details, null, "system");
+                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 2", "Antrag $antrag_id\n" . print_r($daten->getErrors(), true) . "\n\n" . $html_details);
                     throw new \Exception("StadtratAntrag 2");
                 }
             }
@@ -193,7 +193,7 @@ class StadtratsantragParser extends RISParser
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ris_antrag_detail.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-        if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "Stadtratsantrag VOLL", "Erste Seite voll: $seite", null, "system");
+        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("Stadtratsantrag VOLL", "Erste Seite voll: $seite");
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);

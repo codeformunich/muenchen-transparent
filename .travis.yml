@@ -35,7 +35,6 @@ install:
   - phpenv config-rm xdebug.ini # Speeds up build
   - phpenv config-add docs/travis/custom.php.ini
   - ln -s `pwd` /tmp/muenchen-transparent
-  - java -version
 
   # Set up mysql
   - mysql -e 'create database ristest;'

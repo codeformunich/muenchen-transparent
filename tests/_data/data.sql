@@ -6,13 +6,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `antraege` DISABLE KEYS */;
-INSERT INTO `antraege` VALUES (1,NULL,'stadtrat_antrag','2016-04-30 20:01:04',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag ohne Vorgang','','','',NULL,'',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `antraege` VALUES (2,1,'stadtrat_antrag','2016-04-30 20:01:08',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit verwandten Seiten','','','',NULL,'',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `antraege` VALUES (3,1,'stadtrat_antrag','2016-04-30 20:01:19',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Ein verwandter Antrag','','','',NULL,'',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `antraege` VALUES (4,NULL,'stadtrat_antrag','2016-04-30 20:01:15',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit mehreren Dokumenten','','','',NULL,'',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `antraege` VALUES (5,NULL,'stadtrat_antrag','2016-04-30 20:01:12',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Ein Antrag mit einem Dokument','','','',NULL,'',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
+INSERT INTO `antraege` VALUES (1,NULL,'stadtrat_antrag','2016-05-19 12:48:42',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag ohne Vorgang','','','',NULL,'',NULL,'2016-04-30 22:00:00','2016-04-30 22:00:00');
+INSERT INTO `antraege` VALUES (2,1,'stadtrat_antrag','2016-05-19 12:49:58',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit verwandten Seiten','','','',NULL,'',NULL,'2016-05-01 22:00:00','2016-05-01 22:00:00');
+INSERT INTO `antraege` VALUES (3,1,'stadtrat_antrag','2016-05-19 12:50:01',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Ein verwandter Antrag','','','',NULL,'',NULL,'2016-05-02 22:00:00','2016-05-02 22:00:00');
+INSERT INTO `antraege` VALUES (4,NULL,'stadtrat_antrag','2016-05-19 12:50:04',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit mehreren Dokumenten','','','',NULL,'',NULL,'2016-05-03 22:00:00','2016-05-03 22:00:00');
+INSERT INTO `antraege` VALUES (5,NULL,'stadtrat_antrag','2016-05-19 12:51:54',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Ein Antrag mit einem Dokument','','','',NULL,'',NULL,'2016-05-04 22:00:00','2016-05-04 22:00:00');
 INSERT INTO `antraege` VALUES (6,NULL,'stadtrat_antrag','2016-04-30 20:01:10',NULL,NULL,'',NULL,'',NULL,NULL,'','',1,'','','Antrag mit Dokument mit vielen Eigenschaften','','','',NULL,'',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `antraege` VALUES (7,NULL,'stadtrat_antrag','2016-04-30 20:12:37',NULL,'2015-01-01','Antragssteller','1999-04-01','','2026-01-01','2015-01-15','Referat für einen Antrag mit vielen Antraegen','Referent für einen Antrag mit vielen Antraegen',1,'1','Antrag','betreff','kurzinfo','status','lange','2036-01-01','StrIn. Dr. A. B. C.','2016-04-01','2016-05-02 17:53:08','2016-05-02 17:53:08');
+INSERT INTO `antraege` VALUES (7,NULL,'stadtrat_antrag','2016-05-17 20:57:54',NULL,'2015-01-01','Antragssteller','1999-04-01','','2026-01-01','2015-01-15','Referat für einen Antrag mit vielen Antraegen','Referent für einen Antrag mit vielen Antraegen',1,'1','Antrag','betreff','kurzinfo','status','lange','2038-01-19','StrIn. Dr. A. B. C.','2016-04-01','2016-05-02 17:53:08','2016-05-17 20:57:54');
 INSERT INTO `antraege` VALUES (8,NULL,'ba_antrag','2016-04-30 20:14:03',1,NULL,'',NULL,'',NULL,NULL,'','',1,'','','','','','',NULL,'',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
 /*!40000 ALTER TABLE `antraege` ENABLE KEYS */;
 
@@ -29,6 +29,7 @@ INSERT INTO `antraege` VALUES (8,NULL,'ba_antrag','2016-04-30 20:14:03',1,NULL,'
 /*!40000 ALTER TABLE `antraege_stadtraetInnen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `antraege_tags` DISABLE KEYS */;
+INSERT INTO `antraege_tags` VALUES (7,1,'2016-05-23 19:11:08',NULL);
 /*!40000 ALTER TABLE `antraege_tags` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `antraege_vorlagen` DISABLE KEYS */;
@@ -42,7 +43,7 @@ INSERT INTO `benutzerInnen` VALUES (47,'user@example.com',0,'2016-01-17 18:12:13
 /*!40000 ALTER TABLE `benutzerInnen_vorgaenge_abos` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `bezirksausschuesse` DISABLE KEYS */;
-INSERT INTO `bezirksausschuesse` VALUES (1,0,'BA mit Ausschuss mit Termin',NULL,NULL,NULL);
+INSERT INTO `bezirksausschuesse` VALUES (1,0,'BA mit Ausschuss mit Termin','http://www.ba1.muenchen.de',13,'[[11.575738191604614,48.13937283176814],[11.574804782867432,48.13723923356946],[11.576242446899414,48.13688123860767],[11.577283143997192,48.13884302035666],[11.575738191604614,48.13937283176814]]\n');
 /*!40000 ALTER TABLE `bezirksausschuesse` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `bezirksausschuss_budget` DISABLE KEYS */;
@@ -56,9 +57,10 @@ INSERT INTO `dokumente` VALUES (3,'stadtrat_antrag',4,NULL,NULL,NULL,NULL,'',0,'
 INSERT INTO `dokumente` VALUES (4,'stadtrat_antrag',4,NULL,NULL,NULL,NULL,'',0,'Ein anderes Dokument von mehreren in einem Antrag','','2016-03-07 20:18:22',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
 INSERT INTO `dokumente` VALUES (5,NULL,5,NULL,NULL,NULL,NULL,'',0,'Ein Dokument von einem Antrag mit einem Dokument','','2016-03-07 20:27:52',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
 INSERT INTO `dokumente` VALUES (6,NULL,NULL,NULL,NULL,NULL,NULL,'',0,'Dokument ohne Antrag','','2016-03-07 20:32:58',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `dokumente` VALUES (7,NULL,6,4,1,2,NULL,'/RII/RII/7.pdf',0,'Dokument mit vielen Eigenschaften','Dokument viele Eigenschaften','2016-04-23 16:30:20','2016-04-21 22:00:00',NULL,NULL,NULL,NULL,10,'omnipage',NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `dokumente` VALUES (8,NULL,NULL,NULL,NULL,NULL,NULL,'/RII/RII/8.tiff',0,'Dokument (tiff) mit wenig Eigenschaften','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
-INSERT INTO `dokumente` VALUES (9,NULL,NULL,NULL,NULL,NULL,1,'http://example.org/rathausumschau/1-rathaus.pdf',0,'Rathausumschau','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-02 17:53:08');
+INSERT INTO `dokumente` VALUES (7,NULL,6,4,1,2,NULL,'/media/testdokument.pdf',0,'Dokument (pdf) mit vielen Eigenschaften','Dokument viele Eigenschaften','2016-04-23 16:30:20','2016-04-21 22:00:00',NULL,NULL,NULL,NULL,10,'omnipage',NULL,'2016-05-02 17:53:08','2016-05-08 20:57:23');
+INSERT INTO `dokumente` VALUES (8,NULL,NULL,NULL,NULL,NULL,NULL,'/media/testdokument.tiff',0,'Dokument (tiff) mit wenig Eigenschaften','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-08 20:57:28');
+INSERT INTO `dokumente` VALUES (9,NULL,NULL,NULL,NULL,NULL,1,'http://example.org/rathausumschau/1-rathaus.pdf',0,'Rathausumschau','','2016-04-23 16:30:20',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-02 17:53:08','2016-05-09 16:09:15');
+INSERT INTO `dokumente` VALUES (10,NULL,NULL,NULL,NULL,NULL,NULL,'/dev/nowhere',0,'unauffällig gelöschtes Dokument','','2016-05-09 16:08:46',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-05-09 16:08:46','2016-05-09 16:08:46');
 /*!40000 ALTER TABLE `dokumente` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `fraktionen` DISABLE KEYS */;
@@ -68,6 +70,7 @@ INSERT INTO `fraktionen` VALUES (2,'Fraktion des Stadtrat',NULL,'','2016-05-02 1
 
 /*!40000 ALTER TABLE `gremien` DISABLE KEYS */;
 INSERT INTO `gremien` VALUES (1,'2016-01-31 16:25:43',1,'Ausschuss mit Terminen','','Ausschuss','','2016-05-02 17:53:08','2016-05-02 17:53:09');
+INSERT INTO `gremien` VALUES (2,'2016-05-08 10:11:31',NULL,'Ausschuss mit Mitgliedern','','','','2016-05-08 10:11:31','2016-05-08 10:11:31');
 /*!40000 ALTER TABLE `gremien` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `gremien_history` DISABLE KEYS */;
@@ -106,6 +109,7 @@ INSERT INTO `referate` VALUES (1,'Referat für städtische Aufgaben','aufg','Mü
 INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Dr. Stadtrat, mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~','2016-05-02 17:53:09','2016-05-02 17:53:09');
 INSERT INTO `stadtraetInnen` VALUES (2,NULL,0,NULL,'',NULL,'','Stadträtin mit möglichst wenigen Eigenschaften',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-02 17:53:09','2016-05-02 17:53:09');
 INSERT INTO `stadtraetInnen` VALUES (3,NULL,1,NULL,'',NULL,'','Referent für Städtische Aufgaben',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-02 17:53:09','2016-05-02 17:53:09');
+INSERT INTO `stadtraetInnen` VALUES (4,NULL,0,NULL,'',NULL,'','Stadtrat in Gremium',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-08 10:09:27','2016-05-08 10:09:27');
 /*!40000 ALTER TABLE `stadtraetInnen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` DISABLE KEYS */;
@@ -114,6 +118,7 @@ INSERT INTO `stadtraetInnen_fraktionen` VALUES (2,1,1,'3','2004-01-01',NULL,'sei
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_gremien` DISABLE KEYS */;
+INSERT INTO `stadtraetInnen_gremien` VALUES (4,2,'2016-05-01','2016-05-02','Mitglied',1,'2016-05-08 10:10:02','2016-05-08 10:11:48');
 /*!40000 ALTER TABLE `stadtraetInnen_gremien` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `stadtraetInnen_referate` DISABLE KEYS */;
@@ -134,6 +139,7 @@ INSERT INTO `tagesordnungspunkte` VALUES (1,NULL,'2016-04-23 16:28:45',NULL,'',N
 /*!40000 ALTER TABLE `tagesordnungspunkte_history` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
+INSERT INTO `tags` VALUES (1,'Fahrradfahrer',NULL,'2016-05-23 19:10:34',1,'2016-05-23 19:10:34','2016-05-23 19:10:51');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `termine` DISABLE KEYS */;

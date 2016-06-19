@@ -50,6 +50,7 @@ class Gremium extends CActiveRecord implements IRISItem
             ['id, ba_nr', 'numerical', 'integerOnly' => true],
             ['name, gremientyp, referat', 'length', 'max' => 100],
             ['kuerzel', 'length', 'max' => 50],
+            ['created, modified' => 'safe'],
         ];
     }
 
@@ -93,7 +94,7 @@ class Gremium extends CActiveRecord implements IRISItem
         $history->setAttributes($this->getAttributes(), false);
         try {
             if (!$history->save(false)) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Gremium:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Gremium:moveToHistory Error", print_r($history->getErrors(), true));
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
@@ -144,5 +145,8 @@ class Gremium extends CActiveRecord implements IRISItem
         return $this->datum_letzte_aenderung;
     }
 
-
+    public function getBaNr()
+    {
+        return $this->ba_nr == null ? 0 : $this->ba_nr;
+    }
 }

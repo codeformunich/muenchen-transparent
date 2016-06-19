@@ -110,7 +110,7 @@ class OrtGeo extends CActiveRecord
         $ort->to_hide_kommentar = "";
         $ort->datum   = new CDbExpression('NOW()');
         if (!$ort->save()) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true), null, "system");
+            RISTools::report_ris_parser_error("OrtGeo:getOrCreate Error", print_r($ort->getErrors(), true));
             throw new Exception("Fehler beim Speichern: Geo");
         }
         return $ort;
