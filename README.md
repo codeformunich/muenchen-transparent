@@ -59,7 +59,7 @@ cat docs/schema.sql docs/beispieldaten.sql | mysql -u ris -psec muenchen_transpa
 
 ### Solr-Konfiguration
 * Solr 5.5.1 [herunterladen](https://archive.apache.org/dist/lucene/solr/5.5.1/) und in einen Ordner mit dem Namen `solr` entpacken.
-* `docs/solr_config/collections1/` nach `solr/server/solr/` kopieren.
+* `docs/solr_core/` nach `solr/server/solr/muenchen-transparent/` kopieren.
 * solr kann dann mit `solr/bin/solr start` gestartet werden.
 
 ## OParl
