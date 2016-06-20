@@ -36,7 +36,7 @@ gulp
 
 ### MariaDB/MySQL-Konfiguration
 * Eine Datenbank und einen zugehörigen Nutzer anlegen.
-* Die Datenbank-Konfiguration muss dann in protected/config/main.php eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
+* Die Datenbank-Konfiguration muss dann in `protected/config/main.php` eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
 ```php
 'db' => [
     'connectionString'      => 'mysql:host=127.0.0.1;dbname=muenchen_transparent',
@@ -50,7 +50,7 @@ gulp
 ```
 * Beispieldaten in die Datenbank importieren:
 ```bash
-cat docs/schema.sql docs/sql/1.sql docs/sql/2_vorgaenge.sql docs/sql/3_antraege.sql docs/sql/4_termine.sql docs/sql/5_dokumente.sql | mysql -u ris -psec muenchen_transparent
+cat docs/schema.sql docs/beispieldaten.sql | mysql -u ris -psec muenchen_transparent
 ```
 
 ### PHP-Konfiguration:
@@ -58,10 +58,9 @@ cat docs/schema.sql docs/sql/1.sql docs/sql/2_vorgaenge.sql docs/sql/3_antraege.
 * Das Modul für curl muss installiert sein (`php5-curl`)
 
 ### Solr-Konfiguration
-* Solr 4.10 herunterladen und in ein beliebiges Verzeichnis mit dem Namen `solr` entpacken.
-* `docs/solr_config/solr.xml` kommt in den Ordner `solr/example/solr/collection1`
-* `docs/solr_config/collections1` kommt in den Ordner `solr/example/solr/`
-* solr kann dann mit `solr/bin/solr start -p 8983` gestartet werden.
+* Solr 5.5.1 [herunterladen](https://archive.apache.org/dist/lucene/solr/5.5.1/) und in einen Ordner mit dem Namen `solr` entpacken.
+* `docs/solr_core/` nach `solr/server/solr/muenchen-transparent/` kopieren.
+* solr kann dann mit `solr/bin/solr start` gestartet werden.
 
 ## OParl
 

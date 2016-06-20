@@ -46,7 +46,7 @@ class Fraktion extends CActiveRecord implements IRISItem
             ['id, ba_nr', 'numerical', 'integerOnly' => true],
             ['name', 'length', 'max' => 70],
             ['website', 'length', 'max' => 250],
-            ['created, modified' => 'safe'],
+            ['created, modified', 'safe'],
         ];
     }
 

@@ -16,5 +16,5 @@ if [ -n "${password}" ]; then
     password="-p${password}"
 fi
 
-mysqldump -u${username} ${password} --skip-comments --single-transaction --skip-opt --disable-keys --no-create-info ${db} > tests/_data/data.sql
+mysqldump -u${username} ${password} --skip-comments --single-transaction --skip-opt --disable-keys --no-create-info --no-autocommit ${db} > tests/_data/data.sql
 mysqldump -u${username} ${password} --skip-comments --single-transaction --skip-add-drop-table  --no-data           ${db} > docs/schema.sql
