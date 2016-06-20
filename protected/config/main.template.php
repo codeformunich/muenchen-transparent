@@ -47,7 +47,7 @@ $GLOBALS["SOLR_CONFIG"] = array(
         'localhost' => array(
             'host'    => '127.0.0.1',
             'port'    => 8983,
-            'path'    => '/solr/collection1',
+            'path'    => '/solr/muenchen-transparent',
             'timeout' => 300,
         )
     )

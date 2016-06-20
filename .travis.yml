@@ -42,12 +42,10 @@ install:
   - docs/travis/mysql-5-5-schema-workaround.sh
   ## Import the testing data
   - mysql -e 'create database ristest;'
-  - mysql -utravis ristest < docs/schema.sql
-  - mysql -utravis ristest < tests/_data/data.sql
+  - cat docs/schema.sql tests/_data/data.sql | mysql -uroot ristest
   ## Import the example data
   - mysql -e 'create database muenchen_transparent;'
-  - mysql -uroot muenchen_transparent < docs/schema.sql
-  - mysql -uroot muenchen_transparent < docs/beispieldaten.sql
+  - cat docs/schema.sql docs/beispieldaten.sql | mysql -uroot muenchen_transparent
 
   # nginx
   - ln -s `pwd` /tmp/muenchen-transparent

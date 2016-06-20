@@ -19,15 +19,12 @@
 <config>
   <updateHandler class="solr.DirectUpdateHandler2" />
 
-  <luceneMatchVersion>4.10.2</luceneMatchVersion>
-  
-  <lib dir="../../contrib/clustering/lib/" regex=".*\.jar" />
-  <lib dir="../../dist/" regex="solr-clustering-\d.*\.jar" />
+  <luceneMatchVersion>5.5.1</luceneMatchVersion>
 
   <query>
     <!-- Maximum number of clauses in a boolean query... in the past, this affected
-        range or prefix queries that expanded to big boolean queries - built in Solr 
-        query parsers no longer create queries with this limitation. 
+        range or prefix queries that expanded to big boolean queries - built in Solr
+        query parsers no longer create queries with this limitation.
         An exception is thrown if exceeded.  -->
     <maxBooleanClauses>100000</maxBooleanClauses>
 
@@ -53,10 +50,10 @@
            and old cache.
          -->
     <filterCache
-      class="solr.FastLRUCache"
-      size="512"
-      initialSize="512"
-      autowarmCount="0"/>
+            class="solr.FastLRUCache"
+            size="512"
+            initialSize="512"
+            autowarmCount="0"/>
 
     <!-- Cache used to hold field values that are quickly accessible
          by document id.  The fieldValueCache is created by default
@@ -69,22 +66,22 @@
       />
     -->
 
-   <!-- queryResultCache caches results of searches - ordered lists of
-         document ids (DocList) based on a query, a sort, and the range
-         of documents requested.  -->
+    <!-- queryResultCache caches results of searches - ordered lists of
+          document ids (DocList) based on a query, a sort, and the range
+          of documents requested.  -->
     <queryResultCache
-      class="solr.LRUCache"
-      size="512"
-      initialSize="512"
-      autowarmCount="0"/>
+            class="solr.LRUCache"
+            size="512"
+            initialSize="512"
+            autowarmCount="0"/>
 
-  <!-- documentCache caches Lucene Document objects (the stored fields for each document).
-       Since Lucene internal document ids are transient, this cache will not be autowarmed.  -->
+    <!-- documentCache caches Lucene Document objects (the stored fields for each document).
+         Since Lucene internal document ids are transient, this cache will not be autowarmed.  -->
     <documentCache
-      class="solr.LRUCache"
-      size="512"
-      initialSize="512"
-      autowarmCount="0"/>
+            class="solr.LRUCache"
+            size="512"
+            initialSize="512"
+            autowarmCount="0"/>
 
     <!-- If true, stored fields that are not requested will be loaded lazily.
       This can result in a significant speed improvement if the usual case is to
@@ -108,20 +105,20 @@
       />
     -->
 
-   <!-- An optimization that attempts to use a filter to satisfy a search.
-         If the requested sort does not include score, then the filterCache
-         will be checked for a filter matching the query. If found, the filter
-         will be used as the source of document ids, and then the sort will be
-         applied to that.
-    <useFilterForSortedQuery>true</useFilterForSortedQuery>
-   -->
+    <!-- An optimization that attempts to use a filter to satisfy a search.
+          If the requested sort does not include score, then the filterCache
+          will be checked for a filter matching the query. If found, the filter
+          will be used as the source of document ids, and then the sort will be
+          applied to that.
+     <useFilterForSortedQuery>true</useFilterForSortedQuery>
+    -->
 
-   <!-- An optimization for use with the queryResultCache.  When a search
-         is requested, a superset of the requested number of document ids
-         are collected.  For example, if a search for a particular query
-         requests matching documents 10 through 19, and queryWindowSize is 50,
-         then documents 0 through 49 will be collected and cached.  Any further
-         requests in that range can be satisfied via the cache.  -->
+    <!-- An optimization for use with the queryResultCache.  When a search
+          is requested, a superset of the requested number of document ids
+          are collected.  For example, if a search for a particular query
+          requests matching documents 10 through 19, and queryWindowSize is 50,
+          then documents 0 through 49 will be collected and cached.  Any further
+          requests in that range can be satisfied via the cache.  -->
     <queryResultWindowSize>20</queryResultWindowSize>
 
     <!-- Maximum number of documents to cache for any entry in the
@@ -172,20 +169,11 @@
   <requestDispatcher handleSelect="true" >
     <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
   </requestDispatcher>
-  
+
   <requestHandler name="standard" class="solr.StandardRequestHandler" default="true" />
   <requestHandler name="/update" class="solr.UpdateRequestHandler" />
-  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
 
-  <requestHandler name="/admin/ping" class="PingRequestHandler">
-    <lst name="defaults">
-      <str name="qt">standard</str>
-      <str name="q">solrpingquery</str>
-      <str name="echoParams">all</str>
-    </lst>
-  </requestHandler>
-      
-  <!-- config for the admin interface --> 
+  <!-- config for the admin interface -->
   <admin>
     <defaultQuery>solr</defaultQuery>
   </admin>
@@ -240,7 +228,7 @@
     </lst>
   </searchComponent>
 
-    <requestHandler name="/clustering"
+  <requestHandler name="/clustering"
                   startup="lazy"
                   enable="${solr.clustering.enabled:false}"
                   class="solr.SearchHandler">

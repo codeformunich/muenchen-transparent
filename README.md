@@ -58,10 +58,9 @@ cat docs/schema.sql docs/beispieldaten.sql | mysql -u ris -psec muenchen_transpa
 * Das Modul für curl muss installiert sein (`php5-curl`)
 
 ### Solr-Konfiguration
-* Solr 4.10 herunterladen und in ein beliebiges Verzeichnis mit dem Namen `solr` entpacken.
-* `docs/solr_config/solr.xml` kommt in den Ordner `solr/example/solr/collection1`
-* `docs/solr_config/collections1` kommt in den Ordner `solr/example/solr/`
-* solr kann dann mit `solr/bin/solr start -p 8983` gestartet werden.
+* Solr 5.5.1 [herunterladen](https://archive.apache.org/dist/lucene/solr/5.5.1/) und in einen Ordner mit dem Namen `solr` entpacken.
+* `docs/solr_config/collections1/` nach `solr/server/solr/` kopieren.
+* solr kann dann mit `solr/bin/solr start` gestartet werden.
 
 ## OParl
 
