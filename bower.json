@@ -11,14 +11,11 @@
     "typeahead.js": "~0.11",
     "bootstrap-sass": "~3.3.6",
     "jquery": "~2.2.0",
-    "ckeditor": "~4.5.7"
+    "ckeditor": "~4.5.7",
+    "selectize": "^0.12.1"
   },
   "resolutions": {
     "jquery": "~2.2.0",
-    "fontawesome": "~4.5.0",
-    "get-size": "^2.0.0",
-    "outlayer": "^2.1.0",
-    "masonry": "^4.1.0",
-    "fizzy-ui-utils": "^2.0.0"
+    "get-size": "^2.0.0"
   }
 }
