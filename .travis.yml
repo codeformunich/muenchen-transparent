@@ -30,24 +30,30 @@ branches:
     - master
 
 install:
-  # Create environment for the webserver running in travis ci
+  # PHP
   - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - phpenv config-rm xdebug.ini # Speeds up build
   - phpenv config-add docs/travis/custom.php.ini
-  - ln -s `pwd` /tmp/muenchen-transparent
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
-  # Set up mysql
+  # MySql
   - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql # load timezone names
   - mysql -uroot --execute="SET GLOBAL time_zone = 'Europe/Berlin'"; # set the correct timezone (this has to match DEFAULT_TIMEZONE in the yii config)
   - docs/travis/mysql-5-5-schema-workaround.sh
   ## Import the testing data
   - mysql -e 'create database ristest;'
-  - cat docs/schema.sql tests/_data/data.sql | mysql -utravis ristest
+  - mysql -utravis ristest < docs/schema.sql
+  - mysql -utravis ristest < tests/_data/data.sql
   ## Import the example data
   - mysql -e 'create database muenchen_transparent;'
-  - cat docs/schema.sql docs/beispieldaten.sql | mysql -uroot muenchen_transparent
+  - mysql -uroot muenchen_transparent < docs/schema.sql
+  - mysql -uroot muenchen_transparent < docs/beispieldaten.sql
 
-  # Install dependencies
+  # nginx
+  - ln -s `pwd` /tmp/muenchen-transparent
+  - nginx -c `pwd`/docs/nginx-codeception.conf
+
+  # dependencies
   - chmod 644 vendor/heise/shariff/index.php || true # Prevent a weird "has uncommitted changes" error message when updating shariff
   - composer install --prefer-source # --prefer-source fixes github's limits
   - npm install
@@ -56,8 +62,6 @@ install:
   - gulp
 
 script:
-  - nginx -c `pwd`/docs/nginx-codeception.conf
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   - vendor/bin/codecept run --env nohtmlvalidation # nohtmlvalidation is a workaround for the missing java 8
 
 after_failure:
@@ -65,7 +69,7 @@ after_failure:
   - cat protected/runtime/application.log
   - cat /tmp/error.log
   - cat /tmp/access.log
-  - cat tests/_output/*.html
+  - cat tests/_output/*
 
 after_script:
   - git checkout -- docs/schema.sql
