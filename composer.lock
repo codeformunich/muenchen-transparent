@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e224da9c0ce758dc37bfe8ff1dd215a4",
-    "content-hash": "74c90e41663302db6b320e2a56937100",
+    "hash": "1b751589e279b09e39d6be3e4634442a",
+    "content-hash": "688aa13b39ecbd1f85962e1dbf8d4d06",
     "packages": [
         {
             "name": "codeception/codeception",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "58bacde2b85bf135039d393cbb667e6bb08f56c5"
+                "reference": "3bb99ef67015fff4a67e4f5ab876e596a2b0a949"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/58bacde2b85bf135039d393cbb667e6bb08f56c5",
-                "reference": "58bacde2b85bf135039d393cbb667e6bb08f56c5",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/3bb99ef67015fff4a67e4f5ab876e596a2b0a949",
+                "reference": "3bb99ef67015fff4a67e4f5ab876e596a2b0a949",
                 "shasum": ""
             },
             "require": {
@@ -89,7 +89,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2016-06-07 22:35:39"
+            "time": "2016-06-17 00:11:21"
         },
         {
             "name": "container-interop/container-interop",
@@ -174,19 +174,20 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "1c98108ba3eb435b681655764de11502a0653705"
+                "reference": "0b889d7de7461439f8a3bbcca46e0f696cb27986"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/1c98108ba3eb435b681655764de11502a0653705",
-                "reference": "1c98108ba3eb435b681655764de11502a0653705",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/0b889d7de7461439f8a3bbcca46e0f696cb27986",
+                "reference": "0b889d7de7461439f8a3bbcca46e0f696cb27986",
                 "shasum": ""
             },
             "require": {
+                "ext-curl": "*",
                 "php": ">=5.3.19"
             },
             "require-dev": {
@@ -213,7 +214,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2015-12-31 15:58:49"
+            "time": "2016-06-04 00:02:34"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -221,12 +222,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "6a37496c2b7855f5c88cac89c5f56a07e326d63c"
+                "reference": "79c6fbef131eed51ab82bf813e9694419931bc8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/6a37496c2b7855f5c88cac89c5f56a07e326d63c",
-                "reference": "6a37496c2b7855f5c88cac89c5f56a07e326d63c",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/79c6fbef131eed51ab82bf813e9694419931bc8b",
+                "reference": "79c6fbef131eed51ab82bf813e9694419931bc8b",
                 "shasum": ""
             },
             "require": {
@@ -275,7 +276,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-06-04 22:16:20"
+            "time": "2016-06-20 07:37:14"
         },
         {
             "name": "guzzlehttp/promises",
@@ -535,22 +536,22 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "3.0.2",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "45ada3e3fd09789fbfbd6d65b3f0901f0030dc61"
+                "reference": "9270140b940ff02e58ec577c237274e92cd40cdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/45ada3e3fd09789fbfbd6d65b3f0901f0030dc61",
-                "reference": "45ada3e3fd09789fbfbd6d65b3f0901f0030dc61",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/9270140b940ff02e58ec577c237274e92cd40cdd",
+                "reference": "9270140b940ff02e58ec577c237274e92cd40cdd",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5",
                 "phpdocumentor/reflection-common": "^1.0@dev",
-                "phpdocumentor/type-resolver": "^0.1.5",
+                "phpdocumentor/type-resolver": "^0.2.0",
                 "webmozart/assert": "^1.0"
             },
             "require-dev": {
@@ -576,20 +577,20 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-06-06 06:44:13"
+            "time": "2016-06-10 09:48:41"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "0.1.8",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "9891754231e55d42f0d16988ffb799af39f31a12"
+                "reference": "b39c7a5b194f9ed7bd0dd345c751007a41862443"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/9891754231e55d42f0d16988ffb799af39f31a12",
-                "reference": "9891754231e55d42f0d16988ffb799af39f31a12",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/b39c7a5b194f9ed7bd0dd345c751007a41862443",
+                "reference": "b39c7a5b194f9ed7bd0dd345c751007a41862443",
                 "shasum": ""
             },
             "require": {
@@ -598,7 +599,7 @@
             },
             "require-dev": {
                 "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "^5.2"
+                "phpunit/phpunit": "^5.2||^4.8.24"
             },
             "type": "library",
             "extra": {
@@ -623,7 +624,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2016-03-28 10:02:29"
+            "time": "2016-06-10 07:14:17"
         },
         {
             "name": "phpspec/prophecy",
@@ -937,12 +938,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9858a96dc3d0106419cbeb205c6ff44d3c4e8a17"
+                "reference": "a6061462d4e93ee72de1023be0377108e1f89f2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9858a96dc3d0106419cbeb205c6ff44d3c4e8a17",
-                "reference": "9858a96dc3d0106419cbeb205c6ff44d3c4e8a17",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a6061462d4e93ee72de1023be0377108e1f89f2a",
+                "reference": "a6061462d4e93ee72de1023be0377108e1f89f2a",
                 "shasum": ""
             },
             "require": {
@@ -1004,7 +1005,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-06-05 07:13:15"
+            "time": "2016-06-17 15:19:28"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1151,16 +1152,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "2.1.x-dev",
+            "version": "2.2.0alpha4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-dav.git",
-                "reference": "0b43a61e4fc7ef3158108829b7d133deabc5e7a9"
+                "reference": "9329b69666f4850a5d8b48e65686add694d9d376"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/0b43a61e4fc7ef3158108829b7d133deabc5e7a9",
-                "reference": "0b43a61e4fc7ef3158108829b7d133deabc5e7a9",
+                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/9329b69666f4850a5d8b48e65686add694d9d376",
+                "reference": "9329b69666f4850a5d8b48e65686add694d9d376",
                 "shasum": ""
             },
             "require": {
@@ -1174,9 +1175,11 @@
                 "ext-simplexml": "*",
                 "ext-spl": "*",
                 "php": ">=5.4.1",
-                "sabre/event": "^2.0.0",
-                "sabre/http": "^3.0.0",
-                "sabre/vobject": "^3.3.4"
+                "sabre/event": "~2.0.0",
+                "sabre/http": "~4.0.0-alpha1",
+                "sabre/uri": "~1.0",
+                "sabre/vobject": ">=3.3.4,<4",
+                "sabre/xml": "~0.4.2"
             },
             "require-dev": {
                 "evert/phpdoc-md": "~0.1.0",
@@ -1192,6 +1195,11 @@
                 "bin/naturalselection"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Sabre\\DAV\\": "lib/DAV/",
@@ -1221,7 +1229,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2016-03-29 22:02:04"
+            "time": "2015-04-13 14:44:41"
         },
         {
             "name": "sabre/event",
@@ -1276,32 +1284,36 @@
         },
         {
             "name": "sabre/http",
-            "version": "3.0.x-dev",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-http.git",
-                "reference": "6b06c03376219b3d608e1f878514ec105ed1b577"
+                "reference": "3b3ba70329e0ffc0a4d9855ca7d7583ab82b1023"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-http/zipball/6b06c03376219b3d608e1f878514ec105ed1b577",
-                "reference": "6b06c03376219b3d608e1f878514ec105ed1b577",
+                "url": "https://api.github.com/repos/fruux/sabre-http/zipball/3b3ba70329e0ffc0a4d9855ca7d7583ab82b1023",
+                "reference": "3b3ba70329e0ffc0a4d9855ca7d7583ab82b1023",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=5.4",
-                "sabre/event": ">=1.0.0,<3.0.0"
+                "sabre/event": ">=1.0.0,<3.0.0",
+                "sabre/uri": "~1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.3",
-                "squizlabs/php_codesniffer": "~1.5.3"
+                "sabre/cs": "~0.0.1"
             },
             "suggest": {
                 "ext-curl": " to make http requests with the Client class"
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "lib/functions.php"
+                ],
                 "psr-4": {
                     "Sabre\\HTTP\\": "lib/"
                 }
@@ -1323,7 +1335,58 @@
             "keywords": [
                 "http"
             ],
-            "time": "2015-05-11 15:25:57"
+            "time": "2015-05-20 09:05:01"
+        },
+        {
+            "name": "sabre/uri",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruux/sabre-uri.git",
+                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/9012116434d84ef6e5e37a89dfdbfbe2204a8704",
+                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "sabre/cs": "~0.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/functions.php"
+                ],
+                "psr-4": {
+                    "Sabre\\Uri\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Evert Pot",
+                    "email": "me@evertpot.com",
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Functions for making sense out of URIs.",
+            "homepage": "http://sabre.io/uri/",
+            "keywords": [
+                "rfc3986",
+                "uri",
+                "url"
+            ],
+            "time": "2016-03-08 02:29:27"
         },
         {
             "name": "sabre/vobject",
@@ -1390,6 +1453,60 @@
                 "vCard"
             ],
             "time": "2016-04-24 07:05:24"
+        },
+        {
+            "name": "sabre/xml",
+            "version": "0.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruux/sabre-xml.git",
+                "reference": "c8b93c5335504f838e5bc7bdd7438514f36ce640"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruux/sabre-xml/zipball/c8b93c5335504f838e5bc7bdd7438514f36ce640",
+                "reference": "c8b93c5335504f838e5bc7bdd7438514f36ce640",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-xmlreader": "*",
+                "ext-xmlwriter": "*",
+                "lib-libxml": ">=2.6.20",
+                "php": ">=5.4.1",
+                "sabre/uri": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sabre\\Xml\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Evert Pot",
+                    "email": "me@evertpot.com",
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Sabre XML parser is the only XML library that you may not hate.",
+            "homepage": "https://sabre.io/xml/",
+            "keywords": [
+                "XMLReader",
+                "XMLWriter",
+                "dom",
+                "xml"
+            ],
+            "time": "2015-04-01 20:52:53"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1554,23 +1671,23 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "dev-master",
+            "version": "1.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716"
+                "reference": "622c5dc0a8036cfc4ccd73c7b1b668a431e69d96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/4e8f0da10ac5802913afc151413bc8c53b6c2716",
-                "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/622c5dc0a8036cfc4ccd73c7b1b668a431e69d96",
+                "reference": "622c5dc0a8036cfc4ccd73c7b1b668a431e69d96",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": "^5.3.3 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.4"
+                "phpunit/phpunit": "^4.8 || ^5.0"
             },
             "type": "library",
             "extra": {
@@ -1600,7 +1717,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-05-17 03:18:57"
+            "time": "2016-06-11 08:21:19"
         },
         {
             "name": "sebastian/exporter",
@@ -1608,12 +1725,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "f88f8936517d54ae6d589166810877fb2015d0a2"
+                "reference": "42c4c2eec485ee3e159ec9884f95b431287edde4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/f88f8936517d54ae6d589166810877fb2015d0a2",
-                "reference": "f88f8936517d54ae6d589166810877fb2015d0a2",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/42c4c2eec485ee3e159ec9884f95b431287edde4",
+                "reference": "42c4c2eec485ee3e159ec9884f95b431287edde4",
                 "shasum": ""
             },
             "require": {
@@ -1667,7 +1784,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2015-08-09 04:23:41"
+            "time": "2016-06-17 09:04:28"
         },
         {
             "name": "sebastian/global-state",
@@ -2090,12 +2207,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "287f29f5e2114515c2552acce43013c60c7d60b6"
+                "reference": "64a4d43b045f07055bb197650159769604cb2a92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/287f29f5e2114515c2552acce43013c60c7d60b6",
-                "reference": "287f29f5e2114515c2552acce43013c60c7d60b6",
+                "url": "https://api.github.com/repos/symfony/console/zipball/64a4d43b045f07055bb197650159769604cb2a92",
+                "reference": "64a4d43b045f07055bb197650159769604cb2a92",
                 "shasum": ""
             },
             "require": {
@@ -2142,7 +2259,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-06-06 15:08:54"
+            "time": "2016-06-14 11:18:07"
         },
         {
             "name": "symfony/css-selector",
@@ -2427,12 +2544,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "56832b4b038a2dbda1af53771ebcc9ba05626078"
+                "reference": "da8e4c04c3fcd3419342a14caa8ff6ce71617907"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/56832b4b038a2dbda1af53771ebcc9ba05626078",
-                "reference": "56832b4b038a2dbda1af53771ebcc9ba05626078",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/da8e4c04c3fcd3419342a14caa8ff6ce71617907",
+                "reference": "da8e4c04c3fcd3419342a14caa8ff6ce71617907",
                 "shasum": ""
             },
             "require": {
@@ -2468,7 +2585,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-06-06 11:42:41"
+            "time": "2016-06-17 14:16:22"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -2754,17 +2871,17 @@
         },
         {
             "name": "zendframework/zend-config",
-            "version": "dev-master",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-config.git",
-                "reference": "ab0bd090e32972b694d49c06dbf367533ed6184a"
+                "reference": "ef8e216e5a991d6a889c00e9d445d52a5beb01ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packages.zendframework.com/composer/zendframework-zend-config-dev-master-2e8e42.zip",
-                "reference": "ab0bd090e32972b694d49c06dbf367533ed6184a",
-                "shasum": "91f11ecc51b5967132721ce2a2c23231485961fd"
+                "url": "https://packages.zendframework.com/composer/zendframework-zend-config-dev-develop-1911fc.zip",
+                "reference": "ef8e216e5a991d6a889c00e9d445d52a5beb01ea",
+                "shasum": "0429be4da4934e033a6b2fce93cc6c6ce457285c"
             },
             "require": {
                 "php": "^5.5 || ^7.0",
@@ -3100,17 +3217,17 @@
         },
         {
             "name": "zendframework/zend-mail",
-            "version": "2.6.2",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-mail.git",
-                "reference": "89947016cfb7ee76ab93fd0e0f002655ab5ecb5c"
+                "reference": "77a25608a1e59cbdb602ef267e8ab3f6d86a0a08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packages.zendframework.com/composer/zendframework-zend-mail-2.6.2-161135.zip",
-                "reference": "89947016cfb7ee76ab93fd0e0f002655ab5ecb5c",
-                "shasum": "0f8e7bedba86c35aa378fc97c25b948a80b83355"
+                "url": "https://packages.zendframework.com/composer/zendframework-zend-mail-dev-develop-5a08d7.zip",
+                "reference": "77a25608a1e59cbdb602ef267e8ab3f6d86a0a08",
+                "shasum": "053d618c466da7bebceb3e8c7ef7a6c085144bca"
             },
             "require": {
                 "php": "^5.5 || ^7.0",
@@ -3120,8 +3237,8 @@
                 "zendframework/zend-validator": "^2.6"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "1.7.*",
-                "phpunit/phpunit": "~4.0",
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^2.3.1",
                 "zendframework/zend-config": "^2.6",
                 "zendframework/zend-crypt": "^2.6",
                 "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3"
@@ -3133,8 +3250,12 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev",
-                    "dev-develop": "2.7-dev"
+                    "dev-master": "2.7-dev",
+                    "dev-develop": "2.8-dev"
+                },
+                "zf": {
+                    "component": "Zend\\Mail",
+                    "config-provider": "Zend\\Mail\\ConfigProvider"
                 }
             },
             "autoload": {
@@ -3156,21 +3277,21 @@
                 "mail",
                 "zf2"
             ],
-            "time": "2016-04-11 20:09:29"
+            "time": "2016-05-09 21:56:29"
         },
         {
             "name": "zendframework/zend-mime",
-            "version": "dev-master",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-mime.git",
-                "reference": "e7819d6d2cc41dce5bdee1fa5754d484f0fb0328"
+                "reference": "ddbdd42f40d3f4308732a0c46ae96db8d96412a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packages.zendframework.com/composer/zendframework-zend-mime-dev-master-a2c0cb.zip",
-                "reference": "e7819d6d2cc41dce5bdee1fa5754d484f0fb0328",
-                "shasum": "e4ec1e83052ee3100912effa0ed2a57a49cde202"
+                "url": "https://packages.zendframework.com/composer/zendframework-zend-mime-dev-develop-3cff89.zip",
+                "reference": "ddbdd42f40d3f4308732a0c46ae96db8d96412a2",
+                "shasum": "c886e2ebd3040306e5b7f926b80c8f92ab321769"
             },
             "require": {
                 "php": "^5.5 || ^7.0",
@@ -3210,7 +3331,7 @@
                 "mime",
                 "zf2"
             ],
-            "time": "2016-04-20 21:10:04"
+            "time": "2016-04-20 21:10:07"
         },
         {
             "name": "zendframework/zend-servicemanager",
@@ -3454,9 +3575,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "sabre/dav": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
