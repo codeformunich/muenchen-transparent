@@ -1,10 +1,9 @@
 /*
 Gulp is used to managed all sass/css and javascript resources.
-
-You can use `gulp watch` to rebuild the custom css and js on change and
-`gulp brwosersync` for automatically pushing changed reqources to the browser
+ - Use `gulp watch` to rebuild css and js on every file change
+ - Use `gulp browsersync` to automatically push changed resources to the browser
+ - Append `--unuglified` to get uncompressed output
 */
-
 
 var gulp       = require('gulp'),
     concat     = require('gulp-concat'),
@@ -13,14 +12,15 @@ var gulp       = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify     = require('gulp-uglify'),
     expect     = require('gulp-expect-file'),
-    exec       = require('child_process').exec;
+    yargs      = require('yargs'),
+    process    = require('child_process');
 
 // browsersync will only be used with the browsersync task
 var browsersync = require('browser-sync').create();
 var use_browsersync = false;
 
 // setting this to false makes debugging easier and building the js a hundred times faster
-var use_uglify = true;
+var use_uglify = (yargs.argv.unuglified === undefined);
 
 var paths = {
     source_styles: ["html/css/*.scss"],
@@ -106,10 +106,10 @@ gulp.task('sass', function () {
 });
 
 gulp.task('ba-grenzen-geojson', function () {
-    return exec('protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js');
+    return process.exec('$(git rev-parse --show-toplevel)/protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js');
 });
 
-gulp.task('pdfjs', ['pdfjs.js', 'pdfjs.css'])
+gulp.task('pdfjs', ['pdfjs.js', 'pdfjs.css']);
 
 gulp.task('pdfjs.js', function () {
     return gulp.src(paths.pdfjs_js)
