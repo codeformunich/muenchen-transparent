@@ -23,7 +23,7 @@
                 Klicke dazu auf einen Ort und stelle dann den relevanten Radius ein.<br>
             </div>
             <div class="infos" style="display: none;">
-                <strong>Ausgewählt:</strong> <span class="radius_m"></span> Meter um "<span class="zentrum_ort"></span>" (ungefähr)<br>
+                <strong>Ausgew&auml;hlt:</strong> <span class="radius_m"></span> Meter um "<span class="zentrum_ort"></span>" (ungefähr)<br>
                 <br>Willst du per E-Mail benachrichtigt werden, wenn neue Dokumente mit diesem Ortsbezug erscheinen?
             </div>
             <form method="POST" action="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>">
