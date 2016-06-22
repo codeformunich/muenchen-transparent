@@ -19,7 +19,7 @@ var gulp       = require('gulp'),
 var browsersync = require('browser-sync').create();
 var use_browsersync = false;
 
-// setting this to false makes debugging easier and building the js a hundred times faster
+// Add an `--unuglified`options that makes building the js about ten times faster
 var use_uglify = (yargs.argv.unuglified === undefined);
 
 var paths = {
@@ -37,6 +37,7 @@ var paths = {
         "html/js/custom/*.js",
     ],
     leaflet_js: [
+        "html/js/muc_grenzen_geojson.js",
         "html/js/build/ba-grenzen-geojson.js",
         "html/bower/leaflet/dist/leaflet.js",
         "html/bower/leaflet.draw/dist/leaflet.draw.js",
@@ -60,8 +61,9 @@ var paths = {
 gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'pdfjs']);
 
 gulp.task('watch', ['default'], function () {
-    use_uglify = false; // much better performance
-    gulp.watch(paths.source_js, ['std.js']);
+    gulp.watch(paths.std_js, ['std.js']);
+    gulp.watch(paths.leaflet_js, ['leaflet.js']);
+    gulp.watch(paths.pdfjs_js, ['pdfjs.js']);
     gulp.watch(paths.source_styles, ['sass']);
 });
 
