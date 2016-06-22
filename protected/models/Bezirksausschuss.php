@@ -221,8 +221,6 @@ class Bezirksausschuss extends CActiveRecord
      */
     public function getInteressanteStatistik()
     {
-        //return array(); // @TODO
-
         $statistiken = [];
 
         $daten = StatistikDatensatz::model()->findByAttributes(["gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"], ["order" => "jahr DESC"]);
