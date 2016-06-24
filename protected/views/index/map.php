@@ -3,7 +3,6 @@
  * @var int ortsbezugszahlgrenze
  * @var array $geodata_overflow
  */
-/** */
 ?>
 <div class="map-container">
     <div id="mapholder">

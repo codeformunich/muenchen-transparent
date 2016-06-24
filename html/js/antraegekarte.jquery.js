@@ -356,7 +356,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             };
             info.update = function (props) {
                 if (props) {
-                    this._div.innerHTML = '<h4>' + props["name"] + '</h4><!--<a href="' + props["website"] + '">Website</a>-->';
+                    this._div.innerHTML = '<h4>' + props["name"] + '</h4>';
                     this._div.hidden = false;
                 } else {
                     this._div.innerHTML = '';

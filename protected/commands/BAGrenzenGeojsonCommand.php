@@ -11,7 +11,7 @@ class BAGrenzenGeojsonCommand extends CConsoleCommand
         $BAGrenzenGeoJSON = [];
         $BAs = Bezirksausschuss::model()->findAll();
         foreach ($BAs as $ba) $BAGrenzenGeoJSON[] = $ba->toGeoJSONArray();
-        
+
         file_put_contents($args[0], "BA_GRENZEN_GEOJSON = " . json_encode($BAGrenzenGeoJSON) . ";\n");
     }
 }
