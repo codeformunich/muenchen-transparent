@@ -32,7 +32,8 @@ if (isset($title) && $title !== null) {
 } elseif (isset($datum_von) && isset($datum_bis)) {
     $erkl_str = "Dokumente vom " . RISTools::datumstring($datum_von) . " bis " . RISTools::datumstring($datum_bis);
 } else {
-    $erkl_str = "Stadtratsdokumente: etwa ${radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
+    $radius = round($radius);
+    $erkl_str = "Stadtratsdokumente: etwa {$radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
 }
 
 if (!isset($rathausumschauen)) $rathausumschauen = [];

@@ -50,7 +50,7 @@ gulp
 ```
 * Beispieldaten in die Datenbank importieren:
 ```bash
-cat docs/schema.sql docs/beispieldaten.sql | mysql -u ris -psec muenchen_transparent
+cat docs/schema.sql docs/beispieldaten.sql docs/triggers.sql | mysql -u ris -psec muenchen_transparent
 ```
 
 ### PHP-Konfiguration:

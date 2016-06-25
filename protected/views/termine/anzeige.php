@@ -164,9 +164,8 @@ function zeile_anzeigen($feld, $name, $callback)
                 if (geodata.length > 0) $(function () {
                     var $map = $("#map").AntraegeKarte({
                         outlineBA: <?=($termin->ba_nr > 0 ? $termin->ba_nr : 0)?>,
-                        onInit: function ($map) {
-                            $map.setAntraegeData(geodata, null);
-                        }
+                        antraege_data: geodata,
+                        antraege_data_overflow: null,
                     });
                 });
                 else $("#mapsection").hide();

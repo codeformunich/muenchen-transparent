@@ -52,9 +52,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                         index_geo_dokumente_load("", latlng.lng, latlng.lat, rad);
                     }
                 },
-                onInit: function ($map) {
-                    $map.setAntraegeData(<?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
-                }
+                antraege_data: <?=json_encode($geodata)?>,
+                antraege_data_overflow: <?=json_encode($geodata_overflow)?>,
             });
         });
     </script>

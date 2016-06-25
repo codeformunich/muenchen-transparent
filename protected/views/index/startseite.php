@@ -45,9 +45,8 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
                         index_geo_dokumente_load("<?=CHtml::encode($this->createUrl("index/antraegeAjaxGeo"))?>?lng=" + latlng.lng + "&lat=" + latlng.lat + "&radius=" + rad + "&", latlng.lng, latlng.lat, rad);
                     }
                 },
-                onInit: function ($map) {
-                    $map.setAntraegeData(<?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
-                }
+                antraege_data: <?=json_encode($geodata)?>,
+                antraege_data_overflow: <?=json_encode($geodata_overflow)?>,
             });
         });
     </script>

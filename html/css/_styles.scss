@@ -1396,7 +1396,7 @@ section.impressum {
         float: none;
       }
 
-      ul:not {
+      :not(ul) {
         display: block;
       }
 
@@ -1407,11 +1407,11 @@ section.impressum {
         &.stadtrat {
           font-weight: bold;
         }
-      }
 
-      li a {
-        padding-top: 8px;
-        padding-bottom: 8px;
+        a {
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
       }
     }
   }

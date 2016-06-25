@@ -86,20 +86,4 @@ class Tag extends CActiveRecord
         $link_name = $this->name;
         return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
     }
-
-    /**
-     * @param int $num
-     * @return Tag[]
-     */
-    public static function getTopTags($num)
-    {
-        // @TODO
-
-        /** @var Tag[] $tags */
-        $tags     = Tag::model()->findAll();
-        $tags_out = [];
-        foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
-        return $tags_out;
-    }
-
 }

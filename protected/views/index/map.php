@@ -3,7 +3,6 @@
  * @var int ortsbezugszahlgrenze
  * @var array $geodata_overflow
  */
-/** */
 ?>
 <div class="map-container">
     <div id="mapholder">
@@ -19,13 +18,11 @@
     <div id="benachrichtigung_hinweis">
         <div id="benachrichtigung_hinweis_text">
             <div class="nichts">
-                <strong>Hinweis:</strong><br>
                 Du kannst dich bei neuen Dokumenten mit Bezug zu einem bestimmten Ort per E-Mail benachrichtigen lassen.<br>
                 Klicke dazu auf einen Ort und stelle dann den relevanten Radius ein.<br>
-                <br>
             </div>
             <div class="infos" style="display: none;">
-                <strong>Ausgewählt:</strong> <span class="radius_m"></span> Meter um "<span class="zentrum_ort"></span>" (ungefähr)<br>
+                <strong>Ausgew&auml;hlt:</strong> <span class="radius_m"></span> Meter um "<span class="zentrum_ort"></span>" (ungefähr)<br>
                 <br>Willst du per E-Mail benachrichtigt werden, wenn neue Dokumente mit diesem Ortsbezug erscheinen?
             </div>
             <form method="POST" action="<?= CHtml::encode($this->createUrl("benachrichtigungen/index")) ?>">
