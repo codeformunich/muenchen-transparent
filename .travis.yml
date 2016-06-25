@@ -41,7 +41,7 @@ install:
   - mysql -uroot --execute="SET GLOBAL time_zone = 'Europe/Berlin'"; # set the correct timezone (this has to match DEFAULT_TIMEZONE in the yii config)
   - docs/travis/mysql-5-5-schema-workaround.sh
   ## Import the testing data
-  - mysql -e 'create database mt-test;'
+  - mysql -e 'create database `mt-test`;'
   - cat docs/schema.sql tests/_data/data.sql docs/triggers.sql | mysql -utravis mt-test
   ## Import the example data
   - mysql -e 'create database muenchen_transparent;'
