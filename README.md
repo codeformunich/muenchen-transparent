@@ -27,16 +27,16 @@ bower install
 gulp
 ```
 
-### nginx-Konfiguration:
-* Der gewählte `server_name` muss in protected/config/main.php als `SITE_BASE_URL` eingetragen werden.
+### nginx
+* Der gewählte `server_name` muss in [protected/config/main.php](protected/config/main.php) als `SITE_BASE_URL` eingetragen werden.
 * `root` muss auf den `html/`-Ordner zeigen.
 * `$yii_bootstrap` muss auf `index.php` gesetzt werden.
 * Die Einstellungen aus [nginx-minimal.conf](docs/nginx-minimal.conf) müssen übernommen werden, entweder durch ein `include` oder mit copy&paste.
 * Zwei erweiterte Beispiele einer vollständigen Konfiguration finden sich in [nginx-full.conf](docs/nginx-full.conf) und [nginx-travis.conf](docs/nginx-travis.conf).
 
-### MariaDB/MySQL-Konfiguration
+### MariaDB/MySQL
 * Eine Datenbank und einen zugehörigen Nutzer anlegen.
-* Die Datenbank-Konfiguration muss dann in `protected/config/main.php` eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
+* Die Datenbank-Konfiguration muss dann in [protected/config/main.php](protected/config/main.php) eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
 ```php
 'db' => [
     'connectionString'      => 'mysql:host=127.0.0.1;dbname=muenchen_transparent',
@@ -53,20 +53,20 @@ gulp
 cat docs/schema.sql docs/beispieldaten.sql docs/triggers.sql | mysql -u ris -psec muenchen_transparent
 ```
 
-### PHP-Konfiguration:
+### PHP
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
 * Das Modul für curl muss installiert sein (`php5-curl`)
 
-### Solr-Konfiguration
+### Solr
 * Solr 5.5.1 [herunterladen](https://archive.apache.org/dist/lucene/solr/5.5.1/) und in einen Ordner mit dem Namen `solr` entpacken.
-* `docs/solr_core/` nach `solr/server/solr/muenchen-transparent/` kopieren.
+* [docs/solr_core](docs/solr_core) nach `solr/server/solr/muenchen-transparent/` kopieren.
 * solr kann dann mit `solr/bin/solr start` gestartet werden.
 
 ## OParl
 
 Zum Zugriff auf die Daten gibt es eine [OParl](https://oparl.org)-Schnittstelle. Damit die API funktioniert, muss
 `OPARL_10_ROOT` in `main.php` auf den gewünschten Wert gesetzt werden. Genauere Hinweise zur Implementierung finden
-sich in `docs/oparl.md`.
+sich in [oparl.md](docs/oparl.md).
 
 ## Tests
 
@@ -77,11 +77,23 @@ Zum lokalen Ausführen der Test muss ein 2. Server-Block in der nginx-Konfigurat
 * `listen` muss auf `8080` gesetzt werden.
 * `$yii_bootstrap` muss auf `index_codeception.php` gesetzt werden.
 
+Des weiteren muss eine Datenbank mit dem Namen `mt-test` angelegt werden, auf ein ebenfalls anzulegender Nutzer mit dem
+Benutzernamen `travis` und keinem Passwort zugriff hat.Das importieren der Testdaten erfolgt mit
+```bash
+cat docs/schema.sql tests/_data/data.sql docs/triggers.sql | mysql -utravis mt-test
+```
 Die Tests können dann mit
 ```bash
 vendor/bin/codeception run
 ```
 ausgeführt werden.
+
+Sollten die Testdaten verändert worden sein, müssen die Änderungen mit
+```bash
+docs/export-testing-db.sh
+```
+gespeichert werden.
+
 
 Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium ausgeführt werden. Deshalb können keine auf javascript basierenden Funktionen getestet werden.
 
@@ -99,8 +111,8 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * __protected/views/__: View
 
 ## Weitere Dokumentation
-* [Icon-Font bearbeiten](docs/fontello/updating.txt)
-* Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
+* [Icon-Font bearbeiten](docs/updating-fontello.md)
+* Eine Sammlung zu Dokumenten rund um München Transparent gibt es im repository [muenchen-transparent-doc](https://github.com/codeformunich/muenchen-transparent-doc)
 
 ### pdf.js  Updaten:
 * Neuste Pre-built Version von pdf.js herunterladen und in `html/pdfjs` entpacken

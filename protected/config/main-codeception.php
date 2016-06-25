@@ -143,7 +143,7 @@ return [
             'rules'          => $GLOBALS["RIS_URL_RULES"],
         ],
         'db'           => [
-            'connectionString'      => 'mysql:host=127.0.0.1;dbname=ristest',
+            'connectionString'      => 'mysql:host=127.0.0.1;dbname=mt-test',
             'emulatePrepare'        => true,
             'username'              => 'travis',
             'password'              => '',
