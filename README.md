@@ -10,7 +10,21 @@ München Transparent ist ein alternatives Ratsinformationssystem (RIS) für Mün
 
 ## Setup
 
+### Docker
+
+Für einen einfachen Einstieg in die Entwicklung an München Transparent ist eine komplette Entwicklungsumgebung mit `docker-compose` eingecheckt.
+Du benötigst somit nur eine Installation von [docker](https://www.docker.com/products/docker) für dein Betriebssystem und [docker-compose](https://docs.docker.com/compose/install/).
+
+Kopiere `docs/docker/main.template.php` nach `protected/config/main.php`.
+
+Starte die Entwicklungsumgebung mittels `docker-compose up`.
+
+Je nach Betriebssystem/docker-Konfiguration musst du noch die `SITE_BASE_URL` in der `protected/config/main.php` anpassen.
+
+### Selbst aufsetzen
+
 Vorausgesetzt werden nginx mit PHP und MySQL/MariaDB sowie npm und composer.
+Für die Verarbeitung von PDFs werden noch imagemagick, poppler-utils, tesseract, eine Java-Runtime und [PDFbox](http://pdfbox.apache.org) benötigt.
 
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
@@ -110,7 +124,7 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * [Tesseract](https://code.google.com/p/tesseract-ocr/) für das automatische OCR. Wegen der besseren Erkennungsqualität kommt noch etwa 1-2mal montatlich eine zweite, manuelle OCR-Phase hinzu, basierend auf Nuance Omnipage.
 * [Imagemagick](http://www.imagemagick.org/) zur Vorbereitung des OCRs.
 * [Solr](http://lucene.apache.org/solr/) für die Volltextsuche.
-* [PDFbox](pdfbox.apache.org) zur Text-Extraktion aus den PDFs.
+* [PDFbox](http://pdfbox.apache.org) zur Text-Extraktion aus den PDFs.
 
 ### Eingesetzte PHP-Bibliotheken
 * [Yii Framework](http://www.yiiframework.com/)
