@@ -7,7 +7,6 @@ nginx:
    - "8080:80"
   links:
     - php
-    - solr
   command: /bin/bash -c "mkdir -p /var/www/ris3-data && (rm /etc/nginx/conf.d/default.conf || true) && nginx -g 'daemon off;'"
 
 php:
