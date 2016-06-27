@@ -21,3 +21,19 @@ gibt es in `tests/_support/Helper/Oparl.php`. Es ist zu beachten, dass dabei all
 `$I->getOParl([url-affix])` kümmert sich um die Einhaltung einiger allgemeiner Kriterien, wie z.B. HTTP-Header und
 Statuscodes, und überprüft, ob die Antwort des Server der in `tests/_data/oparl[url-affix].json` gespeicherten
 entspricht. Um die erwarteten Anworten zu aktualisieren wird `--env updatejson` an den Aufruf von Codeception angehängt.
+
+### Herstellerspezifische Erweiterungen
+
+Das Präfix der Herstellerspezifischen Erweiterungen ist `muenchen-transparent`. Die folgenden Objekte besitzen solche
+Erweiterungen:
+
+**Person**
+ * `muenchenTransparent:elected`: String (date)
+ * `muenchenTransparent:dateOfBirth`: String (date)
+ * `muenchenTransparent:beruf`: String
+ * `muenchenTransparent:bio`: String
+ * `muenchenTransparent:website`: String (URL)
+ * `muenchenTransparent:twitter`: String (URL)
+ * `muenchenTransparent:facebook`: String (URL)
+ * `muenchenTransparent:abgeordnetenwatch`: String (URL)
+
