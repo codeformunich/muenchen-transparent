@@ -155,14 +155,14 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             ?>
         <section class="well">
             <h2>Statistik</h2>
-            <dl class="ba_funktionen">
-                <? foreach ($statistiken as $statistik) {
-                    echo '<dt>' . CHtml::encode($statistik["name"]) . '</dt>';
-                    echo '<dd>' . CHtml::encode($statistik["wert"]) . '</dd>';
+            <ul style="list-style: none;">
+                <?
+                foreach ($statistiken as $statistik) {
+                    echo '<li>' . CHtml::encode($statistik["name"]) . ': ' .  CHtml::encode($statistik["wert"]) . '</li>';
                 }
                 ?>
-                </dl>
-                </section>
+            </ul>
+        </section>
             <?
         }
 

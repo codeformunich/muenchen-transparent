@@ -1,8 +1,3 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Linux (x86_64)
---
--- Host: localhost    Database: mt-test
--- ------------------------------------------------------
--- Server version	5.7.12-0ubuntu1.1
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -178,4 +173,3 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-25 12:59:27
