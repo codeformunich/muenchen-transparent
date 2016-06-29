@@ -19,7 +19,7 @@
 class OparlTester extends \Codeception\Actor
 {
     use _generated\OparlTesterActions;
-        
+
     /**
      * Checks if the generic requirements for every OParl-response are met:
      * - the HTTP status code is 200 and the headers are correctly set
@@ -37,23 +37,45 @@ class OparlTester extends \Codeception\Actor
 
         if ($skip_extended_checks)
             return;
-        
+
         $this->seeOParlFile();
-        
+
+        $startsWith = function ($haystack, $needle) {
+            return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+        };
+
         // Grab the url used in the config and build an url regex based on it
         $config = \Codeception\Configuration::config();
         $apiSettings = \Codeception\Configuration::suiteSettings('oparl', $config);
+
         $base_url = $apiSettings['modules']['enabled'][1]['REST']['url'];
+        $host_url = preg_replace('~^([^/]*//[^/]*).*$~', '$1', $base_url);
+        $query_url = rtrim($host_url . $this->grabFromCurrentUrl(), '/');
+
         $oparl_url_regex = '~"(' . $base_url . '[^"]*)"~';
 
         // Check that the returned json object is either an external list or an oparl object
-        if (array_key_exists('items', $this->getResponseAsTree())) {
-            $this->assertTrue(is_array($this->getResponseAsTree()->items));
-        } else if (array_key_exists('id', $this->getResponseAsTree()) && array_key_exists('type', $this->getResponseAsTree())) {
-            // check that the id is correct
-            $host_url = preg_replace('~^([^/]*//[^/]*).*$~', '$1', $base_url);
-            $query_url = rtrim($host_url . $this->grabFromCurrentUrl(), '/');
-            $this->assertEquals($query_url, $this->getResponseAsTree()->id);
+        $tree = $this->getResponseAsTree();
+        if (array_key_exists('data', $tree)) {
+            // See "2.5.4 Paginierung" for details
+            $this->assertTrue(is_array($tree->data), "data");
+            $this->assertTrue(is_object($tree->pagination), "pagination");
+            foreach ($tree->pagination as $key => $value) {
+                $this->assertTrue(is_int($value), "is int");
+            }
+            $this->assertTrue(is_object($tree->links), "links");
+            //$this->assertTrue(isset($tree->links->self)); // TODO
+            //$this->assertEquals($tree->links->self, $query_url);
+            foreach ($tree->links as $key => $value) {
+                $this->assertTrue(is_string($value), "is tring");
+                $this->assertTrue($startsWith($value, $base_url), "starts with base url");
+            }
+        } else if (array_key_exists('id', $tree)) {
+            // See "3.3 Eigenschaften mit Verwendung in mehreren Objekttypen" for details
+            $this->assertTrue(isset($tree->type));
+            //$this->assertTrue(isset($tree->created));
+            //$this->assertTrue(isset($tree->modified));
+            $this->assertEquals($tree->id, $query_url);
 
             // Check that the typ is a OParl type
             // The url either ends with /[type]/[id] or with /[type]/[subtype]/[id],
@@ -62,7 +84,7 @@ class OparlTester extends \Codeception\Actor
             // There's an exception for the system object as it is the entry object
             if ($type == "/oparl/v1.0/")
                 $type = "system";
-            $this->assertRegExp('~https:\/\/oparl.org\/schema\/1.0\/' . $type . '~i',  $this->getResponseAsTree()->type);
+            $this->assertRegExp('~https:\/\/oparl.org\/schema\/1.0\/' . $type . '~i',  $tree->type);
         } else {
             $this->fail('Returned JSON was neither an object nor an external list');
         }
@@ -75,6 +97,6 @@ class OparlTester extends \Codeception\Actor
             codecept_debug('URL validity check for ' . $url);
             $this->sendGET($url);
             $this->seeResponseCodeIs(200);
-        }     
+        }
     }
 }

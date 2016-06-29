@@ -48,9 +48,10 @@ gulp
     'schemaCachingDuration' => 3600,
 ],
 ```
-* Beispieldaten in die Datenbank importieren:
+* Schema, Beispieldaten in die Datenbank und (optional) Statistiken importieren:
 ```bash
 cat docs/schema.sql docs/beispieldaten.sql docs/triggers.sql | mysql -u ris -psec muenchen_transparent
+protected/yiic importstatistik
 ```
 
 ### PHP

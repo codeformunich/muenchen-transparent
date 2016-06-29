@@ -60,10 +60,14 @@ class OParl10List
             $bodies[] = OParl10Object::get('body', $ba->ba_nr);
 
         return [
-            'items'         => $bodies,
-            'firstPage'     => OParl10Controller::getOparlListUrl('body'),
-            'lastPage'      => OParl10Controller::getOparlListUrl('body'),
-            'numberOfPages' => 1,
+            'data'       => $bodies,
+            'pagination' => [
+                'totalPages'   => 1,
+                'currentPages' => 1,
+            ],
+            'links'      => [
+                'first'        => OParl10Controller::getOparlListUrl('body'),
+                'last'         => OParl10Controller::getOparlListUrl('body'),            ]
         ];
     }
 
@@ -114,14 +118,18 @@ class OParl10List
         $last_entry = $model->find(['order' => 'id DESC']);
 
         $data = [
-            'items'         => $oparl_entries,
-            'itemsPerPage'  => static::ITEMS_PER_PAGE,
-            'firstPage'     => OParl10Controller::getOparlListUrl($type, $body),
-            'numberOfPages' => ceil($count / static::ITEMS_PER_PAGE),
+            'data'       => $oparl_entries,
+            'pagination' => [
+                'elementsPerPage' => static::ITEMS_PER_PAGE,
+                'totalPages'      => ceil($count / static::ITEMS_PER_PAGE),
+            ],
+            'links'      => [
+                'first'           => OParl10Controller::getOparlListUrl($type, $body),
+            ]
         ];
 
         if (count($entries) > 0 && end($entries)->id != $last_entry->id)
-            $data['nextPage'] = OParl10Controller::getOparlListUrl($type, $body, end($entries)->id);
+            $data['links']['next'] = OParl10Controller::getOparlListUrl($type, $body, end($entries)->id);
 
         return $data;
     }
@@ -158,10 +166,15 @@ class OParl10List
             $organizations[] = OParl10Object::get('organization', $fraktion->id, 'fraktion');
 
         return [
-            'items'         => $organizations,
-            'firstPage'     => OParl10Controller::getOparlListUrl('organization', $body),
-            'lastPage'      => OParl10Controller::getOparlListUrl('organization', $body),
-            'numberOfPages' => 1,
+            'data'         => $organizations,
+            'pagination'    => [
+                'totalPages'  => 1,
+                'currentPage' => 1,
+            ],
+            'links'        => [
+                'firstPage'   => OParl10Controller::getOparlListUrl('organization', $body),
+                'lastPage'    => OParl10Controller::getOparlListUrl('organization', $body),
+            ]
         ];
     }
 
