@@ -288,7 +288,7 @@ class IndexController extends RISBaseController
                     $str = "<div class='antraglink'>" . CHtml::link($name, $ant->getLink()) . "</div>";
                     $str .= "<div class='ort_dokument'>";
                     $str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
-                    $str .= "<div class='dokument'>" . CHtml::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</div>";
+                    $str .= "<div class='dokument'>" . CHtml::link($dokument->getName(), $dokument->getLink()) . "</div>";
                     $str .= "</div>";
                     $str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
 

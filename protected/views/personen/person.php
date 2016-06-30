@@ -143,11 +143,11 @@ $this->html_itemprop = "http://schema.org/Person";
                             <li style="margin-bottom: 10px;">
                                 <?= CHtml::link($risitem->getName(true), $risitem->getLink()) ?> <br>
                                 <a class="fontello-download antrag-herunterladen"
-                                   href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" 
+                                   href="<?= CHtml::encode($dokument->getLinkZumDownload()) ?>" 
                                    download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName(true)) ?>.pdf"
                                    title="Herunterladen: <?= CHtml::encode($dokument->getName(true)) ?>">
                                 </a>
-                                <?= CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument()) ?>
+                                <?= CHtml::link($dokument->getName(false), $dokument->getLink()) ?>
                             </li> <?
                         }
                         echo '</ul></td></tr>';

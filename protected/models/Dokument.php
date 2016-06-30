@@ -211,9 +211,12 @@ class Dokument extends CActiveRecord implements IRISItem
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getLink($add_params = [])
     {
-        throw new \Sabre\DAV\Exception\NotImplemented();
+        return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
     }
 
     /**
@@ -225,6 +228,14 @@ class Dokument extends CActiveRecord implements IRISItem
             if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
             else return RATHAUSUMSCHAU_WEBSITE;
         } else return RIS_URL_PREFIX . $this->url;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLinkZumDownload()
+    {
+        return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]) . '/datei';
     }
 
     /** @return string */
@@ -251,9 +262,6 @@ class Dokument extends CActiveRecord implements IRISItem
             if (preg_match("/^Antwort \\d{2}\-/siu", $name_titel)) return "Antwortschreiben";
 
             if (strlen($name) > 255) {
-                if ($name_titel == "Antwortschreiben") return "Antwortschreiben";
-                if (preg_match("/^Antwortschreiben .*/siu", $name_titel)) return "Antwortschreiben";
-                if (preg_match("/^Antwort \\d{2}\-/siu", $name_titel)) return "Antwortschreiben";
                 return "Dokument";
             }
             if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
@@ -487,22 +495,6 @@ class Dokument extends CActiveRecord implements IRISItem
             $extension = $x[count($x) - 1];
             return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getLinkZumDokument()
-    {
-        return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getLinkZurDatei()
-    {
-        return Yii::app()->createUrl("index/dokumentenproxy", ["id" => $this->id]);
     }
 
     private static $dokumente_cache = [];

@@ -133,7 +133,7 @@ if (count($antraege) > 0) {
             /** @var Antrag $entry */
             $doklist = "";
             foreach ($entry->dokumente as $dokument) {
-                $dokurl = $dokument->getLinkZumDokument();
+                $dokurl = $dokument->getLink();
                 $doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
                 if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
                 $doklist .= ">" . CHtml::encode($dokument->getName(false)) . "</a></li>";

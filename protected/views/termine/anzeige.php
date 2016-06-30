@@ -92,7 +92,7 @@ function zeile_anzeigen($feld, $name, $callback)
         <?
         zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", function ($dok) {
             /** @var Dokument $dok */
-            echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLinkZumDokument());
+            echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLink());
         });
         ?>
         </tbody>
@@ -132,7 +132,7 @@ function zeile_anzeigen($feld, $name, $callback)
                         $antrag_ids[] = $ergebnis->antrag->id;
                     }
                     foreach ($ergebnis->dokumente as $dokument) {
-                        echo "<li>" . CHtml::link($dokument->name, $dokument->getLinkZumDokument());
+                        echo "<li>" . CHtml::link($dokument->name, $dokument->getLink());
                         $x = explode("Beschluss:", $dokument->text_pdf);
                         if (count($x) > 1) echo " (" . CHtml::encode(trim($x[1])) . ")";
                         echo "</li>\n";
@@ -172,9 +172,9 @@ function zeile_anzeigen($feld, $name, $callback)
             });
         </script>
     <? } elseif ($to_pdf) {
-        $this->renderPartial("../index/pdf_embed", array(
-            "url" => '/dokumente/' . $to_pdf->id . '.pdf',
-        ));
+        $this->renderPartial("../index/pdf_embed", [
+            "url" => $to_pdf->getLinkZumDownload(),
+        ]);
     } else {
         echo '<div class="keine_tops">(Noch) Keine Tagesordnung veröffentlicht</div>';
     }

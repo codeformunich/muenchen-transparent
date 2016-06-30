@@ -5,9 +5,8 @@
  * @var Dokument $dokument
  */
 
-$risitem = $dokument->getRISItem();
-if ($risitem) {
-    $this->pageTitle = $risitem->getName(true) . ": " . $dokument->getName();
+if ($dokument->getRISItem()) {
+    $this->pageTitle = $dokument->getRISItem()->getName(true) . ": " . $dokument->getName();
 } else {
     $this->pageTitle = $dokument->getName();
 }
@@ -26,7 +25,7 @@ if ($risitem) {
         } else if ($dokument->tagesordnungspunkt_id) {
             $uebergruppe = Tagesordnungspunkt::model()->findByPk($dokument->tagesordnungspunkt_id);
             $uebergruppe_title = 'Ergebnisseite';
-        } else if ($dokument->termin_id) { 
+        } else if ($dokument->termin_id) {
             $uebergruppe = Termin::model()->findByPk($dokument->termin_id);
             $uebergruppe_title = 'Terminseite';
         }
@@ -34,30 +33,30 @@ if ($risitem) {
         if ($uebergruppe) {
             echo "<li>" . CHtml::link($uebergruppe_title, $uebergruppe->getLink()) . "<br></li>";
         }
-        
+
         $weitere = $uebergruppe && count($uebergruppe->getDokumente()) > 1;
         ?>
-        
+
         <li class="active"><?= CHtml::encode($dokument->getName()) ?></li>
-        
+
         <? // Rechter Bereich ?>
-        
+
         <li class="pdf-download-button <? if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLinkZumOrginal()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
         <? if ($weitere) { ?>
             <li class="dropdown weitere-dokumente kein-slash-davor">
-                
+
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-file"></span> Weitere Dokumente<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLinkZumDokument()) . "</li>\n" ?>
+                    <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLink()) . "</li>\n" ?>
                 </ul>
             </li>
         <? } ?>
     </ul>
 
     <?
-    $this->renderPartial("pdf_embed", array(
-        "url" => '/dokumente/' . $id . '.pdf',
-    ));
+    $this->renderPartial("pdf_embed", [
+        "url" => $dokument->getLinkZumDownload(),
+    ]);
     ?>
 
     <div id="pdf_rechtsvermerk">

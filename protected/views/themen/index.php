@@ -58,7 +58,7 @@ $this->pageTitle = "Themen";
                 <ul><?
                     foreach ($highlights as $dok) {
                         echo "<li>";
-                        echo CHtml::link($dok->antrag->getName(true), $dok->getLinkZumDokument());
+                        echo CHtml::link($dok->antrag->getName(true), $dok->getLink());
                         echo "</li>";
                     }
                     ?>

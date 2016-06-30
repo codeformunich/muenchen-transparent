@@ -227,11 +227,11 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     return 0;
                 });
                 zeile_anzeigen($docs, "Dokumente:", "dokumente",  function ($dokument) {
-                    /** @var Dokument $dok */
-                    echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLinkZumDokument());
+                    /** @var Dokument $dokument */
+                    echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLink());
                     ?>
                     <a class="fontello-download antrag-herunterladen"
-                       href="<?= CHtml::encode('/dokumente/' . $dokument->id . '.pdf') ?>" 
+                       href="<?= CHtml::encode($dokument->getLinkZumDownload()) ?>" 
                        download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf"
                        title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>">
                     </a> <?
@@ -297,10 +297,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     
                     zeile_anzeigen($items, "Verwandte Seiten:", "verwandte_seiten", function ($item) {
                         /** @var IRISItem $item */
-                        if (method_exists($item, "getLinkZumDokument"))
-                            echo CHtml::link($item->getName(true), $item->getLinkZumDokument());
-                        else
-                            echo CHtml::link($item->getName(true), $item->getLink());
+                        echo CHtml::link($item->getName(true), $item->getLink());
                     });
                 }
                 ?>

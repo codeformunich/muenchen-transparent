@@ -81,7 +81,7 @@ $this->pageTitle = "Termine";
 						$doklist  = "";
 						foreach ($termin->antraegeDokumente as $dokument) {
 							//$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
-							$dokurl = $dokument->getLinkZumDokument();
+							$dokurl = $dokument->getLink();
 							$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
 							if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
 							$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";

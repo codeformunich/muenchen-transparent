@@ -116,7 +116,7 @@ class Rathausumschau extends CActiveRecord implements IRISItem
         $x        = explode("Antworten auf Stadtratsanfragen", $x[1]);
         $text     = $x[0];
         $tops_out = [];
-        $link     = $this->dokumente[0]->getLinkZumDokument();
+        $link     = $this->dokumente[0]->getLink();
 
         $tops_in = explode("›", $text);
         if (count($tops_in) <= 1) return $tops_out;
