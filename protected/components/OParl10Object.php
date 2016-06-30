@@ -41,47 +41,61 @@ class OParl10Object {
     }
 
     /**
-     * Erzeugt ein 'oparl:File'-Objekt, das ein Dokument abbildet
+     * Erzeugt ein 'oparl:Body'-Objekt, also den Stadtrat oder die Bezirksauschüsse
      */
-    private static function file($id) {
-        $dokument = Dokument::model()->findByPk($id);
-
-        $data = [
-            'id'          => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
-            'type'        => self::TYPE_FILE,
-            'name'        => $dokument->getName(),
-            'accessUrl'   => SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
-            'downloadUrl' => SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
-            'fileName'    => $dokument->getDateiname(),
-            'created'     => OParl10Controller::mysqlToOparlDateTime($dokument->created),
-            'modified'    => OParl10Controller::mysqlToOparlDateTime($dokument->modified),
-        ];
-
-        if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
-            $data['mimeType' ] = 'application/pdf';
-        } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff') {
-            $data['mimeType' ] = 'image/tiff';
+    private static function body($id) {
+        // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
+        if ($id == 0) {
+            $body = 0;
+            $name = 'Stadrat der Landeshauptstadt München';
+            $shortName = 'Stadtrat';
+            $website = 'http://www.muenchen.de/';
+            $location = null;
+        } else {
+            $ba = Bezirksausschuss::model()->findByPk($id);
+            $body = $ba->ba_nr;
+            $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
+            $shortName = 'BA ' . $ba->ba_nr;
+            $website = $ba->website;
+            $location = self::location($id, 'body');
         }
 
-        if ($dokument->termin)
-            $data['meeting'] = [OParl10Controller::getOparlObjectUrl('meeting', $dokument->termin->id)];
+        $data = [
+            'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
+            'type'            => self::TYPE_BODY,
+            'system'          => OParl10Controller::getOparlObjectUrl('system', null),
+            'contactEmail'    => Yii::app()->params['adminEmail'],
+            'contactName'     => Yii::app()->params['adminEmailName'],
+            'name'            => $name,
+            'shortName'       => $shortName,
+            'website'         => $website,
+            'organization'    => OParl10Controller::getOparlListUrl('organization', $body),
+            'person'          => OParl10Controller::getOparlListUrl('person',       $body),
+            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
+            'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
+            'legislativeTerm' => self::legislativeterm(-1),
+        ];
 
-        if ($dokument->antrag)
-            $data['paper'] = [OParl10Controller::getOparlObjectUrl('paper', $dokument->antrag->id)];
-
-        // TODO
-        /*
-        if ($dokument->tagesordnungspunkt)
-            $data['agendaItem'] = [OParl10Controller::getOparlObjectUrl('agendaItem', $dokument->tagesordnungspunkt->id)];
-        */
-
-        if ($dokument->ocr_von)
-            $data['muenchenTransparent:ocrCreator'] = $dokument->ocr_von;
-
-        if ($dokument->deleted)
-            $data['deleted'] = true;
+        if ($location)
+            $data['location'] = $location;
 
         return $data;
+    }
+
+    private static function location($id, $subtype) {
+        if ($subtype != 'body') {
+            header('HTTP/1.0 400 Bad Request');
+            return ['error' => 'No such subtype ' . $subtype . ' for location'];
+        }
+
+        $object = Bezirksausschuss::model()->findByPk($id);
+
+        return [
+            'id'      => OParl10Controller::getOparlObjectUrl('location', $id, 'body'),
+            'type'    => self::TYPE_LOCATION,
+            'bodies'  => [OParl10Controller::getOparlObjectUrl('body', $id)],
+            'geojson' => $object->toGeoJSONArray(),
+        ];
     }
 
     /**
@@ -132,6 +146,50 @@ class OParl10Object {
             return $data;
         else
             return $data[$id];
+    }
+
+    /**
+     * Erzeugt ein 'oparl:File'-Objekt, das ein Dokument abbildet
+     */
+    private static function file($id) {
+        $dokument = Dokument::model()->findByPk($id);
+
+        $data = [
+            'id'          => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
+            'type'        => self::TYPE_FILE,
+            'name'        => $dokument->getName(),
+            'accessUrl'   => SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
+            'downloadUrl' => SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
+            'fileName'    => $dokument->getDateiname(),
+            'created'     => OParl10Controller::mysqlToOparlDateTime($dokument->created),
+            'modified'    => OParl10Controller::mysqlToOparlDateTime($dokument->modified),
+        ];
+
+        if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
+            $data['mimeType' ] = 'application/pdf';
+        } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff') {
+            $data['mimeType' ] = 'image/tiff';
+        }
+
+        if ($dokument->termin)
+            $data['meeting'] = [OParl10Controller::getOparlObjectUrl('meeting', $dokument->termin->id)];
+
+        if ($dokument->antrag)
+            $data['paper'] = [OParl10Controller::getOparlObjectUrl('paper', $dokument->antrag->id)];
+
+        // TODO
+        /*
+        if ($dokument->tagesordnungspunkt)
+            $data['agendaItem'] = [OParl10Controller::getOparlObjectUrl('agendaItem', $dokument->tagesordnungspunkt->id)];
+        */
+
+        if ($dokument->ocr_von)
+            $data['muenchenTransparent:ocrCreator'] = $dokument->ocr_von;
+
+        if ($dokument->deleted)
+            $data['deleted'] = true;
+
+        return $data;
     }
 
     /**
@@ -356,64 +414,6 @@ class OParl10Object {
             'website'            => SITE_BASE_URL,
             'vendor'             => 'https://github.com/codeformunich/Muenchen-Transparent',
             'product'            => 'https://github.com/codeformunich/Muenchen-Transparent',
-        ];
-    }
-
-    /**
-     * Erzeugt ein 'oparl:Body'-Objekt, also den Stadtrat oder die Bezirksauschüsse
-     */
-    private static function body($id) {
-        // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
-        if ($id == 0) {
-            $body = 0;
-            $name = 'Stadrat der Landeshauptstadt München';
-            $shortName = 'Stadtrat';
-            $website = 'http://www.muenchen.de/';
-            $location = null;
-        } else {
-            $ba = Bezirksausschuss::model()->findByPk($id);
-            $body = $ba->ba_nr;
-            $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
-            $shortName = 'BA ' . $ba->ba_nr;
-            $website = $ba->website;
-            $location = self::location($id, 'body');
-        }
-
-        $data = [
-            'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
-            'type'            => self::TYPE_BODY,
-            'system'          => OParl10Controller::getOparlObjectUrl('system', null),
-            'contactEmail'    => Yii::app()->params['adminEmail'],
-            'contactName'     => Yii::app()->params['adminEmailName'],
-            'name'            => $name,
-            'shortName'       => $shortName,
-            'website'         => $website,
-            'organization'    => OParl10Controller::getOparlListUrl('organization', $body),
-            'person'          => OParl10Controller::getOparlListUrl('person',       $body),
-            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
-            'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
-            'legislativeTerm' => self::legislativeterm(-1),
-        ];
-
-        if ($location)
-            $data['location'] = $location;
-
-        return $data;
-    }
-
-    private static function location($id, $subtype) {
-        if ($subtype != 'body') {
-            header('HTTP/1.0 400 Bad Request');
-            return ['error' => 'No such subtype ' . $subtype . ' for location'];
-        }
-
-        $object = Bezirksausschuss::model()->findByPk($id);
-
-        return [
-            'id'      => OParl10Controller::getOparlObjectUrl('location', $id, 'body'),
-            'type'    => self::TYPE_LOCATION,
-            'bodies'  => [OParl10Controller::getOparlObjectUrl('body', $id)],
-            'geojson' => $object->toGeoJSONArray(),
         ];
     }
 }
