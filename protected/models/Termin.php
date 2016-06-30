@@ -421,7 +421,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     {
         $description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $this->id]);
         foreach ($this->antraegeDokumente as $dok) {
-            $description .= "\n" . $dok->getName() . ": " . $dok->getLink();
+            $description .= "\n" . $dok->getName() . ": " . $dok->getLinkZumOrginal();
         }
         $ende = date("Y-m-d H:i:s", RISTools::date_iso2timestamp($this->termin) + 3600);
         return [

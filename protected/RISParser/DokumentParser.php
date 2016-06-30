@@ -9,7 +9,7 @@ class DokumentParser
         $dokument = Dokument::model()->disableDefaultScope()->findByPk($doc_id);
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $dokument->getLink());
+        curl_setopt($ch, CURLOPT_URL, $dokument->getLinkZumOrginal());
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_NOBODY, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

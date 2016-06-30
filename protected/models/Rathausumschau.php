@@ -75,7 +75,7 @@ class Rathausumschau extends CActiveRecord implements IRISItem
     public function getLink($add_params = [])
     {
         if (count($this->dokumente) > 0) {
-            return $this->dokumente[0]->getLink();
+            return $this->dokumente[0]->getLinkZumOrginal();
         } else {
             return RATHAUSUMSCHAU_WEBSITE;
         }

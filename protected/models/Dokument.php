@@ -79,7 +79,7 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
     /**
-     * 
+     *
      */
     public function getDateiInhalt()
     {
@@ -91,10 +91,10 @@ class Dokument extends CActiveRecord implements IRISItem
                 Header('Content-Type: image/tiff');
             }
 
-            return ris_download_string($this->getLink());
+            return ris_download_string($this->getLinkZumOrginal());
         } catch (Exception $e) {
             $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
-            fwrite($fp, $this->id . " - " . $this->getLink() . "\n");
+            fwrite($fp, $this->id . " - " . $this->getLinkZumOrginal() . "\n");
             fclose($fp);
             return null;
         }
@@ -211,12 +211,15 @@ class Dokument extends CActiveRecord implements IRISItem
         return $this;
     }
 
+    public function getLink($add_params = [])
+    {
+        throw new \Sabre\DAV\Exception\NotImplemented();
+    }
 
     /**
-     * @param array $add_params
      * @return string
      */
-    public function getLink($add_params = [])
+    public function getLinkZumOrginal()
     {
         if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
             if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
