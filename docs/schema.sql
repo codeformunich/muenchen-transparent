@@ -456,7 +456,7 @@ CREATE TABLE `stadtraetInnen_fraktionen` (
   KEY `uq` (`stadtraetIn_id`,`fraktion_id`,`wahlperiode`),
   CONSTRAINT `fk_stadtraetInnen_fraktionen` FOREIGN KEY (`stadtraetIn_id`) REFERENCES `stadtraetInnen` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_stadtraete_fraktionen_fraktionen2` FOREIGN KEY (`fraktion_id`) REFERENCES `fraktionen` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;

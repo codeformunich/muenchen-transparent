@@ -151,7 +151,7 @@ commit;
 
 /*!40000 ALTER TABLE `stadtraetInnen` DISABLE KEYS */;
 set autocommit=0;
-INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Dr. Stadtrat, mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~','2016-05-02 17:53:09','2016-06-24 09:03:32');
+INSERT INTO `stadtraetInnen` VALUES (1,NULL,0,'2014-05-01','Geboren am 31.05.1971 um 18:09:45\n\nQuery: `SELECT FROM_UNIXTIME(avg(unix_timestamp(geburtstag))) FROM stadtraetInnen WHERE geburtstag`','meine.email@gmail.com','https://example.com','Dr. Stadtrat, mit allen Eigenschaften','@StadtratmitallenEigenschaften','StadtratmitallenEigenschaften_1123410','Stadtrat mit allen Eigenschaften','maennlich','München','1971-05-31','Stadtrat','„Bürgernahe Steuersenkungen für Sicherheit und Freiheit“','~','2016-05-02 17:53:09','2016-06-30 14:44:25');
 INSERT INTO `stadtraetInnen` VALUES (2,NULL,0,NULL,'',NULL,'','Stadträtin mit möglichst wenigen Eigenschaften',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-02 17:53:09','2016-05-02 17:53:09');
 INSERT INTO `stadtraetInnen` VALUES (3,NULL,1,NULL,'',NULL,'','Referent für Städtische Aufgaben',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-02 17:53:09','2016-05-02 17:53:09');
 INSERT INTO `stadtraetInnen` VALUES (4,NULL,0,NULL,'',NULL,'','Stadtrat in Gremium',NULL,NULL,NULL,NULL,NULL,NULL,'','','','2016-05-08 10:09:27','2016-05-08 10:09:27');
@@ -162,6 +162,7 @@ commit;
 set autocommit=0;
 INSERT INTO `stadtraetInnen_fraktionen` VALUES (1,1,1,'2','2000-01-01','2004-01-01','von 01.01.2000 bis 01.01.2004','Mitglied','2016-05-02 17:53:09','2016-05-02 17:53:09');
 INSERT INTO `stadtraetInnen_fraktionen` VALUES (2,1,1,'3','2004-01-01',NULL,'seit 01.01.2014','Vorsitzender','2016-05-02 17:53:09','2016-06-24 08:58:33');
+INSERT INTO `stadtraetInnen_fraktionen` VALUES (3,1,2,'2','2000-01-01','2004-01-01','von 01.01.2000 bis 01.01.2004','Mitglied','2016-05-02 17:53:09','2016-06-30 14:44:25');
 /*!40000 ALTER TABLE `stadtraetInnen_fraktionen` ENABLE KEYS */;
 commit;
 
