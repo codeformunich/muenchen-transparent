@@ -51,13 +51,16 @@ class OParl10Object {
             $shortName = 'Stadtrat';
             $website = 'http://www.muenchen.de/';
             $location = null;
+            $web = SITE_BASE_URL;
         } else {
+            /** @var Bezirksausschuss $ba */
             $ba = Bezirksausschuss::model()->findByPk($id);
             $body = $ba->ba_nr;
             $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
             $shortName = 'BA ' . $ba->ba_nr;
             $website = $ba->website;
             $location = self::location($id, 'body');
+            $web = SITE_BASE_URL . $ba->getLink();
         }
 
         $data = [
@@ -74,6 +77,7 @@ class OParl10Object {
             'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
             'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
             'legislativeTerm' => self::legislativeterm(-1),
+            'web'             => $web,
         ];
 
         if ($location)
@@ -88,13 +92,14 @@ class OParl10Object {
             return ['error' => 'No such subtype ' . $subtype . ' for location'];
         }
 
-        $object = Bezirksausschuss::model()->findByPk($id);
+        /** @var Bezirksausschuss $ba */
+        $ba = Bezirksausschuss::model()->findByPk($id);
 
         return [
             'id'      => OParl10Controller::getOparlObjectUrl('location', $id, 'body'),
             'type'    => self::TYPE_LOCATION,
             'bodies'  => [OParl10Controller::getOparlObjectUrl('body', $id)],
-            'geojson' => $object->toGeoJSONArray(),
+            'geojson' => $ba->toGeoJSONArray(),
         ];
     }
 
@@ -152,6 +157,7 @@ class OParl10Object {
      * Erzeugt ein 'oparl:File'-Objekt, das ein Dokument abbildet
      */
     private static function file($id) {
+        /** @var Dokument $dokument */
         $dokument = Dokument::model()->findByPk($id);
 
         $data = [
@@ -161,6 +167,7 @@ class OParl10Object {
             'accessUrl'   => SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
             'downloadUrl' => SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
             'fileName'    => $dokument->getDateiname(),
+            'web'         => SITE_BASE_URL . $dokument->getLink(),
             'created'     => OParl10Controller::mysqlToOparlDateTime($dokument->created),
             'modified'    => OParl10Controller::mysqlToOparlDateTime($dokument->modified),
         ];
@@ -196,6 +203,7 @@ class OParl10Object {
      * Erzeugt ein 'oparl:Meeting'-Objekt, das einen Termin abbildet
      */
     private static function meeting($id) {
+        /** @var Termin $termin */
         $termin = Termin::model()->findByPk($id);
 
         $data = [
@@ -205,6 +213,7 @@ class OParl10Object {
             'meetingState' => $termin->sitzungsstand,
             'start'        => OParl10Controller::mysqlToOparlDateTime($termin->termin),
             'organization' => OParl10Controller::getOparlObjectUrl('organization', $termin->gremium->id, 'gremium'),
+            'web'          => SITE_BASE_URL . $termin->getLink(),
             'created'      => OParl10Controller::mysqlToOparlDateTime($termin->created),
             'modified'     => OParl10Controller::mysqlToOparlDateTime($termin->modified),
         ];
@@ -279,6 +288,7 @@ class OParl10Object {
             'shortName'      => $object->getName(true),
             'membership'     => [],
             'classification' => $object->getTypName(),
+            'web'            => SITE_BASE_URL . $object->getLink(),
             'created'        => OParl10Controller::mysqlToOparlDateTime($object->created),
             'modified'       => OParl10Controller::mysqlToOparlDateTime($object->modified),
         ];
@@ -303,6 +313,7 @@ class OParl10Object {
      * Erzeugt ein 'oparl:Paper'-Objekt, das ein pdf (oder in Ausnahmefällen ein tiff) abbildet
      */
     private static function paper($id) {
+        /** @var Antrag $antrag */
         $antrag = Antrag::model()->findByPk($id);
 
         $data = [
@@ -315,6 +326,7 @@ class OParl10Object {
             'auxiliaryFile'    => [],
             'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization', $antrag->referat_id, 'referat')],
             'keyword'          => [],
+            'web'              => SITE_BASE_URL . $antrag->getLink(),
             'created'          => OParl10Controller::mysqlToOparlDateTime($antrag->created),
             'modified'         => OParl10Controller::mysqlToOparlDateTime($antrag->modified),
         ];
@@ -338,6 +350,7 @@ class OParl10Object {
      * Erzeugt ein 'oparl:Person'-Objekt, das StadträtInnen abbildet
      */
     private static function person($id) {
+        /** @var StadtraetIn $stadtraetin */
         $stadtraetin = StadtraetIn::model()->findByPk($id);
 
         $body = 0; // fallback
@@ -356,6 +369,7 @@ class OParl10Object {
             'name'       => $stadtraetin->name,
             'familyName' => $stadtraetin->errateNachname(),
             'givenName'  => $stadtraetin->errateVorname(),
+            'web'        => SITE_BASE_URL . $stadtraetin->getLink(),
             'created'    => OParl10Controller::mysqlToOparlDateTime($stadtraetin->created),
             'modified'   => OParl10Controller::mysqlToOparlDateTime($stadtraetin->modified),
         ];
@@ -413,7 +427,8 @@ class OParl10Object {
             'contactName'        => Yii::app()->params['adminEmailName'],
             'website'            => SITE_BASE_URL,
             'vendor'             => 'https://github.com/codeformunich/Muenchen-Transparent',
-            'product'            => 'https://github.com/codeformunich/Muenchen-Transparent',
+            'product'            => Yii::app()->createUrl('/infos/api'),
+            'web'                => SITE_BASE_URL,
         ];
     }
 }
