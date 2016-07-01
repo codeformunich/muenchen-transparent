@@ -83,7 +83,7 @@ class IndexController extends RISBaseController
     {
         if (isset($_REQUEST["krit_typ"])) {
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
-            $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getTitle();
+            $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getBeschreibungDerSuche();
 
             $solr   = RISSolrHelper::getSolrClient();
             $select = $solr->createSelect();
@@ -335,7 +335,7 @@ class IndexController extends RISBaseController
     public function actionAntraegeAjaxGeo($lat, $lng, $radius, $seite = 0)
     {
         $krits = new RISSucheKrits();
-        $krits->addGeoKrit($lng, $lat, $radius);
+        $krits->addKrit('geo', $lng . '-' . $lat . '-' . $radius);
 
         $solr   = RISSolrHelper::getSolrClient();
         $select = $solr->createSelect();
@@ -405,10 +405,10 @@ class IndexController extends RISBaseController
     {
         if (AntiXSS::isTokenSet("search_form")) {
             $krits = new RISSucheKrits();
-            if (trim($_REQUEST["volltext"]) != "") $krits->addVolltextsucheKrit($_REQUEST["volltext"]);
-            if (trim($_REQUEST["antrag_nr"]) != "") $krits->addAntragNrKrit($_REQUEST["antrag_nr"]);
-            if ($_REQUEST["typ"] != "") $krits->addAntragTypKrit($_REQUEST["typ"]);
-            if ($_REQUEST["referat"] > 0) $krits->addReferatKrit($_REQUEST["referat"]);
+            if (trim($_REQUEST["volltext"]) != "")  $krits->addKrit('volltext',   $_REQUEST["volltext"]);
+            if (trim($_REQUEST["antrag_nr"]) != "") $krits->addKrit('antrag_nr',  $_REQUEST["antrag_nr"]);
+            if ($_REQUEST["typ"] != "")             $krits->addKrit('antrag_typ', $_REQUEST["typ"]);
+            if ($_REQUEST["referat"] > 0)           $krits->addKrit('referat',    $_REQUEST["referat"]);
 
             /*
              * @TODO: Setzt voraus: offizielles Datum eines Dokuments ermitteln
@@ -429,21 +429,18 @@ class IndexController extends RISBaseController
             if ($_SERVER["REQUEST_METHOD"] == 'POST') $this->redirect($this->createUrl("index/suche", ["suchbegriff" => $suchbegriff]));
             $this->suche_pre = $suchbegriff;
             $krits           = new RISSucheKrits();
-            $krits->addVolltextsucheKrit($suchbegriff);
+            $krits->addKrit('volltext', $suchbegriff);
         } else {
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
         }
 
         if ($krits->getKritsCount() > 0) {
-
             $benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
-
 
             $solr   = RISSolrHelper::getSolrClient();
             $select = $solr->createSelect();
 
             $krits->addKritsToSolr($select);
-
 
             $select->setRows(50);
             $select->addSort('sort_datum', $select::SORT_DESC);

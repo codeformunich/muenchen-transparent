@@ -148,44 +148,6 @@ class RISSucheKrits
         return $krits->getUrl("index/feed");
     }
 
-
-    /**
-     * @param array $request
-     * @return RISSucheKrits
-     */
-    public static function createFromUrl($request)
-    {
-        $x = new RISSucheKrits();
-        if (isset($request["krit_typ"])) for ($i = 0; $i < count($request["krit_typ"]); $i++) switch ($request["krit_typ"][$i]) {
-            case "betreff":
-                $x->addBetreffKrit($request["krit_val"][$i]);
-                break;
-            case "volltext":
-                $x->addVolltextsucheKrit($request["krit_val"][$i]);
-                break;
-            case "antrag_typ":
-                $x->addAntragTypKrit($request["krit_val"][$i]);
-                break;
-            case "antrag_wahlperiode":
-                $x->addWahlperiodeKrit($request["krit_val"][$i]);
-                break;
-            case "ba":
-                $x->addBAKrit($request["krit_val"][$i]);
-                break;
-            case "geo":
-                $y = explode("-", $request["krit_val"][$i]);
-                $x->addGeoKrit($y[0], $y[1], $y[2]);
-                break;
-            case "referat":
-                $x->addReferatKrit($request["krit_val"][$i]);
-                break;
-            case "antrag_nr":
-                $x->addAntragNrKrit($request["krit_val"][$i]);
-                break;
-        }
-        return $x;
-    }
-
     /**
      * @param \Solarium\QueryType\Select\Query\Query $select
      */
@@ -288,7 +250,7 @@ class RISSucheKrits
      * @param Dokument|null $dokument
      * @return string
      */
-    public function getTitle($dokument = null)
+    public function getBeschreibungDerSuche($dokument = null)
     {
         if (count($this->krits) == 1) switch ($this->krits[0]["typ"]) {
             case "betreff":
@@ -379,114 +341,87 @@ class RISSucheKrits
         return json_encode($this->krits);
     }
 
-
     /**
-     * @param $str
+     * Fügt ein einzelnes Kriterium mit dem $name und dem Wert $value hinzu
+     *
+     * @param string $name
+     * @param string $value
      * @return $this
      */
-    public function addVolltextsucheKrit($str)
-    {
-        $this->krits[] = [
-            "typ"         => "volltext",
-            "suchbegriff" => $str
-        ];
-        return $this;
-    }
+    public function addKrit($name, $value) {
+        switch ($name) {
+            case "betreff":
+                $this->krits[] = [
+                    "typ"         => "betreff",
+                    "suchbegriff" => $value
+                ];
+                break;
+            case "volltext":
+                $this->krits[] = [
+                    "typ"         => "volltext",
+                    "suchbegriff" => $value
+                ];
+                break;
+            case "antrag_typ":
+                $this->krits[] = [
+                    "typ"         => "antrag_typ",
+                    "suchbegriff" => $value
+                ];
+                break;
+            case "antrag_wahlperiode":
+                $this->krits[] = [
+                    "typ"         => "antrag_wahlperiode",
+                    "suchbegriff" => $value
+                ];
+                break;
+            case "ba":
+                $this->krits[] = [
+                    "typ"   => "ba",
+                    "ba_nr" => IntVal($value)
+                ];
+                break;
+            case "geo":
+                $options = explode("-", $value);
+                $this->krits[] = [
+                    "typ"    => "geo",
+                    "lng"    => FloatVal($options[0]),
+                    "lat"    => FloatVal($options[1]),
+                    "radius" => FloatVal($options[2])
+                ];
+                break;
+            case "referat":
+                $this->krits[] = [
+                    "typ"        => "referat",
+                    "referat_id" => IntVal($value)
+                ];
+                break;
+            case "antrag_nr":
+                $value = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $value);
+                $value = preg_replace("/ +/siu", "*", $value);
+                $this->krits[] = [
+                    "typ"         => "antrag_nr",
+                    "suchbegriff" => $value,
+                ];
+                break;
+        }
 
-    /**
-     * @param float $lng
-     * @param float $lat
-     * @param float $radius
-     * @return $this
-     */
-    public function addGeoKrit($lng, $lat, $radius)
-    {
-        $this->krits[] = [
-            "typ"    => "geo",
-            "lng"    => FloatVal($lng),
-            "lat"    => FloatVal($lat),
-            "radius" => FloatVal($radius)
-        ];
-        return $this;
-    }
-
-    /**
-     * @param int $ba_nr
-     * @return $this
-     */
-    public function addBAKrit($ba_nr)
-    {
-        $this->krits[] = [
-            "typ"   => "ba",
-            "ba_nr" => IntVal($ba_nr)
-        ];
-        return $this;
-    }
-
-    public function addReferatKrit($referat_id)
-    {
-        $this->krits[] = [
-            "typ"        => "referat",
-            "referat_id" => IntVal($referat_id)
-        ];
-        return $this;
-    }
-
-    /**
-     * @param $str
-     * @return $this
-     */
-    public function addAntragTypKrit($str)
-    {
-        $this->krits[] = [
-            "typ"         => "antrag_typ",
-            "suchbegriff" => $str
-        ];
-        return $this;
-    }
-
-
-    /**
-     * @param $str
-     * @return $this
-     */
-    public function addWahlperiodeKrit($str)
-    {
-        $this->krits[] = [
-            "typ"         => "antrag_wahlperiode",
-            "suchbegriff" => $str
-        ];
         return $this;
     }
 
     /**
-     * @param $str
-     * @return $this
+     * @param array $request
+     * @return RISSucheKrits
      */
-    public function addBetreffKrit($str)
+    public static function createFromUrl($request)
     {
-        $this->krits[] = [
-            "typ"         => "betreff",
-            "suchbegriff" => $str
-        ];
-        return $this;
-    }
+        $x = new RISSucheKrits();
+        if (!isset($request["krit_typ"]))
+            return $x;
 
-    /**
-     * @param string $str
-     * @return $this
-     */
-    public function addAntragNrKrit($str)
-    {
-        $str           = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $str);
-        $str           = preg_replace("/ +/siu", "*", $str);
-        $this->krits[] = [
-            "typ"         => "antrag_nr",
-            "suchbegriff" => $str,
-        ];
-        return $this;
+        for ($i = 0; $i < count($request["krit_typ"]); $i++)
+            $x->addKrit($request["krit_typ"][$i], $request["krit_val"][$i]);
+        return $x;
     }
-
 
     /**
      * @return RISSucheKrits
@@ -495,6 +430,4 @@ class RISSucheKrits
     {
         return new RISSucheKrits($this->krits);
     }
-
-
 }

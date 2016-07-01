@@ -137,7 +137,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                                 <div class='del_holder'>
                                     <button type='submit' class='del' name='<?= $del_form_name ?>'><span class='glyphicon glyphicon-minus-sign'></span></button>
                                 </div>
-                                <div class='krit_holder'><?= $ben->getTitle() ?></div>
+                                <div class='krit_holder'><?= $ben->getBeschreibungDerSuche() ?></div>
                                 <div class='such_holder'><a href='<?= RISTools::bracketEscape(CHtml::encode($ben->getUrl())) ?>'><span
                                             class='glyphicon glyphicon-search'></span></a>
                                 </div>

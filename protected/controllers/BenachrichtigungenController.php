@@ -37,7 +37,7 @@ class BenachrichtigungenController extends RISBaseController
                 $this->msg_err = "Bitte gib einen Suchausdruck an.";
             } else {
                 $ben = new RISSucheKrits();
-                $ben->addVolltextsucheKrit($suchbegriff);
+                $ben->addKrit('volltext', $suchbegriff);
                 $ich->addBenachrichtigung($ben);
                 $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
             }
@@ -45,7 +45,7 @@ class BenachrichtigungenController extends RISBaseController
 
         if (AntiXSS::isTokenSet("benachrichtigung_add_ba")) {
             $ben = new RISSucheKrits();
-            $ben->addBAKrit($_REQUEST["ba"]);
+            $ben->addKrit('ba', $_REQUEST["ba"]);
             $ich->addBenachrichtigung($ben);
             $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
         }
@@ -55,7 +55,7 @@ class BenachrichtigungenController extends RISBaseController
                 $this->msg_err = "Ungültige Eingabe.";
             } else {
                 $ben = new RISSucheKrits();
-                $ben->addGeoKrit($_REQUEST["geo_lng"], $_REQUEST["geo_lat"], $_REQUEST["geo_radius"]);
+                $ben->addKrit('geo', $_REQUEST["geo_lng"] . '-' . $_REQUEST["geo_lat"] . '-' . $_REQUEST["geo_radius"]);
                 $ich->addBenachrichtigung($ben);
                 $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
             }
@@ -175,7 +175,7 @@ class BenachrichtigungenController extends RISBaseController
         $titel       = "Suchergebnisse";
         $description = "Neue Dokumente, die einem der folgenden Kriterien entsprechen:<br>";
         $bens        = $benutzerIn->getBenachrichtigungen();
-        foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getTitle()) . "<br>";
+        foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getBeschreibungDerSuche()) . "<br>";
 
         $solr       = RISSolrHelper::getSolrClient();
         $select     = $this->getAlleSuchergebnisse($solr, $benutzerIn);

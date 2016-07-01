@@ -29,7 +29,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
                 echo " - Dokument: " . $dokument->id . " - " . $dokument->name_title . " - ". $dokument->getLinkZumOrginal() . "\n";
                 foreach ($dok["queries"] as $qu) {
                     /** @var RISSucheKrits $qu */
-                    echo "   - " . $qu->getTitle($dokument) . "\n";
+                    echo "   - " . $qu->getBeschreibungDerSuche($dokument) . "\n";
                 }
             }
         }
@@ -44,7 +44,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
                 echo " - Dokument: " . $dokument->id . " - " . $dokument->name_title . " - ". $dokument->getLinkZumOrginal() . "\n";
                 foreach ($dok["queries"] as $qu) {
                     /** @var RISSucheKrits $qu */
-                    echo "   - " . $qu->getTitle($dokument) . "\n";
+                    echo "   - " . $qu->getBeschreibungDerSuche($dokument) . "\n";
                 }
             }
         }
