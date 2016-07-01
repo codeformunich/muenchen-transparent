@@ -20,31 +20,31 @@
     }
 
     if ($eingeloggt) {
-    if ($wird_benachrichtigt) {
-        ?>
-        <div class="button_hover_change">
-            <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-success btn-nohover" style="width: 250px;">
-                <span class="glyphicon glyphicon-ok"></span> Du wirst benachrichtigt
+        if ($wird_benachrichtigt) {
+            ?>
+            <div class="button_hover_change">
+                <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-success btn-nohover" style="width: 250px;">
+                    <span class="glyphicon glyphicon-ok"></span> Du wirst benachrichtigt
+                </button>
+                <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-primary btn-hover benachrichtigung_del_button" style="width: 250px;">
+                    Nicht mehr benachrichtigen!
+                </button>
+            </div>
+            <?
+        } else {
+            ?>
+            <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" class="btn btn-info btn-raised benachrichtigung_std_button">
+                <span class="glyphicon">@</span> Über neue Treffer benachrichtigen
             </button>
-            <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-primary btn-hover benachrichtigung_del_button" style="width: 250px;">
-                Nicht mehr benachrichtigen!
-            </button>
-        </div>
-    <?
+            <?
+        }
     } else {
         ?>
-        <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" class="btn btn-info btn-raised benachrichtigung_std_button">
-            <span class="glyphicon">@</span> Über neue Treffer benachrichtigen
-        </button>
-    <?
-    }
-    } else {
-    ?>
         <button type="button" class="btn btn-info btn-raised benachrichtigung_std_button" data-toggle="modal" data-target="#benachrichtigung_login">
             <span class="glyphicon">@</span> Über neue Treffer benachrichtigen
         </button>
-    <input type="hidden" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" value="1">
-    <?
+        <input type="hidden" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" value="1">
+        <?
         $this->renderPartial("login_modal");
     }
     ?>

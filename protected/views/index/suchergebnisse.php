@@ -16,7 +16,7 @@ $this->pageTitle = "Suchergebnisse";
 
 ?>
 <section class="well suchergebnisse">
-    <div class="pull-right" style="text-align: center;">
+    <div class="pull-right">
         <?
         $this->renderPartial("suchergebnisse_benachrichtigungen", array(
             "eingeloggt"          => $eingeloggt,
@@ -27,9 +27,11 @@ $this->pageTitle = "Suchergebnisse";
             "krits"               => $krits
         ));
         ?>
-        <div style="font-size: 90%;">
-            <a href="<?= CHtml::encode($krits->getFeedUrl()) ?>"><span class="fontello-rss"></span> Suchergebnisse als RSS-Feed</a>
-        </div>
+        <a href="<?= CHtml::encode($krits->getFeedUrl()) ?>">
+        <button type="button" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" class="btn btn-info btn-raised benachrichtigung_std_button">
+            <span class="glyphicon <? /* class=glyphicon, damit die css-Styles die gleichen wie bei dem Benachrichtigungs-Button sind */ ?> fontello-rss"></span>  Suchergebnisse als RSS-Feed
+        </button>
+        </a>
     </div>
 
     <?

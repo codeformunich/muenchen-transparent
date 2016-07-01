@@ -2,7 +2,6 @@
 
 class RISSucheKrits
 {
-
     /** @var array */
     public $krits = [];
 
@@ -144,8 +143,7 @@ class RISSucheKrits
      */
     public function getFeedUrl()
     {
-        $krits = $this->getBenachrichtigungKrits();
-        return $krits->getUrl("index/feed");
+        return $this->getBenachrichtigungKrits()->getUrl("index/feed");
     }
 
     /**
