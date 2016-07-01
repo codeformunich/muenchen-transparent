@@ -36,7 +36,7 @@ $this->pageTitle = "Themen";
                 <h3>Schlagworte</h3>
                 <div id="list-js-container" class="such-liste">
                     <input class="search" placeholder="Filtern" style="width: 100%;"/>
-                    <ul class="list list-unstyled">
+                    <ul class="list list-unstyled tag-liste">
                         <?
                         usort($tags, function ($a, $b) {
                             if (count($a->antraege) == count($b->antraege))

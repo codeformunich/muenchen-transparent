@@ -229,7 +229,7 @@ class Dokument extends CActiveRecord implements IRISItem
             else return RATHAUSUMSCHAU_WEBSITE;
         } else return RIS_URL_PREFIX . $this->url;
     }
-    
+
     /**
      * @return string
      */

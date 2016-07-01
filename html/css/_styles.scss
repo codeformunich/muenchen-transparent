@@ -1539,3 +1539,8 @@ ul.baliste {
 table li {
   word-break: break-all; // Sonst gibt es bei Dokumententiteln mit lauter Unterstrichen Probleme
 }
+
+.tag-liste {
+  max-height: 400px;
+  overflow-y: scroll;
+}
