@@ -355,8 +355,9 @@ class OParl10Object {
 
         $body = 0; // fallback
 
-        if (count($stadtraetin->getFraktionsMitgliedschaften()) > 0) {
-            $body = $stadtraetin->getFraktionsMitgliedschaften()[0]->fraktion->ba_nr;
+        $mitgliedschaften = $stadtraetin->getFraktionsMitgliedschaften();
+        if (count($mitgliedschaften) > 0) {
+            $body = $mitgliedschaften[0]->fraktion->ba_nr;
             if ($body == null)
                 $body = 0;
         }
