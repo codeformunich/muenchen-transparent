@@ -194,7 +194,8 @@
             <?= CHtml::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
         </span>
         <span class="pull-right">
-            <?= CHtml::link("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
+            <?= CHtml::link("Open-Source-Projekt", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
+            <?= CHtml::link("API", Yii::app()->createUrl("infos/api")) ?> /
             <?= CHtml::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
             <?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
         </span>
