@@ -51,6 +51,7 @@ class Bezirksausschuss extends CActiveRecord
             ['ba_nr, ris_id', 'required'],
             ['ba_nr, ris_id, osm_init_zoom', 'numerical', 'integerOnly' => true],
             ['name', 'length', 'max' => 100],
+            ['created, modified', 'safe'],
         ];
     }
 

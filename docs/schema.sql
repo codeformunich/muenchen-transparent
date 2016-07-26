@@ -201,6 +201,8 @@ CREATE TABLE `bezirksausschuesse` (
   `website` varchar(200) DEFAULT NULL,
   `osm_init_zoom` tinyint(4) DEFAULT NULL,
   `osm_shape` blob,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ba_nr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
