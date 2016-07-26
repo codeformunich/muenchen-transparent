@@ -239,4 +239,11 @@ class Bezirksausschuss extends CActiveRecord
         return $statistiken;
 
     }
+
+    /**
+     * @return static[]
+     */
+    public function alleOhneStadtrat() {
+        return Bezirksausschuss::model()->findAll();
+    }
 }

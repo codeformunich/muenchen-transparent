@@ -120,7 +120,7 @@
                         <ul class="dropdown-menu" id="ba_nav_list">
                             <?
                             /** @var Bezirksausschuss[] $bas */
-                            $bas = Bezirksausschuss::model()->findAll();
+                            $bas = Bezirksausschuss::model()->alleOhneStadtrat();
                             foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
                             ?>
                         </ul>

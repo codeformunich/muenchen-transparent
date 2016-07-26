@@ -842,6 +842,6 @@ class IndexController extends RISBaseController
 
     public function actionBaListe()
     {
-        $this->render('ba_liste', ["bas" => Bezirksausschuss::model()->findAll()]);
+        $this->render('ba_liste', ["bas" => Bezirksausschuss::model()->alleOhneStadtrat()]);
     }
 }

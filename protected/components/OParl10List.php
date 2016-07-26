@@ -55,7 +55,7 @@ class OParl10List
     {
         $bodies = [OParl10Object::get('body', 0)];
 
-        $bas = Bezirksausschuss::model()->findAll();
+        $bas = Bezirksausschuss::model()->alleOhneStadtrat();
         foreach ($bas as $ba)
             $bodies[] = OParl10Object::get('body', $ba->ba_nr);
 

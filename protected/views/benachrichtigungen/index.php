@@ -214,7 +214,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
             <div class="input-group col col-lg-8" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
                 <select name="ba" class="form-control"><?
-                    $bas = Bezirksausschuss::model()->findAll();
+                    $bas = Bezirksausschuss::model()->alleOhneStadtrat();
                     /** @var Bezirksausschuss $ba */
                     foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": " . CHtml::encode($ba->name) . '</option>';
                     ?>

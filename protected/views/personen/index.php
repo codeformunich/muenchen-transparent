@@ -7,7 +7,7 @@
  */
 
 /** @var Bezirksausschuss[] $bas */
-$bas = Bezirksausschuss::model()->findAll();
+$bas = Bezirksausschuss::model()->alleOhneStadtrat();
 $curr_ba = null;
 if ($ba_nr > 0) foreach ($bas as $ba) if ($ba->ba_nr == $ba_nr) $curr_ba = $ba;
 
