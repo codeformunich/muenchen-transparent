@@ -52,6 +52,8 @@ class OParl10Object {
             $website = 'http://www.muenchen.de/';
             $location = null;
             $web = SITE_BASE_URL;
+            $created = Bezirksausschuss::model()->findByPk(1)->created;
+            $modified = Bezirksausschuss::model()->findByPk(1)->modified;
         } else {
             /** @var Bezirksausschuss $ba */
             $ba = Bezirksausschuss::model()->findByPk($id);
@@ -61,6 +63,8 @@ class OParl10Object {
             $website = $ba->website;
             $location = self::location($id, 'body');
             $web = SITE_BASE_URL . $ba->getLink();
+            $created = OParl10Controller::mysqlToOparlDateTime($ba->created);
+            $modified = OParl10Controller::mysqlToOparlDateTime($ba->modified);
         }
 
         $data = [
@@ -78,6 +82,8 @@ class OParl10Object {
             'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
             'legislativeTerm' => self::legislativeterm(-1),
             'web'             => $web,
+            'created'         => $created,
+            'modified'        => $modified,
         ];
 
         if ($location)
