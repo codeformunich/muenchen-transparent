@@ -84,7 +84,7 @@ class OparlTester extends \Codeception\Actor
             // There's an exception for the system object as it is the entry object
             if ($type == "/oparl/v1.0/")
                 $type = "system";
-            $this->assertRegExp('~https:\/\/oparl.org\/schema\/1.0\/' . $type . '~i',  $tree->type);
+            $this->assertRegExp('~https:\/\/schema.oparl.org\/1.0\/' . $type . '~i',  $tree->type);
         } else {
             $this->fail('Returned JSON was neither an object nor an external list');
         }

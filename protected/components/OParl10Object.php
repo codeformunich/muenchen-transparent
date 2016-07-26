@@ -5,18 +5,18 @@
  * abstrahiert.
  */
 class OParl10Object {
-    const TYPE_AGENDAITEM      = 'https://oparl.org/schema/1.0/AgendaItem';
-    const TYPE_BODY            = 'https://oparl.org/schema/1.0/Body';
-    const TYPE_CONSULTATION    = 'https://oparl.org/schema/1.0/Consultation';
-    const TYPE_FILE            = 'https://oparl.org/schema/1.0/File';
-    const TYPE_LEGISLATIVETERM = 'https://oparl.org/schema/1.0/LegislativeTerm';
-    const TYPE_LOCATION        = 'https://oparl.org/schema/1.0/Location';
-    const TYPE_MEETING         = 'https://oparl.org/schema/1.0/Meeting';
-    const TYPE_MEMBERSHIP      = 'https://oparl.org/schema/1.0/Membership';
-    const TYPE_ORGANIZATION    = 'https://oparl.org/schema/1.0/Organization';
-    const TYPE_PAPER           = 'https://oparl.org/schema/1.0/Paper';
-    const TYPE_PERSON          = 'https://oparl.org/schema/1.0/Person';
-    const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
+    const TYPE_AGENDAITEM      = 'https://schema.oparl.org/1.0/AgendaItem';
+    const TYPE_BODY            = 'https://schema.oparl.org/1.0/Body';
+    const TYPE_CONSULTATION    = 'https://schema.oparl.org/1.0/Consultation';
+    const TYPE_FILE            = 'https://schema.oparl.org/1.0/File';
+    const TYPE_LEGISLATIVETERM = 'https://schema.oparl.org/1.0/LegislativeTerm';
+    const TYPE_LOCATION        = 'https://schema.oparl.org/1.0/Location';
+    const TYPE_MEETING         = 'https://schema.oparl.org/1.0/Meeting';
+    const TYPE_MEMBERSHIP      = 'https://schema.oparl.org/1.0/Membership';
+    const TYPE_ORGANIZATION    = 'https://schema.oparl.org/1.0/Organization';
+    const TYPE_PAPER           = 'https://schema.oparl.org/1.0/Paper';
+    const TYPE_PERSON          = 'https://schema.oparl.org/1.0/Person';
+    const TYPE_SYSTEM          = 'https://schema.oparl.org/1.0/System';
 
     /**
      * Gibt ein beliebiges OParl-Objekt im Form eines arrays zurück

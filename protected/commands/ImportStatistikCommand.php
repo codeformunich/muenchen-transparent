@@ -17,19 +17,18 @@ class ImportStatistikCommand extends CConsoleCommand
     {
         // Etwas eigene Statistik
         $start_time = microtime(true);
-        $lines_imported = 0;
-
-        $json = json_decode(file_get_contents(self::$source));
+        $rows_imported = 0;
 
         // Alle alten Datensätze des Indikatorenatlases löschen, damit es zu keinen Kollisionen kommt
         $sql = Yii::app()->db->createCommand();
         $sql->delete('statistik_datensaetze', ['quelle = ' . StatistikDatensatz::QUELLE_INDIKATORENATLAS]);
 
-        foreach ($json->result->packages as $package) {
-            echo $package->title . "\n";
-            $csv = array_map('str_getcsv', file($package->resources[0]->url));
+        $json = json_decode(file_get_contents(self::$source));
+        foreach ($json->result->packages as $indikatorenatlas) {
+            echo $indikatorenatlas->title . "\n";
+            $csv = array_map('str_getcsv', file($indikatorenatlas->resources[0]->url));
             $header = array_flip(array_shift($csv));
-            $lines_imported += sizeof($csv);
+            $rows_imported += sizeof($csv);
 
             foreach ($csv as $row) {
                 $dat = new StatistikDatensatz();
@@ -59,6 +58,6 @@ class ImportStatistikCommand extends CConsoleCommand
         }
 
         $elapsed = microtime(true) - $start_time;
-        echo $lines_imported . " entries have been imported  in " . $elapsed . " seconds\n";
+        echo $rows_imported . " entries have been imported  in " . $elapsed . " seconds\n";
     }
 }
