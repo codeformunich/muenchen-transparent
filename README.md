@@ -15,7 +15,7 @@ Vorausgesetzt werden nginx mit PHP und MySQL/MariaDB sowie npm und composer.
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
 chown -R www-data:www-data protected/runtime
-cp protected/config/main.template.php protected/config/main.php
+cp protected/config/main.template.php protected/config/main-production.php
 ```
 
 Abhängigkeiten installieren und minimiertes javascript und css erzeugen:
@@ -28,7 +28,7 @@ gulp
 ```
 
 ### nginx
-* Der gewählte `server_name` muss in [protected/config/main.php](protected/config/main.php) als `SITE_BASE_URL` eingetragen werden.
+* Der gewählte `server_name` muss in [protected/config/main-production.php](protected/config/main-production.php) als `SITE_BASE_URL` eingetragen werden.
 * `root` muss auf den `html/`-Ordner zeigen.
 * `$yii_bootstrap` muss auf `index.php` gesetzt werden.
 * Die Einstellungen aus [nginx-minimal.conf](docs/nginx-minimal.conf) müssen übernommen werden, entweder durch ein `include` oder mit copy&paste.
@@ -36,7 +36,7 @@ gulp
 
 ### MariaDB/MySQL
 * Eine Datenbank und einen zugehörigen Nutzer anlegen.
-* Die Datenbank-Konfiguration muss dann in [protected/config/main.php](protected/config/main.php) eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
+* Die Datenbank-Konfiguration muss dann in [protected/config/main-production.php](protected/config/main-production.php) eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
 ```php
 'db' => [
     'connectionString'      => 'mysql:host=127.0.0.1;dbname=muenchen_transparent',
@@ -66,7 +66,7 @@ protected/yiic importstatistik
 ## OParl
 
 Zum Zugriff auf die Daten gibt es eine [OParl](https://oparl.org)-Schnittstelle. Damit die API funktioniert, muss
-`OPARL_10_ROOT` in `main.php` auf den gewünschten Wert gesetzt werden. Genauere Hinweise zur Implementierung finden
+`OPARL_10_ROOT` in `main-production.php` auf den gewünschten Wert gesetzt werden. Genauere Hinweise zur Implementierung finden
 sich in [oparl.md](docs/oparl.md).
 
 ## Tests
