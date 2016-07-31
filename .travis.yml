@@ -49,7 +49,7 @@ install:
 
   # nginx
   - ln -s `pwd` /tmp/muenchen-transparent
-  - nginx -c `pwd`/docs/nginx-codeception.conf
+  - nginx -c `pwd`/docs/nginx-test.conf
 
   # dependencies
   - chmod 644 vendor/heise/shariff/index.php || true # Prevent a weird "has uncommitted changes" error message when updating shariff
@@ -72,4 +72,4 @@ after_failure:
 after_script:
   - git checkout -- docs/schema.sql
   - docs/travis/require-clean-working-tree.sh # git shouldn't recognize any altered files after installing the dependencies and running the tests
-  - nginx -c `pwd`/docs/travis/nginx-codeception.conf -s stop
+  - nginx -c `pwd`/docs/travis/nginx-test.conf -s stop
