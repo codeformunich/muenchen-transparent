@@ -119,7 +119,7 @@ $this->html_itemprop = "http://schema.org/Person";
                         $highlighting = $ergebnisse->getHighlighting();
                         foreach ($solr_dokumente as $solr_dokument) {
                             $dokument = Dokument::getDocumentBySolrId($solr_dokument->id, true);
-                            
+
                             // Fehlerfälle abfangen
                             if (!$dokument) {
                                 if ($this->binContentAdmin())
@@ -130,10 +130,10 @@ $this->html_itemprop = "http://schema.org/Person";
                                     echo "<li>Dokument-Zuordnung nicht gefunden: " . $solr_dokument->typ . " / " . $solr_dokument->id . "</li>";
                                 continue;
                             }
-                            
+
                             $risitem = $dokument->getRISItem();
                             if (!$risitem) continue;
-                            
+
                             /**
                              * Design eines Eintrags:
                              *  Oben: Der Titel des Antrags/Termins/etc.
@@ -143,7 +143,7 @@ $this->html_itemprop = "http://schema.org/Person";
                             <li style="margin-bottom: 10px;">
                                 <?= CHtml::link($risitem->getName(true), $risitem->getLink()) ?> <br>
                                 <a class="fontello-download antrag-herunterladen"
-                                   href="<?= CHtml::encode($dokument->getLinkZumDownload()) ?>" 
+                                   href="<?= CHtml::encode($dokument->getLinkZumDownload()) ?>"
                                    download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName(true)) ?>.pdf"
                                    title="Herunterladen: <?= CHtml::encode($dokument->getName(true)) ?>">
                                 </a>
@@ -216,7 +216,7 @@ $this->html_itemprop = "http://schema.org/Person";
     </section>
 </div>
 
-<script src="/bower/list.js/dist/list.min.js"></script>
+<? $this->load_list_js = true; ?>
 
 <script>
 var userList = new List("list-js-container", { valueNames: [ 'antrag-name', 'list-js-datum' ] });

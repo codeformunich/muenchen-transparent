@@ -34,11 +34,7 @@ $this->pageTitle = "Stadtrecht";
 
 </section>
 
-<script src="/bower/list.js/dist/list.min.js"></script>
+<? $this->load_list_js = true; ?>
 <script>
-var options = {
-  valueNames: [ 'list-name' ]
-};
-
-var userList = new List('rechtsdokumente', options);
+var userList = new List('rechtsdokumente', { valueNames: ['list-name']});
 </script>

@@ -26,6 +26,7 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 <section class="well">
     <h1 class="sr-only"><?= CHtml::encode($this->pageTitle) ?></h1>
 
+    <? $this->load_leaflet = true; ?>
     <?
     $this->renderPartial("/index/map", array(
         "ortsbezugszahlgrenze" => 10,

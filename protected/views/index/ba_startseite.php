@@ -35,6 +35,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
         <small>(Bezirksausschuss <?= $ba->ba_nr ?>)</small>
     </h1>
 
+    <? $this->load_leaflet = true; ?>
     <?
     $this->renderPartial("/index/map", array(
         "ortsbezugszahlgrenze" => 20,

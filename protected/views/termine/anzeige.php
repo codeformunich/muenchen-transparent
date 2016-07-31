@@ -158,6 +158,7 @@ function zeile_anzeigen($feld, $name, $callback)
             }
             ?>
         </ol>
+        <? $this->load_leaflet = true; ?>
         <script>
             $(function () {
                 var geodata = <?=json_encode($geodata)?>;
@@ -172,6 +173,7 @@ function zeile_anzeigen($feld, $name, $callback)
             });
         </script>
     <? } elseif ($to_pdf) {
+        $this->load_pdf_js = true;
         $this->renderPartial("../index/pdf_embed", [
             "url" => $to_pdf->getLinkZumDownload(),
         ]);

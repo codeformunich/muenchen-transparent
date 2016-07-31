@@ -259,6 +259,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
         </fieldset>
 
+        <? $this->load_leaflet = true; ?>
         <script>
             $(function () {
                 var $benachrichtigung_hinweis = $("#benachrichtigung_hinweis_text");

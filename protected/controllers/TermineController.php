@@ -74,7 +74,6 @@ class TermineController extends RISBaseController
     public function actionIndex()
     {
         $this->top_menu      = "termine";
-        $this->load_calendar = true;
 
         $tage_zukunft       = 30;
         $tage_vergangenheit = 30;
@@ -116,19 +115,12 @@ class TermineController extends RISBaseController
             return;
         }
 
+        $to_pdf = null;
+        $to_db  = null;
         if (count($termin->tagesordnungspunkte) > 0) {
-            $to_pdf                 = null;
-            $to_db                  = $termin->tagesordnungspunkte;
+            $to_db = $termin->tagesordnungspunkte;
         } else {
-            $to = $termin->errateAktuellsteTagesordnung();
-            if ($to) {
-                $this->load_pdf_js = true;
-                $to_pdf            = $to;
-                $to_db             = null;
-            } else {
-                $to_pdf = null;
-                $to_db  = null;
-            }
+            $to_pdf = $termin->errateAktuellsteTagesordnung();
         }
 
         $this->render("anzeige", [

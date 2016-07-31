@@ -53,6 +53,7 @@ if ($dokument->getRISItem()) {
         <? } ?>
     </ul>
 
+    <? $this->load_pdf_js = true; ?>
     <?
     $this->renderPartial("pdf_embed", [
         "url" => $dokument->getLinkZumDownload(),
