@@ -829,7 +829,7 @@ class IndexController extends RISBaseController
     {
         Header("Content-Type: application/json; charset=UTF-8");
         $shariff = new \Heise\Shariff\Backend([
-            "domain"   => $_SERVER["HTTP_HOST"],
+            "domains"   => [$_SERVER["HTTP_HOST"]],
             "services" => ["Facebook", "GooglePlus"],
             "cache"    => [
                 "ttl"      => 60,
