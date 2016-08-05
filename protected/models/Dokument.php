@@ -556,10 +556,11 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     private function solrIndex_termin_do($update)
     {
+        $gremienname = ($this->termin->gremium ? $this->termin->gremium->name : "");
         /** @var RISSolrDocument $doc */
         $doc                     = $update->createDocument();
         $doc->id                 = "Document:" . $this->id;
-        $doc->text               = RISSolrHelper::string_cleanup($this->termin->gremium->name . " " . $this->text_pdf);
+        $doc->text               = RISSolrHelper::string_cleanup($gremienname . " " . $this->text_pdf);
         $doc->text_ocr           = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
         $doc->dokument_name      = RISSolrHelper::string_cleanup($this->name);
         $doc->dokument_url       = RISSolrHelper::string_cleanup($this->url);
@@ -567,7 +568,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc->antrag_typ         = ($this->termin->ba_nr > 0 ? "ba_termin" : "stadtrat_termin");
         $doc->antrag_ba          = IntVal($this->termin->ba_nr);
         $doc->antrag_id          = $this->termin->id;
-        $doc->antrag_betreff     = RISSolrHelper::string_cleanup($this->termin->gremium->name);
+        $doc->antrag_betreff     = RISSolrHelper::string_cleanup($gremienname);
         $doc->termin_datum       = RISSolrHelper::mysql2solrDate($this->termin->termin);
         $max_datum               = $this->termin->termin;
 
