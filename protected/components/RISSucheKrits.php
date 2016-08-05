@@ -261,7 +261,13 @@ class RISSucheKrits
                 return "referat_id:" . $krit["referat_id"];
                 break;
             case "antrag_nr":
-                return "*" . $krit["antrag_nr"] . "*";
+                if (isset($krit["antrag_nr"])) {
+                    return "*" . $krit["antrag_nr"] . "*";
+                }
+                if (isset($krit["suchbegriff"])) {
+                    return "*" . $krit["suchbegriff"] . "*";
+                }
+                return "";
                 break;
         }
         return "";
