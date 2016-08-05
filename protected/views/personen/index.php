@@ -7,7 +7,7 @@
  */
 
 /** @var Bezirksausschuss[] $bas */
-$bas = Bezirksausschuss::model()->findAll();
+$bas = Bezirksausschuss::model()->alleOhneStadtrat();
 $curr_ba = null;
 if ($ba_nr > 0) foreach ($bas as $ba) if ($ba->ba_nr == $ba_nr) $curr_ba = $ba;
 
@@ -149,7 +149,7 @@ $this->pageTitle   = $personen_typ_name;
                 ?>
             </ul>
 
-            <script src="/bower/isotope/dist/isotope.pkgd.min.js"></script>
+            <? $this->load_isotope_js = true; ?>
             <script>
                 $(function () {
                     var $liste = $(".strIn_liste"),

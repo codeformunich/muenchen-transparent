@@ -5,18 +5,18 @@
  * abstrahiert.
  */
 class OParl10Object {
-    const TYPE_AGENDAITEM      = 'https://oparl.org/schema/1.0/AgendaItem';
-    const TYPE_BODY            = 'https://oparl.org/schema/1.0/Body';
-    const TYPE_CONSULTATION    = 'https://oparl.org/schema/1.0/Consultation';
-    const TYPE_FILE            = 'https://oparl.org/schema/1.0/File';
-    const TYPE_LEGISLATIVETERM = 'https://oparl.org/schema/1.0/LegislativeTerm';
-    const TYPE_LOCATION        = 'https://oparl.org/schema/1.0/Location';
-    const TYPE_MEETING         = 'https://oparl.org/schema/1.0/Meeting';
-    const TYPE_MEMBERSHIP      = 'https://oparl.org/schema/1.0/Membership';
-    const TYPE_ORGANIZATION    = 'https://oparl.org/schema/1.0/Organization';
-    const TYPE_PAPER           = 'https://oparl.org/schema/1.0/Paper';
-    const TYPE_PERSON          = 'https://oparl.org/schema/1.0/Person';
-    const TYPE_SYSTEM          = 'https://oparl.org/schema/1.0/System';
+    const TYPE_AGENDAITEM      = 'https://schema.oparl.org/1.0/AgendaItem';
+    const TYPE_BODY            = 'https://schema.oparl.org/1.0/Body';
+    const TYPE_CONSULTATION    = 'https://schema.oparl.org/1.0/Consultation';
+    const TYPE_FILE            = 'https://schema.oparl.org/1.0/File';
+    const TYPE_LEGISLATIVETERM = 'https://schema.oparl.org/1.0/LegislativeTerm';
+    const TYPE_LOCATION        = 'https://schema.oparl.org/1.0/Location';
+    const TYPE_MEETING         = 'https://schema.oparl.org/1.0/Meeting';
+    const TYPE_MEMBERSHIP      = 'https://schema.oparl.org/1.0/Membership';
+    const TYPE_ORGANIZATION    = 'https://schema.oparl.org/1.0/Organization';
+    const TYPE_PAPER           = 'https://schema.oparl.org/1.0/Paper';
+    const TYPE_PERSON          = 'https://schema.oparl.org/1.0/Person';
+    const TYPE_SYSTEM          = 'https://schema.oparl.org/1.0/System';
 
     /**
      * Gibt ein beliebiges OParl-Objekt im Form eines arrays zurück
@@ -52,6 +52,8 @@ class OParl10Object {
             $website = 'http://www.muenchen.de/';
             $location = null;
             $web = SITE_BASE_URL;
+            $created = Bezirksausschuss::model()->findByPk(1)->created;
+            $modified = Bezirksausschuss::model()->findByPk(1)->modified;
         } else {
             /** @var Bezirksausschuss $ba */
             $ba = Bezirksausschuss::model()->findByPk($id);
@@ -61,6 +63,8 @@ class OParl10Object {
             $website = $ba->website;
             $location = self::location($id, 'body');
             $web = SITE_BASE_URL . $ba->getLink();
+            $created = OParl10Controller::mysqlToOparlDateTime($ba->created);
+            $modified = OParl10Controller::mysqlToOparlDateTime($ba->modified);
         }
 
         $data = [
@@ -78,6 +82,8 @@ class OParl10Object {
             'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
             'legislativeTerm' => self::legislativeterm(-1),
             'web'             => $web,
+            'created'         => $created,
+            'modified'        => $modified,
         ];
 
         if ($location)

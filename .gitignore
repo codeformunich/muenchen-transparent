@@ -20,7 +20,7 @@ html/pdfjs/web/build.js
 .idea
 solr/
 
-protected/config/main.php
+protected/config/main-production.php
 
 # Codeception
 tests/_support/_generated/

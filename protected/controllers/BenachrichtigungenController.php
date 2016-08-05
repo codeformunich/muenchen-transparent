@@ -11,8 +11,6 @@ class BenachrichtigungenController extends RISBaseController
         /** @var BenutzerIn $ich */
         $ich = $this->aktuelleBenutzerIn();
 
-        $this->load_leaflet = true;
-
         if (AntiXSS::isTokenSet("einstellungen_speichern")) {
             $einstellungen = $ich->getEinstellungen();
             if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "tag") $einstellungen->benachrichtigungstag = null;

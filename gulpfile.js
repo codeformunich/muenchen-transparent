@@ -27,6 +27,7 @@ var paths = {
     build_js: ["html/js/build/*.js"],
     php: ["protected/**/*.php"],
     std_js: [
+        "html/bower/jquery/dist/jquery.min.js",
         "html/bower/typeahead.js/dist/typeahead.bundle.min.js",
         "html/bower/bootstrap-sass/assets/javascripts/bootstrap.min.js",
         "html/js/jquery-ui-1.11.2.custom.min.js",

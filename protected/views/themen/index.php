@@ -68,11 +68,7 @@ $this->pageTitle = "Themen";
         </div>
     </div>
 
-<script src="/bower/list.js/dist/list.min.js"></script>
+<? $this->load_list_js = true; ?>
 <script>
-var options = {
-  valueNames: [ 'list-name' ]
-};
-
-var userList = new List("list-js-container", options);
+var userList = new List("list-js-container", { valueNames: [ 'list-name' ] });
 </script>

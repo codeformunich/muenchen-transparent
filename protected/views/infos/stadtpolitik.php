@@ -6,7 +6,6 @@
  */
 
 $this->pageTitle = "So funktioniert Stadtpolitik";
-$this->load_mediaelement = true;
 
 ?>
 
@@ -85,6 +84,7 @@ $this->load_mediaelement = true;
             ))
             ?>
 
+            <? $this->load_mediaelement = true; ?>
             <script>
                 $(function() {
                     $('[data-toggle="tooltip"]').tooltip({animation: true, delay:500});

@@ -120,7 +120,7 @@ class OrtGeo extends CActiveRecord
     public function setzeBA()
     {
         /** @var Bezirksausschuss[] $bas */
-        $bas = Bezirksausschuss::model()->findAll();
+        $bas = Bezirksausschuss::model()->alleOhneStadtrat();
 
         $this->ba_nr = null;
         foreach ($bas as $ba) if ($this->ba_nr === null && $ba->pointInBA($this->lon, $this->lat)) {

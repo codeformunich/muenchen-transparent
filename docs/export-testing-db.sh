@@ -4,7 +4,7 @@
 # cd into the git root
 cd $(git rev-parse --show-toplevel)
 
-configfile="protected/config/main-codeception.php"
+configfile="protected/config/main-test.php"
 
 # Extract the db connection information from the config file using regex
 db=$(      sed -ne "s/ *'connectionString'      => 'mysql:host=127.0.0.1;dbname=\(.*\)',.*/\1/p" ${configfile})
