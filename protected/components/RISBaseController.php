@@ -32,7 +32,7 @@ class RISBaseController extends CController
 
     public $top_menu = "";
 
-    // Options to load js and css libraries. Those files are actually loaded in views/layouts/main.php
+    // Options to load js and css libraries. The files are then loaded in views/layouts/main.php
     public $load_calendar     = false;
     public $load_ckeditor     = false;
     public $load_isotope_js   = false;
@@ -43,10 +43,10 @@ class RISBaseController extends CController
     public $load_selectize_js = false;
     public $load_shariff      = false;
 
-    public $suche_pre             = "";
+    public $suche_pre  = "";
 
-    public $msg_ok                = "";
-    public $msg_err               = "";
+    public $msg_ok = "";
+    public $msg_err = "";
 
     protected function performLoginActions($code = "")
     {
