@@ -324,7 +324,7 @@ class OParl10Object {
             'reference'        => $antrag->antrags_nr,
             'paperType'        => $antrag->getTypName(),
             'auxiliaryFile'    => [],
-            'underDirectionof' => [OParl10Controller::getOparlObjectUrl('organization', $antrag->referat_id, 'referat')],
+            'underDirectionOf' => [OParl10Controller::getOparlObjectUrl('organization', $antrag->referat_id, 'referat')],
             'keyword'          => [],
             'web'              => SITE_BASE_URL . $antrag->getLink(),
             'created'          => OParl10Controller::mysqlToOparlDateTime($antrag->created),
