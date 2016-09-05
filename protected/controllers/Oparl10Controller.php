@@ -48,7 +48,7 @@ class OParl10Controller extends CController {
     public static function asOParlJSON($data) {
         header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
-        echo json_encode($data);
+        echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
     /**
