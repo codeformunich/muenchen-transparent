@@ -78,19 +78,6 @@
   }
 }
 
-.ba_funktionen {
-  dt {
-    font-weight: normal;
-  }
-
-  dd {
-    margin-bottom: 10px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
 /* Set widths on the navbar form inputs since otherwise they're 100% wide */
 .navbar-form input[type="text"],
 .navbar-form input[type="password"] {
@@ -1396,7 +1383,7 @@ section.impressum {
         float: none;
       }
 
-      ul:not {
+      :not(ul) {
         display: block;
       }
 
@@ -1407,11 +1394,11 @@ section.impressum {
         &.stadtrat {
           font-weight: bold;
         }
-      }
 
-      li a {
-        padding-top: 8px;
-        padding-bottom: 8px;
+        a {
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
       }
     }
   }
@@ -1559,4 +1546,9 @@ ul.baliste {
 
 table li {
   word-break: break-all; // Sonst gibt es bei Dokumententiteln mit lauter Unterstrichen Probleme
+}
+
+.tag-liste {
+  max-height: 400px;
+  overflow-y: scroll;
 }

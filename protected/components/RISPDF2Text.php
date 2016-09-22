@@ -1,5 +1,7 @@
 <?php
 
+use SGH\PdfBox\PdfBox;
+
 class RISPDF2Text
 {
 
@@ -124,19 +126,11 @@ class RISPDF2Text
 
     public static function document_text_pdf($pdf)
     {
-        $tmp_file_name = TMP_PATH . "pdf.txt." . rand(0, 10000000);
-        exec(PATH_JAVA . " -jar " . PATH_PDFBOX . " ExtractText -encoding UTF-8 $pdf $tmp_file_name", $ret);
-        if (file_exists($tmp_file_name)) {
-            $text = file_get_contents($tmp_file_name);
-            unlink($tmp_file_name);
-        } else {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "PDFParse Error", $pdf . "\n" . print_r($ret, true), null, "system");
-            $text = "";
-        }
-        return $text;
+        $converter = new PdfBox;
+        $converter->setPathToPdfBox(PATH_PDFBOX);
+        return $converter->textFromPdfFile($pdf);
     }
-
-
+    
     public static function ris_ocr_clean($txt)
     {
         $ord_a = ord("a");

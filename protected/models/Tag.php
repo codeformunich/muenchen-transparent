@@ -47,6 +47,7 @@ class Tag extends CActiveRecord
             ['id, angelegt_benutzerIn_id, reviewed', 'numerical', 'integerOnly' => true],
             ['name', 'length', 'max' => 100],
             ['angelegt_datum', 'length', 'max' => 20],
+            ['created, modified', 'safe'],
         ];
     }
 
@@ -85,20 +86,4 @@ class Tag extends CActiveRecord
         $link_name = $this->name;
         return CHtml::link($this->name, Yii::app()->createUrl("themen/tag", ["tag_id" => $this->id, "tag_name" => $link_name]));
     }
-
-    /**
-     * @param int $num
-     * @return Tag[]
-     */
-    public static function getTopTags($num)
-    {
-        // @TODO
-
-        /** @var Tag[] $tags */
-        $tags     = Tag::model()->findAll();
-        $tags_out = [];
-        foreach ($tags as $tag) if (count($tag->antraege) > 0) $tags_out[] = $tag;
-        return $tags_out;
-    }
-
 }

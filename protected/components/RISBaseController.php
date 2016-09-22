@@ -32,12 +32,17 @@ class RISBaseController extends CController
 
     public $top_menu = "";
 
-    public $load_pdf_js           = false;
-    public $load_leaflet          = false;
-    public $load_calendar         = false;
-    public $load_selectize_js     = false;
-    public $load_mediaelement     = false;
-    public $load_shariff          = false;
+    // Options to load js and css libraries. Those files are actually loaded in views/layouts/main.php
+    public $load_calendar     = false;
+    public $load_ckeditor     = false;
+    public $load_isotope_js   = false;
+    public $load_leaflet      = false;
+    public $load_list_js      = false;
+    public $load_mediaelement = false;
+    public $load_pdf_js       = false;
+    public $load_selectize_js = false;
+    public $load_shariff      = false;
+
     public $suche_pre             = "";
 
     public $msg_ok                = "";

@@ -10,6 +10,8 @@
  * @property string $website
  * @property integer $osm_init_zoom
  * @property string $osm_shape
+ * @property string $created
+ * @property string $modified
  *
  * The followings are the available model relations:
  * @property Antrag[] $antraege
@@ -51,6 +53,7 @@ class Bezirksausschuss extends CActiveRecord
             ['ba_nr, ris_id', 'required'],
             ['ba_nr, ris_id, osm_init_zoom', 'numerical', 'integerOnly' => true],
             ['name', 'length', 'max' => 100],
+            ['created, modified', 'safe'],
         ];
     }
 
@@ -89,7 +92,9 @@ class Bezirksausschuss extends CActiveRecord
         ];
     }
 
-
+    /**
+     * @return array Die Fläche des Stadtbezirks als GeoJSON-Feature
+     */
     public function toGeoJSONArray()
     {
         return [
@@ -221,8 +226,6 @@ class Bezirksausschuss extends CActiveRecord
      */
     public function getInteressanteStatistik()
     {
-        //return array(); // @TODO
-
         $statistiken = [];
 
         $daten = StatistikDatensatz::model()->findByAttributes(["gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"], ["order" => "jahr DESC"]);
@@ -237,4 +240,10 @@ class Bezirksausschuss extends CActiveRecord
 
     }
 
+    /**
+     * @return static[]
+     */
+    public function alleOhneStadtrat() {
+        return Bezirksausschuss::model()->findAll();
+    }
 }

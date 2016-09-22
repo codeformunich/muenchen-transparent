@@ -86,8 +86,7 @@ td.fontello-cancel:hover {
 }
 </style>
 
-<script src="/bower/list.js/dist/list.min.js"></script>
-
+<? $this->load_list_js = true; ?>
 <script>
 var userList = new List("tag-liste", {valueNames: ["tag-name", "antrag-id", "email"]});
 </script>
@@ -109,6 +108,6 @@ $(".tag-delete").click(function() {
     }));
     $("body").append(form);
     form.submit();
-    
+
 });
 </script>

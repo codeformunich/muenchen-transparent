@@ -91,6 +91,7 @@ class RISTools
         curl_setopt($ch, CURLOPT_URL, $url_to_read);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_NOBODY, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD'); // here HTTP request is 'HEAD'
@@ -211,7 +212,7 @@ class RISTools
         } // 25to13012015
         if (preg_match("/^to ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) {
             return "Tagesordnung";
-        } // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
+        } // z.B. https://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218578
         if (preg_match("/^to [0-9\. ]+$/siu", $titel)) {
             return "Tagesordnung";
         } // 2014 01 to
@@ -232,7 +233,7 @@ class RISTools
         }  // 21vto0115oeff
         if (preg_match("/^pro ba[0-9]+ [0-9\.]+(\-ris)?$/siu", $titel)) {
             return "Protokoll";
-        } // z.B. http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
+        } // z.B. https://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_dokumente.jsp?Id=3218508
         if (preg_match("/^prot?[0-9]+( ?oeff)?$/siu", $titel)) {
             return "Protokoll";
         } // pro140918 oeff
@@ -410,25 +411,40 @@ class RISTools
     {
         switch ($typ) {
             case "ba_antrag":
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
-                break;
+                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
             case "ba_initiative":
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_initiativen_details.jsp?Id=" . $id;
-                break;
+                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $id;
             case "ba_termin":
-                return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $id;
-                break;
+                return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $id;
             case "stadtrat_antrag":
-                return "http://www.ris-muenchen.de/RII/RII/ris_antrag_detail.jsp?risid=" . $id;
-                break;
+                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $id;
             case "stadtrat_vorlage":
-                return "http://www.ris-muenchen.de/RII/RII/ris_vorlagen_detail.jsp?risid=" . $id;
-                break;
+                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $id;
             case "stadtrat_termin":
-                return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $id;
-                break;
+                return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $id;
+            default:
+                return "Unbekannt";
         }
-        return "Unbekannt";
+    }
+
+    /**
+     * Meldet einen Fehler beim RIS-Parser. Wenn NO_ERROR_MAIL auf true gesetzt ist, dann wird die Fehlermeldung direkt
+     * ausgegeben, ansonsten wird eine mail verschickt.
+     *
+     * @param $betreff
+     * @param $text_plain
+     * @param null $text_html
+     * @param string $mail_tag
+     */
+    public static function report_ris_parser_error($betreff, $text_plain, $text_html = null, $mail_tag = 'system')
+    {
+        if (defined('NO_ERROR_MAIL') && NO_ERROR_MAIL == true) {
+            echo $betreff;
+            echo $text_plain;
+            return;
+        }
+
+        RISTools::send_email(Yii::app()->params['adminEmail'], $betreff, $text_plain, $text_html, $mail_tag);
     }
 
     /**
@@ -442,7 +458,7 @@ class RISTools
     {
         if (defined("MAILGUN_API_KEY") && strlen(MAILGUN_API_KEY) > 0 && $mail_tag != "system") {
             $message = new \SlmMail\Mail\Message\Mailgun();
-            $message->setOption('tracking', false);
+            //$message->setOption('tracking', false);
             $client = new \Zend\Http\Client();
             $client->setAdapter(new \Zend\Http\Client\Adapter\Curl());
             $service = new \SlmMail\Service\MailgunService(MAILGUN_DOMAIN, MAILGUN_API_KEY);
@@ -453,6 +469,7 @@ class RISTools
             $transport = new Zend\Mail\Transport\Sendmail();
         }
         static::set_zend_email_data($message, $email, $betreff, $text_plain, $text_html);
+        $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($message, true)); fclose($fp);
 
         $transport->send($message);
     }

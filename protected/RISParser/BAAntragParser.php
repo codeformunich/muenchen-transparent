@@ -2,7 +2,7 @@
 
 class BAAntragParser extends RISParser
 {
-    private static $MAX_OFFSET        = 15000;
+    private static $MAX_OFFSET        = 16000;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
@@ -12,13 +12,13 @@ class BAAntragParser extends RISParser
         if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
         
         if ($antrag_id == 0) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Antrag-ID 0\n" . print_r(debug_backtrace(), true), null, "system");
+            RISTools::report_ris_parser_error("Fehler BAAntragParser", "Antrag-ID 0\n" . print_r(debug_backtrace(), true));
             return;
         }
 
         $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
         $html_dokumente = RISTools::load_file(RIS_BA_BASE_URL . "ba_antraege_dokumente.jsp?Id=$antrag_id&selTyp=BA-Antrag");
-        //$html_ergebnisse = load_file("http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
+        //$html_ergebnisse = load_file(RIS_BA_BASE_URL . "ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
 
         $daten                         = new Antrag();
         $daten->id                     = $antrag_id;
@@ -53,7 +53,7 @@ class BAAntragParser extends RISParser
         }
 
         if (!$betreff_gefunden) {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "Fehler BAAntragParser", "Kein Betreff\n" . $html_details, null, "system");
+            RISTools::report_ris_parser_error("Fehler BAAntragParser", "Kein Betreff\n" . $html_details);
             throw new Exception("Betreff nicht gefunden");
         }
 
@@ -71,11 +71,11 @@ class BAAntragParser extends RISParser
                     $daten->typ = Antrag::$TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG;
                     break;
                 default:
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $matches[1], null, "system");
+                    RISTools::report_ris_parser_error("RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $matches[1]);
                     die();
             }
         } else {
-            RISTools::send_email(Yii::app()->params['adminEmail'], "RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $dat_details[0], null, "system");
+            RISTools::report_ris_parser_error("RIS: Unbekannter BA-Antrags-Typ: " . $antrag_id, $dat_details[0]);
             die();
         }
 
@@ -116,7 +116,6 @@ class BAAntragParser extends RISParser
         $dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
         $dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
         preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-        http://www.ris-muenchen.de/RII/RII/ris_antrag_ergebnisse.jsp?risid=6127
         */
 
         if (!($daten->ba_nr > 0)) {
@@ -202,7 +201,7 @@ class BAAntragParser extends RISParser
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ba_antraege_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-        if ($first && count($matches[1]) > 0) RISTools::send_email(Yii::app()->params['adminEmail'], "BA-Anträge VOLL", "Erste Seite voll: $seite", null, "system");
+        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("BA-Anträge VOLL", "Erste Seite voll: $seite");
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);

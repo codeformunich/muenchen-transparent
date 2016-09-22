@@ -41,7 +41,7 @@
 			echo '<ul class="dokumentenliste_small">';
 			foreach ($termin["dokumente"] as $dokument) {
 				/** @var Dokument $dokument */
-				echo '<li>' . CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $dokument->getName(true), $dokument->getLinkZumDokument()) . '</li>';
+				echo '<li>' . CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $dokument->getName(true), $dokument->getLink()) . '</li>';
 			}
 			echo "</ul>";
 		}

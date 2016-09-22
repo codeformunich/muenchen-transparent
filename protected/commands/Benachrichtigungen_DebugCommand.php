@@ -26,7 +26,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
             foreach ($antr["dokumente"] as $dok) {
                 $dokument = $dok["dokument"];
                 /** @var Dokument $dokument */
-                echo " - Dokument: " . $dokument->id . " - " . $dokument->name_title . " - ". $dokument->getLink() . "\n";
+                echo " - Dokument: " . $dokument->id . " - " . $dokument->name_title . " - ". $dokument->getLinkZumOrginal() . "\n";
                 foreach ($dok["queries"] as $qu) {
                     /** @var RISSucheKrits $qu */
                     echo "   - " . $qu->getTitle($dokument) . "\n";
@@ -41,7 +41,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
             foreach ($antr["dokumente"] as $dok) {
                 $dokument = $dok["dokument"];
                 /** @var Dokument $dokument */
-                echo " - Dokument: " . $dokument->id . " - " . $dokument->name_title . " - ". $dokument->getLink() . "\n";
+                echo " - Dokument: " . $dokument->id . " - " . $dokument->name_title . " - ". $dokument->getLinkZumOrginal() . "\n";
                 foreach ($dok["queries"] as $qu) {
                     /** @var RISSucheKrits $qu */
                     echo "   - " . $qu->getTitle($dokument) . "\n";

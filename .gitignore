@@ -3,28 +3,28 @@
 
 # Dependency managers
 composer.phar
-/vendor/
-/node_modules/
-/html/bower/
+vendor/
+node_modules/
+html/bower/
 
 # Static files
-/html/assets/
-/html/css/build/
-/html/piwik/
-/html/sitemap-*
-/html/google*
-/html/BingSiteAuth.xml
-/html/pdfjs/web/build.css
-/html/pdfjs/web/build.css.map
-/html/pdfjs/web/build.js
-/.idea
+html/assets/
+html/css/build/
+html/piwik/
+html/sitemap-*
+html/google*
+html/BingSiteAuth.xml
+html/pdfjs/web/build.css
+html/pdfjs/web/build.css.map
+html/pdfjs/web/build.js
+.idea
+solr/
 
-/protected/config/main.php
+protected/config/main-production.php
 
 # Codeception
-tests/_output/*
-tests/_data/dump.sql
+tests/_support/_generated/
 
 # YII2_TODO
-/config/web.php
-/web/
+config/web.php
+web/

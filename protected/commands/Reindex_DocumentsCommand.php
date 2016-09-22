@@ -8,7 +8,7 @@ class Reindex_DocumentsCommand extends CConsoleCommand
         $max_id = $args[0];
 
         $sql = Yii::app()->db->createCommand();
-        $sql->select("id")->from("dokumente")->where("id <= " . IntVal($max_id))->order("id DESC");
+        $sql->select("id")->from("dokumente")->where("id >= " . IntVal($max_id))->order("id DESC");
         $data = $sql->queryColumn(["id"]);
 
         $anz = count($data);
@@ -16,8 +16,11 @@ class Reindex_DocumentsCommand extends CConsoleCommand
             echo "$nr von $anz: $dok_id\n";
             /** @var Dokument $dokument */
             $dokument = Dokument::model()->findByPk($dok_id);
-            $dokument->geo_extract();
-            $dokument->solrIndex();
+            if ($dokument) {
+                //$dokument->geo_extract();
+                //$dokument->solrIndex();
+                $dokument->reDownloadIndex();
+            }
         }
     }
 }

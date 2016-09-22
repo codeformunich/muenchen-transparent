@@ -30,8 +30,8 @@
  */
 class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
-    public static $TYP_AUTO   = 0;
-    public static $TYP_BUERGERVERSAMMLUNG     = 1;
+    public static $TYP_AUTO = 0;
+    public static $TYP_BUERGERVERSAMMLUNG = 1;
     public static $TYPEN_ALLE = [
         0 => "Automatisch vom RIS",
         1 => "BürgerInnenversammlung",
@@ -69,7 +69,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
             ['referat, referent, vorsitz', 'length', 'max' => 200],
             ['wahlperiode', 'length', 'max' => 20],
             ['status, sitzungsstand', 'length', 'max' => 100],
-            ['termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, sitzungsstand', 'safe'],
+            ['termin_reihe, gremium_id, ba_nr, termin, termin_prev_id, termin_next_id, sitzungsort, referat, referent, vorsitz, wahlperiode, sitzungsstand, created, modified', 'safe'],
         ];
     }
 
@@ -126,7 +126,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         if ($history->sitzungsort == "") $history->sitzungsort = "?";
         try {
             if (!$history->save()) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Termin:moveToHistory Error", print_r($history->getErrors(), true), null, "system");
+                RISTools::report_ris_parser_error("Termin:moveToHistory Error", print_r($history->getErrors(), true));
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
@@ -180,8 +180,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getSourceLink()
     {
-        if ($this->ba_nr > 0) return "http://www.ris-muenchen.de/RII/BA-RII/ba_sitzungen_details.jsp?Id=" . $this->id;
-        else return "http://www.ris-muenchen.de/RII/RII/ris_sitzung_detail.jsp?risid=" . $this->id;
+        if ($this->ba_nr > 0) return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $this->id;
+        else return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $this->id;
     }
 
 
@@ -421,7 +421,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     {
         $description = "Infoseite: " . SITE_BASE_URL . Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $this->id]);
         foreach ($this->antraegeDokumente as $dok) {
-            $description .= "\n" . $dok->getName() . ": " . $dok->getLink();
+            $description .= "\n" . $dok->getName() . ": " . $dok->getLinkZumOrginal();
         }
         $ende = date("Y-m-d H:i:s", RISTools::date_iso2timestamp($this->termin) + 3600);
         return [

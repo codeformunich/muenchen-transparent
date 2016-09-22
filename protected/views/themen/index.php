@@ -36,7 +36,7 @@ $this->pageTitle = "Themen";
                 <h3>Schlagworte</h3>
                 <div id="list-js-container" class="such-liste">
                     <input class="search" placeholder="Filtern" style="width: 100%;"/>
-                    <ul class="list list-unstyled">
+                    <ul class="list list-unstyled tag-liste">
                         <?
                         usort($tags, function ($a, $b) {
                             if (count($a->antraege) == count($b->antraege))
@@ -58,7 +58,7 @@ $this->pageTitle = "Themen";
                 <ul><?
                     foreach ($highlights as $dok) {
                         echo "<li>";
-                        echo CHtml::link($dok->antrag->getName(true), $dok->getLinkZumDokument());
+                        echo CHtml::link($dok->antrag->getName(true), $dok->getLink());
                         echo "</li>";
                     }
                     ?>
@@ -68,11 +68,7 @@ $this->pageTitle = "Themen";
         </div>
     </div>
 
-<script src="/bower/list.js/dist/list.min.js"></script>
+<? $this->load_list_js = true; ?>
 <script>
-var options = {
-  valueNames: [ 'list-name' ]
-};
-
-var userList = new List("list-js-container", options);
+var userList = new List("list-js-container", { valueNames: [ 'list-name' ] });
 </script>

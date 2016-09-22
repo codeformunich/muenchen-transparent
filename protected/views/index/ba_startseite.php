@@ -35,6 +35,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
         <small>(Bezirksausschuss <?= $ba->ba_nr ?>)</small>
     </h1>
 
+    <? $this->load_leaflet = true; ?>
     <?
     $this->renderPartial("/index/map", array(
         "ortsbezugszahlgrenze" => 20,
@@ -52,9 +53,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                         index_geo_dokumente_load("", latlng.lng, latlng.lat, rad);
                     }
                 },
-                onInit: function ($map) {
-                    $map.setAntraegeData(<?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
-                }
+                antraege_data: <?=json_encode($geodata)?>,
+                antraege_data_overflow: <?=json_encode($geodata_overflow)?>,
             });
         });
     </script>
@@ -114,7 +114,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                         $name .= " zur Sitzung am " . date("d.m.Y", RISTools::date_iso2timestamp($dokument->termin->termin));
                         echo '<li>';
                         echo "<div class='metainformationen_antraege'>" . CHtml::encode($dokument->getDisplayDate()) . "</div>";
-                        echo CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLinkZumDokument());
+                        echo CHtml::link('<span class="glyphicon glyphicon-file"></span> ' . $name, $dokument->getLink());
                         echo '</li>';
                     } ?>
                 </ul>
@@ -156,14 +156,14 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             ?>
         <section class="well">
             <h2>Statistik</h2>
-            <dl class="ba_funktionen">
-                <? foreach ($statistiken as $statistik) {
-                    echo '<dt>' . CHtml::encode($statistik["name"]) . '</dt>';
-                    echo '<dd>' . CHtml::encode($statistik["wert"]) . '</dd>';
+            <ul style="list-style: none;">
+                <?
+                foreach ($statistiken as $statistik) {
+                    echo '<li>' . CHtml::encode($statistik["name"]) . ': ' .  CHtml::encode($statistik["wert"]) . '</li>';
                 }
                 ?>
-                </dl>
-                </section>
+            </ul>
+        </section>
             <?
         }
 

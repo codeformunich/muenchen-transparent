@@ -44,10 +44,10 @@
     <link rel="stylesheet" href="/css/build/website.css">
 
     <?
-    if ($this->load_mediaelement)     echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
-    if ($this->load_calendar)         echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
-    if ($this->load_selectize_js)     echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
-    if ($this->load_leaflet)          echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
+    if ($this->load_mediaelement) echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
+    if ($this->load_calendar    ) echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
+    if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
+    if ($this->load_leaflet     ) echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
 
     if ($this->load_pdf_js) { ?>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -60,21 +60,28 @@
     } ?>
 
     <!-- javascript -->
-
-    <script src="/bower/jquery/dist/jquery.min.js"></script>
     <script src="/js/build/std.js"></script>
 
     <?
-    if ($this->load_mediaelement) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
-    if ($this->load_selectize_js) echo '<script src="/js/selectize.js-0.11.2/dist/js/standalone/selectize.min.js" defer></script>';
-    if ($this->load_shariff)      echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
+    if ($this->load_ckeditor     ) echo '<script src="/bower/ckeditor/ckeditor.js"></script>';
+    if ($this->load_isotope_js   ) echo '<script src="/bower/isotope/dist/isotope.pkgd.min.js"></script>';
+    if ($this->load_list_js      ) echo '<script src="/bower/list.js/dist/list.min.js"></script>';
+    if ($this->load_mediaelement ) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
+    if ($this->load_selectize_js ) echo '<script src="/bower/selectize/dist/js/standalone/selectize.min.js" defer></script>';
+    if ($this->load_shariff      ) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
     ?>
+
+    <? if ($this->load_calendar) { ?>
+        <script src="/bower/moment/min/moment-with-locales.min.js"></script>
+        <script src="/bower/fullcalendar/dist/fullcalendar.min.js"></script>
+        <script src="/bower/fullcalendar/dist/lang/de.js"></script>
+    <? } ?>
 
     <? if ($this->load_pdf_js) { ?>
         <link rel="preload" type="application/l10n" href="/pdfjs/web/locale/locale.properties"/>
         <script src="/pdfjs/web/build.js" defer></script>
     <? }
-    
+
     if ($this->load_leaflet) { ?>
         <script src="/js/build/leaflet.js"></script>
     <? } ?>
@@ -120,7 +127,7 @@
                         <ul class="dropdown-menu" id="ba_nav_list">
                             <?
                             /** @var Bezirksausschuss[] $bas */
-                            $bas = Bezirksausschuss::model()->findAll();
+                            $bas = Bezirksausschuss::model()->alleOhneStadtrat();
                             foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
                             ?>
                         </ul>
@@ -194,7 +201,8 @@
             <?= CHtml::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?>
         </span>
         <span class="pull-right">
-            <?= CHtml::link("Open-Source-Projekt <span class='hidden-xs'>(Github)</span>", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
+            <?= CHtml::link("Open-Source-Projekt", "https://github.com/codeformunich/Muenchen-Transparent") ?> /
+            <?= CHtml::link("API", Yii::app()->createUrl("infos/api")) ?> /
             <?= CHtml::link("Datenschutz", Yii::app()->createUrl("infos/datenschutz")) ?> /
             <?= CHtml::link("Impressum", Yii::app()->createUrl("infos/impressum")) ?>
         </span>

@@ -42,7 +42,7 @@ class ThemenController extends RISBaseController
         $this->render("index", [
             "referate"   => Referat::model()->findAll(),
             "highlights" => Dokument::getHighlightDokumente(5),
-            "tags"       => Tag::getTopTags(10),
+            "tags"       => Tag::model()->findAll(),
         ]);
     }
 

@@ -1,9 +1,12 @@
 [München Transparent](https://www.muenchen-transparent.de)
 =========================================
 
-[![Build Status](https://travis-ci.org/codeformunich/Muenchen-Transparent.svg?branch=master)](https://travis-ci.org/codeformunich/Muenchen-Transparent)
+[![Build Status](https://travis-ci.org/codeformunich/muenchen-transparent.svg?branch=master)](https://travis-ci.org/codeformunich/muenchen-transparent)
 [![Code Climate](https://codeclimate.com/github/codeformunich/Muenchen-Transparent/badges/gpa.svg)](https://codeclimate.com/github/codeformunich/Muenchen-Transparent)
 [![Dependencies](https://gemnasium.com/codeformunich/Muenchen-Transparent.svg)](https://gemnasium.com/codeformunich/Muenchen-Transparent)
+
+
+München Transparent ist ein alternatives Ratsinformationssystem (RIS) für München.
 
 ## Setup
 
@@ -12,7 +15,7 @@ Vorausgesetzt werden nginx mit PHP und MySQL/MariaDB sowie npm und composer.
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
 chown -R www-data:www-data protected/runtime
-cp protected/config/main.template.php protected/config/main.php
+cp protected/config/main.template.php protected/config/main-production.php
 ```
 
 Abhängigkeiten installieren und minimiertes javascript und css erzeugen:
@@ -24,16 +27,16 @@ bower install
 gulp
 ```
 
-### nginx-Konfiguration:
-* Der gewählte `server_name` muss in protected/config/main.php als `SITE_BASE_URL` eingetragen werden.
+### nginx
+* Der gewählte `server_name` muss in [protected/config/main-production.php](protected/config/main-production.php) als `SITE_BASE_URL` eingetragen werden.
 * `root` muss auf den `html/`-Ordner zeigen.
 * `$yii_bootstrap` muss auf `index.php` gesetzt werden.
 * Die Einstellungen aus [nginx-minimal.conf](docs/nginx-minimal.conf) müssen übernommen werden, entweder durch ein `include` oder mit copy&paste.
 * Zwei erweiterte Beispiele einer vollständigen Konfiguration finden sich in [nginx-full.conf](docs/nginx-full.conf) und [nginx-travis.conf](docs/nginx-travis.conf).
 
-### MariaDB/MySQL-Konfiguration
+### MariaDB/MySQL
 * Eine Datenbank und einen zugehörigen Nutzer anlegen.
-* Die Datenbank-Konfiguration muss dann in protected/config/main.php eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
+* Die Datenbank-Konfiguration muss dann in [protected/config/main-production.php](protected/config/main-production.php) eingetragen werden. Im Beispiel werden die Datenbank "muenchen_transparent", der Benutzer "ris" und das Passwort "sec" verwendet:
 ```php
 'db' => [
     'connectionString'      => 'mysql:host=127.0.0.1;dbname=muenchen_transparent',
@@ -45,20 +48,26 @@ gulp
     'schemaCachingDuration' => 3600,
 ],
 ```
-* Beispieldaten in die Datenbank importieren:
+* Schema, Beispieldaten in die Datenbank und (optional) Statistiken importieren:
 ```bash
-cat docs/schema.sql docs/init_data/1.sql docs/init_data/2_vorgaenge.sql docs/init_data/3_antraege.sql docs/init_data/4_termine.sql docs/init_data/5_dokumente.sql | mysql -u ris -psec muenchen_transparent
+cat docs/schema.sql docs/beispieldaten.sql docs/triggers.sql | mysql -u ris -psec muenchen_transparent
+protected/yiic importstatistik
 ```
 
-### PHP-Konfiguration:
+### PHP
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
 * Das Modul für curl muss installiert sein (`php5-curl`)
 
-### Solr-Konfiguration
-* Solr 4.10 herunterladen und in ein beliebiges Verzeichnis mit dem Namen `solr` entpacken.
-* `docs/solr_config/solr.xml` kommt in den Ordner `solr/example/solr/collection1`
-* `docs/solr_config/collections1` kommt in den Ordner `solr/example/solr/`
-* solr kann dann mit `solr/bin/solr start -p 8983` gestartet werden.
+### Solr
+* Solr 5.5.1 [herunterladen](https://archive.apache.org/dist/lucene/solr/5.5.1/) und in einen Ordner mit dem Namen `solr` entpacken.
+* [docs/solr_core](docs/solr_core) nach `solr/server/solr/muenchen-transparent/` kopieren.
+* solr kann dann mit `solr/bin/solr start` gestartet werden.
+
+## OParl
+
+Zum Zugriff auf die Daten gibt es eine [OParl](https://oparl.org)-Schnittstelle. Damit die API funktioniert, muss
+`OPARL_10_ROOT` in `main-production.php` auf den gewünschten Wert gesetzt werden. Genauere Hinweise zur Implementierung finden
+sich in [oparl.md](docs/oparl.md).
 
 ## Tests
 
@@ -69,11 +78,23 @@ Zum lokalen Ausführen der Test muss ein 2. Server-Block in der nginx-Konfigurat
 * `listen` muss auf `8080` gesetzt werden.
 * `$yii_bootstrap` muss auf `index_codeception.php` gesetzt werden.
 
-Die Tests können dann mit
+Des weiteren muss eine Datenbank mit dem Namen `mt-test` angelegt werden, auf ein ebenfalls anzulegender Nutzer mit dem
+Benutzernamen `travis` und keinem Passwort zugriff hat.Das importieren der Testdaten erfolgt mit
+```bash
+cat docs/schema.sql tests/_data/data.sql docs/triggers.sql | mysql -utravis mt-test
 ```
+Die Tests können dann mit
+```bash
 vendor/bin/codeception run
 ```
 ausgeführt werden.
+
+Sollten die Testdaten verändert worden sein, müssen die Änderungen mit
+```bash
+docs/export-testing-db.sh
+```
+gespeichert werden.
+
 
 Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium ausgeführt werden. Deshalb können keine auf javascript basierenden Funktionen getestet werden.
 
@@ -91,8 +112,8 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * __protected/views/__: View
 
 ## Weitere Dokumentation
-* [Icon-Font bearbeiten](docs/fontello/updating.txt)
-* Eine Sammlung zu Dokumenten rund um München Transparent gibt es im [video-branch](https://github.com/codeformunich/Muenchen-Transparent/tree/video)
+* [Icon-Font bearbeiten](docs/updating-fontello.md)
+* Eine Sammlung zu Dokumenten rund um München Transparent gibt es im repository [muenchen-transparent-doc](https://github.com/codeformunich/muenchen-transparent-doc)
 
 ### pdf.js  Updaten:
 * Neuste Pre-built Version von pdf.js herunterladen und in `html/pdfjs` entpacken
@@ -107,7 +128,7 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 ### Eingesetzte PHP-Bibliotheken
 * [Yii Framework](http://www.yiiframework.com/)
 * [Zend Framework 2](http://framework.zend.com/)
-* [Solarium](http://www.solarium-project.org/) Zur Anbindung von Solr.
+* [Solarium](http://www.solarium-project.org/)
 * [CSS2InlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles) für die HTML-formatierten E-Mails.
 * [sabre/dav](http://sabre.io/) für die Kalender-Synchronisation
 * [Composer](https://getcomposer.org/)
@@ -118,7 +139,6 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * [Sass](http://sass-lang.com/)
 * [jQuery](http://www.jquery.com/)
 * [Leaflet](http://leafletjs.com/) (mit dem Kartenmaterial von [Skobbler](http://www.skobbler.com/))
-* [Modernizr](http://modernizr.com/)
 * [Bootstrap](http://getbootstrap.com/)
 * [Material Design for Bootstrap](http://fezvrasta.github.io/bootstrap-material-design/)
 * [Fontello](http://fontello.com/)

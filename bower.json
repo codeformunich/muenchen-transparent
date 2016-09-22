@@ -1,20 +1,21 @@
 {
-  "name": "München Transparent",
+  "name": "muenchen-transparent",
   "dependencies": {
-    "list.js": "~1.2",
-    "isotope": "~2.2",
-    "fullcalendar": "~2.4",
-    "leaflet.locatecontrol": "~0.49",
-    "leaflet.draw": "~0.3.0",
-    "mediaelement": "~2.20",
-    "shariff": "~1.23",
-    "typeahead.js": "~0.11",
-    "bootstrap-sass": "~3.3.6",
-    "jquery": "~2.2.0",
-    "ckeditor": "~4.5.7",
+    "list.js": "^1.2",
+    "isotope": "^3.0",
+    "fullcalendar": "^2.4",
+    "leaflet.locatecontrol": "^0.52",
+    "leaflet.draw": "^0.3.0",
+    "mediaelement": "^2.21",
+    "shariff": "^1.23",
+    "typeahead.js": "^0.11",
+    "bootstrap-sass": "^3.3.6",
+    "jquery": "^2.2.0",
+    "ckeditor": "^4.5.7",
+    "selectize": "^0.12.1",
     "Chart.js": "1.0.2"
   },
   "resolutions": {
-    "jquery": "~2.2.0"
+    "jquery": "^2.2.0"
   }
 }

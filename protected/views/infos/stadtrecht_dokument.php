@@ -43,7 +43,7 @@ $this->inline_css .= $dokument->css;
     </div>
 </div>
 
-<script src="/bower/list.js/dist/list.min.js"></script>
+<? $this->load_list_js = true; ?>
 
 <script>
 var userList = new List("list-js-container", { valueNames: [ 'list-name' ] });

@@ -197,9 +197,8 @@ var nachdatum = new Chart(chart).Line(data, {responsive: true, animation: false}
                     lat: <?=$geokrit["lat"]?>,
                     lng: <?=$geokrit["lng"]?>,
                     size: 14,
-                    onInit: function ($map) {
-                        $map.setAntraegeData(<?=json_encode($geodata)?>, <?=json_encode($geodata_overflow)?>);
-                    }
+                    antraege_data: <?=json_encode($geodata)?>,
+                    antraege_data_overflow: <?=json_encode($geodata_overflow)?>,
                 });
             });
         </script>

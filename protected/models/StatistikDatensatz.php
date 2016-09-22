@@ -24,7 +24,7 @@
  */
 class StatistikDatensatz extends CActiveRecord
 {
-    const QUELLE_BEVOELKERUNG = 1;
+    const QUELLE_INDIKATORENATLAS = 1;
 
     /**
      * Returns the static model of the specified AR class.

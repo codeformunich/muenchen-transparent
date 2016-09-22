@@ -23,7 +23,7 @@ class AcceptanceTester extends \Codeception\Actor
    /**
     * Define custom actions here
     */
-    function amOnPageValidated($page) {
+    function seeResponseIsHtml($page) {
         $this->amOnPage($page);
         codecept_debug($this->getScenario()->current('env'));
         // FIXME: Workaround for travis ci because it doesn't support java 8

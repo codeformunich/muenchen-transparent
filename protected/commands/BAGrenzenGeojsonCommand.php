@@ -9,9 +9,9 @@ class BAGrenzenGeojsonCommand extends CConsoleCommand
         if (count($args) != 1) die("Usage: ./yiic bagrenzen [Dateiname]\n");
 
         $BAGrenzenGeoJSON = [];
-        $BAs = Bezirksausschuss::model()->findAll();
+        $BAs = Bezirksausschuss::model()->alleOhneStadtrat();
         foreach ($BAs as $ba) $BAGrenzenGeoJSON[] = $ba->toGeoJSONArray();
-        
+
         file_put_contents($args[0], "BA_GRENZEN_GEOJSON = " . json_encode($BAGrenzenGeoJSON) . ";\n");
     }
 }

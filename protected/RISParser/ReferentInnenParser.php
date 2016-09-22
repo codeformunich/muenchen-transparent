@@ -36,7 +36,7 @@ class ReferentInnenParser extends RISParser
             $str = StadtraetIn::model()->findByPk($id);
             if ($str) {
                 if ($str->name != $name) {
-                    RISTools::send_email(Yii::app()->params['adminEmail'], "ReferentIn Änderung", $str->name . " => " . $name, null, "system");
+                    RISTools::report_ris_parser_error("ReferentIn Änderung", $str->name . " => " . $name);
                     $str->name = $name;
                     $str->save();
                 }
@@ -51,7 +51,7 @@ class ReferentInnenParser extends RISParser
             /** @var Referat $referat */
             $referat = Referat::model()->findByAttributes(["name" => $referat_name]);
             if (!$referat) {
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Referat nicht gefunden", $referat_name, null, "system");
+                RISTools::report_ris_parser_error("Referat nicht gefunden", $referat_name);
                 return;
             }
 
@@ -63,7 +63,7 @@ class ReferentInnenParser extends RISParser
                 $zuo->referat_id     = $referat->id;
                 $zuo->stadtraetIn_id = $str->id;
                 $zuo->save();
-                RISTools::send_email(Yii::app()->params['adminEmail'], "Neue ReferentInnen/Referat-Zuordnung", $referat_name . " / " . $str->name, null, "system");
+                RISTools::report_ris_parser_error("Neue ReferentInnen/Referat-Zuordnung", $referat_name . " / " . $str->name);
             }
         }
 

@@ -17,10 +17,9 @@ $this->pageTitle = "Termine";
 	</ul>
 	<h1 class="sr-only">Termine</h1>
 
-	<script src="/bower/moment/min/moment-with-locales.min.js"></script>
-	<script src="/bower/fullcalendar/dist/fullcalendar.min.js"></script>
-	<script src="/bower/fullcalendar/dist/lang/de.js"></script>
+
 	<div id='calendar'></div>
+    <? $this->load_calendar = true; ?>
 	<script>
 		$(function () {
 			$('#calendar').fullCalendar({
@@ -81,7 +80,7 @@ $this->pageTitle = "Termine";
 						$doklist  = "";
 						foreach ($termin->antraegeDokumente as $dokument) {
 							//$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
-							$dokurl = $dokument->getLinkZumDokument();
+							$dokurl = $dokument->getLink();
 							$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
 							if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
 							$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";

@@ -22,16 +22,17 @@
     "require": {
         "php": ">=5.5.0",
         "yiisoft/yii": "1.1.17",
-        "solarium/solarium": "3.5.*",
-        "zendframework/zend-config": "2.6.*",
-        "zendframework/zend-http": "2.6.*",
-        "zendframework/zend-mail": "2.6.*",
-        "zendframework/zend-mime": "2.6.*",
-        "tijsverkoyen/css-to-inline-styles": "~1.5",
-        "slm/mail": "~1.6",
-        "sabre/dav": "2.1.*@dev",
-        "sabre/vobject" : "~3.3",
-        "codeception/codeception": "~2.1.5",
-        "heise/shariff": "^5.2"
+        "solarium/solarium": "^3.6",
+        "zendframework/zend-config": "^2.6.0",
+        "zendframework/zend-http": "^2.6.0",
+        "zendframework/zend-mail": "^2.6.0",
+        "zendframework/zend-mime": "^2.6.0",
+        "tijsverkoyen/css-to-inline-styles": "^1.5",
+        "slm/mail": "^1.6",
+        "sabre/dav": "^2.1.0",
+        "sabre/vobject" : "^3.3",
+        "codeception/codeception": "~2.1.1",
+        "heise/shariff": "^5.2",
+        "sgh/pdfbox": "^1.0"
     }
 }

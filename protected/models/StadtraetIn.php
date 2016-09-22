@@ -66,6 +66,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             ['name, email', 'length', 'max' => 100],
             ['twitter', 'length', 'max' => 45],
             ['facebook, abgeordnetenwatch', 'length', 'max' => 200],
+            ['created, modified', 'safe'],
         ];
     }
 
@@ -116,8 +117,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
      */
     public function getLink($add_params = [])
     {
-        $name = $this->getName();
-        return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $name], $add_params));
+        return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $this->getName()], $add_params));
     }
 
 
@@ -249,9 +249,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $istBAler = false;
         foreach ($this->stadtraetInnenFraktionen as $frakt) if ($frakt->fraktion->ba_nr > 0) $istBAler = true;
         if ($istBAler) {
-            return "http://www.ris-muenchen.de/RII/BA-RII/ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id;
+            return RIS_BA_BASE_URL . "ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id;
         } else {
-            return "http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail.jsp?risid=" . $this->id;
+            return RIS_BASE_URL . "ris_mitglieder_detail.jsp?risid=" . $this->id;
         }
     }
 
@@ -314,7 +314,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
                     'alias'     => 'c',
                     'condition' => $ba_where,
                 ]
-            ]]);
+            ]
+        ]);
 
         foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
 
@@ -323,7 +324,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         foreach ($strs_in as $strs) {
             if ($strs->id == 3425214) {
                 continue;
-            } // Seltsamer ristestuser http://www.ris-muenchen.de/RII/RII/ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
+            } // Seltsamer ristestuser RIS_BASE_URL . "ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
             $strs_out[] = $strs;
         }
         return $strs_out;

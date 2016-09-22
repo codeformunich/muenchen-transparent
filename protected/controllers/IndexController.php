@@ -181,7 +181,6 @@ class IndexController extends RISBaseController
         ];
     }
 
-
     /**
      * @param Dokument[] $dokumente
      * @param null|RISSucheKrits $filter_krits
@@ -289,7 +288,7 @@ class IndexController extends RISBaseController
                     $str = "<div class='antraglink'>" . CHtml::link($name, $ant->getLink()) . "</div>";
                     $str .= "<div class='ort_dokument'>";
                     $str .= "<div class='ort'>" . CHtml::encode($ort->ort->ort) . "</div>";
-                    $str .= "<div class='dokument'>" . CHtml::link($dokument->getName(), $dokument->getLinkZumDokument()) . "</div>";
+                    $str .= "<div class='dokument'>" . CHtml::link($dokument->getName(), $dokument->getLink()) . "</div>";
                     $str .= "</div>";
                     $str = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
 
@@ -479,25 +478,16 @@ class IndexController extends RISBaseController
         }
     }
 
-
     /**
      * @param int $id
      */
     public function actionDocumentProxy($id)
     {
-        /** @var Dokument $dokument */
-        $dokument = Dokument::model()->findByPk($id);
-        try {
-            $data = ris_download_string($dokument->getLink());
-
-            Header("Content-Type: application/pdf; charset=UTF-8");
-            echo $data;
-        } catch (Exception $e) {
-            $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
-            fwrite($fp, $id . " - " . "http://www.ris-muenchen.de" . $dokument->url . "\n");
-            fclose($fp);
+        $content =  Dokument::getCachedByID($id)->getDateiInhalt();
+        if ($content === null) {
             header("HTTP/1.0 404 Not Found");
-            die();
+        } else {
+            echo $content;
         }
         Yii::app()->end();
     }
@@ -592,8 +582,6 @@ class IndexController extends RISBaseController
     public function actionBa($ba_nr, $datum_max = "")
     {
         $this->top_menu = "ba";
-
-        $this->load_leaflet = true;
 
         $tage_zukunft       = 60;
         $tage_vergangenheit = 60;
@@ -727,8 +715,6 @@ class IndexController extends RISBaseController
         $this->top_menu = "stadtrat";
         $this->performLoginActions();
 
-        $this->load_leaflet = true;
-
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
             $ts = RISTools::date_iso2timestamp($datum_max);
             list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($ts);
@@ -818,7 +804,6 @@ class IndexController extends RISBaseController
 
     public function actionDokumente($id)
     {
-        $this->load_pdf_js = true;
         /** @var Dokument $dokument */
         $dokument = Dokument::getCachedByID($id);
         if (!$dokument) {
@@ -839,7 +824,7 @@ class IndexController extends RISBaseController
     {
         Header("Content-Type: application/json; charset=UTF-8");
         $shariff = new \Heise\Shariff\Backend([
-            "domain"   => $_SERVER["HTTP_HOST"],
+            "domains"   => [$_SERVER["HTTP_HOST"]],
             "services" => ["Facebook", "GooglePlus"],
             "cache"    => [
                 "ttl"      => 60,
@@ -852,6 +837,6 @@ class IndexController extends RISBaseController
 
     public function actionBaListe()
     {
-        $this->render('ba_liste', ["bas" => Bezirksausschuss::model()->findAll()]);
+        $this->render('ba_liste', ["bas" => Bezirksausschuss::model()->alleOhneStadtrat()]);
     }
 }
