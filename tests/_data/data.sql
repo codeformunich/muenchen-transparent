@@ -211,6 +211,7 @@ INSERT INTO `termine` VALUES (1,0,'2016-01-31 16:27:28',0,1,NULL,'2016-01-01 08:
 INSERT INTO `termine` VALUES (2,0,'2016-01-31 16:27:28',0,1,NULL,'2016-02-01 08:00:00',NULL,NULL,'Raum für einen Termin','','','','','','',0,'2016-05-02 17:53:09','2016-05-02 17:53:10');
 INSERT INTO `termine` VALUES (3,0,'2016-01-31 16:27:28',0,1,NULL,'2015-12-01 08:00:00',NULL,NULL,'Raum für einen Termin','','','','','','',0,'2016-05-02 17:53:09','2016-05-02 17:53:10');
 INSERT INTO `termine` VALUES (4,0,'2016-04-23 16:27:45',0,1,NULL,'2016-04-11 22:00:00',NULL,NULL,'Ort','','','','','Termin zu Dokument mit vielen Eigenschaften','',0,'2016-05-02 17:53:09','2016-05-02 17:53:10');
+INSERT INTO `termine` VALUES (5,0,'2016-09-26 15:07:51',0,NULL,NULL,'2000-04-03 22:00:00',NULL,NULL,'Raum des unbekannten Referats','','','','','Dateninkonsitent','Dateninkonsitent',0,'2016-09-26 15:07:51','2016-09-26 15:26:54');
 /*!40000 ALTER TABLE `termine` ENABLE KEYS */;
 commit;
 
