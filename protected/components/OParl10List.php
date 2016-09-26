@@ -110,6 +110,11 @@ class OParl10List
             $criteria->params["id"] = $id;
         }
 
+        // Inkonsistenz im Datenmodell abfangen
+        if ($type == "meeting") {
+            $criteria->addCondition('gremium_id IS NOT NULL');
+        }
+
         $entries = $model->findAll($criteria);
         $oparl_entries = [];
         foreach ($entries as $entry)

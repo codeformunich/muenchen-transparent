@@ -215,14 +215,18 @@ class OParl10Object {
         $data = [
             'id'           => OParl10Controller::getOparlObjectUrl('meeting', $termin->id),
             'type'         => self::TYPE_MEETING,
-            'name'         => $termin->gremium->name,
             'meetingState' => $termin->sitzungsstand,
             'start'        => OParl10Controller::mysqlToOparlDateTime($termin->termin),
-            'organization' => OParl10Controller::getOparlObjectUrl('organization', $termin->gremium->id, 'gremium'),
             'web'          => SITE_BASE_URL . $termin->getLink(),
             'created'      => OParl10Controller::mysqlToOparlDateTime($termin->created),
             'modified'     => OParl10Controller::mysqlToOparlDateTime($termin->modified),
         ];
+
+        // Inkonsitenzen im Datenmodell abfangen
+        if ($termin->gremium != null) {
+            $data['name'] = $termin->gremium->name;
+            $data['organization'] = OParl10Controller::getOparlObjectUrl('organization', $termin->gremium->id, 'gremium');
+        }
 
         $data['auxiliaryFile'] = [];
         foreach ($termin->antraegeDokumente as $dokument)
