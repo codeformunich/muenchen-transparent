@@ -62,7 +62,7 @@ commit;
 
 /*!40000 ALTER TABLE `bezirksausschuesse` DISABLE KEYS */;
 set autocommit=0;
-INSERT INTO `bezirksausschuesse` VALUES (0,0,'München','https://www.muenchen.de/rathaus/',11,NULL,'2016-09-29 12:31:50','2016-09-29 12:31:50');
+INSERT INTO `bezirksausschuesse` VALUES (0,0,'Stadtrat','https://www.muenchen.de/rathaus/',11,NULL,'2016-09-29 12:31:50','2016-09-29 12:42:52');
 INSERT INTO `bezirksausschuesse` VALUES (1,0,'BA mit Ausschuss mit Termin','http://www.ba1.muenchen.de',13,'[[11.575738191604614,48.13937283176814],[11.574804782867432,48.13723923356946],[11.576242446899414,48.13688123860767],[11.577283143997192,48.13884302035666],[11.575738191604614,48.13937283176814]]\n','2016-07-26 19:58:04','2016-07-26 19:58:05');
 /*!40000 ALTER TABLE `bezirksausschuesse` ENABLE KEYS */;
 commit;

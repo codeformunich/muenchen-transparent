@@ -200,7 +200,7 @@ CREATE TABLE `bezirksausschuesse` (
   `name` varchar(100) DEFAULT NULL,
   `website` varchar(200) DEFAULT NULL,
   `osm_init_zoom` tinyint(4) DEFAULT NULL,
-  `osm_shape` blob,
+  `osm_shape` mediumblob,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ba_nr`)
