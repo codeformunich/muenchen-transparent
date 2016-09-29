@@ -44,46 +44,36 @@ class OParl10Object {
      * Erzeugt ein 'oparl:Body'-Objekt, also den Stadtrat oder die Bezirksauschüsse
      */
     private static function body($id) {
-        // FIXME: https://github.com/codeformunich/Muenchen-Transparent/issues/135
+        /** @var Bezirksausschuss $ba */
+        $ba = Bezirksausschuss::model()->findByPk($id);
+
         if ($id == 0) {
-            $body = 0;
             $name = 'Stadrat der Landeshauptstadt München';
             $shortName = 'Stadtrat';
-            $website = 'http://www.muenchen.de/';
             $location = null;
-            $web = SITE_BASE_URL;
-            $created = Bezirksausschuss::model()->findByPk(1)->created;
-            $modified = Bezirksausschuss::model()->findByPk(1)->modified;
         } else {
-            /** @var Bezirksausschuss $ba */
-            $ba = Bezirksausschuss::model()->findByPk($id);
-            $body = $ba->ba_nr;
             $name = 'Bezirksausschuss ' . $ba->ba_nr . ': ' . $ba->name;
             $shortName = 'BA ' . $ba->ba_nr;
-            $website = $ba->website;
             $location = self::location($id, 'body');
-            $web = SITE_BASE_URL . $ba->getLink();
-            $created = OParl10Controller::mysqlToOparlDateTime($ba->created);
-            $modified = OParl10Controller::mysqlToOparlDateTime($ba->modified);
         }
 
         $data = [
-            'id'              => OParl10Controller::getOparlObjectUrl('body', $body),
+            'id'              => OParl10Controller::getOparlObjectUrl('body', $ba->ba_nr),
             'type'            => self::TYPE_BODY,
             'system'          => OParl10Controller::getOparlObjectUrl('system', null),
             'contactEmail'    => Yii::app()->params['adminEmail'],
             'contactName'     => Yii::app()->params['adminEmailName'],
             'name'            => $name,
             'shortName'       => $shortName,
-            'website'         => $website,
-            'organization'    => OParl10Controller::getOparlListUrl('organization', $body),
-            'person'          => OParl10Controller::getOparlListUrl('person',       $body),
-            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $body),
-            'paper'           => OParl10Controller::getOparlListUrl('paper',        $body),
+            'website'         => $ba->website,
             'legislativeTerm' => self::legislativeterm(-1),
-            'web'             => $web,
-            'created'         => $created,
-            'modified'        => $modified,
+            'organization'    => OParl10Controller::getOparlListUrl('organization', $ba->ba_nr),
+            'person'          => OParl10Controller::getOparlListUrl('person',       $ba->ba_nr),
+            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $ba->ba_nr),
+            'paper'           => OParl10Controller::getOparlListUrl('paper',        $ba->ba_nr),
+            'web'             => SITE_BASE_URL . $ba->getLink(),
+            'created'         => OParl10Controller::mysqlToOparlDateTime($ba->created),
+            'modified'        => OParl10Controller::mysqlToOparlDateTime($ba->modified),
         ];
 
         if ($location)

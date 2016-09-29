@@ -19,8 +19,6 @@ class Oparl extends \Codeception\Module
     // really private
     /** The path to the file with the expected response */
     private $url;
-    /** Flag to notify the user about `--env updatejson` in the right situation */
-    private $notify_about_updatejson;
     /** Stores all URLs that have already gotten the basic checks to avoid redundant work */
     private $checked_urls = [];
     /** Stores the expected results in the format ["[url-affix]" => "expected json", ....] */
@@ -108,8 +106,6 @@ class Oparl extends \Codeception\Module
      * When run with the `updatejson` environment all expected reponses that do not match the actual response overwritten
      */
     public function seeOParlFile() {
-        $this->notify_about_updatejson = true;
-
         if ($this->config['updatejson'] === true) {
             if (!array_key_exists($this->url, $this->expectedResults)) {
                 $this->writeln("\nCreating expected response ...");
@@ -127,12 +123,10 @@ class Oparl extends \Codeception\Module
         }
 
         $this->assertEquals($this->expectedResults[$this->url], $this->getPrettyPrintedResponse());
-
-        $this->notify_about_updatejson = false;
     }
 
     /**
-     * @return array
+     * @return bool
      */
     public function isURLKnown($url)
     {
@@ -140,16 +134,5 @@ class Oparl extends \Codeception\Module
             return true;
         $this->checked_urls[] = $url;
         return false;
-    }
-
-    /**
-     * Prints some usefull debug information about a failed test
-     */
-    public function _failed(\Codeception\TestCase $test, $fail) {
-        $this->writeln($this->getPrettyPrintedResponse());
-        if ($this->notify_about_updatejson) {
-            $this->writeln("The file with expected json is missing or differs from the real output.");
-            $this->writeln("Run codeception with `--env updatejson` to fix this.");
-        }
     }
 }
