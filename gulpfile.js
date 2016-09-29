@@ -37,7 +37,6 @@ var paths = {
         "html/js/custom/*.js",
     ],
     leaflet_js: [
-        "html/js/muc_grenzen_geojson.js",
         "html/js/build/ba-grenzen-geojson.js",
         "html/bower/leaflet/dist/leaflet-src.js",
         "html/bower/leaflet.draw/dist/leaflet.draw-src.js",

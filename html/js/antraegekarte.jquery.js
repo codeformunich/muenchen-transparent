@@ -45,7 +45,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
 
         // Marker und View setzen
         if ($widget.options.outlineBA > 0) { // Anzeigen eines einzelnen BAs
-            geojsonFeature = window["BA_GRENZEN_GEOJSON"][$widget.options.outlineBA - 1];
+            geojsonFeature = window["BA_GRENZEN_GEOJSON"][$widget.options.outlineBA];
 
             // Finden eines Rechtecks, das den gesamten BA umfasst
             var array = geojsonFeature["geometry"]["coordinates"][0];
@@ -60,14 +60,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
 
             $widget.map.setView([center_lat, center_lon], geojsonFeature["init_zoom"]);
         } else { // Anzeigen der ganzen Stadt
-            geojsonFeature  = {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [MUC_GRENZEN_GEOJSON],
-                }
-            };
+            geojsonFeature = window["BA_GRENZEN_GEOJSON"][0];
             $widget.map.setView([$widget.options["lat"], $widget.options["lng"]], $widget.options["size"]);
         }
 
@@ -369,7 +362,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
 
         addInfo();
 
-        var BAs = {"type": "FeatureCollection", "features": window["BA_GRENZEN_GEOJSON"]},
+        var BAs = {"type": "FeatureCollection", "features": window["BA_GRENZEN_GEOJSON"].slice(1)},
             BA_map_options = {
                 style: {
                     fillColor: "#ff7800",
