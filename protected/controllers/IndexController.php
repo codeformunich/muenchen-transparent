@@ -791,6 +791,16 @@ class IndexController extends RISBaseController
      */
     public function actionError()
     {
+        // Return JSON error response for OParl
+        if (0 === strpos(SITE_BASE_URL . Yii::app()->request->url, OPARL_10_ROOT)) {
+            header('Access-Control-Allow-Origin: *');
+            header('Content-Type: application/json');
+            echo json_encode([
+                "error" => "An Error occured"
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
         if ($error = Yii::app()->errorHandler->error) {
             if (Yii::app()->request->isAjaxRequest)
                 echo $error['message'];
