@@ -60,7 +60,7 @@ protected/yiic importstatistik
 
 ### Solr
 * Solr 5.5.1 [herunterladen](https://archive.apache.org/dist/lucene/solr/5.5.1/) und in einen Ordner mit dem Namen `solr` entpacken.
-* [docs/solr_core](docs/solr_core) nach `solr/server/solr/muenchen-transparent/` kopieren.
+* [docs/solr-core](docs/solr_core) nach `solr/server/solr/muenchen-transparent/` kopieren.
 * solr kann dann mit `solr/bin/solr start` gestartet werden.
 
 ## OParl

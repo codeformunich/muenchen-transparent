@@ -244,6 +244,6 @@ class Bezirksausschuss extends CActiveRecord
      * @return static[]
      */
     public function alleOhneStadtrat() {
-        return Bezirksausschuss::model()->findAll();
+        return Bezirksausschuss::model()->findAll(["condition" => "ba_nr != 0"]);
     }
 }
