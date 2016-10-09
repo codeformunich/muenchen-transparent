@@ -68,8 +68,10 @@ $this->pageTitle = "Suchergebnisse";
     <?
     }
 
+    // Möglichkeiten, die Suche weiter einzuschränken
     $facet_groups = array();
 
+    // Links, um die Suche nach Antragstyp einzuschränken
     $antrag_typ = array();
     $facet      = $ergebnisse->getFacetSet()->getFacet('antrag_typ');
     foreach ($facet as $value => $count) if ($count > 0) {
@@ -85,6 +87,7 @@ $this->pageTitle = "Suchergebnisse";
     }
     if (count($antrag_typ) > 0) $facet_groups["Dokumenttypen"] = $antrag_typ;
 
+    // Links, um die Suche nach Wahlperiode einzuschränken
     $wahlperiode = array();
     $facet       = $ergebnisse->getFacetSet()->getFacet('antrag_wahlperiode');
     foreach ($facet as $value => $count) if ($count > 0) {
@@ -96,6 +99,7 @@ $this->pageTitle = "Suchergebnisse";
     }
     if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 
+    // Dropdown, um die Suchergebnisse anzuzeigen
     $has_facets = false;
     foreach ($facet_groups as $name => $facets) if (count($facets) > 1) $has_facets = true;
     if ($has_facets) {

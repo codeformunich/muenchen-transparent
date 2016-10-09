@@ -42,6 +42,8 @@ class RISSucheKrits
     }
 
     /**
+     * Distanz zwischen zwei Koordinaten in Metern
+     *
      * @param float $lng1
      * @param float $lat1
      * @param float $lng2
@@ -50,27 +52,31 @@ class RISSucheKrits
      */
     private function calcDistance($lng1, $lat1, $lng2, $lat2)
     {
-        $theta  = $lng1 - $lng2;
-        $dist   = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-        $dist   = acos($dist);
-        $dist   = rad2deg($dist);
+        $theta = $lng1 - $lng2;
+        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+        $dist = acos($dist);
+        $dist = rad2deg($dist);
         $meters = $dist * 60 * 1.1515 * 1.609344 * 1000;
         return $meters;
     }
 
     /**
+     * Bestimmt, ob der angegebene Ort den angegebenen geo-Krits entspricht. true, wenn keine geo-Krits vorhanden sind
+     *
      * @param OrtGeo $ort
      * @return bool
      */
     public function filterGeo($ort)
     {
-        $geo_found = false;
-        foreach ($this->krits as $krit) if ($krit["typ"] == "geo") {
-            $geo_found = true;
-            if ($ort === null) return false;
-            if ($this->calcDistance($krit["lng"], $krit["lat"], $ort->lon, $ort->lat) <= $krit["radius"]) return true;
+        if ($ort === null) return false;
+
+        if (!$this->isGeoKrit()) return true;
+
+        foreach ($this->krits as $krit) {
+            if ($krit["typ"] == "geo" && $this->calcDistance($krit["lng"], $krit["lat"], $ort->lon, $ort->lat) <= $krit["radius"])
+                return true;
         }
-        return !$geo_found;
+        return false;
     }
 
     /**
@@ -83,6 +89,8 @@ class RISSucheKrits
     }
 
     /**
+     * Baut eine absolute URL, die alle Krits als Parameter enhält
+     *
      * @param string $path
      * @return string
      */
@@ -139,6 +147,8 @@ class RISSucheKrits
     }
 
     /**
+     * Baut die URL zu einem RSS-Feed.
+     *
      * @return string
      */
     public function getFeedUrl()
@@ -147,6 +157,8 @@ class RISSucheKrits
     }
 
     /**
+     * FIXME: Unit Tests fehlen noch
+     *
      * @param \Solarium\QueryType\Select\Query\Query $select
      */
     public function addKritsToSolr(&$select)
@@ -191,6 +203,8 @@ class RISSucheKrits
     }
 
     /**
+     * Gibt das erste Krit als Solr-Query-String zurück
+     *
      * @param \Solarium\QueryType\Select\Query\Query $select
      * @return string
      */
@@ -234,6 +248,8 @@ class RISSucheKrits
     }
 
     /**
+     * Erstellt ein Kopie dieses Objekt ohne antrag_wahlperiode
+     *
      * @return RISSucheKrits
      */
     public function getBenachrichtigungKrits()
@@ -245,6 +261,8 @@ class RISSucheKrits
 
 
     /**
+     * Textuelle Beschreibung der Suche im Nominalstil
+     *
      * @param Dokument|null $dokument
      * @return string
      */
@@ -268,6 +286,8 @@ class RISSucheKrits
             case "geo":
                 $ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
                 $title = "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
+
+                // Diejenigen zum Dokument gehörenden Orte angeben, die sich im Suchradius befinden
                 if ($dokument) {
                     /** @var OrtGeo[] $gefundene_orte */
                     $gefundene_orte = [];
@@ -307,11 +327,11 @@ class RISSucheKrits
                     break;
                 case "ba":
                     /** @var Bezirksausschuss $ba */
-                    $ba      = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $cr["ba_nr"]]);
+                    $ba = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $cr["ba_nr"]]);
                     $krits[] = "aus dem Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
                     break;
                 case "geo":
-                    $ort     = OrtGeo::findClosest($cr["lng"], $cr["lat"]);
+                    $ort = OrtGeo::findClosest($cr["lng"], $cr["lat"]);
                     $krits[] = "mit einem Ortsbezug (ungefähr: " . IntVal($cr["radius"]) . "m um \"" . $ort->ort . "\")";
                     break;
                 case "antrag_nr":
@@ -319,7 +339,7 @@ class RISSucheKrits
                     break;
                 case "referat":
                     /** @var Referat $ref */
-                    $ref     = Referat::model()->findByPk($cr["referat_id"]);
+                    $ref = Referat::model()->findByPk($cr["referat_id"]);
                     $krits[] = "im Zuständigkeitsbereich des " . $ref->name;
                     break;
                 case "antrag_wahlperiode":
@@ -346,50 +366,51 @@ class RISSucheKrits
      * @param string $value
      * @return $this
      */
-    public function addKrit($name, $value) {
+    public function addKrit($name, $value)
+    {
         switch ($name) {
             case "betreff":
                 $this->krits[] = [
-                    "typ"         => "betreff",
+                    "typ" => "betreff",
                     "suchbegriff" => $value
                 ];
                 break;
             case "volltext":
                 $this->krits[] = [
-                    "typ"         => "volltext",
+                    "typ" => "volltext",
                     "suchbegriff" => $value
                 ];
                 break;
             case "antrag_typ":
                 $this->krits[] = [
-                    "typ"         => "antrag_typ",
+                    "typ" => "antrag_typ",
                     "suchbegriff" => $value
                 ];
                 break;
             case "antrag_wahlperiode":
                 $this->krits[] = [
-                    "typ"         => "antrag_wahlperiode",
+                    "typ" => "antrag_wahlperiode",
                     "suchbegriff" => $value
                 ];
                 break;
             case "ba":
                 $this->krits[] = [
-                    "typ"   => "ba",
+                    "typ" => "ba",
                     "ba_nr" => IntVal($value)
                 ];
                 break;
             case "geo":
                 $options = explode("-", $value);
                 $this->krits[] = [
-                    "typ"    => "geo",
-                    "lng"    => FloatVal($options[0]),
-                    "lat"    => FloatVal($options[1]),
+                    "typ" => "geo",
+                    "lng" => FloatVal($options[0]),
+                    "lat" => FloatVal($options[1]),
                     "radius" => FloatVal($options[2])
                 ];
                 break;
             case "referat":
                 $this->krits[] = [
-                    "typ"        => "referat",
+                    "typ" => "referat",
                     "referat_id" => IntVal($value)
                 ];
                 break;
@@ -397,7 +418,7 @@ class RISSucheKrits
                 $value = preg_replace("/[^a-zA-Z0-9 \/-]/siu", "", $value);
                 $value = preg_replace("/ +/siu", "*", $value);
                 $this->krits[] = [
-                    "typ"         => "antrag_nr",
+                    "typ" => "antrag_nr",
                     "suchbegriff" => $value,
                 ];
                 break;
@@ -407,6 +428,8 @@ class RISSucheKrits
     }
 
     /**
+     * Erstellt ein Objekt auf Basis der URL-Parameter
+     *
      * @param array $request
      * @return RISSucheKrits
      */
@@ -422,6 +445,8 @@ class RISSucheKrits
     }
 
     /**
+     * Erstellt eine Kopie
+     *
      * @return RISSucheKrits
      */
     public function cloneKrits()
