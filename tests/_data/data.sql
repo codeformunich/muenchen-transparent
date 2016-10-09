@@ -120,6 +120,7 @@ commit;
 
 /*!40000 ALTER TABLE `orte_geo` DISABLE KEYS */;
 set autocommit=0;
+INSERT INTO `orte_geo` VALUES (1,'Marienplatz',11.576006,48.137079,'manual',NULL,0,'','2016-10-09 14:12:24');
 /*!40000 ALTER TABLE `orte_geo` ENABLE KEYS */;
 commit;
 

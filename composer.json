@@ -33,6 +33,7 @@
         "sabre/vobject" : "^3.3",
         "codeception/codeception": "~2.2",
         "heise/shariff": "^5.2",
-        "sgh/pdfbox": "^1.0"
+        "sgh/pdfbox": "^1.0",
+        "codeception/yii-bridge": "dev-master"
     }
 }

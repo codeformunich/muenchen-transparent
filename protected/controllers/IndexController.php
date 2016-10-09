@@ -424,7 +424,7 @@ class IndexController extends RISBaseController
             if ($datum_von || $datum_bis) $krits->addDatumKrit($datum_von, $datum_bis);
             */
 
-        } elseif (isset($_REQUEST["suchbegriff"]) && $_REQUEST["suchbegriff"] != "") {
+        } else if (isset($_REQUEST["suchbegriff"]) && $_REQUEST["suchbegriff"] != "") {
             $suchbegriff = $_REQUEST["suchbegriff"];
             if ($_SERVER["REQUEST_METHOD"] == 'POST') $this->redirect($this->createUrl("index/suche", ["suchbegriff" => $suchbegriff]));
             $this->suche_pre = $suchbegriff;

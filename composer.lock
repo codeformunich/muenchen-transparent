@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5219a4d8e6e2935bd83960fb9f8919af",
-    "content-hash": "269b1659880d1c42c07b7720822da3b2",
+    "hash": "74e57d984217cbf8cdd4074deef12e59",
+    "content-hash": "a863346177853d51ca0360df5b94fc6b",
     "packages": [
         {
             "name": "behat/gherkin",
@@ -156,6 +156,28 @@
                 "unit testing"
             ],
             "time": "2016-08-26 22:21:04"
+        },
+        {
+            "name": "codeception/yii-bridge",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lubobill1990/codeception-yii-bridge.git",
+                "reference": "a5841d6cd523835d31f6f0f11e381283440ee3f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lubobill1990/codeception-yii-bridge/zipball/a5841d6cd523835d31f6f0f11e381283440ee3f5",
+                "reference": "a5841d6cd523835d31f6f0f11e381283440ee3f5",
+                "shasum": ""
+            },
+            "type": "package",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "YiiBridge extension",
+            "time": "2014-11-17 18:04:01"
         },
         {
             "name": "container-interop/container-interop",
@@ -3709,7 +3731,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "codeception/yii-bridge": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

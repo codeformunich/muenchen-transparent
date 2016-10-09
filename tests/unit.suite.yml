@@ -5,5 +5,8 @@
 class_name: UnitTester
 modules:
     enabled:
+        - Yii1:
+            appPath: 'html/index-yii-codeception.php'
+            url: 'http://localhost:8081/'
+        - \Helper\Functional
         - Asserts
-        - \Helper\Unit
