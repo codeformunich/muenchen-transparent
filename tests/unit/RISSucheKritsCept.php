@@ -1,6 +1,7 @@
 <?php
-$I = new FunctionalTester($scenario);
+$I = new UnitTester($scenario);
 $I->wantTo('Test RISSucheKrits');
+$I->amOnPage('/themen');
 
 // --- Test data ---
 // The geo is the Marienplatz with 1000m radius
@@ -129,8 +130,8 @@ foreach ($krits_array as $i => $val) {
         'krit_typ' => [$krits_url_array['krit_typ'][$i]],
         'krit_val' => [$krits_url_array['krit_val'][$i]],
     ];
-    $I->assertEquals($krits->getUrl(), SERVER_NAME . '/suche/?' . $krits_url_parts[$i]);
-    $I->assertEquals($krits->getUrlArray(), $url_array);
+    $I->assertEquals('/suche/?' . $krits_url_parts[$i], $krits->getUrl());
+    $I->assertEquals($url_array, $krits->getUrlArray());
     $I->assertEquals($krits, RISSucheKrits::createFromUrl($url_array));
 
     if ($val['typ'] != 'antrag_wahlperiode') {
@@ -154,9 +155,9 @@ $I->assertEquals($krits, $krits->cloneKrits());
 $I->assertEquals($krits->getKritsCount(), count($krits_array));
 $I->assertEquals($krits->getJson(), json_encode($krits_array));
 
-$I->assertEquals($krits->getUrl(), SERVER_NAME . '/suche/?' . implode('&', $krits_url_parts));
+$I->assertEquals('/suche/?' . implode('&', $krits_url_parts), $krits->getUrl());
 $I->assertEquals($krits, RISSucheKrits::createFromUrl($krits_url_array));
-$I->assertEquals($krits->getUrlArray(), $krits->getUrlArray());
+$I->assertEquals($krits_url_array, $krits->getUrlArray());
 
 $I->assertEquals($krits->isGeoKrit(), true);
 $I->assertEquals($krits->getGeoKrit(), $krits_array[7]);
@@ -167,3 +168,6 @@ $I->assertEquals($krits->getBenachrichtigungKrits()->krits, $krits_array_without
 $I->assertEquals($krits->getBeschreibungDerSuche(), $all_krits_description);
 
 $I->assertEquals($krits->getFeedUrl(), $krits->getBenachrichtigungKrits()->getUrl('index/feed'));
+
+// Special cases
+$I->assertEquals(new RISSucheKrits(), RISSucheKrits::createFromUrl([]));

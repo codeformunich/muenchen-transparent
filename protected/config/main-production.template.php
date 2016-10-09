@@ -169,11 +169,6 @@ return [
                     'class'  => 'CFileLogRoute',
                     'levels' => 'error, warning',
                 ],
-                /*
-                array(
-                    'class' => 'CWebLogRoute',
-                ),
-                */
             ],
         ],
     ],

@@ -12,6 +12,10 @@ settings:
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+coverage:
+    enabled: true
+    include:
+        - protected/components/RISSucheKrits.php
 modules:
     config:
         Db:

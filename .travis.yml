@@ -28,6 +28,7 @@ addons:
 branches:
   only:
     - master
+    - dev
 
 install:
   # PHP

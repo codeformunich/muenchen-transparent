@@ -1,13 +1,13 @@
 <?php
 
 // Helper for the yii1-codeception bridge
-// only difference is the following piece in the array below:
+// The only real difference is the following piece in the array below:
 //         'request' => [
 //           'class' => 'CodeceptionHttpRequest'
 //        ],
 
 
-define("SITE_BASE_URL", "http://localhost:8081");
+define("SITE_BASE_URL", 'http://yii-codeception.local');
 
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 
@@ -171,11 +171,6 @@ return [
                     'class'  => 'CFileLogRoute',
                     'levels' => 'error, warning',
                 ],
-                /*
-                array(
-                    'class' => 'CWebLogRoute',
-                ),
-                */
             ],
         ],
     ],

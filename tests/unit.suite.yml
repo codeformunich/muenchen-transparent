@@ -7,6 +7,6 @@ modules:
     enabled:
         - Yii1:
             appPath: 'html/index-yii-codeception.php'
-            url: 'http://localhost:8081/'
-        - \Helper\Functional
+            url: 'http://yii-codeception.local/html/index-yii-codeception.php'
+        - \Helper\Unit
         - Asserts
