@@ -72,12 +72,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "dd44e930995527498c218e0fb0d8909b1587e05b"
+                "reference": "c5dee2957f0f7dc1ad3e9820d386140d15402315"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/dd44e930995527498c218e0fb0d8909b1587e05b",
-                "reference": "dd44e930995527498c218e0fb0d8909b1587e05b",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/c5dee2957f0f7dc1ad3e9820d386140d15402315",
+                "reference": "c5dee2957f0f7dc1ad3e9820d386140d15402315",
                 "shasum": ""
             },
             "require": {
@@ -102,7 +102,7 @@
             },
             "require-dev": {
                 "codeception/specify": "~0.3",
-                "facebook/php-sdk-v4": "~5.0",
+                "facebook/graph-sdk": "~5.3",
                 "flow/jsonpath": "~0.2",
                 "league/factory-muffin": "^3.0",
                 "league/factory-muffin-faker": "^1.0",
@@ -155,7 +155,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2016-08-26 22:21:04"
+            "time": "2016-10-09 19:03:52"
         },
         {
             "name": "codeception/yii-bridge",

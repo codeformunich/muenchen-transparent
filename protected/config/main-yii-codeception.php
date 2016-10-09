@@ -7,7 +7,7 @@
 //        ],
 
 
-define("SITE_BASE_URL", 'http://yii-codeception.local');
+define("SITE_BASE_URL", 'http://yii-codeception.test');
 
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 
