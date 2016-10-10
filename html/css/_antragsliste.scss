@@ -256,6 +256,24 @@ ul.dokumente {
     @extend blockquote;
   }
 
+  .suchkrits_interaktiv {
+    .suchkriterien {
+      font-size: 20px;
+    }
+
+    ul {
+      list-style: none;
+      font-size: 18px;
+      padding-left: 15px;
+
+      li {
+        .glyphicon {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
   .list-group .list-group-item {
     a.overflow-fadeout-white {
       max-height: 66px;

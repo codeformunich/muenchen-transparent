@@ -37,12 +37,25 @@ $this->pageTitle = "Suchergebnisse";
     <?
     if ($krits->getKritsCount() == 1) {
         echo '<h1>' . CHtml::encode($krits->getBeschreibungDerSuche()) . '</h1>';
-    } else {
-        echo '<h1>Suchergebnisse</h1>';
-        echo '<div class="suchkrit_beschreibung">';
-        echo CHtml::encode($krits->getBeschreibungDerSuche());
-        echo '</div>';
-    }
+    } else { ?>
+        <h1>Suchergebnisse</h1>
+        <div class="suchkrits_interaktiv">
+        <p class="suchkriterien">Gefunden wurden Dokumente mit den folgenden Kriterien:</p>
+        <ul><?
+        foreach ($krits->krits as $krit) {
+            $single_krit = new RISSucheKrits([$krit]);
+            $one_removed = new RISSucheKrits();
+            foreach ($krits->krits as $krit2) {
+                if ($krit2 != $krit)
+                    $one_removed->krits[] = $krit2;
+            }
+            echo '<li><a href="' . $one_removed->getUrl() . '" title=\'Kriterium "' . $single_krit->getBeschreibungDerSuche() . '" enfernen\'>';
+            echo '<span class="glyphicon glyphicon-minus-sign"></span>';
+            echo $single_krit->getBeschreibungDerSuche() . '</a></li>';
+        } ?>
+        </ul>
+        </div>
+    <?}
     echo '<br style="clear: both;">';
 
     if (!is_null($geodata) && count($geodata) > 0) {

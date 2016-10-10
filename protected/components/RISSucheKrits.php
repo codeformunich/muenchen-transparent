@@ -348,6 +348,8 @@ class RISSucheKrits
                 default:
                     $krits[] = json_encode($cr);
             }
+
+            // Eine deutsche Reihung mit passenden Trennern bilden
             $text = "Dokumente ";
             for ($i = 0; $i < (count($krits) - 1); $i++) {
                 $text .= $krits[$i];
