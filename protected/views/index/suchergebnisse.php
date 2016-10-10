@@ -71,37 +71,48 @@ $this->pageTitle = "Suchergebnisse";
     // Möglichkeiten, die Suche weiter einzuschränken
     $facet_groups = array();
 
-    // Links, um die Suche nach Antragstyp einzuschränken
-    $antrag_typ = array();
-    $facet      = $ergebnisse->getFacetSet()->getFacet('antrag_typ');
-    foreach ($facet as $value => $count) if ($count > 0) {
-        $str = "<li><a href='" . RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit('antrag_typ', $value)->getUrl())) . "'>";
-        if (isset(Antrag::$TYPEN_ALLE[$value])) {
-            $x = explode("|", Antrag::$TYPEN_ALLE[$value]);
-            $str .= $x[1] . ' (' . $count . ')';
-        } elseif ($value == "stadtrat_termin") $str .= 'Stadtrats-Termin (' . $count . ')';
-        elseif ($value == "ba_termin") $str .= 'BA-Termin (' . $count . ')';
-        else $str .= $value . " (" . $count . ")";
-        $str .= "</a></li>";
-        $antrag_typ[] = $str;
-    }
-    if (count($antrag_typ) > 0) $facet_groups["Dokumenttypen"] = $antrag_typ;
+    $options = [
+        ['antrag_typ', 'antrag_typ', 'Dokumenttypen'],
+        ['antrag_wahlperiode', 'antrag_wahlperiode', 'Wahlperiode'],
+        ['dokument_bas', 'ba', 'BAs']
+    ];
 
-    // Links, um die Suche nach Wahlperiode einzuschränken
-    $wahlperiode = array();
-    $facet       = $ergebnisse->getFacetSet()->getFacet('antrag_wahlperiode');
-    foreach ($facet as $value => $count) if ($count > 0) {
-        if (in_array($value, array("", "?"))) continue;
-        $str = "<li><a href='" . RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit('antrag_wahlperiode', $value)->getUrl())) . "'>";
-        $str .= $value . ' (' . $count . ')';
-        $str .= "</a></li>";
-        $wahlperiode[] = $str;
+    $out = [];
+
+    foreach ($options as $option) {
+        // Gewählte Optionen ausschließen
+        if ($krits->hasKrit($option[1]))
+            continue;
+
+        $single_facet = [];
+        $facet = $ergebnisse->getFacetSet()->getFacet($option[0]);
+
+        foreach ($facet as $value => $count) if ($count > 0) {
+            if (in_array($value, array("", "?"))) continue;
+
+            $str = [];
+            $str['url'] = RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit($option[1], $value)->getUrl()));
+            $str['count'] = $count;
+
+            if ($option[0] == 'antrag_typ') {
+                if (isset(Antrag::$TYPEN_ALLE[$value])) $str['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
+                else if ($value == "stadtrat_termin") $str['name'] = 'Stadtrats-Termin';
+                else if ($value == "ba_termin") $str['name'] = 'BA-Termin';
+                else $str['name'] = $value;
+            } else if ($option[0] == 'antrag_wahlperiode' || $option[0] == 'dokument_bas') {
+                $str['name'] = $value;
+            }
+
+            $single_facet[] = $str;
+        }
+
+        if (count($single_facet) > 0) $facet_groups[$option[2]] = $single_facet;
     }
-    if (count($wahlperiode) > 0) $facet_groups["Wahlperiode"] = $wahlperiode;
 
     // Dropdown, um die Suchergebnisse anzuzeigen
     $has_facets = false;
     foreach ($facet_groups as $name => $facets) if (count($facets) > 1) $has_facets = true;
+
     if ($has_facets) {
         ?>
         <section class="suchergebnis_eingrenzen">
@@ -114,7 +125,11 @@ $this->pageTitle = "Suchergebnisse";
                 <?
                 foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
                     echo '<div class="eingrenzen_row"><h3>' . CHtml::encode($name) . '</h3><ul>';
-                    echo implode("", $facets);
+                    foreach($facets as $facet) {
+                        echo "<li><a href='" . $facet['url'] . "'>";
+                        echo $facet['name'] . ' (' . $facet['count'] . ')';
+                        echo "</a></li>";
+                    }
                     echo '</ul></div>';
                 }
                 ?>

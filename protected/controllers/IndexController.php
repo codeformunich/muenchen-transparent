@@ -454,6 +454,7 @@ class IndexController extends RISBaseController
             $facetSet = $select->getFacetSet();
             $facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
             $facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
+            $facetSet->createFacetField('dokument_bas')->setField('dokument_bas');
 
             try {
                 $ergebnisse = $solr->select($select);
