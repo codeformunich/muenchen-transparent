@@ -101,7 +101,7 @@ $krits_array_without_wahlperiode = $krits_array;
 // Remove the antrag_wahlperiode
 array_splice($krits_array_without_wahlperiode, 3, 1);
 
-// Orte
+// Places
 $inside      = new OrtGeo();
 $inside->ort = "inside";
 $inside->lat = 11.576006;
@@ -139,6 +139,7 @@ foreach ($krits_array as $i => $val) {
     $I->assertEquals($krits, $krits->cloneKrits());
     $I->assertEquals($krits->getJson(), json_encode([$val]));
 
+    // URL
     $url_array = [
         'krit_typ' => [$krits_url_array['krit_typ'][$i]],
         'krit_val' => [$krits_url_array['krit_val'][$i]],
@@ -147,6 +148,7 @@ foreach ($krits_array as $i => $val) {
     $I->assertEquals($url_array, $krits->getUrlArray());
     $I->assertEquals($krits, RISSucheKrits::createFromUrl($url_array));
 
+    // Benachritigungen
     if ($val['typ'] != 'antrag_wahlperiode') {
         $I->assertEquals($krits->getBenachrichtigungKrits(), $krits);
         $I->assertEquals($krits->getFeedUrl(), $krits->getUrl('index/feed'));
@@ -155,11 +157,15 @@ foreach ($krits_array as $i => $val) {
         $I->assertEquals($krits->getFeedUrl(), (new RISSucheKrits())->getUrl('index/feed'));
     }
 
-    $I->assertEquals($krits->getBeschreibungDerSuche(), $single_krits_description[$i]);
-
+    // solr
     $solr = RISSolrHelper::getSolrClient();
     $select = $solr->createSelect();
     $I->assertEquals($krits->getSolrQueryStr($select), $solr_query_strings[$i]);
+
+    // other
+    $I->assertEquals($krits->getBeschreibungDerSuche(), $single_krits_description[$i]);
+    $I->assertTrue($krits->hasKrit($val['typ']), $val['typ']);
+    $I->assertFalse($krits->hasKrit("invalid"));
 }
 
 // Test with all krits
@@ -180,15 +186,18 @@ $I->assertEquals($krits->getGeoKrit(), $krits_array[7]);
 $I->assertTrue($krits->filterGeo($inside));
 $I->assertFalse($krits->filterGeo($outside));
 
-$I->assertEquals($krits->getBenachrichtigungKrits()->krits, $krits_array_without_wahlperiode);
-$I->assertEquals($krits->getBeschreibungDerSuche(), $all_krits_description);
-
+// solr
 $solr   = RISSolrHelper::getSolrClient();
 $select = $solr->createSelect();
 $krits->addKritsToSolr($select);
 $I->assertEquals($solr_filter_queries, $select->getFilterQueries());
 
-
+// other
+$I->assertEquals($krits->getBeschreibungDerSuche(), $all_krits_description);
+$I->assertEquals($krits->getBenachrichtigungKrits()->krits, $krits_array_without_wahlperiode);
+foreach ($krits_array as $krit) $I->assertTrue($krits->hasKrit($krit["typ"]));
+$I->assertFalse($krits->hasKrit("invalid"));
 
 // Special cases
 $I->assertEquals(new RISSucheKrits(), RISSucheKrits::createFromUrl([]));
+$I->expectException(Exception::class, function() { (new RISSucheKrits())->addKrit("invalid", null); } );

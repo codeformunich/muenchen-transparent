@@ -422,9 +422,22 @@ class RISSucheKrits
                     "suchbegriff" => $value,
                 ];
                 break;
+            default:
+                throw new Exception("Invalid Krit");
         }
 
         return $this;
+    }
+
+    /**
+     * Überprüft, ob ein Kriterium mit dem entsprechenden Namen existiert
+     *
+     * @param $name
+     * @return bool
+     */
+    public function hasKrit($name) {
+        foreach ($this->krits as $krit) if ($krit["typ"] == $name) return true;
+        return false;
     }
 
     /**
