@@ -84,6 +84,19 @@ $solr_query_strings = [
     '{!geofilt pt=11.576006,48.137079 sfield=geo d=1}',
 ];
 
+// Build the solr filter queries returned by addKritsToSolr
+$solr_filter_queries = [];
+foreach ($krits_array as $i => $val) {
+    if ($val["typ"] == 'volltext' || $val["typ"] == 'antrag_nr')
+        continue;
+    if ($val["typ"] == 'ba')
+        $val["typ"] = 'dokument_bas';
+    $filter_query = new Solarium\QueryType\Select\Query\FilterQuery();
+    $filter_query->setQuery($solr_query_strings[$i]);
+    $filter_query->setKey($val["typ"]);
+    $solr_filter_queries[$val["typ"]] = $filter_query;
+};
+
 $krits_array_without_wahlperiode = $krits_array;
 // Remove the antrag_wahlperiode
 array_splice($krits_array_without_wahlperiode, 3, 1);
@@ -155,10 +168,13 @@ $I->assertEquals($krits, $krits->cloneKrits());
 $I->assertEquals($krits->getKritsCount(), count($krits_array));
 $I->assertEquals($krits->getJson(), json_encode($krits_array));
 
+// URL
 $I->assertEquals('/suche/?' . implode('&', $krits_url_parts), $krits->getUrl());
 $I->assertEquals($krits, RISSucheKrits::createFromUrl($krits_url_array));
 $I->assertEquals($krits_url_array, $krits->getUrlArray());
+$I->assertEquals($krits->getFeedUrl(), $krits->getBenachrichtigungKrits()->getUrl('index/feed'));
 
+// geo
 $I->assertEquals($krits->isGeoKrit(), true);
 $I->assertEquals($krits->getGeoKrit(), $krits_array[7]);
 $I->assertTrue($krits->filterGeo($inside));
@@ -167,7 +183,12 @@ $I->assertFalse($krits->filterGeo($outside));
 $I->assertEquals($krits->getBenachrichtigungKrits()->krits, $krits_array_without_wahlperiode);
 $I->assertEquals($krits->getBeschreibungDerSuche(), $all_krits_description);
 
-$I->assertEquals($krits->getFeedUrl(), $krits->getBenachrichtigungKrits()->getUrl('index/feed'));
+$solr   = RISSolrHelper::getSolrClient();
+$select = $solr->createSelect();
+$krits->addKritsToSolr($select);
+$I->assertEquals($solr_filter_queries, $select->getFilterQueries());
+
+
 
 // Special cases
 $I->assertEquals(new RISSucheKrits(), RISSucheKrits::createFromUrl([]));

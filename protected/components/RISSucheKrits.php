@@ -157,7 +157,7 @@ class RISSucheKrits
     }
 
     /**
-     * FIXME: Unit Tests fehlen noch
+     * FIXME: Schließen sich volltext und antrag_nr gegenseitig aus?
      *
      * @param \Solarium\QueryType\Select\Query\Query $select
      */
