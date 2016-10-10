@@ -41,18 +41,21 @@ $this->pageTitle = "Suchergebnisse";
         <h1>Suchergebnisse</h1>
         <div class="suchkrits_interaktiv">
         <p class="suchkriterien">Gefunden wurden Dokumente mit den folgenden Kriterien:</p>
-        <ul><?
-        foreach ($krits->krits as $krit) {
+        <ul>
+        <? foreach ($krits->krits as $krit) {
             $single_krit = new RISSucheKrits([$krit]);
             $one_removed = new RISSucheKrits();
             foreach ($krits->krits as $krit2) {
                 if ($krit2 != $krit)
                     $one_removed->krits[] = $krit2;
-            }
-            echo '<li><a href="' . $one_removed->getUrl() . '" title=\'Kriterium "' . $single_krit->getBeschreibungDerSuche() . '" enfernen\'>';
-            echo '<span class="glyphicon glyphicon-minus-sign"></span>';
-            echo $single_krit->getBeschreibungDerSuche() . '</a></li>';
-        } ?>
+            } ?>
+            <li>
+                <a href="<?= $one_removed->getUrl() ?>"
+                   title='Kriterium "<?= $single_krit->getBeschreibungDerSuche() ?>" enfernen'>
+                <span class="fontello fontello-cancel"></span><?= $single_krit->getBeschreibungDerSuche() ?>
+                </a>
+            </li>
+        <? } ?>
         </ul>
         </div>
     <?}
@@ -82,44 +85,46 @@ $this->pageTitle = "Suchergebnisse";
     }
 
     // Möglichkeiten, die Suche weiter einzuschränken
-    $facet_groups = array();
+    $facet_groups = [];
 
-    $options = [
+    $facet_group_names = [
         ['antrag_typ', 'antrag_typ', 'Dokumenttypen'],
         ['antrag_wahlperiode', 'antrag_wahlperiode', 'Wahlperiode'],
-        ['dokument_bas', 'ba', 'BAs']
+        ['dokument_bas', 'ba', 'Bezirksauschüsse']
     ];
 
-    $out = [];
-
-    foreach ($options as $option) {
+    foreach ($facet_group_names as $facet_group_name) {
         // Gewählte Optionen ausschließen
-        if ($krits->hasKrit($option[1]))
+        if ($krits->hasKrit($facet_group_name[1]))
             continue;
 
-        $single_facet = [];
-        $facet = $ergebnisse->getFacetSet()->getFacet($option[0]);
+        $facet_group = [];
+        $facet = $ergebnisse->getFacetSet()->getFacet($facet_group_name[0]);
 
         foreach ($facet as $value => $count) if ($count > 0) {
             if (in_array($value, array("", "?"))) continue;
 
-            $str = [];
-            $str['url'] = RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit($option[1], $value)->getUrl()));
-            $str['count'] = $count;
+            $facet_option = [];
+            $facet_option['url'] = RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit($facet_group_name[1], $value)->getUrl()));
+            $facet_option['count'] = $count;
 
-            if ($option[0] == 'antrag_typ') {
-                if (isset(Antrag::$TYPEN_ALLE[$value])) $str['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
-                else if ($value == "stadtrat_termin") $str['name'] = 'Stadtrats-Termin';
-                else if ($value == "ba_termin") $str['name'] = 'BA-Termin';
-                else $str['name'] = $value;
-            } else if ($option[0] == 'antrag_wahlperiode' || $option[0] == 'dokument_bas') {
-                $str['name'] = $value;
+            if ($facet_group_name[0] == 'antrag_typ') {
+                if (isset(Antrag::$TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
+                else if ($value == "stadtrat_termin") $facet_option['name'] = 'Stadtrats-Termin';
+                else if ($value == "ba_termin") $facet_option['name'] = 'BA-Termin';
+                else $facet_option['name'] = $value;
+            } else if ($facet_group_name[0] == 'antrag_wahlperiode') {
+                $facet_option['name'] = $value;
+            } else if ($facet_group_name[0] == 'dokument_bas') {
+                $facet_option['name'] = $value . ": " . Bezirksausschuss::model()->findByPk($value)->name;
+            } else {
+                throw new Exception("unknown facet");
             }
 
-            $single_facet[] = $str;
+            $facet_group[] = $facet_option;
         }
 
-        if (count($single_facet) > 0) $facet_groups[$option[2]] = $single_facet;
+        if (count($facet_group) > 0) $facet_groups[$facet_group_name[2]] = $facet_group;
     }
 
     // Dropdown, um die Suchergebnisse anzuzeigen

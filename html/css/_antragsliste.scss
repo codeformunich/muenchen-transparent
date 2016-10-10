@@ -267,8 +267,13 @@ ul.dokumente {
       padding-left: 15px;
 
       li {
-        .glyphicon {
-          margin-right: 10px;
+        .fontello {
+          margin-right: 5px;
+        }
+
+        a:hover {
+          color: darkred;
+          text-decoration: none;
         }
       }
     }
