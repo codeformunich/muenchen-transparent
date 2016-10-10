@@ -3,6 +3,7 @@
  * @var IndexController $this
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
  * @var RISSucheKrits $krits
+ * @var array $available_facets
  * @var bool $email_bestaetigt
  * @var bool $email_angegeben
  * @var bool $eingeloggt
@@ -85,51 +86,8 @@ $this->pageTitle = "Suchergebnisse";
     }
 
     // Möglichkeiten, die Suche weiter einzuschränken
-    $facet_groups = [];
-
-    $facet_group_names = [
-        ['antrag_typ', 'antrag_typ', 'Dokumenttypen'],
-        ['antrag_wahlperiode', 'antrag_wahlperiode', 'Wahlperiode'],
-        ['dokument_bas', 'ba', 'Bezirksauschüsse']
-    ];
-
-    foreach ($facet_group_names as $facet_group_name) {
-        // Gewählte Optionen ausschließen
-        if ($krits->hasKrit($facet_group_name[1]))
-            continue;
-
-        $facet_group = [];
-        $facet = $ergebnisse->getFacetSet()->getFacet($facet_group_name[0]);
-
-        foreach ($facet as $value => $count) if ($count > 0) {
-            if (in_array($value, array("", "?"))) continue;
-
-            $facet_option = [];
-            $facet_option['url'] = RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit($facet_group_name[1], $value)->getUrl()));
-            $facet_option['count'] = $count;
-
-            if ($facet_group_name[0] == 'antrag_typ') {
-                if (isset(Antrag::$TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
-                else if ($value == "stadtrat_termin") $facet_option['name'] = 'Stadtrats-Termin';
-                else if ($value == "ba_termin") $facet_option['name'] = 'BA-Termin';
-                else $facet_option['name'] = $value;
-            } else if ($facet_group_name[0] == 'antrag_wahlperiode') {
-                $facet_option['name'] = $value;
-            } else if ($facet_group_name[0] == 'dokument_bas') {
-                $facet_option['name'] = $value . ": " . Bezirksausschuss::model()->findByPk($value)->name;
-            } else {
-                throw new Exception("unknown facet");
-            }
-
-            $facet_group[] = $facet_option;
-        }
-
-        if (count($facet_group) > 0) $facet_groups[$facet_group_name[2]] = $facet_group;
-    }
-
-    // Dropdown, um die Suchergebnisse anzuzeigen
     $has_facets = false;
-    foreach ($facet_groups as $name => $facets) if (count($facets) > 1) $has_facets = true;
+    foreach ($available_facets as $name => $facets) if (count($facets) > 1) $has_facets = true;
 
     if ($has_facets) {
         ?>
@@ -141,7 +99,7 @@ $this->pageTitle = "Suchergebnisse";
                 </a></div>
             <div id="suchergebnis_eingrenzen_holder">
                 <?
-                foreach ($facet_groups as $name => $facets) if (count($facets) > 1) {
+                foreach ($available_facets as $name => $facets) if (count($facets) > 1) {
                     echo '<div class="eingrenzen_row"><h3>' . CHtml::encode($name) . '</h3><ul>';
                     foreach($facets as $facet) {
                         echo "<li><a href='" . $facet['url'] . "'>";

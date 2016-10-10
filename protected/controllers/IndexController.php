@@ -400,7 +400,59 @@ class IndexController extends RISBaseController
         Yii::app()->end();
     }
 
+    /**
+     * Extrahiert die möglichen Filteroptionen in Gruppen mit Titel, URL und Anzahl der Dokumente
+     *
+     * @param \Solarium\QueryType\Select\Result\Result $ergebnisse
+     * @param RISSucheKrits $krits
+     * @param array $facet_field_names
+     * @return array
+     * @throws Exception
+     */
+    private function extractAvailalbleFacets($ergebnisse, $krits, $facet_field_names) {
+        $availalbe_facets = [];
 
+        foreach ($facet_field_names as $facet_field_name) {
+            // Gewählte Optionen ausschließen
+            if ($krits->hasKrit($facet_field_name[1]))
+                continue;
+
+            $facet_group = [];
+            $facet = $ergebnisse->getFacetSet()->getFacet($facet_field_name[0]);
+
+            foreach ($facet as $value => $count) if ($count > 0) {
+                if (in_array($value, array("", "?"))) continue;
+
+                $facet_option = [];
+                $facet_option['url'] = RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit($facet_field_name[1], $value)->getUrl()));
+                $facet_option['count'] = $count;
+
+                if ($facet_field_name[0] == 'antrag_typ') {
+                    if (isset(Antrag::$TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
+                    else if ($value == "stadtrat_termin") $facet_option['name'] = 'Stadtrats-Termin';
+                    else if ($value == "ba_termin") $facet_option['name'] = 'BA-Termin';
+                    else $facet_option['name'] = $value;
+                } else if ($facet_field_name[0] == 'antrag_wahlperiode') {
+                    $facet_option['name'] = $value;
+                } else if ($facet_field_name[0] == 'dokument_bas') {
+                    $facet_option['name'] = $value . ": " . Bezirksausschuss::model()->findByPk($value)->name;
+                } else {
+                    throw new Exception("unknown facet");
+                }
+
+                $facet_group[] = $facet_option;
+            }
+
+            if (count($facet_group) > 0) $availalbe_facets[$facet_field_name[2]] = $facet_group;
+        }
+
+        return $availalbe_facets;
+    }
+
+
+    /**
+     * @param string $code
+     */
     public function actionSuche($code = "")
     {
         if (AntiXSS::isTokenSet("search_form")) {
@@ -437,7 +489,7 @@ class IndexController extends RISBaseController
         if ($krits->getKritsCount() > 0) {
             $benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
 
-            $solr   = RISSolrHelper::getSolrClient();
+            $solr = RISSolrHelper::getSolrClient();
             $select = $solr->createSelect();
 
             $krits->addKritsToSolr($select);
@@ -451,21 +503,29 @@ class IndexController extends RISBaseController
             $hl->setSimplePrefix('<b>');
             $hl->setSimplePostfix('</b>');
 
+            $facet_field_namess = [
+                ['antrag_typ', 'antrag_typ', 'Dokumenttypen'],
+                ['antrag_wahlperiode', 'antrag_wahlperiode', 'Wahlperiode'],
+                ['dokument_bas', 'ba', 'Bezirksauschüsse']
+            ];
+
             $facetSet = $select->getFacetSet();
-            $facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
-            $facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
-            $facetSet->createFacetField('dokument_bas')->setField('dokument_bas');
+            foreach ($facet_field_namess as $facet_field_names) {
+                $facetSet->createFacetField($facet_field_names[0])->setField($facet_field_names[0]);
+            }
 
             try {
                 $ergebnisse = $solr->select($select);
+                $available_facets = $this->extractAvailalbleFacets($ergebnisse, $krits, $facet_field_namess);
 
                 if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
                 else $geodata = null;
 
                 $this->render("suchergebnisse", array_merge([
-                    "krits"      => $krits,
-                    "ergebnisse" => $ergebnisse,
-                    "geodata"    => $geodata,
+                    "krits"        => $krits,
+                    "ergebnisse"   => $ergebnisse,
+                    "geodata"      => $geodata,
+                    "available_facets" => $available_facets,
                 ], $benachrichtigungen_optionen));
             } catch (Exception $e) {
                 $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
