@@ -1,6 +1,6 @@
 <?php
 
-define("SITE_BASE_URL", "http://localhost:8080");
+if (!defined("SITE_BASE_URL")) define("SITE_BASE_URL", "http://localhost:8080");
 
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 
