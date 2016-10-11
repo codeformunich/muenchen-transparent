@@ -20,19 +20,20 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
-        "yiisoft/yii": "1.1.17",
+        "php": ">=5.6.0",
+        "yiisoft/yii": "~1.1.17",
         "solarium/solarium": "^3.6",
         "zendframework/zend-config": "^2.6.0",
         "zendframework/zend-http": "^2.6.0",
         "zendframework/zend-mail": "^2.6.0",
         "zendframework/zend-mime": "^2.6.0",
         "tijsverkoyen/css-to-inline-styles": "^1.5",
-        "slm/mail": "^1.6",
-        "sabre/dav": "^2.1.0",
-        "sabre/vobject" : "^3.3",
-        "codeception/codeception": "~2.1.1",
-        "heise/shariff": "^5.2",
-        "sgh/pdfbox": "^1.0"
+        "slm/mail": "^2.0",
+        "sabre/dav": "^3.2",
+        "sabre/vobject" : "^4.1",
+        "codeception/codeception": "^2.2",
+        "heise/shariff": "^6.0",
+        "sgh/pdfbox": "^1.0",
+        "codeception/yii-bridge": "dev-master"
     }
 }

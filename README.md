@@ -15,7 +15,7 @@ Vorausgesetzt werden nginx mit PHP und MySQL/MariaDB sowie npm und composer.
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
 chown -R www-data:www-data protected/runtime
-cp protected/config/main.template.php protected/config/main-production.php
+cp protected/config/main-production.template.php protected/config/main-production.php
 ```
 
 Abhängigkeiten installieren und minimiertes javascript und css erzeugen:
