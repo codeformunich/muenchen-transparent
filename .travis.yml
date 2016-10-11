@@ -55,6 +55,8 @@ install:
   - nginx -c `pwd`/docs/nginx-test.conf
 
   # dependencies
+  ## Get the chosen node version
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - chmod 644 vendor/heise/shariff/index.php || true # Prevent a weird "has uncommitted changes" error message when updating shariff
   - composer install --prefer-source # --prefer-source fixes github's limits
   - npm install
