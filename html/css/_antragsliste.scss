@@ -256,29 +256,6 @@ ul.dokumente {
     @extend blockquote;
   }
 
-  .suchkrits_interaktiv {
-    .suchkriterien {
-      font-size: 20px;
-    }
-
-    ul {
-      list-style: none;
-      font-size: 18px;
-      padding-left: 15px;
-
-      li {
-        .fontello {
-          margin-right: 5px;
-        }
-
-        a:hover {
-          color: darkred;
-          text-decoration: none;
-        }
-      }
-    }
-  }
-
   .list-group .list-group-item {
     a.overflow-fadeout-white {
       max-height: 66px;

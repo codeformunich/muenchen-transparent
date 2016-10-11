@@ -569,52 +569,41 @@ ul.terminliste {
   }
 }
 
-.suchergebnis_eingrenzen {
-  text-align: center;
+.suchoptionen {
+  .suchkrits_interaktiv {
+    > ul {
+      list-style: none;
+      font-size: 18px;
+      padding-left: 15px;
 
-  .opener {
-    .close_icon {
-      display: none;
-    }
-  }
+      li {
+        .fontello {
+          margin-right: 5px;
+        }
 
-  #suchergebnis_eingrenzen_holder {
-    display: none;
-  }
-
-  &.visible {
-    #suchergebnis_eingrenzen_holder {
-      display: block;
-    }
-
-    .opener {
-      .close_icon {
-        display: inherit;
-      }
-
-      .open_icon {
-        display: none;
+        a:hover {
+          color: darkred;
+          text-decoration: none;
+        }
       }
     }
   }
 
-  h3 {
-    font-size: 14px;
-    margin-top: 0;
-    margin-bottom: 5px;
-  }
+  .suchergebnis_eingrenzen {
+    > ul {
+      list-style: none;
+      padding-left: 15px;
 
-  ul {
-    list-style-type: none;
-    padding-left: 8px;
-  }
-
-  .eingrenzen_row {
-    display: inline-block;
-    max-width: 250px;
-    text-align: left;
-    vertical-align: top;
-    padding: 20px;
+      li {
+        button.btn {
+          margin: 0px;
+          padding: 3px;
+          font-size: 18px;
+          text-transform: none;
+          font-weight: 400;
+        }
+      }
+    }
   }
 }
 
