@@ -436,6 +436,8 @@ class IndexController extends RISBaseController
                     $facet_option['name'] = $value;
                 } else if ($facet_field_name[0] == 'dokument_bas') {
                     $facet_option['name'] = $value . ": " . Bezirksausschuss::model()->findByPk($value)->name;
+                } else if ($facet_field_name[0] == 'referat_id') {
+                    $facet_option['name'] = Referat::model()->findByPk($value)->name;
                 } else {
                     throw new Exception("unknown facet");
                 }
@@ -506,7 +508,8 @@ class IndexController extends RISBaseController
             $facet_field_namess = [
                 ['antrag_typ', 'antrag_typ', 'Dokumenttypen'],
                 ['antrag_wahlperiode', 'antrag_wahlperiode', 'Wahlperiode'],
-                ['dokument_bas', 'ba', 'Bezirksauschüsse']
+                ['dokument_bas', 'ba', 'Bezirksauschüsse'],
+                ['referat_id', 'referat', 'Referat'],
             ];
 
             $facetSet = $select->getFacetSet();
