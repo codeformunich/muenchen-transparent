@@ -4,13 +4,13 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-exec": "^2.1.2",
-    "gulp-expect-file": "0.0.7",
-    "gulp-if": "^2.0.1",
-    "gulp-sass": "^2.3.1",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.3",
+    "gulp-expect-file": "^0.0.7",
+    "gulp-if": "^2.0",
+    "gulp-sass": "^2.3",
+    "gulp-sourcemaps": "^2.0",
+    "gulp-uglify": "^2.0",
     "pa11y": "^4.0.0",
     "phantomjs-prebuilt": "^2.1.7",
-    "yargs": "^4.7.1"
+    "yargs": "^6.0"
   }
 }
