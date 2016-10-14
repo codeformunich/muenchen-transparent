@@ -13,9 +13,12 @@ class BenachrichtigungenController extends RISBaseController
 
         if (AntiXSS::isTokenSet("einstellungen_speichern")) {
             $einstellungen = $ich->getEinstellungen();
-            if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "tag") $einstellungen->benachrichtigungstag = null;
-            if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "woche") {
-                if (isset($_REQUEST["wochentag"])) $einstellungen->benachrichtigungstag = IntVal($_REQUEST["wochentag"]);
+            if (isset($_REQUEST["intervall"])) {
+                if ($_REQUEST["intervall"] == "tag") {
+                    $einstellungen->benachrichtigungstag = null;
+                } else if ($_REQUEST["intervall"] == "woche" && isset($_REQUEST["wochentag"])) {
+                    $einstellungen->benachrichtigungstag = IntVal($_REQUEST["wochentag"]);
+                }
             }
             $ich->setEinstellungen($einstellungen);
             $ich->save();
@@ -74,7 +77,6 @@ class BenachrichtigungenController extends RISBaseController
             $this->top_menu = "Accountlöschung";
             $this->requireLogin($this->createUrl("index/benachrichtigungen"));
             $ich = $this->aktuelleBenutzerIn();
-            $id  = $ich->id;
 
             if ($ich != NULL) {
                 $ich->email                         = NULL;
@@ -83,7 +85,6 @@ class BenachrichtigungenController extends RISBaseController
                 $ich->datum_angelegt                = NULL;
                 $ich->datum_letzte_benachrichtigung = NULL;
                 $ich->berechtigungen_flags          = 0;
-                $ich->einstellungen_object          = NULL;
                 $ich->einstellungen                 = NULL;
                 $ich->save(false);
 

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Abstrahiert die benachrichtigungen eines Nutzers. Zur Speicherung werden RISSucheKrits mittels json in einen BLOB für
+ * die Datenbank verwandelt.
+ *
+ * Class BenutzerInnenEinstellungen
+ */
 class BenutzerInnenEinstellungen
 {
 

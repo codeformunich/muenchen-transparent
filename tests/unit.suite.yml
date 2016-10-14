@@ -10,3 +10,4 @@ modules:
             url: http://yii-codeception.test/index-yii-codeception.php
         - \Helper\Unit
         - Asserts
+        - Db

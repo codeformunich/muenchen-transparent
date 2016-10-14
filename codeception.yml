@@ -19,8 +19,8 @@ coverage:
 modules:
     config:
         Db:
-            dsn: 'mysql:host=127.0.0.1;dbname=ristest'
+            dsn: 'mysql:host=127.0.0.1;dbname=mt-test'
             user: 'travis'
             password: ''
             dump: 'tests/_data/dump.sql' # The dataset is created by the travis run script
-            populate: true
+            populate: false
