@@ -6,7 +6,7 @@ $I->amOnPage('/themen');
 // Get the test data
 require "RISSucheKritsData.php";
 
-// Test every single krits on it's own
+$I->amGoingTo("test objects with one of single krits");
 foreach ($krits_array as $i => $val) {
     $krits = new RISSucheKrits();
 
@@ -60,7 +60,7 @@ foreach ($krits_array as $i => $val) {
     $I->assertFalse($krits->hasKrit("invalid"));
 }
 
-// Test with all krits
+$I->amGoingTo("test an object with all krits");
 $krits = new RISSucheKrits($krits_array);
 $I->assertEquals($krits, $krits->cloneKrits());
 $I->assertEquals($krits->getKritsCount(), count($krits_array));

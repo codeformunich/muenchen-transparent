@@ -24,3 +24,4 @@ modules:
             password: ''
             dump: 'tests/_data/dump.sql' # The dataset is created by the travis run script
             populate: false
+            cleanup: false

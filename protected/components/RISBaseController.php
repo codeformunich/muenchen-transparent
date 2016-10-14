@@ -175,6 +175,5 @@ class RISBaseController extends CController
             "message" => $error_message,
         ]);
         Yii::app()->end($error_code);
-        die();
     }
 }
