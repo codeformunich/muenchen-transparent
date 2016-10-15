@@ -575,7 +575,7 @@ ul.terminliste {
       font-size: 16px;
       padding-left: 0px;
 
-      li {
+      > li {
         display: flex;
         align-items: center;
 
@@ -590,6 +590,15 @@ ul.terminliste {
         .fontello-cancel:hover {
             color: darkred;
             text-decoration: none;
+        }
+
+        button {
+          border: none;
+          background: none;
+        }
+
+        .glyphicon {
+          color: $brand-primary;
         }
       }
     }

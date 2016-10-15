@@ -411,11 +411,24 @@ class IndexController extends RISBaseController
      */
     private function extractAvailalbleFacets($ergebnisse, $krits, $facet_field_names) {
         $availalbe_facets = [];
+        $used_factes      = [];
 
         foreach ($facet_field_names as $facet_field_name) {
-            // Gewählte Optionen ausschließen
-            if ($krits->hasKrit($facet_field_name[1]))
-                continue;
+            // Gewählte Option ausnehmen, um Duplikate zu vermeiden
+            $krit_used = $krits->hasKrit($facet_field_name[1]);
+            $krits_without_used = $krits;
+            $krit_alone = null;
+
+            if ($krit_used) {
+                $krits_without_used = new RISSucheKrits();
+                foreach ($krits->krits as $i) {
+                    if ($i["typ"] != $facet_field_name[1]) {
+                        $krits_without_used->krits[] = $i;
+                    } else {
+                        $krit_alone = $i;
+                    }
+                }
+            }
 
             $facet_group = [];
             $facet = $ergebnisse->getFacetSet()->getFacet($facet_field_name[0]);
@@ -424,7 +437,7 @@ class IndexController extends RISBaseController
                 if (in_array($value, array("", "?"))) continue;
 
                 $facet_option = [];
-                $facet_option['url'] = RISTools::bracketEscape(CHtml::encode($krits->cloneKrits()->addKrit($facet_field_name[1], $value)->getUrl()));
+                $facet_option['url'] = RISTools::bracketEscape(CHtml::encode($krits_without_used->cloneKrits()->addKrit($facet_field_name[1], $value)->getUrl()));
                 $facet_option['count'] = $count;
 
                 if ($facet_field_name[0] == 'antrag_typ') {
@@ -445,10 +458,28 @@ class IndexController extends RISBaseController
                 $facet_group[] = $facet_option;
             }
 
-            if (count($facet_group) > 0) $availalbe_facets[$facet_field_name[2]] = $facet_group;
+            $to_add = [
+                "name" => $facet_field_name[2],
+                "typ" => $facet_field_name[1],
+                "group" => $facet_group,
+                "krits_without_used" => $krits_without_used,
+                "krit_alone" => $krit_alone,
+            ];
+
+
+            if ($krit_used) {
+                // Ẃir brauchen mindestens 2, weil die erste Möglichkeit die bereits gewählte ist
+                if (count($facet_group) >= 2) {
+                    $used_factes[] = $to_add;
+                }
+            } else {
+                if (count($facet_group) >= 1) {
+                    $availalbe_facets[] = $to_add;
+                }
+            }
         }
 
-        return $availalbe_facets;
+        return [$availalbe_facets, $used_factes];
     }
 
 
@@ -499,6 +530,11 @@ class IndexController extends RISBaseController
             $select->setRows(50);
             $select->addSort('sort_datum', $select::SORT_DESC);
 
+            // Tag hinzufügen, der den Namen entspricht
+            foreach ($select->getFilterQueries() as $filter_query) {
+                $filter_query->addTag($filter_query->getKey());
+            }
+
             /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
             $hl->setFields('text, text_ocr, antrag_betreff');
@@ -514,21 +550,27 @@ class IndexController extends RISBaseController
 
             $facetSet = $select->getFacetSet();
             foreach ($facet_field_namess as $facet_field_names) {
-                $facetSet->createFacetField($facet_field_names[0])->setField($facet_field_names[0]);
+                $facetSet
+                    ->createFacetField($facet_field_names[0])
+                    ->setField($facet_field_names[0])
+                    ->setExcludes([$facet_field_names[0]]);
             }
 
             try {
                 $ergebnisse = $solr->select($select);
-                $available_facets = $this->extractAvailalbleFacets($ergebnisse, $krits, $facet_field_namess);
+                $x = $this->extractAvailalbleFacets($ergebnisse, $krits, $facet_field_namess);
+                $available_facets = $x[0];
+                $used_factes = $x[1];
 
                 if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
                 else $geodata = null;
 
                 $this->render("suchergebnisse", array_merge([
-                    "krits"        => $krits,
-                    "ergebnisse"   => $ergebnisse,
-                    "geodata"      => $geodata,
+                    "krits"            => $krits,
+                    "ergebnisse"       => $ergebnisse,
+                    "geodata"          => $geodata,
                     "available_facets" => $available_facets,
+                    "used_facets"      => $used_factes,
                 ], $benachrichtigungen_optionen));
             } catch (Exception $e) {
                 $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);

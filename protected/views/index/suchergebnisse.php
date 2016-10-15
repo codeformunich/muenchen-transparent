@@ -4,6 +4,7 @@
  * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
  * @var RISSucheKrits $krits
  * @var array $available_facets
+ * @var array $used_facets
  * @var bool $email_bestaetigt
  * @var bool $email_angegeben
  * @var bool $eingeloggt
@@ -45,7 +46,7 @@ $this->pageTitle = "Suchergebnisse";
     // Anzeigen der Suchkriterien und die Möglichkeit, diese zu entfernen
     if ($krits->getKritsCount() > 1) { ?>
     <div class="suchkrits_interaktiv col-md-6 col-md-pull-5">
-        <h4 class="suchkriterien">Gefunden wurden Dokumente mit den folgenden Kriterien:</h4>
+        <h4>Gefunden wurden Dokumente mit den folgenden Kriterien:</h4>
         <ul>
             <? foreach ($krits->krits as $krit) {
                 $single_krit = new RISSucheKrits([$krit]);
@@ -56,10 +57,34 @@ $this->pageTitle = "Suchergebnisse";
                 } ?>
                 <li>
                     <span class="suchkrits_beschreibung"><?= $single_krit->getBeschreibungDerSuche() ?></span>
-                    <a href="<?= $one_removed->getUrl() ?>"
+
+                    <? // bearbeiten ?>
+                    <? foreach ($used_facets as $facets) {
+                        if ($facets["typ"] == $krit["typ"]) {
+                            ?>
+                            <span class="dropdown">
+                                <button data-toggle="dropdown" title="Einen anderen Wert für dieses Kriterium wählen">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <? foreach ($facets["group"] as $facet) { ?>
+                                        <li>
+                                            <a href="<?= $facet['url'] ?>"><?= $facet['name'] . ' (' . $facet['count'] . ')' ?></a>
+                                        </li>
+                                    <? } ?>
+                                </ul>
+                            </span>
+                            <?
+                        }
+                    } ?>
+
+                    <? // Einzeln suchen ?>
+                    <a href="<?= $single_krit->getUrl() ?>"
                        title='Nach "<?= $single_krit->getBeschreibungDerSuche() ?>" suchen'>
                         <span class="fontello fontello-search"></span>
                     </a>
+
+                    <? // Entfernen ?>
                     <a href="<?= $one_removed->getUrl() ?>"
                        title='Kriterium "<?= $single_krit->getBeschreibungDerSuche() ?>" enfernen'>
                         <span class="fontello fontello-cancel"></span>
@@ -76,19 +101,20 @@ $this->pageTitle = "Suchergebnisse";
     <?
     // Möglichkeiten, die Suche weiter einzuschränken
     $has_facets = false;
-    foreach ($available_facets as $name => $facets) if (count($facets) > 1) $has_facets = true;
+    foreach ($available_facets as $facets) if (count($facets["group"]) > 1)
+        $has_facets = true;
 
     if ($has_facets) { ?>
     <section class="suchergebnis_eingrenzen col-md-6">
-        <h4 class="suchkriterien">Suche einschränken</h4>
+        <h4>Suche einschränken</h4>
         <ul>
-            <? foreach ($available_facets as $name => $facets) if (count($facets) > 1) { ?>
+            <? foreach ($available_facets as $facets) { ?>
                 <li class="dropdown">
-                    <button class="asdf btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        <?= CHtml::encode($name) ?> <span class="caret"></span>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                        <?= CHtml::encode($facets["name"]) ?> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <? foreach ($facets as $facet) { ?>
+                        <? foreach ($facets["group"] as $facet) { ?>
                             <li>
                                 <a href="<?= $facet['url'] ?>"><?= $facet['name'] . ' (' . $facet['count'] . ')' ?></a>
                             </li>
