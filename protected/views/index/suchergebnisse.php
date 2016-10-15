@@ -19,8 +19,9 @@ $this->pageTitle = "Suchergebnisse";
 <section class="well suchoptionen">
     <h1> <?= ($krits->getKritsCount() > 1) ? "Suche" : CHtml::encode($krits->getBeschreibungDerSuche()) ?> </h1>
 
+    <div class="row">
     <? // Button mit Extras, die rechts sind ?>
-    <div class="pull-right">
+    <div class="col-md-5 col-md-push-6">
         <?
         $this->renderPartial("suchergebnisse_benachrichtigungen", array(
             "eingeloggt" => $eingeloggt,
@@ -43,7 +44,7 @@ $this->pageTitle = "Suchergebnisse";
     <?
     // Anzeigen der Suchkriterien und die Möglichkeit, diese zu entfernen
     if ($krits->getKritsCount() > 1) { ?>
-    <div class="suchkrits_interaktiv">
+    <div class="suchkrits_interaktiv col-md-6 col-md-pull-5">
         <h4 class="suchkriterien">Gefunden wurden Dokumente mit den folgenden Kriterien:</h4>
         <ul>
             <? foreach ($krits->krits as $krit) {
@@ -54,43 +55,54 @@ $this->pageTitle = "Suchergebnisse";
                         $one_removed->krits[] = $krit2;
                 } ?>
                 <li>
+                    <span class="suchkrits_beschreibung"><?= $single_krit->getBeschreibungDerSuche() ?></span>
+                    <a href="<?= $one_removed->getUrl() ?>"
+                       title='Nach "<?= $single_krit->getBeschreibungDerSuche() ?>" suchen'>
+                        <span class="fontello fontello-search"></span>
+                    </a>
                     <a href="<?= $one_removed->getUrl() ?>"
                        title='Kriterium "<?= $single_krit->getBeschreibungDerSuche() ?>" enfernen'>
-                        <span class="fontello fontello-cancel"></span><?= $single_krit->getBeschreibungDerSuche() ?>
+                        <span class="fontello fontello-cancel"></span>
                     </a>
                 </li>
             <? } ?>
         </ul>
     </div>
     <? } ?>
+    </div>
+
+    <div class="row">
 
     <?
     // Möglichkeiten, die Suche weiter einzuschränken
     $has_facets = false;
     foreach ($available_facets as $name => $facets) if (count($facets) > 1) $has_facets = true;
 
-    if ($has_facets) {
-        ?>
-        <section class="suchergebnis_eingrenzen">
-            <h4 class="suchkriterien">Suche einschränken</h4>
-            <ul>
-                <? foreach ($available_facets as $name => $facets) if (count($facets) > 1) { ?>
-                    <li class="dropdown">
-                        <button class="asdf btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                            <?= CHtml::encode($name) ?> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <? foreach ($facets as $facet) { ?>
-                                <li>
-                                    <a href="<?= $facet['url'] ?>"><?= $facet['name'] . ' (' . $facet['count'] . ')' ?></a>
-                                </li>
-                            <? } ?>
-                        </ul>
-                    </li>
-                <? } ?>
-            </ul>
-        </section>
+    if ($has_facets) { ?>
+    <section class="suchergebnis_eingrenzen col-md-6">
+        <h4 class="suchkriterien">Suche einschränken</h4>
+        <ul>
+            <? foreach ($available_facets as $name => $facets) if (count($facets) > 1) { ?>
+                <li class="dropdown">
+                    <button class="asdf btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                        <?= CHtml::encode($name) ?> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <? foreach ($facets as $facet) { ?>
+                            <li>
+                                <a href="<?= $facet['url'] ?>"><?= $facet['name'] . ' (' . $facet['count'] . ')' ?></a>
+                            </li>
+                        <? } ?>
+                    </ul>
+                </li>
+            <? } ?>
+        </ul>
+    </section>
     <? } ?>
+
+    </div>
+
+    <div class="row">
 
     <?
     // Eine Karte (?!)
@@ -120,6 +132,8 @@ $this->pageTitle = "Suchergebnisse";
             });
         </script>
     <? } ?>
+
+    </div>
 
 </section>
 

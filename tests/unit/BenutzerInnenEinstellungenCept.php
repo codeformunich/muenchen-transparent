@@ -21,7 +21,7 @@ foreach ($krits_array_benachritigungen as $krit) {
     $krits_array_subdivided[] = [$krit];
 }
 
-// Test getEinstellungen()
+// Test getEinstellungen() and the db-json-blob-format
 $I->assertEquals($krits_array_subdivided, $benutzerin->getEinstellungen()->benachrichtigungen);
 $json_raw = ["benachrichtigungen" => $krits_array_subdivided, "benachrichtigungstag" => null];
 $I->assertEquals($benutzerin->getEinstellungen()->toJSON(), json_encode($json_raw));

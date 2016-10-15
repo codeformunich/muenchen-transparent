@@ -572,18 +572,24 @@ ul.terminliste {
 .suchoptionen {
   .suchkrits_interaktiv {
     > ul {
-      list-style: none;
-      font-size: 18px;
-      padding-left: 15px;
+      font-size: 16px;
+      padding-left: 0px;
 
       li {
-        .fontello {
-          margin-right: 5px;
+        display: flex;
+        align-items: center;
+
+        &:not(:first-child) {
+          border-top: thin solid lightgrey;
         }
 
-        a:hover {
-          color: darkred;
-          text-decoration: none;
+        .suchkrits_beschreibung {
+          width: 100%;
+        }
+
+        .fontello-cancel:hover {
+            color: darkred;
+            text-decoration: none;
         }
       }
     }
