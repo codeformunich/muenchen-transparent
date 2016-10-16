@@ -62,7 +62,7 @@ $this->pageTitle = "Suchergebnisse";
                     <? foreach ($used_facets as $facets) {
                         if ($facets["typ"] == $krit["typ"]) {
                             ?>
-                            <span class="dropdown">
+                            <div class="dropdown">
                                 <button data-toggle="dropdown" title="Einen anderen Wert für dieses Kriterium wählen">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
@@ -73,7 +73,7 @@ $this->pageTitle = "Suchergebnisse";
                                         </li>
                                     <? } ?>
                                 </ul>
-                            </span>
+                            </div>
                             <?
                         }
                     } ?>
