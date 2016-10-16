@@ -165,6 +165,9 @@ $this->pageTitle = "Suchergebnisse";
 
 <section class="well suchergebnisse">
     <h1>Suchergebnisse</h1>
+    <p>Zeige <?= count($ergebnisse->getDocuments()) ?> von <?= $ergebnisse->getNumFound() ?> Dokumenten</p>
+    <div style="height: 15px;"></div>
+
     <?
     if ($krits->getKritsCount() > 0) $this->renderPartial("../benachrichtigungen/suchergebnisse_liste", array(
         "ergebnisse" => $ergebnisse,

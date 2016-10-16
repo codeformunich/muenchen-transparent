@@ -558,24 +558,25 @@ class IndexController extends RISBaseController
 
             try {
                 $ergebnisse = $solr->select($select);
-                $x = $this->extractAvailalbleFacets($ergebnisse, $krits, $facet_field_namess);
-                $available_facets = $x[0];
-                $used_factes = $x[1];
-
-                if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
-                else $geodata = null;
-
-                $this->render("suchergebnisse", array_merge([
-                    "krits"            => $krits,
-                    "ergebnisse"       => $ergebnisse,
-                    "geodata"          => $geodata,
-                    "available_facets" => $available_facets,
-                    "used_facets"      => $used_factes,
-                ], $benachrichtigungen_optionen));
             } catch (Exception $e) {
                 $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
                 Yii::app()->end(500);
             }
+
+            $x = $this->extractAvailalbleFacets($ergebnisse, $krits, $facet_field_namess);
+            $available_facets = $x[0];
+            $used_factes = $x[1];
+
+            if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
+            else $geodata = null;
+
+            $this->render("suchergebnisse", array_merge([
+                "krits"            => $krits,
+                "ergebnisse"       => $ergebnisse,
+                "geodata"          => $geodata,
+                "available_facets" => $available_facets,
+                "used_facets"      => $used_factes,
+            ], $benachrichtigungen_optionen));
         } else {
             $this->render("suche");
         }
