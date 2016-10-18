@@ -37,3 +37,6 @@ Erweiterungen:
  * `muenchenTransparent:facebook`: String (URL)
  * `muenchenTransparent:abgeordnetenwatch`: String (URL)
 
+**File**
+ * `muenchenTransparent:nameRaw`: String - Der im RIS angezeigte Dokumentenname
+ * `muenchenTransparent:nameTitelRaw`: String - Der String im titel-Tag im RIS

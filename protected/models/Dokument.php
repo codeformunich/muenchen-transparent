@@ -264,6 +264,8 @@ class Dokument extends CActiveRecord implements IRISItem
             if (strlen($name) > 255) {
                 return "Dokument";
             }
+
+            // Prüfen, ob das Dokument und der Antrag den gleichen Namen haben
             if (strlen($name) > 20 && $this->antrag && strlen($this->antrag->getName()) <= 255 && levenshtein($name, $this->antrag->getName()) < 4) return "Dokument";
 
             $name = preg_replace("/ Nr\. [0-9-]{5} \/ [A-Z] [0-9]+$/siu", "", $name);

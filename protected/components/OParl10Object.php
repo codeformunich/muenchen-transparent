@@ -157,15 +157,17 @@ class OParl10Object {
         $dokument = Dokument::model()->findByPk($id);
 
         $data = [
-            'id'          => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
-            'type'        => self::TYPE_FILE,
-            'name'        => $dokument->getName(),
-            'accessUrl'   => SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
-            'downloadUrl' => SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
-            'fileName'    => $dokument->getDateiname(),
-            'web'         => SITE_BASE_URL . $dokument->getLink(),
-            'created'     => OParl10Controller::mysqlToOparlDateTime($dokument->created),
-            'modified'    => OParl10Controller::mysqlToOparlDateTime($dokument->modified),
+            'id'                               => OParl10Controller::getOparlObjectUrl('file', $dokument->id),
+            'type'                             => self::TYPE_FILE,
+            'name'                             => $dokument->getName(),
+            'muenchenTransparent:nameRaw'      => $dokument->name,
+            'muenchenTransparent:nameTitelTaw' => $dokument->name_title,
+            'accessUrl'                        => SITE_BASE_URL . '/fileaccess/access/' . $dokument->id,
+            'downloadUrl'                      => SITE_BASE_URL . '/fileaccess/download/' . $dokument->id,
+            'fileName'                         => $dokument->getDateiname(),
+            'web'                              => SITE_BASE_URL . $dokument->getLink(),
+            'created'                          => OParl10Controller::mysqlToOparlDateTime($dokument->created),
+            'modified'                         => OParl10Controller::mysqlToOparlDateTime($dokument->modified),
         ];
 
         if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
