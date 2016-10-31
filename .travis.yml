@@ -54,10 +54,9 @@ install:
   - ln -s `pwd` /tmp/muenchen-transparent
   - nginx -c `pwd`/docs/nginx-test.conf
 
-  # config
+  # Preparation for the ba-geojson script
   - cp protected/config/main-test.php protected/config/main-production.php
   - mkdir html/js/build
-  - $(git rev-parse --show-toplevel)/protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js
 
   # dependencies
   ## Get the chosen node version
