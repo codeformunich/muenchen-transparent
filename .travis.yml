@@ -56,6 +56,7 @@ install:
 
   # config
   - cp protected/config/main-test.php protected/config/main-production.php
+  - mkdir html/js/build
   - $(git rev-parse --show-toplevel)/protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js
 
   # dependencies
