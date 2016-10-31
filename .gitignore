@@ -24,7 +24,3 @@ protected/config/main-production.php
 
 # Codeception
 tests/_support/_generated/
-
-# YII2_TODO
-config/web.php
-web/

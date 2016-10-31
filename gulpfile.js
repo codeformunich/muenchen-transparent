@@ -12,8 +12,8 @@ var gulp       = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify     = require('gulp-uglify'),
     expect     = require('gulp-expect-file'),
-    yargs      = require('yargs'),
-    process    = require('child_process');
+    yargs      = require('yargs');
+    child_process = require('child_process');
 
 // browsersync will only be used with the browsersync task
 var browsersync = require('browser-sync').create();
@@ -110,7 +110,7 @@ gulp.task('leaflet.js', ['ba-grenzen-geojson'], function () {
 });
 
 gulp.task('ba-grenzen-geojson', function () {
-    return process.exec('$(git rev-parse --show-toplevel)/protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js');
+    return child_process.execSync('$(git rev-parse --show-toplevel)/protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js');
 });
 
 gulp.task('pdfjs', ['pdfjs.js', 'pdfjs.css']);
