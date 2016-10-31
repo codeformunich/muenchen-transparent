@@ -97,7 +97,7 @@ $this->html_itemprop = "http://schema.org/Person";
                 <?
                 } else {
                     $suche = new RISSucheKrits();
-                    $suche->addVolltextsucheKrit("\"" . $person->getName() . "\"");
+                    $suche->addKrit('volltext', "\"" . $person->getName() . "\"");
                     $solr   = RISSolrHelper::getSolrClient();
                     $select = $solr->createSelect();
                     $suche->addKritsToSolr($select);

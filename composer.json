@@ -27,7 +27,7 @@
         "zendframework/zend-http": "^2.6.0",
         "zendframework/zend-mail": "^2.6.0",
         "zendframework/zend-mime": "^2.6.0",
-        "tijsverkoyen/css-to-inline-styles": "^1.5",
+        "tijsverkoyen/css-to-inline-styles": "^2.2",
         "slm/mail": "^2.0",
         "sabre/dav": "^3.2",
         "sabre/vobject" : "^4.1",

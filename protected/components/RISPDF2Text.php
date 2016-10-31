@@ -130,7 +130,7 @@ class RISPDF2Text
         $converter->setPathToPdfBox(PATH_PDFBOX);
         return $converter->textFromPdfFile($pdf);
     }
-    
+
     public static function ris_ocr_clean($txt)
     {
         $ord_a = ord("a");

@@ -83,7 +83,7 @@ class IndexController extends RISBaseController
     {
         if (isset($_REQUEST["krit_typ"])) {
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
-            $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getTitle();
+            $titel = Yii::app()->params['projectTitle'] . ': ' . $krits->getBeschreibungDerSuche();
 
             $solr   = RISSolrHelper::getSolrClient();
             $select = $solr->createSelect();
@@ -335,7 +335,7 @@ class IndexController extends RISBaseController
     public function actionAntraegeAjaxGeo($lat, $lng, $radius, $seite = 0)
     {
         $krits = new RISSucheKrits();
-        $krits->addGeoKrit($lng, $lat, $radius);
+        $krits->addKrit('geo', $lng . '-' . $lat . '-' . $radius);
 
         $solr   = RISSolrHelper::getSolrClient();
         $select = $solr->createSelect();
@@ -400,15 +400,100 @@ class IndexController extends RISBaseController
         Yii::app()->end();
     }
 
+    /**
+     * Extrahiert die möglichen Filteroptionen in Gruppen mit Titel, URL und Anzahl der Dokumente
+     *
+     * @param \Solarium\QueryType\Select\Result\Result $ergebnisse
+     * @param RISSucheKrits $krits
+     * @param array $facet_field_names
+     * @return array
+     * @throws Exception
+     */
+    private function extractAvailalbleFacets($ergebnisse, $krits, $facet_field_names) {
+        $availalbe_facets = [];
+        $used_factes      = [];
 
+        foreach ($facet_field_names as $facet_field_name) {
+            // Gewählte Option ausnehmen, um Duplikate zu vermeiden
+            $krit_used = $krits->hasKrit($facet_field_name[1]);
+            $krits_without_used = $krits;
+            $krit_alone = null;
+
+            if ($krit_used) {
+                $krits_without_used = new RISSucheKrits();
+                foreach ($krits->krits as $i) {
+                    if ($i["typ"] != $facet_field_name[1]) {
+                        $krits_without_used->krits[] = $i;
+                    } else {
+                        $krit_alone = $i;
+                    }
+                }
+            }
+
+            $facet_group = [];
+            $facet = $ergebnisse->getFacetSet()->getFacet($facet_field_name[0]);
+
+            foreach ($facet as $value => $count) if ($count > 0) {
+                if (in_array($value, array("", "?"))) continue;
+
+                $facet_option = [];
+                $facet_option['url'] = RISTools::bracketEscape(CHtml::encode($krits_without_used->cloneKrits()->addKrit($facet_field_name[1], $value)->getUrl()));
+                $facet_option['count'] = $count;
+
+                if ($facet_field_name[0] == 'antrag_typ') {
+                    if (isset(Antrag::$TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
+                    else if ($value == "stadtrat_termin") $facet_option['name'] = 'Stadtrats-Termin';
+                    else if ($value == "ba_termin") $facet_option['name'] = 'BA-Termin';
+                    else $facet_option['name'] = $value;
+                } else if ($facet_field_name[0] == 'antrag_wahlperiode') {
+                    $facet_option['name'] = $value;
+                } else if ($facet_field_name[0] == 'dokument_bas') {
+                    $facet_option['name'] = $value . ": " . Bezirksausschuss::model()->findByPk($value)->name;
+                } else if ($facet_field_name[0] == 'referat_id') {
+                    $facet_option['name'] = Referat::model()->findByPk($value)->name;
+                } else {
+                    throw new Exception("unknown facet");
+                }
+
+                $facet_group[] = $facet_option;
+            }
+
+            $to_add = [
+                "name" => $facet_field_name[2],
+                "typ" => $facet_field_name[1],
+                "group" => $facet_group,
+                "krits_without_used" => $krits_without_used,
+                "krit_alone" => $krit_alone,
+            ];
+
+
+            if ($krit_used) {
+                // Ẃir brauchen mindestens 2, weil die erste Möglichkeit die bereits gewählte ist
+                if (count($facet_group) >= 2) {
+                    $used_factes[] = $to_add;
+                }
+            } else {
+                if (count($facet_group) >= 1) {
+                    $availalbe_facets[] = $to_add;
+                }
+            }
+        }
+
+        return [$availalbe_facets, $used_factes];
+    }
+
+
+    /**
+     * @param string $code
+     */
     public function actionSuche($code = "")
     {
         if (AntiXSS::isTokenSet("search_form")) {
             $krits = new RISSucheKrits();
-            if (trim($_REQUEST["volltext"]) != "") $krits->addVolltextsucheKrit($_REQUEST["volltext"]);
-            if (trim($_REQUEST["antrag_nr"]) != "") $krits->addAntragNrKrit($_REQUEST["antrag_nr"]);
-            if ($_REQUEST["typ"] != "") $krits->addAntragTypKrit($_REQUEST["typ"]);
-            if ($_REQUEST["referat"] > 0) $krits->addReferatKrit($_REQUEST["referat"]);
+            if (trim($_REQUEST["volltext"]) != "")  $krits->addKrit('volltext',   $_REQUEST["volltext"]);
+            if (trim($_REQUEST["antrag_nr"]) != "") $krits->addKrit('antrag_nr',  $_REQUEST["antrag_nr"]);
+            if ($_REQUEST["typ"] != "")             $krits->addKrit('antrag_typ', $_REQUEST["typ"]);
+            if ($_REQUEST["referat"] > 0)           $krits->addKrit('referat',    $_REQUEST["referat"]);
 
             /*
              * @TODO: Setzt voraus: offizielles Datum eines Dokuments ermitteln
@@ -424,29 +509,31 @@ class IndexController extends RISBaseController
             if ($datum_von || $datum_bis) $krits->addDatumKrit($datum_von, $datum_bis);
             */
 
-        } elseif (isset($_REQUEST["suchbegriff"]) && $_REQUEST["suchbegriff"] != "") {
+        } else if (isset($_REQUEST["suchbegriff"]) && $_REQUEST["suchbegriff"] != "") {
             $suchbegriff = $_REQUEST["suchbegriff"];
             if ($_SERVER["REQUEST_METHOD"] == 'POST') $this->redirect($this->createUrl("index/suche", ["suchbegriff" => $suchbegriff]));
             $this->suche_pre = $suchbegriff;
             $krits           = new RISSucheKrits();
-            $krits->addVolltextsucheKrit($suchbegriff);
+            $krits->addKrit('volltext', $suchbegriff);
         } else {
             $krits = RISSucheKrits::createFromUrl($_REQUEST);
         }
 
         if ($krits->getKritsCount() > 0) {
-
             $benachrichtigungen_optionen = $this->sucheBenachrichtigungenAnmelden($krits, $code);
 
-
-            $solr   = RISSolrHelper::getSolrClient();
+            $solr = RISSolrHelper::getSolrClient();
             $select = $solr->createSelect();
 
             $krits->addKritsToSolr($select);
 
-
             $select->setRows(50);
             $select->addSort('sort_datum', $select::SORT_DESC);
+
+            // Tag hinzufügen, der den Namen entspricht
+            foreach ($select->getFilterQueries() as $filter_query) {
+                $filter_query->addTag($filter_query->getKey());
+            }
 
             /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
@@ -454,25 +541,42 @@ class IndexController extends RISBaseController
             $hl->setSimplePrefix('<b>');
             $hl->setSimplePostfix('</b>');
 
+            $facet_field_namess = [
+                ['antrag_typ', 'antrag_typ', 'Dokumenttypen'],
+                ['antrag_wahlperiode', 'antrag_wahlperiode', 'Wahlperiode'],
+                ['dokument_bas', 'ba', 'Bezirksauschüsse'],
+                ['referat_id', 'referat', 'Referat'],
+            ];
+
             $facetSet = $select->getFacetSet();
-            $facetSet->createFacetField('antrag_typ')->setField('antrag_typ');
-            $facetSet->createFacetField('antrag_wahlperiode')->setField('antrag_wahlperiode');
+            foreach ($facet_field_namess as $facet_field_names) {
+                $facetSet
+                    ->createFacetField($facet_field_names[0])
+                    ->setField($facet_field_names[0])
+                    ->setExcludes([$facet_field_names[0]]);
+            }
 
             try {
                 $ergebnisse = $solr->select($select);
-
-                if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
-                else $geodata = null;
-
-                $this->render("suchergebnisse", array_merge([
-                    "krits"      => $krits,
-                    "ergebnisse" => $ergebnisse,
-                    "geodata"    => $geodata,
-                ], $benachrichtigungen_optionen));
             } catch (Exception $e) {
                 $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
                 Yii::app()->end(500);
             }
+
+            $x = $this->extractAvailalbleFacets($ergebnisse, $krits, $facet_field_namess);
+            $available_facets = $x[0];
+            $used_factes = $x[1];
+
+            if ($krits->isGeoKrit()) $geodata = $this->getJSGeodata($krits, $ergebnisse);
+            else $geodata = null;
+
+            $this->render("suchergebnisse", array_merge([
+                "krits"            => $krits,
+                "ergebnisse"       => $ergebnisse,
+                "geodata"          => $geodata,
+                "available_facets" => $available_facets,
+                "used_facets"      => $used_factes,
+            ], $benachrichtigungen_optionen));
         } else {
             $this->render("suche");
         }

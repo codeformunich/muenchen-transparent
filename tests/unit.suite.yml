@@ -5,5 +5,10 @@
 class_name: UnitTester
 modules:
     enabled:
-        - Asserts
+        - Yii1:
+            appPath: html/index-yii-codeception.php
+            url: http://yii-codeception.test/index-yii-codeception.php
         - \Helper\Unit
+        - Asserts
+        - Db
+

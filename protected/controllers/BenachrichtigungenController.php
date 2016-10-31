@@ -13,9 +13,12 @@ class BenachrichtigungenController extends RISBaseController
 
         if (AntiXSS::isTokenSet("einstellungen_speichern")) {
             $einstellungen = $ich->getEinstellungen();
-            if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "tag") $einstellungen->benachrichtigungstag = null;
-            if (isset($_REQUEST["intervall"]) && $_REQUEST["intervall"] == "woche") {
-                if (isset($_REQUEST["wochentag"])) $einstellungen->benachrichtigungstag = IntVal($_REQUEST["wochentag"]);
+            if (isset($_REQUEST["intervall"])) {
+                if ($_REQUEST["intervall"] == "tag") {
+                    $einstellungen->benachrichtigungstag = null;
+                } else if ($_REQUEST["intervall"] == "woche" && isset($_REQUEST["wochentag"])) {
+                    $einstellungen->benachrichtigungstag = IntVal($_REQUEST["wochentag"]);
+                }
             }
             $ich->setEinstellungen($einstellungen);
             $ich->save();
@@ -37,7 +40,7 @@ class BenachrichtigungenController extends RISBaseController
                 $this->msg_err = "Bitte gib einen Suchausdruck an.";
             } else {
                 $ben = new RISSucheKrits();
-                $ben->addVolltextsucheKrit($suchbegriff);
+                $ben->addKrit('volltext', $suchbegriff);
                 $ich->addBenachrichtigung($ben);
                 $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
             }
@@ -45,7 +48,7 @@ class BenachrichtigungenController extends RISBaseController
 
         if (AntiXSS::isTokenSet("benachrichtigung_add_ba")) {
             $ben = new RISSucheKrits();
-            $ben->addBAKrit($_REQUEST["ba"]);
+            $ben->addKrit('ba', $_REQUEST["ba"]);
             $ich->addBenachrichtigung($ben);
             $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
         }
@@ -55,7 +58,7 @@ class BenachrichtigungenController extends RISBaseController
                 $this->msg_err = "Ungültige Eingabe.";
             } else {
                 $ben = new RISSucheKrits();
-                $ben->addGeoKrit($_REQUEST["geo_lng"], $_REQUEST["geo_lat"], $_REQUEST["geo_radius"]);
+                $ben->addKrit('geo', $_REQUEST["geo_lng"] . '-' . $_REQUEST["geo_lat"] . '-' . $_REQUEST["geo_radius"]);
                 $ich->addBenachrichtigung($ben);
                 $this->msg_ok = "Die Benachrichtigung wurde hinzugefügt.";
             }
@@ -74,7 +77,6 @@ class BenachrichtigungenController extends RISBaseController
             $this->top_menu = "Accountlöschung";
             $this->requireLogin($this->createUrl("index/benachrichtigungen"));
             $ich = $this->aktuelleBenutzerIn();
-            $id  = $ich->id;
 
             if ($ich != NULL) {
                 $ich->email                         = NULL;
@@ -83,7 +85,6 @@ class BenachrichtigungenController extends RISBaseController
                 $ich->datum_angelegt                = NULL;
                 $ich->datum_letzte_benachrichtigung = NULL;
                 $ich->berechtigungen_flags          = 0;
-                $ich->einstellungen_object          = NULL;
                 $ich->einstellungen                 = NULL;
                 $ich->save(false);
 
@@ -175,7 +176,7 @@ class BenachrichtigungenController extends RISBaseController
         $titel       = "Suchergebnisse";
         $description = "Neue Dokumente, die einem der folgenden Kriterien entsprechen:<br>";
         $bens        = $benutzerIn->getBenachrichtigungen();
-        foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getTitle()) . "<br>";
+        foreach ($bens as $ben) $description .= "- " . CHtml::encode($ben->getBeschreibungDerSuche()) . "<br>";
 
         $solr       = RISSolrHelper::getSolrClient();
         $select     = $this->getAlleSuchergebnisse($solr, $benutzerIn);

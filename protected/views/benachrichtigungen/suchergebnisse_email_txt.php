@@ -36,7 +36,7 @@ if (count($data["antraege"]) > 0) {
 			$dokumente_strs[] = "    - " . $dokument->name . " (" . RIS_URL_PREFIX . $dokument->url . ")";
 			foreach ($dok["queries"] as $qu) {
 				/** @var RISSucheKrits $qu */
-				$name = $qu->getTitle();
+				$name = $qu->getBeschreibungDerSuche();
 				if (!in_array($name, $queries)) $queries[] = $name;
 			}
 		}
@@ -71,7 +71,7 @@ foreach ($data["termine"] as $dat) {
 		$dokumente_strs[] = "    - " . $dokument->name . " (" . RIS_URL_PREFIX . $dokument->url . ")";
 		foreach ($dok["queries"] as $qu) {
 			/** @var RISSucheKrits $qu */
-			$name = $qu->getTitle();
+			$name = $qu->getBeschreibungDerSuche();
 			if (!in_array($name, $queries)) $queries[] = $name;
 		}
 	}

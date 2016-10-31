@@ -60,7 +60,7 @@ class Oparl extends \Codeception\Module
         $output->writeln($text);
     }
 
-    public function _beforeSuite() {
+    public function _beforeSuite($settings = []) {
         $filename = codecept_data_dir() . "oparl_expected_results.txt";
         if (file_exists($filename)) {
             $content = file_get_contents($filename);

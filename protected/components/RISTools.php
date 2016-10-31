@@ -490,13 +490,8 @@ class RISTools
         $message->setEncoding("UTF-8");
 
         if ($text_html !== null) {
-            $converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles($text_html);
-            $converter->setStripOriginalStyleTags(false);
-            $converter->setUseInlineStylesBlock(true);
-            $converter->setEncoding("UTF-8");
-            $converter->setExcludeMediaQueries(true);
-            $converter->setCleanup(false);
-            $text_html = $converter->convert();
+            $converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles();
+            $text_html = $converter->convert($text_html);
 
             $text_part          = new Zend\Mime\Part($text_plain);
             $text_part->type    = "text/plain";

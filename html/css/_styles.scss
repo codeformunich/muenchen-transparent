@@ -569,52 +569,56 @@ ul.terminliste {
   }
 }
 
-.suchergebnis_eingrenzen {
-  text-align: center;
+.suchoptionen {
+  .suchkrits_interaktiv {
+    > ul {
+      font-size: 16px;
+      padding-left: 0px;
 
-  .opener {
-    .close_icon {
-      display: none;
-    }
-  }
+      > li {
+        display: flex;
+        align-items: center;
 
-  #suchergebnis_eingrenzen_holder {
-    display: none;
-  }
+        &:not(:first-child) {
+          border-top: thin solid lightgrey;
+        }
 
-  &.visible {
-    #suchergebnis_eingrenzen_holder {
-      display: block;
-    }
+        .suchkrits_beschreibung {
+          width: 100%;
+        }
 
-    .opener {
-      .close_icon {
-        display: inherit;
+        .fontello-cancel:hover {
+            color: darkred;
+            text-decoration: none;
+        }
+
+        button {
+          border: none;
+          background: none;
+        }
+
+        .glyphicon {
+          color: $brand-primary;
+        }
       }
-
-      .open_icon {
-        display: none;
-      }
     }
   }
 
-  h3 {
-    font-size: 14px;
-    margin-top: 0;
-    margin-bottom: 5px;
-  }
+  .suchergebnis_eingrenzen {
+    > ul {
+      list-style: none;
+      padding-left: 15px;
 
-  ul {
-    list-style-type: none;
-    padding-left: 8px;
-  }
-
-  .eingrenzen_row {
-    display: inline-block;
-    max-width: 250px;
-    text-align: left;
-    vertical-align: top;
-    padding: 20px;
+      li {
+        button.btn {
+          margin: 0px;
+          padding: 3px;
+          font-size: 18px;
+          text-transform: none;
+          font-weight: 400;
+        }
+      }
+    }
   }
 }
 
@@ -1030,6 +1034,8 @@ ul.terminliste > li > .termindetails {
 }
 
 .benachrichtigung_std_button {
+  width: 100%;
+
   .glyphicon {
     font-weight: bold;
     font-size: 120%;

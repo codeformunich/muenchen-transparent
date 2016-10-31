@@ -57,24 +57,6 @@ class BenutzerIn extends CActiveRecord
     }
 
     /**
-     * @return BenutzerInnenEinstellungen
-     */
-    public function getEinstellungen()
-    {
-        if (!is_object($this->einstellungen_object)) $this->einstellungen_object = new BenutzerInnenEinstellungen($this->einstellungen);
-        return $this->einstellungen_object;
-    }
-
-    /**
-     * @param BenutzerInnenEinstellungen $einstellungen
-     */
-    public function setEinstellungen($einstellungen)
-    {
-        $this->einstellungen_object = $einstellungen;
-        $this->einstellungen        = $einstellungen->toJSON();
-    }
-
-    /**
      * @param string $className active record class name.
      * @return BenutzerIn the static model class
      */
@@ -265,15 +247,47 @@ class BenutzerIn extends CActiveRecord
     }
 
     /**
+     * @return BenutzerInnenEinstellungen
+     */
+    public function getEinstellungen()
+    {
+        if (!is_object($this->einstellungen_object)) $this->einstellungen_object = new BenutzerInnenEinstellungen($this->einstellungen);
+        return $this->einstellungen_object;
+    }
+
+    /**
+     * @param BenutzerInnenEinstellungen $einstellungen
+     */
+    public function setEinstellungen($einstellungen)
+    {
+        $this->einstellungen_object = $einstellungen;
+        $this->einstellungen        = $einstellungen->toJSON();
+    }
+
+    /**
+     * @return RISSucheKrits[]
+     */
+    public function getBenachrichtigungen()
+    {
+        $arr           = [];
+        $einstellungen = $this->getEinstellungen();
+        foreach ($einstellungen->benachrichtigungen as $krit) $arr[] = new RISSucheKrits($krit);
+        return $arr;
+    }
+
+    /**
      * @param RISSucheKrits $krits
      */
     public function addBenachrichtigung($krits)
     {
+        if ($krits->getBenachrichtigungKrits()->krits == [])
+            return;
+
         $einstellungen = $this->getEinstellungen();
         foreach ($einstellungen->benachrichtigungen as $ben) {
             if ($ben == $krits->krits) return;
         }
-        $einstellungen->benachrichtigungen[] = $krits->krits;
+        $einstellungen->benachrichtigungen[] = $krits->getBenachrichtigungKrits()->krits;
         $this->setEinstellungen($einstellungen);
         $this->save();
     }
@@ -290,17 +304,6 @@ class BenutzerIn extends CActiveRecord
         $einstellungen->benachrichtigungen = $neue;
         $this->setEinstellungen($einstellungen);
         $this->save();
-    }
-
-    /**
-     * @return RISSucheKrits[]
-     */
-    public function getBenachrichtigungen()
-    {
-        $arr           = [];
-        $einstellungen = $this->getEinstellungen();
-        foreach ($einstellungen->benachrichtigungen as $krit) $arr[] = new RISSucheKrits($krit);
-        return $arr;
     }
 
     /**
