@@ -4,6 +4,7 @@
     "list.js": "^1.2",
     "isotope": "^3.0",
     "fullcalendar": "^2.4",
+    "leaflet": "^0.7.0",
     "leaflet.locatecontrol": "^0.55",
     "leaflet.draw": "^0.4",
     "mediaelement": "^2.21",
@@ -15,6 +16,7 @@
     "selectize": "^0.12.1"
   },
   "resolutions": {
-    "jquery": "^2.2.0"
+    "jquery": "^2.2.0",
+    "leaflet": "^0.7.0"
   }
 }

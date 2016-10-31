@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "67d49abe53215289c718e2c681ba2eab",
-    "content-hash": "604edff9e77967630d4321d2b1cfdf14",
+    "hash": "96ae243ea85b2e90073135b5a27ed16e",
+    "content-hash": "8ddebd4482bdf5b71da24c752182cbf5",
     "packages": [
         {
             "name": "behat/gherkin",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Gherkin.git",
-                "reference": "e0427de89f13d9c69ba203acffc908541ddbc354"
+                "reference": "5c14cff4f955b17d20d088dec1bde61c0539ec74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/e0427de89f13d9c69ba203acffc908541ddbc354",
-                "reference": "e0427de89f13d9c69ba203acffc908541ddbc354",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/5c14cff4f955b17d20d088dec1bde61c0539ec74",
+                "reference": "5c14cff4f955b17d20d088dec1bde61c0539ec74",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 "gherkin",
                 "parser"
             ],
-            "time": "2016-09-18 12:15:51"
+            "time": "2016-10-30 11:50:56"
         },
         {
             "name": "codeception/codeception",
@@ -72,12 +72,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "69c7c6c97a1fe38c6590513074eed74b12729e3d"
+                "reference": "9f3a4b2112166f4cac0c2de9dce1496bb4838846"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/69c7c6c97a1fe38c6590513074eed74b12729e3d",
-                "reference": "69c7c6c97a1fe38c6590513074eed74b12729e3d",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/9f3a4b2112166f4cac0c2de9dce1496bb4838846",
+                "reference": "9f3a4b2112166f4cac0c2de9dce1496bb4838846",
                 "shasum": ""
             },
             "require": {
@@ -155,7 +155,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2016-10-15 19:55:51"
+            "time": "2016-10-29 21:59:27"
         },
         {
             "name": "codeception/yii-bridge",
@@ -262,24 +262,25 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.1.3",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "b7186fb1bcfda956d237f59face250d06ef47253"
+                "reference": "af21de3ae5306a8ca0bcc02a19735dadc43e83f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/b7186fb1bcfda956d237f59face250d06ef47253",
-                "reference": "b7186fb1bcfda956d237f59face250d06ef47253",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/af21de3ae5306a8ca0bcc02a19735dadc43e83f3",
+                "reference": "af21de3ae5306a8ca0bcc02a19735dadc43e83f3",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": ">=5.3.19"
+                "php": "^5.5 || ~7.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^1.11",
+                "php-mock/php-mock-phpunit": "^1.1",
                 "phpunit/phpunit": "4.6.* || ~5.0",
                 "squizlabs/php_codesniffer": "^2.6"
             },
@@ -304,7 +305,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2016-08-10 00:44:08"
+            "time": "2016-10-14 15:16:51"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -312,12 +313,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "9061956e6ad81cc90e7f36d54f2eaa944ae74065"
+                "reference": "0118099daf4afd2ab648efedf8790645315aa6c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9061956e6ad81cc90e7f36d54f2eaa944ae74065",
-                "reference": "9061956e6ad81cc90e7f36d54f2eaa944ae74065",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0118099daf4afd2ab648efedf8790645315aa6c4",
+                "reference": "0118099daf4afd2ab648efedf8790645315aa6c4",
                 "shasum": ""
             },
             "require": {
@@ -366,7 +367,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-10-13 05:38:46"
+            "time": "2016-10-28 00:09:06"
         },
         {
             "name": "guzzlehttp/promises",
@@ -535,16 +536,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.5.4",
+            "version": "1.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "ea74994a3dc7f8d2f65a06009348f2d63c81e61f"
+                "reference": "399c1f9781e222f6eb6cc238796f5200d1b7f108"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/ea74994a3dc7f8d2f65a06009348f2d63c81e61f",
-                "reference": "ea74994a3dc7f8d2f65a06009348f2d63c81e61f",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/399c1f9781e222f6eb6cc238796f5200d1b7f108",
+                "reference": "399c1f9781e222f6eb6cc238796f5200d1b7f108",
                 "shasum": ""
             },
             "require": {
@@ -573,7 +574,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2016-09-16 13:37:59"
+            "time": "2016-10-31 17:19:45"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1034,12 +1035,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "c4d334af83710a48d3c39728d515c99413598034"
+                "reference": "b0c4a96b3eca878a7fe1537d1b6fd1175dccd434"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c4d334af83710a48d3c39728d515c99413598034",
-                "reference": "c4d334af83710a48d3c39728d515c99413598034",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b0c4a96b3eca878a7fe1537d1b6fd1175dccd434",
+                "reference": "b0c4a96b3eca878a7fe1537d1b6fd1175dccd434",
                 "shasum": ""
             },
             "require": {
@@ -1108,7 +1109,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-10-09 13:28:23"
+            "time": "2016-10-25 07:41:28"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1305,16 +1306,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "3.2.x-dev",
+            "version": "3.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-dav.git",
-                "reference": "172d16456e5d97cdeee7d2a5101a45f74a435eb5"
+                "reference": "72b57b047d39a913a6ee1dae98ac5b1db1e7473a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/172d16456e5d97cdeee7d2a5101a45f74a435eb5",
-                "reference": "172d16456e5d97cdeee7d2a5101a45f74a435eb5",
+                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/72b57b047d39a913a6ee1dae98ac5b1db1e7473a",
+                "reference": "72b57b047d39a913a6ee1dae98ac5b1db1e7473a",
                 "shasum": ""
             },
             "require": {
@@ -1350,11 +1351,6 @@
                 "bin/naturalselection"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Sabre\\DAV\\": "lib/DAV/",
@@ -1384,7 +1380,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2016-10-10 19:15:20"
+            "time": "2016-10-29 22:11:12"
         },
         {
             "name": "sabre/event",
@@ -1503,16 +1499,16 @@
         },
         {
             "name": "sabre/uri",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-uri.git",
-                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704"
+                "reference": "258b72540fe3f2c0bb395cb40e56f9ae409f93b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/9012116434d84ef6e5e37a89dfdbfbe2204a8704",
-                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704",
+                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/258b72540fe3f2c0bb395cb40e56f9ae409f93b5",
+                "reference": "258b72540fe3f2c0bb395cb40e56f9ae409f93b5",
                 "shasum": ""
             },
             "require": {
@@ -1520,7 +1516,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "*",
-                "sabre/cs": "~0.0.1"
+                "sabre/cs": "~1.0.0"
             },
             "type": "library",
             "autoload": {
@@ -1550,7 +1546,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-03-08 02:29:27"
+            "time": "2016-10-27 04:56:33"
         },
         {
             "name": "sabre/vobject",
@@ -2351,16 +2347,16 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5"
+                "reference": "0acdb2838ae551fe87e4e334e449a468973839f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
-                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/0acdb2838ae551fe87e4e334e449a468973839f2",
+                "reference": "0acdb2838ae551fe87e4e334e449a468973839f2",
                 "shasum": ""
             },
             "require": {
@@ -2372,6 +2368,9 @@
                 "satooshi/php-coveralls": "~1.0",
                 "squizlabs/php_codesniffer": "~1.4",
                 "zendframework/zendframework1": "~1.12"
+            },
+            "suggest": {
+                "minimalcode/search": "Query builder compatible with Solarium, allows simplified solr-query handling"
             },
             "type": "library",
             "extra": {
@@ -2401,7 +2400,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2016-05-03 07:08:49"
+            "time": "2016-10-28 08:50:36"
         },
         {
             "name": "symfony/browser-kit",
@@ -2466,12 +2465,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "e12930d96cc0c15fd1de61d14a037c707baa901f"
+                "reference": "d4875ff77dca3f5c6309e2f3f79ce17918ba3cc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/e12930d96cc0c15fd1de61d14a037c707baa901f",
-                "reference": "e12930d96cc0c15fd1de61d14a037c707baa901f",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d4875ff77dca3f5c6309e2f3f79ce17918ba3cc0",
+                "reference": "d4875ff77dca3f5c6309e2f3f79ce17918ba3cc0",
                 "shasum": ""
             },
             "require": {
@@ -2521,7 +2520,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-06 08:59:27"
+            "time": "2016-10-27 15:03:48"
         },
         {
             "name": "symfony/css-selector",
@@ -2582,12 +2581,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "61de4883414e3a640ffac1798d411a37dc71bc20"
+                "reference": "e6688db8d93472b5fce48b05fadf566a2520da5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/61de4883414e3a640ffac1798d411a37dc71bc20",
-                "reference": "61de4883414e3a640ffac1798d411a37dc71bc20",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/e6688db8d93472b5fce48b05fadf566a2520da5e",
+                "reference": "e6688db8d93472b5fce48b05fadf566a2520da5e",
                 "shasum": ""
             },
             "require": {
@@ -2631,7 +2630,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-30 10:45:11"
+            "time": "2016-10-25 13:27:26"
         },
         {
             "name": "symfony/dom-crawler",
@@ -2639,12 +2638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "241ffb09788b99db0e6b74740ae394850bc456f2"
+                "reference": "85fb014ad777e08a64b394e87d19b8f735f91bca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/241ffb09788b99db0e6b74740ae394850bc456f2",
-                "reference": "241ffb09788b99db0e6b74740ae394850bc456f2",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/85fb014ad777e08a64b394e87d19b8f735f91bca",
+                "reference": "85fb014ad777e08a64b394e87d19b8f735f91bca",
                 "shasum": ""
             },
             "require": {
@@ -2687,7 +2686,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2016-08-31 11:20:00"
+            "time": "2016-10-18 16:01:03"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -2863,12 +2862,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "f3abbc0c63c0c7803db79a7398bb983e5b089f53"
+                "reference": "d2cab32980d8de786744fabdec95991a0ebd7ea8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/f3abbc0c63c0c7803db79a7398bb983e5b089f53",
-                "reference": "f3abbc0c63c0c7803db79a7398bb983e5b089f53",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/d2cab32980d8de786744fabdec95991a0ebd7ea8",
+                "reference": "d2cab32980d8de786744fabdec95991a0ebd7ea8",
                 "shasum": ""
             },
             "require": {
@@ -2910,7 +2909,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-28 14:20:56"
+            "time": "2016-10-24 18:44:12"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -2965,12 +2964,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "9350cea5bf343b657f24e68980490021791935d8"
+                "reference": "c0c92082a2ffef8fab7941d4f6fd6a6a72ed627c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/9350cea5bf343b657f24e68980490021791935d8",
-                "reference": "9350cea5bf343b657f24e68980490021791935d8",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/c0c92082a2ffef8fab7941d4f6fd6a6a72ed627c",
+                "reference": "c0c92082a2ffef8fab7941d4f6fd6a6a72ed627c",
                 "shasum": ""
             },
             "require": {
@@ -3007,7 +3006,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-10-14 13:57:37"
+            "time": "2016-10-17 06:50:33"
         },
         {
             "name": "yiisoft/yii",
@@ -3105,13 +3104,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-cache.git",
-                "reference": "cbd5ae00158a45d8e5b178b9be73cd3fcce14cd7"
+                "reference": "c4c11edc1f24a65b55dafccf31e0005b09645b8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packages.zendframework.com/composer/zendframework-zend-cache-dev-develop-fb7a15.zip",
-                "reference": "cbd5ae00158a45d8e5b178b9be73cd3fcce14cd7",
-                "shasum": "cb4cb7399ca1edb0df9400624908576ff1e05947"
+                "url": "https://packages.zendframework.com/composer/zendframework-zend-cache-dev-develop-fc4d93.zip",
+                "reference": "c4c11edc1f24a65b55dafccf31e0005b09645b8d",
+                "shasum": "09cb956ee62b417b870f2679379e92fd8888e05f"
             },
             "require": {
                 "php": "^5.6 || ^7.0",
@@ -3194,7 +3193,7 @@
                 "cache",
                 "zf2"
             ],
-            "time": "2016-09-19 20:06:20"
+            "time": "2016-10-26 19:50:39"
         },
         {
             "name": "zendframework/zend-config",
