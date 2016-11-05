@@ -69,14 +69,20 @@ class OParl10Controller extends CController {
      * Gibt die externen Liste mit den 'oparl:Body'-Objekten als JSON aus
      */
     public function actionExternalListBody() {
-        self::asOParlJSON(OParl10List::get('body', null));
+        self::asOParlJSON(OParl10List::get('body', null, new OParl10Filter()));
     }
 
     /**
      * Gibt ein beliebiges Objekt außer 'oparl:System' als JSON aus
      */
     public function actionExternalList($typ, $body, $id = null, $created_since = null, $created_until = null, $modified_since = null, $modified_until = null) {
-        self::asOParlJSON(OParl10List::get($typ, $body, $id, $created_since, $created_until, $modified_since, $modified_until));
+        $filter = new OParl10Filter();
+        $filter->id  = $id;
+        $filter->created_since  = $created_since;
+        $filter->created_until  = $created_until;
+        $filter->modified_since = $modified_since;
+        $filter->modified_until = $modified_until;
+        self::asOParlJSON(OParl10List::get($typ, $body, $filter));
     }
 
     /**

@@ -430,7 +430,7 @@ class OParl10Object {
             'contactName'        => Yii::app()->params['adminEmailName'],
             'website'            => SITE_BASE_URL,
             'vendor'             => 'https://github.com/codeformunich/Muenchen-Transparent',
-            'product'            => Yii::app()->createUrl('/infos/api'),
+            'product'            => Yii::app()->createAbsoluteUrl('/infos/api'),
             'web'                => SITE_BASE_URL,
         ];
     }

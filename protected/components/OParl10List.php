@@ -9,43 +9,22 @@ class OParl10List
 
     /**
      * Gibt eine beliebiges externe OParl-Objektliste als array zurück
+     *
+     * @param $type string
+     * @param $body int
+     * @param $filter OParl10Filter
+     * @return array
      */
-    public static function get($type, $body, $id = null, $created_since = null, $created_until = null, $modified_since = null, $modified_until = null) {
-        $criteria = self::criteria($created_since, $created_until, $modified_since, $modified_until);
-
+    public static function get($type, $body, $filter) {
         if      ($type == 'body'         ) return self::body();
-        else if ($type == 'organization' ) return self::organization($body, $criteria);
-        else if ($type == 'person'       ) return self::externalList($body, $criteria, $type, $id);
-        else if ($type == 'meeting'      ) return self::externalList($body, $criteria, $type, $id);
-        else if ($type == 'paper'        ) return self::externalList($body, $criteria, $type, $id);
+        else if ($type == 'organization' ) return self::organization($body, $filter);
+        else if ($type == 'person'       ) return self::externalList($body, $filter, $type);
+        else if ($type == 'meeting'      ) return self::externalList($body, $filter, $type);
+        else if ($type == 'paper'        ) return self::externalList($body, $filter, $type);
         else {
             header('HTTP/1.0 400 Bad Request');
             return ['error' => 'No external list for type ' . $type];
         }
-    }
-
-    /**
-     * Erzeugt ein CDbCriteria-Objekt mit den Filtern für created und modified
-     */
-    public static function criteria($created_since, $created_until, $modified_since, $modified_until) {
-        $criteria = new CDbCriteria();
-        if ($created_since  !== null) {
-            $criteria->addCondition('created  >= :created_since');
-            $criteria->params["created_since"] = $created_since;
-        }
-        if ($created_until  !== null) {
-            $criteria->addCondition('created  <= :created_until');
-            $criteria->params["created_until"] = $created_until;
-        }
-        if ($modified_since !== null) {
-            $criteria->addCondition('modified >= :modified_since');
-            $criteria->params["modified_since"] = $modified_since;
-        }
-        if ($modified_until !== null) {
-            $criteria->addCondition('modified <= :modified_until');
-            $criteria->params["modified_until"] = $modified_until;
-        }
-        return $criteria;
     }
 
     /**
@@ -67,7 +46,8 @@ class OParl10List
             ],
             'links'      => [
                 'first'        => OParl10Controller::getOparlListUrl('body'),
-                'last'         => OParl10Controller::getOparlListUrl('body'),            ]
+                'last'         => OParl10Controller::getOparlListUrl('body'),
+            ]
         ];
     }
 
@@ -77,11 +57,18 @@ class OParl10List
      *  - person
      *  - meeting
      *  - paper
+     *
+     * @param $body int
+     * @param $filter OParl10Filter
+     * @param $type string
+     * @return array
      */
-    private static function externalList($body, $criteria, $type, $id)
+    private static function externalList($body, $filter, $type)
     {
-        $ba_check = true;
+        $criteria = new CDbCriteria();
+        $filter->add_mandatory_filter($criteria);
 
+        $ba_check = true;
         if        ($type == 'person'  ) {
             $model = StadtraetIn::model();
             $ba_check = false;
@@ -100,15 +87,11 @@ class OParl10List
                 $criteria->addCondition('ba_nr IS NULL');
             }
         }
+
         $count = $model->count($criteria);
 
         // Stabile Paginierung: Nur eine bestimmte Anzahl an Elementen ausgeben, deren id größer als $id ist
-        $criteria->order = 'id ASC';
-        $criteria->limit = static::ITEMS_PER_PAGE;
-        if ($id !== null) {
-            $criteria->addCondition('id > :id');
-            $criteria->params["id"] = $id;
-        }
+        $filter->add_pagination_filter($criteria, self::ITEMS_PER_PAGE);
 
         // Inkonsistenz im Datenmodell abfangen
         if ($type == "meeting") {
@@ -144,9 +127,16 @@ class OParl10List
      * - die Gremien
      * - die Frakionen
      * - nur beim Stadtrat: die Referate
+     *
+     * @param $body int
+     * @param $filter OParl10Filter
+     * @return array
      */
-    private static function organization($body, $criteria)
+    private static function organization($body, $filter)
     {
+        $criteria = new CDbCriteria();
+        $filter->add_mandatory_filter($criteria);
+
         $organizations = [];
 
         if ($body == 0) {
