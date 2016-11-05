@@ -24,12 +24,18 @@ class OParl10Controller extends CController {
 
     /**
      * Erzeugt die URL zu einer externen Liste mit OParl-Objekten
+     *
+     * @param $typ int
+     * @param $body int
+     * @param $filter OParl10Filter
+     *
+     * @return String
      */
-    public static function getOparlListUrl($typ, $body = null, $id = null) {
+    public static function getOparlListUrl($typ, $body = null, $filter = null) {
         $url = OPARL_10_ROOT;
         if ($body !== null) $url .= '/body/' . $body;
         $url .= '/list/' . $typ;
-        if ($id !== null) $url .= '?id=' . $id;
+        if ($filter != null) $url .= '?' . $filter->to_url_params();
 
         return $url;
     }

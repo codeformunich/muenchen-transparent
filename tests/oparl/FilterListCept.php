@@ -4,8 +4,8 @@ $I = new OparlTester($scenario);
 $I->wantTo('Test that the list filters work in every possible combination');
 
 /**
- * Helper functions that there were $a items returns if the delimiter isn't 'since' or $b items otherwise. It also checks
- * that the response is equal with and without url encoding
+ * Helper functions that $a items were returned if the delimiter isn't 'since' or $b items otherwise.
+ *
  * @param $url
  * @param $timestamp
  * @param $delimiter
@@ -14,9 +14,6 @@ $I->wantTo('Test that the list filters work in every possible combination');
  */
 $checkItemCount = function ($url, $timestamp, $delimiter, $a, $b) use ($I) {
     $I->getOParl($url . '=' . urlencode($timestamp), true);
-    $old = $I->getPrettyPrintedResponse();
-    $I->getOParl($url . '=' . $timestamp);
-    $I->assertEquals($I->getPrettyPrintedResponse(), $old);
     $I->assertEquals(count($I->getResponseAsTree()->data), $delimiter != 'since' ? $a : $b);
 };
 
@@ -42,7 +39,7 @@ foreach (['modified_', 'created_'] as $field) {
     }
 
     // Combined filters
-    $I->getOParl($base . $field . 'since=2016-05-01T00:00:00+02:00' . '&' . $field . 'until=2016-05-02T00:00:00+02:00');
+    $I->getOParl($base . $field . 'since=' . urlencode('2016-05-01T00:00:00+02:00') . '&' . $field . 'until=' . urlencode('2016-05-02T00:00:00+02:00'));
     $I->assertEquals(count($I->getResponseAsTree()->data), 2);
 }
 

@@ -5,8 +5,8 @@
  */
 class OParl10Filter {
     public $id = null;
-    public $created_since = null;
-    public $created_until = null;
+    public $created_since  = null;
+    public $created_until  = null;
     public $modified_since = null;
     public $modified_until = null;
 
@@ -49,5 +49,25 @@ class OParl10Filter {
         }
         $criteria->order = 'id ASC';
         $criteria->limit = $items_per_page;
+    }
+
+    /**
+     * Erzeugt einen String, der die Filter als URL-Parameter mit passendem Encoding enthält
+     *
+     * @return string
+     */
+    public function to_url_params() {
+        $params = [];
+        foreach($this as $key => $value) {
+            if ($value == null)
+                continue;
+
+            if ($key == "id") {
+                $params[] = $key . "=" . $value;
+            } else {
+                $params[] = $key . "=" . urlencode($value);
+            }
+        }
+        return implode("&", $params);
     }
 }

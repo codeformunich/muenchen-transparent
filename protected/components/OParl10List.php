@@ -76,6 +76,8 @@ class OParl10List
             $model = Termin::model();
         } else if ($type == 'paper'   ) {
             $model = Antrag::model();
+        } else {
+            assert(false);
         }
 
         // TODO: Nur die opal:person-Objekte des gewählten Bodies ausgeben
@@ -88,22 +90,24 @@ class OParl10List
             }
         }
 
-        $count = $model->count($criteria);
-
-        // Stabile Paginierung: Nur eine bestimmte Anzahl an Elementen ausgeben, deren id größer als $id ist
-        $filter->add_pagination_filter($criteria, self::ITEMS_PER_PAGE);
-
         // Inkonsistenz im Datenmodell abfangen
         if ($type == "meeting") {
             $criteria->addCondition('gremium_id IS NOT NULL');
         }
+
+        $count = $model->count($criteria);
+
+        // Stabile Paginierung: Nur eine bestimmte Anzahl an Elementen ausgeben, deren id größer als $id ist
+        $filter->add_pagination_filter($criteria, self::ITEMS_PER_PAGE);
 
         $entries = $model->findAll($criteria);
         $oparl_entries = [];
         foreach ($entries as $entry)
             $oparl_entries[] = OParl10Object::get($type, $entry->id);
 
-        $last_entry = $model->find(['order' => 'id DESC']);
+        $last_entry_criteria = new CDbCriteria($criteria);
+        $last_entry_criteria->order = 'id DESC';
+        $last_entry = $model->find($last_entry_criteria);
 
         $data = [
             'data'       => $oparl_entries,
@@ -112,12 +116,14 @@ class OParl10List
                 'totalPages'      => ceil($count / static::ITEMS_PER_PAGE),
             ],
             'links'      => [
-                'first'           => OParl10Controller::getOparlListUrl($type, $body),
+                'first'           => OParl10Controller::getOparlListUrl($type, $body, $filter),
             ]
         ];
 
-        if (count($entries) > 0 && end($entries)->id != $last_entry->id)
-            $data['links']['next'] = OParl10Controller::getOparlListUrl($type, $body, end($entries)->id);
+        if (count($entries) > 0 && end($entries)->id != $last_entry->id) {
+            $filter->id = end($entries)->id;
+            $data['links']['next'] = OParl10Controller::getOparlListUrl($type, $body, $filter);
+        }
 
         return $data;
     }
