@@ -222,7 +222,7 @@ class OParl10Object {
 
         $data['auxiliaryFile'] = [];
         foreach ($termin->antraegeDokumente as $dokument)
-            $data['auxiliaryFile'][] = OParl10Controller::getOparlObjectUrl('file', $dokument->id);
+            $data['auxiliaryFile'][] = self::file($dokument->id);
 
         if ($termin->abgesetzt)
             $data['cancelled'] = true;
@@ -334,7 +334,7 @@ class OParl10Object {
         ];
 
         foreach ($antrag->dokumente as $dokument)
-            $data['auxiliaryFile'][] = OParl10Controller::getOparlObjectUrl('file', $dokument->id);
+            $data['auxiliaryFile'][] = self::file($dokument->id);
 
         foreach ($antrag->tags as $tags)
             $data['keyword'][] = $tags->name;
