@@ -67,10 +67,10 @@ class OParl10Object {
             'shortName'       => $shortName,
             'website'         => $ba->website,
             'legislativeTerm' => self::legislativeterm(-1),
-            'organization'    => OParl10Controller::getOparlListUrl('organization', $ba->ba_nr),
-            'person'          => OParl10Controller::getOparlListUrl('person',       $ba->ba_nr),
-            'meeting'         => OParl10Controller::getOparlListUrl('meeting',      $ba->ba_nr),
-            'paper'           => OParl10Controller::getOparlListUrl('paper',        $ba->ba_nr),
+            'organization'    => OParl10Controller::getOparlListUrl('organization', null, $ba->ba_nr),
+            'person'          => OParl10Controller::getOparlListUrl('person', null, $ba->ba_nr),
+            'meeting'         => OParl10Controller::getOparlListUrl('meeting', null, $ba->ba_nr),
+            'paper'           => OParl10Controller::getOparlListUrl('paper', null, $ba->ba_nr),
             'web'             => SITE_BASE_URL . $ba->getLink(),
             'created'         => OParl10Controller::mysqlToOparlDateTime($ba->created),
             'modified'        => OParl10Controller::mysqlToOparlDateTime($ba->modified),
@@ -217,7 +217,7 @@ class OParl10Object {
         // Inkonsitenzen im Datenmodell abfangen
         if ($termin->gremium != null) {
             $data['name'] = $termin->gremium->name;
-            $data['organization'] = OParl10Controller::getOparlObjectUrl('organization', $termin->gremium->id, 'gremium');
+            $data['organization'] = [OParl10Controller::getOparlObjectUrl('organization', $termin->gremium->id, 'gremium')];
         }
 
         $data['auxiliaryFile'] = [];
@@ -296,12 +296,13 @@ class OParl10Object {
         ];
 
         // Termine gibt es nur bei Gremien
-        if ($subtype == 'gremium') {
-            $data['meetings'] = [];
+        // FIXME: Externe Liste mit Meetings
+        /*if ($subtype == 'gremium') {
+            $data['meeting'] = [];
             foreach ($object->termine as $termin) {
-                $data['meetings'][] = OParl10Controller::getOparlObjectUrl('meeting', $termin->id);
+                $data['meeting'][] = OParl10Controller::getOparlObjectUrl('meeting', $termin->id);
             }
-        }
+        }*/
 
         // Mitgliedschaften
         foreach ($memberships as $membership) {
@@ -388,15 +389,17 @@ class OParl10Object {
         }
 
         if ($stadtraetin->referentIn)
-            $data['status'] = 'Berufsmäßiger Stadtrat';
+            $data['status'] = ['Berufsmäßiger Stadtrat'];
         else
-            $data['status'] = 'Ehrenamtlicher Stadtrat';
+            $data['status'] = ['Ehrenamtlicher Stadtrat'];
+
+        if ($stadtraetin->email != '')
+            $data['email'] = [$stadtraetin->email];
 
         // optionale Attribute
         $optional_properties = [
             'life'                                  => $stadtraetin->beschreibung,
             'lifeSource'                            => $stadtraetin->quellen,
-            'email'                                 => $stadtraetin->email,
             'muenchenTransparent:elected'           => $stadtraetin->gewaehlt_am,
             'muenchenTransparent:dateOfBirth'       => $stadtraetin->geburtstag,
             'muenchenTransparent:beruf'             => $stadtraetin->beruf,
@@ -424,7 +427,7 @@ class OParl10Object {
             'type'               => self::TYPE_SYSTEM,
             'oparlVersion'       => OParl10Controller::VERSION,
             'otherOparlVersions' => [],
-            'body'               => OParl10Controller::getOparlListUrl('body'),
+            'body'               => OParl10Controller::getOparlListUrl('body', null, null),
             'name'               => Yii::app()->params['projectTitle'],
             'contactEmail'       => Yii::app()->params['adminEmail'],
             'contactName'        => Yii::app()->params['adminEmailName'],

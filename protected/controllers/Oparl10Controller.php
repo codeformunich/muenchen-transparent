@@ -26,16 +26,16 @@ class OParl10Controller extends CController {
      * Erzeugt die URL zu einer externen Liste mit OParl-Objekten
      *
      * @param $typ int
-     * @param $body int
      * @param $filter OParl10Filter
+     * @param $body int
      *
      * @return String
      */
-    public static function getOparlListUrl($typ, $body = null, $filter = null) {
+    public static function getOparlListUrl($typ, $filter, $body) {
         $url = OPARL_10_ROOT;
-        if ($body !== null) $url .= '/body/' . $body;
+        if ($body != null) $url .= '/body/' . $body;
         $url .= '/list/' . $typ;
-        if ($filter != null) $url .= '?' . $filter->to_url_params();
+        if ($filter != null && !$filter->is_empty()) $url .= '?' . $filter->to_url_params();
 
         return $url;
     }
@@ -46,6 +46,13 @@ class OParl10Controller extends CController {
      */
     public static function mysqlToOparlDateTime($in) {
         return (new DateTime($in, new DateTimeZone(DEFAULT_TIMEZONE)))->format(DateTime::ATOM);
+    }
+
+    /**
+     * Umkehrfunktion zu mysqlToOparlDateTime
+     */
+    public static function oparlDateTimeToMysql($in) {
+        return DateTime::createFromFormat(DateTime::ISO8601, $in)->format('Y-m-d H:i:s');
     }
 
     /**
@@ -74,8 +81,14 @@ class OParl10Controller extends CController {
     /**
      * Gibt die externen Liste mit den 'oparl:Body'-Objekten als JSON aus
      */
-    public function actionExternalListBody() {
-        self::asOParlJSON(OParl10List::get('body', null, new OParl10Filter()));
+    public function actionExternalListBody($id = null, $created_since = null, $created_until = null, $modified_since = null, $modified_until = null) {
+        $filter = new OParl10Filter();
+        $filter->id  = $id;
+        $filter->created_since  = $created_since;
+        $filter->created_until  = $created_until;
+        $filter->modified_since = $modified_since;
+        $filter->modified_until = $modified_until;
+        self::asOParlJSON(OParl10List::get('body', null, $filter));
     }
 
     /**

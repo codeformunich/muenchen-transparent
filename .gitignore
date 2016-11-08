@@ -18,7 +18,6 @@ html/pdfjs/web/build.css
 html/pdfjs/web/build.css.map
 html/pdfjs/web/build.js
 .idea
-solr/
 
 protected/config/main-production.php
 

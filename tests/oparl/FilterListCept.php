@@ -44,15 +44,17 @@ foreach (['modified_', 'created_'] as $field) {
 }
 
 // combining all 4 filter
-$four_filters = $base .
-    'modified_since=2016-05-03T00:00:00+02:00' . '&' .
-    'modified_until=2016-05-05T00:00:00+02:00' . '&' .
-    'created_since=2016-05-02T00:00:00+02:00' . '&' .
-    'created_until=2016-05-04T00:00:00+02:00';
+$four_filters = $base . implode('&', [
+    'modified_since=' . urlencode('2016-05-03T00:00:00+02:00'),
+    'modified_until=' . urlencode('2016-05-05T00:00:00+02:00'),
+    'created_since='  . urlencode('2016-05-02T00:00:00+02:00'),
+    'created_until='  . urlencode('2016-05-04T00:00:00+02:00'),
+    ]);
 $I->getOParl($four_filters);
-$I->assertEquals(count($I->getResponseAsTree()->data), 2);
-$I->assertEquals($I->getResponseAsTree()->data[0]->created, '2016-05-03T00:00:00+02:00');
-$I->assertEquals($I->getResponseAsTree()->data[1]->created, '2016-05-04T00:00:00+02:00');
+codecept_debug($four_filters);
+$I->assertEquals(2, count($I->getResponseAsTree()->data));
+$I->assertEquals('2016-05-03T00:00:00+02:00', $I->getResponseAsTree()->data[0]->created);
+$I->assertEquals('2016-05-04T00:00:00+02:00', $I->getResponseAsTree()->data[1]->created);
 
 // combining all 4 filter with pagination via id
 $I->getOParl($four_filters . '&' . 'id=3');

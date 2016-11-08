@@ -16,7 +16,7 @@ class OParl10List
      * @return array
      */
     public static function get($type, $body, $filter) {
-        if      ($type == 'body'         ) return self::body();
+        if      ($type == 'body'         ) return self::body($filter);
         else if ($type == 'organization' ) return self::organization($body, $filter);
         else if ($type == 'person'       ) return self::externalList($body, $filter, $type);
         else if ($type == 'meeting'      ) return self::externalList($body, $filter, $type);
@@ -29,12 +29,15 @@ class OParl10List
 
     /**
      * Die externe Objektliste mit allen 'oparl:Body'-Objekten
+     * @param $filter OParl10Filter
+     * @return array
      */
-    private static function body()
+    private static function body($filter)
     {
-        $bodies = [OParl10Object::get('body', 0)];
-
-        $bas = Bezirksausschuss::model()->alleOhneStadtrat();
+        $criteria = new CDbCriteria();
+        $filter->add_mandatory_filter($criteria);
+        $bodies = [];
+        $bas = Bezirksausschuss::model()->findAll($criteria);
         foreach ($bas as $ba)
             $bodies[] = OParl10Object::get('body', $ba->ba_nr);
 
@@ -45,8 +48,8 @@ class OParl10List
                 'currentPages' => 1,
             ],
             'links'      => [
-                'first'        => OParl10Controller::getOparlListUrl('body'),
-                'last'         => OParl10Controller::getOparlListUrl('body'),
+                'first'        => OParl10Controller::getOparlListUrl('body', $filter, null),
+                'last'         => OParl10Controller::getOparlListUrl('body', $filter, null),
             ]
         ];
     }
@@ -116,13 +119,13 @@ class OParl10List
                 'totalPages'      => ceil($count / static::ITEMS_PER_PAGE),
             ],
             'links'      => [
-                'first'           => OParl10Controller::getOparlListUrl($type, $body, $filter),
+                'first'           => OParl10Controller::getOparlListUrl($type, $filter, $body),
             ]
         ];
 
         if (count($entries) > 0 && end($entries)->id != $last_entry->id) {
             $filter->id = end($entries)->id;
-            $data['links']['next'] = OParl10Controller::getOparlListUrl($type, $body, $filter);
+            $data['links']['next'] = OParl10Controller::getOparlListUrl($type, $filter, $body);
         }
 
         return $data;
@@ -173,8 +176,8 @@ class OParl10List
                 'currentPage' => 1,
             ],
             'links'        => [
-                'firstPage'   => OParl10Controller::getOparlListUrl('organization', $body),
-                'lastPage'    => OParl10Controller::getOparlListUrl('organization', $body),
+                'firstPage'   => OParl10Controller::getOparlListUrl('organization', $filter, $body),
+                'lastPage'    => OParl10Controller::getOparlListUrl('organization', $filter, $body),
             ]
         ];
     }

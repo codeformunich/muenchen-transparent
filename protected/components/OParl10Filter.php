@@ -19,19 +19,19 @@ class OParl10Filter {
     public function add_mandatory_filter($criteria) {
         if ($this->created_since  !== null) {
             $criteria->addCondition('created  >= :created_since');
-            $criteria->params["created_since"]  = $this->created_since;
+            $criteria->params["created_since"]  = OParl10Controller::oparlDateTimeToMysql($this->created_since);
         }
         if ($this->created_until  !== null) {
             $criteria->addCondition('created  <= :created_until');
-            $criteria->params["created_until"]  = $this->created_until;
+            $criteria->params["created_until"]  = OParl10Controller::oparlDateTimeToMysql($this->created_until);
         }
         if ($this->modified_since !== null) {
             $criteria->addCondition('modified >= :modified_since');
-            $criteria->params["modified_since"] = $this->modified_since;
+            $criteria->params["modified_since"] = OParl10Controller::oparlDateTimeToMysql($this->modified_since);
         }
         if ($this->modified_until !== null) {
             $criteria->addCondition('modified <= :modified_until');
-            $criteria->params["modified_until"] = $this->modified_until;
+            $criteria->params["modified_until"] = OParl10Controller::oparlDateTimeToMysql($this->modified_until);
         }
     }
 
@@ -69,5 +69,16 @@ class OParl10Filter {
             }
         }
         return implode("&", $params);
+    }
+
+    /**
+     * @return bool Wether no filter is set
+     */
+    public function is_empty() {
+        foreach($this as $key => $value) {
+            if ($value != null)
+                return false;
+        }
+        return true;
     }
 }
