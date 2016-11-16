@@ -8,6 +8,8 @@
 
 $this->pageTitle = $dokument->titel_lang();
 $this->inline_css .= $dokument->css;
+// Fix mobile layout as fixed falout documents don't scale well
+$this->inline_css .= "#page_main_content { min-width: 1000px; }";
 
 ?>
 <section class="well">
