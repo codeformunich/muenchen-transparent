@@ -29,8 +29,12 @@ class BenachrichtigungenController extends RISBaseController
             foreach ($_REQUEST[AntiXSS::createToken("del_ben")] as $ben => $_val) {
                 $bena = json_decode(rawurldecode($ben), true);
                 $krit = new RISSucheKrits($bena);
-                $ich->delBenachrichtigung($krit);
-                $this->msg_ok = "Die Benachrichtigung wurde entfernt.";
+                $deleted = $ich->delBenachrichtigung($krit);
+                if ($deleted) {
+                    $this->msg_ok = "Die Benachrichtigung wurde entfernt.";
+                } else {
+                    $this->msg_err = "Fehler: Die Benachrichtigung konnte nicht entfernt werden.";
+                }
             }
         }
 

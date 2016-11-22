@@ -143,8 +143,12 @@ class IndexController extends RISBaseController
                 $this->msg_ok .= 'Die Benachrichtigung wurde hinzugefügt.';
             }
             if ($do_benachrichtigung_del) {
-                $ich->delBenachrichtigung($curr_krits);
-                $this->msg_ok .= 'Die Benachrichtigung wurde entfernt.';
+                $deleted = $ich->delBenachrichtigung($curr_krits);
+                if ($deleted) {
+                    $this->msg_ok = "Die Benachrichtigung wurde entfernt.";
+                } else {
+                    $this->msg_err = "Fehler: Die Benachrichtigung konnte nicht entfernt werden.";
+                }
             }
 
             $wird_benachrichtigt = $ich->wirdBenachrichtigt($curr_krits);

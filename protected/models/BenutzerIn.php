@@ -294,16 +294,24 @@ class BenutzerIn extends CActiveRecord
 
     /**
      * @param RISSucheKrits $krits
+     * @return boolean wether the krit was really deleted
      */
     public function delBenachrichtigung($krits)
     {
-        $suchkrits     = $krits->getBenachrichtigungKrits();
+        $was_deleted = false;
         $einstellungen = $this->getEinstellungen();
         $neue          = [];
-        foreach ($einstellungen->benachrichtigungen as $ben) if ($suchkrits->krits != $ben) $neue[] = $ben;
+        foreach ($einstellungen->benachrichtigungen as $ben) {
+            if ($krits->krits != $ben) {
+                $neue[] = $ben;
+            } else {
+                $was_deleted = true;
+            }
+        }
         $einstellungen->benachrichtigungen = $neue;
         $this->setEinstellungen($einstellungen);
         $this->save();
+        return $was_deleted;
     }
 
     /**

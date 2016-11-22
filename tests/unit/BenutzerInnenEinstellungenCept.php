@@ -44,7 +44,11 @@ $I->assertEquals($all_as_kritclass, $benutzerin->getBenachrichtigungen());
 
 // Test delBenachrichtigung() by removing all krits
 foreach ($krits_array as $krit) {
-    $benutzerin->delBenachrichtigung(new RISSucheKrits([$krit]));
+    if ($krit["typ"] == "antrag_wahlperiode")
+        continue;
+
+    $deleted = $benutzerin->delBenachrichtigung(new RISSucheKrits([$krit]));
+    $I->assertTrue($deleted);
 }
 $I->assertEquals([], $benutzerin->getEinstellungen()->benachrichtigungen);
 
