@@ -606,13 +606,16 @@ ul.terminliste {
 
   .suchergebnis_eingrenzen {
     > ul {
+      display: flex;
+      flex-wrap: wrap;
       list-style: none;
       padding-left: 15px;
 
       li {
+        margin-right: 10px;
+
         button.btn {
           margin: 0px;
-          padding: 3px;
           font-size: 18px;
           text-transform: none;
           font-weight: 400;
@@ -1034,7 +1037,9 @@ ul.terminliste > li > .termindetails {
 }
 
 .benachrichtigung_std_button {
-  width: 100%;
+  margin-right: 10px;
+  margin-left: 10px;
+  float: left;
 
   .glyphicon {
     font-weight: bold;

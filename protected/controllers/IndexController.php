@@ -578,6 +578,7 @@ class IndexController extends RISBaseController
                 "krits"            => $krits,
                 "ergebnisse"       => $ergebnisse,
                 "geodata"          => $geodata,
+                "geodata_overflow" => [], // Reicht für diesen Fall
                 "available_facets" => $available_facets,
                 "used_facets"      => $used_factes,
             ], $benachrichtigungen_optionen));

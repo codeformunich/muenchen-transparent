@@ -21,31 +21,11 @@ $this->pageTitle = "Suchergebnisse";
     <h1> <?= ($krits->getKritsCount() > 1) ? "Suche" : CHtml::encode($krits->getBeschreibungDerSuche()) ?> </h1>
 
     <div class="row">
-    <? // Button mit Extras, die rechts sind ?>
-    <div class="col-md-5 col-md-push-6">
-        <?
-        $this->renderPartial("suchergebnisse_benachrichtigungen", array(
-            "eingeloggt" => $eingeloggt,
-            "email_angegeben" => $email_angegeben,
-            "email_bestaetigt" => $email_bestaetigt,
-            "wird_benachrichtigt" => $wird_benachrichtigt,
-            "ich" => $ich,
-            "krits" => $krits
-        ));
-        ?>
-        <a href="<?= CHtml::encode($krits->getFeedUrl()) ?>">
-            <button type="button" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>"
-                    class="btn btn-info benachrichtigung_std_button">
-                <? /* class=glyphicon, damit die css-Styles die gleichen wie bei dem Benachrichtigungs-Button sind */ ?>
-                <span class="glyphicon fontello-rss"></span> Suchergebnisse als RSS-Feed
-            </button>
-        </a>
-    </div>
 
     <?
-    // Anzeigen der Suchkriterien und die Möglichkeit, diese zu entfernen
+    // Anzeigen der Suchkriterien und die Möglichkeit, diese zu entfernen //
     if ($krits->getKritsCount() > 1) { ?>
-    <div class="suchkrits_interaktiv col-md-6 col-md-pull-5">
+    <div class="suchkrits_interaktiv col-md-10">
         <h4>Gefunden wurden Dokumente mit den folgenden Kriterien:</h4>
         <ul>
             <? foreach ($krits->krits as $krit) {
@@ -99,18 +79,18 @@ $this->pageTitle = "Suchergebnisse";
     <div class="row">
 
     <?
-    // Möglichkeiten, die Suche weiter einzuschränken
+    // Möglichkeiten, die Suche weiter einzuschränken //
     $has_facets = false;
     foreach ($available_facets as $facets) if (count($facets["group"]) > 1)
         $has_facets = true;
 
     if ($has_facets) { ?>
-    <section class="suchergebnis_eingrenzen col-md-6">
+    <section class="suchergebnis_eingrenzen col-md-10">
         <h4>Suche einschränken</h4>
         <ul>
             <? foreach ($available_facets as $facets) { ?>
                 <li class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
                         <?= CHtml::encode($facets["name"]) ?> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -126,13 +106,36 @@ $this->pageTitle = "Suchergebnisse";
     </section>
     <? } ?>
 
+
+    <? // Buttons mit Extras // ?>
+    <div class="col-md-10">
+        <?
+        $this->renderPartial("suchergebnisse_benachrichtigungen", array(
+            "eingeloggt" => $eingeloggt,
+            "email_angegeben" => $email_angegeben,
+            "email_bestaetigt" => $email_bestaetigt,
+            "wird_benachrichtigt" => $wird_benachrichtigt,
+            "ich" => $ich,
+            "krits" => $krits
+        ));
+        ?>
+        <a href="<?= CHtml::encode($krits->getFeedUrl()) ?>">
+            <button type="button" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>"
+                    class="btn btn-default benachrichtigung_std_button">
+                <? /* class=glyphicon, damit die css-Styles die gleichen wie bei dem Benachrichtigungs-Button sind */ ?>
+                <span class="glyphicon fontello-rss"></span> Suchergebnisse als RSS-Feed
+            </button>
+        </a>
     </div>
 
+    <? // Needed to keep the map from floating right ?>
+    </div>
     <div class="row">
 
     <?
-    // Eine Karte (?!)
+    // Bei Geokriterien wird eine Karte angezeigt //
     if (!is_null($geodata) && count($geodata) > 0) {
+        $this->load_leaflet = true;
         $geokrit = $krits->getGeoKrit();
         ?>
         <div id="mapholder">

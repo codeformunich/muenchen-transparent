@@ -33,14 +33,14 @@
             <?
         } else {
             ?>
-            <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" class="btn btn-info btn-raised benachrichtigung_std_button">
+            <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" class="btn btn-default benachrichtigung_std_button">
                 <span class="glyphicon">@</span> Über neue Treffer benachrichtigen
             </button>
             <?
         }
     } else {
         ?>
-        <button type="button" class="btn btn-info btn-raised benachrichtigung_std_button" data-toggle="modal" data-target="#benachrichtigung_login">
+        <button type="button" class="btn btn-default benachrichtigung_std_button" data-toggle="modal" data-target="#benachrichtigung_login">
             <span class="glyphicon">@</span> Über neue Treffer benachrichtigen
         </button>
         <input type="hidden" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" value="1">
