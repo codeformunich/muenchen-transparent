@@ -126,4 +126,65 @@ class OParl10Controller extends CController {
             header('Content-Disposition: attachment; filename="' . $dokument->getDateiname() . '"');
         }
     }
+
+    public function actionSuche($searchterm)
+    {
+        $krits = new RISSucheKrits();
+        $krits->addKrit('volltext', $searchterm);
+
+        $solr = RISSolrHelper::getSolrClient();
+        $select = $solr->createSelect();
+
+        $krits->addKritsToSolr($select);
+
+        $select->setRows(50);
+        $select->addSort('sort_datum', $select::SORT_DESC);
+
+        // Tag hinzufügen, der den Namen entspricht
+        foreach ($select->getFilterQueries() as $filter_query) {
+            $filter_query->addTag($filter_query->getKey());
+        }
+
+        /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+        $hl = $select->getHighlighting();
+        $hl->setFields('text, text_ocr, antrag_betreff');
+        $hl->setSimplePrefix('<b>');
+        $hl->setSimplePostfix('</b>');
+
+        $facet_field_namess = [
+            ['antrag_typ', 'antrag_typ', 'Dokumenttypen'],
+            ['antrag_wahlperiode', 'antrag_wahlperiode', 'Wahlperiode'],
+            ['dokument_bas', 'ba', 'Bezirksauschüsse'],
+            ['referat_id', 'referat', 'Referat'],
+        ];
+
+        $facetSet = $select->getFacetSet();
+        foreach ($facet_field_namess as $facet_field_names) {
+            $facetSet
+                ->createFacetField($facet_field_names[0])
+                ->setField($facet_field_names[0])
+                ->setExcludes([$facet_field_names[0]]);
+        }
+
+        try {
+            $ergebnisse = $solr->select($select);
+        } catch (Exception $e) {
+            $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
+            Yii::app()->end(500);
+        }
+
+        $search_results = [];
+        $dokumente = $ergebnisse->getDocuments();
+        foreach ($dokumente as $dokument) {
+            $dok = Dokument::getDocumentBySolrId($dokument->id, true);
+            if (!$dok) {
+                $search_results[] = ['error' => "Dokument nicht gefunden: " . $dokument->id];
+                continue;
+            }
+
+            $search_results[] = OParl10Object::get('file', $dok->id);
+        }
+
+        self::asOParlJSON($search_results);
+    }
 }

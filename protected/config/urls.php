@@ -39,6 +39,7 @@ $GLOBALS["RIS_URL_RULES"] = [
     OPARL_10_ROOT . '/<typ:\w+>/<subtype:\w+>/<id:-?\d+>'                 => 'oparl10/object',
     OPARL_10_ROOT . '/list/body'                                          => 'oparl10/externalListBody',
     OPARL_10_ROOT . '/body/<body:\d+>/list/<typ:\w+>'                     => 'oparl10/externalList',
+    OPARL_10_ROOT . '/search'                                             => 'oparl10/suche',
 
     SITE_BASE_URL . '/<action:\w+>'                                       => 'index/<action>',
     SITE_BASE_URL . '/<controller:\w+>/<id:\d+>'                          => '<controller>/anzeigen',
