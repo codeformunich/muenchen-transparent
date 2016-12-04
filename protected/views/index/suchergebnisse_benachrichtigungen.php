@@ -23,10 +23,10 @@
         if ($wird_benachrichtigt) {
             ?>
             <div class="button_hover_change">
-                <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-success btn-nohover" style="width: 250px;">
+                <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-success btn-nohover benachrichtigung_std_button" style="width: 250px;">
                     <span class="glyphicon glyphicon-ok"></span> Du wirst benachrichtigt
                 </button>
-                <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-primary btn-hover benachrichtigung_del_button" style="width: 250px;">
+                <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_del") ?>" class="btn btn-primary btn-hover benachrichtigung_std_button" style="width: 250px;">
                     Nicht mehr benachrichtigen!
                 </button>
             </div>
