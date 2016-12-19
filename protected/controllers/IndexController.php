@@ -592,12 +592,19 @@ class IndexController extends RISBaseController
      */
     public function actionDocumentProxy($id)
     {
-        $content =  Dokument::getCachedByID($id)->getDateiInhalt();
-        if ($content === null) {
+        $dokument = Dokument::getCachedByID($id);
+        if ($dokument === null) {
             header("HTTP/1.0 404 Not Found");
-        } else {
-            echo $content;
+            Yii::app()->end();
         }
+
+        $content = $dokument->getDateiInhalt();
+        if ($content === null){
+            header("HTTP/1.0 404 Not Found");
+            Yii::app()->end();
+        }
+
+        echo $content;
         Yii::app()->end();
     }
 
