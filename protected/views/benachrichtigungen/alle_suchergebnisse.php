@@ -12,6 +12,6 @@
 
 <?
 
-$this->renderPartial("suchergebnisse_liste", array(
+$this->renderPartial("suchergebnisse_liste_benachrichtigungen", array(
 	"ergebnisse"  => $ergebnisse,
 ));

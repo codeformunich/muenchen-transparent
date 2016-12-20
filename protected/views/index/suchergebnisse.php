@@ -81,12 +81,12 @@ $this->pageTitle = "Suchergebnisse";
     <?
     // Möglichkeiten, die Suche weiter einzuschränken //
     $has_facets = false;
-    foreach ($available_facets as $facets) if (count($facets["group"]) > 1)
+    foreach ($available_facets as $facets) if (count($facets["group"]) > 1) {
         $has_facets = true;
+    }
 
     if ($has_facets) { ?>
     <section class="suchergebnis_eingrenzen col-md-10">
-        <h4>Suche einschränken</h4>
         <ul>
             <? foreach ($available_facets as $facets) { ?>
                 <li class="dropdown">
