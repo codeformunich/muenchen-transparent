@@ -6,7 +6,7 @@
 [![Dependencies](https://gemnasium.com/codeformunich/Muenchen-Transparent.svg)](https://gemnasium.com/codeformunich/Muenchen-Transparent)
 
 
-München Transparent ist ein alternatives Ratsinformationssystem (RIS) für München.
+München Transparent ist ein alternatives Ratsinformationssystem (RIS) für München mit einer modernen Oberfläche, E-Mail-Benachrichtigungen, Volltextsuche, Geodaten, Erklärtexten und vielem mehr.
 
 ## Setup
 
