@@ -135,17 +135,17 @@
                     <!-- Mobiler BA-wähler-->
                     <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= CHtml::link("Bezirksausschüsse", $this->createUrl("index/bezirksausschuss")) ?></li>
                     <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
                     <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
                     <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("personen/index")) ?></li>
                     <?
                     $user = $this->aktuelleBenutzerIn();
                     if ($user && ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER))) {
-                        ?>
+                    ?>
                         <li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <?
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
+                            <?
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
                                     <li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
                                     <li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
@@ -162,6 +162,15 @@
                             </ul>
                         </li>
                     <? } ?>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mehr <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><?= CHtml::link("Glossar", $this->createUrl("infos/glossar")) ?></li>
+                            <li><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
+                            <li><?= CHtml::link("So funktioniert Stadtpolitik", $this->createUrl("infos/soFunktioniertStadtpolitik")) ?></li>
+                            <li><?= CHtml::link("Satzungen und Verordnung", $this->createUrl("infos/stadtrecht")) ?></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

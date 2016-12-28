@@ -42,7 +42,7 @@ class OParl10Controller extends CController {
 
     /**
      * Wandelt einen MySQL timestamp in einen String mit Datum, Zeit und Zeitzone im dem vom OParl genutzten Format um
-     * (entspricht ISO 8601)
+     * (YYYY-MM-DDThh:mm:ss±hh:mm)
      */
     public static function mysqlToOparlDateTime($in) {
         return (new DateTime($in, new DateTimeZone(DEFAULT_TIMEZONE)))->format(DateTime::ATOM);
