@@ -212,7 +212,6 @@ class BenachrichtigungenController extends RISBaseController
 
         $ergebnisse = $solr->select($select);
 
-
         $this->render("alle_suchergebnisse", [
             "ergebnisse" => $ergebnisse,
         ]);

@@ -560,12 +560,24 @@ class IndexController extends RISBaseController
                     ->setExcludes([$facet_field_names[0]]);
             }
 
+            $groupComponent = $select->getGrouping();
+            $groupComponent->addField('antrag_id');
+            $groupComponent->setLimit(20);
+            $groupComponent->setNumberOfGroups(true);
+
             try {
                 $ergebnisse = $solr->select($select);
             } catch (Exception $e) {
                 $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
                 Yii::app()->end(500);
+                die();
             }
+
+            // Unpack the actual results
+            $fieldGroups = $ergebnisse->getGrouping();
+            $fieldGroup = $fieldGroups->getGroup("antrag_id");
+
+            $highlighting = $ergebnisse->getHighlighting();
 
             $x = $this->extractAvailalbleFacets($ergebnisse, $krits, $facet_field_namess);
             $available_facets = $x[0];
@@ -576,7 +588,8 @@ class IndexController extends RISBaseController
 
             $this->render("suchergebnisse", array_merge([
                 "krits"            => $krits,
-                "ergebnisse"       => $ergebnisse,
+                "fieldGroup"       => $fieldGroup,
+                "highlighting"     => $highlighting,
                 "geodata"          => $geodata,
                 "geodata_overflow" => [], // Reicht für diesen Fall
                 "available_facets" => $available_facets,

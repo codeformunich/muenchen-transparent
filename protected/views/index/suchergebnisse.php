@@ -1,7 +1,8 @@
 <?php
 /**
  * @var IndexController $this
- * @var \Solarium\QueryType\Select\Result\Result $ergebnisse
+ * @var \Solarium\QueryType\Select\Result\Grouping\FieldGroup $fieldGroup
+ * @var Solarium\QueryType\Select\Result\Highlighting\Result $highlighting
  * @var RISSucheKrits $krits
  * @var array $available_facets
  * @var array $used_facets
@@ -168,12 +169,13 @@ $this->pageTitle = "Suchergebnisse";
 
 <section class="well suchergebnisse">
     <h1>Suchergebnisse</h1>
-    <p>Zeige <?= count($ergebnisse->getDocuments()) ?> von <?= $ergebnisse->getNumFound() ?> Dokumenten</p>
+    <p>Zeige <?= $fieldGroup->count() ?> von <?= $fieldGroup->getNumberOfGroups() ?> Ergebnissen</p>
     <div style="height: 15px;"></div>
 
     <?
     if ($krits->getKritsCount() > 0) $this->renderPartial("../benachrichtigungen/suchergebnisse_liste", array(
-        "ergebnisse" => $ergebnisse,
+        "fieldGroup" => $fieldGroup,
+        "highlighting" => $highlighting,
     ));
     ?>
 </section>
