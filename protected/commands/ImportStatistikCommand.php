@@ -34,6 +34,14 @@ class ImportStatistikCommand extends CConsoleCommand
                 $dat = new StatistikDatensatz();
                 $dat->quelle = StatistikDatensatz::QUELLE_INDIKATORENATLAS;
 
+                // Catch inconsitent header in "Indikatorenatlas: Bevölkerung - Außenwanderungsziffer Deutsche"
+                foreach (range(1, 5) as $i) {
+                    if (key_exists("NAME_BASISWERT_" . $i, $header)) {
+                        echo "Warning: Wrong csv header in " . $indikatorenatlas->title;
+                        $header["NAME_BASISWERT" . $i] = $header["NAME_BASISWERT_" . $i];
+                    }
+                }
+
                 $dat->indikator_gruppe      =                 $row[$header['INDIKATOR_GRUPPE'     ]];
                 $dat->indikator_bezeichnung =                 $row[$header['INDIKATOR_BEZEICHNUNG']];
                 $dat->indikator_auspraegung =                 $row[$header['INDIKATOR_AUSPRAEGUNG']];
