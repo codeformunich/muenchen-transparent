@@ -33,7 +33,7 @@ class OParl10Object {
      * nis%2FAdministrativ%2FArchiv%2FGVAuszugQ%2FAuszugGV3QAktuell.xls%3F__blob%3DpublicationFile&usg=AFQjCNFvzspzR \
      * iU3IfZ3gKFZPUF-rDWDgg
      */
-    const RGS_MUENCHEN = "6061091620000000";
+    const RGS_MUENCHEN = "606109162000";
 
     /**
      * Gibt ein beliebiges OParl-Objekt im Form eines arrays zurück
