@@ -19,6 +19,23 @@ class OParl10Object {
     const TYPE_SYSTEM          = 'https://schema.oparl.org/1.0/System';
 
     /**
+     * Amtlicher Gemeindeschlüssel für München
+     *
+     * Quelle: http://www.statistik-portal.de/Statistik-Portal/gemeindeverz.asp?G=M%FCnchen
+     */
+    const AGS_MUENCHEN = "09162000";
+
+    /**
+     * Regionalschlüssel für München
+     *
+     * Quelle: https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&ved=0ahUKEwjpz_TP_IPTAhXBiiwKHb2fCfEQF \
+     * gg1MAI&url=https%3A%2F%2Fwww.destatis.de%2FDE%2FZahlenFakten%2FLaenderRegionen%2FRegionales%2FGemeindeverzeich \
+     * nis%2FAdministrativ%2FArchiv%2FGVAuszugQ%2FAuszugGV3QAktuell.xls%3F__blob%3DpublicationFile&usg=AFQjCNFvzspzR \
+     * iU3IfZ3gKFZPUF-rDWDgg
+     */
+    const RGS_MUENCHEN = "6061091620000000";
+
+    /**
      * Gibt ein beliebiges OParl-Objekt im Form eines arrays zurück
      */
     public static function get($type, $id, $subtype = null) {
@@ -75,6 +92,11 @@ class OParl10Object {
             'created'         => OParl10Controller::mysqlToOparlDateTime($ba->created),
             'modified'        => OParl10Controller::mysqlToOparlDateTime($ba->modified),
         ];
+
+        if ($id == 0) {
+            $data['ags'] = self::AGS_MUENCHEN;
+            $data['rgs'] = self::RGS_MUENCHEN;
+        }
 
         if ($location)
             $data['location'] = $location;
