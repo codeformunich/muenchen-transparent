@@ -35,6 +35,9 @@ class BAAntragParser extends RISParser
         //$ergebnisse = array();
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
+        if (!isset($dat_details[1])) {
+            throw new Exception("Fehlerhaft geladen");
+        }
         $dat_details = explode("<!-- detailbereich -->", $dat_details[1]);
 
         preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
