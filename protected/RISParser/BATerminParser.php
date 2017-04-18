@@ -82,11 +82,10 @@ class BATerminParser extends RISParser
             $x      = explode(" ", trim($termin));
             $tag    = IntVal($x[1]);
             if ($tag < 10) $tag = "0" . IntVal($tag);
-            $jahr  = IntVal($x[2]);
-            $y     = explode(".", $x[1]);
-            $monat = $MONATE[mb_strtolower($y[1])];
+            $jahr  = IntVal($x[3]);
+            $monat = $MONATE[mb_strtolower($x[2])];
             if ($monat < 10) $monat = "0" . IntVal($monat);
-            $zeit          = $x[3];
+            $zeit          = $x[4];
             $daten->termin = "${jahr}-${monat}-${tag} ${zeit}:00";
         }
 
@@ -159,6 +158,8 @@ class BATerminParser extends RISParser
                 $top_ueberschrift = false;
                 $top_nr           = $abschnitt_nr . "." . $matches["top"][$i];
             }
+            $x = explode("<!-- Liste", $betreff);
+            $betreff = trim($x[0]);
 
             $vorlage_holder = trim(str_replace("&nbsp;", " ", $matches["vorlage_holder"][$i]));
 
