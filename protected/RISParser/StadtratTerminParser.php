@@ -77,11 +77,10 @@ class StadtratTerminParser extends RISParser
             if (isset($x[1])) {
                 $tag = IntVal($x[1]);
                 if ($tag < 10) $tag = "0" . IntVal($tag);
-                $jahr  = IntVal($x[2]);
-                $y     = explode(".", $x[1]);
-                $monat = $MONATE[mb_strtolower($y[1])];
+                $jahr  = IntVal($x[3]);
+                $monat = $MONATE[mb_strtolower($x[2])];
                 if ($monat < 10) $monat = "0" . IntVal($monat);
-                $zeit          = $x[3];
+                $zeit          = $x[4];
                 $daten->termin = "${jahr}-${monat}-${tag} ${zeit}:00";
             } else {
                 if ($sitzungsort_gefunden && $daten->gremium === null && $daten->sitzungsort == "" && $daten->status == "") $geloescht = true;
