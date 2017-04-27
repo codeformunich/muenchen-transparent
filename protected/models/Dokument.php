@@ -344,8 +344,12 @@ class Dokument extends CActiveRecord implements IRISItem
             $this->datum_dokument = null;
         }
 
-        if ($endung == "pdf") $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
-        else $this->text_pdf = "";
+        $this->text_pdf = "";
+        try {
+            if ($endung == "pdf") {
+                $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
+            }
+        } catch (\Exception $e) {}
 
         $this->text_ocr_raw       = RISPDF2Text::document_text_ocr($absolute_filename, $this->seiten_anzahl);
         $this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
