@@ -4,7 +4,7 @@
  * Enhält alle actions für OParl 1.0 sowie einige Hilfsmethoden
  */
 class OParl10Controller extends CController {
-    const VERSION = 'https://oparl.org/specs/1.0/';
+    const VERSION = 'https://schema.oparl.org/1.0/';
 
     /**
      * Erzeugt die URL zu einem einzelnen OParl-Objekt
