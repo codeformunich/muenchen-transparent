@@ -443,8 +443,24 @@ class Dokument extends CActiveRecord implements IRISItem
                 echo "=> " . $dok["name"] . " (" . $dok["name_title"] . ")\n";
                 $dokument->name       = $dok["name"];
                 $dokument->name_title = $dok["name_title"];
+            }
+
+            if (is_a($antrag_termin_tagesordnungspunkt, "Antrag") && $dokument->antrag_id != $antrag_termin_tagesordnungspunkt->id) {
+                echo "- Dokumentenzuordnung korrigiert: Antrag " . $antrag_termin_tagesordnungspunkt->id . "\n";
+                $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
                 $dokument->save();
             }
+            if (is_a($antrag_termin_tagesordnungspunkt, "Termin")) {
+                echo "- Dokumentenzuordnung korrigiert: Termin " . $antrag_termin_tagesordnungspunkt->id . "\n";
+                $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
+                $dokument->save();
+            }
+            if (is_a($antrag_termin_tagesordnungspunkt, "Tagesordnungspunkt")) {
+                echo "- Dokumentenzuordnung korrigiert: Tagesordnungspunkt " . $antrag_termin_tagesordnungspunkt->id . "\n";
+                $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
+                $dokument->save();
+            }
+
             return "";
         }
 
