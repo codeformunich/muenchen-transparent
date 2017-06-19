@@ -272,10 +272,13 @@ class OParl10Object {
             'type'         => self::TYPE_MEMBERSHIP,
             'organization' => OParl10Controller::getOparlObjectUrl('organization', $organization->id, $subtype),
             'person'       => OParl10Controller::getOparlObjectUrl('person', $object->stadtraetIn->id),
-            'role'         => $object->getFunktion(),
             'created'      => OParl10Controller::mysqlToOparlDateTime($object->created),
             'modified'     => OParl10Controller::mysqlToOparlDateTime($object->modified),
         ];
+
+        $role = $object->getFunktion();
+        if ($role !== null)
+            $data['role'] = $role;
 
         if ($object->datum_von !== null)
             $data['startDate'] = $object->datum_von;
