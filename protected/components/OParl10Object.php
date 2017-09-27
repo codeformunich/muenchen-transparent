@@ -194,7 +194,7 @@ class OParl10Object {
 
         if (substr($dokument->url, -strlen('.pdf')) === '.pdf') {
             $data['mimeType' ] = 'application/pdf';
-        } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff') {
+        } else if (substr($dokument->url, -strlen('.tiff')) === '.tiff' || substr($dokument->url, -strlen('.tif')) === '.tif') {
             $data['mimeType' ] = 'image/tiff';
         }
 
