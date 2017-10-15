@@ -103,6 +103,7 @@ class Fraktion extends CActiveRecord implements IRISItem
         if ($name == "&nbsp;" || trim($name) == "") return "fraktionslos";
         if ($kurzfassung) {
             if (in_array($this->id, [3339564, 2988265, 3312425])) return "Bürgerliche Mitte";
+            if ($this->id == 3312427) return "FDP - HUT";
             if (in_array($this->id, [3312426, 1431959, 33])) return "Die Grünen / RL";
         }
         return $name;
