@@ -49,12 +49,31 @@ class OParl10Object {
         else if ($type == 'person'         ) return self::person($id);
         else if ($type == 'system'         ) return self::system();
         else if ($type == 'location'       ) return self::location($id, $subtype);
-        else if ($type == 'agendaitem'     ) return ['note:' => 'not implemented yet'];
-        else if ($type == 'consultation'   ) return ['note:' => 'not implemented yet'];
+        else if ($type == 'agendaitem'     ) return self::agendaitem($id);
+        else if ($type == 'consultation'   ) return self::consultation($id);
         else {
             header('HTTP/1.0 400 Bad Request');
             return ['error' => 'No such object type ' . $type];
         }
+    }
+
+    private static function agendaitem($id) {
+        $item = Tagesordnungspunkt::model()->findByPk($id);
+
+        $data = [
+            'id' => OParl10Controller::getOparlObjectUrl('agendaitem', $item->id),
+            'type' => self::TYPE_AGENDAITEM,
+            "number" => $item->top_nr,
+            "name" => $item->top_betreff,
+            "consultation" => OParl10Controller::getOparlObjectUrl('consultation', $item->id),
+            "resolutionText" => $item->beschluss_text,
+        ];
+
+        if ($item->entscheidung)
+            $data["result"] = $item->entscheidung;
+
+
+        return $data;
     }
 
     /**
@@ -104,10 +123,24 @@ class OParl10Object {
         return $data;
     }
 
+    private static function consultation($id) {
+        $item = Tagesordnungspunkt::model()->findByPk($id);
+
+        $data = [
+            "id" => OParl10Controller::getOparlObjectUrl('consultation', $item->id),
+            "type" => self::TYPE_CONSULTATION,
+            "paper" => OParl10Controller::getOparlObjectUrl('paper', $item->antrag_id),
+            "meeting" => OParl10Controller::getOparlObjectUrl('meeting', $item->sitzungstermin_id),
+            "organization" => OParl10Controller::getOparlObjectUrl('organization', $item->gremium_id, 'gremium'),
+        ];
+
+        return $data;
+    }
+
     private static function location($id, $subtype) {
         if ($subtype != 'body') {
             header('HTTP/1.0 400 Bad Request');
-            return ['error' => 'No such subtype ' . $subtype . ' for location'];
+            return ['error' => 'No such subtype ' . $subtype . ' for location. Only "body" is allowed.'];
         }
 
         /** @var Bezirksausschuss $ba */
@@ -245,6 +278,10 @@ class OParl10Object {
         $data['auxiliaryFile'] = [];
         foreach ($termin->antraegeDokumente as $dokument)
             $data['auxiliaryFile'][] = self::file($dokument->id);
+
+        $data['agendaItem'] = [];
+        foreach ($termin->tagesordnungspunkte as $top)
+            $data['agendaItem'][] = self::agendaitem($top->id);
 
         if ($termin->abgesetzt)
             $data['cancelled'] = true;
