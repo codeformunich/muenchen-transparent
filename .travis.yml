@@ -66,7 +66,7 @@ install:
   - npm install
   - npm install bower
   - node_modules/bower/bin/bower install
-  - gulp
+  - node_modules/.bin/gulp
 
 script:
   - vendor/bin/codecept run --env nohtmlvalidation # nohtmlvalidation is a workaround for the missing java 8
