@@ -131,7 +131,9 @@ class OParl10Object {
             "type" => self::TYPE_CONSULTATION,
             "paper" => OParl10Controller::getOparlObjectUrl('paper', $item->antrag_id),
             "meeting" => OParl10Controller::getOparlObjectUrl('meeting', $item->sitzungstermin_id),
-            "organization" => OParl10Controller::getOparlObjectUrl('organization', $item->gremium_id, 'gremium'),
+            "organization" => [
+                OParl10Controller::getOparlObjectUrl('organization', $item->gremium_id, 'gremium')
+            ],
         ];
 
         return $data;
