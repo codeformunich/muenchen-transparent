@@ -10,7 +10,7 @@ München Transparent ist ein alternatives Ratsinformationssystem (RIS) für Mün
 
 ## Setup
 
-Vorausgesetzt werden nginx mit PHP und MySQL/MariaDB sowie npm und composer.
+Vorausgesetzt werden nginx mit PHP 7 und MySQL/MariaDB sowie npm und composer.
 
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash

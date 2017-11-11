@@ -4,11 +4,9 @@ sudo: false
 # Note: For using PHP 7 you have add the following line:
 # cp /home/travis/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default /home/travis/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
 php:
-  - '5.6'
-#  - '7.0'
-#  - hhvm
+  - '7.0'
+  - '7.1'
 
-# required for gulp-sourcemaps
 env:
   - TRAVIS_NODE_VERSION="6"
 
