@@ -5,7 +5,7 @@
 composer.phar
 vendor/
 node_modules/
-html/bower/
+html/bower
 
 # Static files
 html/assets/
