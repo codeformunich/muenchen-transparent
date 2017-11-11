@@ -32,3 +32,4 @@ exclude_paths:
 - html/js/Leaflet.Control.Geocoder
 - html/css/_material.scss
 - html/css/material
+- html/css/_shariff.scss
