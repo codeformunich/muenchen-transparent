@@ -6,11 +6,11 @@
     "gulp-exec": "^2.1.2",
     "gulp-expect-file": "^0.0.7",
     "gulp-if": "^2.0",
-    "gulp-sass": "^2.3",
+    "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.0",
-    "gulp-uglify": "^2.0",
+    "gulp-uglify": "^3.0",
     "pa11y": "^4.0.0",
     "phantomjs-prebuilt": "^2.1.7",
-    "yargs": "^6.0"
+    "yargs": "^10.0"
   }
 }
