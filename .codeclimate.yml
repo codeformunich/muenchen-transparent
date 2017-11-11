@@ -31,3 +31,4 @@ exclude_paths:
 - html/pdfjs/
 - html/js/Leaflet.Control.Geocoder
 - html/css/_material.scss
+- html/css/material
