@@ -10,10 +10,11 @@ php:
 
 # required for gulp-sourcemaps
 env:
-  - TRAVIS_NODE_VERSION="4"
+  - TRAVIS_NODE_VERSION="6"
 
 cache:
   apt: true
+  yarn: true
   directories:
     - node_modules
     - html/bower
@@ -63,9 +64,7 @@ install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - chmod 644 vendor/heise/shariff/index.php || true # Prevent a weird "has uncommitted changes" error message when updating shariff
   - composer install --prefer-source # --prefer-source fixes github's limits
-  - npm install
-  - npm install bower
-  - node_modules/bower/bin/bower install
+  - yarn
   - node_modules/.bin/gulp
 
 script:
