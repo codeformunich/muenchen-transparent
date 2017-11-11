@@ -29,3 +29,5 @@ exclude_paths:
 - html/bower/
 - html/css/build/
 - html/pdfjs/
+- html/js/Leaflet.Control.Geocoder
+- html/css/_material.scss
