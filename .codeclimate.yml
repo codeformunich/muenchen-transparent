@@ -28,3 +28,4 @@ exclude_paths:
 - vendor/
 - html/bower/
 - html/css/build/
+- html/pdfjs/
