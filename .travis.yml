@@ -36,7 +36,7 @@ install:
   - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - phpenv config-rm xdebug.ini # Speeds up build
   - phpenv config-add docs/travis/custom.php.ini
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then cp docs/travis/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
+  - cp docs/travis/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/ # Fix the php 7 config https://www.marcus-povey.co.uk/2016/02/16/travisci-with-php-7-on-apache-php-fpm/
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
   # MySql
