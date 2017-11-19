@@ -1,0 +1,9 @@
+html/pdfjs/ linguist-vendored
+html/bower/* linguist-vendored
+html/js/material/* linguist-vendored
+html/js/Leaflet.Control.Geocoder/* linguist-vendored
+docs/solr-core/conf/* linguist-vendored
+html/js/jquery-ui-1.11.2.custom.min.js linguist-vendored
+html/js/hyphenator.js linguist-vendored
+html/js/leaflet.spiderfy.js linguist-vendored
+html/js/leaflet.textmarkers.js linguist-vendored
