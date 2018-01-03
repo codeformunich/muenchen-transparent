@@ -15,7 +15,12 @@ engines:
     config:
       file_extensions: "php"
       rulesets: "codesize,design,unusedcode,docs/phpmd-ruleset.xml"
-
+checks:
+  method-complexity:
+    enabled: false
+  method-lines:
+    config:
+      threshold: 30
 ratings:
   paths:
   - "html/css/*.scss"
