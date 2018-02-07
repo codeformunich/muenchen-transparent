@@ -28,6 +28,7 @@
         "codeception/codeception": "^2.2",
         "heise/shariff": "^7.0",
         "sgh/pdfbox": "^1.0",
-        "codeception/yii-bridge": "dev-master"
+        "codeception/yii-bridge": "dev-master",
+        "mailjet/mailjet-apiv3-php": "dev-master"
     }
 }

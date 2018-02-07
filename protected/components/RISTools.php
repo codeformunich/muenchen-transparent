@@ -456,7 +456,31 @@ class RISTools
      */
     public static function send_email($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
     {
-        if (defined("MAILGUN_API_KEY") && strlen(MAILGUN_API_KEY) > 0 && $mail_tag != "system") {
+    	if (defined("MAILJET_PUBLIC_KEY") && defined("MAILJET_PRIVATE_KEY") && $mail_tag != "system") {
+    		$mailjetMessage = [
+			    'From'     => [
+				    'Email' => Yii::app()->params["adminEmail"],
+				    'Name'  => Yii::app()->params["adminEmailName"]
+			    ],
+			    'To' => [
+				    [
+					    'Email' => $email,
+					    'Name'  => $email
+				    ]
+			    ],
+			    'Subject'  => $betreff,
+			    'TextPart' => $text_plain,
+			    'HTMLPart' => $text_html,
+			    'Headers'  => [
+				    'Precedence' => 'bulk'
+			    ]
+		    ];
+		    $mj       = new \Mailjet\Client( MAILJET_PUBLIC_KEY, MAILJET_PRIVATE_KEY, true, [ 'version' => 'v3.1' ] );
+		    $response = $mj->post( \Mailjet\Resources::$Email, ['body' => ['Messages' => [$mailjetMessage]]] );
+		    $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($response, true)); fclose($fp);
+		    return;
+
+	    } elseif (defined("MAILGUN_API_KEY") && strlen(MAILGUN_API_KEY) > 0 && $mail_tag != "system") {
             $message = new \SlmMail\Mail\Message\Mailgun();
             //$message->setOption('tracking', false);
             $client = new \Zend\Http\Client();
@@ -464,6 +488,7 @@ class RISTools
             $service = new \SlmMail\Service\MailgunService(MAILGUN_DOMAIN, MAILGUN_API_KEY);
             $service->setClient($client);
             $transport = new \SlmMail\Mail\Transport\HttpTransport($service);
+
         } else {
             $message   = new Zend\Mail\Message();
             $transport = new Zend\Mail\Transport\Sendmail();

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f87d22852b0a950e3eb4192e25f7f631",
+    "content-hash": "b0427fb34f8e36c3b3de51f79fff9fda",
     "packages": [
         {
             "name": "behat/gherkin",
@@ -542,6 +542,56 @@
                 "social buttons"
             ],
             "time": "2017-03-30T12:40:12+00:00"
+        },
+        {
+            "name": "mailjet/mailjet-apiv3-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mailjet/mailjet-apiv3-php.git",
+                "reference": "675a794f25bd1c9178e85b97b20844a384f25739"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mailjet/mailjet-apiv3-php/zipball/675a794f25bd1c9178e85b97b20844a384f25739",
+                "reference": "675a794f25bd1c9178e85b97b20844a384f25739",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0|~5.3",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^1.0",
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mailjet": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mailjet",
+                    "email": "dev@mailjet.com",
+                    "homepage": "https://dev.mailjet.com"
+                }
+            ],
+            "description": "PHP wrapper for the Mailjet API",
+            "homepage": "https://github.com/mailjet/mailjet-apiv3-php/",
+            "keywords": [
+                "Mailjet",
+                "api",
+                "email",
+                "php",
+                "v3"
+            ],
+            "time": "2017-11-06T12:59:52+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3825,7 +3875,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/zendframework/zend-loader/zipball/dcacfc3bd1cb0721409d62dc309f5d29eb1f4631",
                 "reference": "dcacfc3bd1cb0721409d62dc309f5d29eb1f4631",
-                "shasum": ""
+                "shasum": "640271ea0e1910270cc5bc29cbcaf55a56fb1495"
             },
             "require": {
                 "php": "^5.5 || ^7.0"
@@ -3846,10 +3896,15 @@
                     "Zend\\Loader\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "ZendTest\\Loader\\": "test/"
+                }
+            },
             "license": [
                 "BSD-3-Clause"
             ],
+            "description": " ",
             "homepage": "https://github.com/zendframework/zend-loader",
             "keywords": [
                 "loader",
@@ -4115,7 +4170,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/zendframework/zend-uri/zipball/ed906be3b402020fca728bd0f76519ef6dd02ab1",
                 "reference": "ed906be3b402020fca728bd0f76519ef6dd02ab1",
-                "shasum": ""
+                "shasum": "bb738adc1c5ea74ee0a5438fe0b6556c22fc3968"
             },
             "require": {
                 "php": "^5.5 || ^7.0",
@@ -4138,7 +4193,11 @@
                     "Zend\\Uri\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "ZendTest\\Uri\\": "test/"
+                }
+            },
             "license": [
                 "BSD-3-Clause"
             ],
@@ -4226,7 +4285,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "codeception/yii-bridge": 20
+        "codeception/yii-bridge": 20,
+        "mailjet/mailjet-apiv3-php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
