@@ -1106,12 +1106,12 @@ $footer_line_height: 3em;
 
 body > footer {
   height: $footer_height;
-  background-color: #009587;
+  background-color: #008276;
 
   a {
     &:link,
     &:visited {
-      color: $navbar-color;
+      color: rgba(255,255,255,0.84);
     }
   }
 
