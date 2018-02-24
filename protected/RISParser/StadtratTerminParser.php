@@ -2,7 +2,7 @@
 
 class StadtratTerminParser extends RISParser
 {
-    private static $MAX_OFFSET        = 6100;
+    private static $MAX_OFFSET        = 6600;
     private static $MAX_OFFSET_UPDATE = 550;
 
     public function parse($termin_id)
@@ -396,7 +396,10 @@ class StadtratTerminParser extends RISParser
 
         preg_match_all("/ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("Stadtratstermin VOLL", "Erste Seite voll: $seite");
+        if ($first && count($matches[1]) > 0) {
+	        RISTools::report_ris_parser_error( "Stadtratstermin VOLL",
+		        "Erste Seite voll: $seite (" . RIS_BASE_URL . "ris_sitzung_trefferliste.jsp?txtPosition=$seite)" );
+        }
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) {
             $this->parse($matches[1][$i]);

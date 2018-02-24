@@ -2,7 +2,7 @@
 
 class BAAntragParser extends RISParser
 {
-    private static $MAX_OFFSET        = 16000;
+    private static $MAX_OFFSET        = 18000;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
@@ -204,7 +204,9 @@ class BAAntragParser extends RISParser
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ba_antraege_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("BA-Anträge VOLL", "Erste Seite voll: $seite");
+        if ($first && count($matches[1]) > 0) {
+        	RISTools::report_ris_parser_error("BA-Anträge VOLL", "Erste Seite voll: $seite  (" . RIS_BASE_URL . "ba_antraege.jsp?Start=$seite)");
+        }
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);
