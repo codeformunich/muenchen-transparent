@@ -456,7 +456,7 @@ class RISTools
      */
     public static function send_email($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
     {
-    	if (defined("MAILJET_PUBLIC_KEY") && defined("MAILJET_PRIVATE_KEY") && $mail_tag != "system") {
+    	if (defined("MAILJET_PUBLIC_KEY") && defined("MAILJET_PRIVATE_KEY") && $mail_tag != "system" && stripos($email, '@muenchen.de') === false) {
     		$mailjetMessage = [
 			    'From'     => [
 				    'Email' => Yii::app()->params["adminEmail"],
