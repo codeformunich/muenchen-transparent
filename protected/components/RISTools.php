@@ -470,11 +470,13 @@ class RISTools
 			    ],
 			    'Subject'  => $betreff,
 			    'TextPart' => $text_plain,
-			    'HTMLPart' => $text_html,
 			    'Headers'  => [
 				    'Precedence' => 'bulk'
 			    ]
 		    ];
+    		if ($text_html) {
+    		    $mailjetMessage['HTMLPart'] = $text_html;
+            }
 		    $mj       = new \Mailjet\Client( MAILJET_PUBLIC_KEY, MAILJET_PRIVATE_KEY, true, [ 'version' => 'v3.1' ] );
 		    $response = $mj->post( \Mailjet\Resources::$Email, ['body' => ['Messages' => [$mailjetMessage]]] );
 		    $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($response, true)); fclose($fp);
