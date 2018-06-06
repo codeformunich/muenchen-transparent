@@ -1,5 +1,5 @@
 @import "variables";
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 @import "ripples";
 @import "material";
@@ -15,7 +15,7 @@
 
 @import "shariff";
 
-@import "../bower/leaflet/dist/leaflet";
+@import "../../node_modules/leaflet/dist/leaflet";
 @import "../js/Leaflet.Control.Geocoder/Control.Geocoder";
-@import "../bower/leaflet.locatecontrol/dist/L.Control.Locate.min";
+@import "../../node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min";
 @import "jquery-ui-1.11.2.custom.min";

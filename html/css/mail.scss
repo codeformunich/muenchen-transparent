@@ -5,13 +5,13 @@ $roboto-font-path: "https://www.muenchen-transparent.de/fonts/";
 $pics-path: "https://www.muenchen-transparent.de/images/";
 
 
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/variables";
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/normalize";
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/grid";
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/list-group";
-@import "../bower/bootstrap-sass/assets/stylesheets/bootstrap/wells";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/normalize";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/grid";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/list-group";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/wells";
 
 
 @import "material/_variables";

@@ -5,15 +5,15 @@ Gulp is used to managed all sass/css and javascript resources.
  - Append `--unuglified` to get uncompressed output
 */
 
-var gulp       = require('gulp'),
-    concat     = require('gulp-concat'),
-    gulpif     = require('gulp-if'),
-    sass       = require('gulp-sass'),
+var gulp = require('gulp'),
+    concat = require('gulp-concat'),
+    gulpif = require('gulp-if'),
+    sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
-    uglify     = require('gulp-uglify'),
-    expect     = require('gulp-expect-file'),
-    yargs      = require('yargs');
-    child_process = require('child_process');
+    uglify = require('gulp-uglify'),
+    expect = require('gulp-expect-file'),
+    yargs = require('yargs');
+child_process = require('child_process');
 
 // browsersync will only be used with the browsersync task
 var browsersync = require('browser-sync').create();
@@ -27,9 +27,9 @@ var paths = {
     build_js: ["html/js/build/*.js"],
     php: ["protected/**/*.php"],
     std_js: [
-        "html/bower/jquery/dist/jquery.min.js",
-        "html/bower/typeahead.js/dist/typeahead.bundle.min.js",
-        "html/bower/bootstrap-sass/assets/javascripts/bootstrap.min.js",
+        "node_modules/jquery/dist/jquery.min.js",
+        "node_modules/typeahead.js/dist/typeahead.bundle.min.js",
+        "node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js",
         "html/js/jquery-ui-1.11.2.custom.min.js",
         "html/js/scrollintoview.js",
         "html/js/material/ripples.min.js",
@@ -38,9 +38,9 @@ var paths = {
     ],
     leaflet_js: [
         "html/js/build/ba-grenzen-geojson.js",
-        "html/bower/leaflet/dist/leaflet-src.js",
-        "html/bower/leaflet.draw/dist/leaflet.draw-src.js",
-        "html/bower/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
+        "node_modules/leaflet/dist/leaflet-src.js",
+        "node_modules/leaflet-draw/dist/leaflet.draw-src.js",
+        "node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js",
         "html/js/Leaflet.Control.Geocoder/Control.Geocoder.js",
         "html/js/leaflet.spiderfy.js",
         "html/js/leaflet.textmarkers.js",
@@ -54,6 +54,19 @@ var paths = {
     ],
     pdfjs_css: [
         "html/pdfjs/web/viewer.css",
+    ],
+    bower_emulate: [
+        "mediaelement",
+        "fullcalendar",
+        "leaflet-draw",
+        "ckeditor",
+        "isotope",
+        "list.js",
+        "mediaelement",
+        "selectize",
+        "shariff",
+        "moment",
+        "fullcalendar"
     ]
 };
 
@@ -67,7 +80,7 @@ gulp.task('watch', function () {
     gulp.watch(paths.pdfjs_css, ['pdfjs.css']);
 });
 
-gulp.task('browsersync', ['watch'], function() {
+gulp.task('browsersync', ['watch'], function () {
     use_uglify = false;
     use_browsersync = true;
     browsersync.init({
@@ -75,12 +88,12 @@ gulp.task('browsersync', ['watch'], function() {
     });
 
     gulp.watch(paths.build_js).on("change", browsersync.reload);
-    gulp.watch(paths.php     ).on("change", browsersync.reload);
+    gulp.watch(paths.php).on("change", browsersync.reload);
 });
 
 // The real tasks
 
-gulp.task('sass', function () {
+gulp.task('sass', ['emulate-bower'], function () {
     return gulp.src(paths.source_sass)
         .pipe(expect(paths.source_sass))
         .pipe(sourcemaps.init())
@@ -93,7 +106,7 @@ gulp.task('sass', function () {
 });
 
 
-gulp.task('std.js', function () {
+gulp.task('std.js', ['emulate-bower'], function () {
     return gulp.src(paths.std_js)
         .pipe(expect(paths.std_js))
         .pipe(concat('std.js'))
@@ -101,7 +114,7 @@ gulp.task('std.js', function () {
         .pipe(gulp.dest('html/js/build/'));
 });
 
-gulp.task('leaflet.js', ['ba-grenzen-geojson'], function () {
+gulp.task('leaflet.js', ['emulate-bower', 'ba-grenzen-geojson'], function () {
     return gulp.src(paths.leaflet_js)
         .pipe(expect(paths.leaflet_js))
         .pipe(concat('leaflet.js'))
@@ -115,7 +128,7 @@ gulp.task('ba-grenzen-geojson', function () {
 
 gulp.task('pdfjs', ['pdfjs.js', 'pdfjs.css']);
 
-gulp.task('pdfjs.js', function () {
+gulp.task('pdfjs.js', ['emulate-bower'], function () {
     return gulp.src(paths.pdfjs_js)
         .pipe(expect(paths.pdfjs_js))
         .pipe(concat('build.js'))
@@ -123,7 +136,7 @@ gulp.task('pdfjs.js', function () {
         .pipe(gulp.dest('html/pdfjs/web/'));
 });
 
-gulp.task('pdfjs.css', function () {
+gulp.task('pdfjs.css', ['emulate-bower'], function () {
     return gulp.src(paths.pdfjs_css)
         .pipe(expect(paths.pdfjs_css))
         .pipe(concat('build.css'))
@@ -134,4 +147,10 @@ gulp.task('pdfjs.css', function () {
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('html/pdfjs/web/'))
         .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
+});
+
+// Copy the old bower dependencies from /node_modules/[package-name] to /html/bower/[package-name]
+gulp.task('emulate-bower', function () {
+    let folders = paths.bower_emulate.map((folder) => "node_modules/" + folder + "/**/*");
+    return gulp.src(folders, {base: "node_modules/"}).pipe(gulp.dest('html/bower/'));
 });
