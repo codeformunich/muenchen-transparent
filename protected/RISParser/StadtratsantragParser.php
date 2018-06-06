@@ -145,6 +145,13 @@ class StadtratsantragParser extends RISParser
             if ($alter_eintrag) {
                 $alter_eintrag->copyToHistory();
                 $alter_eintrag->setAttributes($daten->getAttributes(), false);
+
+                // Leere Seiten ignorieren
+                if ($alter_eintrag->wahlperiode === "" && $alter_eintrag->betreff === "" && $alter_eintrag->status === "") {
+                    echo "Antrag $antrag_id ist leer";
+                    return;
+                }
+
                 if (!$alter_eintrag->save()) {
                     RISTools::report_ris_parser_error("Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details);
                     throw new \Exception("StadtratAntrag 1");
