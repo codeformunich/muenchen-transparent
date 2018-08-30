@@ -86,7 +86,7 @@ function zeile_anzeigen($feld, $name, $callback)
         <tr id="gremium">
             <th>Gremium:</th>
             <td>
-                <?= CHtml::encode($termin->gremium->name) ?>
+                <?= CHtml::encode($termin->gremium ? $termin->gremium->name : '?') ?>
             </td>
         </tr>
         <?
