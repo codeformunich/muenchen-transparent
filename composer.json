@@ -11,10 +11,14 @@
         "anträge",
         "ratsinformationssystem"
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "homepage": "https://www.muenchen-transparent.de/",
     "require": {
         "php": "^7.1.0",
+        "ext-curl": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
         "yiisoft/yii": "~1.1.19",
         "solarium/solarium": "^3.7",
         "zendframework/zend-config": "^3.1.0",
@@ -30,5 +34,11 @@
         "sgh/pdfbox": "^1.0",
         "codeception/yii-bridge": "dev-master",
         "mailjet/mailjet-apiv3-php": "dev-master"
+    },
+    "config": {
+        "platform": {
+            "php": "7.1.20"
+        },
+        "optimize-autoloader": true
     }
 }
