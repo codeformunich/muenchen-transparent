@@ -139,7 +139,7 @@
                     <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("personen/index")) ?></li>
                     <?
                     $user = $this->aktuelleBenutzerIn();
-                    if ($user && ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER) || $user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG) )) {
+                    if ($user && $user->hatIrgendeineBerechtigung()) {
                     ?>
                         <li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
