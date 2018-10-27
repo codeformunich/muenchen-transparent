@@ -6,12 +6,14 @@
  */
 
 
-
 ?>
-<h1>Alle Suchergebnisse</h1>
+<section class="well suchergebnisse">
+    <h1>Alle Suchergebnisse</h1>
+    <?
 
-<?
+    $this->renderPartial("suchergebnisse_liste", array(
+        "ergebnisse" => $ergebnisse,
+    ));
 
-$this->renderPartial("suchergebnisse_liste_benachrichtigungen", array(
-	"ergebnisse"  => $ergebnisse,
-));
+    ?>
+</section>
