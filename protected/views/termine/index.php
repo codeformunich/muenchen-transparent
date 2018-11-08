@@ -65,52 +65,60 @@ $this->pageTitle = "Termine";
 	<div class="col col-md-6">
 		<div class="well">
 			<?
+            /*
 			if (count($termin_dokumente) > 0) {
-				?>
-				<h3>Neue Protokolle</h3>
-				<br>
-				<ul class="antragsliste2"><?
-					foreach ($termin_dokumente as $termin) {
-						$titel = "";
-						if ($termin->gremium) {
-                            $titel .= $termin->gremium->name;
+            ?>
+            <h3>Neue Protokolle</h3>
+            <br>
+            <ul class="antragsliste2"><?
+                foreach ($termin_dokumente as $termin) {
+                    $titel = "";
+                    if ($termin->gremium) {
+                        $titel .= $termin->gremium->name;
+                    }
+                    $titel .= " am " . strftime("%e. %B '%y, %H:%M Uhr", RISTools::date_iso2timestamp($termin->termin));
+                    echo '<li class="panel panel-primary"><div class="panel-heading"><a href="' . CHtml::encode($termin->getLink()) . '"><span>';
+                    echo CHtml::encode($titel) . '</a></span></div>';
+                    echo '<div class="panel-body">';
+
+                    $max_date = 0;
+                    $doklist  = "";
+                    foreach ($termin->antraegeDokumente as $dokument) {
+                        //$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
+                        $dokurl  = $dokument->getLink();
+                        $doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
+                        if (substr($dokurl, strlen($dokurl) - 3) == "pdf") {
+                            $doklist .= ' class="pdf"';
                         }
-                        $titel .= " am " . strftime("%e. %B '%y, %H:%M Uhr", RISTools::date_iso2timestamp($termin->termin));
-						echo '<li class="panel panel-primary"><div class="panel-heading"><a href="' . CHtml::encode($termin->getLink()) . '"><span>';
-						echo CHtml::encode($titel) . '</a></span></div>';
-						echo '<div class="panel-body">';
+                        $doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
+                        $dat     = RISTools::date_iso2timestamp($dokument->getDate());
+                        if ($dat > $max_date) {
+                            $max_date = $dat;
+                        }
+                    }
+                    echo "<ul class='dokumente'>";
+                    echo $doklist;
+                    echo "</ul></div></li>\n";
 
-						$max_date = 0;
-						$doklist  = "";
-						foreach ($termin->antraegeDokumente as $dokument) {
-							//$doklist .= "<li>" . CHtml::link($dokument->name, $this->createUrl("index/dokument", array("id" => $dokument->id))) . "</li>";
-							$dokurl = $dokument->getLink();
-							$doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
-							if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
-							$doklist .= ">" . CHtml::encode($dokument->name) . "</a></li>";
-							$dat = RISTools::date_iso2timestamp($dokument->getDate());
-							if ($dat > $max_date) $max_date = $dat;
-						}
-						echo "<ul class='dokumente'>";
-						echo $doklist;
-						echo "</ul></div></li>\n";
+                }
+                ?></ul>
 
-					}
-					?></ul>
-
-				<br>
-				<h3>Vergangene Termine</h3>
-				<br>
-				<?
-				if (count($termine_vergangenheit) == 0) echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
-				else $this->renderPartial("termin_liste", array(
-					"termine"     => $termine_vergangenheit,
-					"gremienname" => true,
-				)); ?>
-
-			<?
-			}
-			?>
+            <br>
+            <?php
+            }
+            */
+            ?>
+            <h3>Vergangene Termine</h3>
+            <br>
+            <?
+            if (count($termine_vergangenheit) == 0) {
+                echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
+            } else {
+                $this->renderPartial("termin_liste", array(
+                    "termine"     => $termine_vergangenheit,
+                    "gremienname" => true,
+                ));
+            } ?>
 		</div>
 	</div>
 </div>
