@@ -71,7 +71,11 @@ $this->pageTitle = "Termine";
 				<br>
 				<ul class="antragsliste2"><?
 					foreach ($termin_dokumente as $termin) {
-						$titel = $termin->gremium->name . " am " . strftime("%e. %B '%y, %H:%M Uhr", RISTools::date_iso2timestamp($termin->termin));
+						$titel = "";
+						if ($termin->gremium) {
+                            $titel .= $termin->gremium->name;
+                        }
+                        $titel .= " am " . strftime("%e. %B '%y, %H:%M Uhr", RISTools::date_iso2timestamp($termin->termin));
 						echo '<li class="panel panel-primary"><div class="panel-heading"><a href="' . CHtml::encode($termin->getLink()) . '"><span>';
 						echo CHtml::encode($titel) . '</a></span></div>';
 						echo '<div class="panel-body">';
