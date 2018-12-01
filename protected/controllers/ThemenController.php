@@ -7,7 +7,10 @@ class ThemenController extends RISBaseController
     {
         /** @var Referat $ref */
         $ref = Referat::model()->findByAttributes(["urlpart" => $referat_url]);
-        if (!$ref) die("Nicht gefunden");
+        if (!$ref) {
+            $this->render('/index/error', ["code" => 404, "message" => "Das Referat wurde nicht gefunden"]);
+            return;
+        }
 
         $this->top_menu = "themen";
 
@@ -58,6 +61,11 @@ class ThemenController extends RISBaseController
 
         /** @var Tag $tag */
         $tag = Tag::model()->findByPk($tag_id);
+
+        if (!$tag) {
+            $this->render('/index/error', ["code" => 404, "message" => "Das Schlagwort wurde nicht gefunden"]);
+            return;
+        }
 
         $antraege_tag = $tag->antraege;
 
