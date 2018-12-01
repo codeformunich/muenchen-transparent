@@ -35,7 +35,7 @@
 			echo '</div>';
 		}
 
-		echo '<address itemprop="location">' . str_replace(", ", "<br>", nl2br(CHtml::encode($termin["ort"]))) . '</address>';
+		echo '<address itemprop="location"><span itemprop="address">' . str_replace(", ", "<br>", nl2br(CHtml::encode($termin["ort"]))) . '</span></address>';
 
 		if (count($termin["dokumente"]) > 0) {
 			echo '<ul class="dokumentenliste_small">';
