@@ -2,7 +2,7 @@
 
 class StadtratsantragParser extends RISParser
 {
-    private static $MAX_OFFSET        = 19000;
+    private static $MAX_OFFSET        = 21000;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
