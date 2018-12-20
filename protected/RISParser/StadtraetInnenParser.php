@@ -198,7 +198,7 @@ class StadtraetInnenParser extends RISParser
 
     public function parseAlle()
     {
-        $anz                              = 360;
+        $anz                              = 380;
         $this->bearbeitete_stadtraetInnen = [];
         $first                            = true;
         for ($i = $anz; $i >= 0; $i -= 10) {
