@@ -161,7 +161,7 @@ class StadtratTerminParser extends RISParser
             }
 
             $vorlage_holder = trim(str_replace("&nbsp;", " ", $matches["vorlage_holder"][$i]));
-            preg_match_all("/risid=(?<risid>[0-9]+)>/siU", $vorlage_holder, $matches2);
+            preg_match_all("/risid=(?<risid>[0-9]+)/si", $vorlage_holder, $matches2);
             $vorlage_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
 
             if ($vorlage_id) {
