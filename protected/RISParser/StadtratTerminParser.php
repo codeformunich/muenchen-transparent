@@ -171,6 +171,13 @@ class StadtratTerminParser extends RISParser
                     $p = new StadtratsvorlageParser();
                     $p->parse($vorlage_id);
                 }
+
+                $vorlage = Antrag::model()->findByPk($vorlage_id);
+                if (!$vorlage) {
+                    // Es gibt wohl Fälle, wo ungültige Dokumente verlinkt werden, z.B.
+                    // 2019-01-05: https://www.ris-muenchen.de/RII/RII/ris_sitzung_to.jsp?risid=5055052
+                    $vorlage_id = null;
+                }
             }
 
             $entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
@@ -194,7 +201,7 @@ class StadtratTerminParser extends RISParser
                 preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
                 if (isset($matches3["beschluss"]) && count($matches3["beschluss"]) > 0) $beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
                 else {
-                    RISTools::send_email(Yii::app()->params["adminEmail"], "StadtratTermin Kein Beschluss", "Termin: $termin_id\n" . RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id\n" . $html_vorlage_ergebnis);
+                    // RISTools::send_email(Yii::app()->params["adminEmail"], "StadtratTermin Kein Beschluss", "Termin: $termin_id\n" . RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id\n" . $html_vorlage_ergebnis);
                     $beschluss = "";
                 }
                 $top->beschluss_text = $beschluss;
