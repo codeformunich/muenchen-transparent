@@ -96,7 +96,7 @@ CREATE TABLE `antraege_orte` (
   `dokument_id` int(11) NOT NULL,
   `rathausumschau_id` mediumint(11) DEFAULT NULL,
   `ort_name` varchar(100) NOT NULL,
-  `ort_id` smallint(5) unsigned NOT NULL,
+  `ort_id` mediumint(8) unsigned NOT NULL,
   `source` enum('text_parse','manual') NOT NULL,
   `datum` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -316,7 +316,7 @@ CREATE TABLE `metadaten` (
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `orte_geo` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `ort` varchar(100) NOT NULL,
   `lat` double NOT NULL,
   `lon` double NOT NULL,
@@ -467,12 +467,12 @@ CREATE TABLE `stadtraetInnen_gremien` (
   `gremium_id` int(11) NOT NULL,
   `datum_von` date NOT NULL,
   `datum_bis` date DEFAULT NULL,
-  `funktion` varchar(200) DEFAULT NULL,
+  `funktion` varchar(100) DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `stadtraetIn_id` (`stadtraetIn_id`,`gremium_id`,`datum_von`) USING BTREE,
+  UNIQUE KEY `stadtraetIn_id` (`stadtraetIn_id`,`gremium_id`,`datum_von`,`funktion`) USING BTREE,
   KEY `fk_stadtraetIn_gremien_mitgliedschaft_stadtraetInnen1_idx` (`stadtraetIn_id`),
   KEY `fk_stadtraetIn_gremien_mitgliedschaft_gremien1_idx` (`gremium_id`),
   CONSTRAINT `fk_stadtraetIn_gremien_mitgliedschaft_gremien1` FOREIGN KEY (`gremium_id`) REFERENCES `gremien` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,

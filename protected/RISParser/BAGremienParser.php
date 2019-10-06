@@ -61,7 +61,11 @@ class BAGremienParser extends RISParser
 
         /** @var StadtraetInGremium[] $mitglieder_pre */
         $mitglieder_pre = [];
-        if ($alter_eintrag) foreach ($alter_eintrag->mitgliedschaften as $mitgliedschaft) $mitglieder_pre[$mitgliedschaft->stadtraetIn_id] = $mitgliedschaft;
+        if ($alter_eintrag) {
+            foreach ($alter_eintrag->mitgliedschaften as $mitgliedschaft) {
+                $mitglieder_pre[$mitgliedschaft->stadtraetIn_id . ':' . $mitgliedschaft->funktion] = $mitgliedschaft;
+            }
+        }
 
         $mitglieder_post = [];
         preg_match_all("/ergebnistab_tr.*<\/tr/siU", $html_details, $matches);
@@ -97,21 +101,17 @@ class BAGremienParser extends RISParser
                 } else {
                     $datum_bis = null;
                 }
+                $funktion = $match2["funktion"];
 
-                if (isset($mitglieder_pre[$stadtraetIn->id])) {
-                    $mitgliedschaft = $mitglieder_pre[$stadtraetIn->id];
+                if (isset($mitglieder_pre[$stadtraetIn->id . ':' . $funktion])) {
+                    $mitgliedschaft = $mitglieder_pre[$stadtraetIn->id . ':' . $funktion];
                     if ($mitgliedschaft->datum_von != $datum_von || $mitgliedschaft->datum_bis != $datum_bis) {
-                        $mitgliedschaft->funktion = $match2["funktion"];
+                        $mitgliedschaft->funktion = $funktion;
                         $aenderungen .= "Mitgliedschaft von " . $mitgliedschaft->stadtraetIn->name . ": ";
                         $aenderungen .= $mitgliedschaft->datum_von . "/" . $mitgliedschaft->datum_bis . " => ";
                         $aenderungen .= $datum_von . "/" . $datum_bis . "\n";
                         $mitgliedschaft->datum_von = $datum_von;
                         $mitgliedschaft->datum_bis = $datum_bis;
-                        $mitgliedschaft->save();
-                    }
-                    if ($mitgliedschaft->funktion != $match2["funktion"]) {
-                        $mitgliedschaft->funktion = $match2["funktion"];
-                        $aenderungen .= "Funktion von " . $mitgliedschaft->stadtraetIn->name . ": " . $mitgliedschaft->funktion . " => " . $match2["funktion"] . "\n";
                         $mitgliedschaft->save();
                     }
                 } else {
@@ -123,10 +123,10 @@ class BAGremienParser extends RISParser
                     $mitgliedschaft->stadtraetIn_id = $stadtraetIn->id;
                     $mitgliedschaft->save();
                     $mitgliedschaft->refresh();;
-                    $aenderungen .= "Neues Mitglied: " . $mitgliedschaft->stadtraetIn->name . "\n";
+                    $aenderungen .= "Neues Mitglied: " . $mitgliedschaft->stadtraetIn->name . " ($funktion)\n";
                 }
 
-                $mitglieder_post[$stadtraetIn->id] = $mitgliedschaft;
+                $mitglieder_post[$stadtraetIn->id . ':' . $funktion] = $mitgliedschaft;
             }
         }
 
