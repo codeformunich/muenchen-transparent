@@ -103,30 +103,35 @@ class BAGremienParser extends RISParser
                 }
                 $funktion = trim($match2["funktion"]);
 
-                if (isset($mitglieder_pre[$stadtraetIn->id . ':' . $funktion])) {
-                    $mitgliedschaft = $mitglieder_pre[$stadtraetIn->id . ':' . $funktion];
-                    if ($mitgliedschaft->datum_von != $datum_von || $mitgliedschaft->datum_bis != $datum_bis) {
-                        $mitgliedschaft->funktion = $funktion;
-                        $aenderungen .= "Mitgliedschaft von " . $mitgliedschaft->stadtraetIn->name . ": ";
-                        $aenderungen .= $mitgliedschaft->datum_von . "/" . $mitgliedschaft->datum_bis . " => ";
-                        $aenderungen .= $datum_von . "/" . $datum_bis . "\n";
-                        $mitgliedschaft->datum_von = $datum_von;
-                        $mitgliedschaft->datum_bis = $datum_bis;
+                try {
+                    if (isset($mitglieder_pre[$stadtraetIn->id . ':' . $funktion])) {
+                        $mitgliedschaft = $mitglieder_pre[$stadtraetIn->id . ':' . $funktion];
+                        if ($mitgliedschaft->datum_von != $datum_von || $mitgliedschaft->datum_bis != $datum_bis) {
+                            $mitgliedschaft->funktion  = $funktion;
+                            $aenderungen               .= "Mitgliedschaft von " . $mitgliedschaft->stadtraetIn->name . ": ";
+                            $aenderungen               .= $mitgliedschaft->datum_von . "/" . $mitgliedschaft->datum_bis . " => ";
+                            $aenderungen               .= $datum_von . "/" . $datum_bis . "\n";
+                            $mitgliedschaft->datum_von = $datum_von;
+                            $mitgliedschaft->datum_bis = $datum_bis;
+                            $mitgliedschaft->save();
+                        }
+                    } else {
+                        $mitgliedschaft                 = new StadtraetInGremium();
+                        $mitgliedschaft->datum_von      = $datum_von;
+                        $mitgliedschaft->datum_bis      = $datum_bis;
+                        $mitgliedschaft->funktion       = trim($match2["funktion"]);
+                        $mitgliedschaft->gremium_id     = $gremien_id;
+                        $mitgliedschaft->stadtraetIn_id = $stadtraetIn->id;
                         $mitgliedschaft->save();
+                        $mitgliedschaft->refresh();;
+                        $aenderungen .= "Neues Mitglied: " . $mitgliedschaft->stadtraetIn->name . " ($funktion)\n";
                     }
-                } else {
-                    $mitgliedschaft                 = new StadtraetInGremium();
-                    $mitgliedschaft->datum_von      = $datum_von;
-                    $mitgliedschaft->datum_bis      = $datum_bis;
-                    $mitgliedschaft->funktion       = trim($match2["funktion"]);
-                    $mitgliedschaft->gremium_id     = $gremien_id;
-                    $mitgliedschaft->stadtraetIn_id = $stadtraetIn->id;
-                    $mitgliedschaft->save();
-                    $mitgliedschaft->refresh();;
-                    $aenderungen .= "Neues Mitglied: " . $mitgliedschaft->stadtraetIn->name . " ($funktion)\n";
-                }
 
-                $mitglieder_post[$stadtraetIn->id . ':' . $funktion] = $mitgliedschaft;
+                    $mitglieder_post[$stadtraetIn->id . ':' . $funktion] = $mitgliedschaft;
+                } catch (Exception $e) {
+                    $str = "Gremium: $gremien_id\nStadträt*in: " . $stadtraetIn->id . "\nFunktion: $funktion\n" . $e->getMessage();
+                    RISTools::send_email(Yii::app()->params["adminEmail"], "BAGremienParser Inkonsistenz", $str, null, "system");
+                }
             }
         }
 
