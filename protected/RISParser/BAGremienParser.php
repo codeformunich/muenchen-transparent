@@ -63,7 +63,7 @@ class BAGremienParser extends RISParser
         $mitglieder_pre = [];
         if ($alter_eintrag) {
             foreach ($alter_eintrag->mitgliedschaften as $mitgliedschaft) {
-                $mitglieder_pre[$mitgliedschaft->stadtraetIn_id . ':' . $mitgliedschaft->funktion] = $mitgliedschaft;
+                $mitglieder_pre[$mitgliedschaft->stadtraetIn_id . ':' . trim($mitgliedschaft->funktion)] = $mitgliedschaft;
             }
         }
 
@@ -101,7 +101,7 @@ class BAGremienParser extends RISParser
                 } else {
                     $datum_bis = null;
                 }
-                $funktion = $match2["funktion"];
+                $funktion = trim($match2["funktion"]);
 
                 if (isset($mitglieder_pre[$stadtraetIn->id . ':' . $funktion])) {
                     $mitgliedschaft = $mitglieder_pre[$stadtraetIn->id . ':' . $funktion];
