@@ -99,26 +99,26 @@ class RISPDF2Text
         $text  = "";
 
         if (preg_match("/tiff?$/siu", $filename)) { // TIFF
-            $tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
-            exec(PATH_TESSERACT . " $filename $tif_tmp_file -l deu -psm 1", $result);
-            if (file_exists($tif_tmp_file . ".txt")) {
-                $text .= file_get_contents($tif_tmp_file . ".txt");
-                unlink($tif_tmp_file . ".txt");
+            $png_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".png";
+            exec(PATH_TESSERACT . " $filename $png_tmp_file -l deu --oem 1", $result);
+            if (file_exists($png_tmp_file . ".txt")) {
+                $text .= file_get_contents($png_tmp_file . ".txt");
+                unlink($png_tmp_file . ".txt");
             };
         } else for ($i = 0; $i < $seiten_anzahl; $i++) { // PDF
-            $tif_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".tif";
+            $png_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".png";
             $exec         = PATH_CONVERT . " -background white -flatten +matte ";
             $exec .= "-density 900 -resize 33% "; // => better font rendering quality
-            $exec .= "\"${filename}[$i]\" -colorspace Gray $depth $tif_tmp_file";
+            $exec .= "\"${filename}[$i]\" -colorspace Gray $depth $png_tmp_file";
             exec($exec, $result);
-            if (file_exists($tif_tmp_file)) {
-                exec(PATH_TESSERACT . " $tif_tmp_file $tif_tmp_file -l deu -psm 1", $result);
+            if (file_exists($png_tmp_file)) {
+                exec(PATH_TESSERACT . " $png_tmp_file $png_tmp_file -l deu --oem 1", $result);
                 $text .= "########## SEITE " . ($i + 1) . " ##########\n";
-                if (file_exists($tif_tmp_file . ".txt")) {
-                    $text .= file_get_contents($tif_tmp_file . ".txt");
-                    unlink($tif_tmp_file . ".txt");
+                if (file_exists($png_tmp_file . ".txt")) {
+                    $text .= file_get_contents($png_tmp_file . ".txt");
+                    unlink($png_tmp_file . ".txt");
                 };
-                unlink($tif_tmp_file);
+                unlink($png_tmp_file);
             }
         }
         return $text;
