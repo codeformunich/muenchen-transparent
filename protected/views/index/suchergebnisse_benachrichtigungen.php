@@ -12,7 +12,7 @@
 
 ?>
 <form method="POST" action="<?= CHtml::encode(Yii::app()->createUrl("index/suche")) ?>" id="login_benachrichtigung_form">
-    <?
+    <?php
     $krits = $krits->getUrlArray();
     for ($i = 0; $i < count($krits["krit_typ"]); $i++) {
         echo '<input type="hidden" name="krit_typ[]" value="' . CHtml::encode($krits["krit_typ"][$i]) . '">' . "\n";
@@ -30,13 +30,13 @@
                     Nicht mehr benachrichtigen!
                 </button>
             </div>
-            <?
+            <?php
         } else {
             ?>
             <button type="submit" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" class="btn btn-default benachrichtigung_std_button">
                 <span class="glyphicon">@</span> Über neue Treffer benachrichtigen
             </button>
-            <?
+            <?php
         }
     } else {
         ?>
@@ -44,7 +44,7 @@
             <span class="glyphicon">@</span> Über neue Treffer benachrichtigen
         </button>
         <input type="hidden" name="<?= AntiXSS::createToken("benachrichtigung_add") ?>" value="1">
-        <?
+        <?php
         $this->renderPartial("login_modal");
     }
     ?>

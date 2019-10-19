@@ -1,4 +1,4 @@
-﻿<?
+﻿<?php
 /**
  * @var int $id
  * @var IndexController $this
@@ -16,7 +16,7 @@ if ($dokument->getRISItem()) {
 <section class="well pdfjs">
     <ul class="breadcrumb">
         <li><a href="<?= CHtml::encode(Yii::app()->createUrl('index/startseite')) ?>">Startseite</a><br></li>
-        <?
+        <?php
         $uebergruppe = null;
         $uebergruppe_title = null;
         if ($dokument->antrag_id) {
@@ -39,22 +39,22 @@ if ($dokument->getRISItem()) {
 
         <li class="active"><?= CHtml::encode($dokument->getName()) ?></li>
 
-        <? // Rechter Bereich ?>
+        <?php // Rechter Bereich ?>
 
-        <li class="pdf-download-button <? if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLinkZumOrginal()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
-        <? if ($weitere) { ?>
+        <li class="pdf-download-button <?php if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLinkZumOrginal()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
+        <?php if ($weitere) { ?>
             <li class="dropdown weitere-dokumente kein-slash-davor">
 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-file"></span> Weitere Dokumente<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <? foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLink()) . "</li>\n" ?>
+                    <?php foreach ($uebergruppe->getDokumente() as $dok) echo "<li>" . CHtml::link($dok->getName(), $dok->getLink()) . "</li>\n" ?>
                 </ul>
             </li>
-        <? } ?>
+        <?php } ?>
     </ul>
 
-    <? $this->load_pdf_js = true; ?>
-    <?
+    <?php $this->load_pdf_js = true; ?>
+    <?php
     $this->renderPartial("pdf_embed", [
         "url" => $dokument->getLinkZumDownload(),
     ]);

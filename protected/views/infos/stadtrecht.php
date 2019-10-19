@@ -22,7 +22,7 @@ $this->pageTitle = "Stadtrecht";
     <div class="such-liste">
         <input class="search" placeholder="Filtern"/>
         <ul class="list list-unstyled">
-        <?
+        <?php
         /** @var Rechtsdokument[] $dokumente */
         $dokumente = Rechtsdokument::model()->alle_sortiert();
         foreach ($dokumente as $dok) {
@@ -34,7 +34,7 @@ $this->pageTitle = "Stadtrecht";
 
 </section>
 
-<? $this->load_list_js = true; ?>
+<?php $this->load_list_js = true; ?>
 <script>
 var userList = new List('rechtsdokumente', { valueNames: ['list-name']});
 </script>

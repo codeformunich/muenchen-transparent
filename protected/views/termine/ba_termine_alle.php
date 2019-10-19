@@ -20,7 +20,7 @@ $this->pageTitle = "Termine des Bezirksausschuss " . $ba->ba_nr . ", " . $ba->na
     <h1>Termine des Bezirksausschuss <?= $ba->ba_nr . ", " . CHtml::encode($ba->name) ?></h1>
     <br>
     <br>
-    <?
+    <?php
     $this->renderPartial("termin_liste", array(
         "termine"     => $termine,
         "gremienname" => false,

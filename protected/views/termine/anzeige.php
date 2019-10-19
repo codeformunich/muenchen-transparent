@@ -16,38 +16,38 @@ function zeile_anzeigen($feld, $name, $callback)
     } else if (count($feld) == 1) {
         ?>
         <tr>
-            <th><? echo $name ?></th>
+            <th><?php echo $name ?></th>
             <td>
-                <? $callback($feld[0]); ?>
+                <?php $callback($feld[0]); ?>
             </td>
-        </tr> <?
+        </tr> <?php
     } else {
         ?>
         <tr>
-            <th><? echo $name ?></th>
+            <th><?php echo $name ?></th>
             <td>
                 <ul>
-                    <? foreach ($feld as $element) {
+                    <?php foreach ($feld as $element) {
                         ?>
-                        <li> <?
+                        <li> <?php
                             $callback($element);
-                            ?> </li> <?
+                            ?> </li> <?php
                     } ?>
                 </ul>
             </td>
-        </tr> <?
+        </tr> <?php
     }
 }
 
 ?>
 <section class="well pdfjs_long" itemscope itemtype="http://schema.org/Event">
-    <div class="original_ris_link"><?
+    <div class="original_ris_link"><?php
         echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $termin->getSourceLink());
         ?></div>
     <h1 itemprop="name"><?= CHtml::encode($termin->getName()) ?></h1>
     <br>
 
-    <?
+    <?php
     if ($termin->termin_next_id > 0 || $termin->termin_prev_id > 0) {
         echo '<div style="text-align: center; overflow: auto;">';
         if ($termin->termin_next_id > 0) {
@@ -71,12 +71,12 @@ function zeile_anzeigen($feld, $name, $callback)
                 <meta itemprop="startdate" content="<?=CHtml::encode($termin->termin)?>">
             </td>
         </tr>
-        <? if ($termin->sitzungsstand != "") { ?>
+        <?php if ($termin->sitzungsstand != "") { ?>
             <tr id="sitzungsstand">
                 <th>Sitzungsstand:</th>
-                <td <? if ($termin->istAbgesagt()) echo ' class="abgesagt"';?>> <?=CHtml::encode($termin->sitzungsstand)?></td>
+                <td <?php if ($termin->istAbgesagt()) echo ' class="abgesagt"';?>> <?=CHtml::encode($termin->sitzungsstand)?></td>
             </tr>
-        <? } ?>
+        <?php } ?>
         <tr id="ort">
             <th>Ort:</th>
             <td itemprop="location">
@@ -89,7 +89,7 @@ function zeile_anzeigen($feld, $name, $callback)
                 <?= CHtml::encode($termin->gremium ? $termin->gremium->name : '?') ?>
             </td>
         </tr>
-        <?
+        <?php
         zeile_anzeigen($termin->antraegeDokumente, "Dokumente:", function ($dok) {
             /** @var Dokument $dok */
             echo CHtml::encode($dok->getDisplayDate()) . ": " . CHtml::link($dok->getName(false), $dok->getLink());
@@ -98,7 +98,7 @@ function zeile_anzeigen($feld, $name, $callback)
         </tbody>
     </table>
 
-    <? if ($to_db) { ?>
+    <?php if ($to_db) { ?>
         <section id="mapsection">
             <h3>Tagesordnung auf der Karte</h3>
 
@@ -110,7 +110,7 @@ function zeile_anzeigen($feld, $name, $callback)
 
         <h3>Tagesordnung</h3>
         <ol style="list-style-type: none;">
-            <?
+            <?php
             $geheimer_teil = false;
             $tops          = $termin->tagesordnungspunkteSortiert();
             foreach ($tops as $ergebnis) {
@@ -158,7 +158,7 @@ function zeile_anzeigen($feld, $name, $callback)
             }
             ?>
         </ol>
-        <? $this->load_leaflet = true; ?>
+        <?php $this->load_leaflet = true; ?>
         <script>
             $(function () {
                 var geodata = <?=json_encode($geodata)?>;
@@ -172,7 +172,7 @@ function zeile_anzeigen($feld, $name, $callback)
                 else $("#mapsection").hide();
             });
         </script>
-    <? } elseif ($to_pdf) {
+    <?php } elseif ($to_pdf) {
         $this->load_pdf_js = true;
         $this->renderPartial("../index/pdf_embed", [
             "url" => $to_pdf->getLinkZumDownload(),

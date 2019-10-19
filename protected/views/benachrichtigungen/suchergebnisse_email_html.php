@@ -20,13 +20,13 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
         <div class="well suchergebnisse" id="content">
             <h1>Hallo,</h1>
             seit der letzten E-Mail-Benachrichtigung wurde entsprechend deiner Benachrichtigungseinstellungen Folgendes neu gefunden:<br><br>
-            <?
+            <?php
             if (count($data["vorgaenge"]) > 0) {
                 ?>
                 <section class="fullsize">
                     <h3>Abonnierte Vorgänge / Anträge</h3>
                     <ul class="antragsliste">
-                        <?
+                        <?php
                         foreach ($data["vorgaenge"] as $vorgang) {
                             echo "<li class='listitem'><div class='antraglink'>" . CHtml::encode($vorgang["vorgang"]) . "</div>";
                             echo "<ul class='dokumente'>";
@@ -40,14 +40,14 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                         ?>
                     </ul>
                 </section>
-            <?
+            <?php
             }
 
             if (count($data["antraege"]) > 0) {
                 ?>
                 <h3>Anträge &amp; Vorlagen</h3>
                 <ul class="list-group">
-                    <?
+                    <?php
                     foreach ($data["antraege"] as $dat) {
                         /** @var Antrag $antrag */
                         $antrag         = $dat["antrag"];
@@ -83,7 +83,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                                 </h4>
 
                                 <p class="list-group-item-text">
-                                    <?
+                                    <?php
                                     if ($antrag->ba_nr > 0) echo " <span title='" . CHtml::encode("Bezirksausschuss " . $antrag->ba_nr . " (" . $antrag->ba->name . ")") . "' class='ba'>BA " . $antrag->ba_nr . "</span>, ";
                                     echo $doklist;
 
@@ -99,12 +99,12 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                                 </p>
                             </div>
                         </li>
-                    <?
+                    <?php
                     }
 
                     ?>
                 </ul>
-            <?
+            <?php
             }
             unset($antrag);
 
@@ -113,7 +113,7 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
                 <section class="fullsize">
                     <h3>Sitzungen</h3>
                     <ul class="antragsliste">
-                        <?
+                        <?php
                         foreach ($data["termine"] as $dat) {
                             /** @var Termin $termin */
                             $termin = $dat["termin"];
@@ -158,14 +158,14 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
 
                         ?></ul>
                 </section>
-            <? } ?>
+            <?php } ?>
             <br>
 
             Liebe Grüße,<br>
             &nbsp;
             Das München Transparent-Team
             <br><br>
-            <? $url = Yii::app()->createUrl("benachrichtigungen/index", array("code" => $benutzerIn->getBenachrichtigungAbmeldenCode())); ?>
+            <?php $url = Yii::app()->createUrl("benachrichtigungen/index", array("code" => $benutzerIn->getBenachrichtigungAbmeldenCode())); ?>
             PS: Falls du diese Benachrichtigung nicht mehr erhalten willst, kannst du sie <a href="<?php echo CHtml::encode($url); ?>">hier abbestellen</a>.
 
         </div>

@@ -25,7 +25,7 @@
     <form class="form-horizontal form-signin" method="POST" action="<?= CHtml::encode($current_url) ?>">
         <fieldset>
             <legend class="form_row">Einloggen</legend>
-            <?
+            <?php
             foreach ($_POST as $key => $val) if (!in_array($key, array("email", "bestaetigungscode", "password", "password2", AntiXSS::createToken("login"), AntiXSS::createToken("anlegen")))) {
                 echo "<input type='hidden' name='" . CHtml::encode($key) . "' value='" . CHtml::encode($val) . "'>";
             }

@@ -23,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            <? foreach ($fraktionen as $fraktion) foreach ($fraktion as $str) {
+            <?php foreach ($fraktionen as $fraktion) foreach ($fraktion as $str) {
                 /** @var StadtraetIn $str */
                 ?>
                 <tr>
@@ -34,7 +34,7 @@
                     <td><input name="facebook[<?= $str->id ?>]" title="Facebook" value="<?= CHtml::encode($str->facebook) ?>" width="60" maxlength="200"></td>
                     <td><input name="abgeordnetenwatch[<?= $str->id ?>]" title="Twitter" value="<?= CHtml::encode($str->abgeordnetenwatch) ?>" width="60" maxlength="200"></td>
                 </tr>
-            <? } ?>
+            <?php } ?>
             </tbody>
         </table>
 

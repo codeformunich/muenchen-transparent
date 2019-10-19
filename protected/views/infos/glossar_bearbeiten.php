@@ -32,7 +32,7 @@ $this->pageTitle = "Glossar bearbeiten";
 		</div>
 	</form>
 
-	<? $this->load_ckeditor = true; ?>
+	<?php $this->load_ckeditor = true; ?>
 	<script>
 		$(function () {
 			$("#eintrag_del_caller").click(function(ev) {
@@ -41,4 +41,3 @@ $this->pageTitle = "Glossar bearbeiten";
 			ckeditor_init($("#glossary_new_text"));
 		});
 	</script>
-<?

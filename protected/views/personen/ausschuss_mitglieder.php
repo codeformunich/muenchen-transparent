@@ -13,12 +13,12 @@ foreach ($gremien as $gremium) {
 if ($gremienzahl > 0) {
     ?>
 
-    <section class="well"><?
+    <section class="well"><?php
         ?>
 
         <h2><?= CHtml::encode($title) ?></h2>
 
-        <ul class="ausschuesse_liste"><?
+        <ul class="ausschuesse_liste"><?php
             usort($gremien, function ($gr1, $gr2) {
                 /** @var Gremium $gr1 */
                 /** @var Gremium $gr2 */
@@ -92,4 +92,4 @@ if ($gremienzahl > 0) {
         </script>
     </section>
 
-<? } // gremienzahl > 0 ?>
+<?php } // gremienzahl > 0 ?>

@@ -20,14 +20,14 @@ $benutzerInnen = BenutzerIn::alleAktiveAccounts();
             </tr>
             </thead>
             <tbody>
-            <? foreach ($stadtraetInnen as $strIn) {
+            <?php foreach ($stadtraetInnen as $strIn) {
                 /** @var StadtraetIn $strIn */
                 ?>
                 <tr>
                     <td style="padding-top: 15px;"><?= CHtml::encode($strIn->getName()) ?></td>
                     <td style="padding-top: 15px;"><select name="BenutzerIn[<?= $strIn->id ?>]" title="Zugeordneter BenutzerInnenaccount" size="1">
                             <option value=""></option>
-                            <?
+                            <?php
                             foreach ($benutzerInnen as $benutzerIn) {
                                 echo '<option value="' . $benutzerIn->id . '"';
                                 if ($strIn->benutzerIn_id == $benutzerIn->id) echo ' selected';
@@ -36,7 +36,7 @@ $benutzerInnen = BenutzerIn::alleAktiveAccounts();
                             ?>
                         </select></td>
                 </tr>
-            <? } ?>
+            <?php } ?>
             </tbody>
         </table>
 

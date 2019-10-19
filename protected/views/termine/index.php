@@ -19,7 +19,7 @@ $this->pageTitle = "Termine";
 
 
 	<div id='calendar'></div>
-    <? $this->load_calendar = true; ?>
+    <?php $this->load_calendar = true; ?>
 	<script>
 		$(function () {
 			$('#calendar').fullCalendar({
@@ -52,7 +52,7 @@ $this->pageTitle = "Termine";
 		<div class="well">
 			<h3>Kommende Termine</h3>
 			<br>
-			<?
+			<?php
 			if (count($termine_zukunft) == 0) echo "<p class='keine_gefunden'>Keine Termine in den nächsten $tage_zukunft Tagen</p>";
 			else $this->renderPartial("termin_liste", array(
 				"termine"     => $termine_zukunft,
@@ -64,13 +64,13 @@ $this->pageTitle = "Termine";
 	</div>
 	<div class="col col-md-6">
 		<div class="well">
-			<?
+			<?php
             /*
 			if (count($termin_dokumente) > 0) {
             ?>
             <h3>Neue Protokolle</h3>
             <br>
-            <ul class="antragsliste2"><?
+            <ul class="antragsliste2"><?php
                 foreach ($termin_dokumente as $termin) {
                     $titel = "";
                     if ($termin->gremium) {
@@ -110,7 +110,7 @@ $this->pageTitle = "Termine";
             ?>
             <h3>Vergangene Termine</h3>
             <br>
-            <?
+            <?php
             if (count($termine_vergangenheit) == 0) {
                 echo "<p class='keine_gefunden'>Keine Termine in den letzten $tage_vergangenheit Tagen</p>";
             } else {

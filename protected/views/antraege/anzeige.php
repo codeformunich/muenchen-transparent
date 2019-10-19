@@ -24,23 +24,23 @@ function zeile_anzeigen($feld, $name, $css_id, $callback) {
         return;
     ?>
     
-    <tr <? if ($css_id != "") echo 'id="' . $css_id . '"'; ?>>
-        <th><? echo $name ?></th>
+    <tr <?php if ($css_id != "") echo 'id="' . $css_id . '"'; ?>>
+        <th><?php echo $name ?></th>
         <td>
-            <? if (count($feld) == 1) {
+            <?php if (count($feld) == 1) {
                 $callback($feld[0]);
             } else { ?>
                 <ul>
-                    <? foreach ($feld as $element) { ?>
+                    <?php foreach ($feld as $element) { ?>
                         <li>
-                            <? $callback($element); ?>
+                            <?php $callback($element); ?>
                         </li>
-                    <? } ?>
+                    <?php } ?>
                 </ul>
-            <? } ?>
+            <?php } ?>
         </td>
     </tr>
-<? }
+<?php }
 
 function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
     zeile_anzeigen($antraege, $ueberschrift, $css_id, function ($element) use (&$this2){
@@ -62,10 +62,10 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
 <section class="row">
     <div class="col-md-8">
         <section class="well">
-            <div class="original_ris_link"><?
+            <div class="original_ris_link"><?php
                 echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $antrag->getSourceLink());
                 ?></div>
-            <h1 class="small"><? echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
+            <h1 class="small"><?php echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
                 if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")"; ?></h1>
 
             <p style="font-size: 18px;"><?= CHtml::encode($name) ?></p>
@@ -73,11 +73,11 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
             <table class="table antragsdaten">
                 <tbody>
                 <tr id="schlagworte">
-                    <th><?
+                    <th><?php
                         if ($this->aktuelleBenutzerIn()) echo '<label for="antrag_tags">Schlagworte:</label>';
                         else echo 'Schlagworte:';
                         ?></th>
-                    <td><?
+                    <td><?php
                         if (count($antrag->tags) == 0) echo '<em>noch keine</em>';
                         else {
                             echo '<ul class="antrags_tags">';
@@ -95,12 +95,12 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                                         name="<?= AntiXSS::createToken("tag_add") ?>">Speichern
                                 </button>
                             </form>
-                        <?
+                        <?php
                         } else {
                             ?>
                             <form method="POST" action="<?= CHtml::encode($antrag->getLink(["tag_mode" => 1])) ?>"
                                   class="login_modal_form">
-                                <?
+                                <?php
                                 $this->renderPartial("../index/login_modal");
                                 ?>
                                 &nbsp; &nbsp;
@@ -108,7 +108,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                                         class="glyphicon glyphicon-chevron-down"></span> Neue
                                     hinzufügen (Login)</a>
                             </form>
-                        <?
+                        <?php
                         }
                         ?>
 
@@ -148,14 +148,14 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                                     $(this).hide();
                                     return false;
                                 });
-                                <?
+                                <?php
                                 if ($tag_mode) echo '$(".tag_add_opener").click();';
                                 ?>
                             });
                         </script>
                     </td>
                 </tr>
-                <?
+                <?php
                 zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", "initiatoren",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
@@ -177,7 +177,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 ?>
                 <tr id="gremium">
                     <th>Gremium:</th>
-                    <td><?
+                    <td><?php
                         if ($antrag->ba_nr > 0) {
                             echo CHtml::link("Bezirksausschuss " . $antrag->ba_nr, $antrag->ba->getLink()) . " (" . CHtml::encode($antrag->ba->name) . ")";
                         } else {
@@ -190,7 +190,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     <th>Antragsnummer:</th>
                     <td><?= CHtml::encode($antrag->antrags_nr) ?></td>
                 </tr>
-                <?
+                <?php
                 if ($antrag->gestellt_am > 0 && $antrag->gestellt_am == $antrag->registriert_am) {
                     echo "<tr><th>Gestellt u. registriert: </th><td>" . CHtml::encode(RISTools::datumstring($antrag->gestellt_am)) . "</td></tr>\n";
                 } else {
@@ -203,7 +203,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 ?>
                 <tr id="status">
                     <th>Status:</th>
-                    <td><?
+                    <td><?php
                         echo CHtml::encode($antrag->status);
                         if ($antrag->bearbeitung != "") echo " / ";
                         echo CHtml::encode($antrag->bearbeitung);
@@ -213,7 +213,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     <th>Wahlperiode:</th>
                     <td><?= CHtml::encode($antrag->wahlperiode) ?></td>
                 </tr>
-                <?
+                <?php
                 $docs = $antrag->dokumente;
                 usort($docs, function ($dok1, $dok2) {
                     /**
@@ -234,7 +234,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                        href="<?= CHtml::encode($dokument->getLinkZumDownload()) ?>" 
                        download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf"
                        title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>">
-                    </a> <?
+                    </a> <?php
                 });
                 $angezeigte_dokumente = [];
                 foreach ($docs as $d) $angezeigte_dokumente[] = $d->id;
@@ -266,10 +266,10 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     ?>
                     <tr id="historie">
                         <th>Historie: <span class="icon - info - circled" title="Seit dem 1. April 2014"
-                                            style="font - size: 12px; color: gray;"></span></th> <? /* FIXME */ ?>
+                                            style="font - size: 12px; color: gray;"></span></th> <?php /* FIXME */ ?>
                         <td>
                             <ol>
-                                <? foreach ($historie as $hist) {
+                                <?php foreach ($historie as $hist) {
                                     echo " <li>" . $hist->getDatum() . ": <ul> ";
                                     $diff = $hist->getFormattedDiff();
                                     foreach ($diff as $d) {
@@ -281,7 +281,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                             </ol>
                         </td>
                     </tr>
-                <?
+                <?php
                 }
 
                 /** @var IRISItem[] $vorgang_items */
@@ -308,36 +308,36 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
     </div>
     <section class="col-md-4 antrag_sidebar">
 
-        <? $related = $antrag->errateThemenverwandteAntraege(7); ?>
+        <?php $related = $antrag->errateThemenverwandteAntraege(7); ?>
         <div class="well themenverwandt_liste" id="themenverwandt">
 
             <form method="POST" action="<?= Yii::app()->createUrl("antraege/anzeigen", ["id" => $antrag->id]) ?>"
                   class="abo_button row_head" style="min-height: 80px; text-align: center;">
-                <? if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) { ?>
+                <?php if ($antrag->vorgang && $antrag->vorgang->istAbonniert($this->aktuelleBenutzerIn())) { ?>
                     <button type="submit" name="<?= AntiXSS::createToken("deabonnieren") ?>"
                             class="btn btn-success btn-raised btn-lg">
                         <span class="glyphicon">@</span> Abonniert
                     </button>
-                <? } else { ?>
+                <?php } else { ?>
                     <button type="submit" name="<?= AntiXSS::createToken("abonnieren") ?>"
                             class="btn btn-info btn-raised btn-lg">
                         <span class="glyphicon">@</span> Nicht abonniert
                     </button>
-                <? } ?>
+                <?php } ?>
             </form>
 
             <div class="shariff" data-backend-url="<?= CHtml::encode($this->createUrl("/index/shariffData")) ?>"
                  data-url="<?= CHtml::encode(Yii::app()->getBaseUrl(true) . $antrag->getLink()) ?>" data-services="[&quot;twitter&quot;, &quot;facebook&quot;]"></div>
         </div>
         <div class="well themenverwandt_liste">
-            <?
+            <?php
             if (count($related)) {
                 ?>
                 <h2>Könnte themenverwandt sein</h2>
 
 
                 <ul class="list-group">
-                    <?
+                    <?php
                     $this->renderPartial("related_list", [
                         "related" => $related,
                         "narrow"  => true,
@@ -349,7 +349,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                    class="weitere">
                     Weitere Themenverwandte <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
-            <? } ?>
+            <?php } ?>
         </div>
     </section>
 </section>

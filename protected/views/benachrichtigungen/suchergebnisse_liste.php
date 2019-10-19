@@ -9,12 +9,12 @@ $highlighting = $ergebnisse->getHighlighting();
 
 ?>
 
-<? if (count($dokumente) == 0) { ?>
+<?php if (count($dokumente) == 0) { ?>
     <p class="text-danger" style="text-align: center; font-size: xx-large">Nichts gefunden.</p>
-<? } ?>
+<?php } ?>
 
 <ul class="list-group">
-    <?
+    <?php
     foreach ($dokumente as $dokument) {
         $dok = Dokument::getDocumentBySolrId($dokument->id, true);
         if (!$dok) {
@@ -45,7 +45,7 @@ $highlighting = $ergebnisse->getHighlighting();
                 </h4>
 
                 <p class="list-group-item-text">
-                    <?
+                    <?php
                     echo '<a href="' . CHtml::encode($dok->getLink()) . '" class="dokument"><span class="fontello-download"></span> ' . CHtml::encode($dok->getName(false)) . '</a><br>';
                     $highlightedDoc = $highlighting->getResult($dokument->id);
                     if ($highlightedDoc && count($highlightedDoc) > 0) {
@@ -58,5 +58,5 @@ $highlighting = $ergebnisse->getHighlighting();
                 </p>
             </div>
         </li>
-    <? } ?>
+    <?php } ?>
 </ul>

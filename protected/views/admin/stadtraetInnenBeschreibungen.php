@@ -22,13 +22,13 @@
             </tr>
             </thead>
             <tbody>
-            <? foreach ($fraktionen as $fraktion) foreach ($fraktion as $str) {
+            <?php foreach ($fraktionen as $fraktion) foreach ($fraktion as $str) {
                 /** @var StadtraetIn $str */
                 ?>
                 <tr>
                     <td style="font-size: 14px; padding-top: 20px;"><?= CHtml::encode($str->getName()) ?></td>
                     <td>
-                        <? foreach (StadtraetIn::$GESCHLECHTER as $sex_key => $sex_name) {
+                        <?php foreach (StadtraetIn::$GESCHLECHTER as $sex_key => $sex_name) {
                             echo '<label style="font-weight: normal;"><input type="radio" name="geschlecht[' . $str->id . ']" value="' . $sex_key . '" ';
                             if ($str->geschlecht == $sex_key) echo 'checked';
                             echo '> ' . CHtml::encode($sex_name) . '</label><br>';
@@ -38,7 +38,7 @@
                     <td style="padding-top: 20px;"><textarea name="beschreibung[<?=$str->id?>]" title="Beschreibung" rows="3" style="width: 230px;"><?=CHtml::encode($str->beschreibung)?></textarea></td>
                     <td style="padding-top: 20px;"><textarea name="quellen[<?=$str->id?>]" title="Quellen" rows="3"><?=CHtml::encode($str->quellen)?></textarea></td>
                 </tr>
-            <? } ?>
+            <?php } ?>
             </tbody>
         </table>
 

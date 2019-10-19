@@ -20,7 +20,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
         <button type="submit" name="<?= AntiXSS::createToken("abmelden") ?>" class="btn btn-default">Abmelden</button>
     </form>
 
-    <h1>Benachrichtigung<? if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= CHtml::encode($ich->email) ?>:</h1>
+    <h1>Benachrichtigung<?php if (count($bens) + count($abo_vorgaenge) != 1) echo "en"; ?> an <?= CHtml::encode($ich->email) ?>:</h1>
 
     <div class="row">
         <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8 einstellungen_form" style="margin-left: 23px;">
@@ -29,56 +29,56 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
             <div>
                 <div class="radio radio-success">
                     <label>
-                        <input type="radio" name="intervall" value="tag" <? if ($benachrichtigungstag === null) echo "checked"; ?>>
+                        <input type="radio" name="intervall" value="tag" <?php if ($benachrichtigungstag === null) echo "checked"; ?>>
                         Täglich
                     </label>
                 </div>
                 <div class="radio radio-success">
                     <label>
-                        <input type="radio" name="intervall" value="woche" <? if ($benachrichtigungstag !== null) echo "checked"; ?>>
+                        <input type="radio" name="intervall" value="woche" <?php if ($benachrichtigungstag !== null) echo "checked"; ?>>
                         Wöchentlich
                     </label>
                 </div>
                 <div class="tage_auswahl" style="margin-left: 40px;">
                     <div class="radio radio-info">
                         <label>
-                            <input type="radio" name="wochentag" value="1" <? if ($benachrichtigungstag === 1) echo "checked"; ?>>
+                            <input type="radio" name="wochentag" value="1" <?php if ($benachrichtigungstag === 1) echo "checked"; ?>>
                             Montags
                         </label>
                     </div>
                     <div class="radio radio-info">
                         <label>
-                            <input type="radio" name="wochentag" value="2" <? if ($benachrichtigungstag === 2) echo "checked"; ?>>
+                            <input type="radio" name="wochentag" value="2" <?php if ($benachrichtigungstag === 2) echo "checked"; ?>>
                             Dienstags
                         </label>
                     </div>
                     <div class="radio radio-info">
                         <label>
-                            <input type="radio" name="wochentag" value="3" <? if ($benachrichtigungstag === 3) echo "checked"; ?>>
+                            <input type="radio" name="wochentag" value="3" <?php if ($benachrichtigungstag === 3) echo "checked"; ?>>
                             Mittwochs
                         </label>
                     </div>
                     <div class="radio radio-info">
                         <label>
-                            <input type="radio" name="wochentag" value="4" <? if ($benachrichtigungstag === 4) echo "checked"; ?>>
+                            <input type="radio" name="wochentag" value="4" <?php if ($benachrichtigungstag === 4) echo "checked"; ?>>
                             Donnerstags
                         </label>
                     </div>
                     <div class="radio radio-info">
                         <label>
-                            <input type="radio" name="wochentag" value="5" <? if ($benachrichtigungstag === 5) echo "checked"; ?>>
+                            <input type="radio" name="wochentag" value="5" <?php if ($benachrichtigungstag === 5) echo "checked"; ?>>
                             Freitags
                         </label>
                     </div>
                     <div class="radio radio-info">
                         <label>
-                            <input type="radio" name="wochentag" value="6" <? if ($benachrichtigungstag === 6) echo "checked"; ?>>
+                            <input type="radio" name="wochentag" value="6" <?php if ($benachrichtigungstag === 6) echo "checked"; ?>>
                             Samstags
                         </label>
                     </div>
                     <div class="radio radio-info">
                         <label>
-                            <input type="radio" name="wochentag" value="0" <? if ($benachrichtigungstag === 0) echo "checked"; ?>>
+                            <input type="radio" name="wochentag" value="0" <?php if ($benachrichtigungstag === 0) echo "checked"; ?>>
                             Sonntags
                         </label>
                     </div>
@@ -108,19 +108,19 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
     </div>
 
 
-    <?
+    <?php
 
     if (count($bens) == 0 && count($abo_vorgaenge) == 0) {
         ?>
         <div class="benachrichtigung_keine">Noch keine E-Mail-Benachrichtigungen</div>
         <p class="benachrichtigung_keine">Wenn neue Dokumente zu einem von Ihnen abonnierten Thema oder Vorgang veröffentlicht werden, dann erhalten Sie automatisch eine
             Benachrichtigung an <?= CHtml::encode($ich->email) ?>.</p>
-    <?
+    <?php
     } else {
         ?>
         <div class="row">
             <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="col col-lg-8" style="margin-left: 23px;">
-                <? if (count($bens) > 0) { ?>
+                <?php if (count($bens) > 0) { ?>
                     <h3>Abonnierte Suchabfragen</h3>
                     <ul class="benachrichtigungsliste">
                         <li class="header">
@@ -128,7 +128,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                             <div class="krit_holder">Suchkriterium</div>
                             <div class="such_holder">Suchen</div>
                         </li>
-                        <?
+                        <?php
                         foreach ($bens as $ben) {
                             $del_form_name = AntiXSS::createToken("del_ben") . "[" . RISTools::bracketEscape(CHtml::encode(json_encode($ben->krits))) . "]";
                             $such_url      = $ben->getUrl();
@@ -142,11 +142,11 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                                             class='glyphicon glyphicon-search'></span></a>
                                 </div>
                             </li>
-                        <?
+                        <?php
                         }
                         ?>
                     </ul>
-                <?
+                <?php
                 }
                 if (count($abo_vorgaenge) > 0) {
                     ?>
@@ -156,7 +156,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                             <div class="del_holder">Löschen</div>
                             <div class="krit_holder">Vorgang</div>
                         </li>
-                        <?
+                        <?php
                         foreach ($abo_vorgaenge as $vorgang) {
                             $item = $vorgang->wichtigstesRisItem();
                             if (!$item) continue;
@@ -170,15 +170,15 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                                     <a href="<?= CHtml::encode($item->getLink()) ?>"><span class="fontello-right-open"></span> <?= CHtml::encode($item->getName()) ?></a>
                                 </div>
                             </li>
-                        <?
+                        <?php
                         }
                         ?>
                     </ul>
-                <? } ?>
+                <?php } ?>
             </form>
 
         </div>
-        <? if (count($bens) > 0) { ?>
+        <?php if (count($bens) > 0) { ?>
             <div class="row">
                 <div class="benachrichtigung_alle_holder col col-lg-8">
                     <a href="<?= CHtml::encode($this->createUrl("benachrichtigungen/alleSuchergebnisse")) ?>" class="benachrichtigung_alle_suche"><span
@@ -189,9 +189,9 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
                         Alle Suchergebnisse als Feed</a>
                 </div>
             </div>
-        <? } ?>
+        <?php } ?>
         <br style="clear: both;">
-    <? } ?>
+    <?php } ?>
 
     <form method="POST" action="<?= CHtml::encode($this->createUrl("index/benachrichtigungen")) ?>" class="benachrichtigung_add">
         <fieldset>
@@ -213,7 +213,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
             <label for="suchbegriff"><span class="glyphicon glyphicon-map-marker"></span> <span class="name">... aus diesem Stadtteil:</span></label><br>
 
             <div class="input-group col col-lg-8" style="padding-left: 10px; padding-right: 10px; margin-left: 23px;">
-                <select name="ba" class="form-control"><?
+                <select name="ba" class="form-control"><?php
                     $bas = Bezirksausschuss::model()->alleOhneStadtrat();
                     /** @var Bezirksausschuss $ba */
                     foreach ($bas as $ba) echo '<option value="' . $ba->ba_nr . '">BA ' . $ba->ba_nr . ": " . CHtml::encode($ba->name) . '</option>';
@@ -259,7 +259,7 @@ $benachrichtigungstag = $ich->getEinstellungen()->benachrichtigungstag;
 
         </fieldset>
 
-        <? $this->load_leaflet = true; ?>
+        <?php $this->load_leaflet = true; ?>
         <script>
             $(function () {
                 var $benachrichtigung_hinweis = $("#benachrichtigung_hinweis_text");

@@ -17,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        <?
+        <?php
         foreach ($termine as $termin) {
             echo "<tr>";
             echo "<td><strong>" . $termin["ba_nr"] . "</strong></td>";

@@ -37,7 +37,7 @@ $this->pageTitle   = $personen_typ_name;
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <?
+                            <?php
                             $str_link = Yii::app()->createUrl("personen/index");
                             if ($ba_nr === null) echo '<li class="stadtrat active"><a href="' . CHtml::encode($str_link) . '">Stadtrat <span class="sr-only">(aktuell)</span></a></li>';
                             else echo '<li class="stadtrat"><a href="' . CHtml::encode($str_link) . '">Stadtrat</a></li>';
@@ -55,7 +55,7 @@ $this->pageTitle   = $personen_typ_name;
             </div>
         </div>
         <div class="col-sm-9">
-            <?
+            <?php
             //echo '<h2>' . CHtml::encode($personen_typ_name) . '</h2>';
 
             $fraktionen = array();
@@ -76,12 +76,12 @@ $this->pageTitle   = $personen_typ_name;
             asort($fraktionen);
 
             ?>
-            <div class="filter_sorter_holder<? if (count($fraktionen) > 7) echo " extrabreit"; ?>">
+            <div class="filter_sorter_holder<?php if (count($fraktionen) > 7) echo " extrabreit"; ?>">
                 <div class="btn-group filter_widget" data-toggle="buttons">
                     <label class="btn btn-warning btn-separator-right active">
                         <input type="radio" name="options" value="" autocomplete="off" checked> Alle
                     </label>
-                    <?
+                    <?php
                     foreach ($fraktionen as $fr_id => $fr_name) {
                         if ($fr_name == 'Die Grünen / RL') $fr_name = 'Grüne';
                         if ($fr_name == 'Freiheitsrechte Transparenz Bürgerbeteiligung') $fr_name = 'Freiheitsrechte/...';
@@ -95,19 +95,19 @@ $this->pageTitle   = $personen_typ_name;
                             <input type="radio" name="options" value="facebook" autocomplete="off"> <span
                                 class="fontello-facebook" title="Facebook"></span>
                         </label>
-                    <? }
+                    <?php }
                     if ($twitter) { ?>
                         <label class="btn btn-info">
                             <input type="radio" name="options" value="twitter" autocomplete="off"> <span
                                 class="fontello-twitter" title="Twitter"></span>
                         </label>
-                    <? }
+                    <?php }
                     if ($website) { ?>
                         <label class="btn btn-info">
                             <input type="radio" name="options" value="homepage" autocomplete="off"> <span
                                 class="fontello-home" title="Homepage"></span>
                         </label>
-                    <? } ?>
+                    <?php } ?>
                 </div>
 
                 <div class="sort_widget">
@@ -118,7 +118,7 @@ $this->pageTitle   = $personen_typ_name;
             </div>
 
             <ul class="strIn_liste">
-                <?
+                <?php
                 $personen = StadtraetIn::sortByName($personen);
                 foreach ($personen as $strIn) {
                     echo '<li class="strIn fraktion_';
@@ -149,7 +149,7 @@ $this->pageTitle   = $personen_typ_name;
                 ?>
             </ul>
 
-            <? $this->load_isotope_js = true; ?>
+            <?php $this->load_isotope_js = true; ?>
             <script>
                 $(function () {
                     var $liste = $(".strIn_liste"),

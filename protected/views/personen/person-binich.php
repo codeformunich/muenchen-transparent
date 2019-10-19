@@ -29,7 +29,7 @@ $ich             = $this->aktuelleBenutzerIn();
             Accounts (<?= CHtml::encode($ich->email) ?>). Eventuell halten wir dabei noch kurz Rücksprache, um das zu prüfen.</p>
 
         <div style="text-align: center;">
-            <?
+            <?php
             $email = "mailto:" . Yii::app()->params["adminEmail"] . "?subject=" . rawurlencode("Zuordnung eines BA/StR-Profils") . "&body=";
             $text = "Hallo!\n\nBitte ordnen Sie meinen Account mit der E-Mail-Adresse\n" . $ich->email . "\ndem folgendem Profil auf München Transparent zu:\n" . SITE_BASE_URL . $person->getLink() . "\n\n\n";
             $email .= rawurlencode($text)

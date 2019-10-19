@@ -35,7 +35,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
     <div class="nur_dokumente two_cols" id="listen_holder">
         <div id="stadtratsdokumente_holder">
-            <? $this->renderPartial("index_antraege_liste", array(
+            <?php $this->renderPartial("index_antraege_liste", array(
                 "aeltere_url_std"   => $aeltere_url_std,
                 "neuere_url_std"    => $neuere_url_std,
                 "antraege"          => $antraege,

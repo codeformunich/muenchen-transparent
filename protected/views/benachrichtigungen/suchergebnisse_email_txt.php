@@ -6,7 +6,7 @@
 ?>Hallo,
 seit der letzten E-Mail-Benachrichtigung wurden folgende neuen Dokumente gefunden, die deinen Benachrichtigungseinstellungen entsprechen:
 
-<?
+<?php
 
 if (count($data["vorgaenge"]) > 0) {
 	echo "=== Abonnierte Vorgänge ===\n\n";

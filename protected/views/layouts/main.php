@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?
+    <meta name="description" content="<?php
     if ($this->html_description != "") echo CHtml::encode($this->html_description);
     else echo "Münchens Stadtpolitik einfach erklärt. Aktuelle Entscheidungen und Dokumente im alternativen Ratsinformationssystem.";
     ?>">
@@ -43,7 +43,7 @@
 
     <link rel="stylesheet" href="/css/build/website.css">
 
-    <?
+    <?php
     if ($this->load_mediaelement) echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
     if ($this->load_calendar    ) echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
     if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
@@ -53,16 +53,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta name="google" content="notranslate">
         <link rel="stylesheet" href="/pdfjs/web/build.css"/>
-    <? } ?>
+    <?php } ?>
 
-    <? if ($this->inline_css != "") {
+    <?php if ($this->inline_css != "") {
         echo '<style>' . $this->inline_css . '</style>';
     } ?>
 
     <!-- javascript -->
     <script src="/js/build/std.js"></script>
 
-    <?
+    <?php
     if ($this->load_ckeditor     ) echo '<script src="/bower/ckeditor/ckeditor.js"></script>';
     if ($this->load_isotope_js   ) echo '<script src="/bower/isotope/dist/isotope.pkgd.min.js"></script>';
     if ($this->load_list_js      ) echo '<script src="/bower/list.js/dist/list.min.js"></script>';
@@ -71,27 +71,27 @@
     if ($this->load_shariff      ) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
     ?>
 
-    <? if ($this->load_calendar) { ?>
+    <?php if ($this->load_calendar) { ?>
         <script src="/bower/moment/min/moment-with-locales.min.js"></script>
         <script src="/bower/fullcalendar/dist/fullcalendar.min.js"></script>
         <script src="/bower/fullcalendar/dist/lang/de.js"></script>
-    <? } ?>
+    <?php } ?>
 
-    <? if ($this->load_pdf_js) { ?>
+    <?php if ($this->load_pdf_js) { ?>
         <link rel="preload" type="application/l10n" href="/pdfjs/web/locale/locale.properties"/>
         <script src="/pdfjs/web/build.js" defer></script>
-    <? }
+    <?php }
 
     if ($this->load_leaflet) { ?>
         <script src="/js/build/leaflet.js"></script>
-    <? } ?>
+    <?php } ?>
 
 </head>
 
 <body>
 
 <script src="/js/modernizr.js"></script>
-<? echo ris_intern_html_extra_headers(); ?>
+<?php echo ris_intern_html_extra_headers(); ?>
 
 <a href="#page_main_content" class="sr-only">Zum Seiteninhalt</a>
 
@@ -125,7 +125,7 @@
                     <li class="dropdown ba-wahl-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bezirksausschüsse <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="ba_nav_list">
-                            <?
+                            <?php
                             /** @var Bezirksausschuss[] $bas */
                             $bas = Bezirksausschuss::model()->alleOhneStadtrat();
                             foreach ($bas as $ba) echo "<li>" . CHtml::link($ba->ba_nr . ": " . $ba->name, $ba->getLink()) . "</li>\n"
@@ -133,35 +133,35 @@
                         </ul>
                     </li>
                     <!-- Mobiler BA-wähler-->
-                    <li class="ba-wahl-link <? if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= CHtml::link("Bezirksausschüsse", $this->createUrl("index/bezirksausschuss")) ?></li>
-                    <li  <? if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
-                    <li class="<? if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("personen/index")) ?></li>
-                    <?
+                    <li class="ba-wahl-link <?php if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= CHtml::link("Bezirksausschüsse", $this->createUrl("index/bezirksausschuss")) ?></li>
+                    <li <?php if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
+                    <li class="<?php if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
+                    <li class="<?php if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("personen/index")) ?></li>
+                    <?php
                     $user = $this->aktuelleBenutzerIn();
                     if ($user && $user->hatIrgendeineBerechtigung()) {
                     ?>
-                        <li class="dropdown  <? if ($this->top_menu == "admin") echo 'active'; ?>">
+                        <li class="dropdown <?php if ($this->top_menu == "admin") echo 'active'; ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="<? if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
-                            <?
+                            <li class="<?php if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
+                            <?php
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
                                     <li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
                                     <li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
                                     <li><?= CHtml::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
                                     <li><?= CHtml::link("BürgerInnenversammlungen", $this->createUrl("admin/buergerInnenversammlungen")) ?></li>
-                                <? }
+                                <?php }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) { ?>
                                     <li><?= CHtml::link("StadträtInnen: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
-                                <? }
+                                <?php }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) { ?>
                                     <li><?= CHtml::link("Tags", $this->createUrl("admin/tags")) ?></li>
-                                <? }
+                                <?php }
                                 ?>
                             </ul>
                         </li>
-                    <? } ?>
+                    <?php } ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mehr <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -176,22 +176,22 @@
         </div>
     </div>
 
-    <? if ($this->msg_ok != "") { ?>
+    <?php if ($this->msg_ok != "") { ?>
     <div class="alert alert-success alert-dismissable " style="text-align: center">
         <?php echo $this->msg_ok; ?>
         <button type="button" class="close" data-dismiss="alert">×</button>
     </div>
-    <? } ?>
-    <? if ($this->msg_err != "") { ?>
+    <?php } ?>
+    <?php if ($this->msg_err != "") { ?>
     <div class="alert alert-danger alert-dismissable " style="text-align: center">
         <?php echo $this->msg_err; ?>
         <button type="button" class="close" data-dismiss="alert">×</button>
     </div>
-    <? } ?>
+    <?php } ?>
 
     <div id="print_header">München Transparent - www.muenchen-transparent.de</div>
 
-    <main class="container center-block row" id="page_main_content" <?
+    <main class="container center-block row" id="page_main_content" <?php
     if ($this->html_itemprop != "") echo 'itemscope itemtype="' . CHtml::encode($this->html_itemprop) . '"';
     ?>>
         <?php echo $content; ?>

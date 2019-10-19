@@ -20,7 +20,7 @@ $this->inline_css .= "#page_main_content { min-width: 1000px; }";
             <ul class="dropdown-menu" id="list-js-container" style="padding: 5px 10px;">
                 <li><input class="search" placeholder="Suche" style="width: 100%" /></li>
                 <li><ul class="list" style="padding: 0;">
-                    <?
+                    <?php
                     /** @var Rechtsdokument[] $dokumente */
                     $dokumente = Rechtsdokument::model()->alle_sortiert();
                     foreach ($dokumente as $dok) {
@@ -45,7 +45,7 @@ $this->inline_css .= "#page_main_content { min-width: 1000px; }";
     </div>
 </div>
 
-<? $this->load_list_js = true; ?>
+<?php $this->load_list_js = true; ?>
 
 <script>
 var userList = new List("list-js-container", { valueNames: [ 'list-name' ] });

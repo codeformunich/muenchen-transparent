@@ -33,7 +33,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 						?>]]></description>
 					<pubDate><?php echo date(str_replace("y", "Y", DATE_RFC822), $dat["dateCreated"]); ?></pubDate>
 				</item>
-			<? } ?>
+			<?php } ?>
 		</channel>
 	</rss>
 <?php

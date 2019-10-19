@@ -15,7 +15,7 @@ $this->pageTitle = $referat->getName();
     </ul>
     <h1><?= CHtml::encode($referat->getName()) ?></h1>
 
-    <?
+    <?php
     $this->renderPartial("/index/ckeditable_text", array(
         "text"            => $text,
         "my_url"          => $my_url,
@@ -28,7 +28,7 @@ $this->pageTitle = $referat->getName();
 <div class="row" id="listen_holder">
     <div class="col col-md-8">
         <section class="well">
-            <?
+            <?php
             $this->renderPartial("../index/index_antraege_liste", array(
                 "title"             => "Aktuelle Dokumente",
                 "antraege"          => $antraege_referat,
@@ -41,7 +41,7 @@ $this->pageTitle = $referat->getName();
     <div class="col col-md-4">
         <section class="well">
             <h2>Anschrift</h2>
-            <?
+            <?php
             echo CHtml::encode($referat->strasse) . "<br>";
             echo CHtml::encode($referat->plz . " " . $referat->ort) . "<br>";
             if ($referat->telefon != "") echo "Tel.: " . CHtml::encode($referat->telefon) . "<br>";
@@ -51,7 +51,7 @@ $this->pageTitle = $referat->getName();
             ?>
             <br><br>
             <h2>ReferentIn</h2>
-            <?
+            <?php
             foreach ($referat->stadtraetInnenReferate as $str) echo CHtml::encode($str->stadtraetIn->name) . "<br>";
             ?>
             <br><br>
@@ -59,4 +59,3 @@ $this->pageTitle = $referat->getName();
         </section>
     </div>
 </div>
-<?

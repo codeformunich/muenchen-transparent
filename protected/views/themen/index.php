@@ -21,7 +21,7 @@ $this->pageTitle = "Themen";
         <div class="col col-md-8">
             <section class="start_berichte well">
                 <h3 id="staedtische_referate">Städtische Referate</h3>
-                <ul><?
+                <ul><?php
                     foreach ($referate as $ref) {
                         echo "<li>";
                         echo CHtml::link($ref->getName(true), Yii::app()->createUrl("themen/referat", array("referat_url" => $ref->urlpart)));
@@ -37,7 +37,7 @@ $this->pageTitle = "Themen";
                 <div id="list-js-container" class="such-liste">
                     <input class="search" placeholder="Filtern" style="width: 100%;"/>
                     <ul class="list list-unstyled tag-liste">
-                        <?
+                        <?php
                         usort($tags, function ($a, $b) {
                             if (count($a->antraege) == count($b->antraege))
                                 return 0;
@@ -55,7 +55,7 @@ $this->pageTitle = "Themen";
                 <a href="<?= CHtml::encode(Yii::app()->createUrl("index/highlights")) ?>" class="weitere">Weitere</a>
 
                 <h3>Berichte / Highlights</h3>
-                <ul><?
+                <ul><?php
                     foreach ($highlights as $dok) {
                         echo "<li>";
                         echo CHtml::link($dok->antrag->getName(true), $dok->getLink());
@@ -68,7 +68,7 @@ $this->pageTitle = "Themen";
         </div>
     </div>
 
-<? $this->load_list_js = true; ?>
+<?php $this->load_list_js = true; ?>
 <script>
 var userList = new List("list-js-container", { valueNames: [ 'list-name' ] });
 </script>

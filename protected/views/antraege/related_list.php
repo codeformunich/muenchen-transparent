@@ -15,7 +15,7 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
         </div>
         <div class="row-content">
             <h4 class="list-group-item-heading">
-                <?
+                <?php
                 $title = trim($verw->getName(true));
                 if (mb_strlen($title) > $max_title_width) {
                     $title_short = mb_substr($title, 0, $max_title_width * 1.5);
@@ -23,15 +23,15 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
                     <a href="<?= CHtml::encode($verw->getLink()) ?>" title="<?= CHtml::encode($title) ?>" class="overflow-fadeout-white"><span class="hyphenate">
                         <?= CHtml::encode($title_short) ?>
                     </span></a>
-                    <?
+                    <?php
                 } else {
                     ?>
                     <a href="<?= CHtml::encode($verw->getLink()) ?>" class="overflow-fadeout-white"><?= CHtml::encode($title) ?></a>
-                    <?
+                    <?php
                 }
                 ?>
             </h4>
-            <?
+            <?php
             $max_date = 0;
             foreach ($verw->dokumente as $dokument) {
                 $dat = RISTools::date_iso2timestamp($dokument->getDate());
@@ -39,11 +39,11 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
             }
             ?>
             <p class="list-group-item-text">
-                <?
+                <?php
                 echo (count($verw->dokumente) == 1 ? "1 Dokument" : count($verw->dokumente) . " Dokumente");
                 ?>
             </p>
-            <div class="metainformationen_antraege"><?
+            <div class="metainformationen_antraege"><?php
                 $parteien = array();
                 foreach ($verw->antraegePersonen as $person) {
                     $name   = $person->person->name;
@@ -74,7 +74,7 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
                 ?></div>
         </div>
     </li>
-<?
+<?php
 }
 else {
     echo "Keine gefunden";

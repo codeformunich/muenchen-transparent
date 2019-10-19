@@ -19,7 +19,7 @@
             </tr>
             </thead>
             <tbody>
-            <? foreach ($termine as $termin) {
+            <?php foreach ($termine as $termin) {
                 $id      = $termin->id;
                 $del_url = Yii::app()->createUrl("admin/buergerInnenversammlungen", array(AntiXSS::createToken("delete") => $id));
                 ?>
@@ -37,7 +37,7 @@
                         <a href="<?= CHtml::encode($del_url) ?>" onclick="return confirm('Wirklich löschen?');" style="color: red;">löschen</a>
                     </td>
                 </tr>
-            <?
+            <?php
             } ?>
 
             <tr>
@@ -46,7 +46,7 @@
             <tr>
                 <td style="padding: 5px;"><select name="neu[ba_nr]" size="1" style="max-width: 200px;">
                         <option value=""></option>
-                        <?
+                        <?php
                         /** @var Bezirksausschuss[] $bas */
                         $bas = Bezirksausschuss::model()->findAll(array("order" => "ba_nr"));
                         foreach ($bas as $ba) {

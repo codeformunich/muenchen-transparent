@@ -15,7 +15,7 @@ $this->html_itemprop = "http://schema.org/Person";
         <li class="active"><?= CHtml::encode($person->getName()) ?></li>
     </ul>
 
-    <div style="float: right;"><?
+    <div style="float: right;"><?php
         echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $person->getSourceLink());
         ?></div>
     <h1 itemprop="name"><?= CHtml::encode($person->getName()) ?></h1>
@@ -30,7 +30,7 @@ $this->html_itemprop = "http://schema.org/Person";
                     <th>Fraktion(en):</th>
                     <td>
                         <ul class="mitgliedschaften">
-                            <?
+                            <?php
                             $mitgliedschaften = $person->getFraktionsMitgliedschaften();
                             foreach ($mitgliedschaften as $frakts) {
                                 echo "<li class='" . ($frakts->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>" . CHtml::encode($frakts->fraktion->getName());
@@ -49,14 +49,14 @@ $this->html_itemprop = "http://schema.org/Person";
                         </ul>
                     </td>
                 </tr>
-                <?
+                <?php
                 if (count($person->mitgliedschaften) > 0) {
                     ?>
                     <tr>
                         <th>Mitgliedschaften:</th>
                         <td>
                             <ul class="mitgliedschaften">
-                                <?
+                                <?php
                                 foreach ($person->mitgliedschaften as $mitgliedschaft) {
                                     $gremium = $mitgliedschaft->gremium;
                                     echo "<li class='" . ($mitgliedschaft->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>";
@@ -74,16 +74,16 @@ $this->html_itemprop = "http://schema.org/Person";
                             </ul>
                         </td>
                     </tr>
-                <?
+                <?php
                 }
                 if (count($person->antraege) > 0) {
                     ?>
                     <tr>
                         <th>Anträge:</th>
                         <td id="list-js-container">
-                            <input class="search" placeholder="Filtern" style="margin-left: 40px; width: calc(100% - 40px);" /> <? /* Nicht ganz sauber, aber besser als nichts */ ?>
+                            <input class="search" placeholder="Filtern" style="margin-left: 40px; width: calc(100% - 40px);" /> <?php /* Nicht ganz sauber, aber besser als nichts */ ?>
                             <ul class="list">
-                                <?
+                                <?php
                                 foreach ($person->antraege as $antrag) {
                                     echo "<li>";
                                     echo "<a class='antrag-name' href='" . CHtml::encode($antrag->getLink()) . "'>" . $antrag->getName(true) . "</a>";
@@ -94,7 +94,7 @@ $this->html_itemprop = "http://schema.org/Person";
                             </ul>
                         </td>
                     </tr>
-                <?
+                <?php
                 } else {
                     $suche = new RISSucheKrits();
                     $suche->addKrit('volltext', "\"" . $person->getName() . "\"");
@@ -148,7 +148,7 @@ $this->html_itemprop = "http://schema.org/Person";
                                    title="Herunterladen: <?= CHtml::encode($dokument->getName(true)) ?>">
                                 </a>
                                 <?= CHtml::link($dokument->getName(false), $dokument->getLink()) ?>
-                            </li> <?
+                            </li> <?php
                         }
                         echo '</ul></td></tr>';
                     }
@@ -161,7 +161,7 @@ $this->html_itemprop = "http://schema.org/Person";
         <div class="well personendaten_sidebar" itemprop="description">
             <h2>Weitere Infos</h2>
             <dl>
-                <?
+                <?php
                 if ($person->web != "") {
                     echo '<dt>Homepage:</dt>';
                     echo '<bb>' . HTMLTools::textToHtmlWithLink($person->web) . '</dd>' . "\n";
@@ -201,7 +201,7 @@ $this->html_itemprop = "http://schema.org/Person";
                 }
                 ?>
             </dl>
-            <?
+            <?php
             $ich = $this->aktuelleBenutzerIn();
             if ($ich && $ich->id == $person->benutzerIn_id) {
                 $editlink = Yii::app()->createUrl("personen/personBearbeiten", array("id" => $person->id));
@@ -216,7 +216,7 @@ $this->html_itemprop = "http://schema.org/Person";
     </section>
 </div>
 
-<? $this->load_list_js = true; ?>
+<?php $this->load_list_js = true; ?>
 
 <script>
 var userList = new List("list-js-container", { valueNames: [ 'antrag-name', 'list-js-datum' ] });

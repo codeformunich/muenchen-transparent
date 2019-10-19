@@ -35,8 +35,8 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
         <small>(Bezirksausschuss <?= $ba->ba_nr ?>)</small>
     </h1>
 
-    <? $this->load_leaflet = true; ?>
-    <?
+    <?php $this->load_leaflet = true; ?>
+    <?php
     $this->renderPartial("/index/map", array(
         "ortsbezugszahlgrenze" => 20,
         "geodata_overflow"     => $geodata_overflow
@@ -61,10 +61,10 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 </section>
 
 
-<div class="row <? if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
+<div class="row <?php if ($explizites_datum) echo "nur_dokumente"; ?>" id="listen_holder">
     <div class="col col-md-5" id="stadtratsdokumente_holder">
         <div class="well" style="overflow: auto;">
-            <? $this->renderPartial("index_antraege_liste", array(
+            <?php $this->renderPartial("index_antraege_liste", array(
                 "aeltere_url_std"   => $aeltere_url_std,
                 "neuere_url_std"    => $neuere_url_std,
                 "antraege"          => $antraege,
@@ -79,7 +79,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
     </div>
     <div class="col col-md-4 keine_dokumente">
         <div class="well">
-            <?
+            <?php
             if (count($termin_dokumente) > 0) {
                 /** @var Dokument[] $dokumente */
                 $dokumente = array();
@@ -101,7 +101,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                 <h3>Protokolle &amp; Tagesordnungen</h3>
                 <br>
                 <ul class="dokumentenliste_small">
-                    <? foreach ($dokumente as $dokument) {
+                    <?php foreach ($dokumente as $dokument) {
                         $replaces = [
                             " (oeff)"       => "",
                             " (öffentlich)" => "",
@@ -118,11 +118,11 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                         echo '</li>';
                     } ?>
                 </ul>
-            <? } ?>
+            <?php } ?>
 
             <br>
 
-            <?
+            <?php
             if (count($bvs) > 0) {
                 echo '<h3>BürgerInnenversammlung</h3><br>';
                 $this->renderPartial("../termine/termin_liste", array(
@@ -135,7 +135,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
             <h3>Termine</h3>
             <br>
-            <?
+            <?php
             $this->renderPartial("../termine/termin_liste", array(
                 "termine"     => $termine,
                 "gremienname" => false,
@@ -150,21 +150,21 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
     </div>
 
     <div class="col col-md-3 keine_dokumente">
-        <?
+        <?php
         $statistiken = $ba->getInteressanteStatistik();
         if (count($statistiken) > 0) {
             ?>
         <section class="well">
             <h2>Statistik</h2>
             <ul style="list-style: none;">
-                <?
+                <?php
                 foreach ($statistiken as $statistik) {
                     echo '<li>' . CHtml::encode($statistik["name"]) . ': ' .  CHtml::encode($statistik["wert"]) . '</li>';
                 }
                 ?>
             </ul>
         </section>
-            <?
+            <?php
         }
 
         $this->renderPartial("../personen/fraktionen", array(
@@ -178,7 +178,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             <section class="well">
                 <h2>Ämter</h2>
                 <dl class="ba_funktionen">
-                    <?
+                    <?php
                     foreach ($funktionen as $funktion) {
                         if (!$funktion->mitgliedschaftAktiv()) continue;
                         $strIn = $funktion->stadtraetIn;
@@ -189,7 +189,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                     ?>
                 </dl>
             </section>
-        <?
+        <?php
         }
 
         $this->renderPartial("../personen/ausschuss_mitglieder", array(

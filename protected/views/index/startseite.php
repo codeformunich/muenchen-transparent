@@ -26,8 +26,8 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 <section class="well">
     <h1 class="sr-only"><?= CHtml::encode($this->pageTitle) ?></h1>
 
-    <? $this->load_leaflet = true; ?>
-    <?
+    <?php $this->load_leaflet = true; ?>
+    <?php
     $this->renderPartial("/index/map", array(
         "ortsbezugszahlgrenze" => 10,
         "geodata_overflow"     => $geodata_overflow
@@ -152,15 +152,15 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
 <section class="well two_cols" id="listen_holder">
 
-    <? if (isset(Yii::app()->params['startseiten_warnung']) && Yii::app()->params['startseiten_warnung'] != '') { ?>
+    <?php if (isset(Yii::app()->params['startseiten_warnung']) && Yii::app()->params['startseiten_warnung'] != '') { ?>
     <div class="alert alert-dismissable alert-warning">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <?=Yii::app()->params['startseiten_warnung']?>
     </div>
-    <? } ?>
+    <?php } ?>
 
     <div id="stadtratsdokumente_holder">
-        <?
+        <?php
 
         $this->renderPartial("index_antraege_liste", array(
             "antraege"          => $antraege_stadtrat,

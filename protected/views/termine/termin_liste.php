@@ -6,7 +6,7 @@
  */
 
 ?>
-<ul class="terminliste2 list-group<? if ($gremienname) echo " mit_gremienname"; if (isset($twoCols) && $twoCols) echo " termine_twocols"; ?>"><?
+<ul class="terminliste2 list-group<?php if ($gremienname) echo " mit_gremienname"; if (isset($twoCols) && $twoCols) echo " termine_twocols"; ?>"><?php
 	foreach ($termine as $termin) {
 
 		$termine_ids[] = $termin["id"];

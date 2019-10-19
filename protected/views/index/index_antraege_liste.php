@@ -48,20 +48,20 @@ if (count($antraege) > 0) {
     if ($weiter_links_oben && $datum_nav) {
         ?>
         <div class="antragsliste_nav">
-            <?
+            <?php
             if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
                 ?>
                 <div class="neuere_caller">
                     <a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
                             class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
                 </div>
-            <?
+            <?php
             } elseif (isset($neuere_url_std) && $neuere_url_std !== null) {
                 ?>
                 <div class="neuere_caller">
                     <a href="<?= CHtml::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
                 </div>
-            <?
+            <?php
             }
 
             if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
@@ -70,17 +70,17 @@ if (count($antraege) > 0) {
                     <a href="<?= CHtml::encode($aeltere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($aeltere_url_ajax) ?>');" rel="next">Ältere
                         Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
-            <?
+            <?php
             } elseif (isset($aeltere_url_std) && $aeltere_url_std !== null) {
                 ?>
                 <div class="aeltere_caller">
                     <a href="<?= CHtml::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
-            <?
+            <?php
             }
             ?>
         </div>
-    <?
+    <?php
     }
     echo '<ul class="antragsliste2">';
     $akt_datum = null;
@@ -164,20 +164,20 @@ if (count($antraege) > 0) {
 if ($datum_nav) {
     ?>
     <div class="antragsliste_nav">
-        <?
+        <?php
         if (isset($neuere_url_ajax) && $neuere_url_ajax !== null) {
             ?>
             <div class="neuere_caller">
                 <a href="<?= CHtml::encode($neuere_url_std) ?>" onClick="return index_datum_dokumente_load(this, '<?= CHtml::encode($neuere_url_ajax) ?>');" rel="next"><span
                         class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
             </div>
-        <?
+        <?php
         } elseif (isset($neuere_url_std) && $neuere_url_std !== null) {
             ?>
             <div class="neuere_caller">
                 <a href="<?= CHtml::encode($neuere_url_std) ?>" rel="next"><span class="glyphicon glyphicon-chevron-left"></span> Neuere Dokumente</a>
             </div>
-        <?
+        <?php
         }
 
         if (isset($aeltere_url_ajax) && $aeltere_url_ajax !== null) {
@@ -187,15 +187,15 @@ if ($datum_nav) {
                     Dokumente
                     <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
-        <?
+        <?php
         } else if (isset($aeltere_url_std) && $aeltere_url_std !== null) {
             ?>
             <div class="aeltere_caller">
                 <a href="<?= CHtml::encode($aeltere_url_std) ?>" rel="next">Ältere Dokumente <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
-        <?
+        <?php
         }
         ?>
     </div>
-<?
+<?php
 }

@@ -18,7 +18,7 @@ $html_text = preg_replace_callback("/CREATE_URL\((?<url>[^\)]+)\)/siu", function
         <li class="active"><?=CHtml::encode($text->titel)?></li>
     </ul>
 
-    <?
+    <?php
     $this->renderPartial("/index/ckeditable_text", array(
         "text"            => $text,
         "my_url"          => $my_url,

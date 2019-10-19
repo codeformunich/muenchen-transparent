@@ -19,7 +19,7 @@ $this->pageTitle = "Glossar";
 	<br>
 
 	<dl class="glossar dl-horizontal" style="max-width: 850px; margin-left: auto; margin-right: auto;">
-		<?
+		<?php
 		foreach ($eintraege as $eintrag) {
 			echo '<dt id="eintrag_' . str_replace(' ', '-', $eintrag->titel) . '">';
 			if ($this->binContentAdmin()) echo ' <a href="' . CHtml::encode($this->createUrl("infos/glossarBearbeiten", array("id" => $eintrag->id))) . '" title="Bearbeiten"><span class="glyphicon glyphicon-pencil"></span></a>';
@@ -29,7 +29,7 @@ $this->pageTitle = "Glossar";
 		}
 		?>
 	</dl>
-	<?
+	<?php
 
 	if ($this->binContentAdmin()) {
 		?>
@@ -56,7 +56,7 @@ $this->pageTitle = "Glossar";
 			</div>
 		</form>
 
-	<? $this->load_ckeditor = true; ?>
+	<?php $this->load_ckeditor = true; ?>
 		<script>
 			$(function () {
 				$("#glossar_anlegen_caller").click(function (ev) {
@@ -69,7 +69,7 @@ $this->pageTitle = "Glossar";
 				});
 			});
 		</script>
-	<?
+	<?php
 	}
 	?>
 	<script>

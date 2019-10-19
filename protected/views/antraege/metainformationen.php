@@ -6,7 +6,7 @@
 ?>
 <div class='metainformationen_antraege'>
 
-<?
+<?php
 $parteinliste = array();
 $parteien = $antrag->findeFraktionen();
 foreach ($parteien as $partei) {

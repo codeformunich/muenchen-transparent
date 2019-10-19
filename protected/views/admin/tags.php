@@ -14,7 +14,7 @@ $user = $this->aktuelleBenutzerIn();
             <legend>Tag Umbennen</legend>
                 <div class="input-group col">
                 <div class="col col-md-6"><select name="tag_id">
-                <?
+                <?php
                 foreach($tags as $tag)
                     echo "<option value=" . $tag->id . ">" . $tag->name . "</option>";
                 ?>
@@ -32,7 +32,7 @@ $user = $this->aktuelleBenutzerIn();
             <legend>Tag Löschen</legend>
                 <div class="input-group col">
                 <div class="col col-md-6"><select name="tag_id">
-                <?
+                <?php
                 foreach($tags as $tag)
                     echo "<option value=" . $tag->id . ">" . $tag->name . "</option>";
                 ?>
@@ -54,16 +54,16 @@ $user = $this->aktuelleBenutzerIn();
                 <th><button class="sort"                      >Löschen</button></th>
             </tr>
             <tbody class="list">
-            <? foreach($tags as $tag) { ?>
-                <? foreach($tag->antraege as $antrag) { ?>
+            <?php foreach($tags as $tag) { ?>
+                <?php foreach($tag->antraege as $antrag) { ?>
                     <tr>
                         <td class="tag-name" ><?= $tag->name ?></td>
                         <td class="antrag-id"><?= CHtml::link($antrag->id, $antrag->getLink()) ?></td>
                         <td class="email"    ><?= $tag->angelegt_benutzerIn->email ?></td>
                         <td class="fontello-cancel tag-delete"></td>
                     </tr>
-                <? } ?>
-            <? } ?>
+                <?php } ?>
+            <?php } ?>
             <tbody>
         </table>
     </div>
@@ -86,7 +86,7 @@ td.fontello-cancel:hover {
 }
 </style>
 
-<? $this->load_list_js = true; ?>
+<?php $this->load_list_js = true; ?>
 <script>
 var userList = new List("tag-liste", {valueNames: ["tag-name", "antrag-id", "email"]});
 </script>

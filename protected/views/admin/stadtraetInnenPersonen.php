@@ -14,7 +14,7 @@
 
 <form method="POST" style="overflow: auto;">
     <div style="float: left; width: 400px;">
-        <? foreach ($personen as $person) {
+        <?php foreach ($personen as $person) {
             echo "<label ";
             if (!is_null($person->stadtraetIn) || $person->typ == Person::$TYP_FRAKTION) echo "style='color: gray;';";
             echo "><input type='radio' name='person' value='" . $person->id . "'> " . CHtml::encode($person->name);
@@ -26,7 +26,7 @@
 
     <div style="float: left; width: 400px;">
         <label><input type="checkbox" name="fraktion"> Als Fraktion markieren</label><br><br>
-        <? foreach ($stadtraetInnen as $stadtraetIn) {
+        <?php foreach ($stadtraetInnen as $stadtraetIn) {
             echo "<label><input type='radio' name='stadtraetIn' value='" . $stadtraetIn->id . "'>";
             $name = $stadtraetIn->name;
             $frakts = array();

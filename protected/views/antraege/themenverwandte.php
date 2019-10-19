@@ -23,7 +23,7 @@ $related         = $antrag->errateThemenverwandteAntraege(50);
     </blockquote>
 
     <ul class="list-group">
-        <?
+        <?php
         $this->renderPartial("related_list", array(
             "related" => $related,
             "narrow" => false,

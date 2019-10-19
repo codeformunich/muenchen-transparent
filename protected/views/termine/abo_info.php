@@ -22,21 +22,21 @@
         <table>
             <tr>
                 <th>Einzeltermin (ICS):</th>
-                <td><?
+                <td><?php
                     $link = CHtml::encode(Yii::app()->createUrl("termine/icsExportSingle", array("termin_id" => $termin->id)));
                     echo '<a href="' . $link . '">' . SITE_BASE_URL . $link . '</a>';
                     ?></td>
             </tr>
             <tr>
                 <th>Terminreihe (ICS):</th>
-                <td><?
+                <td><?php
                     $link = CHtml::encode(Yii::app()->createUrl("termine/icsExportAll", array("termin_id" => $termin->id)));
                     echo '<a href="' . $link . '" rel="nofollow">' . SITE_BASE_URL . $link . '</a>';
                     ?></td>
             </tr>
             <tr>
                 <th>Terminreihe (CalDAV):</th>
-                <td><?
+                <td><?php
                     $link = CHtml::encode(Yii::app()->createUrl("termine/dav", array("termin_id" => $termin->id)));
                     echo '<a href="' . $link . '" rel="nofollow">' . SITE_BASE_URL . $link . '</a>';
                     ?></td>
@@ -67,6 +67,3 @@
 
 
     </section>
-
-
-<?

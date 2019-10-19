@@ -4,7 +4,7 @@
  * @var string $title
  */
 ?>
-<section class="well"><?
+<section class="well"><?php
     $insgesamt = 0;
     foreach ($fraktionen as $fraktion)
         $insgesamt += count($fraktion);
@@ -12,7 +12,7 @@
 
     <h2><?= CHtml::encode($title) ?> <span style="float: right"><?= $insgesamt ?></span></h2>
 
-    <ul class="fraktionen_liste"><?
+    <ul class="fraktionen_liste"><?php
         usort($fraktionen, function ($val1, $val2) {
             if (count($val1) < count($val2)) return 1;
             if (count($val1) > count($val2)) return -1;

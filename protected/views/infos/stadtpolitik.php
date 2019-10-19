@@ -47,7 +47,7 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
 <div class="row" id="listen_holder">
     <div class="col col-md-8">
         <section class="start_berichte well fliesstext">
-            <?
+            <?php
             if ($this->binContentAdmin()) { ?>
                 <a href="#" style="display: inline; float: right;" id="text_edit_caller">
                     <span class="mdi-content-create"></span> Bearbeiten
@@ -55,7 +55,7 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
                 <a href="#" style="display: none; float: right;" id="text_edit_aborter">
                     <span class="mdi-content-clear"></span> Abbrechen
                 </a>
-            <? }
+            <?php }
             ?>
             <h1>So entsteht Stadtpolitik</h1>
 
@@ -75,7 +75,7 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
             </div>
             <br><br>
 
-            <?
+            <?php
             $this->renderPartial("/index/ckeditable_text", array(
                 "text"            => $text,
                 "my_url"          => $my_url,
@@ -84,7 +84,7 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
             ))
             ?>
 
-            <? $this->load_mediaelement = true; ?>
+            <?php $this->load_mediaelement = true; ?>
             <script>
                 $(function() {
                     $('[data-toggle="tooltip"]').tooltip({animation: true, delay:500});

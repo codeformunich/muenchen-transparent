@@ -35,9 +35,9 @@ $this->pageTitle = "Suche";
 			<div class="col-sm-9">
 				<select id="suche_typ" name="typ" size="1" class="form-control">
 					<option value="">- egal -</option>
-					<? foreach (Dokument::$TYPEN_ALLE as $typ_id => $typ_name) { ?>
+					<?php foreach (Dokument::$TYPEN_ALLE as $typ_id => $typ_name) { ?>
 						<option value="<?= $typ_id ?>"><?= CHtml::encode($typ_name) ?></option>
-					<? } ?>
+					<?php } ?>
 				</select>
 			</div>
 		</div>
@@ -48,13 +48,13 @@ $this->pageTitle = "Suche";
 			<div class="col-sm-9">
 				<select id="suche_referat" name="referat" size="1" class="form-control">
 					<option>- egal -</option>
-					<?
+					<?php
 					/** @var Referat[] $referate */
 					$referate = Referat::model()->findAll();
 					foreach ($referate as $ref) {
 						?>
 						<option value="<?= $ref->id ?>"><?= CHtml::encode($ref->name) ?></option>
-					<? } ?>
+					<?php } ?>
 				</select>
 			</div>
 		</div>
