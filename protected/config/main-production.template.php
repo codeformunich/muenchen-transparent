@@ -11,7 +11,7 @@ define("PATH_CONVERT", "/usr/bin/convert");
 define("PATH_TESSERACT", "/usr/local/bin/tesseract");
 define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
-define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.10.jar");
+define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-2.0.17.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
 
 define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");

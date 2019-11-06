@@ -107,8 +107,8 @@ class RISPDF2Text
             };
         } else for ($i = 0; $i < $seiten_anzahl; $i++) { // PDF
             $png_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".png";
-            $exec         = PATH_CONVERT . " -background white -flatten +matte ";
-            $exec .= "-density 900 -resize 33% "; // => better font rendering quality
+            $exec         = PATH_CONVERT . " -background white -flatten ";
+            $exec .= "-density 600 -resize 50% "; // => better font rendering quality
             $exec .= "\"${filename}[$i]\" -colorspace Gray $depth $png_tmp_file";
             exec($exec, $result);
             if (file_exists($png_tmp_file)) {
