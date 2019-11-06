@@ -644,7 +644,7 @@ CREATE TABLE `termine_history` (
   `typ` smallint(5) unsigned NOT NULL DEFAULT '0',
   `datum_letzte_aenderung` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `termin_reihe` int(11) NOT NULL DEFAULT '0',
-  `gremium_id` int(11) NOT NULL,
+  `gremium_id` int(11) NULL DEFAULT NULL,
   `ba_nr` smallint(6) DEFAULT NULL,
   `termin` timestamp NULL DEFAULT NULL,
   `termin_prev_id` int(11) DEFAULT NULL,
