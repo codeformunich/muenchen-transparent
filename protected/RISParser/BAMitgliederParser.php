@@ -93,14 +93,8 @@ class BAMitgliederParser extends RISParser
                 $strfrakt->stadtraetIn_id = $strIn->id;
                 $strfrakt->wahlperiode    = $wahlperiode;
                 $strfrakt->mitgliedschaft = $matches["mitgliedschaft"][$i];
-
-                if (preg_match("/^von (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+) bis (?<bis_tag>[0-9]+)\\.(?<bis_monat>[0-9]+)\\.(?<bis_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
-                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
-                    $strfrakt->datum_bis = $mitgliedschaft_matches["bis_jahr"] . "-" . $mitgliedschaft_matches["bis_monat"] . "-" . $mitgliedschaft_matches["bis_tag"];
-                } elseif (preg_match("/^seit (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+)$/", $matches["mitgliedschaft"][$i], $mitgliedschaft_matches)) {
-                    $strfrakt->datum_von = $mitgliedschaft_matches["von_jahr"] . "-" . $mitgliedschaft_matches["von_monat"] . "-" . $mitgliedschaft_matches["von_tag"];
-                    $strfrakt->datum_bis = null;
-                }
+                $strfrakt->datum_von      = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["von"];
+                $strfrakt->datum_bis      = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["bis"];
                 $strfrakt->save();
             }
             if (!isset($gefundene_fraktionen[$matches["mitglied_id"][$i]])) $gefundene_fraktionen[$matches["mitglied_id"][$i]] = [];
@@ -114,6 +108,15 @@ class BAMitgliederParser extends RISParser
             $sql .= 'b.stadtraetIn_id = ' . IntVal($strIn) . ' AND a.ba_nr = ' . IntVal($ba_nr) . ' AND b.fraktion_id NOT IN (' . $frakts . ')';
             if (Yii::app()->db->createCommand($sql)->execute() > 0) {
                 echo 'Fraktionen gelöscht bei: ' . $strIn . "\n";
+            }
+        }
+
+        $stadtraetInnenIds = array_map("IntVal", array_keys($gefundene_fraktionen));
+        if (count($stadtraetInnenIds) > 0) {
+            $sql = 'DELETE FROM b USING stadtraetInnen a JOIN stadtraetInnen_fraktionen b ON a.id = b.stadtraetIn_id JOIN fraktionen c ON b.fraktion_id = c.id ' .
+                   'WHERE c.ba_nr = ' . IntVal($ba_nr) . ' AND a.id NOT IN(' . implode(", ", $stadtraetInnenIds) . ')';
+            if (Yii::app()->db->createCommand($sql)->execute() > 0) {
+                echo "Verwaiste Fraktions-Zuordnungen gelöscht\n";
             }
         }
     }
