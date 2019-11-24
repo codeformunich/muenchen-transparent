@@ -282,7 +282,21 @@ class RISSucheKrits
             case "ba":
                 /** @var Bezirksausschuss $ba */
                 $ba = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $this->krits[0]["ba_nr"]]);
-                return "Bezirksausschuss " . $ba->ba_nr . ": " . $ba->name;
+                $title = "Bezirksausschuss " . $ba->ba_nr . " (" . $ba->name . ")";
+
+                if ($dokument) {
+                    /** @var AntragOrt[] $gefundene_orte */
+                    $gefundene_orte = array_filter($dokument->orte, function (AntragOrt $ort) use ($ba) {
+                        return $ort->ort->ba_nr == $ba->ba_nr;
+                    });
+                    if (count($gefundene_orte) > 0) {
+                        $namen = [];
+                        foreach ($gefundene_orte as $gef_ort) $namen[] = $gef_ort->ort->ort;
+                        $title .= ": " . implode(", ", $namen);
+                    }
+                }
+
+                return $title;
             case "geo":
                 $ort = OrtGeo::findClosest($this->krits[0]["lng"], $this->krits[0]["lat"]);
                 $title = "Dokumente mit Ortsbezug (ungefähr: " . IntVal($this->krits[0]["radius"]) . "m um \"" . $ort->ort . "\")";
