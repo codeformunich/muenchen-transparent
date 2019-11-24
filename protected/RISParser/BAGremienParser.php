@@ -17,14 +17,12 @@ class BAGremienParser extends RISParser
         $daten->id                     = $gremien_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
 
-        if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = trim($matches[1]);
-        if (preg_match("/<a href=\"ba_bezirksausschuesse_details[^>]+>(?<ba>[0-9]+ )/siU", $html_details, $matches)) $daten->ba_nr = trim($matches["ba"]);
-        if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = trim($matches[1]);
-        if (preg_match("/Gremiumtyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
+        if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = html_entity_decode(trim($matches[1]), ENT_COMPAT, "UTF-8");
+        if (preg_match("/<a href=\"ba_bezirksausschuesse_details[^>]+>(?<ba>[0-9]+ )/siU", $html_details, $matches)) $daten->ba_nr = html_entity_decode(trim($matches["ba"]), ENT_COMPAT, "UTF-8");
+        if (preg_match("/rzel:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->kuerzel = html_entity_decode(trim($matches[1]), ENT_COMPAT, "UTF-8");
+        if (preg_match("/Gremiumtyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = html_entity_decode($matches[1], ENT_COMPAT, "UTF-8");
 
         $aenderungen = "";
-
-        foreach ($daten as $key => $val) $daten[$key] = ($val === null ? null : html_entity_decode(trim($val), ENT_COMPAT, "UTF-8"));
 
         /** @var Gremium $alter_eintrag */
         $alter_eintrag = Gremium::model()->findByPk($gremien_id);
@@ -162,7 +160,12 @@ class BAGremienParser extends RISParser
         $txt = explode("<!-- tabellenkopf -->", $text);
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ba_gremien_details\.jsp\?Id=(?<id>[0-9]+)[\"'& ]/siU", $txt[0], $matches);
-        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("BA-Gremien VOLL", "Erste Seite voll: $seite");
+        if ($first && count($matches[1]) > 0) {
+            RISTools::report_ris_parser_error(
+                "BA-Gremien VOLL",
+                "Erste Seite voll: $seite (" . RIS_BA_BASE_URL . "ba_gremien.jsp?selWahlperiode=" . static::$WAHLPERIODE_ID . "&Trf=n&Start=$seite)"
+            );
+        }
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) $this->parse($matches[1][$i], static::$WAHLPERIODE_ID);
         return $matches[1];
     }
