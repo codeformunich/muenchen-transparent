@@ -6,7 +6,7 @@
 
 ?>
 <section class="well">
-    <h1>BürgerInnenversammlungen</h1>
+    <h1>Bürger*innenversammlungen</h1>
 
     <form method="POST" action="<?=CHtml::encode(Yii::app()->createUrl("admin/buergerInnenversammlungen"))?>">
         <table>

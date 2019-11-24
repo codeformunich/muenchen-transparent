@@ -25,7 +25,7 @@ $ich             = $this->aktuelleBenutzerIn();
 
         <p>Dann können Sie zusätzliche Informationen über sich und Ihre politische Arbeit veröffentlichen, Angaben ändern oder auch wieder löschen.</p>
 
-        <p>Da wir keine offizielle Liste der E-Mail-Adressen aller StadträtInnen und BA-Mitglieder haben, prüfen wir die Legitimität der Anfrage anhand der E-Mail-Adresse Ihres
+        <p>Da wir keine offizielle Liste der E-Mail-Adressen aller Stadtrats- und BA-Mitglieder haben, prüfen wir die Legitimität der Anfrage anhand der E-Mail-Adresse Ihres
             Accounts (<?= CHtml::encode($ich->email) ?>). Eventuell halten wir dabei noch kurz Rücksprache, um das zu prüfen.</p>
 
         <div style="text-align: center;">

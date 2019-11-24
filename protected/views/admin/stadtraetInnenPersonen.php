@@ -10,7 +10,7 @@
 ?>
 <section class="well">
 
-<h1>StadträtInnen/Personen-Verknüpfung</h1>
+<h1>Stadtratsmitglieder/Personen-Verknüpfung</h1>
 
 <form method="POST" style="overflow: auto;">
     <div style="float: left; width: 400px;">

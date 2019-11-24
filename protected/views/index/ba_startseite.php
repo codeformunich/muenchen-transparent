@@ -124,7 +124,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
 
             <?php
             if (count($bvs) > 0) {
-                echo '<h3>BürgerInnenversammlung</h3><br>';
+                echo '<h3>Bürger*innenversammlung</h3><br>';
                 $this->renderPartial("../termine/termin_liste", array(
                     "termine"     => $bvs,
                     "gremienname" => false,

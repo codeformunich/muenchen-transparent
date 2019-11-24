@@ -2,6 +2,7 @@
 /**
  * @var Referat $referat
  * @var $antraege_referat
+ * @var string $my_url
  */
 
 $this->pageTitle = $referat->getName();
@@ -50,7 +51,7 @@ $this->pageTitle = $referat->getName();
             if ($referat->website != "") echo '<a href="'       . CHtml::encode($referat->website) . '" class="btn btn-primary" style="width: 150px">Website <span class="mdi-navigation-chevron-right" style="font-size: 200%; font-weight: bold; float: right; position: absolute; right: 0; top: 5px;"></span></a>';
             ?>
             <br><br>
-            <h2>ReferentIn</h2>
+            <h2>Referent*in</h2>
             <?php
             foreach ($referat->stadtraetInnenReferate as $str) echo CHtml::encode($str->stadtraetIn->name) . "<br>";
             ?>

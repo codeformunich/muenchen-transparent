@@ -8,7 +8,7 @@
 ?>
 
 <section class="well">
-    <h1>StadträtInnen: Social Media Links</h1>
+    <h1>Stadtratsmitglieder: Social Media Links</h1>
 
     <form method="POST" style="overflow: auto;">
         <table style="width: 100%;">

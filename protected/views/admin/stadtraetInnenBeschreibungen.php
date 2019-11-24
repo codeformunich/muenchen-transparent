@@ -8,7 +8,7 @@
 ?>
 
 <section class="well">
-    <h1>StadträtInnen: Beschreibungen</h1>
+    <h1>Stadtratsmitglieder: Beschreibungen</h1>
 
     <form method="POST" style="overflow: auto; font-size: 12px;">
         <table style="width: 100%;">

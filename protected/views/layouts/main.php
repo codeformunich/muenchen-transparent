@@ -147,13 +147,13 @@
                             <li class="<?php if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
                             <?php
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
-                                    <li><?= CHtml::link("StadträtInnen/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
-                                    <li><?= CHtml::link("StadträtInnen: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
-                                    <li><?= CHtml::link("StadträtInnen: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
-                                    <li><?= CHtml::link("BürgerInnenversammlungen", $this->createUrl("admin/buergerInnenversammlungen")) ?></li>
+                                    <li><?= CHtml::link("Stadtratsmitglieder/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
+                                    <li><?= CHtml::link("Stadtratsmitglieder: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
+                                    <li><?= CHtml::link("Stadtratsmitglieder: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
+                                    <li><?= CHtml::link("Bürger*innenversammlungen", $this->createUrl("admin/buergerInnenversammlungen")) ?></li>
                                 <?php }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) { ?>
-                                    <li><?= CHtml::link("StadträtInnen: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
+                                    <li><?= CHtml::link("Stadtratsmitglieder: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
                                 <?php }
                                 if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) { ?>
                                     <li><?= CHtml::link("Tags", $this->createUrl("admin/tags")) ?></li>

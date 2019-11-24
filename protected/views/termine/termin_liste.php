@@ -14,7 +14,7 @@
 		echo '<div class="row-content"><h4 class="list-group-item-heading">';
 		if ($termin["typ"] == Termin::$TYP_BUERGERVERSAMMLUNG) {
 			echo CHtml::encode($termin["datum_long"]);
-			echo '<meta itemprop="name" content="BürgerInnenversammlung">';
+			echo '<meta itemprop="name" content="Bürger*innenversammlung">';
 		} else {
 			echo '<a href="' . CHtml::encode($termin["link"]) . '" itemprop="url">';
 			echo CHtml::encode($termin["datum_long"]);

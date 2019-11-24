@@ -9,14 +9,14 @@
 $benutzerInnen = BenutzerIn::alleAktiveAccounts();
 ?>
 <section class="well">
-    <h1>StadträtInnen: Accounts</h1>
+    <h1>Stadtratsmitglieder: Accounts</h1>
 
     <form method="POST">
         <table>
             <thead>
             <tr>
                 <th>Name</th>
-                <th>BenutzerIn</th>
+                <th>Benutzer*in</th>
             </tr>
             </thead>
             <tbody>
