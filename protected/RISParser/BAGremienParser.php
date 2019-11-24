@@ -2,7 +2,7 @@
 
 class BAGremienParser extends RISParser
 {
-    private static $MAX_OFFSET     = 200;
+    private static $MAX_OFFSET     = 250;
     public static  $WAHLPERIODE_ID = 3184784;
 
     public function parse($gremien_id, $wahlperiode_id = 0)
@@ -16,6 +16,7 @@ class BAGremienParser extends RISParser
         $daten                         = new Gremium();
         $daten->id                     = $gremien_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->referat                = "";
 
         if (preg_match("/introheadline\">([^>]+)<\/h3/siU", $html_details, $matches)) $daten->name = html_entity_decode(trim($matches[1]), ENT_COMPAT, "UTF-8");
         if (preg_match("/<a href=\"ba_bezirksausschuesse_details[^>]+>(?<ba>[0-9]+ )/siU", $html_details, $matches)) $daten->ba_nr = html_entity_decode(trim($matches["ba"]), ENT_COMPAT, "UTF-8");
