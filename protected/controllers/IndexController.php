@@ -95,7 +95,7 @@ class IndexController extends RISBaseController
 
             /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
-            $hl->setFields('text, text_ocr, antrag_betreff');
+            $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
             $hl->setSimplePrefix('<b>');
             $hl->setSimplePostfix('</b>');
 
@@ -541,7 +541,7 @@ class IndexController extends RISBaseController
 
             /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
-            $hl->setFields('text, text_ocr, antrag_betreff');
+            $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
             $hl->setSimplePrefix('<b>');
             $hl->setSimplePostfix('</b>');
 
@@ -716,7 +716,9 @@ class IndexController extends RISBaseController
 
         /** @var Bezirksausschuss $ba */
         $ba      = Bezirksausschuss::model()->findByPk($ba_nr);
-        $gremien = $ba->gremien;
+        $gremien = array_filter($ba->gremien, function (Gremium $gremium) {
+            return $gremium->gremientyp !== 'BA-Fraktion';
+        });
 
         $this->render("ba_startseite", array_merge([
             "ba"                           => $ba,
