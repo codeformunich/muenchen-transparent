@@ -66,7 +66,7 @@ $single_krits_description = [
     'Volltextsuche nach "value_of_volltext"',
     'Dokumente des Typs "Stadtratsantrag"',
     'Dokumente der Wahlperiode value_of_antrag_wahlperiode',
-    'Bezirksausschuss 0: Stadtrat',
+    'Stadtrat',
     'Referat für städtische Aufgaben',
     'Antrag Nr. valueofantragnr',
     'Dokumente mit Ortsbezug (ungefähr: 1000m um "Marienplatz")',

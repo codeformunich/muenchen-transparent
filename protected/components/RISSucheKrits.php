@@ -282,7 +282,11 @@ class RISSucheKrits
             case "ba":
                 /** @var Bezirksausschuss $ba */
                 $ba = Bezirksausschuss::model()->findByAttributes(["ba_nr" => $this->krits[0]["ba_nr"]]);
-                $title = "Bezirksausschuss " . $ba->ba_nr . " (" . $ba->name . ")";
+                if ($ba->ba_nr == 0) {
+                    $title = "Stadtrat";
+                } else {
+                    $title = "Bezirksausschuss " . $ba->ba_nr . " (" . $ba->name . ")";
+                }
 
                 if ($dokument) {
                     /** @var AntragOrt[] $gefundene_orte */

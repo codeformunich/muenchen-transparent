@@ -220,7 +220,7 @@ class Bezirksausschuss extends CActiveRecord
             return Yii::app()->createUrl("index/startseite");
     }
 
-
+    // https://www.muenchen.de/rathaus/Stadtinfos/Statistik/Bev-lkerung/Monatlicher-Bestand.html
     public static $BA_EINWOHNERINNEN = [
         "1"  => 21085,
         "2"  => 51883,
