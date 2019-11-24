@@ -14,7 +14,7 @@
     "minimum-stability": "stable",
     "homepage": "https://www.muenchen-transparent.de/",
     "require": {
-        "php": "^7.2.0",
+        "php": "^7.3.0",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -37,7 +37,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.2.9"
+            "php": "7.3.11"
         },
         "optimize-autoloader": true
     }
