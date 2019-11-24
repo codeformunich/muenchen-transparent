@@ -176,14 +176,11 @@ class Bezirksausschuss extends CActiveRecord
             return [];
         }
         $funktionen = [];
+        $blacklists = ['Fraktions-Mitglied', 'Mitglied', 'BA-Mitglied'];
         foreach ($vollgremium->mitgliedschaften as $mitgliedschaft) {
-            if (mb_stripos($mitgliedschaft->funktion, "Mitgl") === 0) {
-                continue;
+            if (!in_array($mitgliedschaft->funktion, $blacklists)) {
+                $funktionen[] = $mitgliedschaft;
             }
-            if ($mitgliedschaft->funktion == "BA-Mitglied") {
-                continue;
-            }
-            $funktionen[] = $mitgliedschaft;
         }
 
         $funktion2weight = function ($funktion) {
