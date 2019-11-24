@@ -62,7 +62,7 @@ class BAGremienParser extends RISParser
         $mitglieder_pre = [];
         if ($alter_eintrag) {
             foreach ($alter_eintrag->mitgliedschaften as $mitgliedschaft) {
-                $mitglieder_pre[$mitgliedschaft->stadtraetIn_id . ':' . trim($mitgliedschaft->funktion)] = $mitgliedschaft;
+                $mitglieder_pre[$mitgliedschaft->stadtraetIn_id . ':' . $mitgliedschaft->datum_von . ':' . trim($mitgliedschaft->funktion)] = $mitgliedschaft;
             }
         }
 
@@ -103,14 +103,13 @@ class BAGremienParser extends RISParser
                 $funktion = trim($match2["funktion"]);
 
                 try {
-                    if (isset($mitglieder_pre[$stadtraetIn->id . ':' . $funktion])) {
-                        $mitgliedschaft = $mitglieder_pre[$stadtraetIn->id . ':' . $funktion];
-                        if ($mitgliedschaft->datum_von != $datum_von || $mitgliedschaft->datum_bis != $datum_bis) {
+                    if (isset($mitglieder_pre[$stadtraetIn->id . ':' . $datum_von . ':' . $funktion])) {
+                        $mitgliedschaft = $mitglieder_pre[$stadtraetIn->id . ':' . $datum_von . ':' . $funktion];
+                        if ($mitgliedschaft->datum_bis != $datum_bis) {
                             $mitgliedschaft->funktion  = $funktion;
                             $aenderungen               .= "Mitgliedschaft von " . $mitgliedschaft->stadtraetIn->name . ": ";
                             $aenderungen               .= $mitgliedschaft->datum_von . "/" . $mitgliedschaft->datum_bis . " => ";
                             $aenderungen               .= $datum_von . "/" . $datum_bis . "\n";
-                            $mitgliedschaft->datum_von = $datum_von;
                             $mitgliedschaft->datum_bis = $datum_bis;
                             $mitgliedschaft->save();
                         }
@@ -126,7 +125,7 @@ class BAGremienParser extends RISParser
                         $aenderungen .= "Neues Mitglied: " . $mitgliedschaft->stadtraetIn->name . " ($funktion)\n";
                     }
 
-                    $mitglieder_post[$stadtraetIn->id . ':' . $funktion] = $mitgliedschaft;
+                    $mitglieder_post[$stadtraetIn->id . ':' . $datum_von . ':' . $funktion] = $mitgliedschaft;
                 } catch (Exception $e) {
                     $str = "Gremium: $gremien_id\nStadträt*in: " . $stadtraetIn->id . "\nFunktion: $funktion\n" . $e->getMessage();
                     RISTools::send_email(Yii::app()->params["adminEmail"], "BAGremienParser Inkonsistenz", $str, null, "system");
