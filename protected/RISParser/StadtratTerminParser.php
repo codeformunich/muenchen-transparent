@@ -3,7 +3,7 @@
 class StadtratTerminParser extends RISParser
 {
     private static $MAX_OFFSET        = 7500;
-    private static $MAX_OFFSET_UPDATE = 550;
+    private static $MAX_OFFSET_UPDATE = 570;
 
     public function parse($termin_id)
     {
@@ -405,7 +405,7 @@ class StadtratTerminParser extends RISParser
 
         if ($first && count($matches[1]) > 0) {
 	        RISTools::report_ris_parser_error( "Stadtratstermin VOLL",
-		        "Erste Seite voll: $seite (" . RIS_BASE_URL . "ris_sitzung_trefferliste.jsp?txtPosition=$seite)" );
+		        "Erste Seite voll: $seite (" . RIS_BASE_URL . "ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add . ")" );
         }
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) {
