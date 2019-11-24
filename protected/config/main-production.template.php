@@ -125,9 +125,6 @@ return [
         'application.RISParser.*',
     ],
 
-    'onBeginRequest' => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
-    'onEndRequest'   => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_end_flush();'),
-
     'modules'        => [
         // uncomment the following to enable the Gii tool
         'gii' => [

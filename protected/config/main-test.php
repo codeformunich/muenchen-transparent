@@ -117,9 +117,6 @@ return [
         'application.RISParser.*',
     ],
 
-    'onBeginRequest' => create_function('$event', 'if (SITE_CALL_MODE == "web") return ob_start("ob_gzhandler");'),
-    'onEndRequest'   => create_function('$event', 'if (SITE_CALL_MODE == "web" && ob_get_level() > 0) return ob_end_flush();'),
-
     'timeZone' => 'Europe/Berlin',
 
     'modules'        => [
