@@ -119,11 +119,10 @@ class OParl10Controller extends CController {
             header('HTTP/1.0 410 Gone');
             return;
         } else {
+            if ($mode == 'download') {
+                header('Content-Disposition: attachment; filename="' . $dokument->getDateiname() . '"');
+            }
             echo $content;
-        }
-
-        if ($mode == 'download') {
-            header('Content-Disposition: attachment; filename="' . $dokument->getDateiname() . '"');
         }
     }
 }
