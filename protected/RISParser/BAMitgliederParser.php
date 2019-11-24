@@ -51,10 +51,11 @@ class BAMitgliederParser extends RISParser
                 echo "Lege an: " . $fraktion_name . "\n";
                 $min = Yii::app()->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
                 if ($min > 0) $min = -1;
-                $fraktion        = new Fraktion();
-                $fraktion->id    = $min;
-                $fraktion->name  = $fraktion_name;
-                $fraktion->ba_nr = $ba_nr;
+                $fraktion          = new Fraktion();
+                $fraktion->id      = $min;
+                $fraktion->name    = $fraktion_name;
+                $fraktion->ba_nr   = $ba_nr;
+                $fraktion->website = "";
                 $fraktion->save();
             }
 
