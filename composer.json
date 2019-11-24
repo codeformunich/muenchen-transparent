@@ -1,5 +1,5 @@
 {
-    "name": "codeformunich/Muenchen-Transparent",
+    "name": "codeformunich/muenchen-transparent",
     "description": "München Transparent",
     "type": "library",
     "license": "AGPL-3.0",
@@ -14,7 +14,7 @@
     "minimum-stability": "stable",
     "homepage": "https://www.muenchen-transparent.de/",
     "require": {
-        "php": "^7.1.0",
+        "php": "^7.2.0",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -37,7 +37,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.1.20"
+            "php": "7.2.9"
         },
         "optimize-autoloader": true
     }
