@@ -185,7 +185,7 @@ class Bezirksausschuss extends CActiveRecord
 
         $funktion2weight = function ($funktion) {
             $funktion = trim($funktion);
-            if (in_array($funktion, ["Vorsitz", "BA-Vorsitz", "BA-Vorsitzender", "BA-Vorsitzende", "Vorsitzender", "Vorsitzende", "Sitzungsleitung"])) {
+            if (in_array($funktion, ["Vorsitz", "BA-Vorsitz", "BA-Vorsitzender", "BA-Vorsitzende", "Vorsitzender", "Vorsitzende", "Sitzungsleitung", "Vorsitzende/r"])) {
                 return 1;
             }
             if (mb_stripos($funktion, "1. stell") === 0 || mb_stripos($funktion, "1. stv") === 0 || in_array($funktion, ["stellv. Vorsitz"])) {
