@@ -297,7 +297,7 @@ CREATE TABLE `gremien_history` (
   `datum_letzte_aenderung` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ba_nr` smallint(6) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
-  `kuerzel` varchar(20) NOT NULL,
+  `kuerzel` varchar(50) NOT NULL,
   `gremientyp` varchar(100) NOT NULL,
   `referat` varchar(100) NOT NULL,
   PRIMARY KEY (`id`,`datum_letzte_aenderung`),
