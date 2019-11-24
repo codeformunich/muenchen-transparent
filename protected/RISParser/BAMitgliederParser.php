@@ -48,11 +48,16 @@ class BAMitgliederParser extends RISParser
             if (!$strIn) {
                 echo "Neu anlegen: " . $matches["mitglied_id"][$i] . " - " . $name . " (" . $fraktion_name . ")\n";
 
-                $strIn              = new StadtraetIn();
-                $strIn->name        = $name;
-                $strIn->id          = $matches["mitglied_id"][$i];
-                $strIn->referentIn  = 0;
-                $strIn->gewaehlt_am = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["von"];
+                $strIn               = new StadtraetIn();
+                $strIn->name         = $name;
+                $strIn->id           = $matches["mitglied_id"][$i];
+                $strIn->referentIn   = 0;
+                $strIn->bio          = "";
+                $strIn->web          = "";
+                $strIn->beruf        = "";
+                $strIn->beschreibung = "";
+                $strIn->quellen      = "";
+                $strIn->gewaehlt_am  = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["von"];
                 $strIn->save();
             }
 
@@ -67,11 +72,6 @@ class BAMitgliederParser extends RISParser
                 $fraktion->name      = $fraktion_name;
                 $fraktion->ba_nr     = $ba_nr;
                 $fraktion->website   = "";
-                $strIn->bio          = "";
-                $strIn->web          = "";
-                $strIn->beruf        = "";
-                $strIn->beschreibung = "";
-                $strIn->quellen      = "";
                 $fraktion->save();
             }
 
