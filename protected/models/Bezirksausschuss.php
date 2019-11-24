@@ -221,18 +221,44 @@ class Bezirksausschuss extends CActiveRecord
     }
 
 
+    public static $BA_EINWOHNERINNEN = [
+        "1"  => 20926,
+        "2"  => 51632,
+        "3"  => 51311,
+        "4"  => 68265,
+        "5"  => 60937,
+        "6"  => 40682,
+        "7"  => 59386,
+        "8"  => 29535,
+        "9"  => 98520,
+        "10" => 53662,
+        "11" => 74731,
+        "12" => 76341,
+        "13" => 85971,
+        "14" => 45582,
+        "15" => 72006,
+        "16" => 114478,
+        "17" => 53937,
+        "18" => 52600,
+        "19" => 95554,
+        "20" => 49626,
+        "21" => 74098,
+        "22" => 46385,
+        "23" => 32677,
+        "24" => 60933,
+        "25" => 56281,
+    ];
+
     /**
      * @return array
      */
     public function getInteressanteStatistik()
     {
         $statistiken = [];
-
-        $daten = StatistikDatensatz::model()->findByAttributes(["gliederung_nummer" => $this->ba_nr, "basiswert_2_name" => "Anzahl aller Einwohner (gesamt)"], ["order" => "jahr DESC"]);
-        if ($daten) {
+        if (isset(static::$BA_EINWOHNERINNEN[$this->ba_nr])) {
             $statistiken[] = [
-                "name" => "EinwohnerInnen",
-                "wert" => $daten->basiswert_2,
+                "name" => "Einwohner*innen (31.12.2017)",
+                "wert" => static::$BA_EINWOHNERINNEN[$this->ba_nr],
             ];
         }
 

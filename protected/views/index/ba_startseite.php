@@ -156,7 +156,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             ?>
         <section class="well">
             <h2>Statistik</h2>
-            <ul style="list-style: none;">
+            <ul style="list-style: none; padding-left: 0;">
                 <?php
                 foreach ($statistiken as $statistik) {
                     echo '<li>' . CHtml::encode($statistik["name"]) . ': ' .  CHtml::encode($statistik["wert"]) . '</li>';
