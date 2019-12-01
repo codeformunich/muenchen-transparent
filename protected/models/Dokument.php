@@ -490,8 +490,6 @@ class Dokument extends CActiveRecord implements IRISItem
         $dokument->geo_extract();
         $dokument->solrIndex();
 
-        $dokument->highlightBenachrichtigung();
-
         return "Neue Datei: " . $dokument_id . " / " . $dok["name"] . "\n";
     }
 
@@ -772,13 +770,6 @@ class Dokument extends CActiveRecord implements IRISItem
     public static function getHighlightDokumente($limit = 3)
     {
         return Dokument::model()->findAll(["condition" => "highlight IS NOT NULL", "order" => "highlight DESC", "limit" => $limit]);
-    }
-
-    /**
-     */
-    public function highlightBenachrichtigung()
-    {
-        if ($this->seiten_anzahl >= 100) RISTools::send_email(Yii::app()->params["adminEmail"], "[RIS] Highlight?", $this->getOriginalLink(), null, "system");
     }
 
     /**
