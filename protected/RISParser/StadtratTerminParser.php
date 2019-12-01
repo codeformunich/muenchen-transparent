@@ -181,7 +181,8 @@ class StadtratTerminParser extends RISParser
             }
 
             $entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
-            $entscheidung          = trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original));
+            $entscheidung          = preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original);
+            $entscheidung          = trim(strip_tags($entscheidung));
 
             $top                         = new Tagesordnungspunkt();
             $top->datum_letzte_aenderung = new CDbExpression("NOW()");
@@ -199,8 +200,13 @@ class StadtratTerminParser extends RISParser
             if (!is_null($vorlage_id)) {
                 $html_vorlage_ergebnis = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
                 preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
-                if (isset($matches3["beschluss"]) && count($matches3["beschluss"]) > 0) $beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
-                else {
+                if (isset($matches3["beschluss"]) && count($matches3["beschluss"]) > 0) {
+                    $beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
+                    $beschluss = trim(strip_tags($beschluss));
+                    if ($beschluss === $entscheidung) {
+                        $beschluss = '';
+                    }
+                } else {
                     // RISTools::send_email(Yii::app()->params["adminEmail"], "StadtratTermin Kein Beschluss", "Termin: $termin_id\n" . RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id\n" . $html_vorlage_ergebnis);
                     $beschluss = "";
                 }
