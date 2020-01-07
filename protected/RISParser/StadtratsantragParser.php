@@ -2,7 +2,7 @@
 
 class StadtratsantragParser extends RISParser
 {
-    private static $MAX_OFFSET        = 21000;
+    private static $MAX_OFFSET        = 23000;
     private static $MAX_OFFSET_UPDATE = 200;
 
     public function parse($antrag_id)
@@ -200,7 +200,8 @@ class StadtratsantragParser extends RISParser
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ris_antrag_detail.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
 
-        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("Stadtratsantrag VOLL", "Erste Seite voll: $seite");
+        if ($first && count($matches[1]) > 0) RISTools::report_ris_parser_error("Stadtratsantrag VOLL",
+            "Erste Seite voll: $seite (" . RIS_BASE_URL . "ris_antrag_trefferliste.jsp?txtPosition=$seite)");
 
         for ($i = count($matches[1]) - 1; $i >= 0; $i--) try {
             $this->parse($matches[1][$i]);

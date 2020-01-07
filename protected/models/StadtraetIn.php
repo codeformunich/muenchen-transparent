@@ -249,7 +249,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $istBAler = false;
         foreach ($this->stadtraetInnenFraktionen as $frakt) if ($frakt->fraktion->ba_nr > 0) $istBAler = true;
         if ($istBAler) {
-            return RIS_BA_BASE_URL . "ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id;
+            return RIS_BA_BASE_URL . "ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id . '&Wahlperiode=3184784';
         } else {
             return RIS_BASE_URL . "ris_mitglieder_detail.jsp?risid=" . $this->id;
         }
