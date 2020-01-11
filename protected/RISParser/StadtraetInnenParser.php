@@ -34,9 +34,12 @@ class StadtraetInnenParser extends RISParser
 
         $html_details = RISTools::load_file(RIS_BASE_URL . "ris_mitglieder_detail_fraktion.jsp?risid=$stadtraetIn_id");
 
-        $daten             = new StadtraetIn();
-        $daten->id         = $stadtraetIn_id;
-        $daten->referentIn = 0;
+        $daten               = new StadtraetIn();
+        $daten->id           = $stadtraetIn_id;
+        $daten->referentIn   = 0;
+        $daten->beruf        = '';
+        $daten->beschreibung = '';
+        $daten->quellen      = '';
 
         if (preg_match("/introheadline\">(.*)<\/h3/siU", $html_details, $matches)) {
             $daten->name = trim(str_replace("&nbsp;", " ", $matches[1]));
