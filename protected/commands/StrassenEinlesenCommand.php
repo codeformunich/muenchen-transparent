@@ -2,23 +2,27 @@
 
 class StrassenEinlesenCommand extends CConsoleCommand
 {
-
     public function run($args)
     {
-        for ($i = ord('A'); $i <= ord('Z'); $i++) {
-            $txt = RISTools::load_file('http://stadt-muenchen.net/strassen/index.php?name=' . chr($i));
-            $txt = explode("<table class='full' border='0'>", $txt);
-            $txt = explode("</table>", $txt[1]);
+        for ($jahr = 2009; $jahr <= 2019; $jahr++) {
+            if ($jahr >= 2014) {
+                $url = 'https://www.muenchen.de/rathaus/Stadtverwaltung/Kommunalreferat/geodatenservice/strassennamen/' . $jahr . '.html';
+            } else {
+                $url = 'https://www.muenchen.de/rathaus/Stadtverwaltung/Kommunalreferat/geodatenservice/strassennamen/Strassenneubenennung-' . $jahr . '.html';
+            }
+            $txt = RISTools::load_file($url);
 
-            preg_match_all("/<tr><td>(.*)<\/tr>/siuU", $txt[0], $matches);
-            foreach ($matches[1] as $match) {
-                $y            = explode('</a></td><td>', $match);
-                $strassenname = preg_replace("/(s)tra(ß|ss)e$/siu", "\\1tr.", trim(strip_tags($y[0])));
-                $plz          = trim(strip_tags($y[1]));
+            $txt = explode("begin: lay-teaser", $txt);
+            $txt = explode("end: mod-list", $txt[1]);
+
+            preg_match_all("/<a[^<]+_self\">(?<strasse>[^<]*) <svg/siu", $txt[0], $matches);
+            foreach ($matches['strasse'] as $strasse) {
+                $strassenname = preg_replace("/(s)tra(ß|ss)e$/siu", "\\1tr.", trim(strip_tags($strasse)));
+                $plz = '';
 
                 $str = Strasse::model()->findByAttributes(["name" => $strassenname]);
                 if (!$str) {
-                    echo "Neu: " . $plz . " - " . $strassenname . "\n";
+                    echo "Neu: " . $strassenname . "\n";
                     $str          = new Strasse();
                     $str->name    = $strassenname;
                     $str->plz     = $plz;
@@ -26,11 +30,8 @@ class StrassenEinlesenCommand extends CConsoleCommand
                     if (!$str->save()) {
                         var_dump($str->getErrors());
                     }
-
                 }
             }
         }
     }
-
-
 }
