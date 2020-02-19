@@ -96,22 +96,7 @@ $this->html_itemprop = "http://schema.org/Person";
                     </tr>
                 <?php
                 } else {
-                    $suche = new RISSucheKrits();
-                    $suche->addKrit('volltext', "\"" . $person->getName() . "\"");
-                    $solr   = RISSolrHelper::getSolrClient();
-                    $select = $solr->createSelect();
-                    $suche->addKritsToSolr($select);
-                    $select->setRows(50);
-                    $select->addSort('sort_datum', $select::SORT_DESC);
-
-                    /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
-                    $hl = $select->getHighlighting();
-                    $hl->setFields('text, text_ocr, antrag_betreff');
-                    $hl->setSimplePrefix('<b>');
-                    $hl->setSimplePostfix('</b>');
-
-                    /** @var \Solarium\QueryType\Select\Result\Result $ergebnisse */
-                    $ergebnisse     = $solr->select($select);
+                    $ergebnisse     = $person->getDocumentMentions();
                     $solr_dokumente = $ergebnisse->getDocuments();
 
                     if (count($solr_dokumente) > 0) {

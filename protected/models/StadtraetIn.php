@@ -359,4 +359,41 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $this->overrideFraktionsMitgliedschaften();
         return $this->stadtraetInnenFraktionen;
     }
+
+    public function getAllSearchNames() {
+        $names = [$this->getName()];
+        if (isset(StadtraetInOverrides::$PERSON_ADDITIONAL_NAMES[$this->id])) {
+            $names = array_merge($names, StadtraetInOverrides::$PERSON_ADDITIONAL_NAMES[$this->id]);
+        }
+        return $names;
+    }
+
+    /**
+     * @return \Solarium\QueryType\Select\Result\Result
+     */
+    public function getDocumentMentions() {
+        $solr   = RISSolrHelper::getSolrClient();
+        $select = $solr->createSelect();
+
+        /** @var Solarium\QueryType\Select\Query\Component\DisMax $dismax */
+        $dismax = $select->getDisMax();
+        $dismax->setQueryParser('edismax');
+        $dismax->setQueryFields("text text_ocr");
+
+        $names = array_map(function($name) {
+            return "\"" . $name . "\"";
+        }, $this->getAllSearchNames());
+        $select->setQuery(implode(" OR ", $names));
+
+        $select->setRows(50);
+        $select->addSort('sort_datum', $select::SORT_DESC);
+
+        /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
+        $hl = $select->getHighlighting();
+        $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
+        $hl->setSimplePrefix('<b>');
+        $hl->setSimplePostfix('</b>');
+
+        return $solr->select($select);
+    }
 }

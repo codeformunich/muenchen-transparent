@@ -31,7 +31,7 @@ class RISSolrHelper
 
 
     /**
-     * @param \Solarium\QueryType\Select\Result\Result $ergebnisse
+     * @param \Solarium\QueryType\Select\Result\DocumentInterface $ergebnisse
      * @return array();
      */
     public static function ergebnisse2FeedData($ergebnisse)

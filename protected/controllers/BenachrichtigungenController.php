@@ -159,7 +159,7 @@ class BenachrichtigungenController extends RISBaseController
 
         /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
         $hl = $select->getHighlighting();
-        $hl->setFields('text, text_ocr, antrag_betreff');
+        $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
         $hl->setSimplePrefix('<b>');
         $hl->setSimplePostfix('</b>');
 
