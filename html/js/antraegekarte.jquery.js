@@ -72,6 +72,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             [47.9, 11.93]
         ]);
 
+        /*
         // Adresssuche hinzufügen
         L.Control.geocoder({
             placeholder: "Suche nach Adresse...",
@@ -79,6 +80,7 @@ $.widget("muenchen-transparent.AntraegeKarte", {
             collapsed: false,
             position: "topright"
         }).addTo($widget.map);
+        */
 
         // Automatische Positionsbestimmung
         L.control.locate({

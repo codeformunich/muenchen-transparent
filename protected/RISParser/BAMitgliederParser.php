@@ -3,6 +3,12 @@
 class BAMitgliederParser extends RISParser
 {
 
+    private function parseBaGremienListe(string $url)
+    {
+        $html = RISTools::load_file(RIS_BA_BASE_URL . "ba_gremien.jsp?selWahlperiode=3184784&selBA=" . $url);
+
+    }
+
     private static function parseSeitVonBisStr(string $str): array
     {
         $von = null;

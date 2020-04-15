@@ -2,6 +2,7 @@
 
 class StadtraetInnenParser extends RISParser
 {
+    private static $MAX_OFFSET        = 420;
 
     private $bearbeitete_stadtraetInnen = [];
     private $antraege_alle              = false;
@@ -182,7 +183,8 @@ class StadtraetInnenParser extends RISParser
             if (SITE_CALL_MODE != "cron") echo "- leer\n";
             return [];
         } elseif ($first) {
-            RISTools::report_ris_parser_error("StadträtInnenUpdate VOLL", "Erste Seite voll: $seite");
+            RISTools::report_ris_parser_error("StadträtInnenUpdate VOLL",
+                "Erste Seite voll: $seite (" . RIS_BASE_URL . "ris_mitglieder_trefferliste.jsp?txtPosition=$seite)");
         }
         $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
         preg_match_all("/ris_mitglieder_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -201,7 +203,7 @@ class StadtraetInnenParser extends RISParser
 
     public function parseAlle()
     {
-        $anz                              = 380;
+        $anz                              = static::$MAX_OFFSET;
         $this->bearbeitete_stadtraetInnen = [];
         $first                            = true;
         for ($i = $anz; $i >= 0; $i -= 10) {
