@@ -509,7 +509,7 @@ class IndexController extends RISBaseController
         }
 
         if (isset($_REQUEST["lat"]) && isset($_REQUEST["lng"]) && isset($_REQUEST["distance"])) {
-            $helper = $select->getHelper();
+            $helper  = $select->getHelper();
             $geoFilt = $helper->geofilt("geo", floatval($_REQUEST["lat"]), floatval($_REQUEST["lng"]), floatval($_REQUEST["distance"]) / 1000);
             $select->createFilterQuery("geo")->setQuery($geoFilt);
         }
@@ -542,7 +542,7 @@ class IndexController extends RISBaseController
             }
 
             foreach ($dok->orte as $ort) {
-                $geoOrt    = $ort->ort;
+                $geoOrt = $ort->ort;
                 if (isset($_REQUEST["lat"]) && isset($_REQUEST["lng"]) && isset($_REQUEST["distance"])) {
                     $distance = RISGeo::getDistance($_REQUEST["lat"], $_REQUEST["lng"], $geoOrt->lat, $geoOrt->lon);
                     if ($distance * 1000 > $_REQUEST["distance"]) {
@@ -557,9 +557,10 @@ class IndexController extends RISBaseController
                         "coordinates" => [floatval($geoOrt->lon), floatval($geoOrt->lat)],
                     ],
                     "properties" => [
-                        "link"  => "https://www.muenchen-transparent.de" . $risitem->getLink(),
-                        "title" => $risitem->getName(),
-                        "date"  => $risitem->getDate(),
+                        "link"          => "https://www.muenchen-transparent.de" . $risitem->getLink(),
+                        "title"         => $risitem->getName(),
+                        "date"          => $risitem->getDate(),
+                        "locationTitle" => $geoOrt->ort,
                     ],
                 ];
             }
