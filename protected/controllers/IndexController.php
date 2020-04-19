@@ -486,6 +486,92 @@ class IndexController extends RISBaseController
         return [$availalbe_facets, $used_factes];
     }
 
+    public function actionGeojsonSuche()
+    {
+        $krits = new RISSucheKrits();
+
+        $solr   = RISSolrHelper::getSolrClient();
+        $select = $solr->createSelect();
+
+        if (isset($_REQUEST["suchbegriff"])) {
+            $dismax = $select->getDisMax();
+            $dismax->setQueryParser('edismax');
+            $dismax->setQueryFields("text text_ocr");
+            $select->setQuery($_REQUEST["suchbegriff"]);
+        }
+
+        if (isset($_REQUEST["typ"])) {
+            $typen = [];
+            foreach ($_REQUEST["typ"] as $typ) {
+                $typen[] = "antrag_typ:" . $typ;
+            }
+            $select->createFilterQuery("antrag_typ")->setQuery(implode(" OR ", $typen));
+        }
+
+        if (isset($_REQUEST["lat"]) && isset($_REQUEST["lng"]) && isset($_REQUEST["distance"])) {
+            $helper = $select->getHelper();
+            $geoFilt = $helper->geofilt("geo", floatval($_REQUEST["lat"]), floatval($_REQUEST["lng"]), floatval($_REQUEST["distance"]) / 1000);
+            $select->createFilterQuery("geo")->setQuery($geoFilt);
+        }
+
+        if (isset($_REQUEST["limit"]) && $_REQUEST["limit"] <= 100) {
+            $select->setRows(intval($_REQUEST["limit"]));
+        }
+
+        $select->addSort('sort_datum', $select::SORT_DESC);
+
+        try {
+            $ergebnisse = $solr->select($select);
+        } catch (Exception $e) {
+            $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
+            Yii::app()->end(500);
+            die();
+        }
+
+        $geojson = [];
+
+        $dokumente = $ergebnisse->getDocuments();
+        foreach ($dokumente as $dokument) {
+            $dok = Dokument::getDocumentBySolrId($dokument->id, true);
+            if (!$dok) {
+                continue;
+            }
+            $risitem = $dok->getRISItem();
+            if (!$risitem) {
+                continue;
+            }
+
+            foreach ($dok->orte as $ort) {
+                $geoOrt    = $ort->ort;
+                if (isset($_REQUEST["lat"]) && isset($_REQUEST["lng"]) && isset($_REQUEST["distance"])) {
+                    $distance = RISGeo::getDistance($_REQUEST["lat"], $_REQUEST["lng"], $geoOrt->lat, $geoOrt->lon);
+                    if ($distance * 1000 > $_REQUEST["distance"]) {
+                        continue;
+                    }
+                }
+
+                $geojson[] = [
+                    "type"       => "Feature",
+                    "geometry"   => [
+                        "type"        => "Point",
+                        "coordinates" => [floatval($geoOrt->lon), floatval($geoOrt->lat)],
+                    ],
+                    "properties" => [
+                        "link"  => "https://www.muenchen-transparent.de" . $risitem->getLink(),
+                        "title" => $risitem->getName(),
+                        "date"  => $risitem->getDate(),
+                    ],
+                ];
+            }
+        }
+
+        Header("Content-Type: application/json; charset=UTF-8");
+        echo json_encode([
+            "type"     => "FeatureCollection",
+            "features" => $geojson,
+        ]);
+        Yii::app()->end();
+    }
 
     /**
      * @param string $code
