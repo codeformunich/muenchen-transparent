@@ -37,6 +37,8 @@ class StadtratsvorlageParser extends RISParser
             }
             $txt             = explode("</div>", $txt[1]);
             $daten->kurzinfo = trim(str_replace(["<br />", "<p>", "</p>"], ["", "", ""], $txt[0]));
+        } else {
+            return;
         }
 
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
