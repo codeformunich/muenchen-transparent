@@ -208,7 +208,7 @@
         <span class="pull-left">
             <?= CHtml::link("Über München-Transparent", Yii::app()->createUrl("infos/ueber")) ?> /
             <?= CHtml::link("Anregungen?", Yii::app()->createUrl("infos/feedback")) ?> /
-            <a href="https://meine-stadt-transparent.de/info/about/"
+            <a href="https://meine-stadt-transparent.de"
                title="Meine Stadt Transparent - ein freies Ratsinformationssystem ähnlich München Transparent">Weitere Städte</a>
         </span>
         <span class="pull-right">
