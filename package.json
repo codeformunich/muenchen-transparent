@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "bootstrap-sass": "^3.3.7",
-    "browser-sync": "^2.26.3",
-    "ckeditor": "^4.10.1",
+    "bootstrap-sass": "^3.4.1",
+    "browser-sync": "^2.26.10",
+    "ckeditor": "^4.12.1",
     "desandro-matches-selector": "^2.0.2",
     "ev-emitter": "^1.1.1",
     "fizzy-ui-utils": "^2.0.7",
@@ -15,8 +15,8 @@
     "gulp-expect-file": "^0.0.7",
     "gulp-if": "^2.0.2",
     "gulp-sass": "^3.2.1",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.1",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
     "isotope-layout": "^3.0.6",
     "jquery": "^2.2.4",
     "leaflet": "^0.7.7",
@@ -33,7 +33,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "selectize": "^0.12.6",
     "shariff": "^1.26.2",
-    "sifter": "^0.5.3",
+    "sifter": "^0.5.4",
     "typeahead.js": "^0.11.1",
     "yargs": "^10.0"
   }
