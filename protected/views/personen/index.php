@@ -83,12 +83,13 @@ $this->pageTitle   = $personen_typ_name;
                     </label>
                     <?php
                     foreach ($fraktionen as $fr_id => $fr_name) {
-                        if ($fr_name == 'Die Grünen / RL') $fr_name = 'Grüne';
+                        if ($fr_name == 'Die Grünen / RL') $fr_name = 'Grüne / RL';
                         if ($fr_name == 'Freiheitsrechte Transparenz Bürgerbeteiligung') $fr_name = 'Freiheitsrechte/...';
                         echo '<label class="btn btn-primary">';
                         echo '<input type="radio" name="options" value="' . $fr_id . '" autocomplete="off"> ' . CHtml::encode($fr_name);
                         echo '</label>';
                     }
+                    /*
                     if ($facebook) {
                         ?>
                         <label class="btn btn-info btn-separator-left">
@@ -102,6 +103,7 @@ $this->pageTitle   = $personen_typ_name;
                                 class="fontello-twitter" title="Twitter"></span>
                         </label>
                     <?php }
+                    */
                     if ($website) { ?>
                         <label class="btn btn-info">
                             <input type="radio" name="options" value="homepage" autocomplete="off"> <span
