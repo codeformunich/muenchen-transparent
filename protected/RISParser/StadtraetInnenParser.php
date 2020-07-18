@@ -2,7 +2,7 @@
 
 class StadtraetInnenParser extends RISParser
 {
-    private static $MAX_OFFSET        = 420;
+    private static $MAX_OFFSET        = 450;
 
     private $bearbeitete_stadtraetInnen = [];
     private $antraege_alle              = false;

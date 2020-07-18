@@ -15,6 +15,7 @@ class StadtratsfraktionParser
 
         $daten     = new Fraktion();
         $daten->id = $fraktion_id;
+        $daten->website = '';
 
         if (preg_match("/introheadline\">(.*)<\/h3/siU", $html_details, $matches)) {
             var_dump($matches);
