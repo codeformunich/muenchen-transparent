@@ -103,13 +103,14 @@ $this->pageTitle   = $personen_typ_name;
                                 class="fontello-twitter" title="Twitter"></span>
                         </label>
                     <?php }
-                    */
                     if ($website) { ?>
                         <label class="btn btn-info">
                             <input type="radio" name="options" value="homepage" autocomplete="off"> <span
                                 class="fontello-home" title="Homepage"></span>
                         </label>
-                    <?php } ?>
+                    <?php }
+                    */
+                    ?>
                 </div>
 
                 <div class="sort_widget">
