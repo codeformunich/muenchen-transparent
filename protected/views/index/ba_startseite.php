@@ -173,6 +173,9 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
         ));
 
         $funktionen = $ba->mitgliederMitFunktionen();
+        $funktionen = array_filter($funktionen, function (StadtraetInGremium $funktion) {
+            return $funktion->mitgliedschaftAktiv();
+        });
         if (count($funktionen) > 0) {
             ?>
             <section class="well">
@@ -180,7 +183,6 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
                 <dl class="ba_funktionen">
                     <?php
                     foreach ($funktionen as $funktion) {
-                        if (!$funktion->mitgliedschaftAktiv()) continue;
                         $strIn = $funktion->stadtraetIn;
                         echo '<dt>' . CHtml::encode($funktion->funktion) . '</dt>';
                         echo '<dd><a href="' . CHtml::encode($strIn->getLink()) . '">' . CHtml::encode($strIn->getName()) . '</a></dd>';

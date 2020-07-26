@@ -251,7 +251,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         if ($istBAler) {
             return RIS_BA_BASE_URL . "ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id . '&Wahlperiode=5666213';
         } else {
-            return RIS_BASE_URL . "ris_mitglieder_detail.jsp?risid=" . $this->id . '&Wahlperiode=5666210';
+            return RIS_BASE_URL . "ris_mitglieder_detail.jsp?risid=" . $this->id . '&periodeid=5666210';
         }
     }
 

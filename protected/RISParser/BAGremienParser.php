@@ -2,7 +2,7 @@
 
 class BAGremienParser extends RISParser
 {
-    private static $MAX_OFFSET     = 250;
+    private static $MAX_OFFSET     = 280;
     public static  $WAHLPERIODE_ID = 3184784;
 
     public function parse($gremien_id, $wahlperiode_id = 0)
