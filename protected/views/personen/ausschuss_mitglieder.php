@@ -35,6 +35,7 @@ if ($gremienzahl > 0) {
                         $mitgliedschaft->stadtraetIn->getName(); // Laden erzwingen, ansonsten liefert usort eine Fehlermeldung
                     }
                 }
+                if (count($aktiveMitgliedschaften) === 0) continue;
 
                 echo "<li><a href='#' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
                 echo "<span class='count'>" . count($aktiveMitgliedschaften) . "</span>";
