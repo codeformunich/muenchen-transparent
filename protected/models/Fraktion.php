@@ -100,7 +100,7 @@ class Fraktion extends CActiveRecord implements IRISItem
     public function getName($kurzfassung = false)
     {
         $name = RISTools::korrigiereTitelZeichen($this->name);
-        if ($name == "&nbsp;" || trim($name) == "") return "fraktionslos";
+        if ($name == "&nbsp;" || trim($name) == "" || trim($name) === 'Parteifrei') return "keine Angabe";
         if ($kurzfassung) {
             if (in_array($this->id, [3339564, 2988265, 3312425])) return "Bürgerliche Mitte";
             if ($this->id == 5987061) return "FDP / Bayernpartei";
