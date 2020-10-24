@@ -38,7 +38,7 @@ if ($gremienzahl > 0) {
                                 'mitglied' => $mitgliedschaft->stadtraetIn,
                             ];
                         }
-                        if ($mitgliedschaft->funktion != '') {
+                        if ($mitgliedschaft->funktion != '' && !in_array($mitgliedschaft->funktion, ['UA-Mitglied', 'Mitglied'])) {
                             $aktiveMitgliedschaften[$mitgliedschaft->stadtraetIn_id]['funktionen'][] = $mitgliedschaft->funktion;
                         }
                     }
