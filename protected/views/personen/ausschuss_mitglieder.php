@@ -28,32 +28,39 @@ if ($gremienzahl > 0) {
                 if (count($gremium->mitgliedschaften) == 0) continue;
                 if (mb_strpos($gremium->name, "Vollgremium") !== false) continue;
 
-                $aktiveMitgliedschaften = array();
+                $aktiveMitgliedschaften = [];
                 foreach ($gremium->mitgliedschaften as $mitgliedschaft) {
                     if ($mitgliedschaft->mitgliedschaftAktiv()) {
-                        $aktiveMitgliedschaften[] = $mitgliedschaft;
-                        $mitgliedschaft->stadtraetIn->getName(); // Laden erzwingen, ansonsten liefert usort eine Fehlermeldung
+                        if (!isset($aktiveMitgliedschaften[$mitgliedschaft->stadtraetIn_id])) {
+                            $aktiveMitgliedschaften[$mitgliedschaft->stadtraetIn_id] = [
+                                'name' => $mitgliedschaft->stadtraetIn->getName(), // Laden erzwingen, ansonsten liefert usort eine Fehlermeldung
+                                'funktionen' => [],
+                                'mitglied' => $mitgliedschaft->stadtraetIn,
+                            ];
+                        }
+                        if ($mitgliedschaft->funktion != '') {
+                            $aktiveMitgliedschaften[$mitgliedschaft->stadtraetIn_id]['funktionen'][] = $mitgliedschaft->funktion;
+                        }
                     }
                 }
                 if (count($aktiveMitgliedschaften) === 0) continue;
+                $aktiveMitgliedschaften = array_values($aktiveMitgliedschaften);
 
                 echo "<li><a href='#' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
                 echo "<span class='count'>" . count($aktiveMitgliedschaften) . "</span>";
                 echo CHtml::encode($gremium->getName(true)) . "</a><ul class='mitglieder'>";
 
                 usort($aktiveMitgliedschaften, function ($mitgliedschaft1, $mitgliedschaft2) {
-                    /** @var StadtraetInGremium $mitgliedschaft1 */
-                    /** @var StadtraetInGremium $mitgliedschaft2 */
-                    return StadtraetIn::sortByNameCmp($mitgliedschaft1->stadtraetIn->getName(), $mitgliedschaft2->stadtraetIn->getName());
+                    return StadtraetIn::sortByNameCmp($mitgliedschaft1['name'], $mitgliedschaft2['name']);
                 });
 
                 foreach ($aktiveMitgliedschaften as $mitgliedschaft) {
-                    if (!$mitgliedschaft->mitgliedschaftAktiv()) continue;
-
-                    $mitglied = $mitgliedschaft->stadtraetIn;
+                    /** @var StadtraetIn $mitglied */
+                    $mitglied = $mitgliedschaft['mitglied'];
+                    $funktionen = implode(', ', $mitgliedschaft['funktionen']);
                     echo "<li>";
                     echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>" . CHtml::encode($mitglied->getName()) . "</a>";
-                    if ($mitgliedschaft->funktion != "" && !preg_match("/^mitglied/siu", $mitgliedschaft->funktion)) echo ' <span class="zusatzdaten">(' . CHtml::encode($mitgliedschaft->funktion) . ')</span>';
+                    if ($funktionen && !preg_match("/^mitglied/siu", $funktionen)) echo ' <span class="zusatzdaten">(' . CHtml::encode($funktionen) . ')</span>';
                     /*
                     if ($mitgliedschaft->datum_bis !== null || $mitgliedschaft->datum_von != "2014-05-01") {
                         // @TODO Datum der Legislaturperiode flexibilisieren
