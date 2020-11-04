@@ -19,7 +19,11 @@ class StadtratGremiumParser
         if (preg_match("/Gremientyp:.*detail_div\">([^>]*)<\//siU", $html_details, $matches)) $daten->gremientyp = $matches[1];
         if (preg_match("/Referat:.*detail_div\">([^>]*)<\//siU",    $html_details, $matches)) $daten->referat    = $matches[1];
 
-        foreach ($daten as $key => $val) $daten[$key] = ($val === null ? null : html_entity_decode(trim($val), ENT_COMPAT, "UTF-8"));
+        foreach ($daten as $key => $val) {
+            if (!($val === null || (is_object($val) && is_a($val, CDbExpression::class)))) {
+                $daten[$key] = html_entity_decode(trim($val), ENT_COMPAT, "UTF-8");
+            }
+        }
 
         $aenderungen = "";
 

@@ -41,10 +41,14 @@ class ReferentInnenParser extends RISParser
                     $str->save();
                 }
             } else {
-                $str             = new StadtraetIn();
-                $str->name       = $name;
-                $str->id         = $id;
-                $str->referentIn = 1;
+                $str               = new StadtraetIn();
+                $str->name         = $name;
+                $str->id           = $id;
+                $str->referentIn   = 1;
+                $str->beruf        = '';
+                $str->bio          = '';
+                $str->beschreibung = '';
+                $str->quellen      = '';
                 $str->save();
             }
 
