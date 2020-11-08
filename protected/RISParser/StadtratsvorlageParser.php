@@ -21,12 +21,10 @@ class StadtratsvorlageParser extends RISParser
         $daten->gestellt_von           = "";
         $daten->antrag_typ             = "";
         $daten->bearbeitung            = "";
+        $daten->kurzinfo               = "";
         $daten->initiatorInnen         = "";
         $daten->referent               = "";
         $daten->referat                = "";
-
-        $dokumente  = [];
-        $ergebnisse = [];
 
         if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
             $html_kurzinfo = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
@@ -112,6 +110,7 @@ class StadtratsvorlageParser extends RISParser
 
         $geloescht = ($betreff_gefunden && $daten->wahlperiode == "" && $daten->status == "" && $daten->betreff == "");
 
+        $dokumente  = [];
         preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]+)\"[^>]*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
         for ($i = 0; $i < count($matches[1]); $i++) {
             $dokumente[] = [
