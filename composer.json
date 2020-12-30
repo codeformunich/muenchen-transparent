@@ -33,7 +33,7 @@
         "heise/shariff": "^7.0",
         "sgh/pdfbox": "^1.0",
         "codeception/yii-bridge": "dev-master",
-        "mailjet/mailjet-apiv3-php": "dev-master"
+        "mailjet/mailjet-apiv3-php": "^1.5"
     },
     "config": {
         "platform": {
