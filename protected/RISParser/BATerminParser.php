@@ -2,7 +2,7 @@
 
 class BATerminParser extends RISParser
 {
-    private static $MAX_OFFSET        = 5200;
+    private static $MAX_OFFSET        = 7500;
     private static $MAX_OFFSET_UPDATE = 300;
 
     /**
