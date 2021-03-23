@@ -95,6 +95,8 @@ class RISPDF2Text
      */
     public static function document_text_ocr($filename, $seiten_anzahl)
     {
+        // Hint: PDF-parsing needs to be enabled in /etc/ImageMagick-6/policy.xml
+
         $depth = "-depth 8";
         $text  = "";
 
