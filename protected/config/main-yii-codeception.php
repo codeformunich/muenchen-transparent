@@ -8,7 +8,7 @@ define("SITE_BASE_URL", 'http://yii-codeception.test');
 $x = require_once("main-test.php");
 
 $x["components"]['request'] = [
-    'class' => 'CodeceptionHttpRequest'
+    // 'class' => 'CodeceptionHttpRequest'
 ];
 
 return $x;

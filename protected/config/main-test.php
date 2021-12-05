@@ -27,6 +27,7 @@ define("EMAIL_LOG_FILE", TMP_PATH . "/email.log");
 
 // Konstanten, die das RIS betreffen
 define("RIS_URL_PREFIX", "http://localhost:8080"); // Zum Testen des Proxys
+define("RIS_PDF_PREFIX", "https://risi.muenchen.de/risi/dokument/v/");
 define("RIS_BASE_URL", "https://www.ris-muenchen.de/RII/RII/");
 define("RIS_BA_BASE_URL",  "https://www.ris-muenchen.de/RII/BA-RII/");
 define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");
@@ -140,14 +141,14 @@ return [
             'rules'          => $GLOBALS["RIS_URL_RULES"],
         ],
         'db'           => [
-            'connectionString'      => 'mysql:host=127.0.0.1;dbname=mt-test',
+            'connectionString'      => 'mysql:host=localhost;dbname=mt-test',
             'emulatePrepare'        => true,
-            'username'              => 'travis',
+            'username'              => 'root',
             'password'              => '',
             'charset'               => 'utf8mb4',
             'queryCacheID'          => 'apcCache',
             'schemaCachingDuration' => 3600,
-            'initSQLs'              => ['SET time_zone = "' . DEFAULT_TIMEZONE . '"'],
+            //'initSQLs'              => ['SET time_zone = "' . DEFAULT_TIMEZONE . '"'],
         ],
         'errorHandler' => [
             // use 'site/error' action to display errors

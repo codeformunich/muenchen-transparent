@@ -1,7 +1,6 @@
 <?php
 $I = new UnitTester($scenario);
 $I->wantTo('Test RISSucheKrits');
-$I->amOnPage('/themen');
 
 // Get the test data
 require "RISSucheKritsData.php";
@@ -52,10 +51,10 @@ foreach ($krits_array as $i => $val) {
     // solr
     $solr = RISSolrHelper::getSolrClient();
     $select = $solr->createSelect();
-    $I->assertEquals($krits->getSolrQueryStr($select), $solr_query_strings[$i]);
+    $I->assertEquals($solr_query_strings[$i], $krits->getSolrQueryStr($select));
 
     // other
-    $I->assertEquals($krits->getBeschreibungDerSuche(), $single_krits_description[$i]);
+    $I->assertEquals($single_krits_description[$i], $krits->getBeschreibungDerSuche());
     $I->assertTrue($krits->hasKrit($val['typ']), $val['typ']);
     $I->assertFalse($krits->hasKrit("invalid"));
 }

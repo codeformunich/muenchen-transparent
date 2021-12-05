@@ -23,6 +23,16 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
 ?>
 
+<br><br>
+<div class="alert alert-warning">
+    <p>
+        Hinweis: Das <a href="https://risi.muenchen.de/" style="color: blue; text-decoration: underline;">neue, verbesserte Ratsinformationssystem</a> ist Anfang November online gegangen.
+        Leider können wir bei München Transparent von diesem die neuen Anträge nicht auf die selbe weise abgreifen wie bisher.
+        Daher können keine neuen Anträge und Vorlagen importiert werden, bis wir eine neue Möglichkeit gefunden haben.
+        Der Stand von München Transparent ist bis dahin der von Ende Oktober 2021.
+    </p>
+</div>
+
 <section class="well">
     <h1 class="sr-only"><?= CHtml::encode($this->pageTitle) ?></h1>
 

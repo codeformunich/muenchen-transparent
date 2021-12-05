@@ -20,7 +20,7 @@ modules:
     config:
         Db:
             dsn: 'mysql:host=127.0.0.1;dbname=mt-test'
-            user: 'travis'
+            user: 'root'
             password: ''
             dump: 'tests/_data/dump.sql' # The dataset is created by the travis run script
             populate: false

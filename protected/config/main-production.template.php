@@ -27,6 +27,7 @@ define("EMAIL_LOG_FILE", TMP_PATH . "/email.log");
 
 // Konstanten, die das RIS betreffen
 define("RIS_URL_PREFIX", "https://www.ris-muenchen.de");
+define("RIS_PDF_PREFIX", "https://risi.muenchen.de/risi/dokument/v/");
 define("RIS_BASE_URL", RIS_URL_PREFIX . "/RII/RII/");
 define("RIS_BA_BASE_URL",  RIS_URL_PREFIX . "/RII/BA-RII/");
 define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");

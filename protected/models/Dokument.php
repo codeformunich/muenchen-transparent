@@ -319,7 +319,7 @@ class Dokument extends CActiveRecord implements IRISItem
         } elseif ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
             RISTools::download_file("http://www.muenchen.de" . $this->url, $filename);
         } else {
-            RISTools::download_file(RIS_URL_PREFIX . $this->url, $filename);
+            RISTools::download_file(RIS_PDF_PREFIX . $this->id, $filename);
         }
     }
 
