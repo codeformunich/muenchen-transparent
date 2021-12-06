@@ -32,7 +32,8 @@
         "codeception/codeception": "^4.0",
         "sgh/pdfbox": "^1.0",
         "codeception/yii-bridge": "dev-master",
-        "mailjet/mailjet-apiv3-php": "^1.5"
+        "mailjet/mailjet-apiv3-php": "^1.5",
+        "chrome-php/chrome": "^1.2"
     },
     "config": {
         "platform": {
