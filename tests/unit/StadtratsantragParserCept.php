@@ -1,0 +1,256 @@
+<?php
+$I = new UnitTester($scenario);
+$I->wantTo('Test StadtratsantragParser');
+
+$html = <<<HTML
+<li class="list-group-item even">
+
+
+
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="images/Vorgang_StRAntrag.svg" title="StR-Antrag / StR-Anfrage" alt="Oranger Ordner">
+</div>
+<div class="flex-grow-1 d-flex flex-column flex-md-row align-items-baseline justify-content-between">
+<div>
+<a class="headline-link" href="./antrag/detail/6878706" title="Öffnet den Vorgang „StR-Antrag 20-26 / A 02073“">Neubau Kulturbürgerhaus Pasing an der Offenbachstraße</a>
+<span class="d-inline-block font-size-medium">(20-26 / A 02073)</span>
+
+</div>
+<div id="id2a" style="display:none" data-wicket-placeholder=""></div>
+</div>
+</div>
+<div class="row mt-2">
+<div class="col-12 col-md-6 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Gestellt am:</div>
+<div class="keyvalue-value">
+29.10.2021
+</div>
+</div>
+</div>
+<div class="col-12 col-md-6 mt-2 mt-md-0 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Typ:</div>
+<div class="keyvalue-value">
+Aenderungsantrag
+</div>
+</div>
+</div>
+</div>
+<div class="row mt-2">
+<div class="col-12 col-md-6 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Bearbeitungsfrist:</div>
+<div class="keyvalue-value">
+28.10.2021
+</div>
+</div>
+</div>
+
+</div>
+<div class="row mt-2">
+<div class="col-12 col-md-6 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Art:</div>
+<div class="keyvalue-value">
+
+<img class="svg-icon" src="images/Oeffentlich.svg" title="Öffentlich" alt="Blau-grüne Weltkugel">
+<span>Öffentlicher Vorgang</span>
+
+</div>
+</div>
+</div>
+<div class="col-12 col-md-6 mt-2 mt-md-0 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Status:</div>
+<div class="keyvalue-value">
+Erledigt
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Gestellt von:</div>
+<div class="keyvalue-value">Fraktion Die Grünen - Rosa Liste, SPD / Volt - Fraktion</div>
+</div>
+</div>
+</div>
+
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Zuständiges Referat:</div>
+<div class="keyvalue-value">
+
+
+<a class="icon_action" href="./organisationseinheit/detail/3" title="Öffnet die Detailansicht „Kommunalreferat“">Kommunalreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div class="mt-2">
+
+<div class="row">
+<div class="col-12 col-md-6">
+<div class="d-flex">
+<div><img class="svg-icon mr-1" src="images/Oeffentlich.svg" title="Öffentlich" alt="Blau-grüne Weltkugel"></div><div>
+<div class="text-break">
+<a class="downloadlink" href="./dokument/v/6878710" title="Öffnet das Dokument „Die Gruenen - Rosa Liste - SPD - Volt - Antrag“">Die Gruenen - Rosa Liste - SPD - Volt - Antrag.pdf</a> <span class="d-inline-block">(389 KB)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-12 col-md-6"><a class="icon_action" href="./antrag/detail/6878706?dokument=v6878710" title="Öffnet das Dokument „Die Gruenen - Rosa Liste - SPD - Volt - Antrag“ in der Dokumenten-Vorschau des Vorgangs „StR-Antrag 20-26 / A 02073“">Dokumentenvorschau</a></div>
+</div>
+
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="./antrag/detail/6878706#ergebnisse" title="Öffnet den Vorgangs-Bereich „Ergebnisse“ des Vorgangs „StR-Antrag 20-26 / A 02073“">Ergebnisse</a>
+</div>
+
+</li><li class="list-group-item odd">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="images/Vorgang_StRAntrag.svg" title="StR-Antrag / StR-Anfrage" alt="Oranger Ordner">
+</div>
+<div class="flex-grow-1 d-flex flex-column flex-md-row align-items-baseline justify-content-between">
+<div>
+<a class="headline-link" href="./antrag/detail/6817704" title="Öffnet den Vorgang „StR-Anfrage 20-26 / F 00352“">Schülerausweise wie selbstgebastelt – Wie funktioniert der 3G-Nachweis?</a>
+<span class="d-inline-block font-size-medium">(20-26 / F 00352)</span>
+
+</div>
+<div id="id102" style="display:none" data-wicket-placeholder=""></div>
+</div>
+</div>
+<div class="row mt-2">
+<div class="col-12 col-md-6 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Gestellt am:</div>
+<div class="keyvalue-value">
+01.10.2021
+</div>
+</div>
+</div>
+<div class="col-12 col-md-6 mt-2 mt-md-0 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Typ:</div>
+<div class="keyvalue-value">
+Anfrage
+</div>
+</div>
+</div>
+</div>
+<div class="row mt-2">
+<div class="col-12 col-md-6 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Bearbeitungsfrist:</div>
+<div class="keyvalue-value">
+12.11.2021
+</div>
+</div>
+</div>
+
+<img class="svg-icon" src="images/Oeffentlich.svg" title="Öffentlich" alt="Blau-grüne Weltkugel">
+<span>Öffentlicher Vorgang</span>
+
+</div>
+</div>
+</div>
+<div class="col-12 col-md-6 mt-2 mt-md-0 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Status:</div>
+<div class="keyvalue-value">
+In Bearbeitung
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Gestellt von:</div>
+<div class="keyvalue-value">Herr StR Prof. Dr. Jörg Hoffmann, Frau StRin Gabriele Neff, Herr StR Richard Progl, Herr StR Fritz Roth</div>
+</div>
+</div>
+</div>
+
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Zuständiges Referat:</div>
+<div class="keyvalue-value">
+
+
+<a class="icon_action" href="./organisationseinheit/detail/2164191" title="Öffnet die Detailansicht „Referat für Bildung und Sport“">Referat für Bildung und Sport</a>
+
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+
+<div class="row">
+<div class="col-12 col-md-6">
+<div class="d-flex">
+<div><img class="svg-icon mr-1" src="images/Oeffentlich.svg" title="Öffentlich" alt="Blau-grüne Weltkugel"></div><div>
+<div class="text-break">
+<a class="downloadlink" href="./dokument/v/6817729" title="Öffnet das Dokument „Anfrage“">Anfrage.pdf</a> <span class="d-inline-block">(173 KB)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-12 col-md-6"><a class="icon_action" href="./antrag/detail/6817704?dokument=v6817729" title="Öffnet das Dokument „Anfrage“ in der Dokumenten-Vorschau des Vorgangs „StR-Anfrage 20-26 / F 00352“">Dokumentenvorschau</a></div>
+</div>
+
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="./antrag/detail/6817704#ergebnisse" title="Öffnet den Vorgangs-Bereich „Ergebnisse“ des Vorgangs „StR-Anfrage 20-26 / F 00352“">Ergebnisse</a>
+</div>
+
+</li>
+
+HTML;
+
+
+$downloader = new class($html) extends BrowserBasedDowloader {
+    private string $html;
+
+    public function __construct(string $html)
+    {
+        $this->html = $html;
+    }
+
+    public function downloadDocumentTypeListForPeriod(string $type, \DateTime $from, \DateTime $to): string {
+        return $this->html;
+    }
+};
+
+$parser = new StadtratsantragParser($downloader);
+$parsed = $parser->parseMonth(2021, 1);
+
+$I->assertCount(2, $parsed);
+
+$I->assertSame(6878706, $parsed[0]->id);
+$I->assertSame('./antrag/detail/6878706', $parsed[0]->link);
+$I->assertSame('Neubau Kulturbürgerhaus Pasing an der Offenbachstraße', $parsed[0]->titleShortened);
+$I->assertSame('2021-10-29', $parsed[0]->gestelltAm->format('Y-m-d'));
+
+$I->assertSame(6817704, $parsed[1]->id);
+$I->assertSame('./antrag/detail/6817704', $parsed[1]->link);
+$I->assertSame('Schülerausweise wie selbstgebastelt – Wie funktioniert der 3G-Nachweis?', $parsed[1]->titleShortened);
+$I->assertSame('2021-10-01', $parsed[1]->gestelltAm->format('Y-m-d'));

@@ -5,6 +5,17 @@ class StadtratsantragParser extends RISParser
     private static $MAX_OFFSET        = 26000;
     private static $MAX_OFFSET_UPDATE = 200;
 
+    private BrowserBasedDowloader $browserBasedDowloader;
+
+    public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null)
+    {
+        if ($browserBasedDowloader) {
+            $this->browserBasedDowloader = $browserBasedDowloader;
+        } else {
+            $this->browserBasedDowloader = new BrowserBasedDowloader();
+        }
+    }
+
     public function parse($antrag_id)
     {
         $antrag_id = IntVal($antrag_id);
@@ -249,5 +260,38 @@ class StadtratsantragParser extends RISParser
             $ids        = $this->parseSeite($i * 10, false);
             $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
         }
+    }
+
+
+    /**
+     * @return StadtratsantragListEntry[]
+     * @throws ParsingException
+     */
+    public function parseMonth(int $year, int $month): array
+    {
+        $from = new \DateTime($year . '-' . $month . '-1');
+        $to = (clone $from)->modify('last day of this month');
+
+        /*
+        if (file_exists('/tmp/html.html')) {
+            $html = file_get_contents('/tmp/html.html');
+        } else {
+            $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_TYPE_STADTRAT, $from, $to);
+
+            file_put_contents('/tmp/html.html', $html);
+        }
+        */
+        $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_TYPE_STADTRAT, $from, $to);
+
+        preg_match_all('/<li.*<\/li>/siuU', $html, $matches);
+        $parsedObjects = [];
+        foreach ($matches[0] as $match) {
+            $obj = StadtratsantragListEntry::parseFromHtml($match);
+            if ($obj) {
+                $parsedObjects[] = $obj;
+            }
+        }
+
+        return $parsedObjects;
     }
 }
