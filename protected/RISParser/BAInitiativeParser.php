@@ -5,14 +5,12 @@ class BAInitiativeParser extends RISParser
     private static $MAX_OFFSET        = 5500;
     private static $MAX_OFFSET_UPDATE = 200;
 
-    public function parse($antrag_id)
+    public function parse(int $antrag_id): ?Antrag
     {
-        $antrag_id = IntVal($antrag_id);
-
         if (SITE_CALL_MODE != "cron") echo "- Initiative $antrag_id\n";
-	if ($antrag_id == 0) {
-                RISTools::report_ris_parser_error("Fehler BAInitiativeParser", "Initiative-ID 0\n" . print_r(debug_backtrace(), true));
-                return;
+	    if ($antrag_id == 0) {
+            RISTools::report_ris_parser_error("Fehler BAInitiativeParser", "Initiative-ID 0\n" . print_r(debug_backtrace(), true));
+            return null;
         }
 
         $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=$antrag_id");
@@ -104,7 +102,7 @@ class BAInitiativeParser extends RISParser
         if ($daten->ba_nr == 0) {
             echo "BA-Initiative $antrag_id: " . "Keine BA-Angabe";
             $GLOBALS["RIS_PARSE_ERROR_LOG"][] = "Keine BA-Angabe (Initiative): $antrag_id";
-            return;
+            return null;
         }
 
         $aenderungen = "";
@@ -165,9 +163,11 @@ class BAInitiativeParser extends RISParser
             $antrag->save();
             $antrag->rebuildVorgaenge();
         }
+
+        return $daten;
     }
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Initiativen Seite $seite\n";
         $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_initiativen.jsp?Trf=n&Start=$seite");
@@ -186,7 +186,7 @@ class BAInitiativeParser extends RISParser
         return $matches[1];
     }
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $anz   = static::$MAX_OFFSET;
         $first = true;
@@ -198,7 +198,7 @@ class BAInitiativeParser extends RISParser
     }
 
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         echo "Updates: BA-Initiativen\n";
         $loaded_ids = [];
@@ -209,7 +209,7 @@ class BAInitiativeParser extends RISParser
         }
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }

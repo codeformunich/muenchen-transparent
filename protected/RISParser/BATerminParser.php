@@ -30,9 +30,8 @@ class BATerminParser extends RISParser
         return $behalten;
     }
 
-    public function parse($termin_id)
+    public function parse(int $termin_id): Termin
     {
-        $termin_id = IntVal($termin_id);
         if (SITE_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
         $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=$termin_id");
@@ -335,15 +334,16 @@ class BATerminParser extends RISParser
             $termin->save();
         }
 
+        return $daten;
     }
 
-    public function parseSeite($seite, $alle = false)
+    public function parseSeite(int $seite, int $first, bool $alle = false): array
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Termin Seite $seite\n";
         $add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
         $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_sitzungen.jsp?Start=$seite" . $add);
         $txt  = explode("<table class=\"ergebnistab\" ", $text);
-        if (count($txt) == 1) return;
+        if (count($txt) == 1) return [];
         $txt  = explode("<!-- tabellenfuss", $txt[1]);
 
         preg_match_all("/ba_sitzungen_details\.jsp\?Id=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
@@ -352,9 +352,11 @@ class BATerminParser extends RISParser
         }
 
         sleep(5); // Scheint ziemlich aufwändig auf der RIS-Seite zu sein, mal lieber nicht überlasten :)
+
+        return [];
     }
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $anz = static::$MAX_OFFSET;
         for ($i = $anz; $i >= 0; $i -= 10) {
@@ -364,7 +366,7 @@ class BATerminParser extends RISParser
     }
 
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         echo "Updates: BA-Termine\n";
         for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
@@ -372,7 +374,7 @@ class BATerminParser extends RISParser
         }
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
         echo "Updates: BA-Termine\n";
         for ($i = 0; $i <= 3; $i++) {

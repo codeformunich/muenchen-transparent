@@ -26,10 +26,8 @@ class StadtraetInnenParser extends RISParser
         }
     }
 
-    public function parse($stadtraetIn_id)
+    public function parse(int $stadtraetIn_id): StadtraetIn
     {
-
-        $stadtraetIn_id = IntVal($stadtraetIn_id);
 
         if (SITE_CALL_MODE != "cron") echo "- StadträtIn $stadtraetIn_id\n";
 
@@ -175,7 +173,7 @@ class StadtraetInnenParser extends RISParser
     }
 
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
         $text = RISTools::load_file(RIS_BASE_URL . "ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
         $txt  = explode("<!-- tabellenkopf -->", $text);
@@ -201,7 +199,7 @@ class StadtraetInnenParser extends RISParser
     }
 
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $anz                              = static::$MAX_OFFSET;
         $this->bearbeitete_stadtraetInnen = [];
@@ -213,13 +211,13 @@ class StadtraetInnenParser extends RISParser
         }
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         echo "Updates: StadträtInnen\n";
         $this->parseAlle();
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }

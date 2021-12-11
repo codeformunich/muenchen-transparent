@@ -20,24 +20,33 @@ class BrowserBasedDowloader
     public const DOCUMENT_FRAKTION_GRUPPE = '9';
     public const DOCUMENT_PERSON = '10';
 
-    private ProcessAwareBrowser $browser;
-    public Page $page;
+    private ?ProcessAwareBrowser $browser = null;
+    private ?Page $page = null;
 
     public function __construct()
     {
+    }
+
+    private function open(): void
+    {
+        if ($this->browser) {
+            return;
+        }
         $browserFactory = new BrowserFactory();
         $this->browser = $browserFactory->createBrowser([
             'enableImages' => true, // necessary for JavaScript to work
             //'debugLogger' => 'php://stdout',
-            'headless' => false,
+            //'headless' => false,
             'userAgent' => 'München Transparent',
         ]);
         $this->page = $this->browser->createPage();
     }
 
-    public function close()
+    public function close(): void
     {
         $this->browser->close();
+        $this->page = null;
+        $this->browser = null;
     }
 
     public function waitForElementToAppear(string $query): void
@@ -71,6 +80,8 @@ class BrowserBasedDowloader
     {
         $html = '';
 
+        $this->open();
+
         try {
             $this->page->navigate(RIS_URL_PREFIX . 'erweitertesuche')->waitForNavigation();
 
@@ -100,7 +111,6 @@ class BrowserBasedDowloader
                 }
             }
         } finally {
-            // bye
             $this->close();
         }
 

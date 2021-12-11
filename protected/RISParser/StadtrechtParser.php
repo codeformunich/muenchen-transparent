@@ -1,7 +1,7 @@
 <?php
 
 
-class StadtrechtParser extends RISParser
+class StadtrechtParser
 {
     public function parseIndex()
     {
@@ -17,11 +17,6 @@ class StadtrechtParser extends RISParser
             }
         }
         return $all_docs;
-    }
-
-    public function parse($id)
-    {
-        // @TODO
     }
 
     // http://www.muenchen.info/dir/recht/23/23_20100525/css/23_20100525
@@ -86,11 +81,6 @@ class StadtrechtParser extends RISParser
         $rechtsdokument->save();
     }
 
-    public function parseSeite($seite, $first)
-    {
-
-    }
-
     public function parseAlle()
     {
         $all_docs = $this->parseIndex();
@@ -98,15 +88,5 @@ class StadtrechtParser extends RISParser
         foreach ($all_docs as $doc) {
             $this->parseByURL($doc[0], $doc[1], $doc[2]);
         }
-    }
-
-    public function parseUpdate()
-    {
-
-    }
-
-    public function parseQuickUpdate()
-    {
-
     }
 }

@@ -5,7 +5,7 @@ class BAAntragParser extends RISParser
     private static $MAX_OFFSET        = 25000;
     private static $MAX_OFFSET_UPDATE = 200;
 
-    public function parse($antrag_id)
+    public function parse(int $antrag_id): ?Antrag
     {
         $antrag_id = IntVal($antrag_id);
 
@@ -13,7 +13,7 @@ class BAAntragParser extends RISParser
         
         if ($antrag_id == 0) {
             RISTools::report_ris_parser_error("Fehler BAAntragParser", "Antrag-ID 0\n" . print_r(debug_backtrace(), true));
-            return;
+            return null;
         }
 
         $html_details   = RISTools::load_file(RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=$antrag_id&selTyp=");
@@ -124,7 +124,7 @@ class BAAntragParser extends RISParser
         if (!($daten->ba_nr > 0)) {
             echo "BA-Antrag $antrag_id:" . "Keine BA-Angabe";
             $GLOBALS["RIS_PARSE_ERROR_LOG"][] = "Keine BA-Angabe (Antrag): $antrag_id";
-            return;
+            return null;
         }
 
         $aenderungen = "";
@@ -191,9 +191,11 @@ class BAAntragParser extends RISParser
             $antrag->save();
             $antrag->rebuildVorgaenge();
         }
+
+        return $antrag;
     }
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Anträge Seite $seite\n";
         $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_antraege.jsp?Start=$seite");
@@ -216,7 +218,7 @@ class BAAntragParser extends RISParser
         return $matches[1];
     }
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $anz   = static::$MAX_OFFSET;
         $first = true;
@@ -228,7 +230,7 @@ class BAAntragParser extends RISParser
         }
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         echo "Updates: BA-Anträge\n";
         $loaded_ids = [];
@@ -248,7 +250,7 @@ class BAAntragParser extends RISParser
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }

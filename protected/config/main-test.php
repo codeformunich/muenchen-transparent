@@ -150,10 +150,12 @@ return [
             'schemaCachingDuration' => 3600,
             //'initSQLs'              => ['SET time_zone = "' . DEFAULT_TIMEZONE . '"'],
         ],
+        /*
         'errorHandler' => [
             // use 'site/error' action to display errors
             'errorAction' => 'index/error',
         ],
+        */
         'log'          => [
             'class'  => 'CLogRouter',
             'routes' => [

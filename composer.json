@@ -43,6 +43,8 @@
     },
     "require-dev": {
         "codeception/module-asserts": "^1.3",
-        "codeception/module-db": "^1.1"
+        "codeception/module-db": "^1.1",
+        "phpunit/phpunit": "^9.5",
+        "spatie/phpunit-snapshot-assertions": "^4.2"
     }
 }

@@ -3,17 +3,19 @@
 class ReferentInnenParser extends RISParser
 {
 
-    public function parse($stadtraetIn_id)
+    public function parse(int $stadtraetIn_id): mixed
     {
+        return null;
     }
 
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
+        return [];
     }
 
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $text = RISTools::load_file(RIS_BASE_URL . "ris_referenten_trefferliste.jsp?nav=1");
         $txt  = explode("<!-- ergebnisreihen -->", $text);
@@ -73,13 +75,13 @@ class ReferentInnenParser extends RISParser
 
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         echo "Updates: ReferentInnen\n";
         $this->parseAlle();
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }

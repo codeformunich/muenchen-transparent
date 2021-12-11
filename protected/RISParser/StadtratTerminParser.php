@@ -5,9 +5,8 @@ class StadtratTerminParser extends RISParser
     private static $MAX_OFFSET        = 8000;
     private static $MAX_OFFSET_UPDATE = 570;
 
-    public function parse($termin_id)
+    public function parse(int $termin_id): Termin
     {
-        $termin_id = IntVal($termin_id);
         if (SITE_CALL_MODE != "cron") echo "- Termin $termin_id\n";
 
         $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=$termin_id");
@@ -397,13 +396,13 @@ class StadtratTerminParser extends RISParser
 
     }
 
-    public function parseSeite($seite, $first, $alle = false)
+    public function parseSeite(int $seite, int $first, bool $alle = false): array
     {
         $add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
         $text = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
 
         $txt = explode("<!-- ergebnistabellen-bereich -->", $text);
-        if ($seite > 4790 && count($txt) == 1) return;
+        if ($seite > 4790 && count($txt) == 1) return [];
         if (count($txt) == 1) var_dump($txt);
         $txt = explode("<!-- tabellenfuss", $txt[1]);
 
@@ -419,9 +418,11 @@ class StadtratTerminParser extends RISParser
         }
 
         sleep(5); // Scheint ziemlich aufwändig auf der RIS-Seite zu sein, mal lieber nicht überlasten :)
+
+        return []; // @TODO
     }
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $anz   = StadtratTerminParser::$MAX_OFFSET;
         $first = true;
@@ -432,7 +433,7 @@ class StadtratTerminParser extends RISParser
         }
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         echo "Updates: Stadtratstermin\n";
         $anz   = StadtratTerminParser::$MAX_OFFSET_UPDATE;
@@ -443,7 +444,7 @@ class StadtratTerminParser extends RISParser
         }
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }

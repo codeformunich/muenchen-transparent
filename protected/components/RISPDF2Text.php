@@ -95,6 +95,10 @@ class RISPDF2Text
      */
     public static function document_text_ocr($filename, $seiten_anzahl)
     {
+        if (defined("IN_TEST_MODE")) {
+            return 'TEST OCR';
+        }
+
         // Hint: PDF-parsing needs to be enabled in /etc/ImageMagick-6/policy.xml
 
         $depth = "-depth 8";
@@ -128,6 +132,10 @@ class RISPDF2Text
 
     public static function document_text_pdf($pdf)
     {
+        if (defined("IN_TEST_MODE")) {
+            return 'TEST PDFbox';
+        }
+
         $converter = new PdfBox;
         $converter->setPathToPdfBox(PATH_PDFBOX);
         return $converter->textFromPdfFile($pdf);

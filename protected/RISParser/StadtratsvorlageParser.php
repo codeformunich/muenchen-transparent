@@ -5,7 +5,7 @@ class StadtratsvorlageParser extends RISParser
     private static $MAX_OFFSET        = 70000;
     private static $MAX_OFFSET_UPDATE = 400;
 
-    public function parse($vorlage_id)
+    public function parse(int $vorlage_id): Antrag
     {
         if (SITE_CALL_MODE != "cron") echo "- Beschlussvorlage $vorlage_id\n";
 
@@ -17,7 +17,6 @@ class StadtratsvorlageParser extends RISParser
         $daten->id                     = $vorlage_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_STADTRAT_VORLAGE;
-        $daten->antrag_typ             = "";
         $daten->gestellt_von           = "";
         $daten->antrag_typ             = "";
         $daten->bearbeitung            = "";
@@ -269,7 +268,7 @@ class StadtratsvorlageParser extends RISParser
         }
     }
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
         if (SITE_CALL_MODE != "cron") echo "Seite: $seite\n";
         $text = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_trefferliste.jsp?txtSuchbegriff=&txtPosition=$seite");
@@ -293,7 +292,7 @@ class StadtratsvorlageParser extends RISParser
     }
 
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $anz   = static::$MAX_OFFSET;
         $first = true;
@@ -305,7 +304,7 @@ class StadtratsvorlageParser extends RISParser
 
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         echo "Updates: Stadtratsvorlagen\n";
         $loaded_ids = [];
@@ -323,7 +322,7 @@ class StadtratsvorlageParser extends RISParser
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }

@@ -2,21 +2,20 @@
 
 abstract class RISParser
 {
-    public abstract function parse($id);
-
-    public abstract function parseSeite($seite, $first);
-
-    public abstract function parseAlle();
-
-    public abstract function parseUpdate();
-
-    public abstract function parseQuickUpdate();
+    public abstract function parse(int $id): mixed;
 
     /**
-     * @param string $text
-     * @return string
+     * @return int[]
      */
-    public static function text_simple_clean($text)
+    public abstract function parseSeite(int $seite, int $first): array;
+
+    public abstract function parseAlle(): void;
+
+    public abstract function parseUpdate(): void;
+
+    public abstract function parseQuickUpdate(): void;
+
+    public static function text_simple_clean(string $text): string
     {
         $text = trim($text);
         $text = preg_replace("/<br ?\/?>/siU", "\n", $text);
@@ -26,7 +25,7 @@ abstract class RISParser
         return trim($text);
     }
 
-    public static function text_clean_spaces($text)
+    public static function text_clean_spaces(string $text): string
     {
         $text = str_replace("&nbsp;", " ", $text);
         $text = str_replace("<!-- Bitte prüfen! Texte werden nicht -->", "", $text);
@@ -35,12 +34,7 @@ abstract class RISParser
         return trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $text));
     }
 
-    /**
-     * @param string $dat
-     * @param null|string $fallback
-     * @return null|string
-     */
-    public static function date_de2mysql($dat, $fallback = null)
+    public static function date_de2mysql(string $dat, ?string $fallback = null): ?string
     {
         $x = explode(".", trim($dat));
         if (count($x) != 3) return $fallback;
@@ -51,10 +45,8 @@ abstract class RISParser
     }
 
     /** @param int [] */
-    public static function parseIDs($ids)
+    public function parseIDs(array $ids): void
     {
-        foreach ($ids as $id) static::parse($id);
+        foreach ($ids as $id) $this->parse($id);
     }
-
-
 }

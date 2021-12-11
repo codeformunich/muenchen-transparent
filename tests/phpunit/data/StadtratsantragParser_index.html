@@ -1,8 +1,3 @@
-<?php
-$I = new UnitTester($scenario);
-$I->wantTo('Test StadtratsantragParser');
-
-$html = <<<HTML
 <li class="list-group-item even">
 
 
@@ -125,7 +120,7 @@ Erledigt
 </div>
 <div class="flex-grow-1 d-flex flex-column flex-md-row align-items-baseline justify-content-between">
 <div>
-<a class="headline-link" href="./antrag/detail/6817704" title="Öffnet den Vorgang „StR-Anfrage 20-26 / F 00352“">Schülerausweise wie selbstgebastelt – Wie funktioniert der 3G-Nachweis?</a>
+<a class="headline-link" href="./antrag/detail/123456" title="Öffnet den Vorgang „StR-Anfrage 20-26 / F 00352“">Noch ein Antrag</a>
 <span class="d-inline-block font-size-medium">(20-26 / F 00352)</span>
 
 </div>
@@ -213,44 +208,13 @@ In Bearbeitung
 </div>
 </div>
 </div>
-<div class="col-12 col-md-6"><a class="icon_action" href="./antrag/detail/6817704?dokument=v6817729" title="Öffnet das Dokument „Anfrage“ in der Dokumenten-Vorschau des Vorgangs „StR-Anfrage 20-26 / F 00352“">Dokumentenvorschau</a></div>
+<div class="col-12 col-md-6"><a class="icon_action" href="./antrag/detail/123456?dokument=v6817729" title="Öffnet das Dokument „Anfrage“ in der Dokumenten-Vorschau des Vorgangs „StR-Anfrage 20-26 / F 00352“">Dokumentenvorschau</a></div>
 </div>
 
 </div>
 
 <div class="mt-2">
-<a class="icon_action" href="./antrag/detail/6817704#ergebnisse" title="Öffnet den Vorgangs-Bereich „Ergebnisse“ des Vorgangs „StR-Anfrage 20-26 / F 00352“">Ergebnisse</a>
+<a class="icon_action" href="./antrag/detail/123456#ergebnisse" title="Öffnet den Vorgangs-Bereich „Ergebnisse“ des Vorgangs „StR-Anfrage 20-26 / F 00352“">Ergebnisse</a>
 </div>
 
 </li>
-
-HTML;
-
-
-$downloader = new class($html) extends BrowserBasedDowloader {
-    private string $html;
-
-    public function __construct(string $html)
-    {
-        $this->html = $html;
-    }
-
-    public function downloadDocumentTypeListForPeriod(string $type, \DateTime $from, \DateTime $to): string {
-        return $this->html;
-    }
-};
-
-$parser = new StadtratsantragParser($downloader);
-$parsed = $parser->parseMonth(2021, 1);
-
-$I->assertCount(2, $parsed);
-
-$I->assertSame(6878706, $parsed[0]->id);
-$I->assertSame('./antrag/detail/6878706', $parsed[0]->link);
-$I->assertSame('Neubau Kulturbürgerhaus Pasing an der Offenbachstraße', $parsed[0]->titleShortened);
-$I->assertSame('2021-10-29', $parsed[0]->gestelltAm->format('Y-m-d'));
-
-$I->assertSame(6817704, $parsed[1]->id);
-$I->assertSame('./antrag/detail/6817704', $parsed[1]->link);
-$I->assertSame('Schülerausweise wie selbstgebastelt – Wie funktioniert der 3G-Nachweis?', $parsed[1]->titleShortened);
-$I->assertSame('2021-10-01', $parsed[1]->gestelltAm->format('Y-m-d'));

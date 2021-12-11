@@ -6,137 +6,56 @@ class StadtratsantragParser extends RISParser
     private static $MAX_OFFSET_UPDATE = 200;
 
     private BrowserBasedDowloader $browserBasedDowloader;
+    private CurlBasedDownloader $curlBasedDownloader;
 
-    public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null)
+    public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null, ?CurlBasedDownloader $curlBasedDownloader = null)
     {
-        if ($browserBasedDowloader) {
-            $this->browserBasedDowloader = $browserBasedDowloader;
-        } else {
-            $this->browserBasedDowloader = new BrowserBasedDowloader();
-        }
+        $this->browserBasedDowloader = $browserBasedDowloader ?: new BrowserBasedDowloader();
+        $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
     }
 
-    public function parse($antrag_id)
+    public function parse(int $id): ?Antrag
     {
-        $antrag_id = IntVal($antrag_id);
+        if (SITE_CALL_MODE != "cron") echo "- Antrag $id\n";
 
-        if (in_array($antrag_id, [3258272])) return;
+        $html = $this->curlBasedDownloader->loadUrl(RIS_BASE_URL . 'antrag/detail/' . $id);
 
-        if (SITE_CALL_MODE != "cron") echo "- Antrag $antrag_id\n";
+        $parsed = StadtratsantragData::parseFromHtml($html);
+        if ($parsed === null) {
+            return null;
+        }
 
-        $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $antrag_id);
-        $html_dokumente = RISTools::load_file(RIS_BASE_URL . "ris_antrag_dokumente.jsp?risid=" . $antrag_id);
-        //$html_ergebnisse = load_file(RIS_BASE_URL . "ris_antrag_ergebnisse.jsp?risid=" . $antrag_id);
-
-        if (trim($html_details) == "" || trim($html_dokumente) == "") return;
-
-        $daten                         = new Antrag();
-        $daten->id                     = $antrag_id;
+        $daten = new Antrag();
+        $daten->id = $id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
-        $daten->typ                    = Antrag::$TYP_STADTRAT_ANTRAG;
-        $daten->referent               = "";
-        $daten->referat                = "";
-        $daten->kurzinfo               = "";
-        $daten->bearbeitung            = "";
-        $daten->initiatorInnen         = "";
-
-        $dokumente = [];
-        // $ergebnisse = array();
-
-        $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
-        if (!isset($dat_details[1])) {
-            echo $antrag_id . " - " . RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $antrag_id . "\n";
-            var_dump($dat_details);
-            return;
-        }
-        $dat_details = explode("<!-- detailbereich -->", $dat_details[1]);
-
-        preg_match("/<h3.*>.*&nbsp;(.*)<\/h3/siU", $dat_details[0], $matches);
-        if (count($matches) == 2) $daten->antrags_nr = Antrag::cleanAntragNr($matches[1]);
-
-        preg_match_all("/class=\"detail_row\">.*detail_label\">(.*)<\/d.*detail_div\">(.*)<\/div/siU", $dat_details[0], $matches);
-        $betreff_gefunden = false;
-        for ($i = 0; $i < count($matches[1]); $i++) switch (trim($matches[1][$i])) {
-            case "Betreff:":
-                $betreff_gefunden = true;
-                $daten->betreff   = $this->text_simple_clean($matches[2][$i]);
-                break;
-            case "Status:":
-                $daten->status = $this->text_simple_clean($matches[2][$i]);
-                break;
-            case "Bearbeitung:":
-                $daten->bearbeitung = trim(strip_tags($matches[2][$i]));
-                break;
-        }
-
-        if (!$betreff_gefunden) {
-            RISTools::report_ris_parser_error("Fehler StadtratsantragParser", "Kein Betreff\n" . $html_details);
-            throw new Exception("Betreff nicht gefunden");
-        }
-
-        $dat_details = explode("<!-- details und tabelle -->", $html_details);
-        $dat_details = explode("<!-- tabellenfuss -->", $dat_details[1]);
-
-        preg_match_all("/detail_label_long\">(<span class=\"itext\">)?([^<].*)<\/.*detail_div_(left|right|left_long)\">(.*)<\/div/siU", $dat_details[0], $matches);
-        for ($i = 0; $i < count($matches[2]); $i++) if ($matches[4][$i] != "&nbsp;") switch ($matches[2][$i]) {
-            case "Typ:":
-                $daten->antrag_typ = $matches[4][$i];
-                break;
-            case "Zust&auml;ndiges Referat:":
-                $daten->referat    = $matches[4][$i];
-                $ref               = Referat::getByHtmlName($matches[4][$i]);
-                $daten->referat_id = ($ref ? $ref->id : null);
-                break;
-            case "Gestellt am:":
-                $daten->gestellt_am = $this->date_de2mysql($matches[4][$i]);
-                break;
-            case "Wahlperiode:":
-                $daten->wahlperiode = $matches[4][$i];
-                break;
-            case "Bearbeitungsfrist:":
-                $daten->bearbeitungsfrist = $this->date_de2mysql($matches[4][$i]);
-                break;
-            case "Fristverl&auml;ngerung:":
-                $daten->fristverlaengerung = $this->date_de2mysql($matches[4][$i]);
-                break;
-            case "Gestellt von:":
-                $daten->gestellt_von = $matches[4][$i];
-                break;
-            case "Initiatoren:":
-                if ($matches[4][$i] != "&nbsp;") $daten->initiatorInnen = $matches[4][$i];
-                break;
-            case "Erledigt am:":
-                if ($matches[4][$i] != "&nbsp;") $daten->erledigt_am = $this->date_de2mysql($matches[4][$i]);
-                break;
-        }
-
-        // Die erste Match-Gruppe enthält den Wert von title im <a>-tag, der zweite die URL und der Dritte den von <a>-tag umschlossenen Text
-        preg_match_all("/<li><span class=\"iconcontainer\">.*title=\"([^\"]*)\"[^>]*href=\"(.*)\">(.*)<\/a>/siU", $html_dokumente, $matches);
-        for ($i = 0; $i < count($matches[1]); $i++) {
-            $dokumente[] = [
-                "url"        => $matches[2][$i],
-                "name"       => $matches[3][$i],
-                "name_title" => $matches[1][$i],
-            ];
-        }
-        /*
-        $dat_ergebnisse = explode("<!-- tabellenkopf -->", $html_ergebnisse);
-        $dat_ergebnisse = explode("<!-- tabellenfuss -->", $dat_ergebnisse[1]);
-        preg_match_all("<tr>.*bghell  tdborder\"><a.*\">(.*)<\/a>.*
-        RIS_BASE_URL . "ris_antrag_ergebnisse.jsp?risid=6127
-        */
+        $daten->typ = Antrag::$TYP_STADTRAT_ANTRAG;
+        $daten->referent = "";
+        $daten->kurzinfo = "";
+        $daten->initiatorInnen = implode(', ', $parsed->initiativeNamen);
+        $daten->gestellt_von = implode(', ', $parsed->gestelltVon);
+        $daten->betreff = $parsed->title;
+        $daten->antrags_nr = $parsed->antragsnummer;
+        $daten->status = $parsed->status;
+        $daten->bearbeitung = $parsed->bearbeitungsart ?: '';
+        $daten->antrag_typ = $parsed->typ;
+        $daten->referat = $parsed->referatName;
+        $daten->referat_id = $parsed->referatId;
+        $daten->gestellt_am = $parsed->gestelltAm?->format('Y-m-d');
+        $daten->wahlperiode = $parsed->wahlperiode;
+        $daten->bearbeitungsfrist = $parsed->bearbeitungsfrist?->format('Y-m-d');
+        $daten->erledigt_am = $parsed->erledigtAm?->format('Y-m-d');
 
         $aenderungen = "";
 
         /** @var Antrag $alter_eintrag */
-        $alter_eintrag = Antrag::model()->findByPk($antrag_id);
+        $alter_eintrag = Antrag::model()->findByPk($id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
             if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
             if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
             if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
-            if (isset($daten->initiatorInnen) && $alter_eintrag->initiatorInnen != $daten->initiatorInnen) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatorInnen . " => " . $daten->initiatorInnen . "\n";
+            if ($alter_eintrag->initiatorInnen != $daten->initiatorInnen) $aenderungen .= "Initiatoren: " . $alter_eintrag->initiatorInnen . " => " . $daten->initiatorInnen . "\n";
             if ($alter_eintrag->gestellt_von != $daten->gestellt_von) $aenderungen .= "Gestellt von: " . $alter_eintrag->gestellt_von . " => " . $daten->gestellt_von . "\n";
             if ($alter_eintrag->gestellt_am != $daten->gestellt_am) $aenderungen .= "Gestellt am: " . $alter_eintrag->gestellt_am . " => " . $daten->gestellt_am . "\n";
             if ($alter_eintrag->antrags_nr != $daten->antrags_nr) $aenderungen .= "Antrags-Nr: " . $alter_eintrag->antrags_nr . " => " . $daten->antrags_nr . "\n";
@@ -151,7 +70,7 @@ class StadtratsantragParser extends RISParser
         if ($changed) {
             if ($aenderungen == "") $aenderungen = "Neu angelegt\n";
 
-            echo "Antrag $antrag_id: Verändert: " . $aenderungen . "\n";
+            echo "Antrag $id: Verändert: " . $aenderungen . "\n";
 
             if ($alter_eintrag) {
                 $alter_eintrag->copyToHistory();
@@ -159,18 +78,18 @@ class StadtratsantragParser extends RISParser
 
                 // Leere Seiten ignorieren
                 if ($alter_eintrag->wahlperiode === "" && $alter_eintrag->betreff === "" && $alter_eintrag->status === "") {
-                    echo "Antrag $antrag_id ist leer";
-                    return;
+                    echo "Antrag $id ist leer";
+                    return null;
                 }
 
                 if (!$alter_eintrag->save()) {
-                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 1", "Antrag $antrag_id\n" . print_r($alter_eintrag->getErrors(), true) . "\n\n" . $html_details);
+                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 1", "Antrag $id\n" . print_r($alter_eintrag->getErrors(), true));
                     throw new \Exception("StadtratAntrag 1");
                 }
                 $daten = $alter_eintrag;
             } else {
                 if (!$daten->save()) {
-                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 2", "Antrag $antrag_id\n" . print_r($daten->getErrors(), true) . "\n\n" . $html_details);
+                    RISTools::report_ris_parser_error("Stadtratsantrag Fehler 2", "Antrag $id\n" . print_r($daten->getErrors(), true));
                     throw new \Exception("StadtratAntrag 2");
                 }
             }
@@ -178,7 +97,7 @@ class StadtratsantragParser extends RISParser
             $daten->resetPersonen();
         }
 
-        foreach ($dokumente as $dok) {
+        foreach ($parsed->dokumentLinks as $dok) {
             $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_ANTRAG, $daten, $dok);
         }
 
@@ -192,15 +111,17 @@ class StadtratsantragParser extends RISParser
             $aend->save();
 
             /** @var Antrag $antrag */
-            $antrag                         = Antrag::model()->findByPk($antrag_id);
+            $antrag                         = Antrag::model()->findByPk($id);
             $antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();
         }
+
+        return $daten;
     }
 
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
         $text = RISTools::load_file(RIS_BASE_URL . "ris_antrag_trefferliste.jsp?txtPosition=$seite");
         $txt  = explode("<!-- ergebnisreihen -->", $text);
@@ -222,7 +143,7 @@ class StadtratsantragParser extends RISParser
         return $matches[1];
     }
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         $first = true;
         for ($i = static::$MAX_OFFSET; $i >= 0; $i -= 10) {
@@ -232,7 +153,7 @@ class StadtratsantragParser extends RISParser
         }
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         $loaded_ids = [];
         echo "Updates: Stadtratsanträge\n";
@@ -251,7 +172,7 @@ class StadtratsantragParser extends RISParser
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
         $loaded_ids = [];
         echo "Updates (quick): Stadtratsanträge\n";
@@ -290,6 +211,12 @@ class StadtratsantragParser extends RISParser
             if ($obj) {
                 $parsedObjects[] = $obj;
             }
+        }
+
+        echo count($parsedObjects) . " Stadtratsanträge gefunden\n";
+
+        foreach ($parsedObjects as $object) {
+            $this->parse($object->id);
         }
 
         return $parsedObjects;

@@ -22,7 +22,7 @@ class BAMitgliederParser extends RISParser
         return ["von" => $von, "bis" => $bis];
     }
 
-    public function parse($ba_nr)
+    public function parse($ba_nr): mixed
     {
         $ba_nr = IntVal($ba_nr);
 
@@ -125,26 +125,28 @@ class BAMitgliederParser extends RISParser
                 echo "Verwaiste Fraktions-Zuordnungen gelöscht\n";
             }
         }
+        return null;
     }
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
         $this->parseAlle();
+        return [];
     }
 
-    public function parseAlle()
+    public function parseAlle(): void
     {
         for ($i = 1; $i <= 25; $i++) {
             $this->parse($i);
         }
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
         $this->parseAlle();
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }
