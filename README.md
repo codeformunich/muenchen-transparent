@@ -1,9 +1,6 @@
 [München Transparent](https://www.muenchen-transparent.de)
 =========================================
 
-[![Build Status](https://travis-ci.org/codeformunich/muenchen-transparent.svg?branch=master)](https://travis-ci.org/codeformunich/muenchen-transparent)
-[![Code Climate](https://codeclimate.com/github/codeformunich/Muenchen-Transparent/badges/gpa.svg)](https://codeclimate.com/github/codeformunich/Muenchen-Transparent)
-
 München Transparent ist ein alternatives Ratsinformationssystem (RIS) für München mit einer modernen Oberfläche, E-Mail-Benachrichtigungen, Volltextsuche, Geodaten, Erklärtexten und vielem mehr.
 
 ## Setup
