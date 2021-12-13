@@ -8,7 +8,7 @@ class Reindex_BA_MitgliedCommand extends CConsoleCommand
 
         $parser = new BAMitgliederParser();
         if ($args[0] == "alle") {
-            $parser->parseAlle();
+            $parser->parseAll();
         } elseif ($args[0] > 0) {
             $parser->parse($args[0]);
         }

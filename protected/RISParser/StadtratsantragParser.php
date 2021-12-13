@@ -143,7 +143,7 @@ class StadtratsantragParser extends RISParser
         return $matches[1];
     }
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         $first = true;
         for ($i = static::$MAX_OFFSET; $i >= 0; $i -= 10) {
@@ -193,15 +193,6 @@ class StadtratsantragParser extends RISParser
         $from = new \DateTime($year . '-' . $month . '-1');
         $to = (clone $from)->modify('last day of this month');
 
-        /*
-        if (file_exists('/tmp/html.html')) {
-            $html = file_get_contents('/tmp/html.html');
-        } else {
-            $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_TYPE_STADTRAT, $from, $to);
-
-            file_put_contents('/tmp/html.html', $html);
-        }
-        */
         $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_TYPE_STADTRAT, $from, $to);
 
         preg_match_all('/<li.*<\/li>/siuU', $html, $matches);

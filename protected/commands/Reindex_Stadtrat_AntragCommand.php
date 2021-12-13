@@ -12,11 +12,11 @@ class Reindex_Stadtrat_AntragCommand extends CConsoleCommand
             $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::$TYP_STADTRAT_ANTRAG, "referat_id" => null]);
             foreach ($antraege as $antrag) $parser->parse($antrag->id);
         } elseif ($args[0] == "alle") {
-            $parser->parseAlle();
+            $parser->parseAll();
         } elseif (preg_match('/^(?<year>\d{4})-(?<month>\d{2})$/', $args[0], $matches)) {
             $parser->parseMonth(intval($matches['year']), intval($matches['month']));
         } else {
-            $parser->parse($args[0]);
+            $parser->parse(intval($args[0]));
             /** @var Antrag $a */
             $a = Antrag::model()->findByPk($args[0]);
             $a->resetPersonen();

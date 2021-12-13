@@ -12,7 +12,7 @@ class Reindex_Stadtrat_VorlageCommand extends CConsoleCommand
             $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::$TYP_STADTRAT_VORLAGE, "referat_id" => null]);
             foreach ($antraege as $antrag) $parser->parse($antrag->id);
         } elseif ($args[0] == "alle") {
-            $parser->parseAlle();
+            $parser->parseAll();
         } else {
             $parser->parse($args[0]);
             /** @var Antrag $a */

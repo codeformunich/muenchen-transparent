@@ -186,7 +186,7 @@ class BAInitiativeParser extends RISParser
         return $matches[1];
     }
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         $anz   = static::$MAX_OFFSET;
         $first = true;

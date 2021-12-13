@@ -9,7 +9,7 @@ class Reindex_BA_GremienCommand extends CConsoleCommand
         $parser = new BAGremienParser();
 
         if ($args[0] == "alle") {
-            $parser->parseAlle();
+            $parser->parseAll();
         } elseif ($args[0] > 0) {
             $parser->parse($args[0]);
         }

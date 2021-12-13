@@ -12,7 +12,7 @@ class Reindex_BA_InitiativeCommand extends CConsoleCommand
             $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::$TYP_BA_INITIATIVE, "referat_id" => null]);
             foreach ($antraege as $antrag) $parser->parse($antrag->id);
         } elseif ($args[0] == "alle") {
-            $parser->parseAlle();
+            $parser->parseAll();
         } elseif ($args[0] > 0) {
             $parser->parse($args[0]);
         }

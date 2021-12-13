@@ -422,7 +422,7 @@ class StadtratTerminParser extends RISParser
         return []; // @TODO
     }
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         $anz   = StadtratTerminParser::$MAX_OFFSET;
         $first = true;

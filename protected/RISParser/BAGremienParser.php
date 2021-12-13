@@ -172,7 +172,7 @@ class BAGremienParser extends RISParser
         return $matches[1];
     }
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         $anz   = BAGremienParser::$MAX_OFFSET;
         $first = true;
@@ -185,7 +185,7 @@ class BAGremienParser extends RISParser
 
     public function parseUpdate(): void
     {
-        $this->parseAlle();
+        $this->parseAll();
     }
 
     public function parseQuickUpdate(): void

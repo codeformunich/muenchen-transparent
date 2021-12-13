@@ -9,7 +9,7 @@ abstract class RISParser
      */
     public abstract function parseSeite(int $seite, int $first): array;
 
-    public abstract function parseAlle(): void;
+    public abstract function parseAll(): void;
 
     public abstract function parseUpdate(): void;
 

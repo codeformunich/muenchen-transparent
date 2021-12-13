@@ -10,7 +10,7 @@ class StadtratsantragParserTest extends TestCase
     /** @var BrowserBasedDowloader|MockObject */
     private $browserBasedDownloader;
 
-    /** @var BrowserBasedDowloader|MockObject */
+    /** @var CurlBasedDownloader|MockObject */
     private $curlBasedDownloader;
 
     private ?StadtratsantragParser $parser = null;
@@ -29,6 +29,11 @@ class StadtratsantragParserTest extends TestCase
         $this->browserBasedDownloader
             ->method('downloadDocumentTypeListForPeriod')
             ->willReturn(file_get_contents(__DIR__ . '/data/StadtratsantragParser_index.html'));
+
+        // This does not actually match the list in the file above, we only return something so the parser doesn't break
+        $this->curlBasedDownloader
+            ->method('loadUrl')
+            ->willReturn(file_get_contents(__DIR__ . '/data/StadtratsantragParser_Antrag1.html'));
 
         $parsed = $this->parser->parseMonth(2021, 1);
 

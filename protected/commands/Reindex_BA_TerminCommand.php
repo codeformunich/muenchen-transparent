@@ -9,7 +9,7 @@ class Reindex_BA_TerminCommand extends CConsoleCommand
         if (!isset($args[0]) || ($args[0] != "alle" && $args[0] <= 1)) die("./yiic reindex_ba_termin [termin-ID]|[alle]\n");
 
         $parser = new BATerminParser();
-        if ($args[0] == "alle") $parser->parseAlle();
+        if ($args[0] == "alle") $parser->parseAll();
         if ($args[0] > 0) $parser->parse($args[0]);
 
     }

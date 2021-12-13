@@ -356,7 +356,7 @@ class BATerminParser extends RISParser
         return [];
     }
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         $anz = static::$MAX_OFFSET;
         for ($i = $anz; $i >= 0; $i -= 10) {

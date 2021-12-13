@@ -292,7 +292,7 @@ class StadtratsvorlageParser extends RISParser
     }
 
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         $anz   = static::$MAX_OFFSET;
         $first = true;

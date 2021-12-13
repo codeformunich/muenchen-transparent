@@ -1,7 +1,6 @@
 <?php
 
 /**
- * The followings are the available columns in table 'gremien':
  * @property integer $id
  * @property string $name
  * @property string $urlpart
@@ -11,7 +10,6 @@
  * @property string $email
  * @property string $telefon
  * @property string $website
- * @property string $kurzbeschreibung
  * @property integer $aktiv
  *
  * The followings are the available model relations:
@@ -49,7 +47,7 @@ class Referat extends CActiveRecord implements IRISItem
             ['id, name, urlpart', 'required'],
             ['id, aktiv', 'numerical', 'integerOnly' => true],
             ['name, email, telefon', 'length', 'max' => 100],
-            ['kurzbeschreibung, website', 'length', 'max' => 200],
+            ['website', 'length', 'max' => 200],
             ['strasse, urlpart', 'length', 'max' => 45],
             ['plz', 'length', 'max' => 10],
             ['ort', 'length', 'max' => 30],
@@ -85,7 +83,6 @@ class Referat extends CActiveRecord implements IRISItem
             'email'            => 'E-Mail',
             'telefon'          => 'Telefonnummer',
             'website'          => 'Website',
-            'kurzbeschreibung' => 'Kurzbeschreibung',
             'aktiv'            => 'Aktiv',
         ];
     }

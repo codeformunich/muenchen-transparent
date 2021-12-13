@@ -130,11 +130,11 @@ class BAMitgliederParser extends RISParser
 
     public function parseSeite(int $seite, int $first): array
     {
-        $this->parseAlle();
+        $this->parseAll();
         return [];
     }
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         for ($i = 1; $i <= 25; $i++) {
             $this->parse($i);
@@ -143,7 +143,7 @@ class BAMitgliederParser extends RISParser
 
     public function parseUpdate(): void
     {
-        $this->parseAlle();
+        $this->parseAll();
     }
 
     public function parseQuickUpdate(): void

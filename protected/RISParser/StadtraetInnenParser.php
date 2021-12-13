@@ -199,7 +199,7 @@ class StadtraetInnenParser extends RISParser
     }
 
 
-    public function parseAlle(): void
+    public function parseAll(): void
     {
         $anz                              = static::$MAX_OFFSET;
         $this->bearbeitete_stadtraetInnen = [];
@@ -214,7 +214,7 @@ class StadtraetInnenParser extends RISParser
     public function parseUpdate(): void
     {
         echo "Updates: StadträtInnen\n";
-        $this->parseAlle();
+        $this->parseAll();
     }
 
     public function parseQuickUpdate(): void
