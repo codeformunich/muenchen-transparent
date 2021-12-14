@@ -179,23 +179,21 @@ class RISTools
         return str_replace($search, $replace, $text);
     }
 
-    /**
-     * @param string $titel
-     * @return string
-     */
-    public static function korrigiereTitelZeichen($titel)
+    public static function normalizeTitle(string $title): string
     {
-        $titel = trim($titel);
-        $titel = str_replace(chr(194) . chr(160), " ", $titel);
-        $titel = preg_replace("/([\\s\-\(])\?(\\w[^\\?]*[\\w\.\!])\?/siu", "\\1„\\2“", $titel);
-        $titel = preg_replace("/([\\s\-\(])\"(\\w[^\\?]*[\\w\.\!])\"/siu", "\\1„\\2“", $titel);
-        $titel = str_replace(" ?", " —", $titel);
-        $titel = preg_replace("/^\?(\\w[^\\?]*[\\w\.\!])\?/siu", "„\\1“", $titel);
-        $titel = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $titel);
-        $titel = preg_replace("/\\s\?$/siu", "?", $titel);
-        $titel = str_replace(chr(10) . "?", " —", $titel);
-        $titel = str_replace("Â?", "€", $titel);
-        return $titel;
+        $title = trim($title);
+        $title = str_replace("\r", "", $title);
+        $title = str_replace(chr(194) . chr(160), " ", $title);
+        $title = preg_replace("/([\\s\-\(])\?(\\w[^\\?]*[\\w\.\!])\?/siu", "\\1„\\2“", $title);
+        $title = preg_replace("/([\\s\-\(])\"(\\w[^\\?]*[\\w\.\!])\"/siu", "\\1„\\2“", $title);
+        $title = str_replace(" ?", " —", $title);
+        $title = preg_replace("/^\?(\\w[^\\?]*[\\w\.\!])\?/siu", "„\\1“", $title);
+        $title = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $title);
+        $title = preg_replace("/\\s\?$/siu", "?", $title);
+        $title = str_replace(chr(10) . "?", " —", $title);
+        $title = str_replace("Â?", "€", $title);
+        $title = preg_replace("/([[:lower:]])- *\\n([[:lower:]])/siu", "$1$2", $title);
+        return $title;
     }
 
 

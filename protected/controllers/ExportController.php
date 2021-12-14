@@ -28,7 +28,7 @@ class ExportController extends RISBaseController
 			$antragData = [
 				'id'                 => IntVal( $antrag->id ),
 				'typ'                => $antrag->antrag_typ,
-				'betreff'            => RISTools::korrigiereTitelZeichen($antrag->betreff),
+				'betreff'            => RISTools::normalizeTitle($antrag->betreff),
 				'gestellt_von'       => $antrag->gestellt_von,
 				'gestellt_am'        => $antrag->gestellt_am,
 				'erledigt_am'        => $antrag->erledigt_am,

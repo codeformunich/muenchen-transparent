@@ -379,7 +379,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             case Antrag::$TYP_BA_INITIATIVE:
                 return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $this->id;
             case Antrag::$TYP_STADTRAT_ANTRAG:
-                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $this->id;
+                return RIS_BASE_URL . "antrag/detail/" . $this->id;
             case Antrag::$TYP_STADTRAT_VORLAGE:
                 return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $this->id;
         }
@@ -400,15 +400,15 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     public function getName($kurzfassung = false)
     {
         if ($kurzfassung) {
-            $betreff = str_replace(["\n", "\r"], [" ", " "], $this->betreff);
+            $betreff = trim($this->betreff);
             $x       = explode(" Antrag Nr.", $betreff);
             $x       = explode(" Änderungsantrag ", $x[0]);
             $x       = explode("<strong>Antrag: </strong>", $x[0]);
             $x       = explode(" Empfehlung Nr.", $x[0]);
             $x       = explode(" BA-Antrags-", $x[0]);
-            return RISTools::korrigiereTitelZeichen($x[0]);
+            return RISTools::normalizeTitle($x[0]);
         } else {
-            return RISTools::korrigiereTitelZeichen($this->betreff);
+            return RISTools::normalizeTitle($this->betreff);
         }
     }
 

@@ -15,12 +15,12 @@ class StadtratsantragListEntry
             return null;
         }
         $entry = new self();
-        $entry->titleShortened = $titleMatch['title'];
+        $entry->titleShortened = RISTools::normalizeTitle($titleMatch['title']);
         $entry->link = $titleMatch['url'];
         $linkParts = explode("/", $entry->link);
         $entry->id = intval($linkParts[count($linkParts) - 1]);
 
-        if (preg_match('/Gestellt am:<\/div>\s*<div class="keyvalue-value">\s*(?<date>\d+\.\d+\.\d+)\s*<\/div>/siuU', $html, $match)) {
+        if (preg_match('/(Gestellt am|Freigabe):<\/div>\s*<div class="keyvalue-value">\s*(?<date>\d+\.\d+\.\d+)\s*<\/div>/siuU', $html, $match)) {
             $entry->gestelltAm = (\DateTime::createFromFormat('d.m.Y', $match['date']))->setTime(0, 0, 0);
         }
 

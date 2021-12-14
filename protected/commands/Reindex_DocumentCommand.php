@@ -13,7 +13,5 @@ class Reindex_DocumentCommand extends CConsoleCommand
         }
 
         $dokument->reDownloadIndex();
-        $dokument->geo_extract();
-        $dokument->solrIndex();
     }
 }

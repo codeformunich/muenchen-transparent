@@ -5,16 +5,37 @@ class StadtratsvorlageParser extends RISParser
     private static $MAX_OFFSET        = 70000;
     private static $MAX_OFFSET_UPDATE = 400;
 
-    public function parse(int $vorlage_id): Antrag
-    {
-        if (SITE_CALL_MODE != "cron") echo "- Beschlussvorlage $vorlage_id\n";
+    private BrowserBasedDowloader $browserBasedDowloader;
+    private CurlBasedDownloader $curlBasedDownloader;
 
-        $html_details    = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $vorlage_id);
-        $html_dokumente  = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_dokumente.jsp?risid=" . $vorlage_id);
-        $html_ergebnisse = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=" . $vorlage_id);
+    public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null, ?CurlBasedDownloader $curlBasedDownloader = null)
+    {
+        $this->browserBasedDowloader = $browserBasedDowloader ?: new BrowserBasedDowloader();
+        $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
+    }
+
+    public function parse(int $id): ?Antrag
+    {
+        if (SITE_CALL_MODE != "cron") echo "- Beschlussvorlage $id\n";
+
+        $html = $this->curlBasedDownloader->loadUrl(RIS_BASE_URL . 'sitzungsvorlage/detail/' . $id);
+
+        $parsed = StadtratsvorlageData::parseFromHtml($html);
+        if ($parsed === null) {
+            return null;
+        }
+
+        // @TODO Parse https://risi.muenchen.de/risi/sitzungsvorlage/detail/antraege/6752652?13
+
+        var_dump($parsed);
+        die();
+
+        $html_details    = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $id);
+        $html_dokumente  = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_dokumente.jsp?risid=" . $id);
+        $html_ergebnisse = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=" . $id);
 
         $daten                         = new Antrag();
-        $daten->id                     = $vorlage_id;
+        $daten->id                     = $id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->typ                    = Antrag::$TYP_STADTRAT_VORLAGE;
         $daten->gestellt_von           = "";
@@ -25,12 +46,12 @@ class StadtratsvorlageParser extends RISParser
         $daten->referent               = "";
         $daten->referat                = "";
 
-        if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$vorlage_id")) {
-            $html_kurzinfo = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_kurzinfo.jsp?risid=" . $vorlage_id);
+        if (strpos($html_details, "ris_vorlagen_kurzinfo.jsp?risid=$id")) {
+            $html_kurzinfo = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_kurzinfo.jsp?risid=" . $id);
             $txt           = explode("introtext_border\">", $html_kurzinfo);
             if (count($txt) < 2) {
-                RISTools::report_ris_parser_error("Vorlage: kein introtext_border", $vorlage_id . "\n" . $html_kurzinfo);
-                return;
+                RISTools::report_ris_parser_error("Vorlage: kein introtext_border", $id . "\n" . $html_kurzinfo);
+                return null;
             }
             $txt             = explode("</div>", $txt[1]);
             $daten->kurzinfo = trim(str_replace(["<br />", "<p>", "</p>"], ["", "", ""], $txt[0]));
@@ -39,7 +60,7 @@ class StadtratsvorlageParser extends RISParser
         $dat_details = explode("<!-- bereichsbild, bereichsheadline, allgemeiner text -->", $html_details);
         if (count($dat_details) == 1) {
             RISTools::report_ris_parser_error("Vorlage: Keine Details", $html_details);
-            return;
+            return null;
         }
 
         preg_match("/Vorlagen\-Nr\.:&nbsp;([^<]*)</siU", $dat_details[1], $matches);
@@ -148,7 +169,7 @@ class StadtratsvorlageParser extends RISParser
         $aenderungen = "";
 
         /** @var Antrag $alter_eintrag */
-        $alter_eintrag = Antrag::model()->findByPk($vorlage_id);
+        $alter_eintrag = Antrag::model()->findByPk($id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -171,7 +192,7 @@ class StadtratsvorlageParser extends RISParser
         }
 
         if ($changed) {
-            echo "Vorlage $vorlage_id: Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
+            echo "Vorlage $id: Verändert: " . ($changed ? "Ja" : "Nein") . "\n";
 
             if ($alter_eintrag) {
                 $alter_eintrag->copyToHistory();
@@ -195,10 +216,10 @@ class StadtratsvorlageParser extends RISParser
                         $erg->antrag_id = null;
                         $erg->save();
                     }
-                    Yii::app()->db->createCommand("UPDATE tagesordnungspunkte_history SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
-                    Yii::app()->db->createCommand("UPDATE tagesordnungspunkte SET antrag_id = NULL WHERE antrag_id = " . IntVal($vorlage_id))->execute();
-                    Yii::app()->db->createCommand("DELETE FROM antraege_orte WHERE antrag_id = " . IntVal($vorlage_id))->execute();
-                    Yii::app()->db->createCommand("DELETE FROM antraege_vorlagen WHERE antrag1 = " . IntVal($vorlage_id))->execute();
+                    Yii::app()->db->createCommand("UPDATE tagesordnungspunkte_history SET antrag_id = NULL WHERE antrag_id = " . IntVal($id))->execute();
+                    Yii::app()->db->createCommand("UPDATE tagesordnungspunkte SET antrag_id = NULL WHERE antrag_id = " . IntVal($id))->execute();
+                    Yii::app()->db->createCommand("DELETE FROM antraege_orte WHERE antrag_id = " . IntVal($id))->execute();
+                    Yii::app()->db->createCommand("DELETE FROM antraege_vorlagen WHERE antrag1 = " . IntVal($id))->execute();
 
                     if (!$daten->delete()) {
                         RISTools::report_ris_parser_error("Vorlage: Nicht gelöscht", "VorlageParser 2\n" . print_r($daten->getErrors(), true));
@@ -211,7 +232,7 @@ class StadtratsvorlageParser extends RISParser
                     $aend->datum       = new CDbExpression("NOW()");
                     $aend->aenderungen = $aenderungen;
                     $aend->save();
-                    return;
+                    return null;
                 }
             } elseif (!$geloescht) {
                 if (!$daten->save()) {
@@ -238,10 +259,10 @@ class StadtratsvorlageParser extends RISParser
 
                 $antrag = Antrag::model()->findByPk(IntVal($link));
             }
-            if (!$antrag) if (Yii::app()->params['adminEmail'] != "") RISTools::report_ris_parser_error("Stadtratsvorlage - Zugordnungs Error", $vorlage_id . " - " . $link);
+            if (!$antrag) if (Yii::app()->params['adminEmail'] != "") RISTools::report_ris_parser_error("Stadtratsvorlage - Zugordnungs Error", $id . " - " . $link);
 
             $sql = Yii::app()->db->createCommand();
-            $sql->select("antrag2")->from("antraege_vorlagen")->where("antrag1 = " . IntVal($vorlage_id) . " AND antrag2 = " . IntVal($antrag->id));
+            $sql->select("antrag2")->from("antraege_vorlagen")->where("antrag1 = " . IntVal($id) . " AND antrag2 = " . IntVal($antrag->id));
             $data = $sql->queryAll();
             if (count($data) == 0) {
                 $daten->addAntrag($antrag);
@@ -259,7 +280,7 @@ class StadtratsvorlageParser extends RISParser
             $aend->save();
 
             /** @var Antrag $antrag */
-            $antrag                         = Antrag::model()->findByPk($vorlage_id);
+            $antrag                         = Antrag::model()->findByPk($id);
             if ($antrag) {
                 $antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
                 $antrag->save();
@@ -325,6 +346,35 @@ class StadtratsvorlageParser extends RISParser
     public function parseQuickUpdate(): void
     {
 
+    }
+
+    /**
+     * @return StadtratsantragListEntry[]
+     * @throws ParsingException
+     */
+    public function parseMonth(int $year, int $month): array
+    {
+        $from = new \DateTime($year . '-' . $month . '-1');
+        $to = (clone $from)->modify('last day of this month');
+
+        $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_SITZUNGSVORLAGEN, $from, $to);
+
+        preg_match_all('/<li.*<\/li>/siuU', $html, $matches);
+        $parsedObjects = [];
+        foreach ($matches[0] as $match) {
+            $obj = StadtratsantragListEntry::parseFromHtml($match);
+            if ($obj) {
+                $parsedObjects[] = $obj;
+            }
+        }
+
+        echo count($parsedObjects) . " Stadtratsanträge gefunden\n";
+
+        foreach ($parsedObjects as $object) {
+            $this->parse($object->id);
+        }
+
+        return $parsedObjects;
     }
 
 }

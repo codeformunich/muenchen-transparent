@@ -181,9 +181,9 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
             $x       = explode(" Antrag Nr.", $betreff);
             $x       = explode("<strong>Antrag: </strong>", $x[0]);
-            return RISTools::korrigiereTitelZeichen($x[0]);
+            return RISTools::normalizeTitle($x[0]);
         } else {
-            return RISTools::korrigiereTitelZeichen($this->top_betreff);
+            return RISTools::normalizeTitle($this->top_betreff);
         }
     }
 

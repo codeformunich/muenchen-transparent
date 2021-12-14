@@ -8,7 +8,7 @@ use HeadlessChromium\Page;
 
 class BrowserBasedDowloader
 {
-    public const DOCUMENT_TYPE_STADTRAT = '0';
+    public const DOCUMENT_STADTRAT_ANTRAG = '0';
     public const DOCUMENT_SITZUNGSVORLAGEN = '1';
     public const DOCUMENT_BA_ANTRAG = '2';
     public const DOCUMENT_BA_TOP = '3';

@@ -68,7 +68,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
             <h1 class="small"><?php echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
                 if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")"; ?></h1>
 
-            <p style="font-size: 18px;"><?= CHtml::encode($name) ?></p>
+            <p style="font-size: 18px;"><?= nl2br(CHtml::encode($name)) ?></p>
 
             <table class="table antragsdaten">
                 <tbody>

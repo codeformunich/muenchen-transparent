@@ -193,7 +193,7 @@ class StadtratsantragParser extends RISParser
         $from = new \DateTime($year . '-' . $month . '-1');
         $to = (clone $from)->modify('last day of this month');
 
-        $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_TYPE_STADTRAT, $from, $to);
+        $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_STADTRAT_ANTRAG, $from, $to);
 
         preg_match_all('/<li.*<\/li>/siuU', $html, $matches);
         $parsedObjects = [];

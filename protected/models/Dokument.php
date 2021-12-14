@@ -436,20 +436,16 @@ class Dokument extends CActiveRecord implements IRISItem
         $dokument             = new Dokument();
         $dokument->id         = $dok->id;
         $dokument->typ        = $typ;
-        $dokument->name_title = "";
         $dokument->datum_dokument = null;
         if (is_a($antrag_termin_tagesordnungspunkt, Antrag::class)) $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
         if (is_a($antrag_termin_tagesordnungspunkt, Termin::class)) $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
         if (is_a($antrag_termin_tagesordnungspunkt, Tagesordnungspunkt::class)) $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
         $dokument->url     = $dok->id;
         $dokument->name    = $dok->title;
+        $dokument->name_title = $dok->title;
         $dokument->datum   = date("Y-m-d H:i:s");
         $dokument->deleted = 0;
-        if (defined("NO_TEXT")) {
-            throw new Exception("Noch nicht implementiert");
-        } else {
-            $dokument->download_and_parse();
-        }
+        $dokument->download_and_parse();
 
         if (!$dokument->save()) {
             RISTools::report_ris_parser_error("Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
@@ -600,7 +596,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc = $update->createDocument();
 
         $doc->id                 = "Document:" . $this->id;
-        $doc->text               = RISSolrHelper::string_cleanup(RISTools::korrigiereTitelZeichen($this->antrag->betreff) . " " . $this->text_pdf);
+        $doc->text               = RISSolrHelper::string_cleanup(RISTools::normalizeTitle($this->antrag->betreff) . " " . $this->text_pdf);
         $doc->text_ocr           = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
         $doc->dokument_name      = RISSolrHelper::string_cleanup($this->name);
         $doc->dokument_url       = $this->url;

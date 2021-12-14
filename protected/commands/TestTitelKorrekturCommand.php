@@ -28,7 +28,7 @@ class TestTitelKorrekturCommand extends CConsoleCommand
 
         $allesok = true;
         foreach ($TESTS_TITEL as $test) {
-            $korrektur = RISTools::korrigiereTitelZeichen($test["input"]);
+            $korrektur = RISTools::normalizeTitle($test["input"]);
             if ($korrektur != $test["korrigiert"]) {
                 echo "Fehlerhaft:\n";
                 echo "- Input: " . $test["input"] . "\n";
