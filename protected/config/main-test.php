@@ -5,7 +5,6 @@ if (!defined("SITE_BASE_URL")) define("SITE_BASE_URL", "http://localhost:8080");
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 
 define("RIS_DATA_DIR", "/data/ris3-data/");
-define("RIS_OMNIPAGE_DIR", "/data/nuance/");
 define("PATH_IDENTIFY", "/usr/bin/identify");
 define("PATH_CONVERT", "/usr/bin/convert");
 define("PATH_TESSERACT", "/usr/local/bin/tesseract");
@@ -19,9 +18,6 @@ define("PATH_PDF_RU", RIS_DATA_DIR . "data/ru-pdf/");
 define("TMP_PATH", "/tmp/");
 define("LOG_PATH", RIS_DATA_DIR . "logs/");
 define("RU_PDF_PATH", RIS_DATA_DIR . "data/ru-pdf/");
-define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR . "ocr-todo/");
-define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR . "ocr-dst/");
-define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", TMP_PATH . "/email.log");
 
@@ -36,8 +32,6 @@ define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 define("OPARL_10_ITEMS_PER_PAGE", 3); // Macht das Testen einfacher
 
 define("SEED_KEY", "RANDOMKEY");
-define("MAILGUN_API_KEY", "");
-define("MAILGUN_DOMAIN", "");
 define("NO_ERROR_MAIL", true);
 
 require_once(__DIR__ . "/constants.php");

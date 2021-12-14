@@ -31,7 +31,6 @@
  * @property Tagesordnungspunkt $tagesordnungspunkt
  * @property AntragOrt[] $orte
  * @property Vorgang $vorgang
- * @property Rathausumschau $rathausumschau
  *
  * Scope methods
  * @method boolean getDefaultScopeDisabled()
@@ -77,20 +76,14 @@ class Dokument extends CActiveRecord implements IRISItem
         return parent::model($className);
     }
 
-    /**
-     *
-     */
-    public function getDateiInhalt()
+    public function getDateiInhalt(): ?string
     {
         try {
-            // TODO content type direkt von curl erfragen
-            if (str_ends_with($this->url, '.pdf')) {
-                Header('Content-Type: application/pdf');
-            } else if (str_ends_with($this->url, '.tiff')) {
-                Header('Content-Type: image/tiff');
-            }
-
-            return ris_download_string($this->getLinkZumOrginal());
+            $str = ris_download_string($this->getLinkZumOrginal());
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, $str, FILEINFO_MIME_TYPE);
+            Header('Content-Type: ' . $mime_type);
+            return $str;
         } catch (Exception $e) {
             $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
             fwrite($fp, $this->id . " - " . $this->getLinkZumOrginal() . "\n");
@@ -223,7 +216,7 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getLinkZumOrginal()
     {
-        return RIS_URL_PREFIX . $this->url;
+        return RIS_URL_PREFIX . 'dokument/v/' . $this->url;
     }
 
     /**

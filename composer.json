@@ -16,6 +16,7 @@
     "require": {
         "php": "^8.0",
         "ext-curl": "*",
+        "ext-fileinfo": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-mbstring": "*",

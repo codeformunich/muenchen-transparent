@@ -1,6 +1,6 @@
 <?php
 
-use Zend\Mail\Message;
+use Laminas\Mail\Message;
 
 class RISTools
 {
@@ -346,87 +346,6 @@ class RISTools
         return $ret;
     }
 
-
-    /**
-     * @param string $name_normalized
-     * @param string $name
-     * @return Person
-     */
-    public function ris_get_person_by_name($name_normalized, $name)
-    {
-        /** @var Person $p */
-        $p = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
-        if ($p) {
-            return $p;
-        }
-        echo "$name / $name_normalized \n";
-
-        $p                  = new Person();
-        $p->name_normalized = $name_normalized;
-        $p->name            = $name;
-        $p->typ             = "sonstiges";
-        $p->save();
-        return $p;
-    }
-
-
-    /**
-     * @param string $typ
-     * @param int $ba_nr
-     * @return string
-     */
-    public static function ris_get_original_name($typ, $ba_nr)
-    {
-        switch ($typ) {
-            case "ba_antrag":
-                return "BA $ba_nr Antrag";
-                break;
-            case "ba_initiative":
-                return "BA $ba_nr Initiative";
-                break;
-            case "ba_termin":
-                return "BA $ba_nr Termin";
-                break;
-            case "stadtrat_antrag":
-                return "Stadtratsantrag";
-                break;
-            case "stadtrat_vorlage":
-                return "Stadtratsvorlage";
-                break;
-            case "stadtrat_termin":
-                return "Stadtratssitzung";
-                break;
-        }
-        return "Unbekannt";
-    }
-
-    /**
-     * @param string $typ
-     * @param int $ba_nr
-     * @param int $id
-     * @param string $mode
-     * @return string
-     */
-    public static function ris_get_original_url($typ, $ba_nr, $id, $mode = "")
-    {
-        switch ($typ) {
-            case "ba_antrag":
-                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
-            case "ba_initiative":
-                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $id;
-            case "ba_termin":
-                return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $id;
-            case "stadtrat_antrag":
-                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $id;
-            case "stadtrat_vorlage":
-                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $id;
-            case "stadtrat_termin":
-                return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $id;
-            default:
-                return "Unbekannt";
-        }
-    }
-
     /**
      * Meldet einen Fehler beim RIS-Parser. Wenn NO_ERROR_MAIL auf true gesetzt ist, dann wird die Fehlermeldung direkt
      * ausgegeben, ansonsten wird eine mail verschickt.
@@ -482,18 +401,9 @@ class RISTools
 		    $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($response, true)); fclose($fp);
 		    return;
 
-	    } elseif (defined("MAILGUN_API_KEY") && strlen(MAILGUN_API_KEY) > 0 && $mail_tag != "system") {
-            $message = new \SlmMail\Mail\Message\Mailgun();
-            //$message->setOption('tracking', false);
-            $client = new \Zend\Http\Client();
-            $client->setAdapter(new \Zend\Http\Client\Adapter\Curl());
-            $service = new \SlmMail\Service\MailgunService(MAILGUN_DOMAIN, MAILGUN_API_KEY);
-            $service->setClient($client);
-            $transport = new \SlmMail\Mail\Transport\HttpTransport($service);
-
         } else {
-            $message   = new Zend\Mail\Message();
-            $transport = new Zend\Mail\Transport\Sendmail();
+            $message   = new Laminas\Mail\Message();
+            $transport = new Laminas\Mail\Transport\Sendmail();
         }
         static::set_zend_email_data($message, $email, $betreff, $text_plain, $text_html);
         $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($message, true)); fclose($fp);
@@ -520,13 +430,13 @@ class RISTools
             $converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles();
             $text_html = $converter->convert($text_html);
 
-            $text_part          = new Zend\Mime\Part($text_plain);
+            $text_part          = new Laminas\Mime\Part($text_plain);
             $text_part->type    = "text/plain";
             $text_part->charset = "UTF-8";
-            $html_part          = new Zend\Mime\Part($text_html);
+            $html_part          = new Laminas\Mime\Part($text_html);
             $html_part->type    = "text/html";
             $html_part->charset = "UTF-8";
-            $mimem              = new Zend\Mime\Message();
+            $mimem              = new Laminas\Mime\Message();
             $mimem->setParts([$text_part, $html_part]);
 
             $message->setBody($mimem);
