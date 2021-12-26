@@ -18,6 +18,9 @@ class StadtratsvorlageData
     public ?int $referatId;
     public ?string $referatName;
     public ?string $referentIn;
+    public ?int $baNr = null;
+    public ?int $baGremiumId = null;
+    public ?string $baName = null;
 
     /** @var DokumentLink[] */
     public array $dokumentLinks;
@@ -83,6 +86,12 @@ class StadtratsvorlageData
 
         if (preg_match('/<div[^>]*>Referent\*in:<\/div>\s*<div[^>]*><span>(?<referentIn>[^<]*)<\/span>/siuU', $html, $match)) {
             $entry->referentIn = $match['referentIn'];
+        }
+
+        if (preg_match('/BA-Entscheidung:<\/div>\s*<div[^>]*>\s*<a[^>]*gremium\/detail\/(?<gremiumId>\d+)\?[^\"]+"[^>]*>(?<baNr>\d+) - (?<baName>[^<]*)<\/a>/siuU', $html, $match)) {
+            $entry->baNr = intval($match['baNr']);
+            $entry->baGremiumId = intval($match['gremiumId']);
+            $entry->baName = $match['baName'];
         }
 
         $entry->dokumentLinks = [];

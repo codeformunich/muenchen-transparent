@@ -381,7 +381,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             case Antrag::$TYP_STADTRAT_ANTRAG:
                 return RIS_BASE_URL . "antrag/detail/" . $this->id;
             case Antrag::$TYP_STADTRAT_VORLAGE:
-                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $this->id;
+                return RIS_BASE_URL . "sitzungsvorlage/detail/" . $this->id;
         }
         return "";
     }

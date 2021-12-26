@@ -4,11 +4,6 @@ abstract class RISParser
 {
     public abstract function parse(int $id): mixed;
 
-    /**
-     * @return int[]
-     */
-    public abstract function parseSeite(int $seite, int $first): array;
-
     public abstract function parseAll(): void;
 
     public abstract function parseUpdate(): void;
