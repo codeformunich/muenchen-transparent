@@ -34,4 +34,17 @@ class StadtratsvorlageDataTest extends TestCase
 
         $this->assertMatchesObjectSnapshot($data);
     }
+
+    public function testAntragsliste()
+    {
+        $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Antragsliste1.html');
+        $data = new StadtratsvorlageData();
+        $data->parseAntraege($html);
+
+        $this->assertCount(2, $data->antraege);
+        $this->assertSame("Neubau für das Sozialreferat und das Referat für Gesundheit und Umwelt -\nÜbernachtungsschutz fü...", $data->antraege[0]->titleShortened);
+        $this->assertSame(6447830, $data->antraege[0]->id);
+        $this->assertSame("Neubau für das Sozialreferat und das Referat für Gesundheit und Umwelt -\nÜbernachtungsschutz fü...", $data->antraege[1]->titleShortened);
+        $this->assertSame(6447494, $data->antraege[1]->id);
+    }
 }

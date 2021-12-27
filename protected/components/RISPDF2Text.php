@@ -88,12 +88,7 @@ class RISPDF2Text
         return ["seiten" => $anzahl, "datum" => $datum];
     }
 
-    /**
-     * @param string $filename
-     * @param int $seiten_anzahl
-     * @return string
-     */
-    public static function document_text_ocr($filename, $seiten_anzahl)
+    public static function document_text_ocr(string $filename, int $seiten_anzahl): string
     {
         if (defined("IN_TEST_MODE")) {
             return 'TEST OCR';
@@ -130,7 +125,7 @@ class RISPDF2Text
         return $text;
     }
 
-    public static function document_text_pdf($pdf)
+    public static function document_text_pdf($pdf): string
     {
         if (defined("IN_TEST_MODE")) {
             return 'TEST PDFbox';
@@ -138,10 +133,10 @@ class RISPDF2Text
 
         $converter = new PdfBox;
         $converter->setPathToPdfBox(PATH_PDFBOX);
-        return $converter->textFromPdfFile($pdf);
+        return (string)$converter->textFromPdfFile($pdf);
     }
 
-    public static function ris_ocr_clean($txt)
+    public static function ris_ocr_clean($txt): string
     {
         $ord_a = ord("a");
         $ord_z = ord("z");
@@ -159,11 +154,11 @@ class RISPDF2Text
             if ($c >= $ord_a && $c <= $ord_z) $txt[$first] = "l";
         }
 
-        if (substr($txt, 0, 3) == "ll.") {
+        if (str_starts_with($txt, "ll.")) {
             $txt[0] = "I";
             $txt[1] = "I";
         }
-        if (substr($txt, 0, 4) == "lll.") {
+        if (str_starts_with($txt, "lll.")) {
             $txt[0] = "I";
             $txt[1] = "I";
             $txt[2] = "I";

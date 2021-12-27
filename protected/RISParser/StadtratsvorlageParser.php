@@ -4,11 +4,26 @@ class StadtratsvorlageParser extends RISParser
 {
     private BrowserBasedDowloader $browserBasedDowloader;
     private CurlBasedDownloader $curlBasedDownloader;
+    private StadtratsantragParser $stadtratsantragParser;
 
     public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null, ?CurlBasedDownloader $curlBasedDownloader = null)
     {
         $this->browserBasedDowloader = $browserBasedDowloader ?: new BrowserBasedDowloader();
         $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
+    }
+
+    // Allows overriding the parser by a mock in PhpUnit
+    public function getStadtratsantragParser(): StadtratsantragParser
+    {
+        if (!isset($this->stadtratsantragParser)) {
+            $this->stadtratsantragParser = new StadtratsantragParser();
+        }
+        return $this->stadtratsantragParser;
+    }
+
+    public function setStadtratsantragParser(StadtratsantragParser $stadtratsantragParser): void
+    {
+        $this->stadtratsantragParser = $stadtratsantragParser;
     }
 
     public function parse(int $id): ?Antrag
@@ -22,6 +37,11 @@ class StadtratsvorlageParser extends RISParser
             return null;
         }
 
+        if ($parsed->hatAntragsliste) {
+            $html = $this->curlBasedDownloader->loadUrl(RIS_BASE_URL . 'sitzungsvorlage/detail/antraege/' . $id);
+            $parsed->parseAntraege($html);
+        }
+
         // @TODO Parse https://risi.muenchen.de/risi/sitzungsvorlage/detail/antraege/6752652?13
 
         $daten = new Antrag();
@@ -33,7 +53,7 @@ class StadtratsvorlageParser extends RISParser
         $daten->gestellt_von = "";
         $daten->gestellt_am = $parsed->freigabe->format('Y-m-d');
         $daten->antrag_typ = $parsed->typ;
-        $daten->bearbeitung = ""; // @TODO Dies this exist in the new RIS?
+        $daten->bearbeitung = ""; // @TODO Does this exist in the new RIS?
         $daten->kurzinfo = $parsed->kurzinfo;
         $daten->initiatorInnen = "";
         $daten->referent = $parsed->referentIn;
@@ -127,15 +147,11 @@ class StadtratsvorlageParser extends RISParser
             $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_ANTRAG, $daten, $dok);
         }
 
-        /*
-        foreach ($antrag_links as $link) {
-            / @var Antrag $antrag
-            $antrag = Antrag::model()->findByPk(IntVal($link));
+        foreach ($parsed->antraege as $antragsLink) {
+            /** @var Antrag $antrag */
+            $antrag = Antrag::model()->findByPk($antragsLink->id);
             if (!$antrag) {
-                $parser = new StadtratsantragParser();
-                $parser->parse($link);
-
-                $antrag = Antrag::model()->findByPk(IntVal($link));
+                $antrag = $this->getStadtratsantragParser()->parse($antragsLink->id);
             }
             if (!$antrag) if (Yii::app()->params['adminEmail'] != "") RISTools::report_ris_parser_error("Stadtratsvorlage - Zugordnungs Error", $id . " - " . $link);
 
@@ -144,10 +160,9 @@ class StadtratsvorlageParser extends RISParser
             $data = $sql->queryAll();
             if (count($data) == 0) {
                 $daten->addAntrag($antrag);
-                $aenderungen .= "Neuer Antrag zugeordnet: " . RIS_BASE_URL . "ris_antrag_detail.jsp?risid=$link\n";
+                $aenderungen .= "Neuer Antrag zugeordnet: " . $antrag->id . "\n";
             }
         }
-        */
 
         if ($aenderungen != "") {
             $aend              = new RISAenderung();

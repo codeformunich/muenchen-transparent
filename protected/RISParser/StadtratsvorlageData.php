@@ -28,6 +28,9 @@ class StadtratsvorlageData
     /** @var StadtratsantragErgebnis[] */
     public array $ergebnisse;
 
+    /** @var StadtratsantragListEntry[] */
+    public array $antraege = [];
+
     public static function parseFromHtml(string $html): ?self
     {
         if (!preg_match('/<section class="card">.*<div><h2>Betreff<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<title>[^<]*)<\/div>/siuU', $html, $match)) {
@@ -120,5 +123,22 @@ class StadtratsvorlageData
         }
 
         return $entry;
+    }
+
+    public function parseAntraege(string $html): void
+    {
+        if (!str_contains($html, 'risi-list')) {
+            // @TODO Warning, this should not happen
+            return;
+        }
+        $html = explode('risi-list', $html)[1];
+        preg_match_all('/<li.*<\/li>/siuU', $html, $matches);
+        $this->antraege = [];
+        foreach ($matches[0] as $match) {
+            $obj = StadtratsantragListEntry::parseFromHtml($match);
+            if ($obj) {
+                $this->antraege[] = $obj;
+            }
+        }
     }
 }

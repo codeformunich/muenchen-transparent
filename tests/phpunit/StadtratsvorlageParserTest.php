@@ -13,13 +13,18 @@ class StadtratsvorlageParserTest extends TestCase
     /** @var CurlBasedDownloader|MockObject */
     private $curlBasedDownloader;
 
+    /** @var StadtratsantragParser|MockObject */
+    private $stadtratsantragParser;
+
     private ?StadtratsvorlageParser $parser = null;
 
     public function setUp(): void
     {
         $this->browserBasedDownloader = $this->createMock(BrowserBasedDowloader::class);
         $this->curlBasedDownloader = $this->createMock(CurlBasedDownloader::class);
+        $this->stadtratsantragParser = $this->createMock(StadtratsantragParser::class);
         $this->parser = new StadtratsvorlageParser($this->browserBasedDownloader, $this->curlBasedDownloader);
+        $this->parser->setStadtratsantragParser($this->stadtratsantragParser);
         CurlBasedDownloader::setInstance($this->curlBasedDownloader);
     }
 
@@ -33,7 +38,7 @@ class StadtratsvorlageParserTest extends TestCase
         // This does not actually match the list in the file above, we only return something so the parser doesn't break
         $this->curlBasedDownloader
             ->method('loadUrl')
-            ->willReturn(file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument1.html'));
+            ->willReturn(file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument1.html')); // Dummy return
 
         $parsed = $this->parser->parseMonth(2021, 1);
 
@@ -53,11 +58,21 @@ class StadtratsvorlageParserTest extends TestCase
     public function testParseVorlage1()
     {
         $this->curlBasedDownloader
+            ->expects($this->exactly(2))
             ->method('loadUrl')
-            ->willReturn(file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument1.html'));
+            ->willReturnOnConsecutiveCalls(
+                file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument1.html'),
+                file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Antragsliste1.html')
+            );
+
+        $this->stadtratsantragParser
+            ->expects($this->exactly(2))
+            ->method('parse')
+            ->withConsecutive([6447830], [6447494])
+            ->willReturn(new Antrag());
 
         $vorlage = $this->parser->parse(6752652);
-        $this->assertSame('Aufbau eines Referats für Klima- und Umweltschutz und eines Gesundheitsreferats - IT-Teil (öffentliche Vorlage)', $vorlage->betreff);
+        $this->assertSame("Aufbau eines Referats für Klima- und Umweltschutz und eines Gesundheitsreferats\n- IT-Teil (öffentliche Vorlage)", $vorlage->betreff);
         $this->assertSame('20-26 / V 04180', $vorlage->antrags_nr);
         $this->assertSame('Endgültiger Beschluss', $vorlage->status);
     }
