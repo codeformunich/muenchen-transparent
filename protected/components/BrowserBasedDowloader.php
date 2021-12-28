@@ -20,6 +20,11 @@ class BrowserBasedDowloader
     public const DOCUMENT_FRAKTION_GRUPPE = '9';
     public const DOCUMENT_PERSON = '10';
 
+    public const PERSON_TYPE_STADTRAT = 'strmitglieder';
+    public const PERSON_TYPE_REFERENTINNEN = 'referenten';
+    public const PERSON_TYPE_BA_MITGLIEDER = 'strmitglieder';
+    public const PERSON_TYPE_BA_BEAUFTRAGTE = 'babeauftragter';
+
     private ?ProcessAwareBrowser $browser = null;
     private ?Page $page = null;
 
@@ -106,6 +111,39 @@ class BrowserBasedDowloader
                     $this->page->evaluate('document.querySelector(".colors_suche .list-group-flush").remove()')->waitForResponse();
                     $this->clickJs('.colors_suche a[rel=next]');
                     $this->waitForElementToAppear('.colors_suche .list-group-flush');
+                } else {
+                    $goon = false;
+                }
+            }
+        } finally {
+            $this->close();
+        }
+
+        return $html;
+    }
+
+    public function downloadPersonList(string $type): string
+    {
+        $html = '';
+
+        $this->open();
+
+        try {
+            $this->page->navigate(RIS_URL_PREFIX . 'person/' . $type)->waitForNavigation();
+
+            $goon = true;
+            for ($i = 0; $i < 100 && $goon; $i++) {
+                $page = intval($this->getInnerHtml('.colors_person .btn-pagelink[disabled] span'));
+
+                if ($page !== $i + 1) {
+                    throw new ParsingException('Switched to page ' . ($i + 1) . ', but HTML indicates ' . $page);
+                }
+
+                $html .= $this->getInnerHtml('.colors_person .list-group-flush');
+                if ($this->seeElement('.colors_person a[rel=next]')) {
+                    $this->page->evaluate('document.querySelector(".colors_person .list-group-flush").remove()')->waitForResponse();
+                    $this->clickJs('.colors_person a[rel=next]');
+                    $this->waitForElementToAppear('.colors_person .list-group-flush');
                 } else {
                     $goon = false;
                 }

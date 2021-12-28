@@ -29,8 +29,8 @@ class Recalc_DocumentsCommand extends CConsoleCommand
 
             $absolute_filename = $dokument->getLocalPath();
             $metadata                 = RISPDF2Text::document_pdf_metadata($absolute_filename);
-            $dokument->seiten_anzahl  = $metadata["seiten"];
-            $dokument->datum_dokument = $metadata["datum"];
+            $dokument->seiten_anzahl  = $metadata["pages"];
+            $dokument->datum_dokument = $metadata["date"];
             $dokument->save();
 
             echo $dokument->id . " => " . $dokument->seiten_anzahl . " / " . $dokument->datum_dokument . "\n";

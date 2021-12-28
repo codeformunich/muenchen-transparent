@@ -296,18 +296,13 @@ class RISTools
         return trim($titel);
     }
 
-
-    /**
-     * @param string $str
-     * @return array
-     */
-    public static function normalize_antragvon($str)
+    public static function normalize_antragvon(string $str): array
     {
         $a   = explode(",", $str);
         $ret = [];
         foreach ($a as $y) {
             $z = explode(";", $y);
-            if (count($z) == 2) {
+            if (count($z) === 2) {
                 $y = $z[1] . " " . $z[0];
             }
             $name_orig = $y;

@@ -41,7 +41,6 @@ class RISBaseController extends CController
     public $load_mediaelement = false;
     public $load_pdf_js       = false;
     public $load_selectize_js = false;
-    public $load_shariff      = false;
 
     public $suche_pre  = "";
 

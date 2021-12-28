@@ -58,7 +58,7 @@ class StadtratsantragParserTest extends TestCase
 
         $antrag = $this->parser->parse(6842474);
         $this->assertSame('Bericht über die IAA-Mobility 2021', $antrag->betreff);
-        $this->assertSame('20-26 / A 02018', $antrag->antrags_nr);
+        $this->assertSame('20-26/A02018', $antrag->antrags_nr);
         $this->assertSame('Erledigt', $antrag->status);
     }
 }

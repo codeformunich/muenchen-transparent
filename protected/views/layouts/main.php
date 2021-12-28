@@ -68,7 +68,6 @@
     if ($this->load_list_js      ) echo '<script src="/bower/list.js/dist/list.min.js"></script>';
     if ($this->load_mediaelement ) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
     if ($this->load_selectize_js ) echo '<script src="/bower/selectize/dist/js/standalone/selectize.min.js" defer></script>';
-    if ($this->load_shariff      ) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
     ?>
 
     <?php if ($this->load_calendar) { ?>

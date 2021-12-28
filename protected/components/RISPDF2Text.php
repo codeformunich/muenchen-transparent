@@ -1,11 +1,12 @@
 <?php
 
+use JetBrains\PhpStorm\ArrayShape;
 use SGH\PdfBox\PdfBox;
 
 class RISPDF2Text
 {
 
-    public static $RIS_OCR_CLEAN_I_REPLACES = [
+    public static array $RIS_OCR_CLEAN_I_REPLACES = [
         "ı"           => "i",
         "vv"          => "w",
         "Munchen"     => "München",
@@ -31,7 +32,7 @@ class RISPDF2Text
         "Scn"         => "sch",
     ];
 
-    public static $RIS_OCR_CLEAN_REPLACES = [
+    public static array $RIS_OCR_CLEAN_REPLACES = [
         "nıv"     => "rw",
         " lsar"   => " Isar",
         "-lsar"   => "-Isar",
@@ -50,42 +51,39 @@ class RISPDF2Text
         "Schuie"  => "Schule",
     ];
 
-    public static $RIS_OCR_CLEAN_PREG_REPLACES = [
+    public static array $RIS_OCR_CLEAN_PREG_REPLACES = [
         "/^l([bcdfghkmnpqrstvwxz])/um" => "I\\1",
         "/ l([bcdfghkmnpqrstvwxz])/um" => " I\\1",
         "/ i([aeou])/um"               => " l\\1",
         "/(niv)(?!eau)/u"              => "rw",
     ];
 
-    /**
-     * @param string $filename
-     * @return array
-     */
-    public static function document_pdf_metadata($filename)
+    #[ArrayShape(["pages" => "int", "date" => "string"])]
+    public static function document_pdf_metadata(string $filename): array
     {
         $result = [];
         exec(PATH_PDFINFO . " '" . addslashes($filename) . "'", $result);
         $seiten = 0;
-        $datum  = "";
+        $dateParse  = "";
 
         if (preg_match("/Pages:\\s*([0-9]+)/siu", implode("\n", $result), $matches_page)) $seiten = IntVal($matches_page[1]);
         if (preg_match("/CreationDate:\\s*([a-z0-9 :]+)\n/siu", implode("\n", $result), $matches_date)) {
-            $datum = date_parse($matches_date[1]);
-            if ($datum && isset($datum["year"]) && $datum["year"] > 1990) {
-                $datum = $datum["year"] . "-" . $datum["month"] . "-" . $datum["day"] . " " . $datum["hour"] . ":" . $datum["minute"] . ":" . $datum["second"];
+            $dateParse = date_parse($matches_date[1]);
+            if ($dateParse && isset($dateParse["year"]) && $dateParse["year"] > 1990) {
+                $dateParse = $dateParse["year"] . "-" . $dateParse["month"] . "-" . $dateParse["day"] . " " . $dateParse["hour"] . ":" . $dateParse["minute"] . ":" . $dateParse["second"];
             } else {
-                $datum = "0000-00-00 00:00:00";
+                $dateParse = "0000-00-00 00:00:00";
             }
         }
 
-        if ($seiten > 0) return ["seiten" => $seiten, "datum" => $datum];
+        if ($seiten > 0) return ["pages" => $seiten, "date" => $dateParse];
 
         $result = [];
         exec(PATH_IDENTIFY . " $filename", $result);
-        $anzahl = 0;
-        foreach ($result as $res) if (strpos($res, "DirectClass")) $anzahl++;
+        $pages = 0;
+        foreach ($result as $res) if (strpos($res, "DirectClass")) $pages++;
 
-        return ["seiten" => $anzahl, "datum" => $datum];
+        return ["pages" => $pages, "date" => $dateParse];
     }
 
     public static function document_text_ocr(string $filename, int $seiten_anzahl): string

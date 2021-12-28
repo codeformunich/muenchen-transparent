@@ -73,7 +73,7 @@ class StadtratsvorlageParserTest extends TestCase
 
         $vorlage = $this->parser->parse(6752652);
         $this->assertSame("Aufbau eines Referats für Klima- und Umweltschutz und eines Gesundheitsreferats\n- IT-Teil (öffentliche Vorlage)", $vorlage->betreff);
-        $this->assertSame('20-26 / V 04180', $vorlage->antrags_nr);
+        $this->assertSame('20-26/V04180', $vorlage->antrags_nr);
         $this->assertSame('Endgültiger Beschluss', $vorlage->status);
     }
 }

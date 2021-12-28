@@ -7,7 +7,6 @@
 
 $this->pageTitle         = $antrag->getName(true);
 $this->load_selectize_js = true;
-$this->load_shariff      = true;
 
 $personen = [
     AntragPerson::$TYP_GESTELLT_VON => [],
@@ -287,10 +286,18 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 /** @var IRISItem[] $vorgang_items */
                 if ($antrag->vorgang) {
                     $items = [];
+                    $shownIds = [];
+                    foreach ($antrag->antrag2vorlagen as $antrag) {
+                        $shownIds[] = $antrag->id;
+                    }
+                    foreach ($antrag->vorlage2antraege as $antrag) {
+                        $shownIds[] = $antrag->id;
+                    }
                     foreach ($antrag->vorgang->getRISItemsByDate() as $item) {
                         // Der gerade angezeigte Antrag und seine Dokumente überspringen, sodass sie nicht als verwandte Seiten angezeigt werden
-                        if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
-                        if (is_a($item, "Dokument")) continue;
+                        if (is_a($item, Antrag::class) && $item->id == $antrag->id) continue;
+                        if (is_a($item, Antrag::class) && in_array($antrag->id, $shownIds)) continue;
+                        if (is_a($item, Dokument::class)) continue;
                         
                         $items[] = $item;
                     }

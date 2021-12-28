@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 class StadtratsantragData
 {
     public int $id;
@@ -43,7 +42,7 @@ class StadtratsantragData
         if (!preg_match('/<h1[^>]*>.*StR-(Antrag|Anfrage) (?<nummer>[^<]*) <span[^>]*><span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
             throw new ParsingException('Not found: antragsnummer / status');
         }
-        $entry->antragsnummer = $match['nummer'];
+        $entry->antragsnummer = str_replace(' ', '', $match['nummer']);
         $entry->status = $match['status'];
 
         if (!preg_match('/<a[^>]*href="\.\/(?<id>\d+)\?/siu', $html, $match)) {

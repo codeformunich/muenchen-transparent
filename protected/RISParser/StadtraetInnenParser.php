@@ -2,15 +2,18 @@
 
 class StadtraetInnenParser extends RISParser
 {
-    private static $MAX_OFFSET        = 450;
+    private BrowserBasedDowloader $browserBasedDowloader;
+    private CurlBasedDownloader $curlBasedDownloader;
 
-    private $bearbeitete_stadtraetInnen = [];
-    private $antraege_alle              = false;
+    private bool $antraege_alle = false;
 
-    /**
-     * @param bool $set
-     */
-    public function setParseAlleAntraege($set)
+    public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null, ?CurlBasedDownloader $curlBasedDownloader = null)
+    {
+        $this->browserBasedDowloader = $browserBasedDowloader ?: new BrowserBasedDowloader();
+        $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
+    }
+
+    public function setParseAlleAntraege(bool $set): void
     {
         $this->antraege_alle = $set;
     }
@@ -173,41 +176,15 @@ class StadtraetInnenParser extends RISParser
     }
 
 
-    public function parseSeite(int $seite, int $first): array
-    {
-        $text = RISTools::load_file(RIS_BASE_URL . "ris_mitglieder_trefferliste.jsp?txtPosition=$seite");
-        $txt  = explode("<!-- tabellenkopf -->", $text);
-        if (!isset($txt[1])) {
-            if (SITE_CALL_MODE != "cron") echo "- leer\n";
-            return [];
-        } elseif ($first) {
-            RISTools::report_ris_parser_error("StadträtInnenUpdate VOLL",
-                "Erste Seite voll: $seite (" . RIS_BASE_URL . "ris_mitglieder_trefferliste.jsp?txtPosition=$seite)");
-        }
-        $txt = explode("<div class=\"ergebnisfuss\">", $txt[1]);
-        preg_match_all("/ris_mitglieder_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
-        for ($i = count($matches[1]) - 1; $i >= 0; $i--) if (!in_array($matches[1][$i], $this->bearbeitete_stadtraetInnen)) {
-            try {
-                $this->parse($matches[1][$i]);
-            } catch (Exception $e) {
-                RISTools::report_ris_parser_error("StadträtInnenUpdate Error", $matches[1][$i] . $e);
-            }
-
-            $this->bearbeitete_stadtraetInnen[] = $matches[1][$i];
-        }
-        return $matches[1];
-    }
-
-
     public function parseAll(): void
     {
-        $anz                              = static::$MAX_OFFSET;
-        $this->bearbeitete_stadtraetInnen = [];
-        $first                            = true;
-        for ($i = $anz; $i >= 0; $i -= 10) {
-            if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-            $this->parseSeite($i, $first);
-            $first = false;
+        $html = $this->browserBasedDowloader->downloadPersonList(BrowserBasedDowloader::PERSON_TYPE_STADTRAT);
+        $entries = StadtraetInnenListEntry::parseHtmlList($html);
+
+        echo count($entries) . " Stadtratsmitglieder gefunden\n";
+
+        foreach ($entries as $entry) {
+            $this->parse($entry->id);
         }
     }
 

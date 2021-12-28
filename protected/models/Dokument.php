@@ -318,8 +318,8 @@ class Dokument extends CActiveRecord implements IRISItem
         }
 
         $metadata             = RISPDF2Text::document_pdf_metadata($absolute_filename);
-        $this->seiten_anzahl  = $metadata["seiten"];
-        $this->datum_dokument = $metadata["datum"];
+        $this->seiten_anzahl  = $metadata["pages"];
+        $this->datum_dokument = $metadata["date"];
         if ($this->datum_dokument == "") {
             $this->datum_dokument = null;
         }
@@ -472,14 +472,10 @@ class Dokument extends CActiveRecord implements IRISItem
      */
     public function getLocalPath()
     {
-        if ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
-            if (substr($this->rathausumschau->datum, 0, 4) <= 2008) return PATH_PDF_RU . substr($this->rathausumschau->datum, 0, 4) . "/" . $this->url;
-            return PATH_PDF_RU . substr($this->rathausumschau->datum, 0, 4) . "/" . IntVal($this->rathausumschau->nr) . ".pdf";
-        } else {
-            $x         = explode(".", $this->url);
-            $extension = $x[count($x) - 1];
-            return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
-        }
+        $x = explode(".", $this->url);
+        $extension = $x[count($x) - 1];
+
+        return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
     }
 
     private static $dokumente_cache = [];
@@ -702,9 +698,9 @@ class Dokument extends CActiveRecord implements IRISItem
             return;
         } catch (Exception $e) {
             $tries--;
-            sleep(15);
+            //sleep(15);
+            RISTools::report_ris_parser_error("Failed Indexing: " . $e->getMessage(), '');
         }
-        RISTools::report_ris_parser_error("Failed Indexing", print_r($this->getAttributes(), true));
     }
 
     /**

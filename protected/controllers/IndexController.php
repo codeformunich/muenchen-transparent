@@ -1027,25 +1027,6 @@ class IndexController extends RISBaseController
         }
     }
 
-
-    /**
-     * @param string $url
-     */
-    public function actionShariffData($url)
-    {
-        Header("Content-Type: application/json; charset=UTF-8");
-        $shariff = new \Heise\Shariff\Backend([
-            "domains"   => [$_SERVER["HTTP_HOST"]],
-            "services" => ["Facebook", "GooglePlus"],
-            "cache"    => [
-                "ttl"      => 60,
-                "cacheDir" => TMP_PATH,
-            ]
-        ]);
-        echo json_encode($shariff->get($url));
-        Yii::app()->end();
-    }
-
     public function actionBaListe()
     {
         $this->render('ba_liste', ["bas" => Bezirksausschuss::model()->alleOhneStadtrat()]);

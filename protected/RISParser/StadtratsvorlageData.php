@@ -43,7 +43,7 @@ class StadtratsvorlageData
         if (!preg_match('/<h1[^>]*>.*Sitzungsvorlage (?<nummer>[^<]*)<\/span>\n*<span[^>]*>\n*<span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
             throw new ParsingException('Not found: antragsnummer / status');
         }
-        $entry->antragsnummer = $match['nummer'];
+        $entry->antragsnummer = str_replace(' ', '', $match['nummer']);
         $entry->status = $match['status'];
 
         if (!preg_match('/<a[^>]*href="\.\/(?<id>\d+)\?/siu', $html, $match)) {
