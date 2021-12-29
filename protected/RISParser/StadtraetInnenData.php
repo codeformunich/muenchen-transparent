@@ -25,7 +25,7 @@ class StadtraetInnenData
         $entry = new self();
         $entry->name = preg_replace('/^(Herr|Frau) /siu', '', $match['name']);
 
-        if (!preg_match('/rss\?feed=StR\-MitgliedAntraege&amp;personid=(?<id>\d+)"/siu', $htmlFraktion, $match)) {
+        if (!preg_match('/rss[^">]*\?feed=StR\-MitgliedAntraege&amp;personid=(?<id>\d+)"/siu', $htmlFraktion, $match)) {
             throw new ParsingException('Not found: id');
         }
         $entry->id = intval($match['id']);

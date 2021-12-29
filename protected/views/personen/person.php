@@ -164,16 +164,12 @@ $this->html_itemprop = "http://schema.org/Person";
                     echo '<dt>Facebook:</dt>';
                     echo '<dd><a href="https://www.facebook.com/' . CHtml::encode($person->facebook) . '">Facebook-Profil</a></dd>' . "\n";
                 }
-                if ($person->abgeordnetenwatch != "") {
-                    echo '<dt>Abgeordnetenwatch:</dt>';
-                    echo '<dd><a href="' . CHtml::encode($person->abgeordnetenwatch) . '">Abgeordnetenwatch-Profil</a></dd>' . "\n";
-                }
                 if ($person->geburtstag != "") {
                     $datum = explode("-", $person->geburtstag);
                     if ($datum[1] > 0) {
                         echo '<dt>Geburtstag:</dt>';
                         echo '<dd>' . RISTools::datumstring($person->geburtstag) . '</dd>' . "\n";
-                    } else {
+                    } elseif ($datum[0] > 0) {
                         echo '<dt>Geburtsjahr:</dt>';
                         echo '<dd>' . CHtml::encode($datum[0]) . '</dd>' . "\n";
                     }
@@ -187,6 +183,7 @@ $this->html_itemprop = "http://schema.org/Person";
                 ?>
             </dl>
             <?php
+            /*
             $ich = $this->aktuelleBenutzerIn();
             if ($ich && $ich->id == $person->benutzerIn_id) {
                 $editlink = Yii::app()->createUrl("personen/personBearbeiten", array("id" => $person->id));
@@ -196,6 +193,7 @@ $this->html_itemprop = "http://schema.org/Person";
                 $login_add = ($ich ? '' : ' <small>(Login)</small>');
                 echo '<a href="' . CHtml::encode($binichlink) . '" style="font-size: 0.9em; color: gray; font-style: italic;">Sie Sind ' . CHtml::encode($person->getName()) . '?' . $login_add . '</a>';
             }
+            */
             ?>
         </div>
     </section>

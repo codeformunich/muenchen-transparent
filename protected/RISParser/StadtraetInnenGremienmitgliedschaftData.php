@@ -9,7 +9,7 @@ class StadtraetInnenGremienmitgliedschaftData
     public ?string $funktion = null;
     public ?DateTime $seit = null;
     public ?DateTime $bis = null;
-    public ?string $wahlperiode = null;
+    public ?int $wahlperiode = null;
 
     public static function parseFromHtml(string $html): ?self
     {
@@ -34,7 +34,7 @@ class StadtraetInnenGremienmitgliedschaftData
         }
 
         if (preg_match('/Wahlperiode:<\/div>\s*<div class="keyvalue-value">\s*(?<wahlperiode>[^<]*)\s*<\/div>/siuU', $html, $matches)) {
-            $entry->wahlperiode = $matches['wahlperiode'];
+            $entry->wahlperiode = Wahlperioden::WAHLPERIODEN_BY_YEAR[intval($matches['wahlperiode'])];
         }
 
         return $entry;
