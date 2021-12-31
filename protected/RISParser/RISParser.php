@@ -2,6 +2,21 @@
 
 abstract class RISParser
 {
+    private const MONTHS = [
+        "januar" => 1,
+        "februar" => 2,
+        "märz" => 3,
+        "april" => 4,
+        "mai" => 5,
+        "juni" => 6,
+        "juli" => 7,
+        "august" => 8,
+        "september" => 9,
+        "oktober" => 10,
+        "november" => 11,
+        "dezember" => 12,
+    ];
+
     public abstract function parse(int $id): mixed;
 
     public abstract function parseAll(): void;
@@ -37,6 +52,15 @@ abstract class RISParser
         if (strlen($x[1]) == 1) $x[1] = "0" . $x[1];
         if (strlen($x[2]) == 2) $x[2] = "20" . $x[2];
         return $x[2] . "-" . $x[1] . "-" . $x[0];
+    }
+
+    public static function parseGermanLongDate(string $date): DateTime
+    {
+        preg_match('/(?<day>\d+)\. (?<month>[a-zäöüß]+) (?<year>\d{4}), (?<hour>\d+):(?<minute>\d+)/siu', $date, $match);
+
+        return (new \DateTime())
+            ->setDate(intval($match['year']), static::MONTHS[mb_strtolower($match['month'])], intval($match['day']))
+            ->setTime(intval($match['hour']), intval($match['minute']), 0, 0);
     }
 
     /** @param int [] */

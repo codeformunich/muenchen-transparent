@@ -30,6 +30,8 @@
  */
 class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
+    public const CANCELED_STR = 'Entfällt';
+
     public static $TYP_AUTO = 0;
     public static $TYP_BUERGERVERSAMMLUNG = 1;
     public static $TYPEN_ALLE = [
@@ -406,12 +408,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         return $alle_termine;
     }
 
-
-    /**
-     * @return bool
-     */
-    public function istAbgesagt() {
-        return ($this->sitzungsstand == "Entfällt");
+    public function istAbgesagt(): bool {
+        return ($this->sitzungsstand === static::CANCELED_STR);
     }
 
     /**

@@ -11,7 +11,7 @@ class CalendarListEntryTest extends TestCase
 
     public function testParseList()
     {
-        $html = file_get_contents(__DIR__ . '/data/TermineParser_index.html');
+        $html = file_get_contents(__DIR__ . '/data/CalendarParser_index.html');
         $data = CalendarListEntry::parseHtmlList($html);
         $this->assertCount(65, $data);
         $this->assertMatchesObjectSnapshot($data);

@@ -1,0 +1,325 @@
+-
+    dateStart: '2021-12-22T09:30:00+01:00'
+    id: 6953202
+    organizationId: 5
+    organizationName: Bauausschuss
+-
+    dateStart: '2021-12-22T09:30:00+01:00'
+    id: 6953244
+    organizationId: 22
+    organizationName: Stadtentwässerungsausschuss
+-
+    dateStart: '2021-12-21T19:30:00+01:00'
+    id: 6128324
+    organizationId: 344
+    organizationName: 'BA 18 - Vollgremium'
+-
+    dateStart: '2021-12-21T19:30:00+01:00'
+    id: 6202306
+    organizationId: 282
+    organizationName: 'BA 07 - Vollgremium'
+-
+    dateStart: '2021-12-21T19:00:00+01:00'
+    id: 6243091
+    organizationId: 319
+    organizationName: 'BA 14 - Vollgremium'
+-
+    dateStart: '2021-12-21T14:00:00+01:00'
+    id: 6949459
+    organizationId: 10
+    organizationName: Kulturausschuss
+-
+    dateStart: '2021-12-21T09:30:00+01:00'
+    id: 6953168
+    organizationId: 8
+    organizationName: Kommunalausschuss
+-
+    dateStart: '2021-12-20T19:30:00+01:00'
+    id: 6262347
+    organizationId: 298
+    organizationName: 'BA 10 - Vollgremium'
+-
+    dateStart: '2021-12-16T19:00:00+01:00'
+    id: 6130626
+    organizationId: 325
+    organizationName: 'BA 15 - Vollgremium'
+-
+    dateStart: '2021-12-16T14:05:00+01:00'
+    id: 6953141
+    organizationId: 3334155
+    organizationName: Sportausschuss
+-
+    dateStart: '2021-12-16T14:00:00+01:00'
+    id: 6953060
+    organizationId: 3334126
+    organizationName: Bildungsausschuss
+-
+    dateStart: '2021-12-16T14:00:00+01:00'
+    id: 6953087
+    organizationId: 3334155
+    organizationName: Sportausschuss
+-
+    dateStart: '2021-12-16T14:00:00+01:00'
+    id: 6953033
+    organizationId: 9
+    organizationName: Kreisverwaltungsausschuss
+-
+    dateStart: '2021-12-16T14:00:00+01:00'
+    id: 6953006
+    organizationId: 3334155
+    organizationName: Sportausschuss
+-
+    dateStart: '2021-12-16T14:00:00+01:00'
+    id: 6953114
+    organizationId: 3334126
+    organizationName: Bildungsausschuss
+-
+    dateStart: '2021-12-15T19:30:00+01:00'
+    id: 6179659
+    organizationId: 302
+    organizationName: 'BA 11 - Vollgremium'
+-
+    dateStart: '2021-12-15T19:00:00+01:00'
+    id: 6162585
+    organizationId: 269
+    organizationName: 'BA 05 - Vollgremium'
+-
+    dateStart: '2021-12-15T19:00:00+01:00'
+    id: 6285861
+    organizationId: 373
+    organizationName: 'BA 24 - Vollgremium'
+-
+    dateStart: '2021-12-15T09:00:00+01:00'
+    id: 6432274
+    organizationId: 1
+    organizationName: Vollversammlung
+-
+    dateStart: '2021-12-14T19:30:00+01:00'
+    id: 6224479
+    organizationId: 294
+    organizationName: 'BA 09 - Vollgremium'
+-
+    dateStart: '2021-12-14T19:30:00+01:00'
+    id: 6379243
+    organizationId: 253
+    organizationName: 'BA 01 - Vollgremium'
+-
+    dateStart: '2021-12-14T19:30:00+01:00'
+    id: 6515622
+    organizationId: 306
+    organizationName: 'BA 12 - Vollgremium'
+-
+    dateStart: '2021-12-14T19:30:00+01:00'
+    id: 6434609
+    organizationId: 262
+    organizationName: 'BA 03 - Vollgremium'
+-
+    dateStart: '2021-12-14T19:30:00+01:00'
+    id: 6242305
+    organizationId: 337
+    organizationName: 'BA 17 - Vollgremium'
+-
+    dateStart: '2021-12-14T19:30:00+01:00'
+    id: 6357252
+    organizationId: 287
+    organizationName: 'BA 08 - Vollgremium'
+-
+    dateStart: '2021-12-14T19:30:00+01:00'
+    id: 6107436
+    organizationId: 313
+    organizationName: 'BA 13 - Vollgremium'
+-
+    dateStart: '2021-12-14T19:00:00+01:00'
+    id: 6279785
+    organizationId: 368
+    organizationName: 'BA 23 - Vollgremium'
+-
+    dateStart: '2021-12-14T14:00:00+01:00'
+    id: 6432242
+    organizationId: 6
+    organizationName: Finanzausschuss
+-
+    dateStart: '2021-12-14T09:30:00+01:00'
+    id: 6924277
+    organizationId: 9
+    organizationName: Kreisverwaltungsausschuss
+-
+    dateStart: '2021-12-14T09:30:00+01:00'
+    id: 6432215
+    organizationId: 9
+    organizationName: Kreisverwaltungsausschuss
+-
+    dateStart: '2021-12-14T09:30:00+01:00'
+    id: 6924308
+    organizationId: 6147208
+    organizationName: Mobilitätsausschuss
+-
+    dateStart: '2021-12-13T19:30:00+01:00'
+    id: 6247834
+    organizationId: 355
+    organizationName: 'BA 20 - Vollgremium'
+-
+    dateStart: '2021-12-10T09:00:00+01:00'
+    id: 6432184
+    organizationId: 2
+    organizationName: Ältestenrat
+-
+    dateStart: '2021-12-09T19:00:00+01:00'
+    id: 6388373
+    organizationId: 331
+    organizationName: 'BA 16 - Vollgremium'
+-
+    dateStart: '2021-12-09T14:00:00+01:00'
+    id: 6432155
+    organizationId: 632995
+    organizationName: Gesundheitsausschuss
+-
+    dateStart: '2021-12-09T09:30:00+01:00'
+    id: 6432126
+    organizationId: 14
+    organizationName: Sozialausschuss
+-
+    dateStart: '2021-12-08T19:30:00+01:00'
+    id: 6372729
+    organizationId: 263
+    organizationName: 'BA 04 - Vollgremium'
+-
+    dateStart: '2021-12-08T19:00:00+01:00'
+    id: 6280779
+    organizationId: 363
+    organizationName: 'BA 22 - Vollgremium'
+-
+    dateStart: '2021-12-08T15:30:00+01:00'
+    id: 6432097
+    organizationId: 4769053
+    organizationName: IT-Ausschuss
+-
+    dateStart: '2021-12-08T13:30:00+01:00'
+    id: 6432067
+    organizationId: 17
+    organizationName: 'Verwaltungs- und Personalausschuss'
+-
+    dateStart: '2021-12-08T09:30:00+01:00'
+    id: 6839679
+    organizationId: 3
+    organizationName: 'Ausschuss für Arbeit und Wirtschaft'
+-
+    dateStart: '2021-12-08T09:30:00+01:00'
+    id: 6839712
+    organizationId: 6147208
+    organizationName: Mobilitätsausschuss
+-
+    dateStart: '2021-12-08T09:30:00+01:00'
+    id: 6432021
+    organizationId: 6147208
+    organizationName: Mobilitätsausschuss
+-
+    dateStart: '2021-12-08T09:00:00+01:00'
+    id: 6432052
+    organizationId: 11
+    organizationName: Rechnungsprüfungsausschuss
+-
+    dateStart: '2021-12-07T19:00:00+01:00'
+    id: 6173182
+    organizationId: 349
+    organizationName: 'BA 19 - Vollgremium'
+-
+    dateStart: '2021-12-07T19:00:00+01:00'
+    id: 6297018
+    organizationId: 362
+    organizationName: 'BA 21 - Vollgremium'
+-
+    dateStart: '2021-12-07T19:00:00+01:00'
+    id: 6404670
+    organizationId: 257
+    organizationName: 'BA 02 - Vollgremium'
+-
+    dateStart: '2021-12-07T14:00:00+01:00'
+    id: 6431987
+    organizationId: 6415987
+    organizationName: 'Ausschuss für Klima- und Umweltschutz'
+-
+    dateStart: '2021-12-07T14:00:00+01:00'
+    id: 6431957
+    organizationId: 632995
+    organizationName: Gesundheitsausschuss
+-
+    dateStart: '2021-12-07T14:00:00+01:00'
+    id: 6431930
+    organizationId: 6415987
+    organizationName: 'Ausschuss für Klima- und Umweltschutz'
+-
+    dateStart: '2021-12-07T09:30:00+01:00'
+    id: 6839648
+    organizationId: 6415987
+    organizationName: 'Ausschuss für Klima- und Umweltschutz'
+-
+    dateStart: '2021-12-07T09:30:00+01:00'
+    id: 6839621
+    organizationId: 3
+    organizationName: 'Ausschuss für Arbeit und Wirtschaft'
+-
+    dateStart: '2021-12-07T09:30:00+01:00'
+    id: 6944222
+    organizationId: 4
+    organizationName: 'Ausschuss für Stadtplanung und Bauordnung'
+-
+    dateStart: '2021-12-07T09:30:00+01:00'
+    id: 6431903
+    organizationId: 3
+    organizationName: 'Ausschuss für Arbeit und Wirtschaft'
+-
+    dateStart: '2021-12-06T18:30:00+01:00'
+    id: 6355003
+    organizationId: 276
+    organizationName: 'BA 06 - Vollgremium'
+-
+    dateStart: '2021-12-02T19:30:00+01:00'
+    id: 6282063
+    organizationId: 379
+    organizationName: 'BA 25 - Vollgremium'
+-
+    dateStart: '2021-12-02T14:00:00+01:00'
+    id: 6431865
+    organizationId: 10
+    organizationName: Kulturausschuss
+-
+    dateStart: '2021-12-02T09:30:00+01:00'
+    id: 6431832
+    organizationId: 8
+    organizationName: Kommunalausschuss
+-
+    dateStart: '2021-12-01T14:00:00+01:00'
+    id: 6431722
+    organizationId: 3334126
+    organizationName: Bildungsausschuss
+-
+    dateStart: '2021-12-01T14:00:00+01:00'
+    id: 6431778
+    organizationId: 3334155
+    organizationName: Sportausschuss
+-
+    dateStart: '2021-12-01T14:00:00+01:00'
+    id: 6839590
+    organizationId: 9
+    organizationName: Kreisverwaltungsausschuss
+-
+    dateStart: '2021-12-01T14:00:00+01:00'
+    id: 6431805
+    organizationId: 3334126
+    organizationName: Bildungsausschuss
+-
+    dateStart: '2021-12-01T14:00:00+01:00'
+    id: 6839562
+    organizationId: 3334155
+    organizationName: Sportausschuss
+-
+    dateStart: '2021-12-01T14:00:00+01:00'
+    id: 6431751
+    organizationId: 3334155
+    organizationName: Sportausschuss
+-
+    dateStart: '2021-12-01T09:30:00+01:00'
+    id: 6431692
+    organizationId: 4
+    organizationName: 'Ausschuss für Stadtplanung und Bauordnung'
