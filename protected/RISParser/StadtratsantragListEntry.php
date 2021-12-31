@@ -9,6 +9,22 @@ class StadtratsantragListEntry
     public int $id;
     public string $link;
 
+    /**
+     * @return StadtratsantragListEntry[]
+     */
+    public static function parseHtmlList(string $htmlList): array
+    {
+        preg_match_all('/<li.*<\/li>/siuU', $htmlList, $matches);
+        $parsedObjects = [];
+        foreach ($matches[0] as $match) {
+            $obj = static::parseFromHtml($match);
+            if ($obj) {
+                $parsedObjects[] = $obj;
+            }
+        }
+        return $parsedObjects;
+    }
+
     public static function parseFromHtml(string $html): ?self
     {
         if (!preg_match('/<a class="headline-link" href="(?<url>[^\"]*)"[^>]*>(?<title>.*)<\/a>/siuU', $html, $titleMatch)) {

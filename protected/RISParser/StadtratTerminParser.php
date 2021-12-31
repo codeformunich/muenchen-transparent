@@ -2,12 +2,18 @@
 
 class StadtratTerminParser extends RISParser
 {
-    private static $MAX_OFFSET        = 8000;
-    private static $MAX_OFFSET_UPDATE = 570;
+    private BrowserBasedDowloader $browserBasedDowloader;
+    private CurlBasedDownloader $curlBasedDownloader;
 
-    public function parse(int $termin_id): Termin
+    public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null, ?CurlBasedDownloader $curlBasedDownloader = null)
     {
-        if (SITE_CALL_MODE != "cron") echo "- Termin $termin_id\n";
+        $this->browserBasedDowloader = $browserBasedDowloader ?: new BrowserBasedDowloader();
+        $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
+    }
+
+    public function parse(int $id): ?Termin
+    {
+        if (SITE_CALL_MODE != "cron") echo "- Termin $id\n";
 
         $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=$termin_id");
         $html_dokumente = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_dokumente.jsp?risid=$termin_id");
@@ -16,7 +22,7 @@ class StadtratTerminParser extends RISParser
 
         $daten                         = new Termin();
         $daten->typ                    = Termin::$TYP_AUTO;
-        $daten->id                     = $termin_id;
+        $daten->id                     = $id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id             = NULL;
         $daten->ba_nr                  = NULL;
@@ -361,7 +367,7 @@ class StadtratTerminParser extends RISParser
                     $aend->datum       = new CDbExpression("NOW()");
                     $aend->aenderungen = $aenderungen;
                     $aend->save();
-                    return;
+                    return null;
                 }
 
             } else {
@@ -394,6 +400,7 @@ class StadtratTerminParser extends RISParser
             $termin->save();
         }
 
+        return $daten;
     }
 
     public function parseSeite(int $seite, int $first, bool $alle = false): array
@@ -442,6 +449,27 @@ class StadtratTerminParser extends RISParser
             $this->parseSeite($anz - $i, $first, false);
             $first = false;
         }
+    }
+
+    /**
+     * @return StadtratsantragListEntry[]
+     * @throws ParsingException
+     */
+    public function parseMonth(int $year, int $month): array
+    {
+        $from = new \DateTime($year . '-' . $month . '-1');
+        $to = (clone $from)->modify('last day of this month');
+
+        $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_SITZUNG, $from, $to);
+
+        $parsedObjects = CalendarListEntry::parseHtmlList($html);
+        echo count($parsedObjects) . " Termine gefunden\n";
+
+        foreach ($parsedObjects as $object) {
+            $this->parse($object->id);
+        }
+
+        return $parsedObjects;
     }
 
     public function parseQuickUpdate(): void

@@ -170,15 +170,7 @@ class StadtratsantragParser extends RISParser
 
         $html = $this->browserBasedDowloader->downloadDocumentTypeListForPeriod(BrowserBasedDowloader::DOCUMENT_STADTRAT_ANTRAG, $from, $to);
 
-        preg_match_all('/<li.*<\/li>/siuU', $html, $matches);
-        $parsedObjects = [];
-        foreach ($matches[0] as $match) {
-            $obj = StadtratsantragListEntry::parseFromHtml($match);
-            if ($obj) {
-                $parsedObjects[] = $obj;
-            }
-        }
-
+        $parsedObjects = StadtratsantragListEntry::parseHtmlList($html);
         echo count($parsedObjects) . " Stadtratsanträge gefunden\n";
 
         foreach ($parsedObjects as $object) {
