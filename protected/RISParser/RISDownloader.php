@@ -19,7 +19,7 @@ class RISDownloader
     {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, RIS_BASE_URL . 'aktuelles');
+        curl_setopt($ch, CURLOPT_URL, RIS_URL_PREFIX . 'aktuelles');
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -40,7 +40,7 @@ class RISDownloader
 
     public static function downloadStrAntragIndex(): string
     {
-        $url = RIS_BASE_URL . 'antrag/str/uebersicht?1-1.-form=';
+        $url = RIS_URL_PREFIX . 'antrag/str/uebersicht?1-1.-form=';
 
         $ch = curl_init();
 

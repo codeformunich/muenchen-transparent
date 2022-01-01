@@ -16,8 +16,8 @@ class StadtratsantragData
     public ?string $art;
     public ?string $typ;
     public ?string $bearbeitungsart;
-    public ?int $referatId;
-    public ?string $referatName;
+    public ?int $referatId = null;
+    public ?string $referatName = null;
 
     /** @var string[] */
     public array $initiativeNamen;

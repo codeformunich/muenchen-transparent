@@ -15,7 +15,7 @@ class StadtratsantragParser extends RISParser
     {
         if (SITE_CALL_MODE != "cron") echo "- Antrag $id\n";
 
-        $html = $this->curlBasedDownloader->loadUrl(RIS_BASE_URL . 'antrag/detail/' . $id);
+        $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'antrag/detail/' . $id);
 
         $parsed = StadtratsantragData::parseFromHtml($html);
         if ($parsed === null) {
@@ -35,8 +35,8 @@ class StadtratsantragParser extends RISParser
         $daten->status = $parsed->status;
         $daten->bearbeitung = $parsed->bearbeitungsart ?: '';
         $daten->antrag_typ = $parsed->typ;
-        $daten->referat = $parsed->referatName;
-        $daten->referat_id = $parsed->referatId;
+        $daten->referat = $parsed->referatName ?? '';
+        $daten->referat_id = $parsed->referatId ?? '';
         $daten->gestellt_am = $parsed->gestelltAm?->format('Y-m-d');
         $daten->wahlperiode = $parsed->wahlperiode;
         $daten->bearbeitungsfrist = $parsed->bearbeitungsfrist?->format('Y-m-d');

@@ -30,7 +30,7 @@ class StadtratsvorlageParser extends RISParser
     {
         if (SITE_CALL_MODE != "cron") echo "- Beschlussvorlage $id\n";
 
-        $html = $this->curlBasedDownloader->loadUrl(RIS_BASE_URL . 'sitzungsvorlage/detail/' . $id);
+        $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzungsvorlage/detail/' . $id);
 
         $parsed = StadtratsvorlageData::parseFromHtml($html);
         if ($parsed === null) {
@@ -38,7 +38,7 @@ class StadtratsvorlageParser extends RISParser
         }
 
         if ($parsed->hatAntragsliste) {
-            $html = $this->curlBasedDownloader->loadUrl(RIS_BASE_URL . 'sitzungsvorlage/detail/antraege/' . $id);
+            $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzungsvorlage/detail/antraege/' . $id);
             $parsed->parseAntraege($html);
         }
 

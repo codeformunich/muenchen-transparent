@@ -70,7 +70,7 @@ class ReferentInnenParser
 
     public function parseAll(): void
     {
-        $html = $this->curlBasedDownloader->loadUrl(RIS_BASE_URL . '/organisationseinheit/fachreferat/uebersicht');
+        $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . '/organisationseinheit/fachreferat/uebersicht');
 
         $parts = ReferatData::splitPage($html);
         for ($i = 0; $i < count($parts); $i++) {

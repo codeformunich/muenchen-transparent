@@ -26,7 +26,6 @@ define("RIS_URL_PREFIX", "http://localhost:8080"); // Zum Testen des Proxys
 define("RIS_PDF_PREFIX", "https://risi.muenchen.de/risi/dokument/v/");
 define("RIS_BASE_URL", "https://www.ris-muenchen.de/RII/RII/");
 define("RIS_BA_BASE_URL",  "https://www.ris-muenchen.de/RII/BA-RII/");
-define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");
 define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 
 define("OPARL_10_ITEMS_PER_PAGE", 3); // Macht das Testen einfacher
