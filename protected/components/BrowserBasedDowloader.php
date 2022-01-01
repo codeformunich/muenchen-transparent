@@ -25,11 +25,13 @@ class BrowserBasedDowloader
     public const PERSON_TYPE_BA_MITGLIEDER = 'strmitglieder';
     public const PERSON_TYPE_BA_BEAUFTRAGTE = 'babeauftragter';
 
+    private string $browserPath;
     private ?ProcessAwareBrowser $browser = null;
     private ?Page $page = null;
 
     public function __construct()
     {
+        $this->browserPath = PATH_CHROME_BROWSER;
     }
 
     private function open(): void
@@ -37,7 +39,7 @@ class BrowserBasedDowloader
         if ($this->browser) {
             return;
         }
-        $browserFactory = new BrowserFactory();
+        $browserFactory = new BrowserFactory($this->browserPath);
         $this->browser = $browserFactory->createBrowser([
             'enableImages' => true, // necessary for JavaScript to work
             //'debugLogger' => 'php://stdout',
