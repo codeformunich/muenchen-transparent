@@ -42,9 +42,9 @@ class RISGeo
         ];
     }
 
-    public static function addressToGeo($land, $plz, $ort, $strasse)
+    public static function addressToGeo(string $country, string $zip, string $city, string $street): ?array
     {
-        return ris_intern_address2geo($land, $plz, $ort, $strasse);
+        return ris_intern_address2geo($country, $zip, $city, $street);
     }
 
     public static function init_streets()

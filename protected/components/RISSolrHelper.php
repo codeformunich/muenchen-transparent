@@ -1,14 +1,16 @@
 <?php
 
+use Solarium\Core\Query\Result\ResultInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 class RISSolrHelper
 {
+    private static Solarium\Client $SOLR_CLIENT;
+
     /**
-     * Entfernt die Zeichen \r und ASCII 0 bis 31 aus einem String
-     *
-     * @param $text
-     * @return mixed
+     * Removes \r characters and ASCII 0 to 31 from a string
      */
-    public static function string_cleanup($text)
+    public static function string_cleanup(string $text): string
     {
         $chars = ["\r"];
         $repl  = [" "];
@@ -19,27 +21,23 @@ class RISSolrHelper
         return str_replace($chars, $repl, iconv("UTF-8", "UTF-8//TRANSLIT", $text));
     }
     
-    /**
-     * @return Solarium\Client
-     */
-    public static function getSolrClient()
+    public static function getSolrClient(): Solarium\Client
     {
-        if (!isset($GLOBALS["SOLR_CLIENT"])) $GLOBALS["SOLR_CLIENT"] = new Solarium\Client($GLOBALS["SOLR_CONFIG"]);
+        if (!isset(static::$SOLR_CLIENT)) {
+            $adapter = new Solarium\Core\Client\Adapter\Curl();
+            static::$SOLR_CLIENT = new Solarium\Client($adapter, new EventDispatcher(), $GLOBALS["SOLR_CONFIG"]);
+        }
         // create a client instance
-        return $GLOBALS["SOLR_CLIENT"];
+        return static::$SOLR_CLIENT;
     }
 
 
-    /**
-     * @param \Solarium\QueryType\Select\Result\DocumentInterface $ergebnisse
-     * @return array();
-     */
-    public static function ergebnisse2FeedData($ergebnisse)
+    public static function ergebnisse2FeedData(ResultInterface $results): array
     {
-        $data = array();
+        $data = [];
 
-        $dokumente    = $ergebnisse->getDocuments();
-        $highlighting = $ergebnisse->getHighlighting();
+        $dokumente    = $results->getDocuments();
+        $highlighting = $results->getHighlighting();
 
         $purifier = new CHtmlPurifier();
         $purifier->options = array('URI.AllowedSchemes'=>array(
@@ -77,10 +75,7 @@ class RISSolrHelper
         return $data;
     }
 
-    /**
-     *
-     */
-    public static function solr_optimize_ris()
+    public static function solr_optimize_ris(): void
     {
         $solr   = static::getSolrClient();
         $update = $solr->createUpdate();
@@ -88,21 +83,13 @@ class RISSolrHelper
         $solr->update($update);
     }
 
-    /**
-     * @param string $date
-     * @return string
-     */
-    public static function mysql2solrDate($date)
+    public static function mysql2solrDate(string $date): string
     {
         //$dat = date_parse_from_format("Y-m-d H:i:s", $date);
         return str_replace(" ", "T", $date) . "Z";
     }
 
-    /**
-     * @param string $date
-     * @return string
-     */
-    public static function solr2mysqlDate($date)
+    public static function solr2mysqlDate(string $date): string
     {
         $x         = date_parse($date);
         $timestamp = gmmktime($x["hour"], $x["minute"], $x["second"], $x["month"], $x["day"], $x["year"]);

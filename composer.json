@@ -21,7 +21,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "yiisoft/yii": "^1.1",
-        "solarium/solarium": "^3.7",
+        "solarium/solarium": "^6",
         "laminas/laminas-config": "^3.1.0",
         "laminas/laminas-http": "^2.6.0",
         "laminas/laminas-mail": "^2.6.0",

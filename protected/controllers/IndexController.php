@@ -93,7 +93,6 @@ class IndexController extends RISBaseController
             $select->setRows(100);
             $select->addSort('sort_datum', $select::SORT_DESC);
 
-            /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
             $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
             $hl->setSimplePrefix('<b>');
@@ -523,6 +522,7 @@ class IndexController extends RISBaseController
         try {
             $ergebnisse = $solr->select($select);
         } catch (Exception $e) {
+
             $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
             Yii::app()->end(500);
             die();
@@ -649,8 +649,8 @@ class IndexController extends RISBaseController
             foreach ($facet_field_namess as $facet_field_names) {
                 $facetSet
                     ->createFacetField($facet_field_names[0])
-                    ->setField($facet_field_names[0])
-                    ->setExcludes([$facet_field_names[0]]);
+                    ->setField($facet_field_names[0]);
+                    //->setExcludes([$facet_field_names[0]]);
             }
 
             try {

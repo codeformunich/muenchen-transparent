@@ -95,10 +95,11 @@ class OrtGeo extends CActiveRecord
         if ($ort) return $ort;
 
         $data = RISGeo::addressToGeo("Deutschland", "", "München", $name);
-        if (($data === false || $data["lat"] == 0) && mb_strpos($name, "-") !== false) $data = RISGeo::addressToGeo("Deutschland", "", "München", str_replace("-", "", $name));
-        if (($data === false || $data["lat"] == 0) && mb_stripos($name, "Str.") !== false) $data = RISGeo::addressToGeo("Deutschland", "", "München", str_ireplace("Str.", "Straße", $name));
+        if (($data === null || $data["lat"] == 0) && mb_strpos($name, "-") !== false) $data = RISGeo::addressToGeo("Deutschland", "", "München", str_replace("-", "", $name));
+        if (($data === null || $data["lat"] == 0) && mb_stripos($name, "Str.") !== false) $data = RISGeo::addressToGeo("Deutschland", "", "München", str_ireplace("Str.", "Straße", $name));
 
-        if ($data["lat"] <= 0 || $data["lon"] <= 0) return null;
+
+        if ($data === null || $data["lat"] <= 0 || $data["lon"] <= 0) return null;
 
         $ort      = new OrtGeo();
         $ort->ort = $name;

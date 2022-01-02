@@ -37,16 +37,17 @@ define("NO_ERROR_MAIL", false);
 require_once(__DIR__ . "/constants.php");
 require_once(__DIR__ . "/urls.php");
 
-$GLOBALS["SOLR_CONFIG"] = array(
-    'endpoint' => array(
-        'localhost' => array(
-            'host'    => '127.0.0.1',
-            'port'    => 8983,
-            'path'    => '/solr/muenchen-transparent',
+$GLOBALS["SOLR_CONFIG"] = [
+    'endpoint' => [
+        'localhost' => [
+            'host' => '127.0.0.1',
+            'port' => 8983,
+            'path' => '/',
+            'collection' => 'collection1',
             'timeout' => 300,
-        )
-    )
-);
+        ]
+    ]
+];
 
 function ris_intern_address2geo($land, $plz, $ort, $strasse)
 {
