@@ -16,8 +16,8 @@ class StadtratsvorlageData
     public ?string $art;
     public ?string $typ;
     public ?int $referatId;
-    public ?string $referatName;
-    public ?string $referentIn;
+    public ?string $referatName = null;
+    public ?string $referentIn = null;
     public ?int $baNr = null;
     public ?int $baGremiumId = null;
     public ?string $baName = null;

@@ -56,8 +56,8 @@ class StadtratsvorlageParser extends RISParser
         $daten->bearbeitung = ""; // @TODO Does this exist in the new RIS?
         $daten->kurzinfo = $parsed->kurzinfo;
         $daten->initiatorInnen = "";
-        $daten->referent = $parsed->referentIn;
-        $daten->referat = $parsed->referatName;
+        $daten->referent = $parsed->referentIn ?? '';
+        $daten->referat = $parsed->referatName ?? '';
         $daten->referat_id = $parsed->referatId;
         $daten->antrags_nr = $parsed->antragsnummer;
         $daten->wahlperiode = $parsed->wahlperiode;
