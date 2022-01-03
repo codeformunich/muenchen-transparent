@@ -75,6 +75,8 @@ class StadtratsvorlageParser extends RISParser
                 $aenderungen = "gelöscht";
                 $changed     = true;
             } else {
+                if ($alter_eintrag->betreff != $daten->betreff) $aenderungen .= "Betreff: " . $alter_eintrag->betreff . " => " . $daten->betreff . "\n";
+                if ($alter_eintrag->kurzinfo != $daten->kurzinfo) $aenderungen .= "Kurzinfo: " . $alter_eintrag->kurzinfo . " => " . $daten->kurzinfo . "\n";
                 if ($alter_eintrag->bearbeitungsfrist != $daten->bearbeitungsfrist) $aenderungen .= "Bearbeitungsfrist: " . $alter_eintrag->bearbeitungsfrist . " => " . $daten->bearbeitungsfrist . "\n";
                 if ($alter_eintrag->status != $daten->status) $aenderungen .= "Status: " . $alter_eintrag->status . " => " . $daten->status . "\n";
                 if ($alter_eintrag->fristverlaengerung != $daten->fristverlaengerung) $aenderungen .= "Fristverlängerung: " . $alter_eintrag->fristverlaengerung . " => " . $daten->fristverlaengerung . "\n";
