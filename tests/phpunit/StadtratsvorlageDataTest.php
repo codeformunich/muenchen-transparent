@@ -20,6 +20,17 @@ class StadtratsvorlageDataTest extends TestCase
         $this->assertMatchesObjectSnapshot($data);
     }
 
+    public function testParse2()
+    {
+        $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument2.html');
+        $data = StadtratsvorlageData::parseFromHtml($html);
+        $this->assertSame("Münchner Mietproblematik \"morbus monacensis\"\n\nEmpfehlung Nr. 20-26 / E 00080 ........................", $data->title);
+        $this->assertCount(3, $data->dokumentLinks);
+        $this->assertCount(1, $data->ergebnisse);
+
+        $this->assertMatchesObjectSnapshot($data);
+    }
+
     public function testParseBa()
     {
         $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_DokumentBa.html');

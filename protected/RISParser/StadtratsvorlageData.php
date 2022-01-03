@@ -37,7 +37,7 @@ class StadtratsvorlageData
             throw new ParsingException('Not found: title');
         }
         $entry = new self();
-        $entry->title = $match['title'];
+        $entry->title = html_entity_decode($match['title'], ENT_COMPAT, 'UTF-8');
 
 
         if (!preg_match('/<h1[^>]*>.*Sitzungsvorlage (?<nummer>[^<]*)<\/span>\n*<span[^>]*>\n*<span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
@@ -52,7 +52,7 @@ class StadtratsvorlageData
         $entry->id = intval($match['id']);
 
         if (preg_match('/<section class="card">.*<div><h2>Kurzinformationen<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<kurzinfo>[^<]*)<\/div>/siuU', $html, $match)) {
-            $entry->kurzinfo = $match['kurzinfo'];
+            $entry->kurzinfo = html_entity_decode($match['kurzinfo'], ENT_COMPAT, 'UTF-8');
         } else {
             $entry->kurzinfo = null;
         }
