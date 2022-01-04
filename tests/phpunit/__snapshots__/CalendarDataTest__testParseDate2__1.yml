@@ -5,6 +5,7 @@ sitzungsstand: Entfällt
 organizationId: 6415987
 organizationName: 'Ausschuss für Klima- und Umweltschutz'
 wahlperiode: 2020-2026
+ort: null
 vorsitzId: 3312618
 vorsitzName: 'Habenschaden, Katrin'
 referatId: 6440377
@@ -13,3 +14,5 @@ referentInName: null
 hasAgendaPublic: false
 hasAgendaNonPublic: false
 dokumentLinks: {  }
+agendaPublic: {  }
+agendaNonPublic: {  }

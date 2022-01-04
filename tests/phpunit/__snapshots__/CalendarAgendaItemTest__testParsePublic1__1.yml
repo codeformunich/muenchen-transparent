@@ -1,5 +1,6 @@
 -
     id: 6914188
+    public: true
     topNr: '1.'
     title: |-
         Städtische Wohnungsbaugesellschaften
@@ -13,6 +14,7 @@
     vorlagenIds: [6908536]
 -
     id: 6894317
+    public: true
     topNr: '2.'
     title: |-
         Änderung des Flächennutzungsplans
@@ -34,6 +36,7 @@
     vorlagenIds: [6827977]
 -
     id: 6894319
+    public: true
     topNr: '3.'
     title: |-
         A) Änderung des Flächennutzungsplanes
@@ -59,6 +62,7 @@
     vorlagenIds: [6847631]
 -
     id: 6894322
+    public: true
     topNr: '4.'
     title: |-
         Freiham Süd - Erweiterung Logistikzentrum Augustiner;
@@ -85,6 +89,7 @@
     vorlagenIds: [6787743]
 -
     id: 6894325
+    public: true
     topNr: '5.'
     title: |-
         Bebauungsplan mit Grünordnung Nr. 2132
@@ -108,6 +113,7 @@
     vorlagenIds: [6791832]
 -
     id: 6913667
+    public: true
     topNr: '6.'
     title: |-
         Änderung des Flächennutzungsplans
@@ -124,6 +130,7 @@
     vorlagenIds: [6514256]
 -
     id: 6912443
+    public: true
     topNr: '7.'
     title: |-
         Änderung des Flächennutzungsplans mit integrierter Landschaftsplanung für den Bereich V/61
@@ -138,6 +145,7 @@
     vorlagenIds: [6828011]
 -
     id: 6894327
+    public: true
     topNr: '8.'
     title: |-
         Wohnungspolitisches Handlungsprogramm
@@ -151,6 +159,7 @@
     vorlagenIds: [6760084]
 -
     id: 6894329
+    public: true
     topNr: '9.'
     title: |-
         Perspektive München als Steuerungsinstrument einer nachhaltigen Stadtentwicklung – Bericht zur Fortschreibung der Stadtentwicklungskonzeption
@@ -177,6 +186,7 @@
     vorlagenIds: [6779548]
 -
     id: 6907873
+    public: true
     topNr: '10.'
     title: |-
         Haushalt 2022 des Referates für Stadtplanung und Bauordnung
@@ -193,6 +203,7 @@
     vorlagenIds: [6704823]
 -
     id: 6894331
+    public: true
     topNr: '11.'
     title: 'Mehrjahresinvestitionsprogramm für die Jahre 2021 - 2025'
     hasDisclosure: false
@@ -203,6 +214,7 @@
     vorlagenIds: [6704816]
 -
     id: 6894374
+    public: true
     topNr: '12.'
     title: |-
         Sanierungsgebiet „Neuperlach Nord“
@@ -223,6 +235,7 @@
     vorlagenIds: [6701420]
 -
     id: 6894333
+    public: true
     topNr: '13.'
     title: |-
         Perspektive München
@@ -237,6 +250,7 @@
     vorlagenIds: [6776824]
 -
     id: 6894395
+    public: true
     topNr: '14.'
     title: |-
         Erlass einer Erhaltungssatzung nach § 172 Abs. 1 Satz 1 Nr. 2  BauGB
@@ -253,6 +267,7 @@
     vorlagenIds: [6819477]
 -
     id: 6910677
+    public: true
     topNr: '15.'
     title: |-
         Erlass einer Erhaltungssatzung nach § 172 Abs. 1 Satz 1 Nr. 2 BauGB
@@ -274,6 +289,7 @@
     vorlagenIds: [6819765]
 -
     id: 6855300
+    public: true
     topNr: '16.'
     title: |-
         Schutzgebiete in der Landeshauptstadt München
@@ -286,6 +302,7 @@
     vorlagenIds: [6785344]
 -
     id: 6912232
+    public: true
     topNr: '17.'
     title: |-
         Münchner Gesellschaft für Stadterneuerung mbH (MGS)
@@ -301,6 +318,7 @@
     vorlagenIds: [6836180]
 -
     id: 6927705
+    public: true
     topNr: '18.'
     title: |-
         2. Stammstrecke München – Planfeststellungsabschnitt 3 Ost – Bereich westliches Isarufer bis östlich Leuchtenbergring
@@ -333,6 +351,7 @@
     vorlagenIds: [6909577]
 -
     id: 6930136
+    public: true
     topNr: '19.'
     title: |-
         Umsetzung des Programms
@@ -348,6 +367,7 @@
     vorlagenIds: [6781915]
 -
     id: 6930396
+    public: true
     topNr: '20.'
     title: |-
         BayBO Novelle und Online-Zugangsgesetz:
@@ -361,6 +381,7 @@
     vorlagenIds: [6866423]
 -
     id: 6920236
+    public: true
     topNr: '21.'
     title: |-
         Kreativquartier an der Dachauer Straße/
@@ -382,6 +403,7 @@
     vorlagenIds: [6907745]
 -
     id: 6932114
+    public: true
     topNr: '22.'
     title: |-
         „Holzwohnungsbau in München“
@@ -397,6 +419,7 @@
     vorlagenIds: [6779177]
 -
     id: 6931863
+    public: true
     topNr: '23.'
     title: |-
         Fortschreibung Wohnen in München VI

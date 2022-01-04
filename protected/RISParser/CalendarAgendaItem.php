@@ -5,6 +5,7 @@ declare(strict_types=1);
 class CalendarAgendaItem
 {
     public int $id;
+    public bool $public;
     public string $topNr;
     public string $title;
     public bool $hasDisclosure = false;
@@ -21,7 +22,7 @@ class CalendarAgendaItem
     /**
      * @return CalendarAgendaItem[]
      */
-    public static function parseHtmlList(string $html): array
+    public static function parseHtmlList(string $html, bool $public): array
     {
         $parts = explode('d-table-row even topueberschrift', $html);
         $entries = preg_split('/<div class="d-table-row (odd|even)">/siu', $parts[1]);
@@ -29,7 +30,7 @@ class CalendarAgendaItem
 
         $parsedObjects = [];
         foreach ($entries as $entry) {
-            $parsed = static::parseFromHtml($entry);
+            $parsed = static::parseFromHtml($entry, $public);
             if ($parsed) {
                 $parsedObjects[] = $parsed;
             }
@@ -38,9 +39,10 @@ class CalendarAgendaItem
         return $parsedObjects;
     }
 
-    public static function parseFromHtml(string $html): ?self
+    public static function parseFromHtml(string $html, bool $public): ?self
     {
         $entry = new self();
+        $entry->public = $public;
 
         if (!preg_match('/<div class="d-table-cell px-1 py-2 text-center">\s*<span>(?<topNr>[^<]*)<\/span>/siu', $html, $match)) {
             throw new ParsingException('Not found: topNr');

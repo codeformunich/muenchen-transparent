@@ -17,3 +17,5 @@ dokumentLinks:
     - { title: '1. Nachtrag (oeff)', id: 6932423, url: /dokument/v/6932423, filename: '1. Nachtrag (oeff).pdf' }
     - { title: 'Einladung Ausschuss oeff', id: 6914370, url: /dokument/v/6914370, filename: 'Einladung Ausschuss oeff.pdf' }
     - { title: 'Neufassung (oeff)', id: 6944216, url: /dokument/v/6944216, filename: 'Neufassung (oeff).pdf' }
+agendaPublic: {  }
+agendaNonPublic: {  }

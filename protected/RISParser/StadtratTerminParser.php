@@ -4,6 +4,8 @@ class StadtratTerminParser extends RISParser
 {
     private BrowserBasedDowloader $browserBasedDowloader;
     private CurlBasedDownloader $curlBasedDownloader;
+    private StadtratsvorlageParser $stadtratsvorlageParser;
+    private StadtratGremiumParser $stadtratGremiumParser;
 
     public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null, ?CurlBasedDownloader $curlBasedDownloader = null)
     {
@@ -11,106 +13,104 @@ class StadtratTerminParser extends RISParser
         $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
     }
 
+    // Allows overriding the parser by a mock in PhpUnit
+    public function getStadtratsvorlageParser(): StadtratsvorlageParser
+    {
+        if (!isset($this->stadtratsvorlageParser)) {
+            $this->stadtratsvorlageParser = new StadtratsvorlageParser();
+        }
+        return $this->stadtratsvorlageParser;
+    }
+
+    public function setStadtratsantragParser(StadtratsvorlageParser $stadtratsantragParser): void
+    {
+        $this->stadtratsvorlageParser = $stadtratsantragParser;
+    }
+
+    // Allows overriding the parser by a mock in PhpUnit
+    public function getStadtratGremiumParser(): StadtratGremiumParser
+    {
+        if (!isset($this->stadtratGremiumParser)) {
+            $this->stadtratGremiumParser = new StadtratGremiumParser();
+        }
+        return $this->stadtratGremiumParser;
+    }
+
+    public function setStadtratGremiumParser(StadtratGremiumParser $stadtratGremiumParser): void
+    {
+        $this->stadtratGremiumParser = $stadtratGremiumParser;
+    }
+
+    public function downloadCalendarEntryWithDependencies(int $id): ?CalendarData
+    {
+        $htmlEntry = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzung/detail/' . $id);
+
+        $parsed = CalendarData::parseFromHtml($htmlEntry, $id);
+        if ($parsed === null) {
+            return null;
+        }
+
+        if ($parsed->hasAgendaNonPublic) {
+            $htmlNonPublic = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzung/detail/' . $id . '/tagesordnung/nichtoeffentlich');
+            $parsed->parseAgendaNonPublic($htmlNonPublic);
+        }
+        if ($parsed->hasAgendaPublic) {
+            $htmlPublic = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzung/detail/' . $id . '/tagesordnung/oeffentlich');
+            $parsed->parseAgendaPublic($htmlPublic);
+        }
+
+        foreach(array_merge($parsed->agendaPublic, $parsed->agendaNonPublic) as $agendaItem) {
+            if ($agendaItem->hasDecision && $agendaItem->id) {
+                $htmlDecision = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzung/top/' . $agendaItem->id . '/entscheidung');
+                $agendaItem->parseDecision($htmlDecision);
+            }
+            if ($agendaItem->hasDisclosure && $agendaItem->id) {
+                $htmlDisclosure = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzung/top/' . $agendaItem->id . '/veroeffentlichung');
+                $agendaItem->parseDisclosure($htmlDisclosure);
+            }
+        }
+
+        return $parsed;
+    }
+
     public function parse(int $id): ?Termin
     {
         if (SITE_CALL_MODE != "cron") echo "- Termin $id\n";
 
-        $html_details   = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=$termin_id");
-        $html_dokumente = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_dokumente.jsp?risid=$termin_id");
-        $html_to        = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_to.jsp?risid=$termin_id");
-        $html_to_geheim = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_nto.jsp?risid=$termin_id");
+        $parsed = $this->downloadCalendarEntryWithDependencies($id);
 
-        $daten                         = new Termin();
-        $daten->typ                    = Termin::$TYP_AUTO;
-        $daten->id                     = $id;
-        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
-        $daten->gremium_id             = NULL;
-        $daten->ba_nr                  = NULL;
-        $daten->sitzungsstand          = "";
-        $daten->sitzungsort            = "";
-        $daten->referat                = "";
-        $daten->referent               = "";
-        $daten->vorsitz                = "";
-        $daten->wahlperiode            = "";
-        $daten->status                 = "";
-
-        if (preg_match("/ris_gremien_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->gremium_id = IntVal($matches[1]);
-        if ($daten->gremium_id) {
-            $gr = Gremium::model()->findByPk($daten->gremium_id);
+        if ($parsed->organizationId) {
+            $gr = Gremium::model()->findByPk($parsed->organizationId);
             if (!$gr) {
-                echo "Lege Gremium an: " . $daten->gremium_id . "\n";
-                StadtratGremiumParser::parse($daten->gremium_id);
+                echo "Lege Gremium an: " . $parsed->organizationId . "\n";
+                $this->stadtratGremiumParser->parse($parsed->organizationId);
             }
         }
 
-        $geloescht            = false;
-        $sitzungsort_gefunden = false;
+        $daten = new Termin();
+        $daten->typ = Termin::TYP_AUTO;
+        $daten->id = $id;
+        $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
+        $daten->gremium_id = $parsed->organizationId;
+        $daten->ba_nr = null;
+        $daten->sitzungsstand = $parsed->sitzungsstand ?? '';
+        $daten->sitzungsort = $parsed->ort ?? '';
+        $daten->referat = $parsed->referatName ?? '';
+        $daten->referent = $parsed->referentInName ?? '';
+        $daten->vorsitz = $parsed->vorsitzName ?? '';
+        $daten->wahlperiode = $parsed->wahlperiode;
+        $daten->status = $parsed->status;
+        $daten->termin = $parsed?->dateStart->format('Y-m-d H:i:s');
 
-        if (preg_match("/Sitzungsort:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) {
-            $sitzungsort_gefunden = true;
-            $daten->sitzungsort   = trim(str_replace("&nbsp;", "", $matches[1]));
-        }
-        if (preg_match("/Sitzungsstand:.*detail_div\">([^<]*)[<]/siU", $html_details, $matches)) {
-            $sitzungsort_gefunden   = true;
-            $daten->sitzungsstand   = trim(str_replace("&nbsp;", "", $matches[1]));
-        }
-        if (preg_match("/chste Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_next_id = trim(str_replace("&nbsp;", "", $matches[1]));
-        if (preg_match("/Letzte Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = trim(str_replace("&nbsp;", "", $matches[1]));
-        if (preg_match("/Wahlperiode:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->wahlperiode = trim(str_replace("&nbsp;", "", $matches[1]));
-        if (preg_match("/Status:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->status = trim(str_replace("&nbsp;", "", $matches[1]));
-        if (preg_match("/diges Referat:.*detail_div_left_long\">(<a[^>]+>)?([^>]*)<\//siU", $html_details, $matches)) $daten->referat = trim(str_replace("&nbsp;", "", $matches[2]));
-        if (preg_match("/Referent\/in:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->referent = trim(str_replace("&nbsp;", "", $matches[1]));
-        if (preg_match("/Vorsitz:.*detail_div_left_long\">([^>]*)<\//siU", $html_details, $matches)) $daten->vorsitz = trim(str_replace("&nbsp;", "", $matches[1]));
 
-        if (preg_match("/Termin:.*detail_div\">([^&<]+)[&<]/siU", $html_details, $matches)) {
-            $termin = $matches[1];
-            $MONATE = [
-                "januar"    => "01",
-                "februar"   => "02",
-                "märz"      => "03",
-                "april"     => "04",
-                "mai"       => "05",
-                "juni"      => "06",
-                "juli"      => "07",
-                "august"    => "08",
-                "september" => "09",
-                "oktober"   => "10",
-                "november"  => "11",
-                "dezember"  => "12",
-            ];
-            $x      = explode(" ", trim($termin));
-            if (isset($x[1])) {
-                $tag = IntVal($x[1]);
-                if ($tag < 10) $tag = "0" . IntVal($tag);
-                $jahr  = IntVal($x[3]);
-                $monat = $MONATE[mb_strtolower($x[2])];
-                if ($monat < 10) $monat = "0" . IntVal($monat);
-                $zeit          = $x[4];
-                $daten->termin = "${jahr}-${monat}-${tag} ${zeit}:00";
-            } else {
-                if ($sitzungsort_gefunden && $daten->gremium === null && $daten->sitzungsort == "" && $daten->status == "") $geloescht = true;
-                else {
-                    RISTools::report_ris_parser_error("Stadtratstermin: Unbekanntes Datum", "ID: $termin_id\n" . print_r($matches, true));
-                    die();
-                }
-            }
-        }
+        //if (preg_match("/chste Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_next_id = trim(str_replace("&nbsp;", "", $matches[1]));
+        //if (preg_match("/Letzte Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = trim(str_replace("&nbsp;", "", $matches[1]));
 
-        $dokumente = [];
-
-        preg_match_all("/<li><span class=\"iconcontainer\">.*href=\"(.*)\".*>(.*)<\/a>/siU", $html_dokumente, $matches);
-        for ($i = 0; $i < count($matches[1]); $i++) {
-            $dokumente[] = [
-                "url"        => $matches[1][$i],
-                "name"       => $matches[2][$i],
-                "name_title" => "",
-            ];
-        }
-
+        $geloescht = false; // @TODO
         $aenderungen = "";
 
         /** @var Termin $alter_eintrag */
-        $alter_eintrag = Termin::model()->findByPk($termin_id);
+        $alter_eintrag = Termin::model()->findByPk($id);
         $changed       = true;
         if ($alter_eintrag) {
             $changed = false;
@@ -134,100 +134,64 @@ class StadtratTerminParser extends RISParser
         if (!$alter_eintrag) $daten->save();
 
 
-        $match_top          = "tdborder\">(?<top>.*)<\/t[hd]>";
-        $match_betreff      = "tdborder\">(?<betreff>.*)<\/t[hd]>";
-        $match_vorlage      = "<t(?<ueberschrift>[hd])[^>]*>(?<vorlage_holder>.*)<\/t[hd]>";
-        $match_referentIn   = "<t[hd][^>]*>(?<referentIn>.*)<\/t[hd]>";
-        $match_entscheidung = "<t[hd][^>]*>(?<entscheidung>.*)<\/t[hd]>";
-        preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_referentIn}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
-
-        foreach ($matches["betreff"] as $i => $val) $matches["betreff"][$i] = static::text_clean_spaces($matches["betreff"][$i]);
-        $matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
-
         /** @var Tagesordnungspunkt[] $bisherige_tops */
         $bisherige_tops   = ($alter_eintrag ? $alter_eintrag->tagesordnungspunkte : []);
         $aenderungen_tops = "";
-        //$verwendete_top_betreffs = array();
         $verwendete_top_ids = [];
-        $abschnitt_nr       = 0;
 
-        for ($i = 0; $i < count($matches[0]); $i++) {
-            $top     = trim(str_replace(["&nbsp;", "<strong>", "</strong>"], [" ", "", ""], $matches["top"][$i]));
-            $betreff = $matches["betreff"][$i];
-            if ($matches["ueberschrift"][$i] == "h") {
-                $abschnitt_nr     = $abschnitt_nr + 1;
-                $top_ueberschrift = true;
-                $top_nr           = $abschnitt_nr;
-                $betreff          = str_replace(["<strong>", "</strong>"], ["", ""], $betreff);
+        foreach (array_merge($parsed->agendaPublic, $parsed->agendaNonPublic) as $parsedItem) {
+            if ($parsedItem->public) {
+                $topNr           = "1." . $parsedItem->topNr; // Legacy
             } else {
-                if ($abschnitt_nr == 0) $abschnitt_nr = 1;
-                $top_ueberschrift = false;
-                $top_nr           = $abschnitt_nr . "." . $top;
+                $topNr = $parsedItem->topNr;
             }
 
-            $vorlage_holder = trim(str_replace("&nbsp;", " ", $matches["vorlage_holder"][$i]));
-            preg_match_all("/risid=(?<risid>[0-9]+)/si", $vorlage_holder, $matches2);
-            $vorlage_id = (isset($matches2["risid"][0]) ? $matches2["risid"][0] : null);
-
-            if ($vorlage_id) {
-                $vorlage = Antrag::model()->findByPk($vorlage_id);
+            $vorlagenId = null;
+            if (count($parsedItem->vorlagenIds) > 1) {
+                var_dump($parsedItem);
+                die("More than one Vorlage");
+            }
+            foreach ($parsedItem->vorlagenIds as $vorlagenId) {
+                $vorlage = Antrag::model()->findByPk($vorlagenId);
                 if (!$vorlage) {
-                    echo "Creating: $vorlage_id\n";
-                    $p = new StadtratsvorlageParser();
-                    $p->parse($vorlage_id);
+                    echo "Creating: $vorlagenId\n";
+                    $this->stadtratsvorlageParser->parse($vorlagenId);
                 }
 
-                $vorlage = Antrag::model()->findByPk($vorlage_id);
+                $vorlage = Antrag::model()->findByPk($vorlagenId);
                 if (!$vorlage) {
-                    // Es gibt wohl Fälle, wo ungültige Dokumente verlinkt werden, z.B.
-                    // 2019-01-05: https://www.ris-muenchen.de/RII/RII/ris_sitzung_to.jsp?risid=5055052
-                    $vorlage_id = null;
+                    $vorlagenId = null;
                 }
             }
 
-            $entscheidung_original = trim(str_replace("&nbsp;", " ", $matches["entscheidung"][$i]));
-            $entscheidung          = preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $entscheidung_original);
-            $entscheidung          = trim(strip_tags($entscheidung));
-
-            $top                         = new Tagesordnungspunkt();
+            $top = new Tagesordnungspunkt();
             $top->datum_letzte_aenderung = new CDbExpression("NOW()");
-            $top->sitzungstermin_id      = $termin_id;
-            $top->sitzungstermin_datum   = substr($daten->termin, 0, 10);;
-            $top->top_nr           = $top_nr;
-            $top->antrag_id        = $vorlage_id;
-            $top->top_ueberschrift = ($top_ueberschrift ? 1 : 0);
-            $top->entscheidung     = $entscheidung;
-            $top->top_betreff      = $betreff;
-            $top->gremium_id       = $daten->gremium_id;
-            $top->gremium_name     = $daten->gremium->name;
-            $top->beschluss_text   = "";
+            $top->sitzungstermin_id = $id;
+            $top->sitzungstermin_datum = substr($daten->termin, 0, 10);;
+            $top->top_id = $parsedItem->id;
+            $top->top_nr = $topNr;
+            $top->antrag_id = $vorlagenId;
+            $top->top_ueberschrift = 0;
+            $top->status = ($parsedItem->public ? '' : Tagesordnungspunkt::STATUS_NONPUBLIC);
+            $top->entscheidung = $parsedItem->decision ?? $parsedItem->disclosure;
+            $top->top_betreff = $parsedItem->title;
+            $top->gremium_id = $daten->gremium_id;
+            $top->gremium_name = $daten->gremium->name;
+            $top->beschluss_text = "";
 
-            if (!is_null($vorlage_id)) {
-                $html_vorlage_ergebnis = RISTools::load_file(RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id");
-                preg_match_all("/ris_sitzung_to.jsp\?risid=" . $termin_id . ".*<\/td>.*<\/td>.*tdborder\">(?<beschluss>.*)<\/td>/siU", $html_vorlage_ergebnis, $matches3);
-                if (isset($matches3["beschluss"]) && count($matches3["beschluss"]) > 0) {
-                    $beschluss = static::text_clean_spaces($matches3["beschluss"][0]);
-                    $beschluss = trim(strip_tags($beschluss));
-                    if ($beschluss === $entscheidung) {
-                        $beschluss = '';
-                    }
-                } else {
-                    // RISTools::send_email(Yii::app()->params["adminEmail"], "StadtratTermin Kein Beschluss", "Termin: $termin_id\n" . RIS_BASE_URL . "ris_vorlagen_ergebnisse.jsp?risid=$vorlage_id\n" . $html_vorlage_ergebnis);
-                    $beschluss = "";
-                }
-                $top->beschluss_text = $beschluss;
+            if (!is_null($vorlagenId)) {
+                // @TODO Find out if there is still a "Beschlusstext" stored for the agenda
             }
 
-            /** @var Tagesordnungspunkt $alter_top */
-            if (is_null($vorlage_id)) {
-                $alter_top = Tagesordnungspunkt::model()->findByAttributes(["sitzungstermin_id" => $termin_id, "top_betreff" => $betreff]);
+            /** @var Tagesordnungspunkt|null $alter_top */
+            if ($parsedItem->id) {
+                $alter_top = Tagesordnungspunkt::model()->findByAttributes(["sitzungstermin_id" => $id, "top_id" => $parsedItem->id]);
             } else {
-                $alter_top = Tagesordnungspunkt::model()->findByAttributes(["sitzungstermin_id" => $termin_id, "antrag_id" => $vorlage_id]);
+                $alter_top = Tagesordnungspunkt::model()->findByAttributes(["sitzungstermin_id" => $id, "top_betreff" => $parsedItem->title]);
             }
 
             $top_aenderungen = "";
             if ($alter_top) {
-
                 if ($alter_top->sitzungstermin_id != $top->sitzungstermin_id) $top_aenderungen .= "Sitzung geändert: " . $alter_top->sitzungstermin_id . " => " . $top->sitzungstermin_id . "\n";
                 if ($alter_top->sitzungstermin_datum != $top->sitzungstermin_datum) $top_aenderungen .= "Sitzungstermin geändert: " . $alter_top->sitzungstermin_datum . " => " . $top->sitzungstermin_datum . "\n";
                 if ($alter_top->top_nr != $top->top_nr) $top_aenderungen .= "TOP geändert: " . $alter_top->top_nr . " => " . $top->top_nr . "\n";
@@ -261,59 +225,25 @@ class StadtratTerminParser extends RISParser
                 }
                 $top = $alter_top;
             } else {
-                $aenderungen .= "Neuer TOP: " . $top_nr . " - " . $betreff . "\n";
+                $aenderungen .= "Neuer TOP: " . $topNr . " - " . $parsedItem->title . "\n";
                 $top->save();
             }
 
-            //$verwendete_top_betreffs[] = $top->top_nr . "-" . $top->top_betreff;
             $verwendete_top_ids[] = $top->id;
 
-            preg_match_all("/<a href=(?<url>[^ ]+) title=\"(?<title>[^\"]*)\"/siU", $entscheidung_original, $matches2);
-            if (isset($matches2["url"]) && count($matches2["url"]) > 0) {
-                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_BESCHLUSS, $top, ["url" => $matches2["url"][0], "name" => $matches2["title"][0], "name_title" => ""]);
-                /** @var Dokument $dok */
+
+            /*
+             * @TODO Beschlüsse e.g. in https://risi.muenchen.de/risi/sitzung/detail/5656928/tagesordnung/oeffentlich
+                // $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_BESCHLUSS, $top, ["url" => $matches2["url"][0], "name" => $matches2["title"][0], "name_title" => ""]);
+                / @var Dokument $dok /
                 $dok = Dokument::model()->findByAttributes(["tagesordnungspunkt_id" => $top->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]]);
                 if ($dok && $dok->tagesordnungspunkt_id != $top->id) {
                     echo "Korrgiere ID\n";
                     $dok->tagesordnungspunkt_id = $top->id;
                     $dok->save(false);
                 }
-            }
+            */
         }
-
-
-        preg_match_all("/<tr class=\"ergebnistab_tr\">.*<strong>(?<top>[0-9]+)\..*tdborder\">(?<betreff>.*)<\/td>.*<span[^>]+>(?<vorlage_id>.*)<\/span>.*valign=\"top\">(?<referent>.*)<\/td>/siU", $html_to_geheim, $matches);
-        foreach ($matches["betreff"] as $i => $val) $matches["betreff"][$i] = static::text_clean_spaces($matches["betreff"][$i]);
-        $matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
-
-        for ($i = 0; $i < count($matches[0]); $i++) {
-            $betreff  = $matches["betreff"][$i];
-            $referent = static::text_clean_spaces($matches["referent"][$i]);
-
-            /** @var Tagesordnungspunkt $top */
-            $krits = ["sitzungstermin_id" => $termin_id, "status" => "geheim", "top_betreff" => $betreff];
-            $top   = Tagesordnungspunkt::model()->findByAttributes($krits);
-            if (is_null($top)) {
-                $top = new Tagesordnungspunkt();
-                $aenderungen .= "Neuer geheimer Tagesordnungspunkt: " . $betreff . "\n";
-            }
-            $top->sitzungstermin_id      = $termin_id;
-            $top->sitzungstermin_datum   = $daten->termin;
-            $top->datum_letzte_aenderung = new CDbExpression("NOW()");
-            $top->antrag_id              = null;
-            $top->status                 = "geheim";
-            $top->beschluss_text         = $matches["vorlage_id"][$i];
-            $top->top_nr                 = $matches["top"][$i];
-            $top->top_betreff            = $betreff;
-            $top->entscheidung           = $referent;
-            $top->gremium_id             = $daten->gremium_id;
-            $top->gremium_name           = $daten->gremium->name;
-            $top->save();
-
-            //$verwendete_top_betreffs[] = "geheim-" . $top->top_nr . "-" . $top->top_betreff;
-            $verwendete_top_ids[] = $top->id;
-        }
-
 
         foreach ($bisherige_tops as $top) {
             //$top_key = ($top->status == "geheim" ? "geheim-" : "") . $top->top_nr . "-" . $top->top_betreff;
@@ -343,7 +273,7 @@ class StadtratTerminParser extends RISParser
             if (!$alter_eintrag) $aenderungen = "Neu angelegt\n";
             $aenderungen .= $aenderungen_tops;
 
-            echo "StR-Termin $termin_id: Verändert: " . $aenderungen . "\n";
+            echo "StR-Termin $id: Verändert: " . $aenderungen . "\n";
 
             if ($alter_eintrag) {
                 $alter_eintrag->copyToHistory();
@@ -379,8 +309,7 @@ class StadtratTerminParser extends RISParser
         }
 
 
-        foreach ($dokumente as $dok) {
-            /** @var array $dok */
+        foreach ($parsed->dokumentLinks as $dok) {
             $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_TERMIN, $daten, $dok);
         }
 
@@ -395,38 +324,12 @@ class StadtratTerminParser extends RISParser
             $aend->save();
 
             /** @var Termin $termin */
-            $termin                         = Termin::model()->findByPk($termin_id);
+            $termin                         = Termin::model()->findByPk($id);
             $termin->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
             $termin->save();
         }
 
         return $daten;
-    }
-
-    public function parseSeite(int $seite, int $first, bool $alle = false): array
-    {
-        $add  = ($alle ? "" : "&txtVon=" . date("d.m.Y", time() - 24 * 3600 * 180) . "&txtBis=" . date("d.m.Y", time() + 24 * 3600 * 356 * 2));
-        $text = RISTools::load_file(RIS_BASE_URL . "ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add);
-
-        $txt = explode("<!-- ergebnistabellen-bereich -->", $text);
-        if ($seite > 4790 && count($txt) == 1) return [];
-        if (count($txt) == 1) var_dump($txt);
-        $txt = explode("<!-- tabellenfuss", $txt[1]);
-
-        preg_match_all("/ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $txt[0], $matches);
-
-        if ($first && count($matches[1]) > 0) {
-	        RISTools::report_ris_parser_error( "Stadtratstermin VOLL",
-		        "Erste Seite voll: $seite (" . RIS_BASE_URL . "ris_sitzung_trefferliste.jsp?txtPosition=$seite" . $add . ")" );
-        }
-
-        for ($i = count($matches[1]) - 1; $i >= 0; $i--) {
-            $this->parse($matches[1][$i]);
-        }
-
-        sleep(5); // Scheint ziemlich aufwändig auf der RIS-Seite zu sein, mal lieber nicht überlasten :)
-
-        return []; // @TODO
     }
 
     public function parseAll(): void

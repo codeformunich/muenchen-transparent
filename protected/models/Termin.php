@@ -32,9 +32,9 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
     public const CANCELED_STR = 'Entfällt';
 
-    public static $TYP_AUTO = 0;
-    public static $TYP_BUERGERVERSAMMLUNG = 1;
-    public static $TYPEN_ALLE = [
+    public const TYP_AUTO = 0;
+    public const TYP_BUERGERVERSAMMLUNG = 1;
+    public const TYPEN_ALLE = [
         0 => "Automatisch vom RIS",
         1 => "BürgerInnenversammlung",
     ];
@@ -160,7 +160,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getName($kurzfassung = false)
     {
-        if ($this->typ == static::$TYP_BUERGERVERSAMMLUNG) return "BürgerInnenversammlung";
+        if ($this->typ == static::TYP_BUERGERVERSAMMLUNG) return "BürgerInnenversammlung";
 
         if (!$this->gremium) return "Unbekanntes Gremium";
 
@@ -182,8 +182,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
      */
     public function getSourceLink()
     {
-        if ($this->ba_nr > 0) return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $this->id;
-        else return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $this->id;
+        return RIS_BASE_URL . "sitzung/detail/" . $this->id;
     }
 
 
@@ -199,7 +198,7 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     {
         $ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
         $params = [
-            'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin.typ = ' . IntVal(Termin::$TYP_AUTO) .
+            'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin.typ = ' . IntVal(Termin::TYP_AUTO) .
                 ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
             'order'     => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
             'with'      => ["gremium"],

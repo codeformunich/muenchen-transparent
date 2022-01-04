@@ -1,5 +1,6 @@
 -
     id: 6914190
+    public: false
     topNr: '1.'
     title: |-
         Städtische Wohnungsbaugesellschaften
@@ -13,6 +14,7 @@
     vorlagenIds: {  }
 -
     id: 6894347
+    public: false
     topNr: '2.'
     title: |-
         Beteiligungssteuerung
@@ -28,6 +30,7 @@
     vorlagenIds: {  }
 -
     id: 6894335
+    public: false
     topNr: '3.'
     title: |-
         Kommission für Stadtgestaltung
@@ -41,6 +44,7 @@
     vorlagenIds: {  }
 -
     id: 6908162
+    public: false
     topNr: '4.'
     title: |-
         Münchner Gesellschaft für Stadterneuerung mbH (MGS)
@@ -56,6 +60,7 @@
     vorlagenIds: {  }
 -
     id: 6912195
+    public: false
     topNr: '5.'
     title: |-
         Auflösung des Treuhandvermögens der

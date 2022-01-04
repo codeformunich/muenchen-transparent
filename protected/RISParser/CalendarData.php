@@ -11,7 +11,7 @@ class CalendarData
     public int $organizationId;
     public string $organizationName;
     public string $wahlperiode;
-    public ?string $ort;
+    public ?string $ort = null;
     public ?int $vorsitzId = null;
     public ?string $vorsitzName = null;
     public ?int $referatId = null;
@@ -23,6 +23,12 @@ class CalendarData
 
     /** @var DokumentLink[] */
     public array $dokumentLinks;
+
+    /** @var CalendarAgendaItem[] */
+    public array $agendaPublic = [];
+
+    /** @var CalendarAgendaItem[] */
+    public array $agendaNonPublic = [];
 
     public static function parseFromHtml(string $html, int $id): ?self
     {
@@ -93,5 +99,15 @@ class CalendarData
         }
 
         return $entry;
+    }
+
+    public function parseAgendaPublic(string $agenda): void
+    {
+        $this->agendaPublic = CalendarAgendaItem::parseHtmlList($agenda, true);
+    }
+
+    public function parseAgendaNonPublic(string $agenda): void
+    {
+        $this->agendaNonPublic = CalendarAgendaItem::parseHtmlList($agenda, false);
     }
 }

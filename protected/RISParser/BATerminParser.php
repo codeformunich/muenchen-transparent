@@ -39,7 +39,7 @@ class BATerminParser extends RISParser
         $html_to        = RISTools::load_file(RIS_BA_BASE_URL . "ba_sitzungen_tagesordnung.jsp?Id=$termin_id");
 
         $daten                         = new Termin();
-        $daten->typ                    = Termin::$TYP_AUTO;
+        $daten->typ                    = Termin::TYP_AUTO;
         $daten->id                     = $termin_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id             = NULL;
@@ -129,9 +129,6 @@ class BATerminParser extends RISParser
         $match_vorlage      = "<t[hd][^>]*>(?<vorlage_holder>.*)<\/t[hd]>";
         $match_entscheidung = "<td[^>]*>(?<entscheidung>.*)<\/td>";
         preg_match_all("/<tr class=\"ergebnistab_tr\">.*${match_top}.*${match_betreff}.*${match_vorlage}.*${match_entscheidung}.*<\/tr>/siU", $html_to, $matches);
-
-        foreach ($matches["betreff"] as $i => $val) $matches["betreff"][$i] = static::text_clean_spaces($matches["betreff"][$i]);
-        $matches["betreff"] = RISTools::makeArrValuesUnique($matches["betreff"]);
 
         /** @var Tagesordnungspunkt[] $bisherige_tops */
         $bisherige_tops          = ($alter_eintrag ? $alter_eintrag->tagesordnungspunkte : []);

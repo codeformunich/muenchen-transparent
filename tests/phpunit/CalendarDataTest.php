@@ -28,4 +28,15 @@ class CalendarDataTest extends TestCase
         $this->assertSame('Ausschuss für Klima- und Umweltschutz', $data->organizationName);
         $this->assertMatchesObjectSnapshot($data);
     }
+
+    public function testParseBA1()
+    {
+        $html = file_get_contents(__DIR__ . '/data/CalendarParser_BA_Data1.html');
+        $data = CalendarData::parseFromHtml($html, 6243091);
+
+        $this->assertSame(6243091, $data->id);
+        $this->assertSame('BA 14 - Vollgremium', $data->organizationName);
+        //$this->assertSame(14, $data->o); @TODO BA
+        $this->assertMatchesObjectSnapshot($data);
+    }
 }

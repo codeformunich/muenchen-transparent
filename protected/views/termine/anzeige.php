@@ -114,11 +114,11 @@ function zeile_anzeigen($feld, $name, $callback)
             $geheimer_teil = false;
             $tops          = $termin->tagesordnungspunkteSortiert();
             foreach ($tops as $ergebnis) {
-                if ($ergebnis->status == "geheim" && !$geheimer_teil) {
+                if ($ergebnis->status === Tagesordnungspunkt::STATUS_NONPUBLIC && !$geheimer_teil) {
                     $geheimer_teil = true;
                     echo "</ol><h3>Nicht-Öffentlicher Teil</h3><ol style='list-style-type: none;'>";
                 }
-                $name = $ergebnis->top_nr . ": " . $ergebnis->getName(true);
+                $name = $ergebnis->getTopNo() . ": " . $ergebnis->getName(true);
                 echo "<li style='margin-bottom: 7px;'>";
                 if ($ergebnis->top_ueberschrift) echo "<strong>";
                 echo CHtml::encode(strip_tags($name));
@@ -153,7 +153,7 @@ function zeile_anzeigen($feld, $name, $callback)
                 foreach ($geo as $g) $geodata[] = array(
                     FloatVal($g->lat),
                     FloatVal($g->lon),
-                    $ergebnis->top_nr . ": " . $ergebnis->getName(true)
+                    $ergebnis->getTopNo() . ": " . $ergebnis->getName(true)
                 );
             }
             ?>

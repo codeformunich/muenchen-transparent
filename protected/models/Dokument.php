@@ -696,7 +696,7 @@ class Dokument extends CActiveRecord implements IRISItem
             $update->addCommit();
             $solr->update($update);
             return;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $tries--;
             //sleep(15);
             RISTools::report_ris_parser_error("Failed Indexing: " . $e->getMessage(), '');

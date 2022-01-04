@@ -14,6 +14,7 @@
  * @property string $sitzungstermin_datum
  * @property string $beschluss_text
  * @property string $entscheidung
+ * @property integer|null $top_id
  * @property string $top_nr
  * @property int $top_ueberschrift
  * @property string $top_betreff
@@ -27,6 +28,8 @@
  */
 class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
 {
+    public const STATUS_NONPUBLIC = 'geheim';
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -93,6 +96,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             'beschluss_text'         => 'Beschluss',
             'entscheidung'           => 'Entscheidung',
             'datum_letzte_aenderung' => 'Letzte Änderung',
+            'top_id'                 => 'TOP ID',
             'top_nr'                 => 'Tagesordnungspunkt',
             'top_ueberschrift'       => 'Ist Überschrift',
             'top_betreff'            => 'Betreff',
@@ -153,6 +157,14 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
         return $antraege;
     }
 
+    public function getTopNo(): string
+    {
+        if (preg_match('/^1\.(?<no>\d.*)/siu', $this->top_nr, $matches)) {
+            return $matches['no'];
+        } else {
+            return $this->top_nr;
+        }
+    }
 
     /**
      * @param array $add_params

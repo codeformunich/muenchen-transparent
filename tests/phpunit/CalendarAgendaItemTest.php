@@ -12,14 +12,21 @@ class CalendarAgendaItemTest extends TestCase
     public function testParsePublic1()
     {
         $html = file_get_contents(__DIR__ . '/data/CalendarParser_AgendaPublic1.html');
-        $items = CalendarAgendaItem::parseHtmlList($html);
+        $items = CalendarAgendaItem::parseHtmlList($html, true);
         $this->assertMatchesObjectSnapshot($items);
     }
 
     public function testParseNonpublic1()
     {
         $html = file_get_contents(__DIR__ . '/data/CalendarParser_AgendaNonpublic1.html');
-        $items = CalendarAgendaItem::parseHtmlList($html);
+        $items = CalendarAgendaItem::parseHtmlList($html, false);
+        $this->assertMatchesObjectSnapshot($items);
+    }
+
+    public function testParsePublicBA1()
+    {
+        $html = file_get_contents(__DIR__ . '/data/CalendarParser_BA_Agenda1.html');
+        $items = CalendarAgendaItem::parseHtmlList($html, true);
         $this->assertMatchesObjectSnapshot($items);
     }
 
