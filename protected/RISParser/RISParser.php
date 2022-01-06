@@ -35,15 +35,6 @@ abstract class RISParser
         return trim($text);
     }
 
-    public static function text_clean_spaces(string $text): string
-    {
-        $text = str_replace("&nbsp;", " ", $text);
-        $text = str_replace("<!-- Bitte prüfen! Texte werden nicht -->", "", $text);
-        $text = preg_replace("/[ \\n]*<br ?\/>[ \\n]*/siu", "\n", $text);
-        $text = preg_replace("/[ \\n]*<br ?\/>[ \\n]*/siu", "\n", $text);
-        return trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $text));
-    }
-
     public static function date_de2mysql(string $dat, ?string $fallback = null): ?string
     {
         $x = explode(".", trim($dat));
