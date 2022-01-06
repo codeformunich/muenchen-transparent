@@ -155,7 +155,7 @@ class StadtratsvorlageParser extends RISParser
             if (!$antrag) {
                 $antrag = $this->getStadtratsantragParser()->parse($antragsLink->id);
             }
-            if (!$antrag) if (Yii::app()->params['adminEmail'] != "") RISTools::report_ris_parser_error("Stadtratsvorlage - Zugordnungs Error", $id . " - " . $link);
+            if (!$antrag) if (Yii::app()->params['adminEmail'] != "") RISTools::report_ris_parser_error("Stadtratsvorlage - Zugordnungs Error", $id);
 
             $sql = Yii::app()->db->createCommand();
             $sql->select("antrag2")->from("antraege_vorlagen")->where("antrag1 = " . IntVal($id) . " AND antrag2 = " . IntVal($antrag->id));
@@ -187,26 +187,24 @@ class StadtratsvorlageParser extends RISParser
         return $daten;
     }
 
-
     public function parseAll(): void
     {
-        $anz   = static::$MAX_OFFSET;
-        $first = true;
-        for ($i = $anz; $i >= 0; $i -= 10) {
-            if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-            $this->parseSeite($i, $first);
-            $first = false;
+        for ($year = 2020; $year <= date('y'); $year++) {
+            for ($month = 1; $month <= 12; $month++) {
+                echo "Parsing: $month/$year\n";
+                $this->parseMonth($year, $month);
+            }
         }
-
     }
 
     public function parseUpdate(): void
     {
-        echo "Updates: Stadtratsvorlagen\n";
+        echo "Updates: Stadtratsvorlagen (3 Monate)\n";
+
         $loaded_ids = [];
-        for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
-            $ids        = $this->parseSeite($i, false);
-            $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
+        for ($i = -3; $i >= 0; $i++) {
+            $month = (new DateTime())->modify($i . ' month');
+            $loaded_ids = array_merge($loaded_ids, $this->parseMonth(intval($month->format('Y')), intval($month->format('m'))));
         }
 
         $crit            = new CDbCriteria();
@@ -220,7 +218,11 @@ class StadtratsvorlageParser extends RISParser
 
     public function parseQuickUpdate(): void
     {
+        $lastMonth = (new DateTime())->modify('1 month');
+        $this->parseMonth(intval($lastMonth->format('Y')), intval($lastMonth->format('m')));
 
+        $month = new DateTime();
+        $this->parseMonth(intval($month->format('Y')), intval($month->format('m')));
     }
 
     /**

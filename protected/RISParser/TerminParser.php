@@ -205,23 +205,21 @@ class TerminParser extends RISParser
 
     public function parseAll(): void
     {
-        $anz   = TerminParser::$MAX_OFFSET;
-        $first = true;
-        for ($i = $anz; $i >= 0; $i -= 10) {
-            if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
-            $this->parseSeite($i, $first, true);
-            $first = false;
+        for ($year = 2020; $year <= date('y'); $year++) {
+            for ($month = 1; $month <= 12; $month++) {
+                echo "Parsing: $month/$year\n";
+                $this->parseMonth($year, $month);
+            }
         }
     }
 
     public function parseUpdate(): void
     {
         echo "Updates: Stadtratstermin\n";
-        $anz   = TerminParser::$MAX_OFFSET_UPDATE;
-        $first = true;
-        for ($i = 0; $i < $anz; $i += 10) {
-            $this->parseSeite($anz - $i, $first, false);
-            $first = false;
+
+        for ($i = -3; $i >= 0; $i++) {
+            $month = (new DateTime())->modify($i . ' month');
+            $this->parseMonth(intval($month->format('Y')), intval($month->format('m')));
         }
     }
 
@@ -248,6 +246,13 @@ class TerminParser extends RISParser
 
     public function parseQuickUpdate(): void
     {
+        $lastMonth = (new DateTime())->modify('-1 month');
+        $this->parseMonth(intval($lastMonth->format('Y')), intval($lastMonth->format('m')));
 
+        $month = new DateTime();
+        $this->parseMonth(intval($month->format('Y')), intval($month->format('m')));
+
+        $nextMonth = (new DateTime())->modify('+1 month');
+        $this->parseMonth(intval($nextMonth->format('Y')), intval($nextMonth->format('m')));
     }
 }

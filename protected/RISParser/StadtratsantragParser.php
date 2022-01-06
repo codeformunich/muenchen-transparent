@@ -117,25 +117,24 @@ class StadtratsantragParser extends RISParser
         return $daten;
     }
 
-
     public function parseAll(): void
     {
-        $first = true;
-        for ($i = static::$MAX_OFFSET; $i >= 0; $i -= 10) {
-            if (SITE_CALL_MODE != "cron") echo (static::$MAX_OFFSET - $i) . " / " . static::$MAX_OFFSET . "\n";
-            $this->parseSeite($i, $first);
-            $first = false;
+        for ($year = 2020; $year <= date('y'); $year++) {
+            for ($month = 1; $month <= 12; $month++) {
+                echo "Parsing: $month/$year\n";
+                $this->parseMonth($year, $month);
+            }
         }
     }
 
     public function parseUpdate(): void
     {
-        $loaded_ids = [];
-        echo "Updates: Stadtratsanträge\n";
+        echo "Updates: Stadtratsanträge (3 Monate)\n";
 
-        for ($i = static::$MAX_OFFSET_UPDATE; $i >= 0; $i -= 10) {
-            $ids        = $this->parseSeite($i, false);
-            $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
+        $loaded_ids = [];
+        for ($i = -3; $i >= 0; $i++) {
+            $month = (new DateTime())->modify($i . ' month');
+            $loaded_ids = array_merge($loaded_ids, $this->parseMonth(intval($month->format('Y')), intval($month->format('m'))));
         }
 
         $crit            = new CDbCriteria();
@@ -149,13 +148,13 @@ class StadtratsantragParser extends RISParser
 
     public function parseQuickUpdate(): void
     {
-        $loaded_ids = [];
         echo "Updates (quick): Stadtratsanträge\n";
 
-        for ($i = 0; $i <= 3; $i++) {
-            $ids        = $this->parseSeite($i * 10, false);
-            $loaded_ids = array_merge($loaded_ids, array_map("IntVal", $ids));
-        }
+        $lastMonth = (new DateTime())->modify('-1 month');
+        $this->parseMonth(intval($lastMonth->format('Y')), intval($lastMonth->format('m')));
+
+        $month = new DateTime();
+        $this->parseMonth(intval($month->format('Y')), intval($month->format('m')));
     }
 
 

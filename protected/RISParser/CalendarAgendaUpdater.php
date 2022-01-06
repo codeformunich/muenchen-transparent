@@ -28,7 +28,7 @@ class CalendarAgendaUpdater
 
         if ($oldItem->antrag_id > 0) {
             // Note: if the old item has no antrag_id, but the new one does, matching via title should still be possible
-            return count($newItem->vorlagenIds) > 0 || intval($oldItem->antrag_id) === $newItem->vorlagenIds[0];
+            return count($newItem->vorlagenIds) > 0 && intval($oldItem->antrag_id) === $newItem->vorlagenIds[0];
         }
 
         return $oldItem->top_betreff === $newItem->title;
