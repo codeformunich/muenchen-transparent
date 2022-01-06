@@ -119,7 +119,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
-            if (strpos($e->getMessage(), "Duplicate entry") === false) throw $e;
+            if (!str_contains($e->getMessage(), "Duplicate entry")) throw $e;
         }
 
     }

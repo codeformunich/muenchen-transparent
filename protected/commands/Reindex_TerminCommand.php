@@ -9,14 +9,12 @@ class Reindex_TerminCommand extends CConsoleCommand
         if (!isset($args[0]) || ($args[0] != "alle" && $args[0] <= 1)) die("./yiic reindex_termin [termin-ID]|YYYY-MM|alle\n");
 
         $parser = new TerminParser();
-        if ($args[0] == "alle") {
+        if ($args[0] === "alle") {
             $parser->parseAll();
-        }
-        if (preg_match('/^(?<year>\d{4})-(?<month>\d{2})$/', $args[0], $matches)) {
+        } elseif (preg_match('/^(?<year>\d{4})-(?<month>\d{2})$/', $args[0], $matches)) {
             $parser->parseMonth(intval($matches['year']), intval($matches['month']));
-        }
-        if ($args[0] > 0) {
-            $parser->parse($args[0]);
+        } elseif ($args[0] > 0) {
+            $parser->parse(intval($args[0]));
         }
     }
 }

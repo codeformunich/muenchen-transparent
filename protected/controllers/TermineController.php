@@ -192,64 +192,6 @@ class TermineController extends RISBaseController
         ]);
     }
 
-    /**
-     * @param int $termin_id
-     */
-    public function actionAboInfo($termin_id)
-    {
-        /** @var Termin $sitzung */
-        $termin = Termin::model()->findByPk($termin_id);
-        if (!$termin) {
-            $this->render('/index/error', ["code" => 404, "message" => "Der Termin wurde nicht gefunden"]);
-            return;
-        }
-
-        $this->render("abo_info", [
-            "termin" => $termin,
-        ]);
-    }
-
-
-    /**
-     * @param int $termin_id
-     */
-    public function actionDav($termin_id)
-    {
-        $DEBUG = false;
-
-        $principalBackend = new TermineCalDAVPrincipalBackend($termin_id);
-        $calendarBackend  = new TermineCalDAVCalendarBackend($termin_id);
-
-        $tree = [
-            new Sabre\CalDAV\Principal\Collection($principalBackend),
-            new Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend),
-        ];
-
-        $server = new TermineCalDAVServerBugfix($tree);
-        $server->setBaseUri(Yii::app()->createUrl("termine/dav", ["termin_id" => $termin_id]));
-
-        $authBackend = new TermineCalDAVAuthBackend();
-        $authPlugin  = new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV');
-        $server->addPlugin($authPlugin);
-
-        $server->addPlugin(new Sabre\CalDAV\Plugin());
-        $server->addPlugin(new Sabre\DAV\Browser\Plugin());
-        $server->addPlugin(new Sabre\DAVACL\Plugin());
-
-        if ($DEBUG) {
-            $server->addPlugin(new TermineCalDAVDebug(TMP_PATH . "sabredav.log"));
-
-            ob_start();
-            $server->exec();
-            $txt = ob_get_flush();
-            $fp  = fopen(TMP_PATH . "sabredav.log", "a");
-            fwrite($fp, "RESPONSE:\n\n" . $txt . "\n\n=============================\n\n");
-            fclose($fp);
-        } else {
-            $server->exec();
-        }
-    }
-
     public function actionBaTermineAlle($ba_nr)
     {
         /** @var Termin[] $termine */

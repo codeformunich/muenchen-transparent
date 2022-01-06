@@ -268,37 +268,19 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     /**
      * @return Tagesordnungspunkt[]
      */
-    public function tagesordnungspunkteSortiert()
+    public function tagesordnungspunkteSortiert(): array
     {
         $tagesordnungspunkte = $this->tagesordnungspunkte;
-        usort($tagesordnungspunkte, function ($ergebnis1, $ergebnis2) {
-            /** @var Tagesordnungspunkt $ergebnis1 */
-            /** @var Tagesordnungspunkt $ergebnis2 */
-
+        usort($tagesordnungspunkte, function (Tagesordnungspunkt $ergebnis1, Tagesordnungspunkt $ergebnis2) {
             if ($ergebnis1->status == "geheim" && $ergebnis2->status != "geheim") return 1;
             if ($ergebnis1->status != "geheim" && $ergebnis2->status == "geheim") return -1;
-
-            $nr1 = explode(".", $ergebnis1->top_nr);
-            $nr2 = explode(".", $ergebnis2->top_nr);
-            if ($nr1[0] > $nr2[0]) return 1;
-            if ($nr1[0] < $nr2[0]) return -1;
-            if (count($nr1) == 1 && count($nr2) == 1) return 0;
-            if (count($nr1) >= 2 && count($nr2) == 1) return 1;
-            if (count($nr1) == 1 && count($nr2) >= 2) return -1;
-            if ($nr1[1] > $nr2[1]) return 1;
-            if ($nr1[1] < $nr2[1]) return -1;
-            if (count($nr1) == 2 && count($nr2) == 2) return 0;
-            if (count($nr1) >= 3 && count($nr2) == 2) return 1;
-            if (count($nr1) == 2 && count($nr2) >= 3) return -1;
-            if ($nr1[2] > $nr2[2]) return 1;
-            if ($nr1[2] < $nr2[2]) return -1;
-            return 0;
+            return $ergebnis1->top_pos <=> $ergebnis2->top_pos;
         });
         return $tagesordnungspunkte;
     }
 
 
-    public function toArr()
+    public function toArr(): array
     {
         $ts = RISTools::date_iso2timestamp($this->termin);
         if (date("Y", $ts) == date("Y")) {

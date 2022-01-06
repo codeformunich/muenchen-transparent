@@ -51,14 +51,20 @@ function zeile_anzeigen($feld, $name, $callback)
     if ($termin->termin_next_id > 0 || $termin->termin_prev_id > 0) {
         echo '<div style="text-align: center; overflow: auto;">';
         if ($termin->termin_next_id > 0) {
-            $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_next_id));
+            $url = Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $termin->termin_next_id]);
             echo '<a href="' . CHtml::encode($url) . '" style="float: right;">Nächster Termin <span class="fontello-right-open"></span></a>';
         }
         if ($termin->termin_prev_id > 0) {
-            $url = Yii::app()->createUrl("termine/anzeigen", array("termin_id" => $termin->termin_prev_id));
+            $url = Yii::app()->createUrl("termine/anzeigen", ["termin_id" => $termin->termin_prev_id]);
             echo '<a href="' . CHtml::encode($url) . '" style="float: left;"><span class="fontello-left-open"></span> Voriger Termin</a>';
         }
-        echo '<a href="' . CHtml::encode(Yii::app()->createUrl("termine/aboInfo", array("termin_id" => $termin->id))) . '">Exportieren / Abonnieren</a>';
+
+        echo "Kalender: ";
+        $link = CHtml::encode(Yii::app()->createUrl("termine/icsExportSingle", ["termin_id" => $termin->id]));
+        echo '<a href="' . $link . '">ICS (Einzeltermin)</a> | ';
+
+        $link = CHtml::encode(Yii::app()->createUrl("termine/icsExportAll", array("termin_id" => $termin->id)));
+        echo '<a href="' . $link . '" rel="nofollow">ICS (Terminreihe)</a>';
         echo '</div>';
     }
     ?>
@@ -112,7 +118,7 @@ function zeile_anzeigen($feld, $name, $callback)
         <ol style="list-style-type: none;">
             <?php
             $geheimer_teil = false;
-            $tops          = $termin->tagesordnungspunkteSortiert();
+            $tops = $termin->tagesordnungspunkteSortiert();
             foreach ($tops as $ergebnis) {
                 if ($ergebnis->status === Tagesordnungspunkt::STATUS_NONPUBLIC && !$geheimer_teil) {
                     $geheimer_teil = true;
