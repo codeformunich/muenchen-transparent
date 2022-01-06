@@ -83,7 +83,7 @@ class StadtratTerminParser extends RISParser
             $gr = Gremium::model()->findByPk($parsed->organizationId);
             if (!$gr) {
                 echo "Lege Gremium an: " . $parsed->organizationId . "\n";
-                $this->stadtratGremiumParser->parse($parsed->organizationId);
+                $this->getStadtratGremiumParser()->parse($parsed->organizationId);
             }
         }
 
@@ -140,11 +140,7 @@ class StadtratTerminParser extends RISParser
         $verwendete_top_ids = [];
 
         foreach (array_merge($parsed->agendaPublic, $parsed->agendaNonPublic) as $parsedItem) {
-            if ($parsedItem->public) {
-                $topNr           = "1." . $parsedItem->topNr; // Legacy
-            } else {
-                $topNr = $parsedItem->topNr;
-            }
+            $topNr = $parsedItem->topNr;
 
             $vorlagenId = null;
             if (count($parsedItem->vorlagenIds) > 1) {
@@ -155,7 +151,7 @@ class StadtratTerminParser extends RISParser
                 $vorlage = Antrag::model()->findByPk($vorlagenId);
                 if (!$vorlage) {
                     echo "Creating: $vorlagenId\n";
-                    $this->stadtratsvorlageParser->parse($vorlagenId);
+                    $this->getStadtratsvorlageParser()->parse($vorlagenId);
                 }
 
                 $vorlage = Antrag::model()->findByPk($vorlagenId);
@@ -167,11 +163,12 @@ class StadtratTerminParser extends RISParser
             $top = new Tagesordnungspunkt();
             $top->datum_letzte_aenderung = new CDbExpression("NOW()");
             $top->sitzungstermin_id = $id;
-            $top->sitzungstermin_datum = substr($daten->termin, 0, 10);;
+            $top->sitzungstermin_datum = substr($daten->termin, 0, 10);
+            $top->top_pos = $parsedItem->position;
             $top->top_id = $parsedItem->id;
             $top->top_nr = $topNr;
             $top->antrag_id = $vorlagenId;
-            $top->top_ueberschrift = 0;
+            $top->top_ueberschrift = ($parsedItem->isHeading ? 1 : 0);
             $top->status = ($parsedItem->public ? '' : Tagesordnungspunkt::STATUS_NONPUBLIC);
             $top->entscheidung = $parsedItem->decision ?? $parsedItem->disclosure;
             $top->top_betreff = $parsedItem->title;
@@ -310,7 +307,7 @@ class StadtratTerminParser extends RISParser
 
 
         foreach ($parsed->dokumentLinks as $dok) {
-            $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_TERMIN, $daten, $dok);
+            $aenderungen .= Dokument::create_if_necessary(Dokument::TYP_STADTRAT_TERMIN, $daten, $dok);
         }
 
 

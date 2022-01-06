@@ -128,7 +128,7 @@ $this->html_itemprop = "http://schema.org/Person";
                             <li style="margin-bottom: 10px;">
                                 <?= CHtml::link($risitem->getName(true), $risitem->getLink()) ?> <br>
                                 <a class="fontello-download antrag-herunterladen"
-                                   href="<?= CHtml::encode($dokument->getLinkZumDownload()) ?>"
+                                   href="<?= CHtml::encode($dokument->getDownloadLink()) ?>"
                                    download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName(true)) ?>.pdf"
                                    title="Herunterladen: <?= CHtml::encode($dokument->getName(true)) ?>">
                                 </a>

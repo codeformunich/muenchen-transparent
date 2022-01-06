@@ -13,7 +13,7 @@ class Reindex_Solr_DocumentsCommand extends CConsoleCommand
             $sql = Yii::app()->db->createCommand();
             $sql->select("id")->from("dokumente")->where("id >= 0")->order("id");
             $data = $sql->queryColumn(["id"]);
-        } elseif (isset(Dokument::$TYPEN_ALLE[$args[0]])) {
+        } elseif (isset(Dokument::TYPEN_ALLE[$args[0]])) {
             $sql = Yii::app()->db->createCommand();
             $sql->select("id")->from("dokumente")->where("typ = '" . addslashes($args[0]) . "'")->order("id");
             $data = $sql->queryColumn(["id"]);

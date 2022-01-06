@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 class CalendarAgendaItem
 {
-    public int $id;
+    public int $position;
+    public ?int $id;
     public bool $public;
+    public bool $isHeading;
     public string $topNr;
     public string $title;
     public bool $hasDisclosure = false;
@@ -24,43 +26,56 @@ class CalendarAgendaItem
      */
     public static function parseHtmlList(string $html, bool $public): array
     {
-        $parts = explode('d-table-row even topueberschrift', $html);
-        $entries = preg_split('/<div class="d-table-row (odd|even)">/siu', $parts[1]);
+        $parts = explode('d-table w-100 tops', $html);
+        $entries = preg_split('/<div class="d-table-row (odd|even)/siu', $parts[1]);
         array_shift($entries);
 
         $parsedObjects = [];
+        $topContext = '';
+        $pos = 0;
         foreach ($entries as $entry) {
-            $parsed = static::parseFromHtml($entry, $public);
+            $parsed = static::parseFromHtml($entry, $pos, $public, $topContext);
             if ($parsed) {
                 $parsedObjects[] = $parsed;
+                $pos++;
+
+                if ($parsed->isHeading) {
+                    $topContext = $parsed->topNr;
+                }
             }
         }
 
         return $parsedObjects;
     }
 
-    public static function parseFromHtml(string $html, bool $public): ?self
+    public static function parseFromHtml(string $html, int $pos, bool $public, string $lastHeadingTopNr): ?self
     {
         $entry = new self();
+        $entry->position = $pos;
         $entry->public = $public;
+        $entry->isHeading = (str_contains($html, 'topabschnitt') || str_contains($html, 'topueberschrift'));
 
         if (!preg_match('/<div class="d-table-cell px-1 py-2 text-center">\s*<span>(?<topNr>[^<]*)<\/span>/siu', $html, $match)) {
             throw new ParsingException('Not found: topNr');
         }
-        $entry->topNr = $match['topNr'];
+        if ($entry->isHeading) {
+            $entry->topNr = $match['topNr'];
+        } else {
+            $entry->topNr = $lastHeadingTopNr . (str_ends_with($lastHeadingTopNr, '.') ? '' : '.') . $match['topNr'];
+        }
 
-        if (preg_match('/topdownload?risid=(?<id>\d+)[^\d]/siu', $html, $match)) {
+        if (preg_match('/topdownload\?risid=(?<id>\d+)[^\d]/siu', $html, $match)) {
             $entry->id = intval($match['id']);
         } elseif (preg_match('/\.\.\/top\/(?<id>\d+)\//siu', $html, $match)) {
             $entry->id = intval($match['id']);
         } else {
-            throw new ParsingException('No id found');
+            $entry->id = null;
         }
 
         if (!preg_match('/<div class="d-flex justify-content-between">\s*<div><span class="text-keepwhitespace">(?<title>[^<]*)<\/span>/siu', $html, $match)) {
             throw new ParsingException('Not found: title');
         }
-        $entry->title = $match['title'];
+        $entry->title = html_entity_decode($match['title'], ENT_COMPAT, 'UTF-8');
 
         if (preg_match('/top\/' . $entry->id . '\/entscheidung/siu', $html)) {
             $entry->hasDecision = true;

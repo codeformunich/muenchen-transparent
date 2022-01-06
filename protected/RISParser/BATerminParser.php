@@ -272,7 +272,7 @@ class BATerminParser extends RISParser
 
             preg_match("/<a title=\"(?<title>[^\"]*)\" [^>]*href=\"(?<url>[^ ]+)\"/siU", $entscheidung_original, $matches2);
             if (isset($matches2["url"]) && $matches2["url"] != "" && $matches2["url"] != "/RII/RII/DOK/TOP/") {
-                $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_BESCHLUSS, $tagesordnungspunkt, ["url" => $matches2["url"], "name" => $matches2["title"], "name_title" => ""]);
+                $aenderungen .= Dokument::create_if_necessary(Dokument::TYP_BA_BESCHLUSS, $tagesordnungspunkt, ["url" => $matches2["url"], "name" => $matches2["title"], "name_title" => ""]);
             }
         }
 
@@ -313,7 +313,7 @@ class BATerminParser extends RISParser
         }
 
         foreach ($dokumente as $dok) {
-            $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_BA_TERMIN, $daten, $dok);
+            $aenderungen .= Dokument::create_if_necessary(Dokument::TYP_BA_TERMIN, $daten, $dok);
         }
 
         if ($aenderungen != "") {

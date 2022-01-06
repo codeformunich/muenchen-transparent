@@ -175,7 +175,7 @@ function zeile_anzeigen($feld, $name, $callback)
     <?php } elseif ($to_pdf) {
         $this->load_pdf_js = true;
         $this->renderPartial("../index/pdf_embed", [
-            "url" => $to_pdf->getLinkZumDownload(),
+            "url" => $to_pdf->getDownloadLink(),
         ]);
     } else {
         echo '<div class="keine_tops">(Noch) Keine Tagesordnung veröffentlicht</div>';

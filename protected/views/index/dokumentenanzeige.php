@@ -56,7 +56,7 @@ if ($dokument->getRISItem()) {
     <?php $this->load_pdf_js = true; ?>
     <?php
     $this->renderPartial("pdf_embed", [
-        "url" => $dokument->getLinkZumDownload(),
+        "url" => $dokument->getDownloadLink(),
     ]);
     ?>
 
