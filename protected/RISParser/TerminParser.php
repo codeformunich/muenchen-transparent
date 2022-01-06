@@ -1,6 +1,6 @@
 <?php
 
-class StadtratTerminParser extends RISParser
+class TerminParser extends RISParser
 {
     private BrowserBasedDowloader $browserBasedDowloader;
     private CurlBasedDownloader $curlBasedDownloader;
@@ -92,7 +92,7 @@ class StadtratTerminParser extends RISParser
         $daten->id = $id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
         $daten->gremium_id = $parsed->organizationId;
-        $daten->ba_nr = null;
+        $daten->ba_nr = $parsed->baNr;
         $daten->sitzungsstand = $parsed->sitzungsstand ?? '';
         $daten->sitzungsort = $parsed->ort ?? '';
         $daten->referat = $parsed->referatName ?? '';
@@ -100,11 +100,9 @@ class StadtratTerminParser extends RISParser
         $daten->vorsitz = $parsed->vorsitzName ?? '';
         $daten->wahlperiode = $parsed->wahlperiode;
         $daten->status = $parsed->status;
-        $daten->termin = $parsed?->dateStart->format('Y-m-d H:i:s');
-
-
-        //if (preg_match("/chste Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_next_id = trim(str_replace("&nbsp;", "", $matches[1]));
-        //if (preg_match("/Letzte Sitzung:.*ris_sitzung_detail\.jsp\?risid=([0-9]+)[\"'& ]/siU", $html_details, $matches)) $daten->termin_prev_id = trim(str_replace("&nbsp;", "", $matches[1]));
+        $daten->termin = $parsed->dateStart?->format('Y-m-d H:i:s');
+        $daten->termin_next_id = $parsed->nextCalendarId;
+        $daten->termin_prev_id = $parsed->prevCalendarId;
 
         $geloescht = false; // @TODO
         $aenderungen = "";
@@ -119,6 +117,7 @@ class StadtratTerminParser extends RISParser
                 $changed     = true;
             } else {
                 if ($alter_eintrag->termin != $daten->termin) $aenderungen .= "Termin: " . $alter_eintrag->termin . " => " . $daten->termin . "\n";
+                if ($alter_eintrag->ba_nr != $daten->ba_nr) $aenderungen .= "BA: " . $alter_eintrag->ba_nr . " => " . $daten->ba_nr . "\n";
                 if ($alter_eintrag->gremium_id != $daten->gremium_id) $aenderungen .= "Gremium-ID: " . $alter_eintrag->gremium_id . " => " . $daten->gremium_id . "\n";
                 if ($alter_eintrag->sitzungsort != $daten->sitzungsort) $aenderungen .= "Sitzungsort: " . $alter_eintrag->sitzungsort . " => " . $daten->sitzungsort . "\n";
                 if ($alter_eintrag->termin_next_id != $daten->termin_next_id) $aenderungen .= "Nächster Termin: " . $alter_eintrag->termin_next_id . " => " . $daten->termin_next_id . "\n";
@@ -331,7 +330,7 @@ class StadtratTerminParser extends RISParser
 
     public function parseAll(): void
     {
-        $anz   = StadtratTerminParser::$MAX_OFFSET;
+        $anz   = TerminParser::$MAX_OFFSET;
         $first = true;
         for ($i = $anz; $i >= 0; $i -= 10) {
             if (SITE_CALL_MODE != "cron") echo ($anz - $i) . " / $anz\n";
@@ -343,7 +342,7 @@ class StadtratTerminParser extends RISParser
     public function parseUpdate(): void
     {
         echo "Updates: Stadtratstermin\n";
-        $anz   = StadtratTerminParser::$MAX_OFFSET_UPDATE;
+        $anz   = TerminParser::$MAX_OFFSET_UPDATE;
         $first = true;
         for ($i = 0; $i < $anz; $i += 10) {
             $this->parseSeite($anz - $i, $first, false);

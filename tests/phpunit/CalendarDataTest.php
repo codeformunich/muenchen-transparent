@@ -36,7 +36,10 @@ class CalendarDataTest extends TestCase
 
         $this->assertSame(6243091, $data->id);
         $this->assertSame('BA 14 - Vollgremium', $data->organizationName);
-        //$this->assertSame(14, $data->o); @TODO BA
+        $this->assertSame(6810632, $data->nextCalendarId);
+        $this->assertSame(6243035, $data->prevCalendarId);
+        $this->assertSame(14, $data->baNr);
+        $this->assertSame(223, $data->baId);
         $this->assertMatchesObjectSnapshot($data);
     }
 }

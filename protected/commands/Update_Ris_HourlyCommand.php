@@ -20,7 +20,7 @@ class Update_Ris_HourlyCommand extends CConsoleCommand
 
 
         try {
-            $parser = new StadtratTerminParser();
+            $parser = new TerminParser();
             $parser->parseQuickUpdate();
 
             echo "Done Termine: " . date("Y-m-d H:i:s") . "\n";

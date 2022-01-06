@@ -7,6 +7,8 @@ class CalendarData
     public ?\DateTime $dateStart;
     public int $id;
     public string $status;
+    public ?int $baNr = null;
+    public ?int $baId = null;
     public ?string $sitzungsstand = null;
     public int $organizationId;
     public string $organizationName;
@@ -17,6 +19,8 @@ class CalendarData
     public ?int $referatId = null;
     public ?string $referatName = null;
     public ?string $referentInName = null;
+    public ?int $nextCalendarId = null;
+    public ?int $prevCalendarId = null;
 
     public bool $hasAgendaPublic;
     public bool $hasAgendaNonPublic;
@@ -49,6 +53,11 @@ class CalendarData
             $entry->id = intval($match['id']);
         }
 
+        if (preg_match('/Bezirksausschuss:<\/div>\s*<div[^>]*>\s*<a[^>]*gremium\/detail\/(?<baId>\d+)[^\d][^>]*>(?<baNr>\d+ -)/siuU', $html, $match)) {
+            $entry->baId = intval($match['baId']);
+            $entry->baNr = intval($match['baNr']);
+        }
+
         if (preg_match('/Gremium:<\/div>\s*<div[^>]*>\s*<a[^>]*gremium\/detail\/(?<id>\d+)[^\d][^>]*>(?<title>[^<]*)<\/a>/siuU', $html, $match)) {
             $entry->organizationId = intval($match['id']);
             $entry->organizationName = $match['title'];
@@ -79,6 +88,13 @@ class CalendarData
             if (isset($matches['id']) && count($matches['id']) > 1) {
                 echo "WARNING: More than one \"Vorsitz\" found, skipping all but the first one\n";
             }
+        }
+
+        if (preg_match('/<div[^>]*>Nächste Sitzung:<\/div>\s*<div[^>]*>\s*<div>\s*<img[^>]*>\s*<a href="\.\/(?<nextId>\d+)"/siuU', $html, $match)) {
+            $entry->nextCalendarId = intval($match['nextId']);
+        }
+        if (preg_match('/<div[^>]*>Letzte Sitzung:<\/div>\s*<div[^>]*>\s*<div>\s*<img[^>]*>\s*<a href="\.\/(?<nextId>\d+)"/siuU', $html, $match)) {
+            $entry->prevCalendarId = intval($match['nextId']);
         }
 
         $entry->hasAgendaPublic = str_contains($html, $entry->id . '/tagesordnung/oeffentlich');

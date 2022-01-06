@@ -58,7 +58,7 @@ class CalendarAgendaItem
         if (!preg_match('/<div class="d-table-cell px-1 py-2 text-center">\s*<span>(?<topNr>[^<]*)<\/span>/siu', $html, $match)) {
             throw new ParsingException('Not found: topNr');
         }
-        if ($entry->isHeading) {
+        if ($entry->isHeading || $lastHeadingTopNr === '') {
             $entry->topNr = $match['topNr'];
         } else {
             $entry->topNr = $lastHeadingTopNr . (str_ends_with($lastHeadingTopNr, '.') ? '' : '.') . $match['topNr'];

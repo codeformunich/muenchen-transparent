@@ -6,7 +6,7 @@ class Reindex_StadtratCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        $parser = new StadtratTerminParser();
+        $parser = new TerminParser();
         $parser->parseAll();
 
         $parser = new StadtratsantragParser();

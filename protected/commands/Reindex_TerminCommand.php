@@ -2,13 +2,13 @@
 
 define("VERYFAST", true);
 
-class Reindex_Stadtrat_TerminCommand extends CConsoleCommand
+class Reindex_TerminCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        if (!isset($args[0]) || ($args[0] != "alle" && $args[0] <= 1)) die("./yiic reindex_stadtrattermin [termin-ID]|YYYY-MM|alle\n");
+        if (!isset($args[0]) || ($args[0] != "alle" && $args[0] <= 1)) die("./yiic reindex_termin [termin-ID]|YYYY-MM|alle\n");
 
-        $parser = new StadtratTerminParser();
+        $parser = new TerminParser();
         if ($args[0] == "alle") {
             $parser->parseAll();
         }

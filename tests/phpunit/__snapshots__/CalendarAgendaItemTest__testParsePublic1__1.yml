@@ -1,6 +1,21 @@
 -
+    position: 0
+    id: null
+    public: true
+    isHeading: true
+    topNr: ''
+    title: Tagesordnung
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 1
     id: 6914188
     public: true
+    isHeading: false
     topNr: '1.'
     title: |-
         Städtische Wohnungsbaugesellschaften
@@ -13,8 +28,10 @@
     antraegeIds: [6947685, 6947723]
     vorlagenIds: [6908536]
 -
+    position: 2
     id: 6894317
     public: true
+    isHeading: false
     topNr: '2.'
     title: |-
         Änderung des Flächennutzungsplans
@@ -35,8 +52,10 @@
     antraegeIds: {  }
     vorlagenIds: [6827977]
 -
+    position: 3
     id: 6894319
     public: true
+    isHeading: false
     topNr: '3.'
     title: |-
         A) Änderung des Flächennutzungsplanes
@@ -61,8 +80,10 @@
     antraegeIds: {  }
     vorlagenIds: [6847631]
 -
+    position: 4
     id: 6894322
     public: true
+    isHeading: false
     topNr: '4.'
     title: |-
         Freiham Süd - Erweiterung Logistikzentrum Augustiner;
@@ -88,8 +109,10 @@
     antraegeIds: [6947745]
     vorlagenIds: [6787743]
 -
+    position: 5
     id: 6894325
     public: true
+    isHeading: false
     topNr: '5.'
     title: |-
         Bebauungsplan mit Grünordnung Nr. 2132
@@ -112,8 +135,10 @@
     antraegeIds: {  }
     vorlagenIds: [6791832]
 -
+    position: 6
     id: 6913667
     public: true
+    isHeading: false
     topNr: '6.'
     title: |-
         Änderung des Flächennutzungsplans
@@ -129,8 +154,10 @@
     antraegeIds: {  }
     vorlagenIds: [6514256]
 -
+    position: 7
     id: 6912443
     public: true
+    isHeading: false
     topNr: '7.'
     title: |-
         Änderung des Flächennutzungsplans mit integrierter Landschaftsplanung für den Bereich V/61
@@ -144,8 +171,10 @@
     antraegeIds: {  }
     vorlagenIds: [6828011]
 -
+    position: 8
     id: 6894327
     public: true
+    isHeading: false
     topNr: '8.'
     title: |-
         Wohnungspolitisches Handlungsprogramm
@@ -158,8 +187,10 @@
     antraegeIds: [6869261]
     vorlagenIds: [6760084]
 -
+    position: 9
     id: 6894329
     public: true
+    isHeading: false
     topNr: '9.'
     title: |-
         Perspektive München als Steuerungsinstrument einer nachhaltigen Stadtentwicklung – Bericht zur Fortschreibung der Stadtentwicklungskonzeption
@@ -185,8 +216,10 @@
     antraegeIds: [5903341, 5650127, 5650109, 5650094, 5852196]
     vorlagenIds: [6779548]
 -
+    position: 10
     id: 6907873
     public: true
+    isHeading: false
     topNr: '10.'
     title: |-
         Haushalt 2022 des Referates für Stadtplanung und Bauordnung
@@ -202,8 +235,10 @@
     antraegeIds: {  }
     vorlagenIds: [6704823]
 -
+    position: 11
     id: 6894331
     public: true
+    isHeading: false
     topNr: '11.'
     title: 'Mehrjahresinvestitionsprogramm für die Jahre 2021 - 2025'
     hasDisclosure: false
@@ -213,8 +248,10 @@
     antraegeIds: {  }
     vorlagenIds: [6704816]
 -
+    position: 12
     id: 6894374
     public: true
+    isHeading: false
     topNr: '12.'
     title: |-
         Sanierungsgebiet „Neuperlach Nord“
@@ -234,8 +271,10 @@
     antraegeIds: {  }
     vorlagenIds: [6701420]
 -
+    position: 13
     id: 6894333
     public: true
+    isHeading: false
     topNr: '13.'
     title: |-
         Perspektive München
@@ -249,16 +288,18 @@
     antraegeIds: {  }
     vorlagenIds: [6776824]
 -
+    position: 14
     id: 6894395
     public: true
+    isHeading: false
     topNr: '14.'
     title: |-
         Erlass einer Erhaltungssatzung nach § 172 Abs. 1 Satz 1 Nr. 2  BauGB
         im Stadtgebiet 04 Schwabing-West
 
-        Satzungsbeschluss Satzung &quot;Hohenzollernstraße&quot; der Landeshauptstadt München zur
+        Satzungsbeschluss Satzung "Hohenzollernstraße" der Landeshauptstadt München zur
         Erhaltung der Wohnbevölkerung gemäß § 172 Abs. 1 Satz 1 Nr. 2 BauGB
-        (Erhaltungssatzung &quot;Hohenzollernstraße&quot;)
+        (Erhaltungssatzung "Hohenzollernstraße")
     hasDisclosure: false
     disclosure: null
     hasDecision: true
@@ -266,8 +307,10 @@
     antraegeIds: {  }
     vorlagenIds: [6819477]
 -
+    position: 15
     id: 6910677
     public: true
+    isHeading: false
     topNr: '15.'
     title: |-
         Erlass einer Erhaltungssatzung nach § 172 Abs. 1 Satz 1 Nr. 2 BauGB
@@ -288,8 +331,10 @@
     antraegeIds: [6673214, 6755049]
     vorlagenIds: [6819765]
 -
+    position: 16
     id: 6855300
     public: true
+    isHeading: false
     topNr: '16.'
     title: |-
         Schutzgebiete in der Landeshauptstadt München
@@ -301,8 +346,10 @@
     antraegeIds: [6947753]
     vorlagenIds: [6785344]
 -
+    position: 17
     id: 6912232
     public: true
+    isHeading: false
     topNr: '17.'
     title: |-
         Münchner Gesellschaft für Stadterneuerung mbH (MGS)
@@ -317,8 +364,10 @@
     antraegeIds: {  }
     vorlagenIds: [6836180]
 -
+    position: 18
     id: 6927705
     public: true
+    isHeading: false
     topNr: '18.'
     title: |-
         2. Stammstrecke München – Planfeststellungsabschnitt 3 Ost – Bereich westliches Isarufer bis östlich Leuchtenbergring
@@ -350,8 +399,10 @@
     antraegeIds: [6947698, 6948940, 6868433]
     vorlagenIds: [6909577]
 -
+    position: 19
     id: 6930136
     public: true
+    isHeading: false
     topNr: '19.'
     title: |-
         Umsetzung des Programms
@@ -366,8 +417,10 @@
     antraegeIds: {  }
     vorlagenIds: [6781915]
 -
+    position: 20
     id: 6930396
     public: true
+    isHeading: false
     topNr: '20.'
     title: |-
         BayBO Novelle und Online-Zugangsgesetz:
@@ -380,8 +433,10 @@
     antraegeIds: {  }
     vorlagenIds: [6866423]
 -
+    position: 21
     id: 6920236
     public: true
+    isHeading: false
     topNr: '21.'
     title: |-
         Kreativquartier an der Dachauer Straße/
@@ -402,8 +457,10 @@
     antraegeIds: [6947782]
     vorlagenIds: [6907745]
 -
+    position: 22
     id: 6932114
     public: true
+    isHeading: false
     topNr: '22.'
     title: |-
         „Holzwohnungsbau in München“
@@ -418,8 +475,10 @@
     antraegeIds: {  }
     vorlagenIds: [6779177]
 -
+    position: 23
     id: 6931863
     public: true
+    isHeading: false
     topNr: '23.'
     title: |-
         Fortschreibung Wohnen in München VI
