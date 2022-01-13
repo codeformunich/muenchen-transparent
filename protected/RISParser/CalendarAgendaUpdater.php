@@ -129,25 +129,42 @@ class CalendarAgendaUpdater
             $changesStr = "Neuer TOP: " . $top->top_nr . " - " . $top->top_betreff . "\n";
         }
 
-        /*
-             * @TODO Beschlüsse e.g. in https://risi.muenchen.de/risi/sitzung/detail/5656928/tagesordnung/oeffentlich
-                // $aenderungen .= Dokument::create_if_necessary(Dokument::$TYP_STADTRAT_BESCHLUSS, $top, ["url" => $matches2["url"][0], "name" => $matches2["title"][0], "name_title" => ""]);
-                / @var Dokument $dok /
-                $dok = Dokument::model()->findByAttributes(["tagesordnungspunkt_id" => $top->id, "url" => $matches2["url"][0], "name" => $matches2["title"][0]]);
-                if ($dok && $dok->tagesordnungspunkt_id != $top->id) {
-                    echo "Korrgiere ID\n";
-                    $dok->tagesordnungspunkt_id = $top->id;
-                    $dok->save(false);
-                }
-            */
-
-        if (!is_null($vorlagenId)) {
-            // @TODO Find out if there is still a "Beschlusstext" stored for the agenda
-        }
-
         $top->save();
 
+        $changesStr .= $this->updateAgendaItemDecision($top, $newItem);
+
         return $changesStr;
+    }
+
+    private function updateAgendaItemDecision(Tagesordnungspunkt $top, CalendarAgendaItem $newItem): string
+    {
+        $changes = '';
+        $oldDocument = Dokument::model()->findByAttributes(["tagesordnungspunkt_id" => $top->id, "deleted" => 0]);
+        if ($oldDocument && intval($oldDocument->id) !== $newItem->decisionDocument?->id) {
+            $oldDocument->deleted = 1;
+            $oldDocument->save();
+            $changes .= 'Beschlussdokument entfernen: ' . $oldDocument->id . "\n";
+        }
+
+        if (!$newItem->decisionDocument) {
+            return $changes;
+        }
+
+        $existingDocument = Dokument::model()->findByAttributes(["id" => $newItem->decisionDocument->id]);
+        if ($existingDocument) {
+            if ($existingDocument->tagesordnungspunkt_id !== $newItem->id) {
+                $changes .= "Beschlussdokument " . $existingDocument->id . ": Zuordnung beheben\n";
+                $existingDocument->tagesordnungspunkt_id = $newItem->id;
+                $existingDocument->save();
+            }
+            return $changes;
+        }
+
+        // Only index the document if it didn't exist before
+        $changes .= "Neues Beschlussdokument: " . $newItem->decisionDocument->id . "\n";
+        $changes .= Dokument::create_if_necessary(Dokument::TYP_STADTRAT_BESCHLUSS, $top, $newItem->decisionDocument);
+
+        return $changes;
     }
 
     /**

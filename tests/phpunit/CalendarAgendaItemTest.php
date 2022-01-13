@@ -16,6 +16,19 @@ class CalendarAgendaItemTest extends TestCase
         $this->assertMatchesObjectSnapshot($items);
     }
 
+    public function testParsePublic2()
+    {
+        $html = file_get_contents(__DIR__ . '/data/CalendarParser_AgendaPublic2.html');
+        $items = CalendarAgendaItem::parseHtmlList($html, true);
+        $this->assertCount(13, $items);
+
+        $this->assertStringStartsWith('Karstadt am Nordbad', $items[1]->title);
+        $this->assertTrue($items[1]->hasDecision);
+        $this->assertSame(6878435, $items[1]->decisionDocument->id);
+
+        $this->assertMatchesObjectSnapshot($items);
+    }
+
     public function testParseNonpublic1()
     {
         $html = file_get_contents(__DIR__ . '/data/CalendarParser_AgendaNonpublic1.html');

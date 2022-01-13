@@ -1,0 +1,254 @@
+-
+    position: 0
+    id: null
+    public: true
+    isHeading: true
+    topNr: ''
+    title: Tagesordnung
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 1
+    id: 6806102
+    public: true
+    isHeading: false
+    topNr: '1.'
+    title: |-
+        Karstadt am Nordbad
+
+        Empfehlung Nr. 20-26 / E 00081 der Bürgerversammlung des Stadtbezirkes 04 - Schwabing West am 05.07.2021
+
+        Stadtbezirk 04 - Schwabing West
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878435, url: /dokument/v/6878435, filename: Beschluss.pdf }
+    antraegeIds: [6692450]
+    vorlagenIds: [6765652]
+-
+    position: 2
+    id: 6826423
+    public: true
+    isHeading: false
+    topNr: '2.'
+    title: |-
+        Baukoordinator bzw. Verkehrsplaner für das Neubaugebiet Bayernkaserne
+
+        Empfehlung Nr. 20-26 / E 00004 der Bürgerversammlung des Stadtbezirkes 12 - Schwabing-Freimann am 16.06.2021
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878444, url: /dokument/v/6878444, filename: Beschluss.pdf }
+    antraegeIds: [6661528]
+    vorlagenIds: [6745988]
+-
+    position: 3
+    id: 6829604
+    public: true
+    isHeading: false
+    topNr: '3.'
+    title: |-
+        Gewerbebetriebe in den Stadtvierteln halten - Münchner Mischung schützen
+
+        Antrag Nr. 14-20 / A 06841 von der SPD-Fraktion vom 21.02.2020, eingegangen am 21.02.2020
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878454, url: /dokument/v/6878454, filename: Beschluss.pdf }
+    antraegeIds: [5912448]
+    vorlagenIds: [6265746]
+-
+    position: 4
+    id: 6833473
+    public: true
+    isHeading: false
+    topNr: '4.'
+    title: |-
+        Realisierungswettbewerb
+        „Zwei Hochhäuser an der Westend-/ Zschokkestraße“ in München
+
+
+        Bebauungsplan mit Grünordnung Nr. 2027
+        Zschokkestr. (südlich), Westendstr. (westlich),
+        Barmer Str. und Hans-Thonauer-Str. (östlich)
+        - Erweiterung des Umgriffs (Busbetriebshofgelände) -
+        (Teiländerung des Bebauungsplanes Nr. 58 d)
+
+        Bekanntgabe des Wettbewerbsergebnisses
+
+        Stadtbezirk 25 - Laim
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878479, url: /dokument/v/6878479, filename: Beschluss.pdf }
+    antraegeIds: {  }
+    vorlagenIds: [6771600]
+-
+    position: 5
+    id: 6834206
+    public: true
+    isHeading: false
+    topNr: '5.'
+    title: |-
+        Vollzug der Naturschutzgesetze;
+        Verfahren zur Novellierung und Erweiterung des Landschaftsschutzgebietes „Sportpark der Firma Siemens [...]“ zum neuen Landschaftsschutzgebiet „Landschaftspark Isar-Solln“ sowie
+        Erlass einer Verordnung über die einstweiligen Sicherstellung der Erweiterungsflächen zum Landschaftsschutzgebiet „Sportpark der Firma Siemens südlich der Siemensallee und das Waldstück südlich dieses Parkes“ („Erweiterungsflächen zum ehemaligen Siemens Sportpark“)
+
+        Anträge und Empfehlungen:
+
+        a) Landschaftsschutzverordnung "Landschaftspark Isar-Solln" endlich in Kraft setzen!Antrag Nr. 20-26 / A 00215 der Stadtratsfraktion DIE LINKE / DIE PARTEI vom 07.07.2020
+        b) Landschaftsschutzgebiet Hermann-von-Siemens-Sportpark östlich und südlich
+        Antrag-Nr. 14-20 / B 02109 des Bezirksausschusses des Stadtbezirkes 19 - Thalkirchen-Obersendling-Forstenried-Fürstenried-Solln vom 01.03.2016
+        c)
+        d)...
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878550, url: /dokument/v/6878550, filename: Beschluss.pdf }
+    antraegeIds: [6869379, 3988937, 4487946, 6115185, 5403291]
+    vorlagenIds: [6684586]
+-
+    position: 6
+    id: 6844606
+    public: true
+    isHeading: false
+    topNr: '6.'
+    title: 'Perspektive München als Steuerungsinstrument....'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6874857, url: /dokument/v/6874857, filename: Beschluss.pdf }
+    antraegeIds: [5903341, 5650127, 5650109, 5650094, 5852196]
+    vorlagenIds: [6779548]
+-
+    position: 7
+    id: 6844711
+    public: true
+    isHeading: false
+    topNr: '7.'
+    title: |-
+        Perspektive München
+        Münchner Bevölkerungsbefragung zur
+        Stadtentwicklung 2021
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878583, url: /dokument/v/6878583, filename: Beschluss.pdf }
+    antraegeIds: {  }
+    vorlagenIds: [6811473]
+-
+    position: 8
+    id: 6844737
+    public: true
+    isHeading: false
+    topNr: '8.'
+    title: |-
+        Sanierungsgebiet
+        "Tegernseer Landstraße / Chiemgaustraße"
+
+        Teilaufhebung der Sanierungssatzung über die
+        förmliche Festlegung des Sanierungsgebietes
+        "Tegerseer Landstraße / Chiemgaustraße"
+
+        Stadtbezirk 17 - Obergiesing-Fasangarten
+        Stadtbezirk 18 - Untergiesing-Harlaching
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6872040, url: /dokument/v/6872040, filename: Beschluss.pdf }
+    antraegeIds: [6872044]
+    vorlagenIds: [6433506]
+-
+    position: 9
+    id: 6844744
+    public: true
+    isHeading: false
+    topNr: '9.'
+    title: |-
+        Planungssicherheit bei Schul- und Kindertageseinrichtungen
+
+        Antrag Nr. 14-20 / A 03934 von Frau StRin Beatrix Burkhardt, Frau StRin Anja Burkhardt,
+        Frau StRin Alexandra Gaßmann, Frau StRin Ulrike Grimm, Frau StRin Dorothea Wiepcke
+        vom 23.03.2018
+
+        Planungen für Kindertagesbetreuung noch weiter flexibilisieren
+
+        Antrag Nr. 14-20 / A 03903 von Frau StRin Birgit Volk, Frau StRin Julia Schönfeld-Knor,
+        Frau StRin Kathrin Abele, Frau StRin Verena Dietl, Herrn StR Haimo Liebich,
+        Herrn StR Cumali Naz, Frau StRin Heide Rieke, Frau StRin Ulrike Boesser,
+        Herrn StR Hans Dieter Kaplan, Frau StRin Renate Kürzdörfer, Herrn StR Christian Müller,
+        Frau StRin Bettina Messinger vom 14.03.2018
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878615, url: /dokument/v/6878615, filename: Beschluss.pdf }
+    antraegeIds: [4900245, 4888496]
+    vorlagenIds: [6065691]
+-
+    position: 10
+    id: 6844747
+    public: true
+    isHeading: false
+    topNr: '10.'
+    title: 'Studie "Verdrängungsprozesse in der Landeshauptstadt München - Möglichkeiten der kommunalen Einflussnahme auf einem zunehmend angespannten Wohnungsmarkt"'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878627, url: /dokument/v/6878627, filename: Beschluss.pdf }
+    antraegeIds: {  }
+    vorlagenIds: [6835857]
+-
+    position: 11
+    id: 6856044
+    public: true
+    isHeading: false
+    topNr: '11.'
+    title: |-
+        Sektoraler Bebauungsplan Nr. 2173
+        Tegernseer Landstraße (östlich),
+        Raintalstraße (westlich)
+        Perlacher Straße (nördlich),
+        Kesselbergstraße (südlich)
+
+        - Aufstellungsbeschluss -
+
+        Stadtbezirk 17 Obergiesing-Fasangarten
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6878634, url: /dokument/v/6878634, filename: Beschluss.pdf }
+    antraegeIds: {  }
+    vorlagenIds: [6847310]
+-
+    position: 12
+    id: 6858373
+    public: true
+    isHeading: false
+    topNr: '12.'
+    title: |-
+        Wohnungspolitisches Handlungsprogramm
+        Wohnen in München VI 2017 - 2021
+        Verlängerung um 1 Jahr bis zum 31.12.2022
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: { title: Beschluss, id: 6871997, url: /dokument/v/6871997, filename: Beschluss.pdf }
+    antraegeIds: [6869261]
+    vorlagenIds: [6760084]

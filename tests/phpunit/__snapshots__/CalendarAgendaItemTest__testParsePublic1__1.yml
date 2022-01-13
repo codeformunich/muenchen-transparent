@@ -9,6 +9,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -25,6 +26,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6947685, 6947723]
     vorlagenIds: [6908536]
 -
@@ -49,6 +51,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6827977]
 -
@@ -77,6 +80,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6847631]
 -
@@ -106,6 +110,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6947745]
     vorlagenIds: [6787743]
 -
@@ -132,6 +137,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6791832]
 -
@@ -151,6 +157,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6514256]
 -
@@ -168,6 +175,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6828011]
 -
@@ -184,6 +192,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6869261]
     vorlagenIds: [6760084]
 -
@@ -213,6 +222,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [5903341, 5650127, 5650109, 5650094, 5852196]
     vorlagenIds: [6779548]
 -
@@ -232,6 +242,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6704823]
 -
@@ -245,6 +256,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6704816]
 -
@@ -268,6 +280,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6701420]
 -
@@ -285,6 +298,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6776824]
 -
@@ -304,6 +318,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6819477]
 -
@@ -328,6 +343,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6673214, 6755049]
     vorlagenIds: [6819765]
 -
@@ -343,6 +359,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6947753]
     vorlagenIds: [6785344]
 -
@@ -361,6 +378,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6836180]
 -
@@ -396,6 +414,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6947698, 6948940, 6868433]
     vorlagenIds: [6909577]
 -
@@ -414,6 +433,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6781915]
 -
@@ -430,6 +450,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6866423]
 -
@@ -454,6 +475,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6947782]
     vorlagenIds: [6907745]
 -
@@ -472,6 +494,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6779177]
 -
@@ -500,5 +523,6 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [5803913, 5804595, 5829694]
     vorlagenIds: [6062450]

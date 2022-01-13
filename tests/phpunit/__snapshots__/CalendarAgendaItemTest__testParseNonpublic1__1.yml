@@ -9,6 +9,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -25,6 +26,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -43,6 +45,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -59,6 +62,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -77,6 +81,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -94,5 +99,6 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }

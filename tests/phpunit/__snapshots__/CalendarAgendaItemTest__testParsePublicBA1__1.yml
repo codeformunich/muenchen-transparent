@@ -9,6 +9,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -22,6 +23,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -35,6 +37,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -48,6 +51,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6947672]
     vorlagenIds: {  }
 -
@@ -61,6 +65,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -74,6 +79,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -87,6 +93,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -100,6 +107,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -113,6 +121,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -126,6 +135,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -139,6 +149,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -152,6 +163,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6919526]
     vorlagenIds: {  }
 -
@@ -165,6 +177,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6940519]
     vorlagenIds: {  }
 -
@@ -178,6 +191,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6941243]
     vorlagenIds: {  }
 -
@@ -191,6 +205,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6941267]
     vorlagenIds: {  }
 -
@@ -204,6 +219,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6948969]
     vorlagenIds: {  }
 -
@@ -217,6 +233,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -233,6 +250,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6915916]
     vorlagenIds: {  }
 -
@@ -250,6 +268,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6934453]
     vorlagenIds: {  }
 -
@@ -263,6 +282,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6934824]
     vorlagenIds: {  }
 -
@@ -276,6 +296,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -291,6 +312,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6946914]
     vorlagenIds: {  }
 -
@@ -307,6 +329,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6972317]
     vorlagenIds: {  }
 -
@@ -320,6 +343,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -333,6 +357,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -350,6 +375,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6911696]
 -
@@ -367,6 +393,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6927051]
 -
@@ -386,6 +413,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6932362]
     vorlagenIds: {  }
 -
@@ -399,6 +427,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6909851]
     vorlagenIds: {  }
 -
@@ -418,6 +447,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6916042]
     vorlagenIds: {  }
 -
@@ -431,6 +461,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -444,6 +475,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6940543]
     vorlagenIds: {  }
 -
@@ -457,6 +489,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6941251]
     vorlagenIds: {  }
 -
@@ -470,6 +503,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6941259]
     vorlagenIds: {  }
 -
@@ -483,6 +517,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -496,6 +531,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -509,6 +545,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6921627]
     vorlagenIds: {  }
 -
@@ -522,6 +559,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6919438]
     vorlagenIds: {  }
 -
@@ -538,6 +576,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6866423]
 -
@@ -556,6 +595,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6779177]
 -
@@ -571,6 +611,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6947753]
     vorlagenIds: [6785344]
 -
@@ -584,6 +625,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6814390]
     vorlagenIds: {  }
 -
@@ -597,6 +639,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6451217]
     vorlagenIds: {  }
 -
@@ -613,6 +656,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6947595]
     vorlagenIds: {  }
 -
@@ -626,6 +670,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6682736]
     vorlagenIds: {  }
 -
@@ -654,6 +699,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [5674184, 5674704, 5920506, 5646999, 5923461, 6791038, 6510757]
     vorlagenIds: [6732660]
 -
@@ -671,6 +717,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6922793]
     vorlagenIds: {  }
 -
@@ -684,6 +731,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6736365]
     vorlagenIds: {  }
 -
@@ -697,6 +745,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -723,6 +772,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6701420]
 -
@@ -749,6 +799,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6704816]
 -
@@ -765,6 +816,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6915823]
     vorlagenIds: {  }
 -
@@ -800,6 +852,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6947698, 6948940, 5669509, 6535210, 6302628, 6302600, 6586311, 6868342, 6868448, 6868433]
     vorlagenIds: [6909577]
 -
@@ -818,6 +871,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6917740]
     vorlagenIds: {  }
 -
@@ -833,6 +887,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6900757, 6898522]
     vorlagenIds: [6868061]
 -
@@ -846,6 +901,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6816783]
     vorlagenIds: {  }
 -
@@ -859,6 +915,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6412016]
     vorlagenIds: {  }
 -
@@ -875,6 +932,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6918594]
     vorlagenIds: {  }
 -
@@ -891,6 +949,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6943210]
     vorlagenIds: {  }
 -
@@ -904,6 +963,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6253245]
     vorlagenIds: {  }
 -
@@ -921,6 +981,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -939,6 +1000,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6937308]
     vorlagenIds: {  }
 -
@@ -956,6 +1018,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6937330]
     vorlagenIds: {  }
 -
@@ -972,6 +1035,7 @@
     disclosure: null
     hasDecision: true
     decision: null
+    decisionDocument: null
     antraegeIds: [6942804]
     vorlagenIds: {  }
 -
@@ -985,6 +1049,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1002,6 +1067,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6883957]
 -
@@ -1020,6 +1086,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1033,6 +1100,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1046,6 +1114,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6816903]
     vorlagenIds: {  }
 -
@@ -1062,6 +1131,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6948842]
     vorlagenIds: {  }
 -
@@ -1080,6 +1150,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6948874]
     vorlagenIds: {  }
 -
@@ -1098,6 +1169,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6947353]
     vorlagenIds: [6835697]
 -
@@ -1116,6 +1188,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6835713]
 -
@@ -1134,6 +1207,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6824554]
 -
@@ -1155,6 +1229,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: [6836012]
 -
@@ -1168,6 +1243,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1183,6 +1259,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6874809]
     vorlagenIds: {  }
 -
@@ -1199,6 +1276,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6917766]
     vorlagenIds: {  }
 -
@@ -1212,6 +1290,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6922092]
     vorlagenIds: {  }
 -
@@ -1227,6 +1306,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: [6943794]
     vorlagenIds: {  }
 -
@@ -1240,6 +1320,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1253,6 +1334,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1266,6 +1348,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1279,6 +1362,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1292,6 +1376,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1305,6 +1390,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1318,6 +1404,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1331,6 +1418,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1344,6 +1432,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1357,6 +1446,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1370,6 +1460,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1383,6 +1474,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1396,6 +1488,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1409,6 +1502,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1422,6 +1516,7 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }
 -
@@ -1435,5 +1530,6 @@
     disclosure: null
     hasDecision: false
     decision: null
+    decisionDocument: null
     antraegeIds: {  }
     vorlagenIds: {  }

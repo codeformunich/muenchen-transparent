@@ -14,6 +14,7 @@ class CalendarAgendaItem
     public ?string $disclosure = null; // Only for non-public agenda items
     public bool $hasDecision = false;
     public ?string $decision = null; // For public agenda items
+    public ?DokumentLink $decisionDocument = null;
 
     /** @var int[] */
     public array $antraegeIds = [];
@@ -82,6 +83,14 @@ class CalendarAgendaItem
         }
         if (preg_match('/top\/' . $entry->id . '\/veroeffentlichung/siu', $html)) {
             $entry->hasDisclosure = true;
+        }
+
+        if (preg_match('/<a class="downloadlink" href="[.\/]*(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $html, $match)) {
+            $entry->decisionDocument = new DokumentLink();
+            $entry->decisionDocument->filename = $match['filename'];
+            $entry->decisionDocument->title = $match['title'];
+            $entry->decisionDocument->id = intval($match['id']);
+            $entry->decisionDocument->url = $match['url'];
         }
 
         preg_match_all('/antrag\/detail\/(?<id>\d+)[^\d]/siu', $html, $matches);
