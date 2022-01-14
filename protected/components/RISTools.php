@@ -443,35 +443,6 @@ class RISTools
     }
 
     /**
-     * @param string[] $arr
-     * @return string[]
-     */
-    public static function makeArrValuesUnique($arr)
-    {
-        $val_count = [];
-        foreach ($arr as $elem) {
-            if (isset($val_count[$elem])) {
-                $val_count[$elem]++;
-            } else {
-                $val_count[$elem] = 1;
-            }
-        }
-        $vals_used = [];
-        foreach ($arr as $i => $elem) {
-            if ($val_count[$elem] == 1) {
-                continue;
-            }
-            if (isset($vals_used[$elem])) {
-                $vals_used[$elem]++;
-            } else {
-                $vals_used[$elem] = 1;
-            }
-            $arr[$i] = $elem . " (" . $vals_used[$elem] . ")";
-        }
-        return $arr;
-    }
-
-    /**
      * @param string $text_html
      * @return string
      */

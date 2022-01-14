@@ -3,14 +3,21 @@
 
 class StadtrechtParser
 {
+    private CurlBasedDownloader $curlBasedDownloader;
+
+    public function __construct(?CurlBasedDownloader $curlBasedDownloader = null)
+    {
+        $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
+    }
+
     public function parseIndex()
     {
         $all_docs = [];
-        $index    = ris_download_string("http://www.muenchen.info/dir/recht/alph_portal.html");
+        $index = $this->curlBasedDownloader->loadUrl("https://www.muenchen.info/dir/recht/alph_portal.html");
         $lines    = explode("\n", $index);
         foreach ($lines as $line) {
             if (preg_match("/<td\><a href=\"(\S+)\.htm\" target=\"_blank\">([\S ]+)<\/a><\/td>/i", $line, $matches)) {
-                $url_base = "http://www.muenchen.info/dir/recht/" . $matches[1];
+                $url_base = "https://www.muenchen.info/dir/recht/" . $matches[1];
                 $titel    = $matches[2];
                 $id       = preg_replace("/\S+\/(\S+)/", "$1", $matches[1]);
                 array_push($all_docs, [$url_base, trim($titel), $id]);
@@ -34,7 +41,7 @@ class StadtrechtParser
         $css   = "";
 
         for ($seite = 1; $seite <= $seiten; $seite++) {
-            $document = ris_download_string($url_base . "/css/" . $id . "_" . $seite . ".htm");
+            $document = $this->curlBasedDownloader->loadUrl($url_base . "/css/" . $id . "_" . $seite . ".htm");
 
             // workaround for https://bugs.php.net/bug.php?id=61484
             ini_set('mbstring.substitute_character', "none");
@@ -63,7 +70,8 @@ class StadtrechtParser
 
         }
 
-        $titel = html_entity_decode($titel, ENT_COMPAT, "UTF-8");;
+        $titel = html_entity_decode($titel, ENT_COMPAT, "UTF-8");
+        $titel = iconv("UTF-8", "UTF-8//IGNORE", $titel);
 
         /** @var Rechtsdokument $rechtsdokument */
         if ($id > 0) $rechtsdokument = Rechtsdokument::model()->findByAttributes(["id" => $id]);
