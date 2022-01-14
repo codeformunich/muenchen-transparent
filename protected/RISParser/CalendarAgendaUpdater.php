@@ -152,9 +152,9 @@ class CalendarAgendaUpdater
 
         $existingDocument = Dokument::model()->findByAttributes(["id" => $newItem->decisionDocument->id]);
         if ($existingDocument) {
-            if ($existingDocument->tagesordnungspunkt_id !== $newItem->id) {
+            if (intval($existingDocument->tagesordnungspunkt_id) !== intval($top->id)) {
                 $changes .= "Beschlussdokument " . $existingDocument->id . ": Zuordnung beheben\n";
-                $existingDocument->tagesordnungspunkt_id = $newItem->id;
+                $existingDocument->tagesordnungspunkt_id = $top->id;
                 $existingDocument->save();
             }
             return $changes;

@@ -632,7 +632,6 @@ class IndexController extends RISBaseController
                 $filter_query->addTag($filter_query->getKey());
             }
 
-            /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
             $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
             $hl->setSimplePrefix('<b>');

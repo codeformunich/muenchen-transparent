@@ -124,7 +124,11 @@ function zeile_anzeigen($feld, $name, $callback)
                     $geheimer_teil = true;
                     echo "</ol><h3>Nicht-Öffentlicher Teil</h3><ol style='list-style-type: none;'>";
                 }
-                $name = $ergebnis->getTopNo() . ": " . $ergebnis->getName(true);
+                if ($ergebnis->getTopNo()) {
+                    $name = $ergebnis->getTopNo() . ": " . $ergebnis->getName(true);
+                } else {
+                    $name = $ergebnis->getName(true);
+                }
                 echo "<li style='margin-bottom: 7px;'>";
                 if ($ergebnis->top_ueberschrift) echo "<strong>";
                 echo CHtml::encode(strip_tags($name));

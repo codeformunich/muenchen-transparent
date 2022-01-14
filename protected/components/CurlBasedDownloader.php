@@ -22,10 +22,14 @@ class CurlBasedDownloader
         static::$instance = $instance;
     }
 
-    public function loadUrl(string $url): string
+    public function loadUrl(string $url, int $retries = 3, int $courtesyWait = 200000): string
     {
         if (defined("IN_TEST_MODE")) {
             return '';
+        }
+
+        if ($courtesyWait > 0) {
+            usleep($courtesyWait);
         }
 
         $ch = curl_init();
@@ -40,6 +44,16 @@ class CurlBasedDownloader
         //curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         $text = curl_exec($ch);
         curl_close($ch);
+
+        if ($text === false) {
+            if ($retries > 0) {
+                echo "Dowload failed. Retrying in 30 seconds\n";
+                sleep(30);
+                return $this->loadUrl($url, $retries - 1, $courtesyWait);
+            } else {
+                throw new \Exception('Could not download URL: ' . $url);
+            }
+        }
 
         return $text;
     }
