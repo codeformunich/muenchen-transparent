@@ -217,7 +217,7 @@ class TerminParser extends RISParser
     {
         echo "Updates: Stadtratstermin\n";
 
-        for ($i = -3; $i >= 0; $i++) {
+        for ($i = -6; $i <= 3; $i++) {
             $month = (new DateTime())->modify($i . ' month');
             $this->parseMonth(intval($month->format('Y')), intval($month->format('m')));
         }

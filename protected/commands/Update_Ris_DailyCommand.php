@@ -59,7 +59,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
             RISTools::report_ris_parser_error("RIS Exception StadträtInnen", print_r($e, true));
         }
 
-
+        /*
         try {
             $parser = new BATerminParser();
             $parser->parseUpdate();
@@ -88,12 +88,12 @@ class Update_Ris_DailyCommand extends CConsoleCommand
         } catch (Exception $e) {
             RISTools::report_ris_parser_error("RIS Exception BA-Anträge", print_r($e, true));
         }
+        */
 
 
         RISMetadaten::setzeLetzteAktualisierung(date("Y-m-d H:i:s"));
         RISMetadaten::recalcStats();
 
         echo "Done: " . date("Y-m-d H:i:s") . "\n";
-
     }
 }

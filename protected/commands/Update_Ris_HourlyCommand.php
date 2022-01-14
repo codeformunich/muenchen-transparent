@@ -8,17 +8,6 @@ class Update_Ris_HourlyCommand extends CConsoleCommand
     {
         echo "Gestartet: " . date("Y-m-d H:i:s") . "\n";
 
-
-        try {
-            $parser = new ReferentInnenParser();
-            $parser->parseQuickUpdate();
-
-            echo "Done ReferentInnen: " . date("Y-m-d H:i:s") . "\n";
-        } catch (Exception $e) {
-            RISTools::report_ris_parser_error("RIS Exception ReferentIn", print_r($e, true));
-        }
-
-
         try {
             $parser = new TerminParser();
             $parser->parseQuickUpdate();
@@ -59,7 +48,7 @@ class Update_Ris_HourlyCommand extends CConsoleCommand
             RISTools::report_ris_parser_error("RIS Exception StadträtInnen", print_r($e, true));
         }
 
-
+        /*
         try {
             $parser = new BATerminParser();
             $parser->parseQuickUpdate();
@@ -88,6 +77,7 @@ class Update_Ris_HourlyCommand extends CConsoleCommand
         } catch (Exception $e) {
             RISTools::report_ris_parser_error("RIS Exception BA-Anträge", print_r($e, true));
         }
+        */
 
 
         RISMetadaten::setzeLetzteAktualisierung(date("Y-m-d H:i:s"));
