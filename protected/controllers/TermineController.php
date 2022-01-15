@@ -1,13 +1,15 @@
 <?php
 
+use JetBrains\PhpStorm\ArrayShape;
+
 class TermineController extends RISBaseController
 {
 
     /**
      * @var Termin[] $appointments
-     * @return array
      */
-    private function getFullcalendarStruct($appointments)
+    #[ArrayShape(["has_weekend" => "bool", "data" => "array"])]
+    private function getFullcalendarStruct(array $appointments): array
     {
         $appointments_data = Termin::groupAppointments($appointments);
         $jsdata            = [];
@@ -17,7 +19,7 @@ class TermineController extends RISBaseController
                 "title"    => str_replace("Ausschuss für ", "", implode(", ", array_keys($appointment["gremien"]))),
                 "start"    => str_replace(" ", "T", $appointment["datum_iso"]),
                 "url"      => $appointment["link"],
-                "abgesagt" => $appointment["abgesagt"],
+                "canceled" => $appointment["abgesagt"],
             ];
             $jsdata[] = $d;
             $weekday  = date("N", $appointment["datum_ts"]);
@@ -32,33 +34,22 @@ class TermineController extends RISBaseController
     }
 
 
-    /**
-     * @param int $year
-     * @param int $month
-     * @param int $margin_days
-     * @return array
-     */
-    private function getFullCalendarStructByMonth($year, $month, $margin_days = 7)
+    #[ArrayShape(["has_weekend" => "bool", "data" => "array"])]
+    private function getFullCalendarStructByMonth(int $year, int $month, int $margin_days = 7): array
     {
-        $ts_start   = mktime(0, 0, 0, $month, 1, $year);
-        $monat_tage = date("t", $ts_start);
-        $ts_end     = mktime(0, 0, 0, $month, $monat_tage, $year);
-
-        $margin_start = date("Y-m-d", $ts_start - $margin_days * 24 * 3600);
-        $margin_end   = date("Y-m-d", $ts_end + $margin_days * 24 * 3600);
+        $dateFrom = (new \DateTime())->setTime(0, 0, 0)->setDate($year, $month, 1)->modify('-' . $margin_days . ' days');
+        $dateTo = (new \DateTime())->setTime(0, 0, 0)->setDate($year, $month, 1)->modify('+1 month')->modify('+' . $margin_days . ' days');
 
         /** @var Termin[] $termine_monat */
-        $termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $margin_start, $margin_end, true)->findAll();
-        $fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
-        return $fullcalendar_struct;
+        $termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $dateFrom, $dateTo, true)->findAll();
+        return $this->getFullcalendarStruct($termine_monat);
     }
 
-    /**
-     * @param string $start
-     * @param string $end
-     */
-    public function actionFullCalendarFeed($start, $end)
+    public function actionFullCalendarFeed(string $start, string $end): void
     {
+        $start = new DateTime($start);
+        $end = new DateTime($end);
+
         /** @var Termin[] $termine_monat */
         $termine_monat       = Termin::model()->termine_stadtrat_zeitraum(null, $start, $end, true)->findAll();
         $fullcalendar_struct = $this->getFullcalendarStruct($termine_monat);
@@ -68,9 +59,6 @@ class TermineController extends RISBaseController
     }
 
 
-    /**
-     *
-     */
     public function actionIndex()
     {
         $this->top_menu      = "termine";
@@ -78,8 +66,10 @@ class TermineController extends RISBaseController
         $tage_zukunft       = 30;
         $tage_vergangenheit = 30;
 
-        $termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time()), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll();
-        $termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(null, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
+        $dateNow = (new \DateTime())->setTime(0, 0, 0);
+
+        $termine_zukunft       = Termin::model()->termine_stadtrat_zeitraum(null, $dateNow, (clone $dateNow)->modify('+24 days'), true)->findAll();
+        $termine_vergangenheit = Termin::model()->termine_stadtrat_zeitraum(null, (clone $dateNow)->modify('-24 days'), $dateNow, false)->findAll();
         $termin_dokumente      = Termin::model()->neueste_str_protokolle(0, date("Y-m-d 00:00:00", time() - 60 * 24 * 3600), date("Y-m-d 00:00:00", time()), false)->findAll();
         /** @var Termin[] $termine_zukunft */
         /** @var Termin[] $termine_vergangenheit */
@@ -87,7 +77,7 @@ class TermineController extends RISBaseController
         $gruppiert_zukunft       = Termin::groupAppointments($termine_zukunft);
         $gruppiert_vergangenheit = Termin::groupAppointments($termine_vergangenheit);
 
-        $fullcalendar_struct = $this->getFullCalendarStructByMonth(date("Y"), date("m"));
+        $fullcalendar_struct = $this->getFullCalendarStructByMonth(intval(date("Y")), intval(date("m")));
 
         $this->render("index", [
             "termine_zukunft"       => $gruppiert_zukunft,
@@ -99,12 +89,9 @@ class TermineController extends RISBaseController
         ]);
     }
 
-    /**
-     * @param int $termin_id
-     */
-    public function actionAnzeigen($termin_id)
+    public function actionAnzeigen(string $termin_id): void
     {
-        $termin_id = IntVal($termin_id);
+        $termin_id = intval($termin_id);
 
         $this->top_menu = "termine";
 
@@ -169,9 +156,7 @@ class TermineController extends RISBaseController
         ]);
     }
 
-    /**
-     */
-    public function actionBaZukunft()
+    public function actionBaZukunft(): void
     {
         $sql = Yii::app()->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
@@ -180,9 +165,8 @@ class TermineController extends RISBaseController
             "termine" => $termine
         ]);
     }
-    /**
-     */
-    public function actionBaZukunftCsv()
+
+    public function actionBaZukunftCsv(): void
     {
         $sql = Yii::app()->db->createCommand();
         $sql->select('a.*, b.name')->from('termine a')->join('gremien b', 'a.gremium_id = b.id')->where('b.ba_nr > 0')->andWhere('b.name LIKE "%Voll%"')->andWhere("a.termin >= CURRENT_DATE()")->order("termin");
@@ -192,7 +176,7 @@ class TermineController extends RISBaseController
         ]);
     }
 
-    public function actionBaTermineAlle($ba_nr)
+    public function actionBaTermineAlle($ba_nr): void
     {
         /** @var Termin[] $termine */
         $termine    = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr], ["order" => "termin DESC"]);
@@ -209,6 +193,4 @@ class TermineController extends RISBaseController
             "termine" => $termin_arr,
         ]);
     }
-
-
 }

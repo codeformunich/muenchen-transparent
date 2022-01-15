@@ -45,7 +45,7 @@
 
     <?php
     if ($this->load_mediaelement) echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
-    if ($this->load_calendar    ) echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
+    if ($this->load_calendar    ) echo '<link rel="stylesheet" href="/fullcalendar/main.min.css">';
     if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
     if ($this->load_leaflet     ) echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
 
@@ -71,9 +71,9 @@
     ?>
 
     <?php if ($this->load_calendar) { ?>
-        <script src="/bower/moment/min/moment-with-locales.min.js"></script>
-        <script src="/bower/fullcalendar/dist/fullcalendar.min.js"></script>
-        <script src="/bower/fullcalendar/dist/lang/de.js"></script>
+        <!--<script src="/fullcalendar/moment-with-locales.min.js"></script>-->
+        <script src="/fullcalendar/main.min.js"></script>
+        <script src="/fullcalendar/locales/de.js"></script>
     <?php } ?>
 
     <?php if ($this->load_pdf_js) { ?>

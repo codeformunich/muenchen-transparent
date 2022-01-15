@@ -1469,8 +1469,19 @@ a.tooltip_link:visited {
 }
 
 #calendar {
-  .abgesagt {
-    text-decoration: line-through;
+  .fc-event-time {
+    flex-basis: 30px;
+    flex-shrink: 0;
+  }
+  .fc-event-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .canceled {
+    opacity: 0.7;
+    .fc-event-title, .fc-event-time {
+      text-decoration: line-through;
+    }
   }
 }
 

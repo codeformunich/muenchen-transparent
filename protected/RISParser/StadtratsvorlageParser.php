@@ -218,7 +218,7 @@ class StadtratsvorlageParser extends RISParser
 
     public function parseQuickUpdate(): void
     {
-        $lastMonth = (new DateTime())->modify('1 month');
+        $lastMonth = (new DateTime())->modify('-1 month');
         $this->parseMonth(intval($lastMonth->format('Y')), intval($lastMonth->format('m')));
 
         $month = new DateTime();

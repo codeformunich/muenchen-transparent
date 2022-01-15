@@ -789,6 +789,7 @@ class IndexController extends RISBaseController
      */
     public function actionBa($ba_nr, $datum_max = "")
     {
+        $ba_nr = intval($ba_nr);
         $this->top_menu = "ba";
 
         $tage_zukunft       = 60;
@@ -796,7 +797,9 @@ class IndexController extends RISBaseController
 
         $antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
-        $termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll(['order' => 'termin DESC']);
+        $dateTo = (new \DateTime())->setTime(0, 0, 0);
+        $dateFrom = (clone $dateTo)->modify('-24 days');
+        $termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, $dateFrom, $dateTo, true)->findAll(['order' => 'termin DESC']);
         $termin_dokumente = Termin::model()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
         $termine          = Termin::groupAppointments($termine);
 

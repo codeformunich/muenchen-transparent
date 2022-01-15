@@ -185,22 +185,14 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         return RIS_BASE_URL . "sitzung/detail/" . $this->id;
     }
 
-
-    /**
-     * @param null|int $ba_nr
-     * @param string $zeit_von
-     * @param string $zeit_bis
-     * @param bool $aufsteigend
-     * @param int $limit
-     * @return $this
-     */
-    public function termine_stadtrat_zeitraum($ba_nr, $zeit_von, $zeit_bis, $aufsteigend = true, $limit = 0)
+    public function termine_stadtrat_zeitraum(?int $ba_nr, \DateTime $dateFrom, \DateTime $dateTo, bool $asc = true, int $limit = 0)
     {
         $ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
         $params = [
             'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin.typ = ' . IntVal(Termin::TYP_AUTO) .
-                ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
-            'order'     => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
+                ' AND termin >= "' . addslashes($dateFrom->format('Y-m-d')) . ' 00:00:00"' .
+                ' AND termin <= "' . addslashes($dateTo->format('Y-m-d')) . ' 23:59:59"',
+            'order'     => 'termin ' . ($asc ? "ASC" : "DESC"),
             'with'      => ["gremium"],
             'alias'     => 'termin'
         ];
