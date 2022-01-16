@@ -202,41 +202,27 @@ class Dokument extends CActiveRecord implements IRISItem
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
     }
 
-    /**
-     * @return string
-     */
-    public function getLinkZumOrginal()
+    public function getLinkZumOrginal(): string
     {
-        return RIS_URL_PREFIX . 'dokument/v/' . $this->url;
+        return RIS_PDF_PREFIX . $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getDownloadLink()
+    public function getDownloadLink(): string
     {
         return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]) . '/datei';
     }
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Dokument";
     }
 
-    /**
-     * @param bool $langfassung
-     * @return string
-     */
-    public function getName($langfassung = false)
+    public function getName(bool $langfassung = false): string
     {
         $name = RISTools::korrigiereDokumentenTitel($this->name);
         $name_titel = RISTools::korrigiereDokumentenTitel($this->name_title);
@@ -268,10 +254,7 @@ class Dokument extends CActiveRecord implements IRISItem
         return $this->id . ' - ' . CHtml::encode($this->getName()) . '.pdf';
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         $ts = RISTools::date_iso2timestamp($this->datum);
         if ($ts > DOCUMENT_DATE_ACCURATE_SINCE || $this->datum_dokument == 0) return $this->datum;

@@ -76,28 +76,19 @@ class Fraktion extends CActiveRecord implements IRISItem
         ];
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         if ($this->id < 0) return "#";
         $strs = $this->stadtraetInnenFraktionen;
         return RIS_BASE_URL . "ris_fraktionen_detail.jsp?risid=" . $this->id . "&periodeid=" . $strs[0]->wahlperiode;
     }
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Fraktion";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         $name = RISTools::normalizeTitle($this->name);
         if ($name == "&nbsp;" || trim($name) == "" || trim($name) === 'Parteifrei') return "keine Angabe";
@@ -114,10 +105,7 @@ class Fraktion extends CActiveRecord implements IRISItem
         return $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return "0000-00-00 00:00:00";
     }

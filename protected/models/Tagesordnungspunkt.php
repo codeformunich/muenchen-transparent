@@ -168,28 +168,18 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
         }
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         if ($this->antrag) return $this->antrag->getLink($add_params);
         return $this->sitzungstermin->getLink($add_params);
     }
 
-
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Stadtratsbeschluss";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         if ($kurzfassung) {
             $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
@@ -209,10 +199,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
         return $this->dokumente;
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->datum_letzte_aenderung;
     }

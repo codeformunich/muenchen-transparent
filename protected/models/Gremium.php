@@ -103,29 +103,19 @@ class Gremium extends CActiveRecord implements IRISItem
 
     }
 
-
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("gremium/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         if ($this->ba_nr > 0) return "BA-Gremium";
         else return "Stadtratsgremium";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         $name = $this->name;
         if ($kurzfassung) {
@@ -137,16 +127,13 @@ class Gremium extends CActiveRecord implements IRISItem
         return $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->datum_letzte_aenderung;
     }
 
-    public function getBaNr()
+    public function getBaNr(): int
     {
-        return $this->ba_nr == null ? 0 : $this->ba_nr;
+        return $this->ba_nr === null ? 0 : intval($this->ba_nr);
     }
 }

@@ -119,25 +119,19 @@ class RISAenderung extends CActiveRecord
             case RISAenderung::$TYP_BA_ANTRAG:
             case RISAenderung::$TYP_BA_INITIATIVE:
                 return Antrag::model()->findByPk($this->ris_id);
-                break;
             case RISAenderung::$TYP_BA_GREMIUM:
             case RISAenderung::$TYP_STADTRAT_GREMIUM:
                 return Gremium::model()->findByPk($this->ris_id);
-                break;
             case RISAenderung::$TYP_STADTRAT_TERMIN:
             case RISAenderung::$TYP_BA_TERMIN:
                 return Termin::model()->findByPk($this->ris_id);
-                break;
             case RISAenderung::$TYP_BA_MITGLIED:
             case RISAenderung::$TYP_STADTRAETIN:
                 return StadtraetIn::model()->findByPk($this->ris_id);
-                break;
             case RISAenderung::$TYP_RATHAUSUMSCHAU:
                 return null; // @TODO
-                break;
             case RISAenderung::$TYP_STADTRAT_FRAKTION:
                 return null; // @TODO
-                break;
             default:
                 return null;
         }

@@ -137,30 +137,21 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("termine/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         if ($this->ba_nr > 0) return "BA-Termin";
         else return "Stadtratstermin";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
-        if ($this->typ == static::TYP_BUERGERVERSAMMLUNG) return "BürgerInnenversammlung";
+        if ($this->typ == static::TYP_BUERGERVERSAMMLUNG) return "Bürger*innenversammlung";
 
         if (!$this->gremium) return "Unbekanntes Gremium";
 
@@ -168,19 +159,13 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         else return $this->gremium->name . " (" . $this->termin . ")";
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->datum_letzte_aenderung;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSourceLink()
+    public function getSourceLink(): string
     {
         return RIS_BASE_URL . "sitzung/detail/" . $this->id;
     }

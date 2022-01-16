@@ -111,18 +111,13 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         ];
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $this->getName()], $add_params));
     }
 
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Stadtratsmitglied";
     }
@@ -161,29 +156,19 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         }
     }
 
-    /**
-     * @return string
-     */
-    public function errateVorname()
+    public function errateVorname(): string
     {
         $this->errateNamen();
         return $this->vorname_erraten;
     }
 
-    /**
-     * @return string
-     */
-    public function errateNachname()
+    public function errateNachname(): string
     {
         $this->errateNamen();
         return $this->nachname_erraten;
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         if (mb_strpos($this->name, ",") > 0) {
             preg_match("/^(?<titel>([a-z]+\. )*)(?<name>.*)$/siu", $this->name, $matches);
@@ -232,19 +217,13 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return $personen;
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return "0000-00-00 00:00:00";
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSourceLink()
+    public function getSourceLink(): string
     {
         $istBAler = false;
         foreach ($this->stadtraetInnenFraktionen as $frakt) if ($frakt->fraktion->ba_nr > 0) $istBAler = true;
@@ -375,7 +354,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $solr   = RISSolrHelper::getSolrClient();
         $select = $solr->createSelect();
 
-        /** @var Solarium\QueryType\Select\Query\Component\DisMax $dismax */
         $dismax = $select->getDisMax();
         $dismax->setQueryParser('edismax');
         $dismax->setQueryFields("text text_ocr");
@@ -388,7 +366,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $select->setRows(50);
         $select->addSort('sort_datum', $select::SORT_DESC);
 
-        /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
         $hl = $select->getHighlighting();
         $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
         $hl->setSimplePrefix('<b>');

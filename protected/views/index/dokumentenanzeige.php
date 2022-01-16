@@ -41,7 +41,7 @@ if ($dokument->getRISItem()) {
 
         <?php // Rechter Bereich ?>
 
-        <li class="pdf-download-button <?php if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLinkZumOrginal()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print"></span> Druckansicht</a></li>
+        <li class="pdf-download-button <?php if(!$weitere) echo 'kein-slash-davor' ?>"><a href="<?= CHtml::encode($dokument->getLinkZumOrginal()) ?>" download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName()) ?>"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Druckansicht</a></li>
         <?php if ($weitere) { ?>
             <li class="dropdown weitere-dokumente kein-slash-davor">
 

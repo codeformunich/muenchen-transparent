@@ -359,25 +359,16 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         }
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("antraege/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
-    /**
-     * @return string
-     */
-    public function getSourceLink()
+    public function getSourceLink(): string
     {
         switch ($this->typ) {
             case Antrag::$TYP_BA_ANTRAG:
-                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
             case Antrag::$TYP_BA_INITIATIVE:
-                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $this->id;
             case Antrag::$TYP_STADTRAT_ANTRAG:
                 return RIS_URL_PREFIX . "antrag/detail/" . $this->id;
             case Antrag::$TYP_STADTRAT_VORLAGE:
@@ -386,18 +377,13 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         return "";
     }
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         $str = explode("|", Antrag::$TYPEN_ALLE[$this->typ]);
         return $str[0];
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         if ($kurzfassung) {
             $betreff = trim($this->betreff);
@@ -412,10 +398,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->datum_letzte_aenderung;
     }

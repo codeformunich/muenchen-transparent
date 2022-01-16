@@ -87,39 +87,26 @@ class Referat extends CActiveRecord implements IRISItem
         ];
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("themen/referat", array_merge(["id" => $this->id], $add_params));
     }
 
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Referat";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return "0000-00-00 00:00:00";
     }
-
 
     /**
      * @param string $name
@@ -165,7 +152,7 @@ class Referat extends CActiveRecord implements IRISItem
         return $this;
     }
 
-    public function getBaNr()
+    public function getBaNr(): int
     {
         return 0;
     }

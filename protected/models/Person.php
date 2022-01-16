@@ -124,26 +124,17 @@ class Person extends CActiveRecord implements IRISItem
         return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->getName(true);
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("personen/person", array_merge(["id" => $this->id, "name" => $this->name], $add_params));
     }
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Stadtratsmitglied";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         if ($kurzfassung) {
             if (in_array($this->id, [279])) return "Freiheitsrechte Transparenz Bürgerbeteiligung";
@@ -151,13 +142,8 @@ class Person extends CActiveRecord implements IRISItem
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return "0000-00-00 00:00:00";
     }
-
-
 }
