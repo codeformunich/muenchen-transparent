@@ -439,7 +439,7 @@ class Dokument extends CActiveRecord implements IRISItem
 
     public function getOriginalLink(): string
     {
-        return RIS_URL_PREFIX . $this->url;
+        return RIS_PDF_PREFIX . $this->id;
     }
 
     public function getLocalPath(): string
@@ -450,7 +450,7 @@ class Dokument extends CActiveRecord implements IRISItem
         return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
     }
 
-    private static $dokumente_cache = [];
+    private static array $dokumente_cache = [];
 
     public static function getDocumentBySolrId(string $id, bool $cached = false): ?Dokument
     {
