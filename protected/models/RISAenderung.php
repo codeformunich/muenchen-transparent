@@ -17,22 +17,21 @@
 class RISAenderung extends CActiveRecord
 {
 
-    public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
-    public static $TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
-    public static $TYP_STADTRAT_TERMIN = "stadtrat_termin";
-    public static $TYP_STADTRAT_GREMIUM = "stadtrat_gremium";
-    public static $TYP_STADTRAT_FRAKTION = "stadtrat_fraktion";
-    public static $TYP_STADTRAT_ERGEBNIS = "stadtrat_ergebnis";
-    public static $TYP_STADTRAETIN = "stadtraetIn";
-    public static $TYP_BA_ANTRAG = "ba_antrag";
-    public static $TYP_BA_INITIATIVE = "ba_initiative";
-    public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
-    public static $TYP_BA_TERMIN = "ba_termin";
-    public static $TYP_BA_GREMIUM = "ba_gremium";
-    public static $TYP_RATHAUSUMSCHAU = "rathausumschau";
-    public static $TYP_BA_MITGLIED = "ba_mitglied";
-    public static $TYP_BA_ERGEBNIS = "ba_ergebnis";
-    public static $TYPEN_ALLE = [
+    public const TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
+    public const TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
+    public const TYP_STADTRAT_TERMIN = "stadtrat_termin";
+    public const TYP_STADTRAT_GREMIUM = "stadtrat_gremium";
+    public const TYP_STADTRAT_FRAKTION = "stadtrat_fraktion";
+    public const TYP_STADTRAT_ERGEBNIS = "stadtrat_ergebnis";
+    public const TYP_STADTRAETIN = "stadtraetIn";
+    public const TYP_BA_ANTRAG = "ba_antrag";
+    public const TYP_BA_INITIATIVE = "ba_initiative";
+    public const TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
+    public const TYP_BA_TERMIN = "ba_termin";
+    public const TYP_BA_GREMIUM = "ba_gremium";
+    public const TYP_BA_MITGLIED = "ba_mitglied";
+    public const TYP_BA_ERGEBNIS = "ba_ergebnis";
+    public const TYPEN_ALLE = [
         "stadtrat_antrag"   => "stadtratsantrag",
         "stadtrat_vorlage"  => "Stadtratsvorlage",
         "stadtrat_termin"   => "Stadtratstermin",
@@ -46,7 +45,6 @@ class RISAenderung extends CActiveRecord
         "ba_gremium"        => "BA-Gremium",
         "ba_mitglied"       => "BA-Mitglied",
         "ba_ergebnis"       => "BA-Tagesordnung",
-        "rathausumschau"    => "Rathausumschau",
     ];
 
     /**
@@ -114,23 +112,21 @@ class RISAenderung extends CActiveRecord
     public function getRISItem()
     {
         switch ($this->typ) {
-            case RISAenderung::$TYP_STADTRAT_VORLAGE:
-            case RISAenderung::$TYP_STADTRAT_ANTRAG:
-            case RISAenderung::$TYP_BA_ANTRAG:
-            case RISAenderung::$TYP_BA_INITIATIVE:
+            case RISAenderung::TYP_STADTRAT_VORLAGE:
+            case RISAenderung::TYP_STADTRAT_ANTRAG:
+            case RISAenderung::TYP_BA_ANTRAG:
+            case RISAenderung::TYP_BA_INITIATIVE:
                 return Antrag::model()->findByPk($this->ris_id);
-            case RISAenderung::$TYP_BA_GREMIUM:
-            case RISAenderung::$TYP_STADTRAT_GREMIUM:
+            case RISAenderung::TYP_BA_GREMIUM:
+            case RISAenderung::TYP_STADTRAT_GREMIUM:
                 return Gremium::model()->findByPk($this->ris_id);
-            case RISAenderung::$TYP_STADTRAT_TERMIN:
-            case RISAenderung::$TYP_BA_TERMIN:
+            case RISAenderung::TYP_STADTRAT_TERMIN:
+            case RISAenderung::TYP_BA_TERMIN:
                 return Termin::model()->findByPk($this->ris_id);
-            case RISAenderung::$TYP_BA_MITGLIED:
-            case RISAenderung::$TYP_STADTRAETIN:
+            case RISAenderung::TYP_BA_MITGLIED:
+            case RISAenderung::TYP_STADTRAETIN:
                 return StadtraetIn::model()->findByPk($this->ris_id);
-            case RISAenderung::$TYP_RATHAUSUMSCHAU:
-                return null; // @TODO
-            case RISAenderung::$TYP_STADTRAT_FRAKTION:
+            case RISAenderung::TYP_STADTRAT_FRAKTION:
                 return null; // @TODO
             default:
                 return null;

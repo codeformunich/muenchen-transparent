@@ -100,6 +100,11 @@ class BrowserBasedDowloader
             $this->clickJs('.colors_suche form button[type=submit]');
             $this->page->waitForReload();
 
+            $innerText = $this->page->evaluate('document.querySelector(".colors_suche").innerText')->getReturnValue();
+            if (str_contains($innerText, 'Es wurden keine Einträge gefunden!')) {
+                return '';
+            }
+
             $goon = true;
             for ($i = 0; $i < 100 && $goon; $i++) {
                 $page = intval($this->getInnerHtml('.colors_suche .btn-pagelink[disabled] span'));

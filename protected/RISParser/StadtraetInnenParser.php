@@ -139,7 +139,7 @@ class StadtraetInnenParser extends RISParser
             $aend              = new RISAenderung();
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = null;
-            $aend->typ         = RISAenderung::$TYP_STADTRAETIN;
+            $aend->typ         = RISAenderung::TYP_STADTRAETIN;
             $aend->datum       = new CDbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();

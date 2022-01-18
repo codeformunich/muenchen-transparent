@@ -145,7 +145,7 @@ class BAGremienParser extends RISParser
             $aend              = new RISAenderung();
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = null;
-            $aend->typ         = RISAenderung::$TYP_BA_GREMIUM;
+            $aend->typ         = RISAenderung::TYP_BA_GREMIUM;
             $aend->datum       = new CDbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();

@@ -46,7 +46,7 @@ class BAAntragParser extends RISParser
 
         $aenderungen = "";
 
-        /** @var Antrag $alter_eintrag */
+        /** @var Antrag|null $alter_eintrag */
         $alter_eintrag = Antrag::model()->findByPk($id);
         $changed       = true;
         if ($alter_eintrag) {
@@ -92,17 +92,17 @@ class BAAntragParser extends RISParser
             $aenderungen .= Dokument::create_if_necessary(Dokument::TYP_STADTRAT_ANTRAG, $daten, $dok);
         }
 
-        if ($aenderungen != "") {
+        if ($aenderungen !== "") {
             $aend              = new RISAenderung();
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
-            $aend->typ         = ($daten->typ == Antrag::TYP_BA_ANTRAG ? RISAenderung::$TYP_BA_ANTRAG : RISAenderung::$TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG);
+            $aend->typ         = ($daten->typ == Antrag::TYP_BA_ANTRAG ? RISAenderung::TYP_BA_ANTRAG : RISAenderung::TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG);
             $aend->datum       = new CDbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
 
             /** @var Antrag $antrag */
-            $antrag                         = Antrag::model()->findByPk($id);
+            $antrag = Antrag::model()->findByPk($id);
             $antrag->datum_letzte_aenderung = new CDbExpression('NOW()'); // Auch bei neuen Dokumenten
             $antrag->save();
             $antrag->rebuildVorgaenge();

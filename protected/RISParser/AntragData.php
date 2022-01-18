@@ -33,7 +33,7 @@ class AntragData
     /** @var StadtratsantragErgebnis[] */
     public array $ergebnisse;
 
-    public static function parseFromHtml(string $html): ?self
+    public static function parseFromHtml(string $html, ?int $idFallback = null): ?self
     {
         if (!preg_match('/<section class="card">.*<div><h2>Betreff<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<title>[^<]*)<\/div>/siuU', $html, $match)) {
             throw new ParsingException('Not found: title');
@@ -41,23 +41,28 @@ class AntragData
         $entry = new self();
         $entry->title = $match['title'];
 
-        if (!preg_match('/<h1[^>]*>.*(StR|BA)-(Antrag|Anfrage) (?<nummer>[^<]*) <span[^>]*><span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
+        if (!preg_match('/<h1[^>]*>.*(StR|BA)-(Antrag|Anfrage|Initiative) (?<nummer>[^<]*) <span[^>]*><span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
             throw new ParsingException('Not found: antragsnummer / status');
         }
         $entry->antragsnummer = str_replace(' ', '', $match['nummer']);
         $entry->status = $match['status'];
 
-        if (!preg_match('/<a[^>]*href="\.\/(?<id>\d+)\?/siu', $html, $match)) {
+        if (preg_match('/<a[^>]*href="\.\/(?<id>\d+)\?/siu', $html, $match)) {
+            $entry->id = intval($match['id']);
+        } elseif (preg_match('/<a[^>]*href="\.\/bavorgaenge\/(?<id>\d+)"/siu', $html, $match)) {
+            $entry->id = intval($match['id']);
+        } elseif ($idFallback) {
+            $entry->id = $idFallback;
+        } else {
             throw new ParsingException('Not found: id');
         }
-        $entry->id = intval($match['id']);
 
         if (!preg_match('/<div[^>]*>Wahlperiode:<\/div>\s*<div[^>]*>(?<wahlperiode>\d+-\d+)<\/div>/siuU', $html, $match)) {
             throw new ParsingException('Not found: wahlperiode');
         }
         $entry->wahlperiode = $match['wahlperiode'];
 
-        if (preg_match('/Bezirksausschuss<\/span>:<\/div>\s*<div[^>]*>\s*<a[^>]*gremium\/detail\/(?<baId>\d+)[^\d][^>]*>(?<baNr>\d+ -)/siuU', $html, $match)) {
+        if (preg_match('/Bezirksausschuss(<\/span>)?:<\/div>\s*<div[^>]*>\s*<a[^>]*gremium\/detail\/(?<baId>\d+)[^\d][^>]*>(?<baNr>\d+ -)/siuU', $html, $match)) {
             $entry->baId = intval($match['baId']);
             $entry->baNr = intval($match['baNr']);
         }
@@ -68,6 +73,8 @@ class AntragData
             $entry->gestelltAm = null;
         }
         if (preg_match('/<div[^>]*>Registriert am:<\/div>\s*<div[^>]*>(?<date>\d+\.\d+\.\d+)<\/div>/siuU', $html, $match)) {
+            $entry->registriertAm = (\DateTime::createFromFormat('d.m.Y', $match['date']))->setTime(0, 0, 0);
+        } elseif (preg_match('/<div[^>]*>TO aufgenommen am:<\/div>\s*<div[^>]*>(?<date>\d+\.\d+\.\d+)<\/div>/siuU', $html, $match)) {
             $entry->registriertAm = (\DateTime::createFromFormat('d.m.Y', $match['date']))->setTime(0, 0, 0);
         } else {
             $entry->registriertAm = null;

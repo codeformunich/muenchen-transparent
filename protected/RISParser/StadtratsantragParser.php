@@ -103,7 +103,7 @@ class StadtratsantragParser extends RISParser
             $aend              = new RISAenderung();
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
-            $aend->typ         = RISAenderung::$TYP_STADTRAT_ANTRAG;
+            $aend->typ         = RISAenderung::TYP_STADTRAT_ANTRAG;
             $aend->datum       = new CDbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();

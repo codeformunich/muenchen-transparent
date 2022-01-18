@@ -127,7 +127,7 @@ class StadtratsvorlageParser extends RISParser
                     $aend              = new RISAenderung();
                     $aend->ris_id      = $daten->id;
                     $aend->ba_nr       = NULL;
-                    $aend->typ         = RISAenderung::$TYP_STADTRAT_VORLAGE;
+                    $aend->typ         = RISAenderung::TYP_STADTRAT_VORLAGE;
                     $aend->datum       = new CDbExpression("NOW()");
                     $aend->aenderungen = $aenderungen;
                     $aend->save();
@@ -170,7 +170,7 @@ class StadtratsvorlageParser extends RISParser
             $aend              = new RISAenderung();
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = $daten->ba_nr;
-            $aend->typ         = RISAenderung::$TYP_STADTRAT_VORLAGE;
+            $aend->typ         = RISAenderung::TYP_STADTRAT_VORLAGE;
             $aend->datum       = new CDbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();

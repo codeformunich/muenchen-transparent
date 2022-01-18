@@ -114,7 +114,7 @@ class CalendarAgendaUpdater
                 $aend = new RISAenderung();
                 $aend->ris_id = $oldDataCopy->id;
                 $aend->ba_nr = null;
-                $aend->typ = RISAenderung::$TYP_STADTRAT_ERGEBNIS;
+                $aend->typ = RISAenderung::TYP_STADTRAT_ERGEBNIS;
                 $aend->datum = new CDbExpression("NOW()");
                 $aend->aenderungen = $agendaChanges;
                 $aend->save();
