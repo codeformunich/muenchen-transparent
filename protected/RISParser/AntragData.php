@@ -39,7 +39,7 @@ class AntragData
             throw new ParsingException('Not found: title');
         }
         $entry = new self();
-        $entry->title = $match['title'];
+        $entry->title = html_entity_decode($match['title'], ENT_COMPAT, 'UTF-8');
 
         if (!preg_match('/<h1[^>]*>.*(StR|BA)-(Antrag|Anfrage|Initiative) (?<nummer>[^<]*) <span[^>]*><span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
             throw new ParsingException('Not found: antragsnummer / status');
