@@ -444,7 +444,7 @@ class IndexController extends RISBaseController
                 $facet_option['count'] = $count;
 
                 if ($facet_field_name[0] == 'antrag_typ') {
-                    if (isset(Antrag::$TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
+                    if (isset(Antrag::TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::TYPEN_ALLE[$value])[1];
                     else if ($value == "stadtrat_termin") $facet_option['name'] = 'Stadtrats-Termin';
                     else if ($value == "ba_termin") $facet_option['name'] = 'BA-Termin';
                     else $facet_option['name'] = $value;

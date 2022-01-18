@@ -110,7 +110,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
      */
     public function wichtigstesRisItem()
     {
-        foreach ($this->antraege as $ant) if ($ant->typ == Antrag::$TYP_STADTRAT_VORLAGE) return $ant;
+        foreach ($this->antraege as $ant) if ($ant->typ == Antrag::TYP_STADTRAT_VORLAGE) return $ant;
         foreach ($this->antraege as $ant) return $ant;
 
         $items = $this->getRISItemsByDate();

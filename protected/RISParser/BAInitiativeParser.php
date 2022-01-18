@@ -20,7 +20,7 @@ class BAInitiativeParser extends RISParser
         $daten                         = new Antrag();
         $daten->id                     = $antrag_id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
-        $daten->typ                    = Antrag::$TYP_BA_INITIATIVE;
+        $daten->typ                    = Antrag::TYP_BA_INITIATIVE;
 
         $dokumente = [];
         //$ergebnisse = array();

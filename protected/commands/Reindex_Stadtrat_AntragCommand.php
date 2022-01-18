@@ -7,11 +7,11 @@ class Reindex_Stadtrat_AntragCommand extends CConsoleCommand
         if (count($args) == 0) die("./yii reindex_stadtrat_antrag [Antrags-ID|YYYY-MM|alle|ohnereferat]\n");
 
         $parser = new StadtratsantragParser();
-        if ($args[0] == "ohnereferat") {
+        if ($args[0] === "ohnereferat") {
             /** @var Antrag[] $antraege */
-            $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::$TYP_STADTRAT_ANTRAG, "referat_id" => null]);
+            $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::TYP_STADTRAT_ANTRAG, "referat_id" => null]);
             foreach ($antraege as $antrag) $parser->parse($antrag->id);
-        } elseif ($args[0] == "alle") {
+        } elseif ($args[0] === "alle") {
             $parser->parseAll();
         } elseif (preg_match('/^(?<year>\d{4})-(?<month>\d{2})$/', $args[0], $matches)) {
             $parser->parseMonth(intval($matches['year']), intval($matches['month']));

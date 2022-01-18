@@ -1,0 +1,24 @@
+id: 6466910
+antragsnummer: 20-26/B01694
+status: 'In Bearbeitung'
+baNr: 5
+baId: 214
+title: 'Umwandlung Pkw-Parkplatz zur Fahrradabstellfläche vor Kinderarztpraxis in der Kolumbusstr. 11'
+wahlperiode: 2020-2026
+gestelltAm: null
+registriertAm: '2021-02-09T00:00:00+01:00'
+bearbeitungsfrist: '2021-04-27T00:00:00+02:00'
+erledigtAm: '2021-04-16T00:00:00+02:00'
+art: 'Öffentlicher Vorgang'
+typ: BA-Antrag
+bearbeitungsart: 'laufende Verwaltung'
+referatId: 2
+referatName: Baureferat
+initiativeNamen: {  }
+gestelltVon: {  }
+dokumentLinks:
+    - { title: BVI_4.4, id: 6466931, url: /dokument/v/6466931, filename: BVI_4.4.pdf }
+    - { title: 'Erneuter Antrag BA 5 vom 22.09.2021', id: 6909421, url: /dokument/v/6909421, filename: 'Erneuter Antrag BA 5 vom 22.09.2021.pdf' }
+    - { title: 'Antwortschreiben vom 16.04.2021', id: 6585537, url: /dokument/v/6585537, filename: 'Antwortschreiben vom 16.04.2021.pdf' }
+ergebnisse:
+    - { sitzungId: 6162060, sitzungAm: '2021-05-20T00:00:00+02:00' }

@@ -9,7 +9,7 @@ class Reindex_BA_InitiativeCommand extends CConsoleCommand
         $parser = new BAInitiativeParser();
         if ($args[0] == "ohnereferat") {
             /** @var Antrag[] $antraege */
-            $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::$TYP_BA_INITIATIVE, "referat_id" => null]);
+            $antraege = Antrag::model()->findAllByAttributes(["typ" => Antrag::TYP_BA_INITIATIVE, "referat_id" => null]);
             foreach ($antraege as $antrag) $parser->parse($antrag->id);
         } elseif ($args[0] == "alle") {
             $parser->parseAll();

@@ -33,7 +33,7 @@ class StadtratsantragParserTest extends TestCase
         // This does not actually match the list in the file above, we only return something so the parser doesn't break
         $this->curlBasedDownloader
             ->method('loadUrl')
-            ->willReturn(file_get_contents(__DIR__ . '/data/StadtratsantragParser_Antrag1.html'));
+            ->willReturn(file_get_contents(__DIR__ . '/data/AntragParser_Stadtrat1.html'));
 
         $parsed = $this->parser->parseMonth(2021, 1);
 
@@ -54,7 +54,7 @@ class StadtratsantragParserTest extends TestCase
     {
         $this->curlBasedDownloader
             ->method('loadUrl')
-            ->willReturn(file_get_contents(__DIR__ . '/data/StadtratsantragParser_Antrag1.html'));
+            ->willReturn(file_get_contents(__DIR__ . '/data/AntragParser_Stadtrat1.html'));
 
         $antrag = $this->parser->parse(6842474);
         $this->assertSame('Bericht über die IAA-Mobility 2021', $antrag->betreff);

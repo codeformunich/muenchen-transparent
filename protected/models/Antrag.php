@@ -43,14 +43,13 @@
 class Antrag extends CActiveRecord implements IRISItemHasDocuments
 {
 
-    public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
-    public static $TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
-    public static $TYP_STADTRAT_VORLAGE_GEHEIM = "stadtrat_vorlage_geheim";
-    public static $TYP_BA_ANTRAG = "ba_antrag";
-    public static $TYP_BA_INITIATIVE = "ba_initiative";
-    public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
+    public const TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
+    public const TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
+    public const TYP_BA_ANTRAG = "ba_antrag";
+    public const TYP_BA_INITIATIVE = "ba_initiative";
+    public const TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
 
-    public static $TYPEN_ALLE = [
+    public const TYPEN_ALLE = [
         "stadtrat_antrag"         => "Stadtratsantrag|Stadtratsanträge",
         "stadtrat_vorlage"        => "Stadtratsvorlage|Stadtratsvorlagen",
         "ba_antrag"               => "BA-Antrag|BA-Anträge",
@@ -367,11 +366,11 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
     public function getSourceLink(): string
     {
         switch ($this->typ) {
-            case Antrag::$TYP_BA_ANTRAG:
-            case Antrag::$TYP_BA_INITIATIVE:
-            case Antrag::$TYP_STADTRAT_ANTRAG:
+            case Antrag::TYP_BA_ANTRAG:
+            case Antrag::TYP_BA_INITIATIVE:
+            case Antrag::TYP_STADTRAT_ANTRAG:
                 return RIS_URL_PREFIX . "antrag/detail/" . $this->id;
-            case Antrag::$TYP_STADTRAT_VORLAGE:
+            case Antrag::TYP_STADTRAT_VORLAGE:
                 return RIS_URL_PREFIX . "sitzungsvorlage/detail/" . $this->id;
         }
         return "";
@@ -379,7 +378,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
 
     public function getTypName(): string
     {
-        $str = explode("|", Antrag::$TYPEN_ALLE[$this->typ]);
+        $str = explode("|", Antrag::TYPEN_ALLE[$this->typ]);
         return $str[0];
     }
 

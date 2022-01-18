@@ -47,7 +47,7 @@ class StadtratsvorlageParser extends RISParser
         $daten = new Antrag();
         $daten->id = $id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
-        $daten->typ = Antrag::$TYP_STADTRAT_VORLAGE;
+        $daten->typ = Antrag::TYP_STADTRAT_VORLAGE;
         $daten->betreff = $parsed->title;
         $daten->status = $parsed->status;
         $daten->gestellt_von = "";
@@ -208,7 +208,7 @@ class StadtratsvorlageParser extends RISParser
         }
 
         $crit            = new CDbCriteria();
-        $crit->condition = "typ='" . addslashes(Antrag::$TYP_STADTRAT_VORLAGE) . "' AND status NOT IN ('Endgültiger Beschluss', 'abgeschlossen') AND gestellt_am > NOW() - INTERVAL 2 YEAR";
+        $crit->condition = "typ='" . addslashes(Antrag::TYP_STADTRAT_VORLAGE) . "' AND status NOT IN ('Endgültiger Beschluss', 'abgeschlossen') AND gestellt_am > NOW() - INTERVAL 2 YEAR";
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 
         /** @var array|Antrag[] $antraege */

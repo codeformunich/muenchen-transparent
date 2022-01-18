@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-class StadtratsantragData
+class AntragData
 {
     public int $id;
     public string $antragsnummer;
     public string $status;
+    public ?int $baNr = null;
+    public ?int $baId = null;
     public string $title;
     public string $wahlperiode;
     public ?\DateTime $gestelltAm;
@@ -39,7 +41,7 @@ class StadtratsantragData
         $entry = new self();
         $entry->title = $match['title'];
 
-        if (!preg_match('/<h1[^>]*>.*StR-(Antrag|Anfrage) (?<nummer>[^<]*) <span[^>]*><span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
+        if (!preg_match('/<h1[^>]*>.*(StR|BA)-(Antrag|Anfrage) (?<nummer>[^<]*) <span[^>]*><span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
             throw new ParsingException('Not found: antragsnummer / status');
         }
         $entry->antragsnummer = str_replace(' ', '', $match['nummer']);
@@ -54,6 +56,11 @@ class StadtratsantragData
             throw new ParsingException('Not found: wahlperiode');
         }
         $entry->wahlperiode = $match['wahlperiode'];
+
+        if (preg_match('/Bezirksausschuss<\/span>:<\/div>\s*<div[^>]*>\s*<a[^>]*gremium\/detail\/(?<baId>\d+)[^\d][^>]*>(?<baNr>\d+ -)/siuU', $html, $match)) {
+            $entry->baId = intval($match['baId']);
+            $entry->baNr = intval($match['baNr']);
+        }
 
         if (preg_match('/<div[^>]*>Gestellt am:<\/div>\s*<div[^>]*>(?<date>\d+\.\d+\.\d+)<\/div>/siuU', $html, $match)) {
             $entry->gestelltAm = (\DateTime::createFromFormat('d.m.Y', $match['date']))->setTime(0, 0, 0);

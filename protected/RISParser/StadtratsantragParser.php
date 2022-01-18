@@ -17,7 +17,7 @@ class StadtratsantragParser extends RISParser
 
         $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'antrag/detail/' . $id);
 
-        $parsed = StadtratsantragData::parseFromHtml($html);
+        $parsed = AntragData::parseFromHtml($html);
         if ($parsed === null) {
             return null;
         }
@@ -25,7 +25,7 @@ class StadtratsantragParser extends RISParser
         $daten = new Antrag();
         $daten->id = $id;
         $daten->datum_letzte_aenderung = new CDbExpression('NOW()');
-        $daten->typ = Antrag::$TYP_STADTRAT_ANTRAG;
+        $daten->typ = Antrag::TYP_STADTRAT_ANTRAG;
         $daten->referent = "";
         $daten->kurzinfo = "";
         $daten->initiatorInnen = implode(', ', $parsed->initiativeNamen);
@@ -138,10 +138,10 @@ class StadtratsantragParser extends RISParser
         }
 
         $crit            = new CDbCriteria();
-        $crit->condition = "typ='" . addslashes(Antrag::$TYP_STADTRAT_ANTRAG) . "' AND status != 'erledigt' AND gestellt_am > NOW() - INTERVAL 2 YEAR AND ((TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) < 14 AND TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) > -14) OR ((TO_DAYS(CURRENT_DATE()) - TO_DAYS(gestellt_am)) % 3) = 0)";
+        $crit->condition = "typ='" . addslashes(Antrag::TYP_STADTRAT_ANTRAG) . "' AND status != 'erledigt' AND gestellt_am > NOW() - INTERVAL 2 YEAR AND ((TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) < 14 AND TO_DAYS(bearbeitungsfrist)-TO_DAYS(CURRENT_DATE()) > -14) OR ((TO_DAYS(CURRENT_DATE()) - TO_DAYS(gestellt_am)) % 3) = 0)";
         if (count($loaded_ids) > 0) $crit->addNotInCondition("id", $loaded_ids);
 
-        /** @var array|Antrag[] $antraege */
+        /** @var Antrag[] $antraege */
         $antraege = Antrag::model()->findAll($crit);
         foreach ($antraege as $antrag) $this->parse($antrag->id);
     }
