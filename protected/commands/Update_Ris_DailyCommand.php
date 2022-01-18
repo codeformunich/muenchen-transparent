@@ -61,16 +61,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
         /*
         try {
-            $parser = new BATerminParser();
-            $parser->parseUpdate();
-
-            echo "Done BA Termine: " . date("Y-m-d H:i:s") . "\n";
-        } catch (Exception $e) {
-            RISTools::report_ris_parser_error("RIS Exception BA-Termine", print_r($e, true));
-        }
-
-
-        try {
             $parser = new BAInitiativeParser();
             $parser->parseUpdate();
 
@@ -78,7 +68,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
         } catch (Exception $e) {
             RISTools::report_ris_parser_error("RIS Exception BA-Initiative", print_r($e, true));
         }
-
+        */
 
         try {
             $parser = new BAAntragParser();
@@ -88,7 +78,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
         } catch (Exception $e) {
             RISTools::report_ris_parser_error("RIS Exception BA-Anträge", print_r($e, true));
         }
-        */
 
 
         RISMetadaten::setzeLetzteAktualisierung(date("Y-m-d H:i:s"));

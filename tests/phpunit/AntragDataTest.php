@@ -32,6 +32,7 @@ class AntragDataTest extends TestCase
         $this->assertSame(214, $data->baId);
         $this->assertCount(3, $data->dokumentLinks);
         $this->assertCount(1, $data->ergebnisse);
+        $this->assertSame('2021-02-09', $data->registriertAm->format('Y-m-d'));
 
         $this->assertMatchesObjectSnapshot($data);
     }

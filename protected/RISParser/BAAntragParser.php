@@ -40,6 +40,7 @@ class BAAntragParser extends RISParser
         $daten->gestellt_am = $parsed->gestelltAm?->format('Y-m-d');
         $daten->wahlperiode = $parsed->wahlperiode;
         $daten->bearbeitungsfrist = $parsed->bearbeitungsfrist?->format('Y-m-d');
+        $daten->registriert_am = $parsed->registriertAm?->format('Y-m-d');
         $daten->erledigt_am = $parsed->erledigtAm?->format('Y-m-d');
         $daten->ba_nr = $parsed->baNr;
 
