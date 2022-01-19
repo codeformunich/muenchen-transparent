@@ -153,14 +153,11 @@ class RISBaseController extends CController
         return $ich;
     }
 
-    /**
-     * @return bool
-     */
-    public function binContentAdmin()
+    public function binContentAdmin(): bool
     {
         $curr = $this->aktuelleBenutzerIn();
         if ($curr === null) return false;
-        return $curr->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT);
+        return $curr->hatBerechtigung(BenutzerIn::BERECHTIGUNG_CONTENT);
     }
 
     /**

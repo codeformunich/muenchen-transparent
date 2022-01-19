@@ -96,7 +96,7 @@ class AdminController extends RISBaseController
     {
         $ich = $this->aktuelleBenutzerIn();
         if (!$ich) $this->errorMessageAndDie(403, "");
-        if (!$ich->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) $this->errorMessageAndDie(403, "");
+        if (!$ich->hatBerechtigung(BenutzerIn::BERECHTIGUNG_USER)) $this->errorMessageAndDie(403, "");
 
         $this->top_menu = "admin";
 
@@ -133,7 +133,7 @@ class AdminController extends RISBaseController
     public function actionTags()
     {
         $ich = $this->aktuelleBenutzerIn();
-        if (!$ich || !$ich->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) $this->errorMessageAndDie(403, "");
+        if (!$ich || !$ich->hatBerechtigung(BenutzerIn::BERECHTIGUNG_TAG)) $this->errorMessageAndDie(403, "");
 
         $this->top_menu = "admin";
 

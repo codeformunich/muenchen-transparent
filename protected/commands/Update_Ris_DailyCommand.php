@@ -59,7 +59,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
             RISTools::report_ris_parser_error("RIS Exception StadträtInnen", print_r($e, true));
         }
 
-        /*
         try {
             $parser = new BAInitiativeParser();
             $parser->parseUpdate();
@@ -68,7 +67,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
         } catch (Exception $e) {
             RISTools::report_ris_parser_error("RIS Exception BA-Initiative", print_r($e, true));
         }
-        */
 
         try {
             $parser = new BAAntragParser();

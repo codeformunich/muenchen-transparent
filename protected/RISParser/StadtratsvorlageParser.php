@@ -245,7 +245,7 @@ class StadtratsvorlageParser extends RISParser
             }
         }
 
-        echo count($parsedObjects) . " Beschlussvorlage gefunden\n";
+        echo count($parsedObjects) . " Beschlussvorlagen gefunden\n";
 
         foreach ($parsedObjects as $object) {
             $this->parse($object->id);

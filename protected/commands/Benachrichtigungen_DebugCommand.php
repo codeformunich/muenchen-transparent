@@ -17,7 +17,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
             die("BenutzerIn nicht gefunden.\n");
         }
         /** @var BenutzerIn $benutzerIn */
-        $ergebnisse = $benutzerIn->benachrichtigungsErgebnisse($args[1]);
+        $ergebnisse = $benutzerIn->benachrichtigungsErgebnisse(intval($args[1]));
 
         if (isset($ergebnisse["antraege"])) foreach ($ergebnisse["antraege"] as $antr) {
             $antrag = $antr["antrag"];
