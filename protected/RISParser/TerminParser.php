@@ -205,7 +205,7 @@ class TerminParser extends RISParser
 
     public function parseAll(): void
     {
-        for ($year = 2020; $year <= date('y'); $year++) {
+        for ($year = 2020; $year <= date('Y'); $year++) {
             for ($month = 1; $month <= 12; $month++) {
                 echo "Parsing: $month/$year\n";
                 $this->parseMonth($year, $month);
