@@ -22,9 +22,7 @@ class IndexNewDocumentsCommand extends CConsoleCommand
                 continue;
             }
             
-            if ($dokument->typ == Dokument::$TYP_RATHAUSUMSCHAU)
-                $solr_id = "Rathausumschau\:" . $dokument->id;
-            else if ($dokument->typ == Dokument::$TYP_STADTRAT_BESCHLUSS || $dokument->typ == Dokument::$TYP_BA_BESCHLUSS)
+            if ($dokument->typ === Dokument::TYP_STADTRAT_BESCHLUSS || $dokument->typ === Dokument::TYP_BA_BESCHLUSS)
                 $solr_id = "Ergebnis\:" . $dokument->id;
             else
                 $solr_id = "Document\:" . $dokument->id;

@@ -1,0 +1,29 @@
+id: 6842474
+antragsnummer: 20-26/A02018
+status: Erledigt
+baNr: null
+baId: null
+title: 'Bericht über die IAA-Mobility 2021'
+wahlperiode: 2020-2026
+gestelltAm: '2021-10-13T00:00:00+02:00'
+registriertAm: '2021-10-14T00:00:00+02:00'
+bearbeitungsfrist: '2021-10-12T00:00:00+02:00'
+erledigtAm: '2021-10-12T00:00:00+02:00'
+art: 'Öffentlicher Vorgang'
+typ: Änderungsantrag
+bearbeitungsart: Beschluss
+referatId: 7
+referatName: 'Referat für Arbeit und Wirtschaft'
+initiativeNamen: {  }
+gestelltVon:
+    - 'SPD / Volt - Fraktion'
+    - 'Fraktion Die Grünen - Rosa Liste'
+dokumentLinks:
+    - { title: 'SPD - Volt - Die Gruenen - Rosa Liste - Antrag', id: 6842481, url: /dokument/v/6842481, filename: 'SPD - Volt - Die Gruenen - Rosa Liste - Antrag.pdf' }
+ergebnisse:
+    - { sitzungId: 6162501, sitzungAm: '2021-11-17T00:00:00+01:00' }
+    - { sitzungId: 6434531, sitzungAm: '2021-11-16T00:00:00+01:00' }
+    - { sitzungId: 6107348, sitzungAm: '2021-11-16T00:00:00+01:00' }
+    - { sitzungId: 6379110, sitzungAm: '2021-10-26T00:00:00+02:00' }
+    - { sitzungId: 6130438, sitzungAm: '2021-10-21T00:00:00+02:00' }
+    - { sitzungId: 6805415, sitzungAm: '2021-10-12T00:00:00+02:00' }

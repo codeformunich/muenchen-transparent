@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\ArrayShape;
+
 /**
  * @property integer $id
  * @property string $email
@@ -17,19 +19,17 @@
  */
 class BenutzerIn extends CActiveRecord
 {
-
     // Hinweis: Müssen 2er-Potenzen sein, also 32, 64, 128, ...
-    public static $BERECHTIGUNG_USER = 1;
-    public static $BERECHTIGUNG_CONTENT = 2;
-    public static $BERECHTIGUNG_TAG = 4;
-    public static $BERECHTIGUNGEN = [
+    public const BERECHTIGUNG_USER = 1;
+    public const BERECHTIGUNG_CONTENT = 2;
+    public const BERECHTIGUNG_TAG = 4;
+    public const BERECHTIGUNGEN = [
         1 => "User-Admin",
         2 => "Content-Admin",
         4 => "Tag-Admin",
     ];
 
-    /** @var null|BenutzerInnenEinstellungen */
-    private $einstellungen_object = null;
+    private ?BenutzerInnenEinstellungen $einstellungen_object = null;
 
 
     /**
@@ -40,12 +40,7 @@ class BenutzerIn extends CActiveRecord
         return BenutzerIn::model()->findAllByAttributes(["email_bestaetigt" => "1"], ["order" => "email"]);
     }
 
-    /**
-     * @param string $email
-     * @param string $password
-     * @return BenutzerIn
-     */
-    public static function createBenutzerIn($email, $password = "")
+    public static function createBenutzerIn(string $email, string $password = ""): BenutzerIn
     {
         $benutzerIn = new BenutzerIn;
         $benutzerIn->email = $email;
@@ -128,10 +123,7 @@ class BenutzerIn extends CActiveRecord
     }
 
 
-    /**
-     * @return string
-     */
-    public static function createPassword()
+    public static function createPassword(): string
     {
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         $max = strlen($chars) - 1;
@@ -163,10 +155,7 @@ class BenutzerIn extends CActiveRecord
         return false;
     }
 
-    /**
-     *
-     */
-    public function sendEmailBestaetigungsMail()
+    public function sendEmailBestaetigungsMail(): void
     {
         $best_code = $this->createEmailBestaetigungsCode();
         $link = Yii::app()->getBaseUrl(true) . Yii::app()->createUrl("index/benachrichtigungen", ["code" => $best_code]);
@@ -174,11 +163,7 @@ class BenutzerIn extends CActiveRecord
             . "Liebe Grüße,\n\tDas München Transparent-Team.", null, "email");
     }
 
-    /**
-     * @param string $code
-     * @return bool
-     */
-    public function emailBestaetigen($code)
+    public function emailBestaetigen(string $code): bool
     {
         if (!$this->checkEmailBestaetigungsCode($code)) return false;
         if ($this->pwd_enc == "") $this->pwd_enc = BenutzerIn::create_hash($code);
@@ -186,13 +171,9 @@ class BenutzerIn extends CActiveRecord
         return $this->save();
     }
 
-    /**
-     * @return string
-     */
-    public function getBenachrichtigungAbmeldenCode()
+    public function getBenachrichtigungAbmeldenCode(): string
     {
-        $code = $this->id . "-" . substr(md5($this->id . "abmelden" . SEED_KEY), 0, 8);
-        return $code;
+        return $this->id . "-" . substr(md5($this->id . "abmelden" . SEED_KEY), 0, 8);
     }
 
 
@@ -246,19 +227,13 @@ class BenutzerIn extends CActiveRecord
         $this->save(false);
     }
 
-    /**
-     * @return BenutzerInnenEinstellungen
-     */
-    public function getEinstellungen()
+    public function getEinstellungen(): BenutzerInnenEinstellungen
     {
         if (!is_object($this->einstellungen_object)) $this->einstellungen_object = new BenutzerInnenEinstellungen($this->einstellungen);
         return $this->einstellungen_object;
     }
 
-    /**
-     * @param BenutzerInnenEinstellungen $einstellungen
-     */
-    public function setEinstellungen($einstellungen)
+    public function setEinstellungen(BenutzerInnenEinstellungen $einstellungen): void
     {
         $this->einstellungen_object = $einstellungen;
         $this->einstellungen = $einstellungen->toJSON();
@@ -267,7 +242,7 @@ class BenutzerIn extends CActiveRecord
     /**
      * @return RISSucheKrits[]
      */
-    public function getBenachrichtigungen()
+    public function getBenachrichtigungen(): array
     {
         $arr = [];
         $einstellungen = $this->getEinstellungen();
@@ -293,10 +268,9 @@ class BenutzerIn extends CActiveRecord
     }
 
     /**
-     * @param RISSucheKrits $krits
      * @return boolean wether the krit was really deleted
      */
-    public function delBenachrichtigung($krits)
+    public function delBenachrichtigung(RISSucheKrits $krits): bool
     {
         $was_deleted = false;
         $einstellungen = $this->getEinstellungen();
@@ -314,11 +288,7 @@ class BenutzerIn extends CActiveRecord
         return $was_deleted;
     }
 
-    /**
-     * @param RISSucheKrits $krits
-     * @return bool
-     */
-    public function wirdBenachrichtigt($krits)
+    public function wirdBenachrichtigt(RISSucheKrits $krits): bool
     {
         $suchkrits = $krits->getBenachrichtigungKrits();
         $einstellungen = $this->getEinstellungen();
@@ -344,10 +314,8 @@ class BenutzerIn extends CActiveRecord
 
     /**
      * @param int[] $document_ids
-     * @param RISSucheKrits $benachrichtigung
-     * @return array
      */
-    public function queryBenachrichtigungen($document_ids, $benachrichtigung)
+    public function queryBenachrichtigungen(array $document_ids, RISSucheKrits $benachrichtigung): array
     {
         $solr = RISSolrHelper::getSolrClient();
 
@@ -356,7 +324,6 @@ class BenutzerIn extends CActiveRecord
         $select->addSort('sort_datum', $select::SORT_DESC);
         $select->setRows(100);
 
-        /** @var Solarium\QueryType\Select\Query\Component\DisMax $dismax */
         $dismax = $select->getDisMax();
         $dismax->setQueryParser('edismax');
         $dismax->setQueryFields("text text_ocr");
@@ -365,7 +332,6 @@ class BenutzerIn extends CActiveRecord
 
         $select->createFilterQuery('maxprice')->setQuery(implode(" OR ", $document_ids));
 
-        /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
         $hl = $select->getHighlighting();
         $hl->setFields('text, text_ocr, antrag_betreff');
         $hl->setSimplePrefix('<b>');
@@ -384,11 +350,8 @@ class BenutzerIn extends CActiveRecord
         return $res;
     }
 
-    /**
-     * @param int $zeitspanne
-     * @return array
-     */
-    public function benachrichtigungsErgebnisse($zeitspanne)
+    #[ArrayShape(["antraege" => "array", "termine" => "array", "vorgaenge" => "array"])]
+    public function benachrichtigungsErgebnisse(int $zeitspanne): array
     {
         $benachrichtigungen = $this->getBenachrichtigungen();
 
@@ -408,7 +371,7 @@ class BenutzerIn extends CActiveRecord
 
         $sql = Yii::app()->db->createCommand();
         $sql->select("id")->from("dokumente")->where("datum >= '" . addslashes($neu_seit) . "'");
-        $data = $sql->queryColumn(["id"]);
+        $data = $sql->queryColumn();
         if (count($data) > 0) {
 
             $document_ids = [];

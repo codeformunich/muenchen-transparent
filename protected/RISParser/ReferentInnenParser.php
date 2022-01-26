@@ -1,86 +1,88 @@
 <?php
 
-class ReferentInnenParser extends RISParser
+class ReferentInnenParser
 {
+    private CurlBasedDownloader $curlBasedDownloader;
 
-    public function parse($stadtraetIn_id)
+    public function __construct(?CurlBasedDownloader $curlBasedDownloader = null)
     {
+        $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
     }
 
-
-    public function parseSeite($seite, $first)
+    private function createIfNotExistsReferat(ReferatData $data): Referat
     {
+        /** @var Referat $referat */
+        $referat = Referat::model()->findByPk($data->id);
+        if (!$referat) {
+            echo "Creating Referat: " . $data->name . " (" . $data->id . ")\n";
+            $referat = new Referat();
+            $referat->id = $data->id;
+            $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
+            $referat->urlpart = $slugger->slug($data->name);
+        } else {
+            echo "Referat already exists: " . $data->name . "\n";
+        }
+        $referat->name = $data->name;
+        $referat->save();
+
+        return $referat;
     }
 
-
-    public function parseAlle()
+    public function createIfNotExistsReferentIn(ReferatData $data, Referat $referat): void
     {
-        $text = RISTools::load_file(RIS_BASE_URL . "ris_referenten_trefferliste.jsp?nav=1");
-        $txt  = explode("<!-- ergebnisreihen -->", $text);
-        $txt  = explode("<div class=\"ergebnisfuss\">", $txt[1]);
-
-        preg_match_all("/ris_referenten_detail\.jsp\?risid=(?<id>[0-9]+)[\"'& ][^>]*>(?<name>[^<]+)<.*target=\"_blank\">(?<referat>[^<]+)</siU", $txt[0], $matches);
-        for ($i = 0; $i < count($matches["name"]); $i++) {
-            $name = trim($matches["name"][$i]);
-            $name = str_replace("&nbsp;", " ", $name);
-            $name = preg_replace("/ *(\n *)+/siu", "\n", $name);
-
-            $x    = explode("\n", $name);
-            $y    = explode(", ", $x[1]);
-            $name = trim($x[0]) . " " . trim($y[1]) . " " . trim($y[0]);
-
-            $id           = IntVal($matches["id"][$i]);
-            $referat_name = $matches["referat"][$i];
-
-            /** @var StadtraetIn $str */
-            $str = StadtraetIn::model()->findByPk($id);
-            if ($str) {
-                if ($str->name != $name) {
-                    RISTools::report_ris_parser_error("ReferentIn Änderung", $str->name . " => " . $name);
-                    $str->name = $name;
-                    $str->save();
-                }
-            } else {
-                $str               = new StadtraetIn();
-                $str->name         = $name;
-                $str->id           = $id;
-                $str->referentIn   = 1;
-                $str->beruf        = '';
-                $str->bio          = '';
-                $str->beschreibung = '';
-                $str->quellen      = '';
+        /** @var StadtraetIn $str */
+        $str = StadtraetIn::model()->findByPk($data->referentInId);
+        if ($str) {
+            if ($str->name != $data->referentInName) {
+                RISTools::report_ris_parser_error("ReferentIn Änderung", $str->name . " => " . $data->referentInName);
+                $str->name = $data->referentInName;
                 $str->save();
             }
+            echo "ReferentIn exists: " . $str->name . "\n";
+        } else {
+            $str = new StadtraetIn();
+            $str->name = $data->referentInName;
+            $str->id = $data->referentInId;
+            $str->referentIn = 1;
+            $str->beruf = '';
+            $str->bio = '';
+            $str->beschreibung = '';
+            $str->quellen = '';
+            $str->save();
+            echo "ReferentIn created: " . $str->name . "\n";
+        }
 
-            /** @var Referat $referat */
-            $referat = Referat::model()->findByAttributes(["name" => $referat_name]);
-            if (!$referat) {
-                RISTools::report_ris_parser_error("Referat nicht gefunden", $referat_name);
-                return;
-            }
-
-            $gefunden = false;
-            foreach ($str->stadtraetInnenReferate as $ref) if ($ref->referat_id == $referat->id) $gefunden = true;
-
-            if (!$gefunden) {
-                $zuo                 = new StadtraetInReferat();
-                $zuo->referat_id     = $referat->id;
-                $zuo->stadtraetIn_id = $str->id;
-                $zuo->save();
-                RISTools::report_ris_parser_error("Neue ReferentInnen/Referat-Zuordnung", $referat_name . " / " . $str->name);
+        $gefunden = false;
+        foreach ($str->stadtraetInnenReferate as $ref) {
+            if ($ref->referat_id == $referat->id) {
+                $gefunden = true;
             }
         }
 
+        if (!$gefunden) {
+            $zuo = new StadtraetInReferat();
+            $zuo->referat_id = $referat->id;
+            $zuo->stadtraetIn_id = $str->id;
+            $zuo->save();
+            RISTools::report_ris_parser_error("Neue ReferentInnen/Referat-Zuordnung", $referat->name . " / " . $str->name);
+        }
     }
 
-    public function parseUpdate()
+    public function parseAll(): void
+    {
+        $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . '/organisationseinheit/fachreferat/uebersicht');
+
+        $parts = ReferatData::splitPage($html);
+        for ($i = 0; $i < count($parts); $i++) {
+            $parsed = ReferatData::parseFromHtml($parts[$i]);
+            $referat = $this->createIfNotExistsReferat($parsed);
+            $this->createIfNotExistsReferentIn($parsed, $referat);
+        }
+    }
+
+    public function parseUpdate(): void
     {
         echo "Updates: ReferentInnen\n";
-        $this->parseAlle();
-    }
-
-    public function parseQuickUpdate()
-    {
-
+        $this->parseAll();
     }
 }

@@ -14,6 +14,8 @@
  * @property string $sitzungstermin_datum
  * @property string $beschluss_text
  * @property string $entscheidung
+ * @property integer $top_pos
+ * @property integer|null $top_id
  * @property string $top_nr
  * @property int $top_ueberschrift
  * @property string $top_betreff
@@ -27,6 +29,8 @@
  */
 class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
 {
+    public const STATUS_NONPUBLIC = 'geheim';
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -93,6 +97,8 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
             'beschluss_text'         => 'Beschluss',
             'entscheidung'           => 'Entscheidung',
             'datum_letzte_aenderung' => 'Letzte Änderung',
+            'top_pos'                => 'TOP Position',
+            'top_id'                 => 'TOP ID',
             'top_nr'                 => 'Tagesordnungspunkt',
             'top_ueberschrift'       => 'Ist Überschrift',
             'top_betreff'            => 'Betreff',
@@ -113,7 +119,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
-            if (strpos($e->getMessage(), "Duplicate entry") === false) throw $e;
+            if (!str_contains($e->getMessage(), "Duplicate entry")) throw $e;
         }
 
     }
@@ -153,37 +159,35 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
         return $antraege;
     }
 
+    public function getTopNo(): string
+    {
+        if (preg_match('/^1\.(?<no>\d.*)/siu', $this->top_nr, $matches)) {
+            return $matches['no'];
+        } else {
+            return $this->top_nr;
+        }
+    }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         if ($this->antrag) return $this->antrag->getLink($add_params);
         return $this->sitzungstermin->getLink($add_params);
     }
 
-
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Stadtratsbeschluss";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         if ($kurzfassung) {
             $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
             $x       = explode(" Antrag Nr.", $betreff);
             $x       = explode("<strong>Antrag: </strong>", $x[0]);
-            return RISTools::korrigiereTitelZeichen($x[0]);
+            return RISTools::normalizeTitle($x[0]);
         } else {
-            return RISTools::korrigiereTitelZeichen($this->top_betreff);
+            return RISTools::normalizeTitle($this->top_betreff);
         }
     }
 
@@ -195,10 +199,7 @@ class Tagesordnungspunkt extends CActiveRecord implements IRISItemHasDocuments
         return $this->dokumente;
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->datum_letzte_aenderung;
     }

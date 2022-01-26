@@ -17,7 +17,7 @@ $this->pageTitle = "Stadtrecht";
     <h1>Stadtrecht</h1>
 
     <p style="font-size: 18px;">Hier finden Sie alle Satzungen, Verordnungen und Regelungen vom offiziellen
-        <a href="http://www.muenchen.info/dir/recht/num_portal.html">Portal für Stadtrecht</a>
+        <a href="https://stadt.muenchen.de/rathaus/stadtrecht/alphabetisch.html">Portal für Stadtrecht</a>
         der Stadt München übersichtlich aufbereitet.</p>
     <div class="such-liste">
         <input class="search" placeholder="Filtern"/>

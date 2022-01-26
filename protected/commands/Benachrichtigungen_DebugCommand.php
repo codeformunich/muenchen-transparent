@@ -5,7 +5,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
     public function run($args)
     {
         if (count($args) != 2) {
-            die("./yiic benachrichtigungen_verschicken [e@mail] [tage]\n");
+            die("./yiic benachrichtigungen_debug [e@mail] [tage]\n");
         }
 
         if (is_numeric($args[0])) {
@@ -17,7 +17,7 @@ class Benachrichtigungen_DebugCommand extends CConsoleCommand
             die("BenutzerIn nicht gefunden.\n");
         }
         /** @var BenutzerIn $benutzerIn */
-        $ergebnisse = $benutzerIn->benachrichtigungsErgebnisse($args[1]);
+        $ergebnisse = $benutzerIn->benachrichtigungsErgebnisse(intval($args[1]));
 
         if (isset($ergebnisse["antraege"])) foreach ($ergebnisse["antraege"] as $antr) {
             $antrag = $antr["antrag"];

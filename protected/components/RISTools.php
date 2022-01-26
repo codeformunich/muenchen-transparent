@@ -1,6 +1,6 @@
 <?php
 
-use Zend\Mail\Message;
+use Laminas\Mail\Message;
 
 class RISTools
 {
@@ -179,23 +179,21 @@ class RISTools
         return str_replace($search, $replace, $text);
     }
 
-    /**
-     * @param string $titel
-     * @return string
-     */
-    public static function korrigiereTitelZeichen($titel)
+    public static function normalizeTitle(string $title): string
     {
-        $titel = trim($titel);
-        $titel = str_replace(chr(194) . chr(160), " ", $titel);
-        $titel = preg_replace("/([\\s\-\(])\?(\\w[^\\?]*[\\w\.\!])\?/siu", "\\1„\\2“", $titel);
-        $titel = preg_replace("/([\\s\-\(])\"(\\w[^\\?]*[\\w\.\!])\"/siu", "\\1„\\2“", $titel);
-        $titel = str_replace(" ?", " —", $titel);
-        $titel = preg_replace("/^\?(\\w[^\\?]*[\\w\.\!])\?/siu", "„\\1“", $titel);
-        $titel = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $titel);
-        $titel = preg_replace("/\\s\?$/siu", "?", $titel);
-        $titel = str_replace(chr(10) . "?", " —", $titel);
-        $titel = str_replace("Â?", "€", $titel);
-        return $titel;
+        $title = trim($title);
+        $title = str_replace("\r", "", $title);
+        $title = str_replace(chr(194) . chr(160), " ", $title);
+        $title = preg_replace("/([\\s\-\(])\?(\\w[^\\?]*[\\w\.\!])\?/siu", "\\1„\\2“", $title);
+        $title = preg_replace("/([\\s\-\(])\"(\\w[^\\?]*[\\w\.\!])\"/siu", "\\1„\\2“", $title);
+        $title = str_replace(" ?", " —", $title);
+        $title = preg_replace("/^\?(\\w[^\\?]*[\\w\.\!])\?/siu", "„\\1“", $title);
+        $title = preg_replace("/([0-9])\?([0-9])/siu", " \\1-\\2", $title);
+        $title = preg_replace("/\\s\?$/siu", "?", $title);
+        $title = str_replace(chr(10) . "?", " —", $title);
+        $title = str_replace("Â?", "€", $title);
+        $title = preg_replace("/([[:lower:]])- *\\n([[:lower:]])/siu", "$1$2", $title);
+        return $title;
     }
 
 
@@ -298,18 +296,13 @@ class RISTools
         return trim($titel);
     }
 
-
-    /**
-     * @param string $str
-     * @return array
-     */
-    public static function normalize_antragvon($str)
+    public static function normalize_antragvon(string $str): array
     {
         $a   = explode(",", $str);
         $ret = [];
         foreach ($a as $y) {
             $z = explode(";", $y);
-            if (count($z) == 2) {
+            if (count($z) === 2) {
                 $y = $z[1] . " " . $z[0];
             }
             $name_orig = $y;
@@ -344,87 +337,6 @@ class RISTools
             }
         }
         return $ret;
-    }
-
-
-    /**
-     * @param string $name_normalized
-     * @param string $name
-     * @return Person
-     */
-    public function ris_get_person_by_name($name_normalized, $name)
-    {
-        /** @var Person $p */
-        $p = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);
-        if ($p) {
-            return $p;
-        }
-        echo "$name / $name_normalized \n";
-
-        $p                  = new Person();
-        $p->name_normalized = $name_normalized;
-        $p->name            = $name;
-        $p->typ             = "sonstiges";
-        $p->save();
-        return $p;
-    }
-
-
-    /**
-     * @param string $typ
-     * @param int $ba_nr
-     * @return string
-     */
-    public static function ris_get_original_name($typ, $ba_nr)
-    {
-        switch ($typ) {
-            case "ba_antrag":
-                return "BA $ba_nr Antrag";
-                break;
-            case "ba_initiative":
-                return "BA $ba_nr Initiative";
-                break;
-            case "ba_termin":
-                return "BA $ba_nr Termin";
-                break;
-            case "stadtrat_antrag":
-                return "Stadtratsantrag";
-                break;
-            case "stadtrat_vorlage":
-                return "Stadtratsvorlage";
-                break;
-            case "stadtrat_termin":
-                return "Stadtratssitzung";
-                break;
-        }
-        return "Unbekannt";
-    }
-
-    /**
-     * @param string $typ
-     * @param int $ba_nr
-     * @param int $id
-     * @param string $mode
-     * @return string
-     */
-    public static function ris_get_original_url($typ, $ba_nr, $id, $mode = "")
-    {
-        switch ($typ) {
-            case "ba_antrag":
-                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $id . "&selTyp=BA-Antrag";
-            case "ba_initiative":
-                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $id;
-            case "ba_termin":
-                return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $id;
-            case "stadtrat_antrag":
-                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $id;
-            case "stadtrat_vorlage":
-                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $id;
-            case "stadtrat_termin":
-                return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $id;
-            default:
-                return "Unbekannt";
-        }
     }
 
     /**
@@ -482,18 +394,9 @@ class RISTools
 		    $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($response, true)); fclose($fp);
 		    return;
 
-	    } elseif (defined("MAILGUN_API_KEY") && strlen(MAILGUN_API_KEY) > 0 && $mail_tag != "system") {
-            $message = new \SlmMail\Mail\Message\Mailgun();
-            //$message->setOption('tracking', false);
-            $client = new \Zend\Http\Client();
-            $client->setAdapter(new \Zend\Http\Client\Adapter\Curl());
-            $service = new \SlmMail\Service\MailgunService(MAILGUN_DOMAIN, MAILGUN_API_KEY);
-            $service->setClient($client);
-            $transport = new \SlmMail\Mail\Transport\HttpTransport($service);
-
         } else {
-            $message   = new Zend\Mail\Message();
-            $transport = new Zend\Mail\Transport\Sendmail();
+            $message   = new Laminas\Mail\Message();
+            $transport = new Laminas\Mail\Transport\Sendmail();
         }
         static::set_zend_email_data($message, $email, $betreff, $text_plain, $text_html);
         $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($message, true)); fclose($fp);
@@ -520,13 +423,13 @@ class RISTools
             $converter = new \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles();
             $text_html = $converter->convert($text_html);
 
-            $text_part          = new Zend\Mime\Part($text_plain);
+            $text_part          = new Laminas\Mime\Part($text_plain);
             $text_part->type    = "text/plain";
             $text_part->charset = "UTF-8";
-            $html_part          = new Zend\Mime\Part($text_html);
+            $html_part          = new Laminas\Mime\Part($text_html);
             $html_part->type    = "text/html";
             $html_part->charset = "UTF-8";
-            $mimem              = new Zend\Mime\Message();
+            $mimem              = new Laminas\Mime\Message();
             $mimem->setParts([$text_part, $html_part]);
 
             $message->setBody($mimem);
@@ -537,35 +440,6 @@ class RISTools
             $headers->removeHeader('Content-Type');
             $headers->addHeaderLine('Content-Type', 'text/plain; charset=UTF-8');
         }
-    }
-
-    /**
-     * @param string[] $arr
-     * @return string[]
-     */
-    public static function makeArrValuesUnique($arr)
-    {
-        $val_count = [];
-        foreach ($arr as $elem) {
-            if (isset($val_count[$elem])) {
-                $val_count[$elem]++;
-            } else {
-                $val_count[$elem] = 1;
-            }
-        }
-        $vals_used = [];
-        foreach ($arr as $i => $elem) {
-            if ($val_count[$elem] == 1) {
-                continue;
-            }
-            if (isset($vals_used[$elem])) {
-                $vals_used[$elem]++;
-            } else {
-                $vals_used[$elem] = 1;
-            }
-            $arr[$i] = $elem . " (" . $vals_used[$elem] . ")";
-        }
-        return $arr;
     }
 
     /**

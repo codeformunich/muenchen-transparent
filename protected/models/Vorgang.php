@@ -110,7 +110,7 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
      */
     public function wichtigstesRisItem()
     {
-        foreach ($this->antraege as $ant) if ($ant->typ == Antrag::$TYP_STADTRAT_VORLAGE) return $ant;
+        foreach ($this->antraege as $ant) if ($ant->typ == Antrag::TYP_STADTRAT_VORLAGE) return $ant;
         foreach ($this->antraege as $ant) return $ant;
 
         $items = $this->getRISItemsByDate();
@@ -204,32 +204,22 @@ class Vorgang extends CActiveRecord implements IRISItemHasDocuments
         }
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
-        // TODO: Implement getLink() method.
+        return '';
     }
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Vorgang";
     }
 
-    /** @return string */
-    public function getDate()
+    public function getDate(): string
     {
-        // TODO: Implement getDate() method.
+        return '0000-00-00 00:00:00';
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         return $this->betreff;
     }

@@ -41,7 +41,6 @@ class RISBaseController extends CController
     public $load_mediaelement = false;
     public $load_pdf_js       = false;
     public $load_selectize_js = false;
-    public $load_shariff      = false;
 
     public $suche_pre  = "";
 
@@ -154,14 +153,11 @@ class RISBaseController extends CController
         return $ich;
     }
 
-    /**
-     * @return bool
-     */
-    public function binContentAdmin()
+    public function binContentAdmin(): bool
     {
         $curr = $this->aktuelleBenutzerIn();
         if ($curr === null) return false;
-        return $curr->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT);
+        return $curr->hatBerechtigung(BenutzerIn::BERECHTIGUNG_CONTENT);
     }
 
     /**

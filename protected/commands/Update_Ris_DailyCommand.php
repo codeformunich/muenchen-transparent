@@ -1,13 +1,12 @@
 <?php
 
-//define("VERYFAST", true);
-
 class Update_Ris_DailyCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        echo "Gestartet: " . date("Y-m-d H:i:s");
+        if (posix_getuid() === 0) die("This command cannot be run as root");
 
+        echo "Gestartet: " . date("Y-m-d H:i:s");
 
         try {
             $parser = new ReferentInnenParser();
@@ -20,7 +19,7 @@ class Update_Ris_DailyCommand extends CConsoleCommand
 
 
         try {
-            $parser = new StadtratTerminParser();
+            $parser = new TerminParser();
             $parser->parseUpdate();
 
             echo "Done Termine: " . date("Y-m-d H:i:s") . "\n";
@@ -59,17 +58,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
             RISTools::report_ris_parser_error("RIS Exception StadträtInnen", print_r($e, true));
         }
 
-
-        try {
-            $parser = new BATerminParser();
-            $parser->parseUpdate();
-
-            echo "Done BA Termine: " . date("Y-m-d H:i:s") . "\n";
-        } catch (Exception $e) {
-            RISTools::report_ris_parser_error("RIS Exception BA-Termine", print_r($e, true));
-        }
-
-
         try {
             $parser = new BAInitiativeParser();
             $parser->parseUpdate();
@@ -78,7 +66,6 @@ class Update_Ris_DailyCommand extends CConsoleCommand
         } catch (Exception $e) {
             RISTools::report_ris_parser_error("RIS Exception BA-Initiative", print_r($e, true));
         }
-
 
         try {
             $parser = new BAAntragParser();
@@ -94,6 +81,5 @@ class Update_Ris_DailyCommand extends CConsoleCommand
         RISMetadaten::recalcStats();
 
         echo "Done: " . date("Y-m-d H:i:s") . "\n";
-
     }
 }

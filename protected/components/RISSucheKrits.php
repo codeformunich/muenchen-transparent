@@ -274,7 +274,7 @@ class RISSucheKrits
                 if ($such[0] == "\"" && $such[strlen($such) - 1] == "\"") return "Dokumente mit " . $this->krits[0]["suchbegriff"] . " im Betreff";
                 return "Dokumente mit \"" . $such . "\" im Betreff";
             case "antrag_typ":
-                return "Dokumente des Typs \"" . Dokument::$TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
+                return "Dokumente des Typs \"" . Dokument::TYPEN_ALLE[$this->krits[0]["suchbegriff"]] . "\"";
             case "volltext":
                 $such = $this->krits[0]["suchbegriff"];
                 if ($such[0] == "\"" && $such[strlen($such) - 1] == "\"") return "Volltextsuche nach " . $this->krits[0]["suchbegriff"];
@@ -289,7 +289,6 @@ class RISSucheKrits
                 }
 
                 if ($dokument) {
-                    /** @var AntragOrt[] $gefundene_orte */
                     $gefundene_orte = array_filter($dokument->orte, function (AntragOrt $ort) use ($ba) {
                         return $ort->ort->ba_nr == $ba->ba_nr;
                     });
@@ -338,7 +337,7 @@ class RISSucheKrits
                     $krits[] = "mit \"" . $cr["suchbegriff"] . "\" im Betreff";
                     break;
                 case "antrag_typ":
-                    $krits[] = "vom Typ \"" . Dokument::$TYPEN_ALLE[$cr["suchbegriff"]] . "\"";
+                    $krits[] = "vom Typ \"" . Dokument::TYPEN_ALLE[$cr["suchbegriff"]] . "\"";
                     break;
                 case "volltext":
                     $krits[] = "mit dem Suchausdruck \"" . $cr["suchbegriff"] . "\"";

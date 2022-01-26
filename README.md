@@ -1,14 +1,11 @@
 [München Transparent](https://www.muenchen-transparent.de)
 =========================================
 
-[![Build Status](https://travis-ci.org/codeformunich/muenchen-transparent.svg?branch=master)](https://travis-ci.org/codeformunich/muenchen-transparent)
-[![Code Climate](https://codeclimate.com/github/codeformunich/Muenchen-Transparent/badges/gpa.svg)](https://codeclimate.com/github/codeformunich/Muenchen-Transparent)
-
 München Transparent ist ein alternatives Ratsinformationssystem (RIS) für München mit einer modernen Oberfläche, E-Mail-Benachrichtigungen, Volltextsuche, Geodaten, Erklärtexten und vielem mehr.
 
 ## Setup
 
-Vorausgesetzt werden nginx mit PHP >= 7.1 und MySQL/MariaDB sowie npm und composer.
+Vorausgesetzt werden nginx mit PHP >= 8.0 und MySQL/MariaDB sowie npm und composer.
 
 Berechtigungen setzen und Abhängigkeiten installieren: (`www-data` muss durch den passenden Nutzer ersetzt werden, bei MacOSX ist das z.B. `_www` )
 ```bash
@@ -128,7 +125,6 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * [Zend Framework 2](http://framework.zend.com/)
 * [Solarium](http://www.solarium-project.org/)
 * [CSS2InlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles) für die HTML-formatierten E-Mails.
-* [sabre/dav](http://sabre.io/) für die Kalender-Synchronisation
 * [Composer](https://getcomposer.org/)
 * [Codeception](http://codeception.com/)
 
@@ -145,5 +141,4 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * [List.js](http://www.listjs.com/)
 * [Bower](http://bower.io/)
 * [Isotope](http://isotope.metafizzy.co/)
-* [Shariff](http://www.heise.de/ct/artikel/Shariff-Social-Media-Buttons-mit-Datenschutz-2467514.html)
 * [CKEditor](http://ckeditor.com/)

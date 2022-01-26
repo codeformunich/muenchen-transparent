@@ -5,7 +5,7 @@ class BAGremienParser extends RISParser
     private static $MAX_OFFSET     = 350;
     public static  $WAHLPERIODE_ID = 5666213;
 
-    public function parse($gremien_id, $wahlperiode_id = 0)
+    public function parse($gremien_id, $wahlperiode_id = 0): ?Gremium
     {
         $wahlperiode_id = IntVal($wahlperiode_id > 0 ? $wahlperiode_id : static::$WAHLPERIODE_ID);
         $gremien_id     = IntVal($gremien_id);
@@ -84,7 +84,7 @@ class BAGremienParser extends RISParser
                         $stadtraetIn = StadtraetIn::model()->findByAttributes(["name" => $name]);
                         if (!$stadtraetIn) {
                             RISTools::report_ris_parser_error("BA-Gremium nicht zuordbar", "Gremium: $gremien_id\nMitglieds-ID: " . $match2["id"]);
-                            return;
+                            return null;
                         }
                     }
                 }
@@ -145,14 +145,16 @@ class BAGremienParser extends RISParser
             $aend              = new RISAenderung();
             $aend->ris_id      = $daten->id;
             $aend->ba_nr       = null;
-            $aend->typ         = RISAenderung::$TYP_BA_GREMIUM;
+            $aend->typ         = RISAenderung::TYP_BA_GREMIUM;
             $aend->datum       = new CDbExpression("NOW()");
             $aend->aenderungen = $aenderungen;
             $aend->save();
         }
+
+        return $daten;
     }
 
-    public function parseSeite($seite, $first)
+    public function parseSeite(int $seite, int $first): array
     {
         if (SITE_CALL_MODE != "cron") echo "BA-Gremien Seite $seite\n";
         $text = RISTools::load_file(RIS_BA_BASE_URL . "ba_gremien.jsp?selWahlperiode=" . static::$WAHLPERIODE_ID . "&Trf=n&Start=$seite");
@@ -170,7 +172,7 @@ class BAGremienParser extends RISParser
         return $matches[1];
     }
 
-    public function parseAlle()
+    public function parseAll(): void
     {
         $anz   = BAGremienParser::$MAX_OFFSET;
         $first = true;
@@ -181,12 +183,12 @@ class BAGremienParser extends RISParser
         }
     }
 
-    public function parseUpdate()
+    public function parseUpdate(): void
     {
-        $this->parseAlle();
+        $this->parseAll();
     }
 
-    public function parseQuickUpdate()
+    public function parseQuickUpdate(): void
     {
 
     }

@@ -1,0 +1,1535 @@
+-
+    position: 0
+    id: null
+    public: true
+    isHeading: true
+    topNr: '1.'
+    title: Allgemeines
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 1
+    id: null
+    public: true
+    isHeading: true
+    topNr: 1.1.
+    title: 'Begrüßung, Beschlussfähigkeit, Entschuldigungen, Tagesordnung'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 2
+    id: null
+    public: true
+    isHeading: true
+    topNr: 1.2.
+    title: Protokolle
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 3
+    id: 6947678
+    public: true
+    isHeading: false
+    topNr: 1.2.1.
+    title: 'Protokoll/e der Sitzung am 30.11.2021'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6947672]
+    vorlagenIds: {  }
+-
+    position: 4
+    id: null
+    public: true
+    isHeading: true
+    topNr: 1.3.
+    title: Ausläufe
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 5
+    id: null
+    public: true
+    isHeading: true
+    topNr: 1.4.
+    title: 'Fragen von anwesenden Bürgerinnen und Bürgern sowie Kindern und Jugendlichen und/oder deren Vertretung'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 6
+    id: null
+    public: true
+    isHeading: true
+    topNr: 1.5.
+    title: 'Berichte aus den Unterausschüssen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 7
+    id: null
+    public: true
+    isHeading: true
+    topNr: 1.6.
+    title: 'Berichte der Beauftragten'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 8
+    id: null
+    public: true
+    isHeading: true
+    topNr: '2.'
+    title: Entscheidungsfälle
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 9
+    id: null
+    public: true
+    isHeading: true
+    topNr: '3.'
+    title: 'Anhörungen / Stellungnahmen / Anträge'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 10
+    id: null
+    public: true
+    isHeading: true
+    topNr: 3.1.
+    title: 'Bereich Planung, Bauvorhaben und Baumschutz, Umweltschutz'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 11
+    id: 6919530
+    public: true
+    isHeading: false
+    topNr: 3.1.1.
+    title: 'Friedenstr. 18; Umbau und Nutzungsänderung einer Werkstatt im 4.OG in ein Biotechnologie-Labor mit Sicherheitsstufe 2 nach GenTG'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6919526]
+    vorlagenIds: {  }
+-
+    position: 12
+    id: 6940523
+    public: true
+    isHeading: false
+    topNr: 3.1.2.
+    title: 'Friedenstr. 2; Neubau eines Bürogebäudes mit Tiefgarage'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6940519]
+    vorlagenIds: {  }
+-
+    position: 13
+    id: 6941247
+    public: true
+    isHeading: false
+    topNr: 3.1.3.
+    title: 'Fehwiesenstr. 118, Schulbauoffensive - Campus Ost / Schulcampus: Neubau Ludwig-Thoma-Realschule sowie Neubau einer Förderschule für geistige Entwicklung mit Einfachsporthalle, Mensa als Versammlungsstätte und zwei Dienstwohnungen - VORBESCHEID'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6941243]
+    vorlagenIds: {  }
+-
+    position: 14
+    id: 6941271
+    public: true
+    isHeading: false
+    topNr: 3.1.4.
+    title: 'Hohenbrunner Str. 33; Neubau eines Mehrfamilienhauses mit 5 Wohneinheiten und 6 Stellplätzen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6941267]
+    vorlagenIds: {  }
+-
+    position: 15
+    id: 6948973
+    public: true
+    isHeading: false
+    topNr: 3.1.5.
+    title: 'Glasscherben auf öffentlichen Flächen häufig entfernen; Antrag BA 14'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6948969]
+    vorlagenIds: {  }
+-
+    position: 16
+    id: null
+    public: true
+    isHeading: true
+    topNr: 3.2.
+    title: 'Bereich städtebauliche Entwicklung, Mobilität, Wohnen und Gewerbe, Digitalisierung'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 17
+    id: 6915928
+    public: true
+    isHeading: false
+    topNr: 3.2.1.
+    title: |-
+        Projekt "Saisonale Stadträume - Sommerstraßen und Parklets"
+
+        - Anhörung durch das Mobilitätsreferat -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6915916]
+    vorlagenIds: {  }
+-
+    position: 18
+    id: 6934459
+    public: true
+    isHeading: false
+    topNr: 3.2.2.
+    title: |-
+        Einrichtung eines personenbezogenen Behindertenparkplatzes in der
+        Gotteszeller Str. 13
+
+        - Anhörung durch das Mobilitätsreferat -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6934453]
+    vorlagenIds: {  }
+-
+    position: 19
+    id: 6934828
+    public: true
+    isHeading: false
+    topNr: 3.2.3.
+    title: 'Rückgabestationen für Elektroroller, Bürgeranliegen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6934824]
+    vorlagenIds: {  }
+-
+    position: 20
+    id: null
+    public: true
+    isHeading: true
+    topNr: 3.3.
+    title: 'Bereich Bildung, Kinderbetreuung, Sport, Kultur'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 21
+    id: 6946918
+    public: true
+    isHeading: false
+    topNr: 3.3.1.
+    title: |-
+        Kinderkrippe in der Dingolfinger Straße muss voraussichtlich 2022 schließen,
+        - Bitte um Unterstützung  -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6946914]
+    vorlagenIds: {  }
+-
+    position: 22
+    id: 6972323
+    public: true
+    isHeading: false
+    topNr: 3.3.2.
+    title: |-
+        Veranstaltung in einer städtischen Grünanlage
+        Hier: Grünanlage an der Echardinger Kapelle – Freiluft-Gottesdienst zum 2. Weihnachtsfeiertag, Evang.-Luth.Kirchenggemeinde Sophie Scholl am 26.12.2021, von 17.00 Uhr bis 18.00 Uhr
+        (Nachtrag)
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6972317]
+    vorlagenIds: {  }
+-
+    position: 23
+    id: null
+    public: true
+    isHeading: true
+    topNr: 3.4.
+    title: 'Bereich Soziales, Integration, Senioren, Familie'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 24
+    id: null
+    public: true
+    isHeading: true
+    topNr: 3.5.
+    title: 'Bereich Budget / Organisation'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 25
+    id: 6911705
+    public: true
+    isHeading: false
+    topNr: 3.5.1.
+    title: |-
+        (E) Stadtbezirksbudget
+        Hidalgo gGmbH
+        Street Art Song (im Rahmen des Kunstlied-Festivals HIDALGO) am 10.09.2022
+        1.500,00 €; Az. 0262.0-14-0309
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6911696]
+-
+    position: 26
+    id: 6927077
+    public: true
+    isHeading: false
+    topNr: 3.5.2.
+    title: |-
+        (E) Stadtbezirksbudget
+        AKA - Aktiv für interkulturellen Austausch e.V.
+        Formularservice für Ramersdorf und Berg am Laim vom 01.01. - 31.12.2022
+        2.021,03 €; Az. 0262.0-14-0310
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6927051]
+-
+    position: 27
+    id: 6932366
+    public: true
+    isHeading: false
+    topNr: 3.5.3.
+    title: |-
+        Zuwendungen aus dem Stadtbezirksbudget der Bezirksausschüsse
+        Antrag vom 02.06.2020 von democraticArts
+        Die Demokratie der Kunst - Die Kunst der Demokratie - in Krisenzeiten (Unruly Ghosts)
+        hier: Antrag auf Änderung des Zuschusses
+
+        - Anhörung durch das Direktorium -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6932362]
+    vorlagenIds: {  }
+-
+    position: 28
+    id: 6941231
+    public: true
+    isHeading: false
+    topNr: 3.5.4.
+    title: 'Bestellung einer städtischen Leistung: Errichtung eines rollstuhlgeeigneten Karusells und einer zusätzlichen Kletterwand in der Grünanlage Xaver-Weismor-Straße; Antrag CSU-Fraktion (vertagt aus 11/2021)'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6909851]
+    vorlagenIds: {  }
+-
+    position: 29
+    id: 6916056
+    public: true
+    isHeading: false
+    topNr: 3.5.5.
+    title: |-
+        Fraktionsübergreifende Resolution: Stadtteil-Berichterstattung in der „Süddeutschen
+        Zeitung“ wieder stärken!
+
+        - Schreiben des Bezirksausschusses 5 Au-Haidhausen an die Süddeutsche Zeitung sowie bitte an alle BA´s um Unterstützung -
+
+        (FF alle UA)
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6916042]
+    vorlagenIds: {  }
+-
+    position: 30
+    id: null
+    public: true
+    isHeading: true
+    topNr: 3.6.
+    title: Baumschutz
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 31
+    id: 6940547
+    public: true
+    isHeading: false
+    topNr: 3.6.1.
+    title: 'Friedenstr. 2; Neubau eines Bürogebäudes mit Tiefgarage'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6940543]
+    vorlagenIds: {  }
+-
+    position: 32
+    id: 6941255
+    public: true
+    isHeading: false
+    topNr: 3.6.2.
+    title: 'Fehwiesenstr. 118, Schulbauoffensive - Campus Ost / Schulcampus: Neubau Ludwig-Thoma-Realschule sowie Neubau einer Förderschule für geistige Entwicklung mit Einfachsporthalle, Mensa als Versammlungsstätte und zwei Dienstwohnungen - VORBESCHEID'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6941251]
+    vorlagenIds: {  }
+-
+    position: 33
+    id: 6941263
+    public: true
+    isHeading: false
+    topNr: 3.6.3.
+    title: 'Hohenbrunner Str. 33; Neubau eines Mehrfamilienhauses mit 5 Wohneinheiten und 6 Stellplätzen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6941259]
+    vorlagenIds: {  }
+-
+    position: 34
+    id: null
+    public: true
+    isHeading: true
+    topNr: '4.'
+    title: 'Unterrichtungsfälle / Bekanntgaben'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 35
+    id: null
+    public: true
+    isHeading: true
+    topNr: 4.1.
+    title: 'Bereich Planung, Bauvorhaben und Baumschutz, Umweltschutz'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 36
+    id: 6921631
+    public: true
+    isHeading: false
+    topNr: 4.1.1.
+    title: 'Liste der Bauvorhaben im 14. Stadtbezirk Berg am Laim in der Zeit vom 15.11.2021 - 05.12.2021'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6921627]
+    vorlagenIds: {  }
+-
+    position: 37
+    id: 6919454
+    public: true
+    isHeading: false
+    topNr: 4.1.2.
+    title: 'Broschüre "Preis für Stadtbildpflege 2020"'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6919438]
+    vorlagenIds: {  }
+-
+    position: 38
+    id: 6939820
+    public: true
+    isHeading: false
+    topNr: 4.1.3.
+    title: |-
+        (U) BayBO Novelle und Online-Zugangsgesetz:
+        Änderungen im Aufgabenspektrum
+        der Lokalbaukommission - Personelle Ausstattung
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6866423]
+-
+    position: 39
+    id: 6939807
+    public: true
+    isHeading: false
+    topNr: 4.1.4.
+    title: |-
+        (U) „Holzwohnungsbau in München“
+        Zuschussprogramm für den Einsatz nachwachsender Rohstoffe im Mietwohnungsbau in Holzbauweise bzw. Holzhybridbauweise
+        Klimaschutz konkret
+        Projektförderung Holzbau des Freistaates auch bei GEWOFAG und GWG realisieren
+        Antrag Nr. 20-26 / A 01805 von Herrn StR Manuel Pretzl, Herrn StR Sebastian Schall, Frau StRin Dr. Evelyne Menges, Frau StRin Heike Kainz, Frau StRin Alexandra Gaßmann, Herrn StR Andreas Babor und Herrn StR Winfried Kaum vom 06.08.2021
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6779177]
+-
+    position: 40
+    id: 6921673
+    public: true
+    isHeading: false
+    topNr: 4.1.5.
+    title: |-
+        (U) Schutzgebiete in der Landeshauptstadt München
+        - Perspektiven -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6947753]
+    vorlagenIds: [6785344]
+-
+    position: 41
+    id: 6941667
+    public: true
+    isHeading: false
+    topNr: 4.1.6.
+    title: 'Aufstellen von Mülleimern in der Berg-am-Laim-Straße und Kreillerstraße'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6814390]
+    vorlagenIds: {  }
+-
+    position: 42
+    id: 6941680
+    public: true
+    isHeading: false
+    topNr: 4.1.7.
+    title: 'Installation eines Mülleimers neben der Sitzbank an der Hansjakobstraße/Ecke St.-Veit-Straße; Bürgeranliegen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6451217]
+    vorlagenIds: {  }
+-
+    position: 43
+    id: 6947599
+    public: true
+    isHeading: false
+    topNr: 4.1.8.
+    title: |-
+        Sauberkeit Bürgersteig im Bereich Leuchtenbergring / Streitfeldstraße / Neumarkter Straße
+
+        - Antwort des Baureferates auf Anfrage eines Bürgers -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6947595]
+    vorlagenIds: {  }
+-
+    position: 44
+    id: 6918186
+    public: true
+    isHeading: false
+    topNr: 4.1.9.
+    title: 'Erfassung der Boden- bzw. Flächenversiegelung in Berg am Laim'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6682736]
+    vorlagenIds: {  }
+-
+    position: 45
+    id: 6949402
+    public: true
+    isHeading: false
+    topNr: 4.1.10.
+    title: |-
+        (U) Schottergärten in der Landeshauptstadt München
+
+        Anträge:
+        1. Mehr Grün in Münchens Gärten – Maßnahmen gegen Schottergärten
+        Antrag Nr. 14-20 / A 06007 der Stadtratsfraktion DIE GRÜNEN/RL vom 27.09.2019
+        2. Bäume in München 2 – Schottergärten unterbinden
+        Antrag Nr. 14-20 / A 06000 von Frau StRin Burkhardt, Hern StR Vogelsgesang und Herrn StR Schall vom 27.09.2019
+        3. Geschotterte Steingärten – Münchner Freiflächengestaltungssatzung konkretisieren
+        Antrag Nr. 14-20 / A 06867 der Stadtratsfraktion SPD vom 27.02.2020
+        4. Ökologisch Garteln I – Steingarten verbieten
+        Antrag Nr. 14-20 / A 06881 der Stadtratsfraktion ÖDP vom 02.03.2020
+        5. Maßnahmen gegen Schottergärten
+        BA-Antrags-Nr. 14-20 / B 06749 des Bezirksausschusses des Stadtbezirkes 21–Pasing-Obermenzing vom 10.09.2019
+        6. Schluss mit lebensfeindlichen Schottergärten auf Münchner Gemarkung
+        BA-Antrags-Nr. 20-26 / B 01858 des Bezirksausschusses des Stadtbezirkes 12–Schwabing-Freimann vom 23.02.2021
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [5674184, 5674704, 5920506, 5646999, 5923461, 6791038, 6510757]
+    vorlagenIds: [6732660]
+-
+    position: 46
+    id: 6922797
+    public: true
+    isHeading: false
+    topNr: 4.1.11.
+    title: |-
+        Baumentfernungen und Gehölzpflegemaßnahmen an Straßen und in öffentlichen Grünflächen
+        hier: Jahresmeldung 2021/2022
+
+        - Information durch das Baureferat -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6922793]
+    vorlagenIds: {  }
+-
+    position: 47
+    id: 6938758
+    public: true
+    isHeading: false
+    topNr: 4.1.12.
+    title: 'Baumbilanz für das Werksviertel'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6736365]
+    vorlagenIds: {  }
+-
+    position: 48
+    id: null
+    public: true
+    isHeading: true
+    topNr: 4.2.
+    title: 'Bereich städtebauliche Entwicklung, Mobilität, Wohnen und Gewerbe, Digitalisierung'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 49
+    id: 6922718
+    public: true
+    isHeading: false
+    topNr: 4.2.1.
+    title: |-
+        (U) Sanierungsgebiet „Neuperlach Nord“
+        Sanierungsgebiet „Neuperlach Zentrum“
+        A) Vorbereitende Untersuchungen im Untersuchungsgebiet Neuperlach
+        B) Beteiligung der Betroffenen und der öffentlichen Aufgabenträger
+        C) Neuperlach: Fit für die Zukunft – Start der Sanierung und Durchführung der Sanierung in mehreren Phasen
+        D) Sanierungssatzung über die förmliche Festlegung des Sanierungsgebietes „Neuperlach Nord“
+        E) Sanierungssatzung über die förmliche Festlegung des Sanierungsgebietes „Neuperlach Zentrum“
+        F) Organisatorische Erfordernisse der Städtebauförderung zur Stadtteilentwicklung
+        G) Personalbedarf im Referat für Stadtplanung und Bauordnung
+        H) Städtebauförderung, Kosten, Finanzierung
+
+        Stadtbezirk 16 ‒ Ramersdorf - Perlach
+        Sitzungsvorlagen Nr. 20-26 / V 03969
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6701420]
+-
+    position: 50
+    id: 6921670
+    public: true
+    isHeading: false
+    topNr: 4.2.2.
+    title: |-
+        (U) Mehrjahresinvestitionsprogramm
+        für die Jahre 2021 - 2025
+
+        Gliederungsziffern
+        3601 Natur- und Denkmalschutz
+        6100 Referat für Stadtplanung und Bauordnung
+        6101 Stadtentwicklungsplanung
+        6110 Lokalbaukommission
+        6130 Stadtplanung
+        6150 Städtebauförderung
+        6200 Förderung Wohnungsbau & Wohnsiedlung
+
+        Stellungnahme zum Antrag des Bezirksausschusses 21
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6704816]
+-
+    position: 51
+    id: 6915832
+    public: true
+    isHeading: false
+    topNr: 4.2.3.
+    title: |-
+        Verfahrensbeschleunigung zur baulichen Umsetzung von Radentscheidmaßnahmen durch das Baureferat
+
+        Sitzungsvorlagen Nr. 20-26 / V 04708
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6915823]
+    vorlagenIds: {  }
+-
+    position: 52
+    id: 6939823
+    public: true
+    isHeading: false
+    topNr: 4.2.4.
+    title: |-
+        (U) 2. Stammstrecke München – Planfeststellungsabschnitt 3 Ost – Bereich westliches Isarufer bis östlich Leuchtenbergring
+
+            a) Neues Planfeststellungsverfahren für den Ostabschnitt PFA 3 Ost
+            b) Planungen des PFA 3 Ost
+            c) Ergebnisse der Überprüfung der Planfeststellungsunterlagen
+               Stellungnahme der Landeshauptstadt München im Anhörungsverfahren
+            d) Weiteres Vorgehen beim Planfeststellungsverfahren
+            e) Anträge
+
+        1. Attraktive Verbindung zwischen Haidhausen und Werksviertel
+        Antrag Nr. 14-20 / A 05971 von der FDP – MUT Stadtratsfraktion vom 25.09.2019, (aufgegriffen im Beschluss des Mobilitätsausschusses und des Ausschusses für Stadtplanung und Bauordnung vom 23.09.2020)
+
+        2. Ostbahnhof: Verlängerung der Personenunterführung West bis ins Werksviertel vertraglich sichern und realisieren
+        Antrag Nr. 20-26 / A 01243 von Herrn StR Fabian Ewald, Herrn StR Jens Luther und Herrn StR Prof. Dr. Hans Theiss vom 25.03.2021
+
+        3. Planmäßige Fertigstellung des barrierefreien Ausbaus der Station Leuchtenberging sicherstellen
+        BA-Antrags-Nr. 20-26 / B 00997 des Bezirksausschusses des Stadtbezirks 14 – Berg am Laim vom 27.10.2020
+
+        4. Auskunft über sämtliche Schattenmaßnahmen zur zweiten S-Bahn-Stammstrecke
+        BA-Antrags-Nr. 20-26 / B 00998 des Bezirksausschusses des Stadtbezirks 14 – Berg am Laim vom 27.10.2020
+
+        5./ 6. / 7.
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6947698, 6948940, 5669509, 6535210, 6302628, 6302600, 6586311, 6868342, 6868448, 6868433]
+    vorlagenIds: [6909577]
+-
+    position: 53
+    id: 6917746
+    public: true
+    isHeading: false
+    topNr: 4.2.5.
+    title: |-
+        Baumaßnahme Strom-Projekt - Berg-am-Laim-Straße
+        Beginn: 47. KW 2021
+        vor. Ende: 08. KW 2022
+
+        - Mitteilung der SWM GmbH -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6917740]
+    vorlagenIds: {  }
+-
+    position: 54
+    id: 6918283
+    public: true
+    isHeading: false
+    topNr: 4.2.6.
+    title: |-
+        (U) Beschleunigung und Verbesserung der Zuverlässigkeit des Buslinienverkehrs
+        Drittes Maßnahmenbündel (2. Teil)
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6900757, 6898522]
+    vorlagenIds: [6868061]
+-
+    position: 55
+    id: 6918285
+    public: true
+    isHeading: false
+    topNr: 4.2.7.
+    title: 'Sichere und behindertengerechte Querung der Heinrich-Wieland-Straße (1)'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6816783]
+    vorlagenIds: {  }
+-
+    position: 56
+    id: 6918348
+    public: true
+    isHeading: false
+    topNr: 4.2.8.
+    title: 'Ideenwettbewerb für den Knoten Bad-Schachener-Straße/Hechtseestraße/Heinrich-Wieland-Straße/St.-Michael-Straße/Hofangerstraße'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6412016]
+    vorlagenIds: {  }
+-
+    position: 57
+    id: 6918760
+    public: true
+    isHeading: false
+    topNr: 4.2.9.
+    title: |-
+        Verkehrszeiche, Poller o.ä. im öffentlichen Raum behindertengerecht gestalten
+
+        - Antrag des BA 17 mit der Bitte um Unterstützung durch die weiteren Bezirksausschüsse - 
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6918594]
+    vorlagenIds: {  }
+-
+    position: 58
+    id: 6943214
+    public: true
+    isHeading: false
+    topNr: 4.2.10.
+    title: |-
+        Aschheimer Straße;
+        Ausweisung eines Zweirichtungsradwegs nördlich der Einmündung Erika-Köth-Straße
+        (U-1738) bis Höhe Piusstraße
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6943210]
+    vorlagenIds: {  }
+-
+    position: 59
+    id: 6938847
+    public: true
+    isHeading: false
+    topNr: 4.2.11.
+    title: 'Oberirdische Beschriftung der U-Bahn-Stationen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6253245]
+    vorlagenIds: {  }
+-
+    position: 60
+    id: 6934449
+    public: true
+    isHeading: false
+    topNr: 4.2.12.
+    title: |-
+        Vollzug des Bundesimmissionschutzgesetzes (BImSchG) und der Geräte- und Maschinenlärmschutzverordnung (32. BImSchV)
+        Ausnahmezulassung gem. § 7 Abs 2 32. BImSchV für Reinigungsarbeiten an U-Bahnhöfen im gesamten Stadtgebiet
+
+        Zeitraum: 01.01.2022 bis 31.12.2022
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 61
+    id: 6937692
+    public: true
+    isHeading: false
+    topNr: 4.2.13.
+    title: |-
+        Vollzug des Bundes-Immissionsschutzgesetzes (BImSchG) und der Geräte und Machinenlärmschutzverordnung (32. BImSchV)
+
+        Ausnahmezulassung gem. § 7 Abs. 2 der 32. BImSchV
+
+        Jahresgenehmigung für das Jahr 2022 für Arbeiten an Anlagen des ÖPNV/Weichenwartung Tram
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6937308]
+    vorlagenIds: {  }
+-
+    position: 62
+    id: 6937671
+    public: true
+    isHeading: false
+    topNr: 4.2.14.
+    title: |-
+        Vollzug des Bundes-Immissionsschutzgesetzes (BImSchG) und der Geräte- und Machinenlärmschutzverordnung (32. BImSchV)
+        Ausnahmezulassung gem. § 7 Abs. 2 der 32. BImSchV
+
+        Jahresgenehmigung 2022 für Reinigungsarbeiten an U-Bahnhöfen im gesamten Stadtgebiet München
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6937330]
+    vorlagenIds: {  }
+-
+    position: 63
+    id: 6942808
+    public: true
+    isHeading: false
+    topNr: 4.2.15.
+    title: |-
+        Aktueller Sachstand bezüglich des Bosch-Werkes in Berg am Laim
+
+        - Antwortschreiben des Referates für Arbeit und Wirtschaft -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: true
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6942804]
+    vorlagenIds: {  }
+-
+    position: 64
+    id: null
+    public: true
+    isHeading: true
+    topNr: 4.3.
+    title: 'Bereich Bildung, Kinderbetreuung, Sport, Kultur'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 65
+    id: 6932242
+    public: true
+    isHeading: false
+    topNr: 4.3.1.
+    title: |-
+        (U) Mehrjahresinvestitionsprogramm (MIP) 2021 - 2025
+
+        1. Investitionsmaßnahmen für Bildungseinrichtungen, Kindertageseinrichtungen und Sportanlagen
+        2. Stellungnahmen der Bezirksausschüsse
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6883957]
+-
+    position: 66
+    id: 6936958
+    public: true
+    isHeading: false
+    topNr: 4.3.2.
+    title: |-
+        (U) Reinigungsstandards in Münchner Schulen und
+        städt. Kindertageseinrichtungen
+        temporäre Anpassung aufgrund der Corona Pandemie
+        sowie zusätzliche Schwimmhallenreinigung im Rahmen
+        der Schwimmoffensive für das Haushaltsjahr 2022 ff.
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 67
+    id: null
+    public: true
+    isHeading: true
+    topNr: 4.4.
+    title: 'Bereich Soziales, Integration, Senioren, Familie'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 68
+    id: 6918325
+    public: true
+    isHeading: false
+    topNr: 4.4.1.
+    title: 'Anpassung des Bolzplatzes an der Kreillerstraße 21 an die Bedürfnisse der Jugendlichen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6816903]
+    vorlagenIds: {  }
+-
+    position: 69
+    id: 6948852
+    public: true
+    isHeading: false
+    topNr: 4.4.2.
+    title: |-
+        Antrag auf Aufstellung eines Corona-Test Pavillons Berg-am-Laim-Straße/Ampfingstraße neben dem Edeka
+
+        - Stellungnahme vorab gemäß § 13 Abs. 2 BA-Satzung i.V.m. § 20 BA-Satzung -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6948842]
+    vorlagenIds: {  }
+-
+    position: 70
+    id: 6948878
+    public: true
+    isHeading: false
+    topNr: 4.4.3.
+    title: |-
+        Zurverfügungstellung von kostenlosen FFP2-Masken
+        und Schnelltests; BA-Antrags-Nr. 20-26 / B 03085 des Bezirksausschusses
+        des Stadtbezirkes 12 – Schwabing-Freimann vom 28.09.2021
+
+        - Antwortschreiben des Direktoriums -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6948874]
+    vorlagenIds: {  }
+-
+    position: 71
+    id: 6921649
+    public: true
+    isHeading: false
+    topNr: 4.4.4.
+    title: |-
+        (U) Haushaltsplan 2022 - Produkt- und zielorientierte Ansätze
+        Zuschussnehmerdatei 2022
+        Vollzug des Haushaltsplanes 2022
+        für den Bereich "Förderung freier Träger"
+        des Stadtjugendamtes
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6947353]
+    vorlagenIds: [6835697]
+-
+    position: 72
+    id: 6921652
+    public: true
+    isHeading: false
+    topNr: 4.4.5.
+    title: |-
+        (U) Haushaltsplan 2022 - Produkt- und zielorientierte Ansätze
+        Zuschussnehmerdatei 2022
+        Vollzug des Haushaltsplanes 2022
+        für den Bereich "Förderung freier Träger"
+        des Amtes für Wohnen und Migration
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6835713]
+-
+    position: 73
+    id: 6921657
+    public: true
+    isHeading: false
+    topNr: 4.4.6.
+    title: |-
+        (U) Haushaltsplan 2022 -Produkt- und zielorientierte Ansätze
+        Zuschussnehmerdatei 2022
+        Vollzug des Haushaltsplanes 2022
+        für den Bereich "Förderung freier Träger"
+        des Amtes für Soziale Sicherung
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6824554]
+-
+    position: 74
+    id: 6921666
+    public: true
+    isHeading: false
+    topNr: 4.4.7.
+    title: |-
+        (U) Haushaltsplan 2022 - Produkt- und Zielorientierte Ansätze
+        Zuschussnehmerdatei 2022
+        Vollzug des Haushaltsplanes 2022
+        für den Bereich "Förderung freie Träger"
+        des Sozialreferats/Gesellschaftliches Engagement/
+        Bürgerschaftliches Engagement (BE),
+        Gesellschaftliches Engagement/Unternehmensengagement (CSR)
+        und Geschäftsleitung/Sozialplanung
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: [6836012]
+-
+    position: 75
+    id: null
+    public: true
+    isHeading: true
+    topNr: 4.5.
+    title: 'Bereich Budget / Organisation'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 76
+    id: 6938658
+    public: true
+    isHeading: false
+    topNr: 4.5.1.
+    title: |-
+        Antrag auf Bestellung städtischer Leistungen:
+        hier: Erläuterungsschilder für Straßen im Werksviertel
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6874809]
+    vorlagenIds: {  }
+-
+    position: 77
+    id: 6917770
+    public: true
+    isHeading: false
+    topNr: 4.5.2.
+    title: |-
+        Mehrjahresinvestitionsprogramm - Entwurf für die Jahre 2021-2025
+
+        - Mitteilung durch die Stadtkämmerei -
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6917766]
+    vorlagenIds: {  }
+-
+    position: 78
+    id: 6922103
+    public: true
+    isHeading: false
+    topNr: 4.5.3.
+    title: 'Infoschreiben BA 07 / 2021: Durchführung des Sitzungsbetriebs bei den Bezirksausschüsse'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6922092]
+    vorlagenIds: {  }
+-
+    position: 79
+    id: 6943800
+    public: true
+    isHeading: false
+    topNr: 4.5.4.
+    title: |-
+        Informationsschreiben BA 08/2021:
+        Durchführung des Sitzungsbetriebs bei den Bezirksausschüssen
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: [6943794]
+    vorlagenIds: {  }
+-
+    position: 80
+    id: null
+    public: true
+    isHeading: true
+    topNr: 4.6.
+    title: Baumschutz
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 81
+    id: null
+    public: true
+    isHeading: true
+    topNr: '5.'
+    title: 'Termine, Ankündigungen, Sonstiges, Verschiedenes'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 82
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.1.
+    title: 'Termine der UA - Sitzungen'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 83
+    id: null
+    public: true
+    isHeading: false
+    topNr: 5.1.1.
+    title: 'Aufgrund der aktuellen Corona-Lage, finden die Sitzungen der Unterausschüsse weitgehend online statt. Bitte wenden Sie sich an die BA-Geschäftsstelle, wenn Sie an einer Sitzung teilnehmen möchten oder Fragen zu einem Tagesordnungspunkt haben. '
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 84
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.1.1
+    title: 'Bereich Planung, Bauvorhaben und Baumschutz, Umweltschutz'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 85
+    id: null
+    public: true
+    isHeading: false
+    topNr: 5.1.1.1.
+    title: 'Am Dienstag, den 14.2021, um 19.00 Uhr, über Webex (online).'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 86
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.1.2
+    title: 'Bereich städtebauliche Entwicklung, Mobilität, Wohnen und Gewerbe, Digitalisierung'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 87
+    id: null
+    public: true
+    isHeading: false
+    topNr: 5.1.2.1.
+    title: 'Am Montag, den 13.12.2021, um 19.15 Uhr, voraussichtlich in der Mensa der Ludwig-Thoma-Realschule, Fehwiesenstr. 118.'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 88
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.1.3
+    title: 'Bereich Bildung, Kinderbetreuung, Sport, Kultur'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 89
+    id: null
+    public: true
+    isHeading: false
+    topNr: 5.1.3.1.
+    title: 'Am Dienstag, den 14.12.2021, um 18.00 Uhr, voraussichtlich im Technischen Rathaus (Baureferat), Raum 0.409.'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 90
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.1.4
+    title: 'Bereich Soziales, Integration, Senioren, Familie'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 91
+    id: null
+    public: true
+    isHeading: false
+    topNr: 5.1.4.1.
+    title: 'Am Donnerstag, den 16.12.2021, um 18.30 Uhr, über Webex (online).'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 92
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.1.5
+    title: 'Bereich Budget / Organisation'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 93
+    id: null
+    public: true
+    isHeading: false
+    topNr: 5.1.5.1.
+    title: 'Am Montag, den 13.12.2021, um 18.30 Uhr, über Webex (online).'
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 94
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.2.
+    title: Ankündigungen
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 95
+    id: null
+    public: true
+    isHeading: true
+    topNr: 5.3.
+    title: Sonstiges/Verschiedenes
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }

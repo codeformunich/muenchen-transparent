@@ -21,29 +21,38 @@ $this->pageTitle = "Termine";
 	<div id='calendar'></div>
     <?php $this->load_calendar = true; ?>
 	<script>
-		$(function () {
-			$('#calendar').fullCalendar({
-				header: {
-					left: 'prev,next today',
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'de',
+                headerToolbar: {
+					start: 'prev,next today',
 					center: 'title',
-					right: 'month,basicWeek,basicDay'
+					end: 'dayGridMonth,dayGridWeek'
 				},
-				eventLimit: true,
-				lang: $("html").attr("lang"),
-				weekNumbers: true,
-				timeFormat: 'H:mm',
-				weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
-				eventSources: [
+                eventDisplay: 'block',
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: false
+                },
+                weekends: <?=($fullcalendar_struct["has_weekend"] ? "true" : "false")?>,
+                eventSources: [
 					"<?=CHtml::encode(Yii::app()->createUrl("termine/fullCalendarFeed"))?>"
 				],
-				eventRender: function (event, element) {
-					element.attr("title", event["title"]);
-					if (event["abgesagt"]) {
-						element.addClass("abgesagt");
-					}
+                eventClassNames: function (arg) {
+                    if (arg.event.extendedProps.canceled) {
+                        return ['canceled'];
+                    } else {
+                        return [];
+                    }
 				}
-			})
-		})
+            });
+
+            calendar.render();
+        });
 	</script>
 </section>
 

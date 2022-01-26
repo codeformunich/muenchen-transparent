@@ -30,8 +30,7 @@ $this->pageTitle = "So funktioniert Stadtpolitik";
         </div>
 
         <div class="col col-md-6">
-            <a href="<?= CHtml::encode(Yii::app()->createUrl("infos/stadtrecht")) ?>"
-               class="btn btn-success">
+            <a href="https://stadt.muenchen.de/rathaus/stadtrecht/alphabetisch.html" class="btn btn-success" target="_blank">
                 <h2><span class="glyphicon glyphicon-paragraph">§</span> Stadtrecht</h2>
 
                 <div class="description">

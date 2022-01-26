@@ -14,7 +14,6 @@
  * @var float $geo_lat
  * @var float $radius
  * @var OrtGeo $naechster_ort
- * @var Rathausumschau[] $rathausumschauen
  * @var int $zeige_ba_orte
  * @var bool $zeige_jahr
  */
@@ -36,7 +35,6 @@ if (isset($title) && $title !== null) {
     $erkl_str = "Stadtratsdokumente: etwa {$radius}m um \"" . CHtml::encode($naechster_ort->ort) . "\"";
 }
 
-if (!isset($rathausumschauen)) $rathausumschauen = [];
 if (!isset($zeige_ba_orte)) $zeige_ba_orte = 0;
 
 $datum_nav = ((isset($neuere_url_std) && $neuere_url_std !== null) || (isset($aeltere_url_std) && $aeltere_url_std !== null));
@@ -86,10 +84,6 @@ if (count($antraege) > 0) {
     $akt_datum = null;
 
     $by_date = array();
-    foreach ($rathausumschauen as $ru) {
-        if (!isset($by_date[$ru->datum])) $by_date[$ru->datum] = array();
-        $by_date[$ru->datum][] = $ru;
-    }
     foreach ($antraege as $ant) {
         if (!method_exists($ant, "getName")) {
             echo '<li class="panel panel-danger">
@@ -103,60 +97,32 @@ if (count($antraege) > 0) {
     krsort($by_date);
 
     foreach ($by_date as $date => $entries) foreach ($entries as $entry) {
-        if (is_a($entry, "Rathausumschau")) {
-            /** @var Rathausumschau $entry */
-            echo '<li class="panel panel-success">
-            <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"><span>';
-            echo CHtml::encode($entry->getName(true)) . '</span></a></div>';
-            echo '<div class="panel-body">';
-
-            echo "<div class='metainformationen_antraege'>";
-            $ts = RISTools::date_iso2timestamp($entry->datum);
-            if (date("Y") == date("Y", $ts)) {
-                echo date("d.m.", $ts);
-            } else {
-                echo date("d.m.Y", $ts);
-            }
-            echo "</div>";
-
-            $inhalt = $entry->inhaltsverzeichnis();
-            if (count($inhalt) > 0) echo '<ul class="toc">';
-            foreach ($inhalt as $inh) {
-                if ($inh["link"]) echo '<li>' . CHtml::link($inh["titel"], $inh["link"]) . '</li>';
-                else echo '<li>' . CHtml::encode($inh["titel"]) . '</li>';
-            }
-            if (count($inhalt) > 0) echo '</ul>';
-
-            echo '</div>';
-            echo '</li>';
-        } else {
-            /** @var Antrag $entry */
-            $doklist = "";
-            foreach ($entry->dokumente as $dokument) {
-                $dokurl = $dokument->getLink();
-                $doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
-                if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
-                $doklist .= ">" . CHtml::encode($dokument->getName(false)) . "</a></li>";
-                $dat = RISTools::date_iso2timestamp($dokument->getDate());
-            }
-
-            $titel = $entry->getName(true);
-            echo '<li class="panel panel-primary">
-            <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"';
-            if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
-            echo '><span>';
-            echo CHtml::encode($titel) . '</span></a></div>';
-            echo '<div class="panel-body">';
-
-            $this->renderPartial("/antraege/metainformationen", array(
-                "antrag" => $entry,
-                "zeige_ba_orte" => $zeige_ba_orte
-            ));
-
-            echo "<ul class='dokumente'>";
-            echo $doklist;
-            echo "</ul></div></li>\n";
+        /** @var Antrag $entry */
+        $doklist = "";
+        foreach ($entry->dokumente as $dokument) {
+            $dokurl = $dokument->getLink();
+            $doklist .= "<li><a href='" . CHtml::encode($dokurl) . "'";
+            if (substr($dokurl, strlen($dokurl) - 3) == "pdf") $doklist .= ' class="pdf"';
+            $doklist .= ">" . CHtml::encode($dokument->getName(false)) . "</a></li>";
+            $dat = RISTools::date_iso2timestamp($dokument->getDate());
         }
+
+        $titel = $entry->getName(true);
+        echo '<li class="panel panel-primary">
+        <div class="panel-heading"><a href="' . CHtml::encode($entry->getLink()) . '"';
+        if (mb_strlen($titel) > 110) echo ' title="' . CHtml::encode($titel) . '"';
+        echo '><span>';
+        echo CHtml::encode($titel) . '</span></a></div>';
+        echo '<div class="panel-body">';
+
+        $this->renderPartial("/antraege/metainformationen", array(
+            "antrag" => $entry,
+            "zeige_ba_orte" => $zeige_ba_orte
+        ));
+
+        echo "<ul class='dokumente'>";
+        echo $doklist;
+        echo "</ul></div></li>\n";
     }
     echo '</ul>';
 }

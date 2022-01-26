@@ -143,6 +143,8 @@ commit;
 /*!40000 ALTER TABLE `referate` DISABLE KEYS */;
 set autocommit=0;
 INSERT INTO `referate` VALUES (1,'Referat für städtische Aufgaben','aufg','Münchnerstr. 1','12345','München','aufg@example.com','089132456','http://aufg.example.com','Verantwortlich für Staädtische Aufgaben',1,'2016-05-02 17:53:09','2016-05-02 17:53:09');
+INSERT INTO `referate` VALUES (7,'Referat für Arbeit und Wirtschaft','wirtschaft','Münchnerstr. 1','12345','München','aufg@example.com','089132456','http://aufg.example.com','',1,'2016-05-02 17:53:09','2016-05-02 17:53:09');
+INSERT INTO `referate` VALUES (4769009,'IT-Referat','it','','','','it@example.com','089132456','http://it.example.com','',1,'2016-05-02 17:53:09','2016-05-02 17:53:09');
 /*!40000 ALTER TABLE `referate` ENABLE KEYS */;
 commit;
 

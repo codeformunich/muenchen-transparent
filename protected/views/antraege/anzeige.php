@@ -7,7 +7,6 @@
 
 $this->pageTitle         = $antrag->getName(true);
 $this->load_selectize_js = true;
-$this->load_shariff      = true;
 
 $personen = [
     AntragPerson::$TYP_GESTELLT_VON => [],
@@ -65,10 +64,10 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
             <div class="original_ris_link"><?php
                 echo CHtml::link("<span class='fontello-right-open'></span>Original-Seite im RIS", $antrag->getSourceLink());
                 ?></div>
-            <h1 class="small"><?php echo "<strong>" . Yii::t('t', Antrag::$TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
+            <h1 class="small"><?php echo "<strong>" . Yii::t('t', Antrag::TYPEN_ALLE[$antrag->typ], 1) . "</strong>";
                 if ($antrag->antrag_typ != "") echo " (" . CHtml::encode($antrag->antrag_typ) . ")"; ?></h1>
 
-            <p style="font-size: 18px;"><?= CHtml::encode($name) ?></p>
+            <p style="font-size: 18px;"><?= nl2br(CHtml::encode($name)) ?></p>
 
             <table class="table antragsdaten">
                 <tbody>
@@ -231,7 +230,7 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     echo CHtml::encode($dokument->getDisplayDate()) . ": " . CHtml::link($dokument->getName(false), $dokument->getLink());
                     ?>
                     <a class="fontello-download antrag-herunterladen"
-                       href="<?= CHtml::encode($dokument->getLinkZumDownload()) ?>" 
+                       href="<?= CHtml::encode($dokument->getDownloadLink()) ?>"
                        download="<?= $dokument->antrag_id ?> - <?= CHtml::encode($dokument->getName())?>.pdf"
                        title="Herunterladen: <?= CHtml::encode($dokument->getName()) ?>">
                     </a> <?php
@@ -287,10 +286,18 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                 /** @var IRISItem[] $vorgang_items */
                 if ($antrag->vorgang) {
                     $items = [];
+                    $shownIds = [];
+                    foreach ($antrag->antrag2vorlagen as $antrag) {
+                        $shownIds[] = $antrag->id;
+                    }
+                    foreach ($antrag->vorlage2antraege as $antrag) {
+                        $shownIds[] = $antrag->id;
+                    }
                     foreach ($antrag->vorgang->getRISItemsByDate() as $item) {
                         // Der gerade angezeigte Antrag und seine Dokumente überspringen, sodass sie nicht als verwandte Seiten angezeigt werden
-                        if (is_a($item, "Antrag") && $item->id == $antrag->id) continue;
-                        if (is_a($item, "Dokument")) continue;
+                        if (is_a($item, Antrag::class) && $item->id == $antrag->id) continue;
+                        if (is_a($item, Antrag::class) && in_array($antrag->id, $shownIds)) continue;
+                        if (is_a($item, Dokument::class)) continue;
                         
                         $items[] = $item;
                     }

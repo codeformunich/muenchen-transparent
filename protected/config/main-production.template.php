@@ -5,53 +5,49 @@ define("SITE_BASE_URL", "https://www.muenchen-transparent.de");
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 
 define("RIS_DATA_DIR", "/data/ris3-data/");
-define("RIS_OMNIPAGE_DIR", "/data/nuance/");
 define("PATH_IDENTIFY", "/usr/bin/identify");
 define("PATH_CONVERT", "/usr/bin/convert");
 define("PATH_TESSERACT", "/usr/local/bin/tesseract");
 define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
-define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-2.0.17.jar");
+define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-2.0.25.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
+define("PATH_CHROME_BROWSER", "/usr/bin/google-chrome");
 
 define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");
 define("PATH_PDF_RU", RIS_DATA_DIR . "data/ru-pdf/");
 define("TMP_PATH", "/tmp/");
 define("LOG_PATH", RIS_DATA_DIR . "logs/");
 define("RU_PDF_PATH", RIS_DATA_DIR . "data/ru-pdf/");
-define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR . "ocr-todo/");
-define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR . "ocr-dst/");
-define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", TMP_PATH . "/email.log");
 
 // Konstanten, die das RIS betreffen
-define("RIS_URL_PREFIX", "https://www.ris-muenchen.de");
-define("RIS_BASE_URL", RIS_URL_PREFIX . "/RII/RII/");
-define("RIS_BA_BASE_URL",  RIS_URL_PREFIX . "/RII/BA-RII/");
-define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");
+define("RIS_URL_PREFIX", "https://risi.muenchen.de/risi/");
+define("RIS_PDF_PREFIX", "https://risi.muenchen.de/risi/dokument/v/");
+define("RIS_BASE_URL", RIS_URL_PREFIX);
+define("RIS_BA_BASE_URL",  RIS_URL_PREFIX);
 define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 
 define("OPARL_10_ITEMS_PER_PAGE", 100);
 
 define("SEED_KEY", "RANDOMKEY");
-define("MAILGUN_DOMAIN", "");
-define("MAILGUN_API_KEY", "");
 define("NO_ERROR_MAIL", false);
 
 require_once(__DIR__ . "/constants.php");
 require_once(__DIR__ . "/urls.php");
 
-$GLOBALS["SOLR_CONFIG"] = array(
-    'endpoint' => array(
-        'localhost' => array(
-            'host'    => '127.0.0.1',
-            'port'    => 8983,
-            'path'    => '/solr/muenchen-transparent',
+$GLOBALS["SOLR_CONFIG"] = [
+    'endpoint' => [
+        'localhost' => [
+            'host' => '127.0.0.1',
+            'port' => 8983,
+            'path' => '/',
+            'collection' => 'collection1',
             'timeout' => 300,
-        )
-    )
-);
+        ]
+    ]
+];
 
 function ris_intern_address2geo($land, $plz, $ort, $strasse)
 {

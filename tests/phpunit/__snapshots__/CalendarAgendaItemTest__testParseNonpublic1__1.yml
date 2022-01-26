@@ -1,0 +1,104 @@
+-
+    position: 0
+    id: null
+    public: false
+    isHeading: true
+    topNr: ''
+    title: Tagesordnung
+    hasDisclosure: false
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 1
+    id: 6914190
+    public: false
+    isHeading: false
+    topNr: '1.'
+    title: |-
+        Städtische Wohnungsbaugesellschaften
+        Zusammenführung der städtischen Wohnungsbaugesellschaften
+        Steuerung des Zusammenführungsprozesses
+    hasDisclosure: true
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 2
+    id: 6894347
+    public: false
+    isHeading: false
+    topNr: '2.'
+    title: |-
+        Beteiligungssteuerung
+
+        Ziele 2022 - Berichte 2021
+        für GWG und GEWOFAG jeweils mit Unterbeteiligungen
+        Abweichungsbericht Oktober 2021
+    hasDisclosure: true
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 3
+    id: 6894335
+    public: false
+    isHeading: false
+    topNr: '3.'
+    title: |-
+        Kommission für Stadtgestaltung
+        Ausscheiden und Neuberufung
+        von Mitgliedern
+    hasDisclosure: true
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 4
+    id: 6908162
+    public: false
+    isHeading: false
+    topNr: '4.'
+    title: |-
+        Münchner Gesellschaft für Stadterneuerung mbH (MGS)
+        Sanierungstätigkeit ab 2022;
+        Stundensätze der MGS für 2022
+        Evaluierung der Neuausrichtung der MGS
+        (Zwischenstand)
+    hasDisclosure: true
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }
+-
+    position: 5
+    id: 6912195
+    public: false
+    isHeading: false
+    topNr: '5.'
+    title: |-
+        Auflösung des Treuhandvermögens der
+        Münchner Gesellschaft für Stadterneuerung mbH:
+
+        Verkauf von Treuhandgrundstücken
+    hasDisclosure: true
+    disclosure: null
+    hasDecision: false
+    decision: null
+    decisionDocument: null
+    antraegeIds: {  }
+    vorlagenIds: {  }

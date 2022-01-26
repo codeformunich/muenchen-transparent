@@ -1,0 +1,44 @@
+id: 6006354
+antragsnummer: 20-26/V00419
+status: 'Endgültiger Beschluss'
+title: |-
+    Sanierung der Martin-Behaim-Straße
+
+    Empfehlung Nr. 14-20 / E 03090
+    der Bürgerversammlung des Stadtbezirkes 7
+    Sendling-Westpark
+    am 19.11.2019
+
+    Sanierung der Martin-Behaim-Straße zwischen
+    Fugger- und Pirkheimerstraße
+
+    BA-Antrag Nr. 14-20 / B 05988
+    des Bezirksausschusses des Stadtbezirkes 7
+    Sendling-Westpark vom 26.03.2019
+kurzinfo: |-
+    Von der Sachbehandlung - laufende Angelegenheit (§ 22 GeschO) - wird Kenntnis
+    genommen.
+    Die Martin-Behaim-Straße wird zwischen der Fugger- und Pirkheimerstraße saniert
+    und ein provisorischer Gehweg auf der Westseite entlang der Grünanlage bis zur
+    Pirkheimerstraße errichtet.
+    Einem Rückbau der Gehbahn zur Errichtung von weiteren Parkplätzen kann nicht
+    entsprochen werden.
+hatAntragsliste: true
+wahlperiode: 2020-2026
+freigabe: '2020-05-18T00:00:00+02:00'
+art: 'Öffentlicher Vorgang'
+typ: 'Beschlussvorlage BA'
+referatId: 2
+referatName: Baureferat
+referentIn: 'Berufsm. StRin Hingerl'
+baNr: 7
+baGremiumId: 216
+baName: Sendling-Westpark
+dokumentLinks:
+    - { title: Beschlussvorlage, id: 6007483, url: /dokument/v/6007483, filename: Beschlussvorlage.pdf }
+    - { title: 'Anlage 1, Originalantrag, Antrag Nr. 14-20 / E 03090', id: 6007489, url: /dokument/v/6007489, filename: 'Anlage 1, Originalantrag, Antrag Nr. 14-20 / E 03090.pdf' }
+    - { title: 'Anlage 2, Originalantrag, BA-Antrag Nr. 14-20 / B 05988', id: 6007492, url: /dokument/v/6007492, filename: 'Anlage 2, Originalantrag, BA-Antrag Nr. 14-20 / B 05988.pdf' }
+    - { title: 'Anlage 3, Lageplan', id: 6007494, url: /dokument/v/6007494, filename: 'Anlage 3, Lageplan.pdf' }
+ergebnisse:
+    - { sitzungId: 5821257, sitzungAm: '2020-06-23T00:00:00+02:00' }
+antraege: {  }

@@ -12,12 +12,10 @@
  * @var string $aeltere_url_ajax
  * @var string $aeltere_url_std
  * @var array $statistiken
- * @var Rathausumschau[] $rathausumschauen
  */
 
 $this->pageTitle = Yii::app()->name;
 $ba_links = [];
-/** @var Bezirksausschuss[] $bas */
 $bas = Bezirksausschuss::model()->alleOhneStadtrat();
 foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
 
@@ -170,7 +168,6 @@ foreach ($bas as $ba) $ba_links["ba_" . $ba->ba_nr] = $ba->getLink();
             "aeltere_url_ajax"  => null,
             "aeltere_url_std"   => null,
             "weiter_links_oben" => $explizites_datum,
-            "rathausumschauen"  => $rathausumschauen,
         ));
         $this->renderPartial("index_antraege_liste", array(
             "title"             => "Sonstige neue Dokumente",

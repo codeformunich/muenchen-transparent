@@ -1,7 +1,5 @@
 <?php
 
-//define("VERYFAST", true);
-
 class EMailTestCommand extends CConsoleCommand
 {
     public function run($args)

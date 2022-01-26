@@ -4,18 +4,14 @@ class StrassenEinlesenCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        for ($jahr = 2009; $jahr <= 2019; $jahr++) {
-            if ($jahr >= 2014) {
-                $url = 'https://www.muenchen.de/rathaus/Stadtverwaltung/Kommunalreferat/geodatenservice/strassennamen/' . $jahr . '.html';
-            } else {
-                $url = 'https://www.muenchen.de/rathaus/Stadtverwaltung/Kommunalreferat/geodatenservice/strassennamen/Strassenneubenennung-' . $jahr . '.html';
-            }
+        for ($jahr = 2018; $jahr <= 2021; $jahr++) {
+            $url = 'https://stadt.muenchen.de/infos/strassenneubenennungen' . $jahr . '-uebersicht.html';
             $txt = RISTools::load_file($url);
 
-            $txt = explode("begin: lay-teaser", $txt);
-            $txt = explode("end: mod-list", $txt[1]);
+            $txt = explode('<ul class="m-linklist__list">', $txt);
+            $txt = explode("</ul>", $txt[1]);
 
-            preg_match_all("/<a[^<]+_self\">(?<strasse>[^<]*) <svg/siu", $txt[0], $matches);
+            preg_match_all('/<span class="m-linklist-element__title">(?<strasse>[^<]*)<\/span>/siu', $txt[0], $matches);
             foreach ($matches['strasse'] as $strasse) {
                 $strassenname = preg_replace("/(s)tra(ß|ss)e$/siu", "\\1tr.", trim(strip_tags($strasse)));
                 $plz = '';

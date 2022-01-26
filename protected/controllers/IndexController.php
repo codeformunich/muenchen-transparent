@@ -93,7 +93,6 @@ class IndexController extends RISBaseController
             $select->setRows(100);
             $select->addSort('sort_datum', $select::SORT_DESC);
 
-            /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
             $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
             $hl->setSimplePrefix('<b>');
@@ -445,7 +444,7 @@ class IndexController extends RISBaseController
                 $facet_option['count'] = $count;
 
                 if ($facet_field_name[0] == 'antrag_typ') {
-                    if (isset(Antrag::$TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::$TYPEN_ALLE[$value])[1];
+                    if (isset(Antrag::TYPEN_ALLE[$value])) $facet_option['name'] = explode("|", Antrag::TYPEN_ALLE[$value])[1];
                     else if ($value == "stadtrat_termin") $facet_option['name'] = 'Stadtrats-Termin';
                     else if ($value == "ba_termin") $facet_option['name'] = 'BA-Termin';
                     else $facet_option['name'] = $value;
@@ -523,6 +522,7 @@ class IndexController extends RISBaseController
         try {
             $ergebnisse = $solr->select($select);
         } catch (Exception $e) {
+
             $this->render('error', ["code" => 500, "message" => "Ein Fehler bei der Suche ist aufgetreten"]);
             Yii::app()->end(500);
             die();
@@ -632,7 +632,6 @@ class IndexController extends RISBaseController
                 $filter_query->addTag($filter_query->getKey());
             }
 
-            /** @var Solarium\QueryType\Select\Query\Component\Highlighting\Highlighting $hl */
             $hl = $select->getHighlighting();
             $hl->setFields(['text', 'text_ocr', 'antrag_betreff']);
             $hl->setSimplePrefix('<b>');
@@ -649,8 +648,8 @@ class IndexController extends RISBaseController
             foreach ($facet_field_namess as $facet_field_names) {
                 $facetSet
                     ->createFacetField($facet_field_names[0])
-                    ->setField($facet_field_names[0])
-                    ->setExcludes([$facet_field_names[0]]);
+                    ->setField($facet_field_names[0]);
+                    //->setExcludes([$facet_field_names[0]]);
             }
 
             try {
@@ -790,6 +789,7 @@ class IndexController extends RISBaseController
      */
     public function actionBa($ba_nr, $datum_max = "")
     {
+        $ba_nr = intval($ba_nr);
         $this->top_menu = "ba";
 
         $tage_zukunft       = 60;
@@ -797,12 +797,14 @@ class IndexController extends RISBaseController
 
         $antraege_data = $this->ba_dokumente_nach_datum($ba_nr, $datum_max);
 
-        $termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d 00:00:00", time() + $tage_zukunft * 24 * 3600), true)->findAll(['order' => 'termin DESC']);
+        $dateTo = (new \DateTime())->setTime(0, 0, 0);
+        $dateFrom = (clone $dateTo)->modify('-24 days');
+        $termine          = Termin::model()->termine_stadtrat_zeitraum($ba_nr, $dateFrom, $dateTo, true)->findAll(['order' => 'termin DESC']);
         $termin_dokumente = Termin::model()->neueste_ba_dokumente($ba_nr, date("Y-m-d 00:00:00", time() - $tage_vergangenheit * 24 * 3600), date("Y-m-d H:i:s", time()), false)->findAll();
         $termine          = Termin::groupAppointments($termine);
 
         /** @var Termin[] $bvs */
-        $bvs     = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::$TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC", "condition" => "termin > NOW()"]);
+        $bvs     = Termin::model()->findAllByAttributes(["ba_nr" => $ba_nr, "typ" => Termin::TYP_BUERGERVERSAMMLUNG], ["order" => "termin DESC", "condition" => "termin > NOW()"]);
         $bvs_arr = [];
         foreach ($bvs as $bv) $bvs_arr[] = $bv->toArr();
 
@@ -855,22 +857,14 @@ class IndexController extends RISBaseController
         if ($heute) $i = 1;
         else        $i = 0;
 
-        $rus = [];
-
         do {
             if ($heute) {
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d H:i:s");
-                if ($i == 1) {
-                    $ru = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d")]);
-                    if ($ru) $rus[] = $ru;
-                }
             } else {
                 $datum_von = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 00:00:00";
                 $datum_bis = date("Y-m-d", $date_ts - 3600 * 24 * $i) . " 23:59:59";
             }
-            $ru = Rathausumschau::model()->findByAttributes(["datum" => date("Y-m-d", $date_ts - 3600 * 24 * $i)]);
-            if ($ru) $rus[] = $ru;
             /** @var array|Antrag[] $antraege */
             $antraege          = Antrag::model()->neueste_stadtratsantragsdokumente(null, $datum_von, $datum_bis)->findAll();
             $antraege_stadtrat = $antraege_sonstige = [];
@@ -880,7 +874,7 @@ class IndexController extends RISBaseController
             }
             $i++;
         } while (count($antraege) == 0 && $i < 10);
-        return [$antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis];
+        return [$antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis];
     }
 
 
@@ -890,7 +884,7 @@ class IndexController extends RISBaseController
     public function actionStadtratAntraegeAjaxDatum($datum_max)
     {
         $time = RISTools::date_iso2timestamp($datum_max);
-        list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($time);
+        list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($time);
         list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
 
         $gestern = date("Y-m-d", RISTools::date_iso2timestamp($datum_von . " 00:00:00") - 1);
@@ -904,7 +898,6 @@ class IndexController extends RISBaseController
             "antraege"          => $antraege,
             "datum"             => $datum_von,
             "weiter_links_oben" => true,
-            "rathausumschauen"  => $rus,
         ]);
 
         Header("Content-Type: application/json; charset=UTF-8");
@@ -928,9 +921,9 @@ class IndexController extends RISBaseController
 
         if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/siu", $datum_max)) {
             $ts = RISTools::date_iso2timestamp($datum_max);
-            list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($ts);
+            list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate($ts);
         } else {
-            list($antraege, $antraege_stadtrat, $antraege_sonstige, $rus, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate(time());
+            list($antraege, $antraege_stadtrat, $antraege_sonstige, $datum_von, $datum_bis) = $this->getStadtratsDokumenteByDate(time());
         }
 
         list($geodata, $geodata_overflow) = $this->antraege2geodata($antraege);
@@ -948,7 +941,6 @@ class IndexController extends RISBaseController
             "datum"             => $datum_von,
             "explizites_datum"  => ($datum_max != ""),
             "statistiken"       => RISMetadaten::getStats(),
-            "rathausumschauen"  => $rus,
         ]);
     }
 
@@ -1035,25 +1027,6 @@ class IndexController extends RISBaseController
                 "dokument" => $dokument
             ]);
         }
-    }
-
-
-    /**
-     * @param string $url
-     */
-    public function actionShariffData($url)
-    {
-        Header("Content-Type: application/json; charset=UTF-8");
-        $shariff = new \Heise\Shariff\Backend([
-            "domains"   => [$_SERVER["HTTP_HOST"]],
-            "services" => ["Facebook", "GooglePlus"],
-            "cache"    => [
-                "ttl"      => 60,
-                "cacheDir" => TMP_PATH,
-            ]
-        ]);
-        echo json_encode($shariff->get($url));
-        Yii::app()->end();
     }
 
     public function actionBaListe()

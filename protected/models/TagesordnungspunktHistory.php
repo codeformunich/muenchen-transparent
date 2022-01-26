@@ -108,9 +108,9 @@ class TagesordnungspunktHistory extends CActiveRecord
         if ($kurzfassung) {
             $betreff = str_replace(["\n", "\r"], [" ", " "], $this->top_betreff);
             $x       = explode(" Antrag Nr.", $betreff);
-            return RISTools::korrigiereTitelZeichen($x[0]);
+            return RISTools::normalizeTitle($x[0]);
         } else {
-            return RISTools::korrigiereTitelZeichen($this->top_betreff);
+            return RISTools::normalizeTitle($this->top_betreff);
         }
     }
 }

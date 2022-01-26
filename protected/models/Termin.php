@@ -30,9 +30,11 @@
  */
 class Termin extends CActiveRecord implements IRISItemHasDocuments
 {
-    public static $TYP_AUTO = 0;
-    public static $TYP_BUERGERVERSAMMLUNG = 1;
-    public static $TYPEN_ALLE = [
+    public const CANCELED_STR = 'Entfällt';
+
+    public const TYP_AUTO = 0;
+    public const TYP_BUERGERVERSAMMLUNG = 1;
+    public const TYPEN_ALLE = [
         0 => "Automatisch vom RIS",
         1 => "BürgerInnenversammlung",
     ];
@@ -135,30 +137,21 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
 
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("termine/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         if ($this->ba_nr > 0) return "BA-Termin";
         else return "Stadtratstermin";
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
-        if ($this->typ == static::$TYP_BUERGERVERSAMMLUNG) return "BürgerInnenversammlung";
+        if ($this->typ == static::TYP_BUERGERVERSAMMLUNG) return "Bürger*innenversammlung";
 
         if (!$this->gremium) return "Unbekanntes Gremium";
 
@@ -166,40 +159,25 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         else return $this->gremium->name . " (" . $this->termin . ")";
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->datum_letzte_aenderung;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSourceLink()
+    public function getSourceLink(): string
     {
-        if ($this->ba_nr > 0) return RIS_BA_BASE_URL . "ba_sitzungen_details.jsp?Id=" . $this->id;
-        else return RIS_BASE_URL . "ris_sitzung_detail.jsp?risid=" . $this->id;
+        return RIS_BASE_URL . "sitzung/detail/" . $this->id;
     }
 
-
-    /**
-     * @param null|int $ba_nr
-     * @param string $zeit_von
-     * @param string $zeit_bis
-     * @param bool $aufsteigend
-     * @param int $limit
-     * @return $this
-     */
-    public function termine_stadtrat_zeitraum($ba_nr, $zeit_von, $zeit_bis, $aufsteigend = true, $limit = 0)
+    public function termine_stadtrat_zeitraum(?int $ba_nr, \DateTime $dateFrom, \DateTime $dateTo, bool $asc = true, int $limit = 0)
     {
         $ba_sql = ($ba_nr > 0 ? " = " . IntVal($ba_nr) : " IS NULL ");
         $params = [
-            'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin.typ = ' . IntVal(Termin::$TYP_AUTO) .
-                ' AND termin >= "' . addslashes($zeit_von) . '" AND termin <= "' . addslashes($zeit_bis) . '"',
-            'order'     => 'termin ' . ($aufsteigend ? "ASC" : "DESC"),
+            'condition' => 'termin.ba_nr ' . $ba_sql . ' AND termin.typ = ' . IntVal(Termin::TYP_AUTO) .
+                ' AND termin >= "' . addslashes($dateFrom->format('Y-m-d')) . ' 00:00:00"' .
+                ' AND termin <= "' . addslashes($dateTo->format('Y-m-d')) . ' 23:59:59"',
+            'order'     => 'termin ' . ($asc ? "ASC" : "DESC"),
             'with'      => ["gremium"],
             'alias'     => 'termin'
         ];
@@ -267,37 +245,19 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
     /**
      * @return Tagesordnungspunkt[]
      */
-    public function tagesordnungspunkteSortiert()
+    public function tagesordnungspunkteSortiert(): array
     {
         $tagesordnungspunkte = $this->tagesordnungspunkte;
-        usort($tagesordnungspunkte, function ($ergebnis1, $ergebnis2) {
-            /** @var Tagesordnungspunkt $ergebnis1 */
-            /** @var Tagesordnungspunkt $ergebnis2 */
-
+        usort($tagesordnungspunkte, function (Tagesordnungspunkt $ergebnis1, Tagesordnungspunkt $ergebnis2) {
             if ($ergebnis1->status == "geheim" && $ergebnis2->status != "geheim") return 1;
             if ($ergebnis1->status != "geheim" && $ergebnis2->status == "geheim") return -1;
-
-            $nr1 = explode(".", $ergebnis1->top_nr);
-            $nr2 = explode(".", $ergebnis2->top_nr);
-            if ($nr1[0] > $nr2[0]) return 1;
-            if ($nr1[0] < $nr2[0]) return -1;
-            if (count($nr1) == 1 && count($nr2) == 1) return 0;
-            if (count($nr1) >= 2 && count($nr2) == 1) return 1;
-            if (count($nr1) == 1 && count($nr2) >= 2) return -1;
-            if ($nr1[1] > $nr2[1]) return 1;
-            if ($nr1[1] < $nr2[1]) return -1;
-            if (count($nr1) == 2 && count($nr2) == 2) return 0;
-            if (count($nr1) >= 3 && count($nr2) == 2) return 1;
-            if (count($nr1) == 2 && count($nr2) >= 3) return -1;
-            if ($nr1[2] > $nr2[2]) return 1;
-            if ($nr1[2] < $nr2[2]) return -1;
-            return 0;
+            return $ergebnis1->top_pos <=> $ergebnis2->top_pos;
         });
         return $tagesordnungspunkte;
     }
 
 
-    public function toArr()
+    public function toArr(): array
     {
         $ts = RISTools::date_iso2timestamp($this->termin);
         if (date("Y", $ts) == date("Y")) {
@@ -406,12 +366,8 @@ class Termin extends CActiveRecord implements IRISItemHasDocuments
         return $alle_termine;
     }
 
-
-    /**
-     * @return bool
-     */
-    public function istAbgesagt() {
-        return ($this->sitzungsstand == "Entfällt");
+    public function istAbgesagt(): bool {
+        return ($this->sitzungsstand === static::CANCELED_STR);
     }
 
     /**

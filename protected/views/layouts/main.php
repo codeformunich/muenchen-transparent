@@ -45,7 +45,7 @@
 
     <?php
     if ($this->load_mediaelement) echo '<link rel="stylesheet" href="/bower/mediaelement/build/mediaelementplayer.min.css">';
-    if ($this->load_calendar    ) echo '<link rel="stylesheet" href="/bower/fullcalendar/dist/fullcalendar.min.css">';
+    if ($this->load_calendar    ) echo '<link rel="stylesheet" href="/fullcalendar/main.min.css">';
     if ($this->load_selectize_js) echo '<link rel="stylesheet" href="/css/selectizejs.ratsinformant.css">';
     if ($this->load_leaflet     ) echo '<link rel="stylesheet" href="/bower/leaflet.draw/dist/leaflet.draw.css">';
 
@@ -68,13 +68,12 @@
     if ($this->load_list_js      ) echo '<script src="/bower/list.js/dist/list.min.js"></script>';
     if ($this->load_mediaelement ) echo '<script src="/bower/mediaelement/build/mediaelement-and-player.min.js" defer></script>';
     if ($this->load_selectize_js ) echo '<script src="/bower/selectize/dist/js/standalone/selectize.min.js" defer></script>';
-    if ($this->load_shariff      ) echo '<script src="/bower/shariff/build/shariff.min.js" defer></script>';
     ?>
 
     <?php if ($this->load_calendar) { ?>
-        <script src="/bower/moment/min/moment-with-locales.min.js"></script>
-        <script src="/bower/fullcalendar/dist/fullcalendar.min.js"></script>
-        <script src="/bower/fullcalendar/dist/lang/de.js"></script>
+        <!--<script src="/fullcalendar/moment-with-locales.min.js"></script>-->
+        <script src="/fullcalendar/main.min.js"></script>
+        <script src="/fullcalendar/locales/de.js"></script>
     <?php } ?>
 
     <?php if ($this->load_pdf_js) { ?>
@@ -146,16 +145,16 @@
                         <ul class="dropdown-menu">
                             <li class="<?php if ($this->top_menu == "themen") echo ' active'; ?>"><?= CHtml::link("Themen", $this->createUrl("themen/index")) ?></li>
                             <?php
-                                if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_CONTENT)) { ?>
+                                if ($user->hatBerechtigung(BenutzerIn::BERECHTIGUNG_CONTENT)) { ?>
                                     <li><?= CHtml::link("Stadtratsmitglieder/Personen", $this->createUrl("admin/stadtraetInnenPersonen")) ?></li>
                                     <li><?= CHtml::link("Stadtratsmitglieder: Social-Media-Daten", $this->createUrl("admin/stadtraetInnenSocialMedia")) ?></li>
                                     <li><?= CHtml::link("Stadtratsmitglieder: Beschreibungen", $this->createUrl("admin/stadtraetInnenBeschreibungen")) ?></li>
                                     <li><?= CHtml::link("Bürger*innenversammlungen", $this->createUrl("admin/buergerInnenversammlungen")) ?></li>
                                 <?php }
-                                if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_USER)) { ?>
+                                if ($user->hatBerechtigung(BenutzerIn::BERECHTIGUNG_USER)) { ?>
                                     <li><?= CHtml::link("Stadtratsmitglieder: Accounts", $this->createUrl("admin/stadtraetInnenBenutzerInnen")) ?></li>
                                 <?php }
-                                if ($user->hatBerechtigung(BenutzerIn::$BERECHTIGUNG_TAG)) { ?>
+                                if ($user->hatBerechtigung(BenutzerIn::BERECHTIGUNG_TAG)) { ?>
                                     <li><?= CHtml::link("Tags", $this->createUrl("admin/tags")) ?></li>
                                 <?php }
                                 ?>

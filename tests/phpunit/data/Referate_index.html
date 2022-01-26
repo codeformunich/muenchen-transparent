@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>RatsInformationsSystem München - Service - Referate</title>
+<link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.ico">
+<link type="image/png" href="../../images/favicon32.png" rel="icon">
+<link type="image/png" href="../../images/favicon32.png" rel="shortcut icon">
+<link rel="stylesheet" type="text/css" href="../../js/jAlert-4.9.1/jAlert.css" />
+<link rel="stylesheet" type="text/css" href="../../css/risi.css" />
+<script type="text/javascript" src="../../wicket/resource/org.apache.wicket.resource.JQueryResourceReference/jquery/jquery-2.2.4-ver-F9EE266EF993962AD59E804AD9DEBE66.js"></script>
+<script type="text/javascript" src="../../js/popper-1.16.1/popper.min.js"></script>
+<script type="text/javascript" src="../../bootstrap/js/bootstrap-risi.min.js"></script>
+<script type="text/javascript" src="../../js/risi.js"></script>
+<script type="text/javascript" id="responsive-bootstrap-toolkit-2.6.3/bootstrap-toolkit.min.js" src="../../js/responsive-bootstrap-toolkit-2.6.3/bootstrap-toolkit.min.js"></script>
+<script type="text/javascript" id="responsive-bootstrap-toolkit-2.6.3/bootstrap-4.js" src="../../js/responsive-bootstrap-toolkit-2.6.3/bootstrap-4.js"></script>
+</head>
+<body id="ankerseitenbegin" class="d-flex flex-column">
+
+
+<header class="header-sticky">
+<div class="header-fullsize flex-shrink-0">
+<div class="container">
+<div class="row justify-content-between align-items-center no-gutters">
+<div class="col-10 col-md-8 d-flex align-items-center">
+<div id="logo_sonne" class="d-none d-md-block mr-3">
+<img src="../../images/mde-Logo_Sonne.svg" alt="" style="width: 105px; padding-top: 3px;">
+</div>
+<div class="font-weight-bold">
+<div class="header-big text-break">Rats&shy;Informations&shy;System</div>
+<div class="header-small text-right">München</div>
+</div>
+</div>
+<div class="d-md-none col-auto">
+<a id="searchboxtoggle" class="btn icon_lupe text-blue" style="font-size: 1.1rem; background: #f9d32a;" href="javascript:toggleSearchBox();" title="Suche ein- bzw. ausblenden"></a>
+</div>
+<div id="navsearchbox" class="d-none d-md-block col-md-4 mb-2 mb-md-0" role="search">
+<form class="form-inline" style="padding: inherit; right: 0; top: 0;" method="get" action="../../suche">
+<input type="hidden" name="scope" value="Vorgang">
+<input type="hidden" name="start" value="true">
+<div class="input-group w-100">
+<label for="searchtext" class="sr-only font-size-big font-weight-bold">Suche</label>
+<input type="search" class="form-control" placeholder="Wonach suchen Sie?" title="Suche" id="searchtext" name="text">
+<div class="input-group-append">
+<button class="btn bg-primary icon_lupe text-white" type="submit" title="Suche starten"></button>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<div class="navbar-fullsize flex-shrink-0 d-flex " >
+<div class="container sticky-nav d-flex justify-content-between">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary flex-grow-1" id="navbar">
+<button class="navbar-toggler font-size-normal" type="button" data-toggle="collapse" data-target="#navbarMenu"
+aria-controls="navbarMenu" aria-expanded="false" aria-label="Navigation ein-/ausblenden">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarMenu">
+<ul class="navbar-nav">
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Aktuelles" title="Öffnet Menüpunkt „Aktuelles“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aktuelles</a>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Aktuelles">
+<li><a class="dropdown-item" title="Öffnet „Aktuelle Aktuelle Vorgänge“" href="../../aktuelles"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>Aktuelle Vorgänge</span></a></li>
+<li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+<li><a class="dropdown-item" title="Öffnet „Aktuelle Stadtrats-Vorgänge“" href="../../aktuellestrvorgaenge"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>Aktuelle Stadtrats-Vorgänge</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Offene StR-Anträge/-Anfragen“" href="../../antrag/str/uebersichtoffene"><img class="svg-icon" src="../../images/Vorgang_StRAntrag.svg" title="StR-Antrag / StR-Anfrage" alt="Oranger Ordner"/> <span>Offene StR-Anträge/-Anfragen</span></a></li>
+<li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+<li><a class="dropdown-item" title="Öffnet „Aktuelle BA-Anträge“" href="../../antrag/ba/baantraguebersichtaktuelle"><img class="svg-icon" src="../../images/Vorgang_BAAntrag.svg" title="BA-Antrag" alt="Pinker Ordner"/> <span>Aktuelle BA-Anträge</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Offene BA-Anträge“" href="../../antrag/ba/baantraguebersichtoffen"><img class="svg-icon" src="../../images/Vorgang_BAAntrag.svg" title="BA-Antrag" alt="Pinker Ordner"/> <span>Offene BA-Anträge</span></a></li>
+<li><span class="dropdown-item-text bg-header text-white">Bürgerversammlung</span></li>
+<li><a class="dropdown-item" title="Öffnet „Aktuelle BV-Empfehlungen“" href="../../antrag/ba/bvempfehlunguebersichtaktuelle"><img class="svg-icon" src="../../images/Vorgang_BVEmpfehlungAnfrage.svg" title="BV-Empfehlung/-Anfrage" alt="Blauer Ordner"/> <span>Aktuelle BV-Empfehlungen</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Offene BV-Empfehlungen“" href="../../antrag/ba/bvempfehlunguebersichtoffen"><img class="svg-icon" src="../../images/Vorgang_BVEmpfehlungAnfrage.svg" title="BV-Empfehlung/-Anfrage" alt="Blauer Ordner"/> <span>Offene BV-Empfehlungen</span></a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Sitzungen" title="Öffnet Menüpunkt „Sitzungen“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sitzungen</a>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Sitzungen">
+<li><a class="dropdown-item" title="Öffnet „Sitzungskalender“" href="../../sitzung/kalender"><img class="svg-icon" src="../../images/Kalender.svg" title="Sitzungskalender" alt="Roter Kalender"/> <span>Sitzungskalender</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Sitzungen“" href="../../sitzung/uebersicht"><img class="svg-icon" src="../../images/Vorgang_Sitzung.svg" title="Sitzung" alt="Blaue Uhr"/> <span>Sitzungen</span></a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Vorgänge" title="Öffnet Menüpunkt „Vorgänge“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Vorgänge</a>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Vorgänge">
+<li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+<li><a class="dropdown-item" title="Öffnet „StR-Anträge/-Anfragen“" href="../../antrag/str/uebersicht"><img class="svg-icon" src="../../images/Vorgang_StRAntrag.svg" title="StR-Antrag / StR-Anfrage" alt="Oranger Ordner"/> <span>StR-Anträge/-Anfragen</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Sitzungsvorlagen“" href="../../sitzungsvorlage/uebersicht"><img class="svg-icon" src="../../images/Vorgang_SV.svg" title="Sitzungsvorlage" alt="Grüner Ordner"/> <span>Sitzungsvorlagen</span></a></li>
+<li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+<li><a class="dropdown-item" title="Öffnet „BA-Anträge“" href="../../antrag/ba/baantraguebersicht"><img class="svg-icon" src="../../images/Vorgang_BAAntrag.svg" title="BA-Antrag" alt="Pinker Ordner"/> <span>BA-Anträge</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „BA-Sitzungsvorlagen“" href="../../sitzungsvorlage/ba/uebersicht"><img class="svg-icon" src="../../images/Vorgang_SV.svg" title="Sitzungsvorlage" alt="Grüner Ordner"/> <span>BA-Sitzungsvorlagen</span></a></li>
+<li><span class="dropdown-item-text bg-header text-white" >Bürgerversammlung</span></li>
+<li><a class="dropdown-item" title="Öffnet „BV-Empfehlungen“" href="../../antrag/ba/bvempfehlunguebersicht"><img class="svg-icon" src="../../images/Vorgang_BVEmpfehlungAnfrage.svg" title="BV-Empfehlung/-Anfrage" alt="Blauer Ordner"/> <span>BV-Empfehlungen</span></a></li>
+</ul>
+</li>
+
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Gremien" title="Öffnet Menüpunkt „Gremien“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gremien</a>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Gremien">
+<li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+<li><a class="dropdown-item" href="../../gremium/detail/1?tab=mitgliederaktuell" title="Öffnet die Detailansicht „Vollversammlung“"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktives Gremium" alt="Mehrere Personen"/> <span>Vollversammlung</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Ausschüsse“" href="../../gremium/strausschuss/uebersicht"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktives Gremium" alt="Mehrere Personen"/> <span>Ausschüsse</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Stadtratsmitglieder“" href="../../person/strmitglieder"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>Stadtratsmitglieder</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Referent*innen“" href="../../person/referenten"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>Referent*innen</span></a></li>
+<li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+<li><a class="dropdown-item" title="Öffnet „Bezirksausschüsse“" href="../../gremium/bezirksausschuss/uebersicht"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver Bezirksausschuss" alt="Mehrere Personen"/> <span>Bezirksausschüsse</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „BA-Unterausschüsse“" href="../../gremium/baunterausschuss/uebersicht"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver BA-Unterausschuss" alt="Mehrere Personen"/> <span>BA-Unterausschüsse</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „BA-Mitglieder“" href="../../person/bamitglieder"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>BA-Mitglieder</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Beauftragte“" href="../../person/babeauftragter"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>Beauftragte</span></a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Fraktionen" title="Öffnet Menüpunkt „Fraktionen“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Fraktionen</a>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Fraktionen">
+<li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+<li><a class="dropdown-item" title="Öffnet „StR-Fraktionen / Gruppierungen“" href="../../gremium/strfraktion/uebersicht"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>StR-Fraktionen / Gruppierungen</span></a></li>
+<li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+<li><a class="dropdown-item" title="Öffnet „BA-Fraktionen“" href="../../gremium/bafraktion/uebersicht"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>BA-Fraktionen</span></a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link" title="Öffnet „Suche“" href="../../suche">Suche</a></li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Service" title="Öffnet Menüpunkt „Service“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" lang="en">Service</a>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Service">
+<li><a class="dropdown-item" href="../../service/hilfesuche" title="Öffnet „Hilfe zur Suche“"><img class="svg-icon" src="../../images/Hilfe_Suche.svg" title="Hilfe zur Suche" alt="Papier mit lila Fragezeichen"/> <span>Hilfe zur Suche</span></a></li>
+<li><a class="dropdown-item" href="../../service/hilfe" title="Öffnet „Hilfe / FAQ“"><img class="svg-icon" src="../../images/Hilfe.svg" title="Hilfe / FAQ" alt="Blaues Buch mit weißem Fragezeichen"/> <span>Hilfe / FAQ</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „Referate“" href="./uebersicht"><img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate"/> <span>Referate</span></a></li>
+<li><a class="dropdown-item" title="Öffnet „BA-Geschäftsstellen“" href="../../gremium/bageschaeftsstellen/uebersicht"><img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate"/> <span>BA-Geschäftsstellen</span></a></li>
+<li><a class="dropdown-item" href="../../service/kontakt" title="Öffnet „Kontakt“"><img class="svg-icon" src="../../images/Kontakt.svg" title="Kontakt" alt="Blaues AT-Zeichen"/> <span>Kontakt</span></a></li>
+<li><a class="dropdown-item" href="../../service/impressum" title="Öffnet „Impressum &amp; Datenschutz“"><img class="svg-icon" src="../../images/Impressum.svg" title="Impressum" alt="Weißes i in orangenem Kreis"/> <span>Impressum &amp; Datenschutz</span></a></li>
+
+</ul>
+</li>
+</ul>
+</div>
+<script>
+/*<![CDATA[*/
+
+$("#navbarMenu").on("show.bs.collapse", function() {
+$(document.documentElement).animate({
+scrollTop: $("#navbar").offset().top
+});
+});
+$("#navbarMenu .dropdown").on("shown.bs.dropdown", function(event) {
+$("#navbarMenu").animate({
+scrollTop: event.target.offsetTop - 50
+});
+});
+
+/*]]>*/
+</script>
+</nav>
+<div class="d-flex text-white align-self-auto" style="height:38px;">
+<div class="align-middle align-self-center">
+<a class="icon_login" lang="en" title="Öffnet „Login“" href="../../extranet/login">Login</a>
+</div>
+</div>
+
+</div>
+</div>
+</header>
+<div class="breadcrumb-fullsize flex-shrink-0">
+<div class="container d-block h-100">
+<div class="d-flex justify-content-end justify-content-md-between align-items-center h-100">
+<div class=" ml-2 p-0 font-size-small d-none d-md-block">
+<ol class="breadcrumb_container">
+<li class="breadcrumb_start"><a href="../../aktuelles" title="Öffnet „Aktuelle Vorgänge“"><span style="font-family: Iconfont, sans-serif;">Z</span></a></li>
+<li class="breadcrumb_arrow"><span>Service</span></li>
+
+<li class="breadcrumb_arrow"><span>Referate</span></li>
+
+</ol>
+</div>
+<div>
+<img class="d-none d-sm-inline" src="../../images/Muenchen_Logo.svg" alt="" style="height: 24px;">
+<img class="d-sm-none" src="../../images/Muenchen_Stadtwappen.svg" alt="" style="height: 32px;">
+</div>
+</div>
+</div>
+</div>
+<main class="container mt-4 pb-2 flex-grow-1 flex-shrink-0">
+
+<div class="headline align-items-lg-center">
+<div class="titlearea">
+
+<div class="d-flex ml-2">
+<div class="page-title">
+<img class="svg-icon pr-3" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate"/>
+</div>
+<div>
+<h1 class="page-title">
+<span class="d-inline-block">Referate <span class="d-inline-block page-additionaltitle"></span></span>
+</h1>
+</div>
+</div>
+
+</div>
+<div class="actionarea">
+<div class="action">
+<a class="icon_action" href="../../suche?bereich=Vorgang&amp;objekt=-41" title="Öffnet die Aktion „Suche“">Suche</a>
+</div>
+</div>
+</div>
+<div>
+Die Stadtverwaltung der Landeshauptstadt München besteht aus folgenden Referaten:
+</div>
+<div class="mt-4">
+<div class="container-fluid px-0">
+<div class="row">
+<div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/2" title="Öffnet die Detailansicht „Baureferat“">Baureferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/487847?tab" title="Öffnet weitere Informationen zu „Hingerl, Rosemarie“">Frau Rosemarie Hingerl</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/2?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Baureferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/baureferat.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882218" alt="Frau Rosemarie Hingerl">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/1" title="Öffnet die Detailansicht „Direktorium“">Direktorium</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/6882225?tab" title="Öffnet weitere Informationen zu „Reiter, Dieter“">Herr Dieter Reiter</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/1?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Direktorium“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="http://www.muenchen.de/Rathaus/dir/37558/index.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882226" alt="Herr Dieter Reiter">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/6440375" title="Öffnet die Detailansicht „Gesundheitsreferat“">Gesundheitsreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/6440699?tab" title="Öffnet weitere Informationen zu „Zurek, Beatrix“">Frau Beatrix Zurek</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/6440375?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Gesundheitsreferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/Referat-fuer-Gesundheit-und-Umwelt.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882223" alt="Frau Beatrix Zurek">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/4769009" title="Öffnet die Detailansicht „IT-Referat“">IT-Referat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/4873150?tab" title="Öffnet weitere Informationen zu „Bönig, Thomas“">Herr Thomas Bönig</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/4769009?tab=referatssarbeit" title="Öffnet die Referatsarbeit „IT-Referat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/IT-Referat.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882213" alt="Herr Thomas Bönig">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/3" title="Öffnet die Detailansicht „Kommunalreferat“">Kommunalreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/5070184?tab" title="Öffnet weitere Informationen zu „Frank, Kristina“">Frau Kristina Frank</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/3?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Kommunalreferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="http://www.kommunalreferat-muenchen.de/">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882216" alt="Frau Kristina Frank">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/4" title="Öffnet die Detailansicht „Kreisverwaltungsreferat“">Kreisverwaltungsreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/165428?tab" title="Öffnet weitere Informationen zu „Böhle, Dr. Thomas“">Herr Dr. Thomas Böhle</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/4?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Kreisverwaltungsreferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="http://www.muenchen.de/rathaus/Stadtverwaltung/Kreisverwaltungsreferat.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882212" alt="Herr Dr. Thomas Böhle">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/5" title="Öffnet die Detailansicht „Kulturreferat“">Kulturreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/5544871?tab" title="Öffnet weitere Informationen zu „Biebl, Anton“">Herr Anton Biebl</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/5?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Kulturreferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/Kulturreferat.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882211" alt="Herr Anton Biebl">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/6414098" title="Öffnet die Detailansicht „Mobilitätsreferat“">Mobilitätsreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/6414237?tab" title="Öffnet weitere Informationen zu „Dunkel, Georg“">Herr Georg Dunkel</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/6414098?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Mobilitätsreferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/mobilitaetsreferat.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882215" alt="Herr Georg Dunkel">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/6" title="Öffnet die Detailansicht „Personal- und Organisationsreferat“">Personal- und Organisationsreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/4115713?tab" title="Öffnet weitere Informationen zu „Dietrich, Dr. Alexander“">Herr Dr. Alexander Dietrich</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/6?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Personal- und Organisationsreferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/Personal-und-Organisationsreferat.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882214" alt="Herr Dr. Alexander Dietrich">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/7" title="Öffnet die Detailansicht „Referat für Arbeit und Wirtschaft“">Referat für Arbeit und Wirtschaft</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/5410984?tab" title="Öffnet weitere Informationen zu „Baumgärtner, Clemens“">Herr Clemens Baumgärtner</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/7?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Referat für Arbeit und Wirtschaft“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/Referat-fuer-Arbeit-und-Wirtschaft.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882210" alt="Herr Clemens Baumgärtner">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/2164191" title="Öffnet die Detailansicht „Referat für Bildung und Sport“">Referat für Bildung und Sport</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/6604775?tab" title="Öffnet weitere Informationen zu „Kraus, Florian“">Herr Florian Kraus</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/2164191?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Referat für Bildung und Sport“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/Referat-fuer-Bildung-und-Sport.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882219" alt="Herr Florian Kraus">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/6440377" title="Öffnet die Detailansicht „Referat für Klima- und Umweltschutz“">Referat für Klima- und Umweltschutz</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/6440698?tab" title="Öffnet weitere Informationen zu „Kugler, Christine“">Frau Christine Kugler</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/6440377?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Referat für Klima- und Umweltschutz“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/referat-fuer-klima-und-umweltschutz.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882220" alt="Frau Christine Kugler">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/9" title="Öffnet die Detailansicht „Referat für Stadtplanung und Bauordnung“">Referat für Stadtplanung und Bauordnung</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/1152817?tab" title="Öffnet weitere Informationen zu „Merk, Prof. Elisabeth“">Frau Prof. Elisabeth Merk</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/9?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Referat für Stadtplanung und Bauordnung“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="http://www.muenchen.de/rathaus/Stadtverwaltung/Referat-fuer-Stadtplanung-und-Bauordnung.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882221" alt="Frau Prof. Elisabeth Merk">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/11" title="Öffnet die Detailansicht „Sozialreferat“">Sozialreferat</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/4115845?tab" title="Öffnet weitere Informationen zu „Schiwy, Dorothee“">Frau Dorothee Schiwy</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/11?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Sozialreferat“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/Sozialreferat.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882222" alt="Frau Dorothee Schiwy">
+</div>
+</div>
+</div>
+</div><div class="col-12 col-lg-6 mb-4">
+<div class="card h-100 p-2">
+<div class="row no-gutters">
+<div class="col-12 col-md-7">
+
+<div class="row no-gutters">
+<div class="col-12 col-lg">
+<div class="d-flex font-size-big">
+<div class="mr-2">
+<img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate">
+</div>
+<div class="flex-grow-1">
+<a class="headline-link" href="../detail/12" title="Öffnet die Detailansicht „Stadtkämmerei“">Stadtkämmerei</a>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row mt-2">
+<div class="col-12 keyvalue-container keyvalue-minimumkeywidth">
+<div class="keyvalue-row">
+<div class="keyvalue-key">Leitung:</div>
+<div class="keyvalue-value">
+<a class="icon_action" href="../../person/detail/5208125?tab" title="Öffnet weitere Informationen zu „Frey, Christoph“">Herr Christoph Frey</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-2">
+<a class="icon_action" href="../detail/12?tab=referatssarbeit" title="Öffnet die Referatsarbeit „Stadtkämmerei“">Referatsarbeit</a>
+</div>
+
+<div class="mt-2">
+<a class="icon_linkextern" target="_blank" title="Öffnet „WEB-Seite“" href="https://www.muenchen.de/rathaus/Stadtverwaltung/Stadtkaemmerei.html">Homepage</a>
+</div>
+
+
+</div>
+<div class="d-none d-md-block col-12 col-md-5 pl-0 pl-md-2">
+<img class="w-100" src="../../bild/6882217" alt="Herr Christoph Frey">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</main>
+<footer>
+<div class="footer-social-fullsize flex-shrink-0 py-3 mt-4">
+<div class="container">
+<div class="d-flex justify-content-center justify-content-md-between align-items-end h-100">
+<div>
+<a href="https://www.muenchen.de/" target="_blank" title="Öffnet „muenchen.de“"><img src="../../images/mde-Logo_Footer.svg" alt="Logo der Webseite „muenchen.de“" style="height: 30px;"></a>
+</div>
+<div class="d-flex ml-2 ml-md-0">
+<div class="social_facebook"><a href="https://de-de.facebook.com/muenchen" target="_blank" title="Öffnet „Facebook“"><span class="icon_facebook"></span></a></div>
+<div class="social_twitter"><a href="https://twitter.com/muenchen" target="_blank" title="Öffnet „Twitter“"><span class="icon_twitter"></span></a></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer-bottom-fullsize flex-shrink-0">
+<div class="container" style="padding-top: 8px; padding-bottom:8px; ">
+<div class="row justify-content-between">
+<div class="col-12 col-md-auto text-center text-md-left">
+<span>
+<a href="../../service/kontakt" title="Öffnet „Kontakt“">Kontakt</a> |
+<a href="../../service/impressum" title="Öffnet „Impressum &amp; Datenschutz“">Impressum &amp; Datenschutz</a> |
+<a href="../../service/barrierefreiheit" title="Öffnet „Erklärung zur Barrierefreiheit“">Erklärung zur Barrierefreiheit</a>
+
+| <a target="_blank" itemprop="url" href="https://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html" title="Öffnet „Rathaus-Umschau“">Rathaus-Umschau</a>
+
+</span>
+</div>
+<div class="col-12 col-md-auto text-center text-md-right">
+<span>
+<a href="../../service/sitemap" title="Öffnet „Sitemap“">Sitemap</a>
+| <a href="../../service/hilfe" title="Öffnet „Hilfe / FAQ“">Hilfe und FAQ</a>
+
+</span>
+</div>
+</div>
+</div>
+<div class="d-flex justify-content-end pr-3">
+<div id="zumseitenbeginn" style="display:none; position: fixed; z-index: 10000; bottom: 50px; ">
+<div style="display: flex; height: 100%; width: 100%; justify-content: center; align-items: center;">
+<a class="icon_backtotop" href="#ankerseitenbegin" title="Springt zum Seitenanfang" ></a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script type="text/javascript">
+/*<![CDATA[*/
+
+(function() {
+var isScrolling = false;
+$(window).scroll(function() {
+isScrolling = true;
+});
+setInterval( function() {
+if (isScrolling) {
+isScrolling = false;
+var element = $('#zumseitenbeginn');
+if ($(this).scrollTop() > 60) {
+if (element.data("fading") !== "in") {
+element.data("fading", "in");
+$('#zumseitenbeginn').stop(true, true).fadeIn();
+$('#logo_sonne').removeClass("d-md-block");
+}
+} else if ($(this).scrollTop() < 40){
+if (element.data("fading") !== "out") {
+element.data("fading", "out");
+$('#zumseitenbeginn').stop(true, true).fadeOut();
+$('#logo_sonne').addClass("d-md-block");
+}
+}
+}
+}, 500);
+}());
+function toggleSearchBox(){
+var component = document.getElementById('navsearchbox');
+var togglebutton = document.getElementById('searchboxtoggle');
+if (component.classList.contains("d-none")) {
+component.classList.remove("d-none");
+}else{
+component.classList.add("d-none");
+}
+togglebutton.blur();
+}
+
+/*]]>*/
+</script>
+</body>
+</html>

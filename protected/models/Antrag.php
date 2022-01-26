@@ -43,14 +43,13 @@
 class Antrag extends CActiveRecord implements IRISItemHasDocuments
 {
 
-    public static $TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
-    public static $TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
-    public static $TYP_STADTRAT_VORLAGE_GEHEIM = "stadtrat_vorlage_geheim";
-    public static $TYP_BA_ANTRAG = "ba_antrag";
-    public static $TYP_BA_INITIATIVE = "ba_initiative";
-    public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
+    public const TYP_STADTRAT_ANTRAG = "stadtrat_antrag";
+    public const TYP_STADTRAT_VORLAGE = "stadtrat_vorlage";
+    public const TYP_BA_ANTRAG = "ba_antrag";
+    public const TYP_BA_INITIATIVE = "ba_initiative";
+    public const TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung";
 
-    public static $TYPEN_ALLE = [
+    public const TYPEN_ALLE = [
         "stadtrat_antrag"         => "Stadtratsantrag|Stadtratsanträge",
         "stadtrat_vorlage"        => "Stadtratsvorlage|Stadtratsvorlagen",
         "ba_antrag"               => "BA-Antrag|BA-Anträge",
@@ -359,63 +358,46 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         }
     }
 
-    /**
-     * @param array $add_params
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("antraege/anzeigen", array_merge(["id" => $this->id], $add_params));
     }
 
-    /**
-     * @return string
-     */
-    public function getSourceLink()
+    public function getSourceLink(): string
     {
         switch ($this->typ) {
-            case Antrag::$TYP_BA_ANTRAG:
-                return RIS_BA_BASE_URL . "ba_antraege_details.jsp?Id=" . $this->id . "&selTyp=BA-Antrag";
-            case Antrag::$TYP_BA_INITIATIVE:
-                return RIS_BA_BASE_URL . "ba_initiativen_details.jsp?Id=" . $this->id;
-            case Antrag::$TYP_STADTRAT_ANTRAG:
-                return RIS_BASE_URL . "ris_antrag_detail.jsp?risid=" . $this->id;
-            case Antrag::$TYP_STADTRAT_VORLAGE:
-                return RIS_BASE_URL . "ris_vorlagen_detail.jsp?risid=" . $this->id;
+            case Antrag::TYP_BA_ANTRAG:
+            case Antrag::TYP_BA_INITIATIVE:
+            case Antrag::TYP_STADTRAT_ANTRAG:
+                return RIS_URL_PREFIX . "antrag/detail/" . $this->id;
+            case Antrag::TYP_STADTRAT_VORLAGE:
+                return RIS_URL_PREFIX . "sitzungsvorlage/detail/" . $this->id;
         }
         return "";
     }
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
-        $str = explode("|", Antrag::$TYPEN_ALLE[$this->typ]);
+        $str = explode("|", Antrag::TYPEN_ALLE[$this->typ]);
         return $str[0];
     }
 
-    /**
-     * @param bool $kurzfassung
-     * @return string
-     */
-    public function getName($kurzfassung = false)
+    public function getName(bool $kurzfassung = false): string
     {
         if ($kurzfassung) {
-            $betreff = str_replace(["\n", "\r"], [" ", " "], $this->betreff);
+            $betreff = trim($this->betreff);
             $x       = explode(" Antrag Nr.", $betreff);
             $x       = explode(" Änderungsantrag ", $x[0]);
             $x       = explode("<strong>Antrag: </strong>", $x[0]);
             $x       = explode(" Empfehlung Nr.", $x[0]);
             $x       = explode(" BA-Antrags-", $x[0]);
-            return RISTools::korrigiereTitelZeichen($x[0]);
+            return RISTools::normalizeTitle($x[0]);
         } else {
-            return RISTools::korrigiereTitelZeichen($this->betreff);
+            return RISTools::normalizeTitle($this->betreff);
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->datum_letzte_aenderung;
     }

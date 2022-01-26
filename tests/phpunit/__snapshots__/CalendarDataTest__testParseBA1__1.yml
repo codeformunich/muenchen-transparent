@@ -1,0 +1,23 @@
+dateStart: '2021-12-21T19:00:00+01:00'
+id: 6243091
+status: Niederschrift
+baNr: 14
+baId: 223
+sitzungsstand: null
+organizationId: 319
+organizationName: 'BA 14 - Vollgremium'
+wahlperiode: 2020-2026
+ort: 'Kulturzentrum Trudering, Wasserburger Landstr. 32, 81825 München'
+vorsitzId: 2728887
+vorsitzName: 'Friedrich, Alexander'
+referatId: null
+referatName: null
+referentInName: null
+nextCalendarId: 6810632
+prevCalendarId: 6243035
+hasAgendaPublic: true
+hasAgendaNonPublic: false
+dokumentLinks:
+    - { title: 'Einladung (oeff)', id: 6951109, url: /dokument/v/6951109, filename: 'Einladung (oeff).pdf' }
+agendaPublic: {  }
+agendaNonPublic: {  }

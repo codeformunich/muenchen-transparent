@@ -31,7 +31,6 @@
  * @property Tagesordnungspunkt $tagesordnungspunkt
  * @property AntragOrt[] $orte
  * @property Vorgang $vorgang
- * @property Rathausumschau $rathausumschau
  *
  * Scope methods
  * @method boolean getDefaultScopeDisabled()
@@ -40,17 +39,16 @@
 class Dokument extends CActiveRecord implements IRISItem
 {
 
-    public static $TYP_STADTRAT_ANTRAG    = "stadtrat_antrag";
-    public static $TYP_STADTRAT_VORLAGE   = "stadtrat_vorlage";
-    public static $TYP_STADTRAT_TERMIN    = "stadtrat_termin";
-    public static $TYP_STADTRAT_BESCHLUSS = "stadtrat_beschluss";
-    public static $TYP_BA_ANTRAG          = "ba_antrag";
-    public static $TYP_BA_INITIATIVE      = "ba_initiative";
-    public static $TYP_BA_TERMIN          = "ba_termin";
-    public static $TYP_BA_BESCHLUSS       = "ba_beschluss";
-    public static $TYP_RATHAUSUMSCHAU     = "rathausumschau";
+    public const TYP_STADTRAT_ANTRAG    = "stadtrat_antrag";
+    public const TYP_STADTRAT_VORLAGE   = "stadtrat_vorlage";
+    public const TYP_STADTRAT_TERMIN    = "stadtrat_termin";
+    public const TYP_STADTRAT_BESCHLUSS = "stadtrat_beschluss";
+    public const TYP_BA_ANTRAG          = "ba_antrag";
+    public const TYP_BA_INITIATIVE      = "ba_initiative";
+    public const TYP_BA_TERMIN          = "ba_termin";
+    public const TYP_BA_BESCHLUSS       = "ba_beschluss";
     //public static $TYP_BUERGERVERSAMMLUNG_EMPFEHLUNG = "bv_empfehlung"; @TODO
-    public static $TYPEN_ALLE = [
+    public const TYPEN_ALLE = [
         "stadtrat_antrag"    => "Stadtratsantrag",
         "stadtrat_vorlage"   => "Stadtratsvorlage",
         "stadtrat_termin"    => "Stadtrat: Termin",
@@ -63,8 +61,7 @@ class Dokument extends CActiveRecord implements IRISItem
         //"bv_empfehlung"      => "BürgerInnenversammlung: Empfehlung",
     ];
 
-    public static $OCR_VON_TESSERACT = "tesseract";
-    public static $OCR_VON_OMNIPAGE  = "omnipage";
+    public const OCR_VON_TESSERACT = "tesseract";
 
     private static $_cache = [];
 
@@ -78,20 +75,14 @@ class Dokument extends CActiveRecord implements IRISItem
         return parent::model($className);
     }
 
-    /**
-     *
-     */
-    public function getDateiInhalt()
+    public function getDateiInhalt(): ?string
     {
         try {
-            // TODO content type direkt von curl erfragen
-            if (substr($this->url, -strlen('.pdf')) === '.pdf') {
-                Header('Content-Type: application/pdf');
-            } else if (substr($this->url, -strlen('.tiff')) === '.tiff') {
-                Header('Content-Type: image/tiff');
-            }
-
-            return ris_download_string($this->getLinkZumOrginal());
+            $str = ris_download_string($this->getLinkZumOrginal());
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, $str, FILEINFO_MIME_TYPE);
+            Header('Content-Type: ' . $mime_type);
+            return $str;
         } catch (Exception $e) {
             $fp = fopen(TMP_PATH . "ris-file-not-found.log", "a");
             fwrite($fp, $this->id . " - " . $this->getLinkZumOrginal() . "\n");
@@ -211,44 +202,27 @@ class Dokument extends CActiveRecord implements IRISItem
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLink($add_params = [])
+    public function getLink(array $add_params = []): string
     {
         return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]);
     }
 
-    /**
-     * @return string
-     */
-    public function getLinkZumOrginal()
+    public function getLinkZumOrginal(): string
     {
-        if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
-            if ($this->rathausumschau->datum >= 2009) return "http://www.muenchen.de" . $this->url;
-            else return RATHAUSUMSCHAU_WEBSITE;
-        } else return RIS_URL_PREFIX . $this->url;
+        return RIS_PDF_PREFIX . $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getLinkZumDownload()
+    public function getDownloadLink(): string
     {
         return Yii::app()->createUrl("index/dokumente", ["id" => $this->id]) . '/datei';
     }
 
-    /** @return string */
-    public function getTypName()
+    public function getTypName(): string
     {
         return "Dokument";
     }
 
-    /**
-     * @param bool $langfassung
-     * @return string
-     */
-    public function getName($langfassung = false)
+    public function getName(bool $langfassung = false): string
     {
         $name = RISTools::korrigiereDokumentenTitel($this->name);
         $name_titel = RISTools::korrigiereDokumentenTitel($this->name_title);
@@ -275,26 +249,19 @@ class Dokument extends CActiveRecord implements IRISItem
         return $name;
     }
 
-    public function getDateiname()
+    public function getDateiname(): string
     {
         return $this->id . ' - ' . CHtml::encode($this->getName()) . '.pdf';
     }
 
-    /**
-     * @return string
-     */
-    public function getDate()
+    public function getDate(): string
     {
         $ts = RISTools::date_iso2timestamp($this->datum);
         if ($ts > DOCUMENT_DATE_ACCURATE_SINCE || $this->datum_dokument == 0) return $this->datum;
         return $this->datum_dokument;
     }
 
-    /**
-     * @param string $fallback
-     * @return string
-     */
-    public function getDisplayDate($fallback = "")
+    public function getDisplayDate(string $fallback = ""): string
     {
         $ts = RISTools::date_iso2timestamp($this->datum);
         if ($ts > DOCUMENT_DATE_ACCURATE_SINCE) return date("d.m.Y", $ts);
@@ -307,25 +274,19 @@ class Dokument extends CActiveRecord implements IRISItem
         return "Vor 2008";
     }
 
-    /**
-     */
-    public function download_if_necessary()
+    public function download_if_necessary(): void
     {
         $filename = $this->getLocalPath();
         if (file_exists($filename)) return;
 
-        if (substr($this->url, 0, 7) == "http://") {
-            RISTools::download_file($this->url, $filename);
-        } elseif ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
-            RISTools::download_file("http://www.muenchen.de" . $this->url, $filename);
+        if (str_starts_with($this->url, "http://") || str_starts_with($this->url, "https://")) {
+            CurlBasedDownloader::getInstance()->downloadFile($this->url, $filename);
         } else {
-            RISTools::download_file(RIS_URL_PREFIX . $this->url, $filename);
+            CurlBasedDownloader::getInstance()->downloadFile(RIS_PDF_PREFIX . $this->id, $filename);
         }
     }
 
-    /**
-     */
-    public function download_and_parse()
+    public function download_and_parse(): void
     {
         $this->download_if_necessary();
         $absolute_filename = $this->getLocalPath();
@@ -334,34 +295,27 @@ class Dokument extends CActiveRecord implements IRISItem
             return;
         }
 
-        $y      = explode(".", $this->url);
-        $endung = mb_strtolower($y[count($y) - 1]);
-
         $metadata             = RISPDF2Text::document_pdf_metadata($absolute_filename);
-        $this->seiten_anzahl  = $metadata["seiten"];
-        $this->datum_dokument = $metadata["datum"];
+        $this->seiten_anzahl  = $metadata["pages"];
+        $this->datum_dokument = $metadata["date"];
         if ($this->datum_dokument == "") {
             $this->datum_dokument = null;
         }
 
         $this->text_pdf = "";
         try {
-            if ($endung == "pdf") {
-                $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
-            }
+            $this->text_pdf = RISPDF2Text::document_text_pdf($absolute_filename);
         } catch (\Exception $e) {}
 
         $this->text_ocr_raw       = RISPDF2Text::document_text_ocr($absolute_filename, $this->seiten_anzahl);
         $this->text_ocr_corrected = RISPDF2Text::ris_ocr_clean($this->text_ocr_raw);
-        $this->ocr_von            = Dokument::$OCR_VON_TESSERACT;
-
-        copy($absolute_filename, OMNIPAGE_PDF_DIR . $this->id . "." . $endung);
+        $this->ocr_von            = Dokument::OCR_VON_TESSERACT;
     }
 
     /**
      * @throws Exception
      */
-    public function geo_extract()
+    public function geo_extract(): void
     {
         $text              = $this->text_ocr_corrected . $this->text_pdf;
         $strassen_gefunden = RISGeo::suche_strassen($text);
@@ -411,10 +365,7 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
 
-    /**
-     *
-     */
-    public function reDownloadIndex()
+    public function reDownloadIndex(): void
     {
         $this->download_and_parse();
         $this->save();
@@ -424,38 +375,34 @@ class Dokument extends CActiveRecord implements IRISItem
 
 
     /**
-     * @param string $typ
      * @param Antrag|Termin|Tagesordnungspunkt $antrag_termin_tagesordnungspunkt
-     * @param array $dok
      * @throws Exception
-     * @return string
      */
-    public static function create_if_necessary($typ, $antrag_termin_tagesordnungspunkt, $dok)
+    public static function create_if_necessary(string $typ, $antrag_termin_tagesordnungspunkt, DokumentLink $dok): string
     {
-        $x           = explode("/", $dok["url"]);
-        $dokument_id = IntVal($x[count($x) - 1]);
-
         /** @var Dokument|null $dokument */
-        $dokument = Dokument::model()->disableDefaultScope()->findByPk($dokument_id);
+        $dokument = Dokument::model()->disableDefaultScope()->findByPk($dok->id);
         if ($dokument) {
-            if ($dokument->name != $dok["name"] || $dokument->name_title != $dok["name_title"]) {
+
+            if ($dokument->name != $dok->title || $dokument->name_title != $dok->title) {
                 echo "- Dokumententitel geändert: " . $dokument->name . " (" . $dokument->name_title . ")";
-                echo "=> " . $dok["name"] . " (" . $dok["name_title"] . ")\n";
-                $dokument->name       = $dok["name"];
-                $dokument->name_title = $dok["name_title"];
+                echo "=> " . $dok->title . "\n";
+                $dokument->name       = $dok->title;
+                $dokument->name_title = $dok->title;
+                $dokument->save();
             }
 
-            if (is_a($antrag_termin_tagesordnungspunkt, "Antrag") && $dokument->antrag_id != $antrag_termin_tagesordnungspunkt->id) {
+            if (is_a($antrag_termin_tagesordnungspunkt, Antrag::class) && $dokument->antrag_id != $antrag_termin_tagesordnungspunkt->id) {
                 echo "- Dokumentenzuordnung korrigiert: Antrag " . $antrag_termin_tagesordnungspunkt->id . "\n";
                 $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
                 $dokument->save();
             }
-            if (is_a($antrag_termin_tagesordnungspunkt, "Termin") && $dokument->termin_id != $antrag_termin_tagesordnungspunkt->id) {
+            if (is_a($antrag_termin_tagesordnungspunkt, Termin::class) && $dokument->termin_id != $antrag_termin_tagesordnungspunkt->id) {
                 echo "- Dokumentenzuordnung korrigiert: Termin " . $antrag_termin_tagesordnungspunkt->id . "\n";
                 $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
                 $dokument->save();
             }
-            if (is_a($antrag_termin_tagesordnungspunkt, "Tagesordnungspunkt") && $dokument->tagesordnungspunkt_id != $antrag_termin_tagesordnungspunkt->id) {
+            if (is_a($antrag_termin_tagesordnungspunkt, Tagesordnungspunkt::class) && $dokument->tagesordnungspunkt_id != $antrag_termin_tagesordnungspunkt->id) {
                 echo "- Dokumentenzuordnung korrigiert: Tagesordnungspunkt " . $antrag_termin_tagesordnungspunkt->id . "\n";
                 $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
                 $dokument->save();
@@ -465,22 +412,18 @@ class Dokument extends CActiveRecord implements IRISItem
         }
 
         $dokument             = new Dokument();
-        $dokument->id         = $dokument_id;
+        $dokument->id         = $dok->id;
         $dokument->typ        = $typ;
-        $dokument->name_title = "";
         $dokument->datum_dokument = null;
-        if (is_a($antrag_termin_tagesordnungspunkt, "Antrag")) $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
-        if (is_a($antrag_termin_tagesordnungspunkt, "Termin")) $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
-        if (is_a($antrag_termin_tagesordnungspunkt, "Tagesordnungspunkt")) $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
-        $dokument->url     = $dok["url"];
-        $dokument->name    = $dok["name"];
+        if (is_a($antrag_termin_tagesordnungspunkt, Antrag::class)) $dokument->antrag_id = $antrag_termin_tagesordnungspunkt->id;
+        if (is_a($antrag_termin_tagesordnungspunkt, Termin::class)) $dokument->termin_id = $antrag_termin_tagesordnungspunkt->id;
+        if (is_a($antrag_termin_tagesordnungspunkt, Tagesordnungspunkt::class)) $dokument->tagesordnungspunkt_id = $antrag_termin_tagesordnungspunkt->id;
+        $dokument->url     = $dok->id;
+        $dokument->name    = $dok->title;
+        $dokument->name_title = $dok->title;
         $dokument->datum   = date("Y-m-d H:i:s");
         $dokument->deleted = 0;
-        if (defined("NO_TEXT")) {
-            throw new Exception("Noch nicht implementiert");
-        } else {
-            $dokument->download_and_parse();
-        }
+        $dokument->download_and_parse();
 
         if (!$dokument->save()) {
             RISTools::report_ris_parser_error("Dokument:create_if_necessary Error", print_r($dokument->getErrors(), true));
@@ -490,41 +433,26 @@ class Dokument extends CActiveRecord implements IRISItem
         $dokument->geo_extract();
         $dokument->solrIndex();
 
-        return "Neue Datei: " . $dokument_id . " / " . $dok["name"] . "\n";
+        return "Neue Datei: " . $dok->id . " / " . $dok->title . "\n";
     }
 
 
-    /**
-     * @return string
-     */
-    public function getOriginalLink()
+    public function getOriginalLink(): string
     {
-        return RIS_URL_PREFIX . $this->url;
+        return RIS_PDF_PREFIX . $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getLocalPath()
+    public function getLocalPath(): string
     {
-        if ($this->typ == Dokument::$TYP_RATHAUSUMSCHAU) {
-            if (substr($this->rathausumschau->datum, 0, 4) <= 2008) return PATH_PDF_RU . substr($this->rathausumschau->datum, 0, 4) . "/" . $this->url;
-            return PATH_PDF_RU . substr($this->rathausumschau->datum, 0, 4) . "/" . IntVal($this->rathausumschau->nr) . ".pdf";
-        } else {
-            $x         = explode(".", $this->url);
-            $extension = $x[count($x) - 1];
-            return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
-        }
+        $x = explode(".", $this->url);
+        $extension = $x[count($x) - 1];
+
+        return PATH_PDF . ($this->id % 100) . "/" . $this->id . "." . $extension;
     }
 
-    private static $dokumente_cache = [];
+    private static array $dokumente_cache = [];
 
-    /**
-     * @param string $id
-     * @param bool $cached
-     * @return Dokument
-     */
-    public static function getDocumentBySolrId($id, $cached = false)
+    public static function getDocumentBySolrId(string $id, bool $cached = false): ?Dokument
     {
         $x  = explode(":", $id);
         $id = IntVal($x[1]);
@@ -535,22 +463,17 @@ class Dokument extends CActiveRecord implements IRISItem
         return Dokument::model()->with(["antrag", "tagesordnungspunkt", "rathausumschau"])->findByPk($id);
     }
 
-    /**
-     * @return IRISItem
-     */
-    public function getRISItem()
+    public function getRISItem(): ?IRISItem
     {
-        if (in_array($this->typ, [static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS])) return $this->tagesordnungspunkt;
-        if (in_array($this->typ, [static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN])) return $this->termin;
-        if (in_array($this->typ, [static::$TYP_RATHAUSUMSCHAU])) return $this->rathausumschau;
+        if (in_array($this->typ, [static::TYP_STADTRAT_BESCHLUSS, static::TYP_BA_BESCHLUSS])) return $this->tagesordnungspunkt;
+        if (in_array($this->typ, [static::TYP_STADTRAT_TERMIN, static::TYP_BA_TERMIN])) return $this->termin;
         return $this->antrag;
     }
 
     /**
-     * @param int $limit
-     * @return array|Dokument[]
+     * Dokument[]
      */
-    public function solrMoreLikeThis($limit = 10)
+    public function solrMoreLikeThis(int $limit = 10): array
     {
         if ($GLOBALS["SOLR_CONFIG"] === null) return [];
         $solr   = RISSolrHelper::getSolrClient();
@@ -571,10 +494,7 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
 
-    /**
-     * @param Solarium\QueryType\Update\Query\Query $update
-     */
-    private function solrIndex_termin_do($update)
+    private function solrIndex_termin_do(Solarium\QueryType\Update\Query\Query $update): void
     {
         $gremienname = ($this->termin->gremium ? $this->termin->gremium->name : "");
         /** @var RISSolrDocument $doc */
@@ -620,10 +540,7 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
 
-    /**
-     * @param Solarium\QueryType\Update\Query\Query $update
-     */
-    private function solrIndex_antrag_do($update)
+    private function solrIndex_antrag_do(\Solarium\QueryType\Update\Query\Query $update): void
     {
         if (!$this->antrag) return;
 
@@ -632,7 +549,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $doc = $update->createDocument();
 
         $doc->id                 = "Document:" . $this->id;
-        $doc->text               = RISSolrHelper::string_cleanup(RISTools::korrigiereTitelZeichen($this->antrag->betreff) . " " . $this->text_pdf);
+        $doc->text               = RISSolrHelper::string_cleanup(RISTools::normalizeTitle($this->antrag->betreff) . " " . $this->text_pdf);
         $doc->text_ocr           = RISSolrHelper::string_cleanup($this->text_ocr_corrected);
         $doc->dokument_name      = RISSolrHelper::string_cleanup($this->name);
         $doc->dokument_url       = $this->url;
@@ -700,22 +617,6 @@ class Dokument extends CActiveRecord implements IRISItem
     /**
      * @param Solarium\QueryType\Update\Query\Query $update
      */
-    private function solrIndex_rathausumschau_do($update)
-    {
-        if (!$this->rathausumschau) return;
-
-        /** @var RISSolrDocument $doc */
-        $doc = $update->createDocument();
-
-        $this->solrIndex_generic_do($doc, "Rathausumschau:", $this->text_pdf, $this->rathausumschau->datum . " 13:00:00");
-
-        $doc->antrag_id = $this->rathausumschau->nr;
-        $update->addDocuments([$doc]);
-    }
-
-    /**
-     * @param Solarium\QueryType\Update\Query\Query $update
-     */
     private function solrIndex_beschluss_do($update)
     {
         /** @var RISSolrDocument $doc */
@@ -730,37 +631,28 @@ class Dokument extends CActiveRecord implements IRISItem
     }
 
 
-    /**
-     */
-    public function solrIndex()
+    public function solrIndex(): void
     {
-
         $tries = 3;
         while ($tries > 0) try {
             $solr   = RISSolrHelper::getSolrClient();
             $update = $solr->createUpdate();
 
             if ($this->deleted == 1) {
-                if ($this->typ == static::$TYP_RATHAUSUMSCHAU) {
-                    $update->addDeleteQuery("id:\"Rathausumschau:" . $this->id . "\"");
-                } else {
-                    $update->addDeleteQuery("id:\"Document:" . $this->id . "\"");
-                }
-
+                $update->addDeleteQuery("id:\"Document:" . $this->id . "\"");
             } else {
-                if (in_array($this->typ, [static::$TYP_STADTRAT_TERMIN, static::$TYP_BA_TERMIN])) $this->solrIndex_termin_do($update);
-                elseif (in_array($this->typ, [static::$TYP_STADTRAT_BESCHLUSS, static::$TYP_BA_BESCHLUSS])) $this->solrIndex_beschluss_do($update);
-                elseif ($this->typ == static::$TYP_RATHAUSUMSCHAU) $this->solrIndex_rathausumschau_do($update);
+                if (in_array($this->typ, [static::TYP_STADTRAT_TERMIN, static::TYP_BA_TERMIN])) $this->solrIndex_termin_do($update);
+                elseif (in_array($this->typ, [static::TYP_STADTRAT_BESCHLUSS, static::TYP_BA_BESCHLUSS])) $this->solrIndex_beschluss_do($update);
                 else $this->solrIndex_antrag_do($update);
             }
             $update->addCommit();
             $solr->update($update);
             return;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $tries--;
-            sleep(15);
+            //sleep(15);
+            RISTools::report_ris_parser_error("Failed Indexing: " . $e->getMessage(), '');
         }
-        RISTools::report_ris_parser_error("Failed Indexing", print_r($this->getAttributes(), true));
     }
 
     /**

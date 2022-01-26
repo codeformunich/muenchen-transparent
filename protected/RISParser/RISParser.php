@@ -2,21 +2,30 @@
 
 abstract class RISParser
 {
-    public abstract function parse($id);
+    private const MONTHS = [
+        "januar" => 1,
+        "februar" => 2,
+        "märz" => 3,
+        "april" => 4,
+        "mai" => 5,
+        "juni" => 6,
+        "juli" => 7,
+        "august" => 8,
+        "september" => 9,
+        "oktober" => 10,
+        "november" => 11,
+        "dezember" => 12,
+    ];
 
-    public abstract function parseSeite($seite, $first);
+    public abstract function parse(int $id): mixed;
 
-    public abstract function parseAlle();
+    public abstract function parseAll(): void;
 
-    public abstract function parseUpdate();
+    public abstract function parseUpdate(): void;
 
-    public abstract function parseQuickUpdate();
+    public abstract function parseQuickUpdate(): void;
 
-    /**
-     * @param string $text
-     * @return string
-     */
-    public static function text_simple_clean($text)
+    public static function text_simple_clean(string $text): string
     {
         $text = trim($text);
         $text = preg_replace("/<br ?\/?>/siU", "\n", $text);
@@ -26,21 +35,7 @@ abstract class RISParser
         return trim($text);
     }
 
-    public static function text_clean_spaces($text)
-    {
-        $text = str_replace("&nbsp;", " ", $text);
-        $text = str_replace("<!-- Bitte prüfen! Texte werden nicht -->", "", $text);
-        $text = preg_replace("/[ \\n]*<br ?\/>[ \\n]*/siu", "\n", $text);
-        $text = preg_replace("/[ \\n]*<br ?\/>[ \\n]*/siu", "\n", $text);
-        return trim(preg_replace("/<a[^>]*>[^<]*<\/a>/siU", "", $text));
-    }
-
-    /**
-     * @param string $dat
-     * @param null|string $fallback
-     * @return null|string
-     */
-    public static function date_de2mysql($dat, $fallback = null)
+    public static function date_de2mysql(string $dat, ?string $fallback = null): ?string
     {
         $x = explode(".", trim($dat));
         if (count($x) != 3) return $fallback;
@@ -50,11 +45,18 @@ abstract class RISParser
         return $x[2] . "-" . $x[1] . "-" . $x[0];
     }
 
-    /** @param int [] */
-    public static function parseIDs($ids)
+    public static function parseGermanLongDate(string $date): DateTime
     {
-        foreach ($ids as $id) static::parse($id);
+        preg_match('/(?<day>\d+)\. (?<month>[a-zäöüß]+) (?<year>\d{4}), (?<hour>\d+):(?<minute>\d+)/siu', $date, $match);
+
+        return (new \DateTime())
+            ->setDate(intval($match['year']), static::MONTHS[mb_strtolower($match['month'])], intval($match['day']))
+            ->setTime(intval($match['hour']), intval($match['minute']), 0, 0);
     }
 
-
+    /** @param int [] */
+    public function parseIDs(array $ids): void
+    {
+        foreach ($ids as $id) $this->parse($id);
+    }
 }

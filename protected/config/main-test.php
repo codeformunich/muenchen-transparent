@@ -5,38 +5,33 @@ if (!defined("SITE_BASE_URL")) define("SITE_BASE_URL", "http://localhost:8080");
 if (!defined("SITE_CALL_MODE")) define("SITE_CALL_MODE", "web");
 
 define("RIS_DATA_DIR", "/data/ris3-data/");
-define("RIS_OMNIPAGE_DIR", "/data/nuance/");
 define("PATH_IDENTIFY", "/usr/bin/identify");
 define("PATH_CONVERT", "/usr/bin/convert");
 define("PATH_TESSERACT", "/usr/local/bin/tesseract");
 define("PATH_JAVA", "/usr/local/java/bin/java");
 define("PATH_PDFTOTEXT", "/usr/bin/pdftotext");
-define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-1.8.10.jar");
+define("PATH_PDFBOX", RIS_DATA_DIR . "pdfbox-app-2.0.25.jar");
 define("PATH_PDFINFO", "/usr/bin/pdfinfo");
+define("PATH_CHROME_BROWSER", "/usr/bin/google-chrome");
 
 define("PATH_PDF", RIS_DATA_DIR . "data/pdf/");
 define("PATH_PDF_RU", RIS_DATA_DIR . "data/ru-pdf/");
 define("TMP_PATH", "/tmp/");
 define("LOG_PATH", RIS_DATA_DIR . "logs/");
 define("RU_PDF_PATH", RIS_DATA_DIR . "data/ru-pdf/");
-define("OMNIPAGE_PDF_DIR", RIS_OMNIPAGE_DIR . "ocr-todo/");
-define("OMNIPAGE_DST_DIR", RIS_OMNIPAGE_DIR . "ocr-dst/");
-define("OMNIPAGE_IMPORTED_DIR", RIS_OMNIPAGE_DIR . "ocr-imported/");
 define("TILE_CACHE_DIR", RIS_DATA_DIR . "tile-cache/tiles/");
 define("EMAIL_LOG_FILE", TMP_PATH . "/email.log");
 
 // Konstanten, die das RIS betreffen
 define("RIS_URL_PREFIX", "http://localhost:8080"); // Zum Testen des Proxys
+define("RIS_PDF_PREFIX", "https://risi.muenchen.de/risi/dokument/v/");
 define("RIS_BASE_URL", "https://www.ris-muenchen.de/RII/RII/");
 define("RIS_BA_BASE_URL",  "https://www.ris-muenchen.de/RII/BA-RII/");
-define("RATHAUSUMSCHAU_WEBSITE",  "http://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html");
 define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 
 define("OPARL_10_ITEMS_PER_PAGE", 3); // Macht das Testen einfacher
 
 define("SEED_KEY", "RANDOMKEY");
-define("MAILGUN_API_KEY", "");
-define("MAILGUN_DOMAIN", "");
 define("NO_ERROR_MAIL", true);
 
 require_once(__DIR__ . "/constants.php");
@@ -140,19 +135,21 @@ return [
             'rules'          => $GLOBALS["RIS_URL_RULES"],
         ],
         'db'           => [
-            'connectionString'      => 'mysql:host=127.0.0.1;dbname=mt-test',
+            'connectionString'      => 'mysql:host=localhost;dbname=mt-test',
             'emulatePrepare'        => true,
-            'username'              => 'travis',
+            'username'              => 'root',
             'password'              => '',
             'charset'               => 'utf8mb4',
             'queryCacheID'          => 'apcCache',
             'schemaCachingDuration' => 3600,
-            'initSQLs'              => ['SET time_zone = "' . DEFAULT_TIMEZONE . '"'],
+            //'initSQLs'              => ['SET time_zone = "' . DEFAULT_TIMEZONE . '"'],
         ],
+        /*
         'errorHandler' => [
             // use 'site/error' action to display errors
             'errorAction' => 'index/error',
         ],
+        */
         'log'          => [
             'class'  => 'CLogRouter',
             'routes' => [

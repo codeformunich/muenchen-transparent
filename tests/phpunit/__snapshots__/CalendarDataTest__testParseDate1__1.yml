@@ -1,0 +1,25 @@
+dateStart: '2021-12-01T09:30:00+01:00'
+id: 6431692
+status: 'TO freigegeben'
+baNr: null
+baId: null
+sitzungsstand: null
+organizationId: 4
+organizationName: 'Ausschuss für Stadtplanung und Bauordnung'
+wahlperiode: 2020-2026
+ort: 'Großer Sitzungssaal'
+vorsitzId: 3312640
+vorsitzName: 'Reiter, Dieter'
+referatId: 9
+referatName: 'Referat für Stadtplanung und Bauordnung'
+referentInName: 'Stadtbaurätin Prof. Dr. (Univ. Florenz) Merk'
+nextCalendarId: 6944222
+prevCalendarId: 6430935
+hasAgendaPublic: true
+hasAgendaNonPublic: true
+dokumentLinks:
+    - { title: '1. Nachtrag (oeff)', id: 6932423, url: /dokument/v/6932423, filename: '1. Nachtrag (oeff).pdf' }
+    - { title: 'Einladung Ausschuss oeff', id: 6914370, url: /dokument/v/6914370, filename: 'Einladung Ausschuss oeff.pdf' }
+    - { title: 'Neufassung (oeff)', id: 6944216, url: /dokument/v/6944216, filename: 'Neufassung (oeff).pdf' }
+agendaPublic: {  }
+agendaNonPublic: {  }

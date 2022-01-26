@@ -1,11 +1,12 @@
 <?php
 
+use JetBrains\PhpStorm\ArrayShape;
 use SGH\PdfBox\PdfBox;
 
 class RISPDF2Text
 {
 
-    public static $RIS_OCR_CLEAN_I_REPLACES = [
+    public static array $RIS_OCR_CLEAN_I_REPLACES = [
         "ı"           => "i",
         "vv"          => "w",
         "Munchen"     => "München",
@@ -31,7 +32,7 @@ class RISPDF2Text
         "Scn"         => "sch",
     ];
 
-    public static $RIS_OCR_CLEAN_REPLACES = [
+    public static array $RIS_OCR_CLEAN_REPLACES = [
         "nıv"     => "rw",
         " lsar"   => " Isar",
         "-lsar"   => "-Isar",
@@ -50,51 +51,47 @@ class RISPDF2Text
         "Schuie"  => "Schule",
     ];
 
-    public static $RIS_OCR_CLEAN_PREG_REPLACES = [
+    public static array $RIS_OCR_CLEAN_PREG_REPLACES = [
         "/^l([bcdfghkmnpqrstvwxz])/um" => "I\\1",
         "/ l([bcdfghkmnpqrstvwxz])/um" => " I\\1",
         "/ i([aeou])/um"               => " l\\1",
         "/(niv)(?!eau)/u"              => "rw",
     ];
 
-    /**
-     * @param string $filename
-     * @return array
-     */
-    public static function document_pdf_metadata($filename)
+    #[ArrayShape(["pages" => "int", "date" => "string"])]
+    public static function document_pdf_metadata(string $filename): array
     {
         $result = [];
         exec(PATH_PDFINFO . " '" . addslashes($filename) . "'", $result);
         $seiten = 0;
-        $datum  = "";
+        $dateParse  = "";
 
         if (preg_match("/Pages:\\s*([0-9]+)/siu", implode("\n", $result), $matches_page)) $seiten = IntVal($matches_page[1]);
         if (preg_match("/CreationDate:\\s*([a-z0-9 :]+)\n/siu", implode("\n", $result), $matches_date)) {
-            $datum = date_parse($matches_date[1]);
-            if ($datum && isset($datum["year"]) && $datum["year"] > 1990) {
-                $datum = $datum["year"] . "-" . $datum["month"] . "-" . $datum["day"] . " " . $datum["hour"] . ":" . $datum["minute"] . ":" . $datum["second"];
+            $dateParse = date_parse($matches_date[1]);
+            if ($dateParse && isset($dateParse["year"]) && $dateParse["year"] > 1990) {
+                $dateParse = $dateParse["year"] . "-" . $dateParse["month"] . "-" . $dateParse["day"] . " " . $dateParse["hour"] . ":" . $dateParse["minute"] . ":" . $dateParse["second"];
             } else {
-                $datum = "0000-00-00 00:00:00";
+                $dateParse = "0000-00-00 00:00:00";
             }
         }
 
-        if ($seiten > 0) return ["seiten" => $seiten, "datum" => $datum];
+        if ($seiten > 0) return ["pages" => $seiten, "date" => $dateParse];
 
         $result = [];
         exec(PATH_IDENTIFY . " $filename", $result);
-        $anzahl = 0;
-        foreach ($result as $res) if (strpos($res, "DirectClass")) $anzahl++;
+        $pages = 0;
+        foreach ($result as $res) if (strpos($res, "DirectClass")) $pages++;
 
-        return ["seiten" => $anzahl, "datum" => $datum];
+        return ["pages" => $pages, "date" => $dateParse];
     }
 
-    /**
-     * @param string $filename
-     * @param int $seiten_anzahl
-     * @return string
-     */
-    public static function document_text_ocr($filename, $seiten_anzahl)
+    public static function document_text_ocr(string $filename, int $seiten_anzahl): string
     {
+        if (defined("IN_TEST_MODE")) {
+            return 'TEST OCR';
+        }
+
         // Hint: PDF-parsing needs to be enabled in /etc/ImageMagick-6/policy.xml
 
         $depth = "-depth 8";
@@ -126,14 +123,18 @@ class RISPDF2Text
         return $text;
     }
 
-    public static function document_text_pdf($pdf)
+    public static function document_text_pdf($pdf): string
     {
+        if (defined("IN_TEST_MODE")) {
+            return 'TEST PDFbox';
+        }
+
         $converter = new PdfBox;
         $converter->setPathToPdfBox(PATH_PDFBOX);
-        return $converter->textFromPdfFile($pdf);
+        return (string)$converter->textFromPdfFile($pdf);
     }
 
-    public static function ris_ocr_clean($txt)
+    public static function ris_ocr_clean($txt): string
     {
         $ord_a = ord("a");
         $ord_z = ord("z");
@@ -151,11 +152,11 @@ class RISPDF2Text
             if ($c >= $ord_a && $c <= $ord_z) $txt[$first] = "l";
         }
 
-        if (substr($txt, 0, 3) == "ll.") {
+        if (str_starts_with($txt, "ll.")) {
             $txt[0] = "I";
             $txt[1] = "I";
         }
-        if (substr($txt, 0, 4) == "lll.") {
+        if (str_starts_with($txt, "lll.")) {
             $txt[0] = "I";
             $txt[1] = "I";
             $txt[2] = "I";

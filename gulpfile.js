@@ -1,28 +1,25 @@
 /*
 Gulp is used to managed all sass/css and javascript resources.
  - Use `gulp watch` to rebuild css and js on every file change
- - Use `gulp browsersync` to automatically push changed resources to the browser
  - Append `--unuglified` to get uncompressed output
 */
 
-var gulp = require('gulp'),
+const gulp = require('gulp'),
+    terser = require('gulp-terser'),
     concat = require('gulp-concat'),
     gulpif = require('gulp-if'),
+    postcss = require('gulp-postcss'),
+    autoprefixer = require('autoprefixer'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     expect = require('gulp-expect-file'),
     yargs = require('yargs');
-child_process = require('child_process');
-
-// browsersync will only be used with the browsersync task
-var browsersync = require('browser-sync').create();
-var use_browsersync = false;
 
 // Add an `--unuglified`options that makes building the js about ten times faster
-var use_uglify = (yargs.argv["unuglified"] === undefined);
+const use_uglify = (yargs.argv["unuglified"] === undefined);
 
-var paths = {
+const paths = {
     source_sass: ["html/css/*.scss"],
     build_js: ["html/js/build/*.js"],
     php: ["protected/**/*.php"],
@@ -70,6 +67,33 @@ var paths = {
     ]
 };
 
+function taskBuildJsMain() {
+    return gulp.src(paths.std_js)
+        .pipe(sourcemaps.init())
+        .pipe(concat('std.js'))
+        .pipe(terser())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('html/js/build/'));
+}
+
+function taskBuildCss() {
+    return gulp.src(paths.source_sass)
+        .pipe(sourcemaps.init())
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(postcss([autoprefixer()]))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('html/css/build/'));
+}
+
+async function taskCopyFiles() {
+    await gulp.src("node_modules/fullcalendar/main.min.js").pipe(gulp.dest('./html/fullcalendar/'));
+    await gulp.src("node_modules/fullcalendar/main.min.css").pipe(gulp.dest('./html/fullcalendar/'));
+    await gulp.src("node_modules/fullcalendar/locales/de.js").pipe(gulp.dest('./html/fullcalendar/locales/'));
+}
+
+gulp.task('default', gulp.parallel(taskBuildJsMain, taskCopyFiles, taskBuildCss));
+
+/*
 gulp.task('default', ['std.js', 'leaflet.js', 'sass', 'pdfjs']);
 
 gulp.task('watch', function () {
@@ -80,39 +104,8 @@ gulp.task('watch', function () {
     gulp.watch(paths.pdfjs_css, ['pdfjs.css']);
 });
 
-gulp.task('browsersync', ['watch'], function () {
-    use_uglify = false;
-    use_browsersync = true;
-    browsersync.init({
-        proxy: "ratsinformant.local"
-    });
-
-    gulp.watch(paths.build_js).on("change", browsersync.reload);
-    gulp.watch(paths.php).on("change", browsersync.reload);
-});
-
 // The real tasks
 
-gulp.task('sass', ['emulate-bower'], function () {
-    return gulp.src(paths.source_sass)
-        .pipe(expect(paths.source_sass))
-        .pipe(sourcemaps.init())
-        .pipe(sass({
-            outputStyle: 'compressed'
-        }).on('error', sass.logError))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('html/css/build/'))
-        .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
-});
-
-
-gulp.task('std.js', ['emulate-bower'], function () {
-    return gulp.src(paths.std_js)
-        .pipe(expect(paths.std_js))
-        .pipe(concat('std.js'))
-        .pipe(gulpif(use_uglify, uglify()))
-        .pipe(gulp.dest('html/js/build/'));
-});
 
 gulp.task('leaflet.js', ['emulate-bower', 'ba-grenzen-geojson'], function () {
     return gulp.src(paths.leaflet_js)
@@ -120,10 +113,6 @@ gulp.task('leaflet.js', ['emulate-bower', 'ba-grenzen-geojson'], function () {
         .pipe(concat('leaflet.js'))
         .pipe(gulpif(use_uglify, uglify()))
         .pipe(gulp.dest('html/js/build/'));
-});
-
-gulp.task('ba-grenzen-geojson', function () {
-    return child_process.execSync('$(git rev-parse --show-toplevel)/protected/yiic bagrenzengeojson html/js/build/ba-grenzen-geojson.js');
 });
 
 gulp.task('pdfjs', ['pdfjs.js', 'pdfjs.css']);
@@ -145,12 +134,12 @@ gulp.task('pdfjs.css', ['emulate-bower'], function () {
             outputStyle: 'compressed'
         }).on('error', sass.logError))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('html/pdfjs/web/'))
-        .pipe(gulpif(use_browsersync, browsersync.stream({match: "**/*.css"})));
+        .pipe(gulp.dest('html/pdfjs/web/'));
 });
 
 // Copy the old bower dependencies from /node_modules/[package-name] to /html/bower/[package-name]
 gulp.task('emulate-bower', function () {
-    let folders = paths.bower_emulate.map((folder) => "node_modules/" + folder + "/**/*");
+    let folders = paths.bower_emulate.map((folder) => "node_modules/" + folder + "/**" + "/*");
     return gulp.src(folders, {base: "node_modules/"}).pipe(gulp.dest('html/bower/'));
 });
+*/

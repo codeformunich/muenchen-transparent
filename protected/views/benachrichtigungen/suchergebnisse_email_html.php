@@ -161,6 +161,8 @@ $css = file_get_contents(Yii::app()->getBasePath() . "/../html/css/build/mail.cs
             <?php } ?>
             <br>
 
+            Berücksichtigt werden Dokumente, die seit dem 27. Januar 2022 gefunden wurden.<br><br>
+
             Liebe Grüße,<br>
             &nbsp;
             Das München Transparent-Team
