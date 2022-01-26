@@ -4,7 +4,8 @@ class Reindex_Stadtrat_VorlageCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        if (count($args) == 0) die("./yii reindex_vorlage [Vorlagen-ID|YYYY-MM|alle]\n");
+        if (posix_getuid() === 0) die("This command cannot be run as root");
+        if (count($args) == 0) die("./yii reindex_stadtrat_vorlage [Vorlagen-ID|YYYY-MM|alle]\n");
 
         $parser = new StadtratsvorlageParser();
         if ($args[0] == "ohnereferat") {

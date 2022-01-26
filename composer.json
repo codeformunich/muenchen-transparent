@@ -20,6 +20,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
+        "ext-posix": "*",
         "yiisoft/yii": "^1.1",
         "solarium/solarium": "^6",
         "laminas/laminas-config": "^3.1.0",

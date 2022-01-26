@@ -1,11 +1,11 @@
 <?php
 
-define("VERYFAST", true);
-
 class Update_Ris_HourlyCommand extends CConsoleCommand
 {
     public function run($args)
     {
+        if (posix_getuid() === 0) die("This command cannot be run as root");
+
         echo "Gestartet: " . date("Y-m-d H:i:s") . "\n";
 
         try {

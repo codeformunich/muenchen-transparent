@@ -4,6 +4,7 @@ class Reindex_Stadtrat_AntragCommand extends CConsoleCommand
 {
     public function run($args)
     {
+        if (posix_getuid() === 0) die("This command cannot be run as root");
         if (count($args) == 0) die("./yii reindex_stadtrat_antrag [Antrags-ID|YYYY-MM|alle|ohnereferat]\n");
 
         $parser = new StadtratsantragParser();
