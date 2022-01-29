@@ -36,13 +36,13 @@ class AntragData
     public static function parseFromHtml(string $html, ?int $idFallback = null): ?self
     {
         if (!preg_match('/<section class="card">.*<div><h2>Betreff<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<title>[^<]*)<\/div>/siuU', $html, $match)) {
-            throw new ParsingException('Not found: title');
+            throw new ParsingException('Not found: title (ID ' . $idFallback . ')');
         }
         $entry = new self();
         $entry->title = html_entity_decode($match['title'], ENT_COMPAT, 'UTF-8');
 
         if (!preg_match('/<h1[^>]*>.*(StR|BA)-(Antrag|Anfrage|Initiative) (?<nummer>[^<]*) <span[^>]*><span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
-            throw new ParsingException('Not found: antragsnummer / status');
+            throw new ParsingException('Not found: antragsnummer / status (ID ' . $idFallback . ')');
         }
         $entry->antragsnummer = str_replace(' ', '', $match['nummer']);
         $entry->status = $match['status'];
@@ -58,7 +58,7 @@ class AntragData
         }
 
         if (!preg_match('/<div[^>]*>Wahlperiode:<\/div>\s*<div[^>]*>(?<wahlperiode>\d+-\d+)<\/div>/siuU', $html, $match)) {
-            throw new ParsingException('Not found: wahlperiode');
+            throw new ParsingException('Not found: wahlperiode (ID ' . $idFallback . ')');
         }
         $entry->wahlperiode = $match['wahlperiode'];
 

@@ -32,7 +32,7 @@ class StadtratsvorlageParser extends RISParser
 
         $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzungsvorlage/detail/' . $id);
 
-        $parsed = StadtratsvorlageData::parseFromHtml($html);
+        $parsed = StadtratsvorlageData::parseFromHtml($html, $id);
         if ($parsed === null) {
             return null;
         }

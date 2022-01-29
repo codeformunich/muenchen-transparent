@@ -15,11 +15,9 @@ cp protected/config/main-production.template.php protected/config/main-productio
 
 Abhängigkeiten installieren und minimiertes javascript und css erzeugen:
 ```bash
-npm install -g bower gulp-cli
 npm install
 composer install
-bower install
-gulp
+npx gulp
 ```
 
 ### nginx
@@ -51,7 +49,7 @@ protected/yiic importstatistik
 
 ### PHP
 * Die Option "short_open_tag" muss auf "On" gestellt sein.
-* Das Modul für curl muss installiert sein (`php5-curl`)
+* Das Modul für curl muss installiert sein (`php8-curl`)
 
 ### Solr
 * Solr 5.5.1 [herunterladen](https://archive.apache.org/dist/lucene/solr/5.5.1/) und in einen Ordner mit dem Namen `solr` entpacken.

@@ -17,7 +17,7 @@ class BAAntragParser extends RISParser
 
         $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'antrag/detail/' . $id);
 
-        $parsed = AntragData::parseFromHtml($html);
+        $parsed = AntragData::parseFromHtml($html, $id);
         if ($parsed === null) {
             return null;
         }

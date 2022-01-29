@@ -31,23 +31,23 @@ class StadtratsvorlageData
     /** @var StadtratsantragListEntry[] */
     public array $antraege = [];
 
-    public static function parseFromHtml(string $html): ?self
+    public static function parseFromHtml(string $html, ?int $idFallback): ?self
     {
         if (!preg_match('/<section class="card">.*<div><h2>Betreff<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<title>[^<]*)<\/div>/siuU', $html, $match)) {
-            throw new ParsingException('Not found: title');
+            throw new ParsingException('Not found: title (' . $idFallback . ')');
         }
         $entry = new self();
         $entry->title = html_entity_decode($match['title'], ENT_COMPAT, 'UTF-8');
 
 
         if (!preg_match('/<h1[^>]*>.*Sitzungsvorlage (?<nummer>[^<]*)<\/span>\n*<span[^>]*>\n*<span>\((?<status>[^)]*)\)<\/span>/siuU', $html, $match)) {
-            throw new ParsingException('Not found: antragsnummer / status');
+            throw new ParsingException('Not found: antragsnummer / status (' . $idFallback . ')');
         }
         $entry->antragsnummer = str_replace(' ', '', $match['nummer']);
         $entry->status = $match['status'];
 
         if (!preg_match('/<a[^>]*href="\.\/(?<id>\d+)\?/siu', $html, $match)) {
-            throw new ParsingException('Not found: id');
+            throw new ParsingException('Not found: id (' . $idFallback . ')');
         }
         $entry->id = intval($match['id']);
 
@@ -60,7 +60,7 @@ class StadtratsvorlageData
         $entry->hatAntragsliste = !!preg_match('/<a [^>]*href="\.\/antraege\//siu', $html);
 
         if (!preg_match('/<div[^>]*>Wahlperiode:<\/div>\s*<div[^>]*>(?<wahlperiode>\d+-\d+)<\/div>/siuU', $html, $match)) {
-            throw new ParsingException('Not found: wahlperiode');
+            throw new ParsingException('Not found: wahlperiode (' . $idFallback . ')');
         }
         $entry->wahlperiode = $match['wahlperiode'];
 
