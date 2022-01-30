@@ -22,7 +22,10 @@ class CurlBasedDownloader
         static::$instance = $instance;
     }
 
-    public function loadUrl(string $url, int $retries = 3, int $courtesyWait = 200000): string
+    /**
+     * @throws DocumentVanishedException
+     */
+    public function loadUrl(string $url, bool $detectVanished = false, int $retries = 3, int $courtesyWait = 200000): string
     {
         if (defined("IN_TEST_MODE")) {
             return '';
@@ -36,7 +39,7 @@ class CurlBasedDownloader
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -44,6 +47,16 @@ class CurlBasedDownloader
         //curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         $text = curl_exec($ch);
         curl_close($ch);
+
+        if ($detectVanished) {
+            $info = curl_getinfo($ch);
+            if ($info['http_code'] === 302 && str_contains($info['redirect_url'], 'extranet/login')) {
+                throw new DocumentVanishedException('Redirected to: ' . $info['redirect_url']);
+            }
+            if ($info['http_code'] === 404) {
+                throw new DocumentVanishedException('Document not found');
+            }
+        }
 
         if ($text === false) {
             if ($retries > 0) {

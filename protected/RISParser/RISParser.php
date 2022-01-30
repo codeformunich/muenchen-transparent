@@ -59,4 +59,49 @@ abstract class RISParser
     {
         foreach ($ids as $id) $this->parse($id);
     }
+
+    protected array $deletedIds = [];
+
+    protected function deleteAntrag(int $id, string $changeType): void
+    {
+        $this->deletedIds[] = $id;
+        if (count($this->deletedIds) > 10) {
+            RISTools::report_ris_parser_error("Deleting more than 10 documents at once - aborting", $changeType . "\n" . print_r($this->deletedIds, true));
+            echo "Deleted more than 10 " . $changeType . ": aborting\n";
+            die();
+        }
+
+        echo "Lösche " . $changeType . ": $id\n";
+
+        /** @var Antrag $document */
+        $document = Antrag::model()->findByPk($id);
+        $document->copyToHistory();
+
+        foreach ($document->dokumente as $dok) {
+            echo "- Dokument " . $dok->id . ": Antrag " . $dok->antrag_id . " => null\n";
+            $dok->antrag_id = null;
+            $dok->save();
+        }
+        foreach ($document->ergebnisse as $erg) {
+            echo "- Ergebnis " . $erg->id . ": Antrag " . $erg->antrag_id . " => null\n";
+            $erg->antrag_id = null;
+            $erg->save();
+        }
+        Yii::app()->db->createCommand("UPDATE tagesordnungspunkte_history SET antrag_id = NULL WHERE antrag_id = " . IntVal($id))->execute();
+        Yii::app()->db->createCommand("UPDATE tagesordnungspunkte SET antrag_id = NULL WHERE antrag_id = " . IntVal($id))->execute();
+        Yii::app()->db->createCommand("DELETE FROM antraege_orte WHERE antrag_id = " . IntVal($id))->execute();
+        Yii::app()->db->createCommand("DELETE FROM antraege_vorlagen WHERE antrag1 = " . IntVal($id))->execute();
+
+        if (!$document->delete()) {
+            RISTools::report_ris_parser_error("Could not delete Antrag", print_r($document->getErrors(), true));
+            die("Fehler");
+        }
+        $aend              = new RISAenderung();
+        $aend->ris_id      = $document->id;
+        $aend->ba_nr       = NULL;
+        $aend->typ         = $changeType;
+        $aend->datum       = new CDbExpression("NOW()");
+        $aend->aenderungen = 'Gelöscht';
+        $aend->save();
+    }
 }

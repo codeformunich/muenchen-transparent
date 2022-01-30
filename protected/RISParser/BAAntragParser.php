@@ -15,7 +15,12 @@ class BAAntragParser extends RISParser
     {
         if (SITE_CALL_MODE != "cron") echo "- Antrag $id\n";
 
-        $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'antrag/detail/' . $id);
+        try {
+            $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'antrag/detail/' . $id, true);
+        } catch (DocumentVanishedException $e) {
+            $this->deleteAntrag($id, RISAenderung::TYP_BA_ANTRAG);
+            return null;
+        }
 
         $parsed = AntragData::parseFromHtml($html, $id);
         if ($parsed === null) {
