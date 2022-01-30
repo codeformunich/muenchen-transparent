@@ -91,6 +91,7 @@ abstract class RISParser
         Yii::app()->db->createCommand("UPDATE tagesordnungspunkte SET antrag_id = NULL WHERE antrag_id = " . IntVal($id))->execute();
         Yii::app()->db->createCommand("DELETE FROM antraege_orte WHERE antrag_id = " . IntVal($id))->execute();
         Yii::app()->db->createCommand("DELETE FROM antraege_vorlagen WHERE antrag1 = " . IntVal($id))->execute();
+        Yii::app()->db->createCommand("DELETE FROM antraege_personen WHERE antrag_id = " . IntVal($id))->execute();
 
         if (!$document->delete()) {
             RISTools::report_ris_parser_error("Could not delete Antrag", print_r($document->getErrors(), true));
