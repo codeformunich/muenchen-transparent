@@ -17,16 +17,16 @@ class StadtraetInnenData
     /** @var StadtraetInnenGremienmitgliedschaftData[] */
     public array $ausschussMitgliedschaften;
 
-    public static function parseFromHtml(string $htmlFraktion, string $htmlAusschuss): ?self
+    public static function parseFromHtml(string $htmlFraktion, string $htmlAusschuss, ?int $idFallback): ?self
     {
         if (!preg_match('/<h1 class="page-title">\n<span[^>]*>(?<name>[^<]*) <span/siuU', $htmlFraktion, $match)) {
-            throw new ParsingException('Not found: name');
+            throw new ParsingException('Not found: name (' . $idFallback . ')');
         }
         $entry = new self();
         $entry->name = preg_replace('/^(Herr|Frau) /siu', '', $match['name']);
 
         if (!preg_match('/rss[^">]*\?feed=StR\-MitgliedAntraege&amp;personid=(?<id>\d+)"/siu', $htmlFraktion, $match)) {
-            throw new ParsingException('Not found: id');
+            throw new ParsingException('Not found: id (' . $idFallback . ')');
         }
         $entry->id = intval($match['id']);
 

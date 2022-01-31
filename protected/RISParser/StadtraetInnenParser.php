@@ -36,7 +36,7 @@ class StadtraetInnenParser extends RISParser
         $htmlFraktionen = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=fraktionen');
         $htmlAusschuesse = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=strausschuesse');
 
-        $parsed = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse);
+        $parsed = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse, $id);
 
         $daten = new StadtraetIn();
         $daten->id = $id;
