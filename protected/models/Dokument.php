@@ -460,7 +460,7 @@ class Dokument extends CActiveRecord implements IRISItem
             if (!isset(static::$dokumente_cache[$id])) static::$dokumente_cache[$id] = Dokument::model()->with("antrag")->findByPk($id);
             return static::$dokumente_cache[$id];
         }
-        return Dokument::model()->with(["antrag", "tagesordnungspunkt", "rathausumschau"])->findByPk($id);
+        return Dokument::model()->with(["antrag", "tagesordnungspunkt"])->findByPk($id);
     }
 
     public function getRISItem(): ?IRISItem
