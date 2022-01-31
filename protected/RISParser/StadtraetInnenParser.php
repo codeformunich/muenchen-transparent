@@ -33,8 +33,8 @@ class StadtraetInnenParser extends RISParser
     {
         if (SITE_CALL_MODE != "cron") echo "- StadträtIn $id\n";
 
-        $htmlFraktionen = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=fraktionen');
-        $htmlAusschuesse = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=strausschuesse');
+        $htmlFraktionen = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=fraktionen', false, true);
+        $htmlAusschuesse = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=strausschuesse', false, true);
 
         $parsed = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse, $id);
 

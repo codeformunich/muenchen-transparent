@@ -25,7 +25,7 @@ class CurlBasedDownloader
     /**
      * @throws DocumentVanishedException
      */
-    public function loadUrl(string $url, bool $detectVanished = false, int $retries = 3, int $courtesyWait = 200000): string
+    public function loadUrl(string $url, bool $detectVanished = false, bool $followRedirects = false, int $retries = 3, int $courtesyWait = 200000): string
     {
         if (defined("IN_TEST_MODE")) {
             return '';
@@ -39,7 +39,7 @@ class CurlBasedDownloader
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $followRedirects);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_USERAGENT, RISTools::STD_USER_AGENT);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -62,7 +62,7 @@ class CurlBasedDownloader
             if ($retries > 0) {
                 echo "Dowload failed. Retrying in 30 seconds\n";
                 sleep(30);
-                return $this->loadUrl($url, $retries - 1, $courtesyWait);
+                return $this->loadUrl($url, $detectVanished, $followRedirects, $retries - 1, $courtesyWait);
             } else {
                 throw new \Exception('Could not download URL: ' . $url);
             }
