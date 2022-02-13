@@ -11,10 +11,10 @@ class StadtraetInnenData
     public ?string $lebenslauf = null;
     public ?string $fotoUrl = null;
 
-    /** @var StadtraetInnenGremienmitgliedschaftData[] */
+    /** @var GremienmitgliedschaftData[] */
     public array $fraktionsMitgliedschaften;
 
-    /** @var StadtraetInnenGremienmitgliedschaftData[] */
+    /** @var GremienmitgliedschaftData[] */
     public array $ausschussMitgliedschaften;
 
     public static function parseFromHtml(string $htmlFraktion, string $htmlAusschuss, ?int $idFallback): ?self
@@ -49,7 +49,7 @@ class StadtraetInnenData
         preg_match_all('/<li.*<\/li>/siuU', $fraktionList, $matches);
         $entry->fraktionsMitgliedschaften = [];
         foreach ($matches[0] as $match) {
-            $entry->fraktionsMitgliedschaften[] = StadtraetInnenGremienmitgliedschaftData::parseFromHtml($match);
+            $entry->fraktionsMitgliedschaften[] = GremienmitgliedschaftData::parseFromHtml($match);
         }
 
         // @TODO This is only the first page with the most recent memberships
@@ -57,9 +57,8 @@ class StadtraetInnenData
         preg_match_all('/<li.*<\/li>/siuU', $ausschussList, $matches);
         $entry->ausschussMitgliedschaften = [];
         foreach ($matches[0] as $match) {
-            $entry->ausschussMitgliedschaften[] = StadtraetInnenGremienmitgliedschaftData::parseFromHtml($match);
+            $entry->ausschussMitgliedschaften[] = GremienmitgliedschaftData::parseFromHtml($match);
         }
-
 
         return $entry;
     }

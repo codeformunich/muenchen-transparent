@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class StadtraetInnenGremienmitgliedschaftData
+class GremienmitgliedschaftData
 {
     public int $gremiumId;
     public string $gremiumName;
@@ -10,6 +10,8 @@ class StadtraetInnenGremienmitgliedschaftData
     public ?DateTime $seit = null;
     public ?DateTime $bis = null;
     public ?int $wahlperiode = null;
+    public ?int $baNr = null;
+    public ?string $baName = null;
 
     public static function parseFromHtml(string $html): ?self
     {
@@ -22,7 +24,7 @@ class StadtraetInnenGremienmitgliedschaftData
         $entry->gremiumName = $matches['name'];
 
         if (preg_match('/Zugehörigkeit:<\/div>\s*<div class="keyvalue-value">\s*' .
-                        '<div>(von|seit) (?<seit>\d+\.\d+\.\d+)( bis (?<bis>\d+\.\d+\.\d+))?\s*<\/div>/siuU', $html, $matches)) {
+                        '(<div>)?(von|seit) (?<seit>\d+\.\d+\.\d+)( bis (?<bis>\d+\.\d+\.\d+))?\s*<\/div>/siuU', $html, $matches)) {
             $entry->seit = (\DateTime::createFromFormat('d.m.Y', $matches['seit']))->setTime(0, 0, 0);
             if (isset($matches['bis'])) {
                 $entry->bis = (\DateTime::createFromFormat('d.m.Y', $matches['bis']))->setTime(0, 0, 0);
@@ -31,10 +33,17 @@ class StadtraetInnenGremienmitgliedschaftData
 
         if (preg_match('/Funktion:<\/div>\s*<div class="keyvalue-value">\s*<div>(?<funktion>[^<]*)\s*<\/div>/siuU', $html, $matches)) {
             $entry->funktion = $matches['funktion'];
+        } elseif (preg_match('/Funktion<\/div>\s*<div class="keyvalue-value">(?<funktion>[^<]*)\s*<\/div>/siuU', $html, $matches)) {
+            $entry->funktion = $matches['funktion'];
         }
 
         if (preg_match('/Wahlperiode:<\/div>\s*<div class="keyvalue-value">\s*(?<wahlperiode>[^<]*)\s*<\/div>/siuU', $html, $matches)) {
             $entry->wahlperiode = Wahlperioden::WAHLPERIODEN_BY_YEAR[intval($matches['wahlperiode'])];
+        }
+
+        if (preg_match('/<a class="headline-link text-keepwhitespace"[^>]*>(?<baNo>\d+) - (?<baName>[^<]*)<\/a>/siu', $html, $match)) {
+            $entry->baNr = intval($match['baNo']);
+            $entry->baName = $match['baName'];
         }
 
         return $entry;

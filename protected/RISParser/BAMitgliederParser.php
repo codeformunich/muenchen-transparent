@@ -24,9 +24,17 @@ class BAMitgliederParser extends RISParser
         return ["von" => $von, "bis" => $bis];
     }
 
-    public function parse($ba_nr): mixed
+    public function parse(int $id): StadtraetIn
     {
-        $ba_nr = IntVal($ba_nr);
+        $htmlFraktionen = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=fraktionen', false, true);
+        $htmlBas = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=mitgliedschaften', false, true);
+        $htmlAusschuesse = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=baausschuesse', false, true);
+
+        $parsed = BAMitgliederData::parseFromHtml($htmlBas, $htmlFraktionen, $htmlAusschuesse, $id);
+
+        var_dump($parsed);
+        die();
+
 
         if (SITE_CALL_MODE != "cron") echo "- BA $ba_nr\n";
         /** @var Bezirksausschuss $ba */
@@ -134,14 +142,10 @@ class BAMitgliederParser extends RISParser
     {
         $html = $this->browserBasedDowloader->downloadPersonList(BrowserBasedDowloader::PERSON_TYPE_BA_MITGLIEDER);
 
-        file_put_contents(__DIR__ . '/../bamitglieder.html', $html);
-
         $entries = StadtraetInnenListEntry::parseHtmlList($html);
 
-        var_dump($entries);die();
-
-        for ($i = 1; $i <= 25; $i++) {
-            $this->parse($i);
+        foreach ($entries as $entry) {
+            $this->parse($entry->id);
         }
     }
 

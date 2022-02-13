@@ -13,7 +13,7 @@ class StadtraetInnenDataTest extends TestCase
     {
         $htmlFraktionen = file_get_contents(__DIR__ . '/data/StadtraetInnenParser_Test1_Mitgliedschaften.html');
         $htmlAusschuesse = file_get_contents(__DIR__ . '/data/StadtraetInnenParser_Test1_Ausschuesse.html');
-        $data = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse);
+        $data = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse, null);
 
         $this->assertSame(3312434, $data->id);
         $this->assertSame('Kathrin Abele', $data->name);
@@ -53,7 +53,7 @@ class StadtraetInnenDataTest extends TestCase
     {
         $htmlFraktionen = file_get_contents(__DIR__ . '/data/StadtraetInnenParser_Test2_Mitgliedschaften.html');
         $htmlAusschuesse = file_get_contents(__DIR__ . '/data/StadtraetInnenParser_Test1_Ausschuesse.html');
-        $data = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse);
+        $data = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse, null);
 
         $this->assertSame(3312434, $data->id);
         $this->assertSame('Kathrin Abele', $data->name);

@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="de">
+<head><script type="text/javascript" src="../../wicket/resource/org.apache.wicket.resource.JQueryResourceReference/jquery/jquery-2.2.4-ver-F9EE266EF993962AD59E804AD9DEBE66.js"></script>
+    <script type="text/javascript" src="../../wicket/resource/org.apache.wicket.ajax.AbstractDefaultAjaxBehavior/res/js/wicket-ajax-jquery-ver-04D5389C5F00ED98AD39E57EBB5AA818.js"></script>
+    <script type="text/javascript" id="wicket-ajax-base-url">
+        /*<![CDATA[*/
+        Wicket.Ajax.baseUrl="person/detail/954?0&amp;tab=mitgliedschaften";
+        /*]]>*/
+    </script>
+    <script type="text/javascript" src="../../wicket/resource/de.eitco.ris.risi.wicket.gremium.detail.sectionpanel.GremiumMitgliedschaftenToggle/GremiumMitgliedschaftenToggle-ver-592163130C4B4E4B7AB44BD7D8411E5A.js"></script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>RatsInformationsSystem München - Bezirksausschuss-Mitglieder - Mögele, Josef (Mitgliedschaften)</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link type="image/png" href="../../images/favicon32.png" rel="icon">
+    <link type="image/png" href="../../images/favicon32.png" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="../../js/jAlert-4.9.1/jAlert.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/risi.css" />
+    <script type="text/javascript" src="../../js/popper-1.16.1/popper.min.js"></script>
+    <script type="text/javascript" src="../../bootstrap/js/bootstrap-risi.min.js"></script>
+    <script type="text/javascript" src="../../js/risi.js"></script>
+    <script type="text/javascript" id="responsive-bootstrap-toolkit-2.6.3/bootstrap-toolkit.min.js" src="../../js/responsive-bootstrap-toolkit-2.6.3/bootstrap-toolkit.min.js"></script>
+    <script type="text/javascript" id="responsive-bootstrap-toolkit-2.6.3/bootstrap-4.js" src="../../js/responsive-bootstrap-toolkit-2.6.3/bootstrap-4.js"></script>
+    <script type="text/javascript" >
+        /*<![CDATA[*/
+        Wicket.Event.add(window, "domready", function(event) {
+            Wicket.Ajax.ajax({"u":"./954;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?0-1.0-typedSectionsPanel-tabcontainer-bamitgliedschaftenListSection-list-cardheader-sort_filter&tab=mitgliedschaften","m":"POST","c":"id5","e":"change"});;
+            Wicket.Event.publish(Wicket.Event.Topic.AJAX_HANDLERS_BOUND);
+            ;});
+        /*]]>*/
+    </script>
+</head>
+<body id="ankerseitenbegin" class="d-flex flex-column">
+
+
+<header class="header-sticky">
+    <div class="header-fullsize flex-shrink-0">
+        <div class="container">
+            <div class="row justify-content-between align-items-center no-gutters">
+                <div class="col-10 col-md-8 d-flex align-items-center">
+                    <div id="logo_sonne" class="d-none d-md-block mr-3">
+                        <img src="../../images/mde-Logo_Sonne.svg" alt="" style="width: 105px; padding-top: 3px;">
+                    </div>
+                    <div class="font-weight-bold">
+                        <div class="header-big text-break">Rats&shy;Informations&shy;System</div>
+                        <div class="header-small text-right">München</div>
+                    </div>
+                </div>
+                <div class="d-md-none col-auto">
+                    <a id="searchboxtoggle" class="btn icon_lupe text-blue" style="font-size: 1.1rem; background: #f9d32a;" href="javascript:toggleSearchBox();" title="Suche ein- bzw. ausblenden"></a>
+                </div>
+                <div id="navsearchbox" class="d-none d-md-block col-md-4 mb-2 mb-md-0" role="search">
+                    <form class="form-inline" style="padding: inherit; right: 0; top: 0;" method="get" action="../../suche">
+                        <input type="hidden" name="scope" value="Vorgang">
+                        <input type="hidden" name="start" value="true">
+                        <div class="input-group w-100">
+                            <label for="searchtext" class="sr-only font-size-big font-weight-bold">Suche</label>
+                            <input type="search" class="form-control" placeholder="Wonach suchen Sie?" title="Suche" id="searchtext" name="text">
+                            <div class="input-group-append">
+                                <button class="btn bg-primary icon_lupe text-white" type="submit" title="Suche starten"></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar-fullsize flex-shrink-0 d-flex " >
+        <div class="container sticky-nav d-flex justify-content-between">
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary flex-grow-1" id="navbar">
+                <button class="navbar-toggler font-size-normal" type="button" data-toggle="collapse" data-target="#navbarMenu"
+                        aria-controls="navbarMenu" aria-expanded="false" aria-label="Navigation ein-/ausblenden">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Aktuelles" title="Öffnet Menüpunkt „Aktuelles“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aktuelles</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Aktuelles">
+                                <li><a class="dropdown-item" title="Öffnet „Aktuelle Aktuelle Vorgänge“" href="../../aktuelles;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>Aktuelle Vorgänge</span></a></li>
+                                <li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „Aktuelle Stadtrats-Vorgänge“" href="../../aktuellestrvorgaenge;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>Aktuelle Stadtrats-Vorgänge</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Offene StR-Anträge/-Anfragen“" href="../../antrag/str/uebersichtoffene;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_StRAntrag.svg" title="StR-Antrag / StR-Anfrage" alt="Oranger Ordner"/> <span>Offene StR-Anträge/-Anfragen</span></a></li>
+                                <li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „Aktuelle BA-Anträge“" href="../../antrag/ba/baantraguebersichtaktuelle;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_BAAntrag.svg" title="BA-Antrag" alt="Pinker Ordner"/> <span>Aktuelle BA-Anträge</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Offene BA-Anträge“" href="../../antrag/ba/baantraguebersichtoffen;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_BAAntrag.svg" title="BA-Antrag" alt="Pinker Ordner"/> <span>Offene BA-Anträge</span></a></li>
+                                <li><span class="dropdown-item-text bg-header text-white">Bürgerversammlung</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „Aktuelle BV-Empfehlungen“" href="../../antrag/ba/bvempfehlunguebersichtaktuelle;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_BVEmpfehlungAnfrage.svg" title="BV-Empfehlung/-Anfrage" alt="Blauer Ordner"/> <span>Aktuelle BV-Empfehlungen</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Offene BV-Empfehlungen“" href="../../antrag/ba/bvempfehlunguebersichtoffen;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_BVEmpfehlungAnfrage.svg" title="BV-Empfehlung/-Anfrage" alt="Blauer Ordner"/> <span>Offene BV-Empfehlungen</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Sitzungen" title="Öffnet Menüpunkt „Sitzungen“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sitzungen</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Sitzungen">
+                                <li><a class="dropdown-item" title="Öffnet „Sitzungskalender“" href="../../sitzung/kalender;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Kalender.svg" title="Sitzungskalender" alt="Roter Kalender"/> <span>Sitzungskalender</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Sitzungen“" href="../../sitzung/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_Sitzung.svg" title="Sitzung" alt="Blaue Uhr"/> <span>Sitzungen</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Vorgänge" title="Öffnet Menüpunkt „Vorgänge“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Vorgänge</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Vorgänge">
+                                <li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „StR-Anträge/-Anfragen“" href="../../antrag/str/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_StRAntrag.svg" title="StR-Antrag / StR-Anfrage" alt="Oranger Ordner"/> <span>StR-Anträge/-Anfragen</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Sitzungsvorlagen“" href="../../sitzungsvorlage/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_SV.svg" title="Sitzungsvorlage" alt="Grüner Ordner"/> <span>Sitzungsvorlagen</span></a></li>
+                                <li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „BA-Anträge“" href="../../antrag/ba/baantraguebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_BAAntrag.svg" title="BA-Antrag" alt="Pinker Ordner"/> <span>BA-Anträge</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „BA-Sitzungsvorlagen“" href="../../sitzungsvorlage/ba/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_SV.svg" title="Sitzungsvorlage" alt="Grüner Ordner"/> <span>BA-Sitzungsvorlagen</span></a></li>
+                                <li><span class="dropdown-item-text bg-header text-white" >Bürgerversammlung</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „BV-Empfehlungen“" href="../../antrag/ba/bvempfehlunguebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Vorgang_BVEmpfehlungAnfrage.svg" title="BV-Empfehlung/-Anfrage" alt="Blauer Ordner"/> <span>BV-Empfehlungen</span></a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Gremien" title="Öffnet Menüpunkt „Gremien“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gremien</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Gremien">
+                                <li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+                                <li><a class="dropdown-item" href="../../gremium/detail/1;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=mitgliederaktuell" title="Öffnet die Detailansicht „Vollversammlung“"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktives Gremium" alt="Mehrere Personen"/> <span>Vollversammlung</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Ausschüsse“" href="../../gremium/strausschuss/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktives Gremium" alt="Mehrere Personen"/> <span>Ausschüsse</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Stadtratsmitglieder“" href="../strmitglieder;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>Stadtratsmitglieder</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Referent*innen“" href="../referenten;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>Referent*innen</span></a></li>
+                                <li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „Bezirksausschüsse“" href="../../gremium/bezirksausschuss/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver Bezirksausschuss" alt="Mehrere Personen"/> <span>Bezirksausschüsse</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „BA-Unterausschüsse“" href="../../gremium/baunterausschuss/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver BA-Unterausschuss" alt="Mehrere Personen"/> <span>BA-Unterausschüsse</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „BA-Mitglieder“" href="../bamitglieder;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>BA-Mitglieder</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Beauftragte“" href="../babeauftragter;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/> <span>Beauftragte</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Fraktionen" title="Öffnet Menüpunkt „Fraktionen“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Fraktionen</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Fraktionen">
+                                <li><span class="dropdown-item-text bg-header text-white">Stadtrat</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „StR-Fraktionen / Gruppierungen“" href="../../gremium/strfraktion/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>StR-Fraktionen / Gruppierungen</span></a></li>
+                                <li><span class="dropdown-item-text bg-header text-white">Bezirksausschuss</span></li>
+                                <li><a class="dropdown-item" title="Öffnet „BA-Fraktionen“" href="../../gremium/bafraktion/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Muenchen_Stadtwappen.svg" title="Münchner Stadtwappen" alt="Wappenschild mit einem nach rechts schauenden Mönch der ein Eidbuch hält"/> <span>BA-Fraktionen</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" title="Öffnet „Suche“" href="../../suche;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD">Suche</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-Service" title="Öffnet Menüpunkt „Service“" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" lang="en">Service</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Service">
+                                <li><a class="dropdown-item" href="../../service/hilfesuche;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Hilfe zur Suche“"><img class="svg-icon" src="../../images/Hilfe_Suche.svg" title="Hilfe zur Suche" alt="Papier mit lila Fragezeichen"/> <span>Hilfe zur Suche</span></a></li>
+                                <li><a class="dropdown-item" href="../../service/hilfe;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Hilfe / FAQ“"><img class="svg-icon" src="../../images/Hilfe.svg" title="Hilfe / FAQ" alt="Blaues Buch mit weißem Fragezeichen"/> <span>Hilfe / FAQ</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „Referate“" href="../../organisationseinheit/fachreferat/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate"/> <span>Referate</span></a></li>
+                                <li><a class="dropdown-item" title="Öffnet „BA-Geschäftsstellen“" href="../../gremium/bageschaeftsstellen/uebersicht;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD"><img class="svg-icon" src="../../images/Orgeinheit.svg" title="Aktive Orgeinheit" alt="Mehrere Quadrate"/> <span>BA-Geschäftsstellen</span></a></li>
+                                <li><a class="dropdown-item" href="../../service/kontakt;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Kontakt“"><img class="svg-icon" src="../../images/Kontakt.svg" title="Kontakt" alt="Blaues AT-Zeichen"/> <span>Kontakt</span></a></li>
+                                <li><a class="dropdown-item" href="../../service/impressum;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Impressum &amp; Datenschutz“"><img class="svg-icon" src="../../images/Impressum.svg" title="Impressum" alt="Weißes i in orangenem Kreis"/> <span>Impressum &amp; Datenschutz</span></a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <script>
+                    /*<![CDATA[*/
+
+                    $("#navbarMenu").on("show.bs.collapse", function() {
+                        $(document.documentElement).animate({
+                            scrollTop: $("#navbar").offset().top
+                        });
+                    });
+                    $("#navbarMenu .dropdown").on("shown.bs.dropdown", function(event) {
+                        $("#navbarMenu").animate({
+                            scrollTop: event.target.offsetTop - 50
+                        });
+                    });
+
+                    /*]]>*/
+                </script>
+            </nav>
+            <div class="d-flex text-white align-self-auto" style="height:38px;">
+                <div class="align-middle align-self-center">
+                    <a class="icon_login" lang="en" title="Öffnet „Login“" href="../../extranet/login;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD">Login</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>
+<div class="breadcrumb-fullsize flex-shrink-0">
+    <div class="container d-block h-100">
+        <div class="d-flex justify-content-end justify-content-md-between align-items-center h-100">
+            <div class=" ml-2 p-0 font-size-small d-none d-md-block">
+                <ol class="breadcrumb_container">
+                    <li class="breadcrumb_start"><a href="../../aktuelles;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Aktuelle Vorgänge“"><span style="font-family: Iconfont, sans-serif;">Z</span></a></li>
+                    <li class="breadcrumb_arrow"><a href="../bamitglieder;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Bezirksausschuss-Mitglieder“">Bezirksausschuss-Mitglieder</a></li>
+
+                    <li class="breadcrumb_arrow"><span>Mögele, Josef (Mitgliedschaften)</span></li>
+
+                </ol>
+            </div>
+            <div>
+                <img class="d-none d-sm-inline" src="../../images/Muenchen_Logo.svg" alt="" style="height: 24px;">
+                <img class="d-sm-none" src="../../images/Muenchen_Stadtwappen.svg" alt="" style="height: 32px;">
+            </div>
+        </div>
+    </div>
+</div>
+<main class="container mt-4 pb-2 flex-grow-1 flex-shrink-0">
+
+    <div class="headline align-items-lg-center">
+        <div class="titlearea">
+
+            <div class="d-flex ml-2">
+                <div class="page-title">
+                    <img class="svg-icon pr-3" src="../../images/Person_D.svg" title="Aktive Person" alt="Orange menschliche Umrandung"/>
+                </div>
+                <div>
+                    <h1 class="page-title">
+                        <span class="d-inline-block">Herr Josef Mögele <span class="d-inline-block page-additionaltitle"><span>(BA-Mitglied)</span></span></span>
+                    </h1>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="colors_person mt-2">
+        <div class="row mt-2">
+
+            <div class="col-12 col-md">
+                <div>
+                    <section class="card">
+                        <div class="card-header">
+                            <div><h2>Personen-Informationen der aktuellen Wahlperiode <span>2020-2026</span></h2></div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row mt-2">
+                                <div class="col-12 col-md-6 keyvalue-container keyvalue-fixedkeywidth-8_5">
+                                    <div class="keyvalue-row">
+                                        <div class="keyvalue-key">Aktuelle Partei:</div>
+                                        <div class="keyvalue-value">
+                                            SPD
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+                <div class="mt-4">
+                    <section class="card">
+                        <div class="card-header">
+                            <div><h2>Adresse / Kontakt</h2></div>
+                        </div>
+                        <div class="card-body">
+
+
+
+
+
+
+                            <div class="row mt-2">
+                                <div class="col-12 keyvalue-container keyvalue-fixedkeywidth-8_5">
+                                    <div class="keyvalue-row">
+                                        <div class="keyvalue-key">E-Mail:</div>
+                                        <div class="keyvalue-value">
+                                            <div></div>
+                                            <div>
+                                                <a class="icon_linkemail" itemprop="email" href="mailto:bag-west.dir@muenchen.de" title="Öffnet „E-Mail-Kontakt (BA-Geschäftsstelle)“"><span>E-Mail-Kontakt (BA-Geschäftsstelle)</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <div class="card no-bottom-border mt-4">
+                <div class="card-tab-header auswahl-unterseite">
+
+                    <a class="icon_action mr-3" href="./954;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=baausschuesse&amp;scrolltotab=true" title="Öffnet die BA-Ausschüsse „Mögele, Josef“">BA-Ausschüsse</a>
+                    <a class="icon_action mr-3" href="./954;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=fraktionen&amp;scrolltotab=true" title="Öffnet die Fraktionen / Gruppierungen „Mögele, Josef“">Fraktionen / Gruppierungen</a>
+                    <a class="icon_action" href="./954;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=ehrungen&amp;scrolltotab=true" title="Öffnet die Ehrungen „Mögele, Josef“">Ehrungen</a>
+                </div>
+            </div>
+            <div>
+                <section class="card no-top-border">
+                    <div class="card-header no-top-border" >
+                        <div><h2>BA-Mitgliedschaften - <span>Herr Josef Mögele</span></h2></div>
+                    </div>
+                    <div class="mt-2 risi-list" id="id6">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="risilistheader">
+                                    <div class="sort d-flex align-items-center">
+                                        <div class="input-group-prepend w-100">
+                                            <div>
+                                                <label class="input-group-text" id="id5-w-lbl" for="id5">Sortierung:</label>
+                                            </div>
+                                            <div class="w-100"><select class="form-control" name="typedSectionsPanel:tabcontainer:bamitgliedschaftenListSection:list:cardheader:sort_filter" id="id5" aria-controls="id1">
+                                                <option value="0">Funktion (A bis Z)</option>
+                                                <option value="1">Funktion (Z bis A)</option>
+                                                <option value="2">Gremium (A bis Z)</option>
+                                                <option value="3">Gremium (Z bis A)</option>
+                                                <option value="4">Wahlperiode (zeitlich aufsteigend)</option>
+                                                <option selected="selected" value="5">Wahlperiode (zeitlich absteigend)</option>
+                                            </select></div>
+                                        </div>
+                                    </div>
+                                    <div class="page" id="id7">
+
+
+
+                                        <a class="btn btn-pagelink px-2 py-1" id="id8" disabled="disabled" title="Zur Seite 1"><span>1</span></a>
+
+
+
+                                    </div>
+                                    <div class="count">
+                                        <span class="font-weight-bold">1 - 7 von 7 Treffern</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled list-group list-group-flush">
+                                <li class="list-group-item even">
+
+                                    <div class="d-flex font-size-big">
+                                        <div class="mr-2">
+                                            <img class="svg-icon" src="../../images/Gremium.svg" title="Aktives Gremium" alt="Mehrere Personen">
+                                        </div>
+                                        <div class="flex-grow-1 align-items-baseline">
+                                            <div class="d-flex flex-column flex-md-row flex-wrap">
+                                                <div class="mr-0 mr-md-2">
+
+                                                    <span class="font-weight-bold text-keepwhitespace">25 - Laim</span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-1">
+
+                                        <div data-mitgliedschaften="" data-mitglieder-anzahl="1">
+                                            <div data-mitgliedschaft="">
+
+                                                <div class="mt-1 row no-gutters" >
+                                                    <div class="col-12 col-lg-5">
+                                                        <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                            <div class="keyvalue-row">
+                                                                <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                                <div class="keyvalue-value">von 02.08.1984 bis 30.04.2008</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                        <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                            <div class="keyvalue-row">
+                                                                <div class="keyvalue-key">Funktion</div>
+                                                                <div class="keyvalue-value"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                        <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                            <div class="keyvalue-row">
+                                                                <div class="keyvalue-key">Wahlperiode:</div>
+                                                                <div class="keyvalue-value"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </li><li class="list-group-item odd">
+
+                                <div class="d-flex font-size-big">
+                                    <div class="mr-2">
+                                        <img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver Bezirksausschuss" alt="Mehrere Personen">
+                                    </div>
+                                    <div class="flex-grow-1 align-items-baseline">
+                                        <div class="d-flex flex-column flex-md-row flex-wrap">
+                                            <div class="mr-0 mr-md-2">
+                                                <a class="headline-link text-keepwhitespace" href="../../gremium/detail/234;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=mitgliederaktuell" title="Öffnet die Detailansicht „25 - Laim“">25 - Laim</a>
+
+                                                <span class="d-inline-block font-size-medium">(BA25)</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+
+                                    <div data-mitgliedschaften="" data-mitglieder-anzahl="1">
+                                        <div data-mitgliedschaft="">
+
+                                            <div class="mt-1 row no-gutters" >
+                                                <div class="col-12 col-lg-5">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                            <div class="keyvalue-value">seit 12.05.2020</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Funktion</div>
+                                                            <div class="keyvalue-value">Vorsitzende/r</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Wahlperiode:</div>
+                                                            <div class="keyvalue-value">2020-2026</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><div data-mitgliedschaft="" style="display: none">
+                                        <hr class="d-lg-none my-2">
+                                        <div class="mt-1 row no-gutters" >
+                                            <div class="col-12 col-lg-5">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                        <div class="keyvalue-value">seit 01.05.2020</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Funktion</div>
+                                                        <div class="keyvalue-value">Mitglied</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Wahlperiode:</div>
+                                                        <div class="keyvalue-value">2020-2026</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                        <div class="mt-2">
+
+                                            <div class="row no-gutters">
+                                                <div class="col offset-lg-5">
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Anzeige von weiteren Zugehörigkeiten" data-show-more-link>
+                                                        <img class="svg-icon" src="../../images/Einblenden.svg" title="Mehr" alt="Eine blaue Pfeilspitze nach unten"> <span>Weitere Zugehörigkeiten</span>
+                                                    </button>
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Minimierung der Zugehörigkeiten" data-show-less-link style="display: none;">
+                                                        <img class="svg-icon" src="../../images/Ausblenden.svg" title="Weniger" alt="Eine blaue Pfeilspitze nach oben"> <span>Weniger Zugehörigkeiten</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </li><li class="list-group-item even">
+
+                                <div class="d-flex font-size-big">
+                                    <div class="mr-2">
+                                        <img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver Bezirksausschuss" alt="Mehrere Personen">
+                                    </div>
+                                    <div class="flex-grow-1 align-items-baseline">
+                                        <div class="d-flex flex-column flex-md-row flex-wrap">
+                                            <div class="mr-0 mr-md-2">
+                                                <a class="headline-link text-keepwhitespace" href="../../gremium/detail/234;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=mitgliederaktuell" title="Öffnet die Detailansicht „25 - Laim“">25 - Laim</a>
+
+                                                <span class="d-inline-block font-size-medium">(BA25)</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+
+                                    <div data-mitgliedschaften="" data-mitglieder-anzahl="1">
+                                        <div data-mitgliedschaft="">
+
+                                            <div class="mt-1 row no-gutters" >
+                                                <div class="col-12 col-lg-5">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                            <div class="keyvalue-value">von 01.05.2014 bis 30.04.2020</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Funktion</div>
+                                                            <div class="keyvalue-value">Mitglied</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Wahlperiode:</div>
+                                                            <div class="keyvalue-value">2014-2020</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><div data-mitgliedschaft="" style="display: none">
+                                        <hr class="d-lg-none my-2">
+                                        <div class="mt-1 row no-gutters" >
+                                            <div class="col-12 col-lg-5">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                        <div class="keyvalue-value">von 01.05.2014 bis 30.04.2020</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Funktion</div>
+                                                        <div class="keyvalue-value">Vorsitzende/r</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Wahlperiode:</div>
+                                                        <div class="keyvalue-value">2014-2020</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                        <div class="mt-2">
+
+                                            <div class="row no-gutters">
+                                                <div class="col offset-lg-5">
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Anzeige von weiteren Zugehörigkeiten" data-show-more-link>
+                                                        <img class="svg-icon" src="../../images/Einblenden.svg" title="Mehr" alt="Eine blaue Pfeilspitze nach unten"> <span>Weitere Zugehörigkeiten</span>
+                                                    </button>
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Minimierung der Zugehörigkeiten" data-show-less-link style="display: none;">
+                                                        <img class="svg-icon" src="../../images/Ausblenden.svg" title="Weniger" alt="Eine blaue Pfeilspitze nach oben"> <span>Weniger Zugehörigkeiten</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </li><li class="list-group-item odd">
+
+                                <div class="d-flex font-size-big">
+                                    <div class="mr-2">
+                                        <img class="svg-icon" src="../../images/Gremium.svg" title="Aktives Gremium" alt="Mehrere Personen">
+                                    </div>
+                                    <div class="flex-grow-1 align-items-baseline">
+                                        <div class="d-flex flex-column flex-md-row flex-wrap">
+                                            <div class="mr-0 mr-md-2">
+
+                                                <span class="font-weight-bold text-keepwhitespace">25 - Laim</span>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+
+                                    <div data-mitgliedschaften="" data-mitglieder-anzahl="1">
+                                        <div data-mitgliedschaft="">
+
+                                            <div class="mt-1 row no-gutters" >
+                                                <div class="col-12 col-lg-5">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                            <div class="keyvalue-value">seit 01.05.2014</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Funktion</div>
+                                                            <div class="keyvalue-value"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Wahlperiode:</div>
+                                                            <div class="keyvalue-value">2014-2020</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><div data-mitgliedschaft="" style="display: none">
+                                        <hr class="d-lg-none my-2">
+                                        <div class="mt-1 row no-gutters" >
+                                            <div class="col-12 col-lg-5">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                        <div class="keyvalue-value">seit 01.05.2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Funktion</div>
+                                                        <div class="keyvalue-value"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Wahlperiode:</div>
+                                                        <div class="keyvalue-value">2014-2020</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><div data-mitgliedschaft="" style="display: none">
+                                        <hr class="d-lg-none my-2">
+                                        <div class="mt-1 row no-gutters" >
+                                            <div class="col-12 col-lg-5">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                        <div class="keyvalue-value">seit 01.05.2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Funktion</div>
+                                                        <div class="keyvalue-value"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Wahlperiode:</div>
+                                                        <div class="keyvalue-value">2014-2020</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                        <div class="mt-2">
+
+                                            <div class="row no-gutters">
+                                                <div class="col offset-lg-5">
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Anzeige von weiteren Zugehörigkeiten" data-show-more-link>
+                                                        <img class="svg-icon" src="../../images/Einblenden.svg" title="Mehr" alt="Eine blaue Pfeilspitze nach unten"> <span>Weitere Zugehörigkeiten</span>
+                                                    </button>
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Minimierung der Zugehörigkeiten" data-show-less-link style="display: none;">
+                                                        <img class="svg-icon" src="../../images/Ausblenden.svg" title="Weniger" alt="Eine blaue Pfeilspitze nach oben"> <span>Weniger Zugehörigkeiten</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </li><li class="list-group-item even">
+
+                                <div class="d-flex font-size-big">
+                                    <div class="mr-2">
+                                        <img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver Bezirksausschuss" alt="Mehrere Personen">
+                                    </div>
+                                    <div class="flex-grow-1 align-items-baseline">
+                                        <div class="d-flex flex-column flex-md-row flex-wrap">
+                                            <div class="mr-0 mr-md-2">
+                                                <a class="headline-link text-keepwhitespace" href="../../gremium/detail/234;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=mitgliederaktuell" title="Öffnet die Detailansicht „25 - Laim“">25 - Laim</a>
+
+                                                <span class="d-inline-block font-size-medium">(BA25)</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+
+                                    <div data-mitgliedschaften="" data-mitglieder-anzahl="1">
+                                        <div data-mitgliedschaft="">
+
+                                            <div class="mt-1 row no-gutters" >
+                                                <div class="col-12 col-lg-5">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                            <div class="keyvalue-value">von 01.05.2008 bis 30.04.2014</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Funktion</div>
+                                                            <div class="keyvalue-value">Mitglied</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Wahlperiode:</div>
+                                                            <div class="keyvalue-value">2008-2014</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><div data-mitgliedschaft="" style="display: none">
+                                        <hr class="d-lg-none my-2">
+                                        <div class="mt-1 row no-gutters" >
+                                            <div class="col-12 col-lg-5">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                        <div class="keyvalue-value">von 01.05.2008 bis 30.04.2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Funktion</div>
+                                                        <div class="keyvalue-value">Vorsitzende/r</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Wahlperiode:</div>
+                                                        <div class="keyvalue-value">2008-2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                        <div class="mt-2">
+
+                                            <div class="row no-gutters">
+                                                <div class="col offset-lg-5">
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Anzeige von weiteren Zugehörigkeiten" data-show-more-link>
+                                                        <img class="svg-icon" src="../../images/Einblenden.svg" title="Mehr" alt="Eine blaue Pfeilspitze nach unten"> <span>Weitere Zugehörigkeiten</span>
+                                                    </button>
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Minimierung der Zugehörigkeiten" data-show-less-link style="display: none;">
+                                                        <img class="svg-icon" src="../../images/Ausblenden.svg" title="Weniger" alt="Eine blaue Pfeilspitze nach oben"> <span>Weniger Zugehörigkeiten</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </li><li class="list-group-item odd">
+
+                                <div class="d-flex font-size-big">
+                                    <div class="mr-2">
+                                        <img class="svg-icon" src="../../images/Gremium.svg" title="Aktives Gremium" alt="Mehrere Personen">
+                                    </div>
+                                    <div class="flex-grow-1 align-items-baseline">
+                                        <div class="d-flex flex-column flex-md-row flex-wrap">
+                                            <div class="mr-0 mr-md-2">
+
+                                                <span class="font-weight-bold text-keepwhitespace">25 - Laim</span>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+
+                                    <div data-mitgliedschaften="" data-mitglieder-anzahl="1">
+                                        <div data-mitgliedschaft="">
+
+                                            <div class="mt-1 row no-gutters" >
+                                                <div class="col-12 col-lg-5">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                            <div class="keyvalue-value">von 01.05.2008 bis 30.04.2014</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Funktion</div>
+                                                            <div class="keyvalue-value"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Wahlperiode:</div>
+                                                            <div class="keyvalue-value">2008-2014</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><div data-mitgliedschaft="" style="display: none">
+                                        <hr class="d-lg-none my-2">
+                                        <div class="mt-1 row no-gutters" >
+                                            <div class="col-12 col-lg-5">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                        <div class="keyvalue-value">von 01.05.2008 bis 30.04.2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Funktion</div>
+                                                        <div class="keyvalue-value"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Wahlperiode:</div>
+                                                        <div class="keyvalue-value">2008-2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><div data-mitgliedschaft="" style="display: none">
+                                        <hr class="d-lg-none my-2">
+                                        <div class="mt-1 row no-gutters" >
+                                            <div class="col-12 col-lg-5">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                        <div class="keyvalue-value">von 01.05.2008 bis 30.04.2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Funktion</div>
+                                                        <div class="keyvalue-value"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                    <div class="keyvalue-row">
+                                                        <div class="keyvalue-key">Wahlperiode:</div>
+                                                        <div class="keyvalue-value">2008-2014</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                        <div class="mt-2">
+
+                                            <div class="row no-gutters">
+                                                <div class="col offset-lg-5">
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Anzeige von weiteren Zugehörigkeiten" data-show-more-link>
+                                                        <img class="svg-icon" src="../../images/Einblenden.svg" title="Mehr" alt="Eine blaue Pfeilspitze nach unten"> <span>Weitere Zugehörigkeiten</span>
+                                                    </button>
+                                                    <button class="btn btn-link p-0" onclick="RISI.MITGLIEDSCHAFTEN.toggle(this)" title="Minimierung der Zugehörigkeiten" data-show-less-link style="display: none;">
+                                                        <img class="svg-icon" src="../../images/Ausblenden.svg" title="Weniger" alt="Eine blaue Pfeilspitze nach oben"> <span>Weniger Zugehörigkeiten</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </li><li class="list-group-item even">
+
+                                <div class="d-flex font-size-big">
+                                    <div class="mr-2">
+                                        <img class="svg-icon" src="../../images/Gremium.svg" title="Aktiver Bezirksausschuss" alt="Mehrere Personen">
+                                    </div>
+                                    <div class="flex-grow-1 align-items-baseline">
+                                        <div class="d-flex flex-column flex-md-row flex-wrap">
+                                            <div class="mr-0 mr-md-2">
+                                                <a class="headline-link text-keepwhitespace" href="../../gremium/detail/234;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD?tab=mitgliederaktuell" title="Öffnet die Detailansicht „25 - Laim“">25 - Laim</a>
+
+                                                <span class="d-inline-block font-size-medium">(BA25)</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+
+                                    <div data-mitgliedschaften="" data-mitglieder-anzahl="1">
+                                        <div data-mitgliedschaft="">
+
+                                            <div class="mt-1 row no-gutters" >
+                                                <div class="col-12 col-lg-5">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Zugehörigkeit:</div>
+                                                            <div class="keyvalue-value">von 02.08.1984 bis 30.04.2008</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-4 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container keyvalue-minimumkeywidth">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Funktion</div>
+                                                            <div class="keyvalue-value">Vorsitzende/r</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-3 mt-2 mt-lg-0">
+                                                    <div class="keyvalue-container ml-lg-auto" style="width: auto;">
+                                                        <div class="keyvalue-row">
+                                                            <div class="keyvalue-key">Wahlperiode:</div>
+                                                            <div class="keyvalue-value">2002-2008</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </li>
+
+                            </ul>
+                            <div class="card-footer">
+                                <div class="risilistheader">
+                                    <div class="sort"></div>
+                                    <div class="page" id="id9">
+
+
+
+                                        <a class="btn btn-pagelink px-2 py-1" id="ida" disabled="disabled" title="Zur Seite 1"><span>1</span></a>
+
+
+
+                                    </div>
+                                    <div class="count">
+                                        <span class="font-weight-bold">1 - 7 von 7 Treffern</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+</main>
+<footer>
+    <div class="footer-social-fullsize flex-shrink-0 py-3 mt-4">
+        <div class="container">
+            <div class="d-flex justify-content-center justify-content-md-between align-items-end h-100">
+                <div>
+                    <a href="https://www.muenchen.de/" target="_blank" title="Öffnet „muenchen.de“"><img src="../../images/mde-Logo_Footer.svg" alt="Logo der Webseite „muenchen.de“" style="height: 30px;"></a>
+                </div>
+                <div class="d-flex ml-2 ml-md-0">
+                    <div class="social_facebook"><a href="https://de-de.facebook.com/muenchen" target="_blank" title="Öffnet „Facebook“"><span class="icon_facebook"></span></a></div>
+                    <div class="social_twitter"><a href="https://twitter.com/muenchen" target="_blank" title="Öffnet „Twitter“"><span class="icon_twitter"></span></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom-fullsize flex-shrink-0">
+        <div class="container" style="padding-top: 8px; padding-bottom:8px; ">
+            <div class="row justify-content-between">
+                <div class="col-12 col-md-auto text-center text-md-left">
+<span>
+<a href="../../service/kontakt;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Kontakt“">Kontakt</a> |
+<a href="../../service/impressum;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Impressum &amp; Datenschutz“">Impressum &amp; Datenschutz</a> |
+<a href="../../service/barrierefreiheit;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Erklärung zur Barrierefreiheit“">Erklärung zur Barrierefreiheit</a>
+
+| <a target="_blank" itemprop="url" href="https://www.muenchen.de/rathaus/Stadtinfos/Presse-Service.html" title="Öffnet „Rathaus-Umschau“">Rathaus-Umschau</a>
+
+</span>
+                </div>
+                <div class="col-12 col-md-auto text-center text-md-right">
+<span>
+<a href="../../service/sitemap;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Sitemap“">Sitemap</a>
+| <a href="../../service/hilfe;jsessionid=6294A9844EBA78BBE6F7CD2A9E0A07BD" title="Öffnet „Hilfe / FAQ“">Hilfe und FAQ</a>
+ | <a href="#" onclick="javascript:window.location=&#039;mailto:?subject=Ratsinformationssystem München&amp;body=&#039; + window.location;" title="Öffnet „Link verschicken“">Link verschicken</a>
+</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end pr-3">
+            <div id="zumseitenbeginn" style="display:none; position: fixed; z-index: 10000; bottom: 50px; ">
+                <div style="display: flex; height: 100%; width: 100%; justify-content: center; align-items: center;">
+                    <a class="icon_backtotop" href="#ankerseitenbegin" title="Springt zum Seitenanfang" ></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script type="text/javascript">
+    /*<![CDATA[*/
+
+    (function() {
+        var isScrolling = false;
+        $(window).scroll(function() {
+            isScrolling = true;
+        });
+        setInterval( function() {
+            if (isScrolling) {
+                isScrolling = false;
+                var element = $('#zumseitenbeginn');
+                if ($(this).scrollTop() > 60) {
+                    if (element.data("fading") !== "in") {
+                        element.data("fading", "in");
+                        $('#zumseitenbeginn').stop(true, true).fadeIn();
+                        $('#logo_sonne').removeClass("d-md-block");
+                    }
+                } else if ($(this).scrollTop() < 40){
+                    if (element.data("fading") !== "out") {
+                        element.data("fading", "out");
+                        $('#zumseitenbeginn').stop(true, true).fadeOut();
+                        $('#logo_sonne').addClass("d-md-block");
+                    }
+                }
+            }
+        }, 500);
+    }());
+    function toggleSearchBox(){
+        var component = document.getElementById('navsearchbox');
+        var togglebutton = document.getElementById('searchboxtoggle');
+        if (component.classList.contains("d-none")) {
+            component.classList.remove("d-none");
+        }else{
+            component.classList.add("d-none");
+        }
+        togglebutton.blur();
+    }
+
+    /*]]>*/
+</script>
+</body>
+</html>
