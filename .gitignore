@@ -1,5 +1,6 @@
 *.log
 *.bak
+.DS_Store
 
 # Dependency managers
 composer.phar

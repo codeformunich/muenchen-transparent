@@ -22,7 +22,7 @@ class BrowserBasedDowloader
 
     public const PERSON_TYPE_STADTRAT = 'strmitglieder';
     public const PERSON_TYPE_REFERENTINNEN = 'referenten';
-    public const PERSON_TYPE_BA_MITGLIEDER = 'strmitglieder';
+    public const PERSON_TYPE_BA_MITGLIEDER = 'bamitglieder';
     public const PERSON_TYPE_BA_BEAUFTRAGTE = 'babeauftragter';
 
     private string $browserPath;

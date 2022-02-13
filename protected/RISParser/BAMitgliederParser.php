@@ -2,11 +2,13 @@
 
 class BAMitgliederParser extends RISParser
 {
+    private BrowserBasedDowloader $browserBasedDowloader;
+    private CurlBasedDownloader $curlBasedDownloader;
 
-    private function parseBaGremienListe(string $url)
+    public function __construct(?BrowserBasedDowloader $browserBasedDowloader = null, ?CurlBasedDownloader $curlBasedDownloader = null)
     {
-        $html = RISTools::load_file(RIS_BA_BASE_URL . "ba_gremien.jsp?selWahlperiode=3184784&selBA=" . $url);
-
+        $this->browserBasedDowloader = $browserBasedDowloader ?: new BrowserBasedDowloader();
+        $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
     }
 
     private static function parseSeitVonBisStr(string $str): array
@@ -128,14 +130,16 @@ class BAMitgliederParser extends RISParser
         return null;
     }
 
-    public function parseSeite(int $seite, int $first): array
-    {
-        $this->parseAll();
-        return [];
-    }
-
     public function parseAll(): void
     {
+        $html = $this->browserBasedDowloader->downloadPersonList(BrowserBasedDowloader::PERSON_TYPE_BA_MITGLIEDER);
+
+        file_put_contents(__DIR__ . '/../bamitglieder.html', $html);
+
+        $entries = StadtraetInnenListEntry::parseHtmlList($html);
+
+        var_dump($entries);die();
+
         for ($i = 1; $i <= 25; $i++) {
             $this->parse($i);
         }
