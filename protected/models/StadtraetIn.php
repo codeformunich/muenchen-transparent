@@ -29,7 +29,7 @@
  */
 class StadtraetIn extends CActiveRecord implements IRISItem
 {
-    public static $GESCHLECHTER = [
+    public const GESCHLECHTER = [
         "weiblich"  => "Weiblich",
         "maennlich" => "Männlich",
         "sonstiges" => "Beides passt nicht",
@@ -225,22 +225,13 @@ class StadtraetIn extends CActiveRecord implements IRISItem
 
     public function getSourceLink(): string
     {
-        $istBAler = false;
-        foreach ($this->stadtraetInnenFraktionen as $frakt) if ($frakt->fraktion->ba_nr > 0) $istBAler = true;
-        if ($istBAler) {
-            return RIS_BA_BASE_URL . "ba_mitglieder_details_mitgliedschaft.jsp?Id=" . $this->id . '&Wahlperiode=5666213';
-        } else {
-            return RIS_BASE_URL . "ris_mitglieder_detail.jsp?risid=" . $this->id . '&periodeid=5666210';
-        }
+        return RIS_URL_PREFIX . "person/detail/" . $this->id . '?tab=mitgliedschaften';
     }
 
-    /**
-     *
-     */
-    private function overrideFraktionsMitgliedschaften()
+    private function overrideFraktionsMitgliedschaften(): void
     {
-        if (isset(StadtraetInFraktionOverrides::$FRAKTION_ADD[$this->id])) {
-            foreach (StadtraetInFraktionOverrides::$FRAKTION_ADD[$this->id] as $override) {
+        if (isset(StadtraetInFraktionOverrides::FRAKTION_ADD[$this->id])) {
+            foreach (StadtraetInFraktionOverrides::FRAKTION_ADD[$this->id] as $override) {
                 $mitgliedschaft                  = new StadtraetInFraktion();
                 $mitgliedschaft->stadtraetIn_id  = $this->id;
                 $mitgliedschaft->fraktion_id     = $override["fraktion_id"];
@@ -250,11 +241,11 @@ class StadtraetIn extends CActiveRecord implements IRISItem
                 $this->stadtraetInnenFraktionen = array_merge([$mitgliedschaft], $this->stadtraetInnenFraktionen);
             }
         }
-        if (isset(StadtraetInFraktionOverrides::$FRAKTION_DEL[$this->id])) {
+        if (isset(StadtraetInFraktionOverrides::FRAKTION_DEL[$this->id])) {
             $fraktionen_neu = [];
             foreach ($this->stadtraetInnenFraktionen as $mitgliedschaft) {
                 $todel = false;
-                foreach (StadtraetInFraktionOverrides::$FRAKTION_DEL[$this->id] as $override) {
+                foreach (StadtraetInFraktionOverrides::FRAKTION_DEL[$this->id] as $override) {
                     if ($override["datum_von"] == $mitgliedschaft->datum_von && $override["fraktion_id"] == $mitgliedschaft->fraktion_id) {
                         $todel = true;
                     }
@@ -347,10 +338,8 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return $names;
     }
 
-    /**
-     * @return \Solarium\QueryType\Select\Result\Result
-     */
-    public function getDocumentMentions() {
+    public function getDocumentMentions(): \Solarium\QueryType\Select\Result\Result
+    {
         $solr   = RISSolrHelper::getSolrClient();
         $select = $solr->createSelect();
 

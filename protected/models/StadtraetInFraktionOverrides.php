@@ -6,7 +6,7 @@
 
 class StadtraetInFraktionOverrides
 {
-    public static $BETROFFENE_FRAKTIONEN = [
+    public const BETROFFENE_FRAKTIONEN = [
         -126, // AGS BA9
         -38, // Grüne BA9
         -37, // SPD BA9
@@ -21,7 +21,7 @@ class StadtraetInFraktionOverrides
      * Keys beziehen sich auf StadtraetIn-ID
      * Z.B. AGS - Arbeitsgemeinschaft für ein soziales Neuhausen-Nymphenburg
      */
-    public static $FRAKTION_ADD = [
+    public const FRAKTION_ADD = [
 
         // AGS - Arbeitsgemeinschaft für ein soziales Neuhausen-Nymphenburg
         // Hinweis von von Anna Hanusch (BA-Vorsitzende) per Feedback-Formular am 4.2.2015
@@ -79,7 +79,7 @@ class StadtraetInFraktionOverrides
         ],
     ];
 
-    public static $FRAKTION_DEL = [
+    public const FRAKTION_DEL = [
         // Hinweis von von Anna Hanusch (BA-Vorsitzende) per Feedback-Formular am 4.2.2015
         1431217 => [
             [

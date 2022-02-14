@@ -28,7 +28,7 @@
                 <tr>
                     <td style="font-size: 14px; padding-top: 20px;"><?= CHtml::encode($str->getName()) ?></td>
                     <td>
-                        <?php foreach (StadtraetIn::$GESCHLECHTER as $sex_key => $sex_name) {
+                        <?php foreach (StadtraetIn::GESCHLECHTER as $sex_key => $sex_name) {
                             echo '<label style="font-weight: normal;"><input type="radio" name="geschlecht[' . $str->id . ']" value="' . $sex_key . '" ';
                             if ($str->geschlecht == $sex_key) echo 'checked';
                             echo '> ' . CHtml::encode($sex_name) . '</label><br>';

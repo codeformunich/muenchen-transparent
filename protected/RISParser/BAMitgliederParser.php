@@ -11,19 +11,6 @@ class BAMitgliederParser extends RISParser
         $this->curlBasedDownloader = $curlBasedDownloader ?: new CurlBasedDownloader();
     }
 
-    private static function parseSeitVonBisStr(string $str): array
-    {
-        $von = null;
-        $bis = null;
-        if (preg_match("/^von (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+) bis (?<bis_tag>[0-9]+)\\.(?<bis_monat>[0-9]+)\\.(?<bis_jahr>[0-9]+)$/", $str, $matches)) {
-            $von = $matches["von_jahr"] . "-" . $matches["von_monat"] . "-" . $matches["von_tag"];
-            $bis = $matches["bis_jahr"] . "-" . $matches["bis_monat"] . "-" . $matches["bis_tag"];
-        } elseif (preg_match("/^seit (?<von_tag>[0-9]+)\\.(?<von_monat>[0-9]+)\\.(?<von_jahr>[0-9]+)$/", $str, $matches)) {
-            $von = $matches["von_jahr"] . "-" . $matches["von_monat"] . "-" . $matches["von_tag"];
-        }
-        return ["von" => $von, "bis" => $bis];
-    }
-
     public function parse(int $id): StadtraetIn
     {
         $htmlFraktionen = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=fraktionen', false, true);
@@ -32,110 +19,87 @@ class BAMitgliederParser extends RISParser
 
         $parsed = BAMitgliederData::parseFromHtml($htmlBas, $htmlFraktionen, $htmlAusschuesse, $id);
 
-        var_dump($parsed);
-        die();
+        /** @var StadtraetIn $strIn */
+        $strIn = StadtraetIn::model()->findByPk($parsed->id);
+        if (!$strIn) {
+            echo "Neu anlegen: " . $parsed->id . " - " . $parsed->name . " (BA " . $parsed->baNr . ")\n";
+
+            $strIn               = new StadtraetIn();
+            $strIn->name         = $parsed->name;
+            $strIn->id           = $parsed->id;
+            $strIn->referentIn   = 0;
+            $strIn->bio          = "";
+            $strIn->web          = "";
+            $strIn->beruf        = "";
+            $strIn->beschreibung = "";
+            $strIn->quellen      = "";
+            $strIn->gewaehlt_am  = null;
+            $strIn->save();
+        }
+
+        $this->setFraktionsmitgliedschaften($strIn, $parsed);
 
 
-        if (SITE_CALL_MODE != "cron") echo "- BA $ba_nr\n";
-        /** @var Bezirksausschuss $ba */
-        $ba = Bezirksausschuss::model()->findByPk($ba_nr);
+        // $sql = 'DELETE FROM b USING stadtraetInnen a JOIN stadtraetInnen_fraktionen b ON a.id = b.stadtraetIn_id JOIN fraktionen c ON b.fraktion_id = c.id ' .
+        //                   'WHERE c.ba_nr = ' . IntVal($ba_nr) . ' AND a.id NOT IN(' . implode(", ", $stadtraetInnenIds) . ')';
 
-        $ba_details = RISTools::load_file(RIS_BA_BASE_URL . "ba_bezirksausschuesse_details.jsp?Id=" . $ba->ris_id);
+        return $strIn;
+    }
 
-        preg_match("/Wahlperiode.*detail_div\">(?<wahlperiode>[^<]*)</siuU", $ba_details, $matches);
-        $wahlperiode = $matches["wahlperiode"];
+    private function setFraktionsmitgliedschaften(StadtraetIn $strIn, BAMitgliederData $data): void
+    {
+        if (count($data->fraktionsMitgliedschaften) === 0) {
+            return;
+        }
+        // @TODO Support multiple memberships
+        $mitgliedschaft = array_shift($data->fraktionsMitgliedschaften);
 
-        $x = explode('<!-- tabellenkopf -->', $ba_details);
-        $x = explode('<!-- seitenfuss -->', $x[1]);
+        /** @var Fraktion|null $fraktion */
+        $fraktion = Fraktion::model()->findByAttributes(["ba_nr" => $data->baNr, "name" => $mitgliedschaft->gremiumName]);
+        if (!$fraktion) {
+            echo "Lege an: " . $mitgliedschaft->gremiumName . "\n";
+            $min = Yii::app()->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
+            if ($min > 0) $min = -1;
+            $fraktion = new Fraktion();
+            $fraktion->id = $min;
+            $fraktion->name = $mitgliedschaft->gremiumName;
+            $fraktion->ba_nr = $data->baNr;
+            $fraktion->website = "";
+            $fraktion->save();
+        }
 
-        $gefundene_fraktionen = [];
-
-        preg_match_all("/ba_mitglieder_details_mitgliedschaft\.jsp\?Id=(?<mitglied_id>[0-9]+)&amp;Wahlperiode=(?<wahlperiode>[0-9]+)[\"'& ]>(?<name>[^<]*)<.*tdborder\">(?<mitgliedschaft>[^<]*)<\/td>.*tdborder[^>]*>(?<fraktion>[^<]*) *<\/td>.*notdborder[^>]*>(?<funktion>[^<]*) *<\/td.*<\/tr/siU", $x[0], $matches);
-        for ($i = 0; $i < count($matches[1]); $i++) {
-            $fraktion_name = trim(html_entity_decode($matches["fraktion"][$i]));
-            $name          = str_replace("&nbsp;", " ", $matches["name"][$i]);
-            $name          = trim(str_replace(["Herr", "Frau"], [" ", " "], $name));
-
-            if ($fraktion_name == "")
-                $fraktion_name = "Parteifrei";
-
-            /** @var StadtraetIn $strIn */
-            $strIn = StadtraetIn::model()->findByPk($matches["mitglied_id"][$i]);
-            if (!$strIn) {
-                echo "Neu anlegen: " . $matches["mitglied_id"][$i] . " - " . $name . " (" . $fraktion_name . ")\n";
-
-                $strIn               = new StadtraetIn();
-                $strIn->name         = $name;
-                $strIn->id           = $matches["mitglied_id"][$i];
-                $strIn->referentIn   = 0;
-                $strIn->bio          = "";
-                $strIn->web          = "";
-                $strIn->beruf        = "";
-                $strIn->beschreibung = "";
-                $strIn->quellen      = "";
-                $strIn->gewaehlt_am  = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["von"];
-                $strIn->save();
-            }
-
-            /** @var Fraktion|null $fraktion */
-            $fraktion = Fraktion::model()->findByAttributes(["ba_nr" => $ba_nr, "name" => $fraktion_name]);
-            if (!$fraktion) {
-                echo "Lege an: " . $fraktion_name . "\n";
-                $min = Yii::app()->db->createCommand()->select("MIN(id)")->from("fraktionen")->queryColumn()[0] - 1;
-                if ($min > 0) $min = -1;
-                $fraktion            = new Fraktion();
-                $fraktion->id        = $min;
-                $fraktion->name      = $fraktion_name;
-                $fraktion->ba_nr     = $ba_nr;
-                $fraktion->website   = "";
-                $fraktion->save();
-            }
-
-            $gefunden = false;
-            foreach ($strIn->stadtraetInnenFraktionen as $strfrakt) if ($strfrakt->fraktion_id == $fraktion->id) {
-                $gefunden            = true;
-                $von_pre             = $strfrakt->datum_von;
-                $bis_pre             = $strfrakt->datum_bis;
-                $strfrakt->datum_von = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["von"];
-                $strfrakt->datum_bis = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["bis"];
-                if ($von_pre != $strfrakt->datum_von || $bis_pre != $strfrakt->datum_bis) {
-                    $strfrakt->save();
-                    echo $strIn->getName() . ": " . $von_pre . "/" . $bis_pre . " => " . $strfrakt->datum_von . "/" . $strfrakt->datum_bis . "\n";
-                }
-            }
-            if (!$gefunden) {
-                $strfrakt                 = new StadtraetInFraktion();
-                $strfrakt->fraktion_id    = $fraktion->id;
-                $strfrakt->stadtraetIn_id = $strIn->id;
-                $strfrakt->wahlperiode    = $wahlperiode;
-                $strfrakt->mitgliedschaft = $matches["mitgliedschaft"][$i];
-                $strfrakt->datum_von      = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["von"];
-                $strfrakt->datum_bis      = static::parseSeitVonBisStr($matches["mitgliedschaft"][$i])["bis"];
+        $gefunden = false;
+        foreach ($strIn->stadtraetInnenFraktionen as $strfrakt) if ($strfrakt->fraktion_id == $fraktion->id) {
+            $gefunden = true;
+            $von_pre = $strfrakt->datum_von;
+            $bis_pre = $strfrakt->datum_bis;
+            $strfrakt->datum_von = $mitgliedschaft->seit?->format('Y-m-d');
+            $strfrakt->datum_bis = $mitgliedschaft->bis?->format('Y-m-d');
+            $strfrakt->mitgliedschaft = $strfrakt->datum_von . ' - ' . $strfrakt->datum_bis;
+            if ($von_pre != $strfrakt->datum_von || $bis_pre != $strfrakt->datum_bis) {
+                echo $strIn->getName() . ": " . $von_pre . "/" . $bis_pre . " => " . $strfrakt->datum_von . "/" . $strfrakt->datum_bis . "\n";
                 $strfrakt->save();
             }
-            if (!isset($gefundene_fraktionen[$matches["mitglied_id"][$i]])) $gefundene_fraktionen[$matches["mitglied_id"][$i]] = [];
-            $gefundene_fraktionen[$matches["mitglied_id"][$i]][] = $fraktion->id;
+        }
+        if (!$gefunden) {
+            $strfrakt = new StadtraetInFraktion();
+            $strfrakt->fraktion_id = $fraktion->id;
+            $strfrakt->stadtraetIn_id = $strIn->id;
+            $strfrakt->wahlperiode = $mitgliedschaft->wahlperiode;
+            $strfrakt->datum_von = $mitgliedschaft->seit?->format('Y-m-d');
+            $strfrakt->datum_bis = $mitgliedschaft->bis?->format('Y-m-d');
+            $strfrakt->mitgliedschaft = $strfrakt->datum_von . ' - ' . $strfrakt->datum_bis;
+            $strfrakt->save();
         }
 
-        foreach ($gefundene_fraktionen as $strIn => $fraktionen) {
-            //SELECT a.* FROM `fraktionen` a JOIN stadtraetInnen_fraktionen b ON a.id = b.fraktion_id WHERE b.stadtraetIn_id = 3314069 AND a.ba_nr = 18 AND b.fraktion_id NOT IN (-88)
-            $sql = 'DELETE FROM b USING `fraktionen` a JOIN `stadtraetInnen_fraktionen` b ON a.id = b.fraktion_id WHERE ';
-            $frakts = implode(", ", array_map('IntVal', $fraktionen));
-            $sql .= 'b.stadtraetIn_id = ' . IntVal($strIn) . ' AND a.ba_nr = ' . IntVal($ba_nr) . ' AND b.fraktion_id NOT IN (' . $frakts . ')';
-            if (Yii::app()->db->createCommand($sql)->execute() > 0) {
-                echo 'Fraktionen gelöscht bei: ' . $strIn . "\n";
-            }
+        //SELECT a.* FROM `fraktionen` a JOIN stadtraetInnen_fraktionen b ON a.id = b.fraktion_id WHERE b.stadtraetIn_id = 3314069 AND a.ba_nr = 18 AND b.fraktion_id NOT IN (-88)
+        $gefundene_fraktionen = [$fraktion->id];
+        $frakts = implode(", ", array_map('IntVal', $gefundene_fraktionen));
+        $sql = 'DELETE FROM b USING `fraktionen` a JOIN `stadtraetInnen_fraktionen` b ON a.id = b.fraktion_id WHERE ';
+        $sql .= 'b.stadtraetIn_id = ' . IntVal($data->id) . ' AND a.ba_nr = ' . IntVal($data->baNr) . ' AND b.fraktion_id NOT IN (' . $frakts . ')';
+        if (Yii::app()->db->createCommand($sql)->execute() > 0) {
+            echo 'Fraktionen gelöscht bei: ' . $data->baNr . "\n";
         }
-
-        $stadtraetInnenIds = array_map("IntVal", array_keys($gefundene_fraktionen));
-        if (count($stadtraetInnenIds) > 0) {
-            $sql = 'DELETE FROM b USING stadtraetInnen a JOIN stadtraetInnen_fraktionen b ON a.id = b.stadtraetIn_id JOIN fraktionen c ON b.fraktion_id = c.id ' .
-                   'WHERE c.ba_nr = ' . IntVal($ba_nr) . ' AND a.id NOT IN(' . implode(", ", $stadtraetInnenIds) . ')';
-            if (Yii::app()->db->createCommand($sql)->execute() > 0) {
-                echo "Verwaiste Fraktions-Zuordnungen gelöscht\n";
-            }
-        }
-        return null;
     }
 
     public function parseAll(): void
