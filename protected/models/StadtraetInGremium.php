@@ -4,7 +4,7 @@
  * @property integer $stadtraetIn_id
  * @property integer $gremium_id
  * @property string $datum_von
- * @property string $datum_bis
+ * @property string|null $datum_bis
  * @property string $funktion
  *
  * The followings are the available model relations:
@@ -23,18 +23,12 @@ class StadtraetInGremium extends CActiveRecord
         return parent::model($className);
     }
 
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName()
+    public function tableName(): string
     {
         return 'stadtraetInnen_gremien';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
-    public function rules()
+    public function rules(): array
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
@@ -46,10 +40,7 @@ class StadtraetInGremium extends CActiveRecord
         ];
     }
 
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
+    public function relations(): array
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
@@ -59,10 +50,7 @@ class StadtraetInGremium extends CActiveRecord
         ];
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'stadtraetIn_id' => 'StadträtIn',
@@ -73,22 +61,18 @@ class StadtraetInGremium extends CActiveRecord
         ];
     }
 
-    /**
-     * @param string $datum
-     * @return bool
-     */
-    public function mitgliedschaftAktiv($datum = "") {
-        if ($datum == "") $datum = date("Y-m-d");
-        $datum = str_replace("-", "", $datum);
+    public function mitgliedschaftAktiv(): bool {
+        $date = str_replace("-", "", date("Y-m-d"));
 
         if (is_null($this->datum_bis)) return true;
         $bis = str_replace("-", "", $this->datum_bis);
 
-        return ($bis >= $datum);
+        return ($bis >= $date);
     }
 
-    public function getFunktion()
+    public function getDatumVonTimestamp(): int
     {
-        return $this->funktion;
+        $date = DateTime::createFromFormat('Y-m-d', $this->datum_von);
+        return $date->getTimestamp();
     }
 }

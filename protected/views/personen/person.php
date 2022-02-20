@@ -7,6 +7,47 @@
 $this->pageTitle = $person->getName();
 $this->html_itemprop = "http://schema.org/Person";
 
+
+function printMitgliedschaftenListe(string $type, StadtraetIn $person, string $title): void
+{
+    $mitgliedschaften = $person->getMembershipsByType($type);
+    if (count($mitgliedschaften) === 0) {
+        return;
+    }
+    ?>
+    <tr>
+        <th><?= CHtml::encode($title) ?>:</th>
+        <td>
+            <ul class="mitgliedschaften">
+                <?php
+                foreach ($mitgliedschaften as $mitgliedschaft) {
+                    $gremium = $mitgliedschaft->gremium;
+                    echo "<li class='" . ($mitgliedschaft->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>";
+                    if ($type === Gremium::TYPE_BA) {
+                        echo CHtml::link($gremium->ba->name, $gremium->ba->getLink());
+                    } else {
+                        echo CHtml::encode($gremium->getName(false));
+                        if ($gremium->ba_nr > 0) {
+                            echo " (Bezirksausschuss " . CHtml::link($gremium->ba->name, $gremium->ba->getLink()) . ")";
+                        }
+                    }
+                    echo "<br>(" . CHtml::encode($mitgliedschaft->funktion);
+                    if ($mitgliedschaft->datum_von > 0 && $mitgliedschaft->datum_bis > 0) {
+                        echo ", von " . RISTools::datumstring($mitgliedschaft->datum_von);
+                        echo " bis " . RISTools::datumstring($mitgliedschaft->datum_bis);
+                    } elseif ($mitgliedschaft->datum_von > 0) {
+                        echo ", seit " . RISTools::datumstring($mitgliedschaft->datum_von);
+                    }
+                    echo ")";
+                    echo "</li>\n";
+                }
+                ?>
+            </ul>
+        </td>
+    </tr>
+<?php
+}
+
 ?>
 <section class="well">
     <ul class="breadcrumb" style="margin-bottom: 5px;">
@@ -26,56 +67,13 @@ $this->html_itemprop = "http://schema.org/Person";
         <section class="well">
             <table class="table">
                 <tbody>
-                <tr>
-                    <th>Fraktion(en):</th>
-                    <td>
-                        <ul class="mitgliedschaften">
-                            <?php
-                            $mitgliedschaften = $person->getFraktionsMitgliedschaften();
-                            foreach ($mitgliedschaften as $frakts) {
-                                echo "<li class='" . ($frakts->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>" . CHtml::encode($frakts->fraktion->getName());
-                                if ($frakts->fraktion->ba_nr > 0) {
-                                    echo ", Bezirksausschuss " . $frakts->fraktion->ba_nr . " (" . CHtml::encode($frakts->fraktion->bezirksausschuss->name) . ")";
-                                    // @Wird noch nicht zuverlässig erkannt; siehe https://github.com/codeformunich/muenchen-transparent/issues/38
-                                }
-                                if ($frakts->datum_von > 0 && $frakts->datum_bis > 0) {
-                                    echo "<br><small>(von " . RISTools::datumstring($frakts->datum_von);
-                                    echo " bis " . RISTools::datumstring($frakts->datum_bis) . ")</small>";
-                                } elseif ($frakts->datum_von > 0) {
-                                    echo "<br>(seit " . RISTools::datumstring($frakts->datum_von) . ")";
-                                }
-                                echo "</li>";
-                            } ?>
-                        </ul>
-                    </td>
-                </tr>
                 <?php
-                if (count($person->mitgliedschaften) > 0) {
-                    ?>
-                    <tr>
-                        <th>Mitgliedschaften:</th>
-                        <td>
-                            <ul class="mitgliedschaften">
-                                <?php
-                                foreach ($person->mitgliedschaften as $mitgliedschaft) {
-                                    $gremium = $mitgliedschaft->gremium;
-                                    echo "<li class='" . ($mitgliedschaft->mitgliedschaftAktiv() ? 'aktiv' : 'inaktiv') . "'>";
-                                    echo CHtml::encode($gremium->getName(true));
-                                    if ($gremium->ba_nr > 0) {
-                                        echo " (Bezirksausschuss " . CHtml::link($gremium->ba->name, $gremium->ba->getLink()) . ")";
-                                    }
-                                    if ($mitgliedschaft->datum_bis != "") {
-                                        echo '<br><small>(' . RISTools::datumstring($mitgliedschaft->datum_von);
-                                        echo ' bis ' . RISTools::datumstring($mitgliedschaft->datum_bis) . ')</small>';
-                                    }
-                                    echo "</li>\n";
-                                }
-                                ?>
-                            </ul>
-                        </td>
-                    </tr>
-                <?php
-                }
+                printMitgliedschaftenListe(Gremium::TYPE_STR_AUSSCHUSS, $person, 'Ausschüsse');
+                // @TODO StadtratsFraktion
+                printMitgliedschaftenListe(Gremium::TYPE_BA, $person, 'Bezirksausschuss');
+                printMitgliedschaftenListe(Gremium::TYPE_BA_FRAKTION, $person, 'Fraktion');
+                printMitgliedschaftenListe(Gremium::TYPE_BA_UNTERAUSSCHUSS, $person, 'Unterausschüsse');
+
                 if (count($person->antraege) > 0) {
                     ?>
                     <tr>

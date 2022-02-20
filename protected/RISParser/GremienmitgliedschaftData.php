@@ -48,4 +48,57 @@ class GremienmitgliedschaftData
 
         return $entry;
     }
+
+    /**
+     * @param GremienmitgliedschaftData[] $mitgliedschaften
+     */
+    public static function setGremienmitgliedschaftenToPerson(StadtraetIn $person, array $mitgliedschaften, string $typ, ?int $baNr): void
+    {
+        $mitgliedschaftenNeu = [];
+        foreach ($mitgliedschaften as $mitgliedschaft) {
+            // The key should resemble the unique key contraint in the database
+            $key = $mitgliedschaft->gremiumId . "-" . $mitgliedschaft->seit?->format('Y-m-d') . "-" . $mitgliedschaft->funktion;
+            $mitgliedschaftenNeu[$key] = $mitgliedschaft;
+        }
+
+        $foundKeys = [];
+        foreach ($person->mitgliedschaften as $mitgliedschaft) {
+            $key = $mitgliedschaft->gremium_id . "-" . $mitgliedschaft->datum_von . "-" . $mitgliedschaft->funktion;
+            if ($mitgliedschaft->gremium->gremientyp !== $typ) {
+                continue;
+            }
+            if (isset($mitgliedschaftenNeu[$key])) {
+                $bis = $mitgliedschaftenNeu[$key]->bis?->format('Y-m-d');
+                if ($mitgliedschaft->datum_bis !== $bis) {
+                    echo "Bis geändert: ". $mitgliedschaft->datum_bis . " => $bis\n";
+                    $mitgliedschaft->datum_bis = $bis;
+                    $mitgliedschaft->save();
+                }
+            } else {
+                $mitgliedschaft->delete();
+                echo "Removing: " . $key . "\n";
+            }
+            $foundKeys[] = $key;
+        }
+
+        foreach ($mitgliedschaftenNeu as $key => $mitgliedschaft) {
+            if (in_array($key, $foundKeys)) {
+                continue;
+            }
+
+            $gremium = Gremium::getOrCreate($mitgliedschaft->gremiumId, $mitgliedschaft->gremiumName, $typ, $baNr);
+
+            $created = new StadtraetInGremium();
+            $created->gremium_id = $gremium->id;
+            $created->stadtraetIn_id = $person->id;
+            $created->funktion = $mitgliedschaft->funktion;
+            $created->datum_von = $mitgliedschaft->seit?->format('Y-m-d');
+            $created->datum_bis = $mitgliedschaft->bis?->format('Y-m-d');
+            $created->save();
+
+            echo "Creating: " . $key . "\n";
+        }
+
+        $person->refresh();
+    }
 }

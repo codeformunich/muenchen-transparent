@@ -330,7 +330,28 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return $this->stadtraetInnenFraktionen;
     }
 
-    public function getAllSearchNames() {
+    /**
+     * @return StadtraetInGremium[]
+     */
+    public function getMembershipsByType(string $type): array
+    {
+        $arr = [];
+        foreach ($this->mitgliedschaften as $mitgliedschaft) {
+            if ($mitgliedschaft->gremium->gremientyp === $type) {
+                $arr[] = $mitgliedschaft;
+            }
+        }
+
+        usort($arr, function (StadtraetInGremium $mitgliedschaft1, StadtraetInGremium $mitgliedschaft2): int {
+            $from1 = $mitgliedschaft1->getDatumVonTimestamp();
+            $from2 = $mitgliedschaft2->getDatumVonTimestamp();
+            return $from2 <=> $from1;
+        });
+
+        return $arr;
+    }
+
+    public function getAllSearchNames(): array {
         $names = [$this->getName()];
         if (isset(StadtraetInOverrides::$PERSON_ADDITIONAL_NAMES[$this->id])) {
             $names = array_merge($names, StadtraetInOverrides::$PERSON_ADDITIONAL_NAMES[$this->id]);

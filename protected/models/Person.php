@@ -86,12 +86,9 @@ class Person extends CActiveRecord implements IRISItem
     }
 
     /**
-     * @param string $name
-     * @param string $name_normalized
-     * @return Person
      * @throws Exception
      */
-    public static function getOrCreate($name, $name_normalized)
+    public static function getOrCreate(string $name, string $name_normalized): Person
     {
         /** @var Person|null $pers */
         $pers = Person::model()->findByAttributes(["name_normalized" => $name_normalized]);

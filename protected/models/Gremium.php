@@ -4,9 +4,9 @@
  * This is the model class for table "gremien".
  *
  * The followings are the available columns in table 'gremien':
- * @property integer $id
+ * @property int $id
  * @property string $datum_letzte_aenderung
- * @property integer $ba_nr
+ * @property int|null $ba_nr
  * @property string $name
  * @property string $kuerzel
  * @property string $gremientyp
@@ -20,6 +20,13 @@
  */
 class Gremium extends CActiveRecord implements IRISItem
 {
+    const TYPE_STR_OTHER = '-';
+    const TYPE_STR_VOLLVERSAMMLUNG = 'Plenum';
+    const TYPE_STR_AUSSCHUSS = 'Ausschuss';
+    const TYPE_BA_UNTERAUSSCHUSS = 'BA-Unterausschuss';
+    const TYPE_BA = 'Bezirksausschuss';
+    const TYPE_BA_FRAKTION = 'BA-Fraktion';
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -46,7 +53,7 @@ class Gremium extends CActiveRecord implements IRISItem
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return [
-            ['id, datum_letzte_aenderung, name, kuerzel, gremientyp', 'required'],
+            ['id, datum_letzte_aenderung, name, gremientyp', 'required'],
             ['id, ba_nr', 'numerical', 'integerOnly' => true],
             ['name, gremientyp, referat', 'length', 'max' => 100],
             ['kuerzel', 'length', 'max' => 50],
@@ -83,6 +90,27 @@ class Gremium extends CActiveRecord implements IRISItem
             'gremientyp'             => 'Gremientyp',
             'referat'                => 'Referat',
         ];
+    }
+
+    public static function getOrCreate(int $id, string $name, string $typ, ?int $baNr): Gremium
+    {
+        $gremium = Gremium::model()->findByPk($id);
+        if (!$gremium) {
+            echo "Lege Gremium an: " . $name . " ($id)\n";
+            $gremium = new Gremium();
+            $gremium->id = $id;
+            $gremium->name = $name;
+            $gremium->gremientyp = $typ;
+            $gremium->ba_nr = $baNr;
+            $gremium->referat = '';
+            $gremium->kuerzel = '';
+            $gremium->datum_letzte_aenderung = date("Y-m-d H:i:s");
+            if (!$gremium->save()) {
+                var_dump($gremium->getErrors());
+            }
+        }
+
+        return $gremium;
     }
 
     /**

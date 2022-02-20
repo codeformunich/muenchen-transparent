@@ -31,10 +31,12 @@ class BAMitgliederData
         $entry->id = intval($match['id']);
 
         $fraktionList = explode('risi-list', $htmlFraktion)[1];
-        preg_match_all('/<li.*<\/li>/siuU', $fraktionList, $matches);
         $entry->fraktionsMitgliedschaften = [];
-        foreach ($matches[0] as $match) {
-            $entry->fraktionsMitgliedschaften[] = GremienmitgliedschaftData::parseFromHtml($match);
+        if (!str_contains($fraktionList, 'Es wurden keine Einträge gefunden')) {
+            preg_match_all('/<li.*<\/li>/siuU', $fraktionList, $matches);
+            foreach ($matches[0] as $match) {
+                $entry->fraktionsMitgliedschaften[] = GremienmitgliedschaftData::parseFromHtml($match);
+            }
         }
 
         $baList = explode('risi-list', $htmlBa)[1];
