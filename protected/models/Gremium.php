@@ -21,7 +21,7 @@
 class Gremium extends CActiveRecord implements IRISItem
 {
     const TYPE_STR_OTHER = '-';
-    const TYPE_STR_VOLLVERSAMMLUNG = 'Plenum';
+    const TYPE_STR_FRAKTION = 'Fraktion';
     const TYPE_STR_AUSSCHUSS = 'Ausschuss';
     const TYPE_BA_UNTERAUSSCHUSS = 'BA-Unterausschuss';
     const TYPE_BA = 'Bezirksausschuss';

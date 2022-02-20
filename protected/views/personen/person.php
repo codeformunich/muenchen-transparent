@@ -68,8 +68,8 @@ function printMitgliedschaftenListe(string $type, StadtraetIn $person, string $t
             <table class="table">
                 <tbody>
                 <?php
+                printMitgliedschaftenListe(Gremium::TYPE_STR_FRAKTION, $person, 'Fraktion');
                 printMitgliedschaftenListe(Gremium::TYPE_STR_AUSSCHUSS, $person, 'Ausschüsse');
-                // @TODO StadtratsFraktion
                 printMitgliedschaftenListe(Gremium::TYPE_BA, $person, 'Bezirksausschuss');
                 printMitgliedschaftenListe(Gremium::TYPE_BA_FRAKTION, $person, 'Fraktion');
                 printMitgliedschaftenListe(Gremium::TYPE_BA_UNTERAUSSCHUSS, $person, 'Unterausschüsse');

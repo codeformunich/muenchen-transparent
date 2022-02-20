@@ -25,6 +25,8 @@ class BrowserBasedDowloader
     public const PERSON_TYPE_BA_MITGLIEDER = 'bamitglieder';
     public const PERSON_TYPE_BA_BEAUFTRAGTE = 'babeauftragter';
 
+    public const MEMBERSHIP_TYPE_STR_AUSSCHUESSE = 'strausschuesse';
+
     private string $browserPath;
     private ?ProcessAwareBrowser $browser = null;
     private ?Page $page = null;
@@ -82,6 +84,30 @@ class BrowserBasedDowloader
     {
         return $this->page->evaluate('!!document.querySelector("'.$selector.'")')->getReturnValue();
     }
+
+    private function readPaginatedContent(string $listClass): string
+    {
+        $html = '';
+        $goon = true;
+        for ($i = 0; $i < 100 && $goon; $i++) {
+            $page = intval($this->getInnerHtml($listClass . ' .btn-pagelink[disabled] span'));
+
+            if ($page !== $i + 1) {
+                throw new ParsingException('Switched to page ' . ($i + 1) . ', but HTML indicates ' . $page);
+            }
+
+            $html .= $this->getInnerHtml($listClass . ' .list-group-flush');
+            if ($this->seeElement($listClass . ' a[rel=next]')) {
+                $this->page->evaluate('document.querySelector("' . $listClass . ' .list-group-flush").remove()')->waitForResponse();
+                $this->clickJs($listClass . ' a[rel=next]');
+                $this->waitForElementToAppear($listClass . ' .list-group-flush');
+            } else {
+                $goon = false;
+            }
+        }
+
+        return $html;
+    }
     
     public function downloadDocumentTypeListForPeriod(string $type, \DateTime $from, \DateTime $to): string
     {
@@ -105,23 +131,7 @@ class BrowserBasedDowloader
                 return '';
             }
 
-            $goon = true;
-            for ($i = 0; $i < 100 && $goon; $i++) {
-                $page = intval($this->getInnerHtml('.colors_suche .btn-pagelink[disabled] span'));
-
-                if ($page !== $i + 1) {
-                    throw new ParsingException('Switched to page ' . ($i + 1) . ', but HTML indicates ' . $page);
-                }
-
-                $html .= $this->getInnerHtml('.colors_suche .list-group-flush');
-                if ($this->seeElement('.colors_suche a[rel=next]')) {
-                    $this->page->evaluate('document.querySelector(".colors_suche .list-group-flush").remove()')->waitForResponse();
-                    $this->clickJs('.colors_suche a[rel=next]');
-                    $this->waitForElementToAppear('.colors_suche .list-group-flush');
-                } else {
-                    $goon = false;
-                }
-            }
+            $html = $this->readPaginatedContent('.colors_suche');
         } finally {
             $this->close();
         }
@@ -137,24 +147,23 @@ class BrowserBasedDowloader
 
         try {
             $this->page->navigate(RIS_URL_PREFIX . 'person/' . $type)->waitForNavigation();
+            $html = $this->readPaginatedContent('.colors_person');
+        } finally {
+            $this->close();
+        }
 
-            $goon = true;
-            for ($i = 0; $i < 100 && $goon; $i++) {
-                $page = intval($this->getInnerHtml('.colors_person .btn-pagelink[disabled] span'));
+        return $html;
+    }
 
-                if ($page !== $i + 1) {
-                    throw new ParsingException('Switched to page ' . ($i + 1) . ', but HTML indicates ' . $page);
-                }
+    public function downloadPersonsMembershipList(int $personId, string $membershipType): string
+    {
+        $html = '';
 
-                $html .= $this->getInnerHtml('.colors_person .list-group-flush');
-                if ($this->seeElement('.colors_person a[rel=next]')) {
-                    $this->page->evaluate('document.querySelector(".colors_person .list-group-flush").remove()')->waitForResponse();
-                    $this->clickJs('.colors_person a[rel=next]');
-                    $this->waitForElementToAppear('.colors_person .list-group-flush');
-                } else {
-                    $goon = false;
-                }
-            }
+        $this->open();
+
+        try {
+            $this->page->navigate(RIS_URL_PREFIX . 'person/detail/' . $personId . '/?tab=' . $membershipType)->waitForNavigation();
+            $html = $this->readPaginatedContent('.colors_person');
         } finally {
             $this->close();
         }

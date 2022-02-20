@@ -40,25 +40,29 @@ class BAMitgliederData
         }
 
         $baList = explode('risi-list', $htmlBa)[1];
-        preg_match_all('/<li.*<\/li>/siuU', $baList, $matches);
         $entry->baMitgliedschaften = [];
-        foreach ($matches[0] as $match) {
-            try {
-                $mitgliedschaft = GremienmitgliedschaftData::parseFromHtml($match);
-                $entry->baMitgliedschaften[] = $mitgliedschaft;
-                if ($mitgliedschaft->baNr) {
-                    $entry->baNr = $mitgliedschaft->baNr;
+        if (!str_contains($baList, 'Es wurden keine Einträge gefunden')) {
+            preg_match_all('/<li.*<\/li>/siuU', $baList, $matches);
+            foreach ($matches[0] as $match) {
+                try {
+                    $mitgliedschaft = GremienmitgliedschaftData::parseFromHtml($match);
+                    $entry->baMitgliedschaften[] = $mitgliedschaft;
+                    if ($mitgliedschaft->baNr) {
+                        $entry->baNr = $mitgliedschaft->baNr;
+                    }
+                } catch (ParsingException $e) {
+                    echo "Could not parse BA-Mitgliedschaft: " . $e->getMessage() . "\n";
                 }
-            } catch (ParsingException $e) {
-                echo "Could not parse BA-Mitgliedschaft: " . $e->getMessage() . "\n";
             }
         }
 
         $ausschussList = explode('risi-list', $htmlAusschuesse)[1];
-        preg_match_all('/<li.*<\/li>/siuU', $ausschussList, $matches);
         $entry->baAusschuesse = [];
-        foreach ($matches[0] as $match) {
-            $entry->baAusschuesse[] = GremienmitgliedschaftData::parseFromHtml($match);
+        if (!str_contains($ausschussList, 'Es wurden keine Einträge gefunden')) {
+            preg_match_all('/<li.*<\/li>/siuU', $ausschussList, $matches);
+            foreach ($matches[0] as $match) {
+                $entry->baAusschuesse[] = GremienmitgliedschaftData::parseFromHtml($match);
+            }
         }
 
         return $entry;

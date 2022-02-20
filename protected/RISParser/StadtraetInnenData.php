@@ -52,9 +52,8 @@ class StadtraetInnenData
             $entry->fraktionsMitgliedschaften[] = GremienmitgliedschaftData::parseFromHtml($match);
         }
 
-        // @TODO This is only the first page with the most recent memberships
-        $ausschussList = explode('risi-list', $htmlAusschuss)[1];
-        preg_match_all('/<li.*<\/li>/siuU', $ausschussList, $matches);
+        preg_match_all('/<li.*<\/li>/siuU', $htmlAusschuss, $matches);
+
         $entry->ausschussMitgliedschaften = [];
         foreach ($matches[0] as $match) {
             $entry->ausschussMitgliedschaften[] = GremienmitgliedschaftData::parseFromHtml($match);

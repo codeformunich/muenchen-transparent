@@ -25,7 +25,7 @@ class StadtraetInnenDataTest extends TestCase
         $this->assertTrue(str_ends_with($data->lebenslauf, 'Gesundheitsangebote für alle.'));
 
         $this->assertCount(2, $data->fraktionsMitgliedschaften);
-        $this->assertCount(10, $data->ausschussMitgliedschaften);
+        $this->assertCount(12, $data->ausschussMitgliedschaften);
 
         $this->assertSame(5986278, $data->fraktionsMitgliedschaften[0]->gremiumId);
         $this->assertSame('SPD / Volt - Fraktion', $data->fraktionsMitgliedschaften[0]->gremiumName);

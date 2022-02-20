@@ -14,10 +14,12 @@
  * @property string $abgeordnetenwatch
  * @property string $geschlecht
  * @property string $kontaktdaten
- * @property string $geburtstag
+ * @property string|null $geburtstag
  * @property string $beruf
  * @property string $beschreibung
  * @property string $quellen
+ * @property string $created
+ * @property string $modified
  *
  * The followings are the available model relations:
  * @property Antrag[] $antraege
@@ -276,25 +278,27 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             'alias' => 'a',
             'order' => 'a.name ASC',
             'with'  => [
-                'stadtraetInnenFraktionen'          => [
+                'mitgliedschaften'          => [
                     'alias'     => 'b',
                     'condition' => 'b.datum_von <= "' . addslashes($datum) . '" AND (b.datum_bis IS NULL OR b.datum_bis >= "' . addslashes($datum) . '")',
                 ],
-                'stadtraetInnenFraktionen.fraktion' => [
+                'mitgliedschaften.gremium' => [
                     'alias'     => 'c',
                     'condition' => $ba_where,
                 ]
             ]
         ]);
 
-        foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
+        //foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
 
         /** @var StadtraetIn[] $strs_out */
         $strs_out = [];
         foreach ($strs_in as $strs) {
+            /*
             if ($strs->id == 3425214) {
                 continue;
             } // Seltsamer ristestuser RIS_BASE_URL . "ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
+            */
             $strs_out[] = $strs;
         }
         return $strs_out;

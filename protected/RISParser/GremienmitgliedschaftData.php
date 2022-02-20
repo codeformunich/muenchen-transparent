@@ -17,7 +17,7 @@ class GremienmitgliedschaftData
     {
         $entry = new self();
 
-        if (!preg_match('/<a class="headline-link[^>]*href="\.\.\/\.\.\/gremium\/detail\/(?<id>\d+)[^\d][^>]*>(?<name>[^<]*)<\/a>/siuU', $html, $matches)) {
+        if (!preg_match('/<a class="headline-link[^>]*href="[\.\/]*gremium\/detail\/(?<id>\d+)[^\d][^>]*>(?<name>[^<]*)<\/a>/siuU', $html, $matches)) {
             throw new ParsingException('Not found: title');
         }
         $entry->gremiumId = intval($matches['id']);
@@ -87,6 +87,7 @@ class GremienmitgliedschaftData
             }
 
             $gremium = Gremium::getOrCreate($mitgliedschaft->gremiumId, $mitgliedschaft->gremiumName, $typ, $baNr);
+            echo "Creating: " . $key . "\n";
 
             $created = new StadtraetInGremium();
             $created->gremium_id = $gremium->id;
@@ -95,8 +96,6 @@ class GremienmitgliedschaftData
             $created->datum_von = $mitgliedschaft->seit?->format('Y-m-d');
             $created->datum_bis = $mitgliedschaft->bis?->format('Y-m-d');
             $created->save();
-
-            echo "Creating: " . $key . "\n";
         }
 
         $person->refresh();

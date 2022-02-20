@@ -34,7 +34,7 @@ class StadtraetInnenParser extends RISParser
         if (SITE_CALL_MODE != "cron") echo "- StadträtIn $id\n";
 
         $htmlFraktionen = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=fraktionen', false, true);
-        $htmlAusschuesse = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'person/detail/' . $id . '?tab=strausschuesse', false, true);
+        $htmlAusschuesse = $this->browserBasedDowloader->downloadPersonsMembershipList($id, BrowserBasedDowloader::MEMBERSHIP_TYPE_STR_AUSSCHUESSE);
 
         $parsed = StadtraetInnenData::parseFromHtml($htmlFraktionen, $htmlAusschuesse, $id);
 
@@ -60,16 +60,18 @@ class StadtraetInnenParser extends RISParser
             if ($alter_eintrag->bio != $daten->bio) $aenderungen .= "Biografie: " . $alter_eintrag->bio . " => " . $daten->bio . "\n";
             if ($aenderungen != "") $changed = true;
 
-            $daten->web               = $alter_eintrag->web;
-            $daten->twitter           = $alter_eintrag->twitter;
-            $daten->facebook          = $alter_eintrag->facebook;
+            $daten->web = $alter_eintrag->web;
+            $daten->twitter = $alter_eintrag->twitter;
+            $daten->facebook = $alter_eintrag->facebook;
             $daten->abgeordnetenwatch = $alter_eintrag->abgeordnetenwatch;
-            $daten->quellen           = $alter_eintrag->quellen;
-            $daten->geburtstag        = $alter_eintrag->geburtstag;
-            $daten->geschlecht        = $alter_eintrag->geschlecht;
-            $daten->beschreibung      = $alter_eintrag->beschreibung;
-            $daten->beruf             = $alter_eintrag->beruf;
-            $daten->kontaktdaten      = $alter_eintrag->kontaktdaten;
+            $daten->quellen = $alter_eintrag->quellen;
+            $daten->geburtstag = ($alter_eintrag->geburtstag !== null && $alter_eintrag->geburtstag !== '0000-00-00' ? $alter_eintrag->geburtstag : null);
+            $daten->geschlecht = $alter_eintrag->geschlecht;
+            $daten->beschreibung = $alter_eintrag->beschreibung;
+            $daten->beruf = $alter_eintrag->beruf;
+            $daten->kontaktdaten = $alter_eintrag->kontaktdaten;
+            $daten->created = $alter_eintrag->created;
+            $daten->modified = date("Y-m-d H:i:s");
         }
 
         if ($changed) {
@@ -92,45 +94,8 @@ class StadtraetInnenParser extends RISParser
             }
         }
 
-        foreach ($parsed->fraktionsMitgliedschaften as $fraktionMitgliedschaft) {
-            $str_fraktion = new StadtraetInFraktion();
-            $str_fraktion->datum_von = $fraktionMitgliedschaft->seit?->format('Y-m-d');
-            $str_fraktion->datum_bis = $fraktionMitgliedschaft->bis?->format('Y-m-d');
-            $str_fraktion->fraktion_id    = $fraktionMitgliedschaft->gremiumId;
-            $str_fraktion->stadtraetIn_id = $id;
-            $str_fraktion->wahlperiode    = $fraktionMitgliedschaft->wahlperiode;
-            $str_fraktion->funktion       = $fraktionMitgliedschaft->funktion;
-            $str_fraktion->mitgliedschaft = null;
-
-            /** @var array|StadtraetInFraktion[] $bisherige_fraktionen */
-            $bisherige_fraktionen = StadtraetInFraktion::model()->findAllByAttributes(["stadtraetIn_id" => $id]);
-            /** @var null|StadtraetInFraktion $bisherige */
-
-            $bisherige = null;
-            foreach ($bisherige_fraktionen as $fr) {
-                if ($fr->fraktion_id == $str_fraktion->fraktion_id && $fr->wahlperiode == $str_fraktion->wahlperiode && $fr->funktion == $str_fraktion->funktion) {
-                    $bisherige = $fr;
-                }
-            }
-
-            if ($bisherige === null) {
-                $fraktion = Fraktion::model()->findByPk($str_fraktion->fraktion_id);
-                if (is_null($fraktion)) {
-                    $frakt_parser = new StadtratsfraktionParser();
-                    $frakt_parser->parse($str_fraktion->fraktion_id, $str_fraktion->wahlperiode);
-                }
-                $str_fraktion->save();
-                $aenderungen = "Neue Fraktionszugehörigkeit: " . $str_fraktion->fraktion->name . "\n";
-            } else {
-                if ($bisherige->wahlperiode != $fraktionMitgliedschaft->wahlperiode) $aenderungen .= "Neue Wahlperiode: " . $bisherige->wahlperiode . " => " . $fraktionMitgliedschaft->wahlperiode . "\n";
-                if ($bisherige->funktion != $fraktionMitgliedschaft->funktion) $aenderungen .= "Neue Funktion in der Fraktion: " . $bisherige->funktion . " => " . $fraktionMitgliedschaft->funktion . "\n";
-                //if ($bisherige->mitgliedschaft != $matches["mitgliedschaft"][$i]) $aenderungen .= "Mitgliedschaft in der Fraktion: " . $bisherige->mitgliedschaft . " => " . $matches["mitgliedschaft"][$i] . "\n";
-                if ($bisherige->datum_von != $str_fraktion->datum_von) $aenderungen .= "Fraktionsmitgliedschaft Start: " . $bisherige->datum_von . " => " . $str_fraktion->datum_von . "\n";
-                if ($bisherige->datum_bis != $str_fraktion->datum_bis) $aenderungen .= "Fraktionsmitgliedschaft Ende: " . $bisherige->datum_bis . " => " . $str_fraktion->datum_bis . "\n";
-                $bisherige->setAttributes($str_fraktion->getAttributes());
-                $bisherige->save();
-            }
-        }
+        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($daten, $parsed->fraktionsMitgliedschaften, Gremium::TYPE_STR_FRAKTION, null);
+        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($daten, $parsed->ausschussMitgliedschaften, Gremium::TYPE_STR_AUSSCHUSS, null);
 
 
         if ($aenderungen != "") echo "StadträtIn $id: Verändert: " . $aenderungen . "\n";

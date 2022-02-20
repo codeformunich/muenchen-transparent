@@ -37,9 +37,21 @@ class BAMitgliederParser extends RISParser
             $strIn->save();
         }
 
-        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($strIn, $parsed->fraktionsMitgliedschaften, Gremium::TYPE_BA_FRAKTION, $parsed->baNr);
-        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($strIn, $parsed->baMitgliedschaften, Gremium::TYPE_BA, $parsed->baNr);
-        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($strIn, $parsed->baAusschuesse, Gremium::TYPE_BA_UNTERAUSSCHUSS, $parsed->baNr);
+        if (isset($parsed->baNr)) {
+            $baNr = $parsed->baNr;
+        } else {
+            $baNr = null;
+            foreach ($strIn->mitgliedschaften as $mitgliedschaft) {
+                if ($mitgliedschaft->gremium->ba_nr > 0) {
+                    $baNr = $mitgliedschaft->gremium->ba_nr;
+                }
+            }
+            echo "Warnung: BA-Mitglied ohne erkannte BA-Zuordnung: " . $strIn->name . "\n";
+        }
+
+        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($strIn, $parsed->fraktionsMitgliedschaften, Gremium::TYPE_BA_FRAKTION, $baNr);
+        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($strIn, $parsed->baMitgliedschaften, Gremium::TYPE_BA, $baNr);
+        GremienmitgliedschaftData::setGremienmitgliedschaftenToPerson($strIn, $parsed->baAusschuesse, Gremium::TYPE_BA_UNTERAUSSCHUSS, $baNr);
 
         return $strIn;
     }
@@ -50,8 +62,21 @@ class BAMitgliederParser extends RISParser
 
         $entries = StadtraetInnenListEntry::parseHtmlList($html);
 
+        $ids = [];
         foreach ($entries as $entry) {
-            $this->parse($entry->id);
+            $mitglied = $this->parse($entry->id);
+            $ids[] = $mitglied->id;
+        }
+
+        // parse members that are not in the current list anymore, but have been in the past and therefore still have an DB entry
+        /** @var CDbCommand $sql */
+        $sql = Yii::app()->db->createCommand('
+            SELECT DISTINCT(str.id) FROM stadtraetInnen str JOIN stadtraetInnen_gremien strgr ON str.id = strgr.stadtraetIn_id
+                JOIN gremien gr ON strgr.gremium_id = gr.id
+                WHERE gr.ba_nr > 0 AND str.id NOT IN (' . implode(', ', $ids) . ')'
+        );
+        foreach ($sql->query() as $row) {
+            $this->parse(intval($row['id']));
         }
     }
 

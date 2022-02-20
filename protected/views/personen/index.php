@@ -6,7 +6,6 @@
  * @var StadtraetIn[] $personen
  */
 
-/** @var Bezirksausschuss[] $bas */
 $bas = Bezirksausschuss::model()->alleOhneStadtrat();
 $curr_ba = null;
 if ($ba_nr > 0) foreach ($bas as $ba) if ($ba->ba_nr == $ba_nr) $curr_ba = $ba;
@@ -59,7 +58,6 @@ $this->pageTitle   = $personen_typ_name;
             //echo '<h2>' . CHtml::encode($personen_typ_name) . '</h2>';
 
             $fraktionen = array();
-            $twitter    = $facebook = $website = false;
             foreach ($personen as $strIn) {
                 if (count($strIn->stadtraetInnenFraktionen) > 0) {
                     $frakt = $strIn->stadtraetInnenFraktionen[0]->fraktion;
@@ -69,9 +67,6 @@ $this->pageTitle   = $personen_typ_name;
                     $frakt->name = "Fraktionslos";
                 }
                 if (!isset($fraktionen[$frakt->id])) $fraktionen[$frakt->id] = $frakt->getName(true);
-                if ($strIn->twitter != "") $twitter = true;
-                if ($strIn->facebook != "") $facebook = true;
-                if ($strIn->web != "") $website = true;
             }
             asort($fraktionen);
 
@@ -89,27 +84,6 @@ $this->pageTitle   = $personen_typ_name;
                         echo '<input type="radio" name="options" value="' . $fr_id . '" autocomplete="off"> ' . CHtml::encode($fr_name);
                         echo '</label>';
                     }
-                    /*
-                    if ($facebook) {
-                        ?>
-                        <label class="btn btn-info btn-separator-left">
-                            <input type="radio" name="options" value="facebook" autocomplete="off"> <span
-                                class="fontello-facebook" title="Facebook"></span>
-                        </label>
-                    <?php }
-                    if ($twitter) { ?>
-                        <label class="btn btn-info">
-                            <input type="radio" name="options" value="twitter" autocomplete="off"> <span
-                                class="fontello-twitter" title="Twitter"></span>
-                        </label>
-                    <?php }
-                    if ($website) { ?>
-                        <label class="btn btn-info">
-                            <input type="radio" name="options" value="homepage" autocomplete="off"> <span
-                                class="fontello-home" title="Homepage"></span>
-                        </label>
-                    <?php }
-                    */
                     ?>
                 </div>
 
@@ -130,14 +104,7 @@ $this->pageTitle   = $personen_typ_name;
                     } else {
                         echo "0";
                     }
-                    if ($strIn->twitter != "") echo " twitter";
-                    if ($strIn->facebook != "") echo " facebook";
-                    if ($strIn->web != "") echo " homepage";
-                    echo ' "><div class="sm_links">';
-                    if ($strIn->web != "") echo "<a href='" . CHtml::encode($strIn->web) . "' title='Homepage' class='web_link'></a>";
-                    if ($strIn->twitter != "") echo "<a href='https://twitter.com/" . CHtml::encode($strIn->twitter) . "' title='Twitter' class='twitter_link'>T</a>";
-                    if ($strIn->facebook != "") echo "<a href='https://www.facebook.com/" . CHtml::encode($strIn->facebook) . "' title='Facebook' class='fb_link'>f</a>";
-                    echo '</div>';
+                    echo ' "><div class="sm_links"></div>';
                     echo '<a href="' . CHtml::encode($strIn->getLink()) . '" class="name" data-vorname="' . CHtml::encode($strIn->errateVorname()) . '"';
                     echo ' data-nachname="' . CHtml::encode($strIn->errateNachname()) . '">' . CHtml::encode($strIn->getName()) . '</a>';
                     echo '<div class="partei">';
@@ -173,7 +140,7 @@ $this->pageTitle   = $personen_typ_name;
                     $filter.find("input").change(function () {
                         var val = $filter.find("input:checked").val();
                         if (val > 0 || val < 0 || val === "0")  $liste.isotope({filter: ".fraktion_" + val});
-                        else if (val == "twitter" || val == "facebook" || val == "homepage") $liste.isotope({filter: "." + val});
+                        else if (val === "twitter" || val === "facebook" || val === "homepage") $liste.isotope({filter: "." + val});
                         else $liste.isotope({filter: null});
                     });
                     $sorter.find("a").click(function (ev) {
