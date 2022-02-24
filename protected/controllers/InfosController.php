@@ -52,23 +52,6 @@ class InfosController extends RISBaseController
         $this->std_content_page(21, $this->createUrl("infos/ueber"));
     }
 
-    public function actionStadtrecht()
-    {
-        $this->top_menu = "so_funktioniert";
-        $this->render("stadtrecht");
-    }
-
-    public function actionStadtrechtDokument($id)
-    {
-        /** @var Rechtsdokument $dok */
-        $dok = Rechtsdokument::model()->findByPk($id);
-        if (!$dok) {
-            $this->render('../index/error', ["code" => 404, "message" => "Das Dokument wurde nicht gefunden"]);
-            Yii::app()->end();
-        }
-        $this->render("stadtrecht_dokument", ["dokument" => $dok]);
-    }
-
     /**
      * @param int $id
      * @param string $my_url
