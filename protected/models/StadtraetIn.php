@@ -261,11 +261,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
     }
 
     /**
-     * @param string $datum
-     * @param int|null $ba_nr
      * @return StadtraetIn[]
      */
-    public static function getByFraktion($datum, $ba_nr)
+    public static function getByFraktion(?int $ba_nr): array
     {
         if ($ba_nr === null) {
             $ba_where = "c.ba_nr IS NULL";
@@ -273,6 +271,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             $ba_where = "c.ba_nr = " . IntVal($ba_nr);
         }
 
+        $today = date('Y-m-d');
         /** @var StadtraetIn[] $strs_in */
         $strs_in = StadtraetIn::model()->findAll([
             'alias' => 'a',
@@ -280,7 +279,7 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             'with'  => [
                 'mitgliedschaften'          => [
                     'alias'     => 'b',
-                    'condition' => 'b.datum_von <= "' . addslashes($datum) . '" AND (b.datum_bis IS NULL OR b.datum_bis >= "' . addslashes($datum) . '")',
+                    'condition' => 'b.datum_von <= "' . addslashes($today) . '" AND (b.datum_bis IS NULL OR b.datum_bis >= "' . addslashes($today) . '")',
                 ],
                 'mitgliedschaften.gremium' => [
                     'alias'     => 'c',
@@ -304,17 +303,12 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return $strs_out;
     }
 
-    /**
-     * @param string $datum
-     * @param int|null $ba_nr
-     * @return array[]
-     */
-    public static function getGroupedByFraktion($datum, $ba_nr)
+    public static function getGroupedByFraktion(?int $ba_nr): array
     {
-        $strs       = static::getByFraktion($datum, $ba_nr);
+        $strs       = static::getByFraktion($ba_nr);
         $fraktionen = [];
         foreach ($strs as $str) {
-            if (count($str->stadtraetInnenFraktionen) == 0) {
+            if (count($str->stadtraetInnenFraktionen) === 0) {
                 continue;
             }
             if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) {
@@ -323,15 +317,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
         }
         return $fraktionen;
-    }
-
-    /**
-     * @return StadtraetInFraktion[]
-     */
-    public function getFraktionsMitgliedschaften()
-    {
-        $this->overrideFraktionsMitgliedschaften();
-        return $this->stadtraetInnenFraktionen;
     }
 
     /**
@@ -353,6 +338,16 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         });
 
         return $arr;
+    }
+
+    public function getCurrentMembershipOfType(string $type): ?StadtraetInGremium
+    {
+        $memberships = $this->getMembershipsByType($type);
+        $currentMemberships = array_filter($memberships, function (StadtraetInGremium $membership): bool {
+            return $membership->mitgliedschaftAktiv();
+        });
+
+        return count($currentMemberships) > 0 ? $currentMemberships[0] : null;
     }
 
     public function getAllSearchNames(): array {

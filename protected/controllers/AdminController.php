@@ -56,8 +56,7 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Gespeichert";
         }
 
-        /** @var array[] $fraktionen */
-        $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
+        $fraktionen = StadtraetIn::getGroupedByFraktion(null);
 
         $this->render("stadtraetInnenSocialMedia", [
             "fraktionen" => $fraktionen,
@@ -84,8 +83,7 @@ class AdminController extends RISBaseController
             $this->msg_ok = "Gespeichert";
         }
 
-        /** @var array[] $fraktionen */
-        $fraktionen = StadtraetIn::getGroupedByFraktion(date("Y-m-d"), null);
+        $fraktionen = StadtraetIn::getGroupedByFraktion(null);
 
         $this->render("stadtraetInnenBeschreibungen", [
             "fraktionen" => $fraktionen,

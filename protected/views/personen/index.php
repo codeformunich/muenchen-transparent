@@ -55,18 +55,19 @@ $this->pageTitle   = $personen_typ_name;
         </div>
         <div class="col-sm-9">
             <?php
-            //echo '<h2>' . CHtml::encode($personen_typ_name) . '</h2>';
-
-            $fraktionen = array();
+            $fraktionen = [];
             foreach ($personen as $strIn) {
-                if (count($strIn->stadtraetInnenFraktionen) > 0) {
-                    $frakt = $strIn->stadtraetInnenFraktionen[0]->fraktion;
+                if ($ba_nr > 0) {
+                    $fraktion = $strIn->getCurrentMembershipOfType(Gremium::TYPE_BA_FRAKTION)?->gremium;
                 } else {
-                    $frakt = new Fraktion();
-                    $frakt->id = "0";
-                    $frakt->name = "Fraktionslos";
+                    $fraktion = $strIn->getCurrentMembershipOfType(Gremium::TYPE_STR_FRAKTION)?->gremium;
                 }
-                if (!isset($fraktionen[$frakt->id])) $fraktionen[$frakt->id] = $frakt->getName(true);
+                if (!$fraktion) {
+                    $fraktion = new Gremium();
+                    $fraktion->id = "0";
+                    $fraktion->name = "Fraktionslos";
+                }
+                if (!isset($fraktionen[$fraktion->id])) $fraktionen[$fraktion->id] = $fraktion->getName(true);
             }
             asort($fraktionen);
 
@@ -99,8 +100,13 @@ $this->pageTitle   = $personen_typ_name;
                 $personen = StadtraetIn::sortByName($personen);
                 foreach ($personen as $strIn) {
                     echo '<li class="strIn fraktion_';
-                    if (count($strIn->stadtraetInnenFraktionen) > 0) {
-                        echo $strIn->stadtraetInnenFraktionen[0]->fraktion_id;
+                    if ($ba_nr > 0) {
+                        $fraktion = $strIn->getCurrentMembershipOfType(Gremium::TYPE_BA_FRAKTION)?->gremium;
+                    } else {
+                        $fraktion = $strIn->getCurrentMembershipOfType(Gremium::TYPE_STR_FRAKTION)?->gremium;
+                    }
+                    if ($fraktion) {
+                        echo $fraktion->id;
                     } else {
                         echo "0";
                     }
@@ -108,8 +114,8 @@ $this->pageTitle   = $personen_typ_name;
                     echo '<a href="' . CHtml::encode($strIn->getLink()) . '" class="name" data-vorname="' . CHtml::encode($strIn->errateVorname()) . '"';
                     echo ' data-nachname="' . CHtml::encode($strIn->errateNachname()) . '">' . CHtml::encode($strIn->getName()) . '</a>';
                     echo '<div class="partei">';
-                    if (count($strIn->stadtraetInnenFraktionen) > 0) {
-                        echo CHtml::encode($strIn->stadtraetInnenFraktionen[0]->fraktion->getName(true));
+                    if ($fraktion) {
+                        echo CHtml::encode($fraktion->getName(true));
                     } else {
                         echo "Fraktionslos";
                     }

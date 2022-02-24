@@ -424,9 +424,12 @@ class OParl10Object {
 
         $body = 0; // fallback
 
-        $mitgliedschaften = $stadtraetin->getFraktionsMitgliedschaften();
-        if (count($mitgliedschaften) > 0) {
-            $body = $mitgliedschaften[0]->fraktion->ba_nr;
+        $memberships = array_merge(
+            $stadtraetin->getMembershipsByType(Gremium::TYPE_STR_FRAKTION),
+            $stadtraetin->getMembershipsByType(Gremium::TYPE_BA_FRAKTION),
+        );
+        if (count($memberships) > 0) {
+            $body = $memberships[0]->gremium->ba_nr;
             if ($body == null)
                 $body = 0;
         }

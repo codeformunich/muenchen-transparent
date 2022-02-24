@@ -147,6 +147,21 @@ class Gremium extends CActiveRecord implements IRISItem
     {
         $name = $this->name;
         if ($kurzfassung) {
+            switch ($this->name) {
+                case 'Bündnis90/Die Grünen/RL-Fraktion';
+                case 'DIE GRÜNEN/RL-Fraktion':
+                case 'Fraktion Die Grünen - Rosa Liste':
+                    return 'Grüne/RL';
+                case 'Fraktion ÖDP/München-Liste':
+                    return 'ÖDP/Münchner';
+                case 'Stadtratsfraktion DIE LINKE. / Die PARTEI';
+                    return 'Linke/Partei';
+                case 'FDP BAYERNPARTEI Stadtratsfraktion';
+                    return 'FDP/Bayernpartei';
+                case 'SPD / Volt - Fraktion';
+                    return 'SPD/Volt';
+            }
+            $name = str_replace('-Fraktion', '', $name);
             $name = preg_replace("/UA *[0-9]+/", "", $name);
             $name = preg_replace("/^[0-9]+[ _]/", "", $name);
             $name = preg_replace("/^UA /", "", $name);

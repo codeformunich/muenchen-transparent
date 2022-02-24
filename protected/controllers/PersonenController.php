@@ -2,16 +2,13 @@
 
 class PersonenController extends RISBaseController
 {
-
-    /**
-     * @param null|int $ba
-     */
-    public function actionIndex($ba = null)
+    public function actionIndex(?string $ba = null)
     {
+        $ba = ($ba > 0 ? intval($ba) : null);
         $this->top_menu = "personen";
 
         $this->render('index', [
-            "personen"     => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
+            "personen"     => StadtraetIn::getByFraktion($ba),
             "personen_typ" => ($ba > 0 ? "ba" : "str"),
             "ba_nr"        => $ba
         ]);

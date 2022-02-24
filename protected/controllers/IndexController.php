@@ -782,12 +782,7 @@ class IndexController extends RISBaseController
         Yii::app()->end();
     }
 
-
-    /**
-     * @param int $ba_nr
-     * @param string $datum_max
-     */
-    public function actionBa($ba_nr, $datum_max = "")
+    public function actionBa(string $ba_nr, string $datum_max = "")
     {
         $ba_nr = intval($ba_nr);
         $this->top_menu = "ba";
@@ -824,7 +819,7 @@ class IndexController extends RISBaseController
             "tage_vergangenheit"           => $tage_vergangenheit,
             "tage_zukunft"                 => $tage_zukunft,
             "tage_vergangenheit_dokumente" => static::$BA_DOKUMENTE_TAGE_PRO_SEITE,
-            "fraktionen"                   => StadtraetIn::getGroupedByFraktion(date("Y-m-d"), $ba_nr),
+            "fraktionen"                   => StadtraetIn::getGroupedByFraktion($ba_nr),
             "explizites_datum"             => ($datum_max != ""),
         ], $antraege_data));
     }
@@ -946,10 +941,11 @@ class IndexController extends RISBaseController
 
     public function actionPersonen($ba = null)
     {
+        $ba = $ba > 0 ? intval($ba) : null;
         $this->top_menu = "personen";
 
         $this->render('personen', [
-            "stadtraetInnen" => StadtraetIn::getByFraktion(date("Y-m-d"), $ba),
+            "stadtraetInnen" => StadtraetIn::getByFraktion($ba),
             "personen_typ"   => ($ba > 0 ? "ba" : "str"),
             "ba_nr"          => $ba
         ]);
