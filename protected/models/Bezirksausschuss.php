@@ -20,7 +20,6 @@
  * @property GremiumHistory[] $gremienHistories
  * @property RISAenderung[] $RISAenderungen
  * @property StadtraetIn[] $stadtraetInnen
- * @property Fraktion[] $fraktionen
  * @property BezirksausschussBudget[] $budgets
  */
 class Bezirksausschuss extends CActiveRecord
@@ -71,7 +70,6 @@ class Bezirksausschuss extends CActiveRecord
             'gremienHistories'  => [self::HAS_MANY, 'GremiumHistory', 'ba_nr'],
             'RISAenderungen'    => [self::HAS_MANY, 'RisAenderung', 'ba_nr'],
             'stadtraetInnen'    => [self::HAS_MANY, 'StadtraetIn', 'ba_nr'],
-            'fraktionen'        => [self::HAS_MANY, 'Fraktion', 'ba_nr'],
             'budgets'           => [self::HAS_MANY, 'BezirksausschussBudget', 'ba_nr'],
         ];
     }

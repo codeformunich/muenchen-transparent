@@ -165,10 +165,6 @@ class OParl10List
         foreach ($gremien as $gremium)
             $organizations[] = OParl10Object::get('organization', $gremium->id, 'gremium');
 
-        $fraktionen = Fraktion::model()->findAll($criteria);
-        foreach ($fraktionen as $fraktion)
-            $organizations[] = OParl10Object::get('organization', $fraktion->id, 'fraktion');
-
         return [
             'data'         => $organizations,
             'pagination'    => [

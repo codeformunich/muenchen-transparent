@@ -105,20 +105,24 @@ class Person extends CActiveRecord implements IRISItem
         return $pers;
     }
 
-    /**
-     * @param string $datum
-     * @return string|null
-     */
-    public function ratePartei($datum = "")
+    public function ratePartei(?string $datum = ""): ?string
     {
-        if (isset($this->fraktion) && $this->fraktion) return $this->fraktion->getName(true);
         if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return null;
-        if (!isset($this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion)) return null;
-        if ($datum != "") foreach ($this->stadtraetIn->stadtraetInnenFraktionen as $fraktionsZ) {
+        $memberships = array_merge(
+            $this->stadtraetIn->getMembershipsByType(Gremium::TYPE_STR_FRAKTION),
+            $this->stadtraetIn->getMembershipsByType(Gremium::TYPE_BA_FRAKTION),
+        );
+        if ($datum != "") foreach ($memberships as $fraktionsZ) {
             $dat = str_replace("-", "", $datum);
-            if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) return $fraktionsZ->fraktion->getName(true);
+            if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) {
+                return $fraktionsZ->gremium->getName(true);
+            }
         }
-        return $this->stadtraetIn->stadtraetInnenFraktionen[0]->fraktion->getName(true);
+        if (count($memberships) > 0) {
+            return $memberships[0]->gremium->getName(true);
+        } else {
+            return null;
+        }
     }
 
     public function getLink(array $add_params = []): string

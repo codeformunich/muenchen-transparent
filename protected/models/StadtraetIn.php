@@ -25,7 +25,6 @@
  * @property Antrag[] $antraege
  * @property Person[] $personen
  * @property BenutzerIn
- * @property StadtraetInFraktion[] $stadtraetInnenFraktionen
  * @property StadtraetInGremium[] $mitgliedschaften
  * @property StadtraetInReferat[] $stadtraetInnenReferate
  */
@@ -82,7 +81,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return [
             'antraege'                 => [self::MANY_MANY, 'Antrag', 'antraege_stadtraetInnen(stadtraetIn_id, antrag_id)', 'order' => 'gestellt_am DESC'],
             'personen'                 => [self::HAS_MANY, 'Person', 'ris_stadtraetIn'],
-            'stadtraetInnenFraktionen' => [self::HAS_MANY, 'StadtraetInFraktion', 'stadtraetIn_id', 'order' => 'wahlperiode DESC'],
             'mitgliedschaften'         => [self::HAS_MANY, 'StadtraetInGremium', 'stadtraetIn_id'],
             'stadtraetInnenReferate'   => [self::HAS_MANY, 'StadtraetInReferat', 'stadtraetIn_id'],
             'benutzerIn'               => [self::HAS_ONE, 'BenutzerIn', 'benutzerIn_id'],

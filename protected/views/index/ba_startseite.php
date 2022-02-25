@@ -16,7 +16,7 @@
  * @var array $termine
  * @var array $bvs
  * @var Termin[] $termin_dokumente
- * @var Fraktion $fraktionen
+ * @var array $fraktionen
  * @var int $tage_zukunft
  * @var int $tage_vergangenheit
  * @var int $tage_vergangenheit_dokumente

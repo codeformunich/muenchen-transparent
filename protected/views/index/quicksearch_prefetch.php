@@ -13,9 +13,13 @@ $output_data = [];
 foreach ($stadtraetInnen as $str) {
 	$fraktion = "";
 	$gremien = [];
-	foreach ($str->stadtraetInnenFraktionen as $fr) {
-		$fraktion = $fr->fraktion->name;
-		$gremium = ($fr->fraktion->ba_nr > 0 ? "BA " . $fr->fraktion->ba_nr : "Stadtrat");
+    $memberships = array_merge(
+        $str->getMembershipsByType(Gremium::TYPE_STR_FRAKTION),
+        $str->getMembershipsByType(Gremium::TYPE_BA_FRAKTION),
+    );
+	foreach ($memberships as $fr) {
+		$fraktion = $fr->gremium->name;
+		$gremium = ($fr->gremium->ba_nr > 0 ? "BA " . $fr->gremium->ba_nr : "Stadtrat");
 		if (!in_array($gremium, $gremien)) $gremien[] = $gremium;
 	} // @TODO
 

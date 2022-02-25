@@ -297,7 +297,7 @@ class OParl10Object {
      */
     private static function membership($id, $subtype) {
         if ($subtype == 'fraktion') {
-            $object = StadtraetInFraktion::model()->findByPk($id);
+            $object = StadtraetInGremium::model()->findByPk($id);
         } else if ($subtype == 'gremium') {
             $object = StadtraetInGremium::model()->findByPk($id);
         } else if ($subtype == 'referat') {
@@ -335,8 +335,8 @@ class OParl10Object {
      */
     private static function organization($id, $subtype) {
         if ($subtype == 'fraktion') {
-            $object = Fraktion::model()->findByPk($id);
-            $memberships = $object->stadtraetInnenFraktionen;
+            $object = Gremium::model()->findByPk($id);
+            $memberships = $object->mitgliedschaften;
         } else if ($subtype == 'gremium') {
             $object = Gremium::model()->findByPk($id);
             $memberships = $object->mitgliedschaften;

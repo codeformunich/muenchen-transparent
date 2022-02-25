@@ -5,10 +5,10 @@ class ExportController extends RISBaseController
 	public function actionFraktionantraege($fraktion_id, $limit = 30, $offset = 0) {
 		Header("Content-Type: application/json; charset=UTF-8");
 
-		/** @var Fraktion $fraktion */
-		$fraktion = Fraktion::model()->findByPk( $fraktion_id );
+		/** @var Gremium $fraktion */
+		$fraktion = Gremium::model()->findByPk( $fraktion_id );
 		$strIds   = [ ];
-		foreach ( $fraktion->stadtraetInnenFraktionen as $strFrakt ) {
+		foreach ( $fraktion->mitgliedschaften as $strFrakt ) {
 			$strIds[] = $strFrakt->stadtraetIn_id;
 		}
 		$strIds = implode( ", ", array_map( "IntVal", $strIds ) );
@@ -22,7 +22,6 @@ class ExportController extends RISBaseController
 
 		$return = [ ];
 		foreach ( $antragIds as $antragId ) {
-			/** @var StadtraetInFraktion[] $strs */
 			$antrag = Antrag::model()->findByPk( $antragId );
 
 			$antragData = [
