@@ -1,30 +1,26 @@
 <?php
 /**
- * @var StadtraetIn[][] $fraktionen
+ * @var StadtraetIn[][][] $fraktionen
  * @var string $title
  */
 ?>
 <section class="well"><?php
     $insgesamt = 0;
     foreach ($fraktionen as $fraktion)
-        $insgesamt += count($fraktion);
+        $insgesamt += count($fraktion['persons']);
     ?>
 
     <h2><?= CHtml::encode($title) ?> <span style="float: right"><?= $insgesamt ?></span></h2>
 
     <ul class="fraktionen_liste"><?php
         usort($fraktionen, function ($val1, $val2) {
-            if (count($val1) < count($val2)) return 1;
-            if (count($val1) > count($val2)) return -1;
-            return 0;
+            return count($val2['persons']) <=> count($val1['persons']);
         });
         foreach ($fraktionen as $fraktion) {
-            /** @var StadtraetIn[] $fraktion */
-            $fr = $fraktion[0]->stadtraetInnenFraktionen[0]->fraktion;
-            echo "<li><a href='" . CHtml::encode($fr->getLink()) . "' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
-            echo "<span class='count'>" . count($fraktion) . "</span>";
-            echo CHtml::encode($fr->getName()) . "</a><ul class='mitglieder'>";
-            $mitglieder = StadtraetIn::sortByName($fraktion);
+            echo "<li><a href='" . CHtml::encode($fraktion['link']) . "' class='name'><span class=\"glyphicon glyphicon-chevron-right\"></span>";
+            echo "<span class='count'>" . count($fraktion['persons']) . "</span>";
+            echo CHtml::encode($fraktion['name']) . "</a><ul class='mitglieder'>";
+            $mitglieder = StadtraetIn::sortByName($fraktion['persons']);
             foreach ($mitglieder as $mitglied) {
                 echo "<li>";
                 echo "<a href='" . CHtml::encode($mitglied->getLink()) . "' class='ris_link'>" . CHtml::encode($mitglied->getName()) . "</a>";

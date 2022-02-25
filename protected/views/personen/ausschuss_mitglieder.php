@@ -8,6 +8,7 @@ $gremienzahl = 0;
 foreach ($gremien as $gremium) {
     if (count($gremium->mitgliedschaften) == 0) continue;
     if (mb_strpos($gremium->name, "Vollgremium") !== false) continue;
+    if ($gremium->gremientyp === Gremium::TYPE_BA) continue;
     $gremienzahl++;
 }
 if ($gremienzahl > 0) {
@@ -19,13 +20,12 @@ if ($gremienzahl > 0) {
         <h2><?= CHtml::encode($title) ?></h2>
 
         <ul class="ausschuesse_liste"><?php
-            usort($gremien, function ($gr1, $gr2) {
-                /** @var Gremium $gr1 */
-                /** @var Gremium $gr2 */
+            usort($gremien, function (Gremium $gr1, Gremium $gr2) {
                 return strnatcasecmp($gr1->getName(true), $gr2->getName(true));
             });
             foreach ($gremien as $gremium) {
-                if (count($gremium->mitgliedschaften) == 0) continue;
+                if (count($gremium->mitgliedschaften) === 0) continue;
+                if ($gremium->gremientyp === Gremium::TYPE_BA) continue;
                 if (mb_strpos($gremium->name, "Vollgremium") !== false) continue;
 
                 $aktiveMitgliedschaften = [];

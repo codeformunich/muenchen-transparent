@@ -230,36 +230,6 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         return RIS_URL_PREFIX . "person/detail/" . $this->id . '?tab=mitgliedschaften';
     }
 
-    private function overrideFraktionsMitgliedschaften(): void
-    {
-        if (isset(StadtraetInFraktionOverrides::FRAKTION_ADD[$this->id])) {
-            foreach (StadtraetInFraktionOverrides::FRAKTION_ADD[$this->id] as $override) {
-                $mitgliedschaft                  = new StadtraetInFraktion();
-                $mitgliedschaft->stadtraetIn_id  = $this->id;
-                $mitgliedschaft->fraktion_id     = $override["fraktion_id"];
-                $mitgliedschaft->datum_von       = $override["datum_von"];
-                $mitgliedschaft->datum_bis       = $override["datum_bis"];
-                $mitgliedschaft->wahlperiode     = $override["wahlperiode"];
-                $this->stadtraetInnenFraktionen = array_merge([$mitgliedschaft], $this->stadtraetInnenFraktionen);
-            }
-        }
-        if (isset(StadtraetInFraktionOverrides::FRAKTION_DEL[$this->id])) {
-            $fraktionen_neu = [];
-            foreach ($this->stadtraetInnenFraktionen as $mitgliedschaft) {
-                $todel = false;
-                foreach (StadtraetInFraktionOverrides::FRAKTION_DEL[$this->id] as $override) {
-                    if ($override["datum_von"] == $mitgliedschaft->datum_von && $override["fraktion_id"] == $mitgliedschaft->fraktion_id) {
-                        $todel = true;
-                    }
-                }
-                if (!$todel) {
-                    $fraktionen_neu[] = $mitgliedschaft;
-                }
-            }
-            $this->stadtraetInnenFraktionen = $fraktionen_neu;
-        }
-    }
-
     /**
      * @return StadtraetIn[]
      */
@@ -288,16 +258,9 @@ class StadtraetIn extends CActiveRecord implements IRISItem
             ]
         ]);
 
-        //foreach ($strs_in as $key => $strIn) $strIn->overrideFraktionsMitgliedschaften();
-
         /** @var StadtraetIn[] $strs_out */
         $strs_out = [];
         foreach ($strs_in as $strs) {
-            /*
-            if ($strs->id == 3425214) {
-                continue;
-            } // Seltsamer ristestuser RIS_BASE_URL . "ris_mitglieder_detail_fraktion.jsp?risid=3425214&periodeid=null o_O
-            */
             $strs_out[] = $strs;
         }
         return $strs_out;
@@ -308,13 +271,17 @@ class StadtraetIn extends CActiveRecord implements IRISItem
         $strs       = static::getByFraktion($ba_nr);
         $fraktionen = [];
         foreach ($strs as $str) {
-            if (count($str->stadtraetInnenFraktionen) === 0) {
-                continue;
+            $type = ($ba_nr > 0 ? Gremium::TYPE_BA_FRAKTION : Gremium::TYPE_STR_FRAKTION);
+            $fraktion = $str->getCurrentMembershipOfType($type);
+            $id = $fraktion ? $fraktion->gremium_id : 0;
+            if (!isset($fraktionen[$id])) {
+                $fraktionen[$id] = [
+                    'persons' => [],
+                    'name' => $fraktion ? $fraktion->gremium->getName() : 'Fraktionslos',
+                    'link' => $fraktion ? $fraktion->gremium->getLink() : '',
+                ];
             }
-            if (!isset($fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id])) {
-                $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id] = [];
-            }
-            $fraktionen[$str->stadtraetInnenFraktionen[0]->fraktion_id][] = $str;
+            $fraktionen[$id]['persons'][] = $str;
         }
         return $fraktionen;
     }

@@ -211,8 +211,7 @@ class Bezirksausschuss extends CActiveRecord
         return $funktionen;
     }
 
-    /** @return string */
-    public function getLink()
+    public function getLink(): string
     {
         if ($this->ba_nr != 0)
             return Yii::app()->createUrl("index/ba", ["ba_nr" => $this->ba_nr, "ba_name" => $this->name]);
@@ -220,45 +219,42 @@ class Bezirksausschuss extends CActiveRecord
             return Yii::app()->createUrl("index/startseite");
     }
 
-    // https://www.muenchen.de/rathaus/Stadtinfos/Statistik/Bev-lkerung/Monatlicher-Bestand.html
-    public static $BA_EINWOHNERINNEN = [
-        "1"  => 21085,
-        "2"  => 51883,
-        "3"  => 51823,
-        "4"  => 68933,
-        "5"  => 61539,
-        "6"  => 41175,
-        "7"  => 60450,
-        "8"  => 29548,
-        "9"  => 99999,
-        "10" => 54839,
-        "11" => 76330,
-        "12" => 78591,
-        "13" => 89690,
-        "14" => 46982,
-        "15" => 73446,
-        "16" => 117681,
-        "17" => 54518,
-        "18" => 53189,
-        "19" => 97519,
-        "20" => 50155,
-        "21" => 75791,
-        "22" => 48983,
-        "23" => 34229,
-        "24" => 62100,
-        "25" => 57140,
+    // https://stadt.muenchen.de/dam/jcr:cc9cc6c7-cfd6-4d9a-8f33-bed0dbec974a/LHM_Stat.Taschenbuch_2021.pdf
+    public const BA_EINWOHNERINNEN = [
+        "1"  => 20960,
+        "2"  => 51547,
+        "3"  => 51530 ,
+        "4"  => 68750,
+        "5"  => 62353,
+        "6"  => 40916,
+        "7"  => 60468,
+        "8"  => 29328,
+        "9"  => 99704,
+        "10" => 54934,
+        "11" => 75999,
+        "12" => 78881,
+        "13" => 91855,
+        "14" => 46915,
+        "15" => 74456,
+        "16" => 118147,
+        "17" => 53897,
+        "18" => 52940,
+        "19" => 98596,
+        "20" => 49770,
+        "21" => 77301,
+        "22" => 50140,
+        "23" => 33710,
+        "24" => 62270,
+        "25" => 56729,
     ];
 
-    /**
-     * @return array
-     */
-    public function getInteressanteStatistik()
+    public function getInteressanteStatistik(): array
     {
         $statistiken = [];
-        if (isset(static::$BA_EINWOHNERINNEN[$this->ba_nr])) {
+        if (isset(static::BA_EINWOHNERINNEN[$this->ba_nr])) {
             $statistiken[] = [
                 "name" => "Einwohner*innen (Oktober 2019)",
-                "wert" => static::$BA_EINWOHNERINNEN[$this->ba_nr],
+                "wert" => static::BA_EINWOHNERINNEN[$this->ba_nr],
             ];
         }
 
