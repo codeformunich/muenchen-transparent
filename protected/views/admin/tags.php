@@ -1,6 +1,7 @@
 <?php
 /**
  * @var AdminController $this
+ * @var Tag[] $tags
  */
 
 $user = $this->aktuelleBenutzerIn();

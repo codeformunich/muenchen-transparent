@@ -183,17 +183,8 @@ class AdminController extends RISBaseController
         }
 
         $tags = Tag::model()->findAll();
-        usort($tags, function ($tag1, $tag2) {
-            /**
-            * @var Tag $dok1
-            * @var Tag $dok2
-            */
-            $name1 = strtolower($tag1->name);
-            $name2 = strtolower($tag2->name);
-            if ($name1 == $name2) {
-                return 0;
-            }
-            return ($name1 > $name2) ? +1 : -1;
+        usort($tags, function (Tag $tag1, Tag $tag2) {
+            return strtolower($tag1->name) <=>  strtolower($tag2->name);
         });
 
         $this->render("tags", [

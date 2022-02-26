@@ -298,10 +298,13 @@ class OParl10Object {
     private static function membership($id, $subtype) {
         if ($subtype == 'fraktion') {
             $object = StadtraetInGremium::model()->findByPk($id);
+            $role = $object->funktion;
         } else if ($subtype == 'gremium') {
             $object = StadtraetInGremium::model()->findByPk($id);
+            $role = $object->funktion;
         } else if ($subtype == 'referat') {
             $object = StadtraetInReferat::model()->findByPk($id);
+            $role = $object->getFunktion();
         } else {
             header('HTTP/1.0 400 Bad Request');
             return ['error' => 'No such subtype ' . $subtype . ' for membership'];
@@ -317,7 +320,6 @@ class OParl10Object {
             'modified'     => OParl10Controller::mysqlToOparlDateTime($object->modified),
         ];
 
-        $role = $object->getFunktion();
         if ($role !== null)
             $data['role'] = $role;
 

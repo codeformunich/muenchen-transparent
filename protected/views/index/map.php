@@ -1,6 +1,6 @@
 <?php
 /**
- * @var int ortsbezugszahlgrenze
+ * @var int $ortsbezugszahlgrenze
  * @var array $geodata_overflow
  */
 ?>

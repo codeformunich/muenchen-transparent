@@ -3,6 +3,7 @@
  * @var Referat $referat
  * @var $antraege_referat
  * @var string $my_url
+ * @var string $text
  */
 
 $this->pageTitle = $referat->getName();
