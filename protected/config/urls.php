@@ -23,7 +23,6 @@ $GLOBALS["RIS_URL_RULES"] = [
     SITE_BASE_URL . '/termine/<termin_id:\d+>/geoExport'                  => 'termine/topGeoExport',
     SITE_BASE_URL . '/termine/<termin_id:\d+>/icsSingle'                  => 'termine/icsExportSingle',
     SITE_BASE_URL . '/termine/<termin_id:\d+>/icsAll'                     => 'termine/icsExportAll',
-    SITE_BASE_URL . '/termine/<termin_id:\d+>/dav*'                       => 'termine/dav',
     SITE_BASE_URL . '/termine/'                                           => 'termine/index',
     SITE_BASE_URL . '/themen/referat/<referat_url:[a-z0-9_-]+>'           => 'themen/referat',
     SITE_BASE_URL . '/themen/schlagwort/<tag_id:\d+>_<tag_name:[^\/]+>'   => 'themen/tag',

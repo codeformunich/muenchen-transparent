@@ -126,14 +126,15 @@ class Gremium extends CActiveRecord implements IRISItem
                 throw new Exception("Fehler");
             }
         } catch (CDbException $e) {
-            if (strpos($e->getMessage(), "Duplicate entry") === false) throw $e;
+            if (!str_contains($e->getMessage(), "Duplicate entry")) throw $e;
         }
 
     }
 
     public function getLink(array $add_params = []): string
     {
-        return Yii::app()->createUrl("gremium/anzeigen", array_merge(["id" => $this->id], $add_params));
+        //return Yii::app()->createUrl("gremium/anzeigen", array_merge(["id" => $this->id], $add_params));
+        return '#';
     }
 
 
