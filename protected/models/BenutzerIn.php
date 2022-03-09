@@ -316,7 +316,7 @@ class BenutzerIn extends CActiveRecord
             $wochentag = $benutzerIn->getEinstellungen()->benachrichtigungstag;
             if ($wochentag === null || $wochentag == date("w")) $todo[] = $benutzerIn;
         }
-        
+
         return $todo;
     }
 
