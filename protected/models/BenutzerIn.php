@@ -1,7 +1,5 @@
 <?php
 
-use JetBrains\PhpStorm\ArrayShape;
-
 /**
  * @property integer $id
  * @property string $email
@@ -28,6 +26,8 @@ class BenutzerIn extends CActiveRecord
         2 => "Content-Admin",
         4 => "Tag-Admin",
     ];
+
+    private const SPLIT_EMAILS_ON_DAYS = 2;
 
     private ?BenutzerInnenEinstellungen $einstellungen_object = null;
 
@@ -300,15 +300,23 @@ class BenutzerIn extends CActiveRecord
     /**
      * @return BenutzerIn[]
      */
-    public static function heuteZuBenachrichtigendeBenutzerInnen()
+    public static function heuteZuBenachrichtigendeBenutzerInnen(): array
     {
+        $requiredModulo = intval(date('d')) % static::SPLIT_EMAILS_ON_DAYS;
+
         /** @var BenutzerIn[] $benutzerInnen */
         $benutzerInnen = BenutzerIn::model()->findAllByAttributes(["email_bestaetigt" => 1]);
         $todo = [];
         foreach ($benutzerInnen as $benutzerIn) {
+            $userModulo = $benutzerIn->id % static::SPLIT_EMAILS_ON_DAYS;
+            if ($userModulo !== $requiredModulo) {
+                continue;
+            }
+
             $wochentag = $benutzerIn->getEinstellungen()->benachrichtigungstag;
             if ($wochentag === null || $wochentag == date("w")) $todo[] = $benutzerIn;
         }
+        
         return $todo;
     }
 
@@ -350,7 +358,6 @@ class BenutzerIn extends CActiveRecord
         return $res;
     }
 
-    #[ArrayShape(["antraege" => "array", "termine" => "array", "vorgaenge" => "array"])]
     public function benachrichtigungsErgebnisse(int $zeitspanne): array
     {
         $benachrichtigungen = $this->getBenachrichtigungen();
@@ -455,66 +462,28 @@ class BenutzerIn extends CActiveRecord
         else return null;
     }
 
-    /**
-     * @return string
-     */
-    public function getFeedCode()
+    public function getFeedCode(): string
     {
         return $this->id . "-" . substr(md5(SEED_KEY . $this->pwd_enc), 0, 10);
     }
 
 
-    /**
-     * @static
-     * @param string $password
-     * @return string
-     */
-    public static function create_hash($password)
+    public static function create_hash(string $password): string
     {
         return password_hash($password, PASSWORD_DEFAULT);
     }
 
-
-    /**
-     * @param string $password
-     * @return bool
-     */
-    public function validate_password($password)
+    public function validate_password(string $password): bool
     {
         return password_verify($password, $this->pwd_enc);
     }
 
-    /**
-     * @param int $berechtigung
-     */
-    public function setzeBerechtigung($berechtigung)
-    {
-        $this->berechtigungen_flags = $this->berechtigungen_flags | $berechtigung;
-        $this->save();
-    }
-
-    /**
-     * @param int $berechtigung
-     */
-    public function entferneBerechtigung($berechtigung)
-    {
-        $this->berechtigungen_flags = $this->berechtigungen_flags & ~$berechtigung;
-        $this->save();
-    }
-
-    /**
-     * @param int $berechtigung
-     * @return bool
-     */
-    public function hatBerechtigung($berechtigung)
+    public function hatBerechtigung(int $berechtigung): bool
     {
         return (($this->berechtigungen_flags & $berechtigung) == $berechtigung);
     }
 
-    /**
-     * @return bool
-     */
-    public function hatIrgendeineBerechtigung()
+    public function hatIrgendeineBerechtigung(): bool
     {
         return $this->berechtigungen_flags != 0;
     }
