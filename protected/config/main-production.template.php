@@ -32,6 +32,7 @@ define("OPARL_10_ROOT", SITE_BASE_URL . '/oparl/v1.0');
 define("OPARL_10_ITEMS_PER_PAGE", 100);
 
 define("SEED_KEY", "RANDOMKEY");
+define("MAILER_DSN", "");
 define("NO_ERROR_MAIL", false);
 
 require_once(__DIR__ . "/constants.php");

@@ -1,6 +1,8 @@
 <?php
 
-use Laminas\Mail\Message;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 
 class RISTools
 {
@@ -196,12 +198,7 @@ class RISTools
         return $title;
     }
 
-
-    /**
-     * @param string $titel
-     * @return string
-     */
-    public static function korrigiereDokumentenTitel($titel)
+    public static function korrigiereDokumentenTitel(string $titel): string
     {
         $titel = trim(str_replace("_", " ", $titel));
 
@@ -359,16 +356,23 @@ class RISTools
         RISTools::send_email(Yii::app()->params['adminEmail'], $betreff, $text_plain, $text_html, $mail_tag);
     }
 
-    /**
-     * @param string $email
-     * @param string $betreff
-     * @param string $text_plain
-     * @param null|string $text_html
-     * @param null|string $mail_tag
-     */
-    public static function send_email($email, $betreff, $text_plain, $text_html = null, $mail_tag = null)
+    public static function send_email(string $email, string $subject, string $text_plain, ?string $text_html = null, ?string $mail_tag = null)
     {
-    	if (defined("MAILJET_PUBLIC_KEY") && defined("MAILJET_PRIVATE_KEY") && $mail_tag != "system" && stripos($email, '@muenchen.de') === false) {
+        if (defined("MAILER_DSN")) {
+            $transport = Transport::fromDsn(MAILER_DSN);
+            $mailer = new Mailer($transport);
+
+            $email = (new Email())
+                ->from(Yii::app()->params["adminEmail"])
+                ->to(Yii::app()->params["adminEmail"])
+                ->subject($subject)
+                ->text($text_plain)
+                ->html($text_html);
+
+            $mailer->send($email);
+
+            return;
+        } elseif (defined("MAILJET_PUBLIC_KEY") && defined("MAILJET_PRIVATE_KEY") && $mail_tag != "system" && stripos($email, '@muenchen.de') === false) {
     		$mailjetMessage = [
 			    'From'     => [
 				    'Email' => Yii::app()->params["adminEmail"],
@@ -380,7 +384,7 @@ class RISTools
 					    'Name'  => $email
 				    ]
 			    ],
-			    'Subject'  => $betreff,
+			    'Subject'  => $subject,
 			    'TextPart' => $text_plain,
 			    'Headers'  => [
 				    'Precedence' => 'bulk'
@@ -398,7 +402,7 @@ class RISTools
             $message   = new Laminas\Mail\Message();
             $transport = new Laminas\Mail\Transport\Sendmail();
         }
-        static::set_zend_email_data($message, $email, $betreff, $text_plain, $text_html);
+        static::set_zend_email_data($message, $email, $subject, $text_plain, $text_html);
         $fp = fopen("/tmp/mail.log", "a"); fwrite($fp, print_r($message, true)); fclose($fp);
 
         $transport->send($message);
