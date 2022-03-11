@@ -9,11 +9,7 @@ class RISTools
 
     const STD_USER_AGENT = "RISParser (Muenchen Transparent)";
 
-    /**
-     * @param string $text
-     * @return string
-     */
-    public static function toutf8($text)
+    public static function toutf8(string $text): string
     {
         if (!function_exists('mb_detect_encoding')) {
             return $text;
@@ -356,7 +352,7 @@ class RISTools
         RISTools::send_email(Yii::app()->params['adminEmail'], $betreff, $text_plain, $text_html, $mail_tag);
     }
 
-    public static function send_email(string $email, string $subject, string $text_plain, ?string $text_html = null, ?string $mail_tag = null)
+    public static function send_email(string $emailAddress, string $subject, string $text_plain, ?string $text_html = null, ?string $mail_tag = null)
     {
         if (defined("MAILER_DSN")) {
             $transport = Transport::fromDsn(MAILER_DSN);
@@ -364,7 +360,7 @@ class RISTools
 
             $email = (new Email())
                 ->from(Yii::app()->params["adminEmail"])
-                ->to(Yii::app()->params["adminEmail"])
+                ->to($emailAddress)
                 ->subject($subject)
                 ->text($text_plain)
                 ->html($text_html);

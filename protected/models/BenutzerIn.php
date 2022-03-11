@@ -27,7 +27,7 @@ class BenutzerIn extends CActiveRecord
         4 => "Tag-Admin",
     ];
 
-    private const SPLIT_EMAILS_ON_DAYS = 2;
+    private const SPLIT_EMAILS_ON_DAYS = 1;
 
     private ?BenutzerInnenEinstellungen $einstellungen_object = null;
 
