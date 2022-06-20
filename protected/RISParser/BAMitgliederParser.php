@@ -25,7 +25,6 @@ class BAMitgliederParser extends RISParser
             echo "Neu anlegen: " . $parsed->id . " - " . $parsed->name . " (BA " . $parsed->baNr . ")\n";
 
             $strIn               = new StadtraetIn();
-            $strIn->name         = $parsed->name;
             $strIn->id           = $parsed->id;
             $strIn->referentIn   = 0;
             $strIn->bio          = "";
@@ -34,8 +33,9 @@ class BAMitgliederParser extends RISParser
             $strIn->beschreibung = "";
             $strIn->quellen      = "";
             $strIn->gewaehlt_am  = null;
-            $strIn->save();
         }
+        $strIn->name         = $parsed->name;
+        $strIn->save();
 
         if (isset($parsed->baNr)) {
             $baNr = $parsed->baNr;
