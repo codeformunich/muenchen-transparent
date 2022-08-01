@@ -132,7 +132,7 @@ Es ist zu beachten, dass die Tests durch PhpBrowser und nicht durch selenium aus
 * [jQuery](http://www.jquery.com/)
 * [Leaflet](http://leafletjs.com/) (mit dem Kartenmaterial von [Skobbler](http://www.skobbler.com/))
 * [Bootstrap](http://getbootstrap.com/)
-* [Material Design for Bootstrap](http://fezvrasta.github.io/bootstrap-material-design/)
+* [Material Design for Bootstrap](https://mdbootstrap.com/)
 * [Fontello](http://fontello.com/)
 * [Moment.js](momentjs.com)
 * [FullCalendar](http://fullcalendar.io/)
