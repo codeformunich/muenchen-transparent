@@ -90,7 +90,7 @@ class BrowserBasedDowloader
         $html = '';
         $goon = true;
         for ($i = 0; $i < 100 && $goon; $i++) {
-            $page = intval($this->getInnerHtml($listClass . ' .btn-pagelink[disabled] span'));
+            $page = intval($this->getInnerHtml($listClass . ' .btn-pagelink.btn-selected span'));
 
             if ($page !== $i + 1) {
                 throw new ParsingException('Switched to page ' . ($i + 1) . ', but HTML indicates ' . $page);
