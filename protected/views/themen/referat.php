@@ -3,7 +3,7 @@
  * @var Referat $referat
  * @var $antraege_referat
  * @var string $my_url
- * @var string $text
+ * @var Text|null $text
  */
 
 $this->pageTitle = $referat->getName();
@@ -18,12 +18,14 @@ $this->pageTitle = $referat->getName();
     <h1><?= CHtml::encode($referat->getName()) ?></h1>
 
     <?php
-    $this->renderPartial("/index/ckeditable_text", array(
-        "text"            => $text,
-        "my_url"          => $my_url,
-        "show_title"      => false,
-        "insert_tooltips" => false,
-    ));
+    if ($text) {
+        $this->renderPartial("/index/ckeditable_text", array(
+            "text" => $text,
+            "my_url" => $my_url,
+            "show_title" => false,
+            "insert_tooltips" => false,
+        ));
+    }
     ?>
 </section>
 
