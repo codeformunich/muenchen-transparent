@@ -46,6 +46,7 @@ class StadtraetInnenData
         }
 
         $fraktionList = explode('risi-list', $htmlFraktion)[1];
+        $fraktionList = explode('footer-bottom-fullsize', $fraktionList)[0];
         preg_match_all('/<li.*<\/li>/siuU', $fraktionList, $matches);
         $entry->fraktionsMitgliedschaften = [];
         foreach ($matches[0] as $match) {
