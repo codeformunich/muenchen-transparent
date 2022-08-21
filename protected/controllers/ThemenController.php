@@ -18,7 +18,7 @@ class ThemenController extends RISBaseController
         $bis              = date("Y-m-d H:i:s", time());
         $antraege_referat = Antrag::model()->neueste_stadtratsantragsdokumente_referat($ref->id, $von, $bis)->findAll();
 
-        $text = Text::model()->findByAttributes(["typ" => Text::$TYP_REFERAT, "titel" => $ref->name]);
+        $text = Text::model()->findByAttributes(["typ" => Text::TYP_REFERAT, "titel" => $ref->name]);
         $my_url = Yii::app()->createUrl("/themen/referat/" . $referat_url);
 
         if ($this->binContentAdmin() && AntiXSS::isTokenSet("save")) {

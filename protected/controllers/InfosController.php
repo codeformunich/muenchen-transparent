@@ -109,7 +109,7 @@ class InfosController extends RISBaseController
 
         if (AntiXSS::isTokenSet("anlegen") && $this->binContentAdmin()) {
             $text                     = new Text();
-            $text->typ                = Text::$TYP_GLOSSAR;
+            $text->typ                = Text::TYP_GLOSSAR;
             $text->titel              = $_REQUEST["titel"];
             $text->text               = $_REQUEST["text"];
             $text->pos                = 0;
@@ -119,7 +119,7 @@ class InfosController extends RISBaseController
         }
 
         $eintraege = Text::model()->findAllByAttributes([
-            "typ" => Text::$TYP_GLOSSAR,
+            "typ" => Text::TYP_GLOSSAR,
         ], ["order" => "titel"]);
 
         $this->render('glossar', [
@@ -141,7 +141,7 @@ class InfosController extends RISBaseController
         /** @var Text $eintrag */
         $eintrag = Text::model()->findByAttributes([
             "id"  => $id,
-            "typ" => Text::$TYP_GLOSSAR,
+            "typ" => Text::TYP_GLOSSAR,
         ]);
         if (!$eintrag) throw new Exception("Nicht gefunden");
 

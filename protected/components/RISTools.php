@@ -450,7 +450,7 @@ class RISTools
     {
         /** @var Text[] $eintraege */
         $eintraege    = Text::model()->findAllByAttributes([
-            "typ" => Text::$TYP_GLOSSAR,
+            "typ" => Text::TYP_GLOSSAR,
         ]);
         $regexp_parts = [];
         /** @var Text[] $tooltip_replaces */
