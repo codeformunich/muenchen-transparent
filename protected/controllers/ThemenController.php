@@ -36,14 +36,11 @@ class ThemenController extends RISBaseController
         ]);
     }
 
-    /**
-     *
-     */
     public function actionIndex()
     {
         $this->top_menu = "themen";
         $this->render("index", [
-            "referate"   => Referat::model()->findAll(),
+            "referate"   => Referat::model()->findAllByAttributes(["aktiv" => 1]),
             "highlights" => Dokument::getHighlightDokumente(5),
             "tags"       => Tag::model()->findAll(),
         ]);

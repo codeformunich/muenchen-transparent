@@ -5,6 +5,11 @@
  * @var Tag[] $tags
  */
 
+
+usort($referate, function (Referat $referat1, Referat $referat2): int {
+    return strnatcasecmp($referat1->getName(), $referat2->getName());
+});
+
 $this->pageTitle = "Themen";
 
 ?>
