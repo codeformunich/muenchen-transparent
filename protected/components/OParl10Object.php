@@ -388,25 +388,28 @@ class OParl10Object {
         $antrag = Antrag::model()->findByPk($id);
 
         $data = [
-            'id'               => OParl10Controller::getOparlObjectUrl('paper', $antrag->id),
-            'type'             => self::TYPE_PAPER,
-            'body'             => OParl10Controller::getOparlObjectUrl('body', ($antrag->ba_nr != null ? $antrag->ba_nr : 0)),
-            'name'             => $antrag->getName(),
-            'reference'        => $antrag->antrags_nr,
-            'paperType'        => $antrag->getTypName(),
-            'auxiliaryFile'    => [],
-            'originatorPerson' => [],
-            'underDirectionOf' => [OParl10Controller::getOparlObjectUrl('organization', $antrag->referat_id, 'referat')],
-            'keyword'          => [],
-            'web'              => SITE_BASE_URL . $antrag->getLink(),
-            'created'          => OParl10Controller::mysqlToOparlDateTime($antrag->created),
-            'modified'         => OParl10Controller::mysqlToOparlDateTime($antrag->modified),
+            'id'                     => OParl10Controller::getOparlObjectUrl('paper', $antrag->id),
+            'type'                   => self::TYPE_PAPER,
+            'body'                   => OParl10Controller::getOparlObjectUrl('body', ($antrag->ba_nr != null ? $antrag->ba_nr : 0)),
+            'name'                   => $antrag->getName(),
+            'reference'              => $antrag->antrags_nr,
+            'paperType'              => $antrag->getTypName(),
+            'auxiliaryFile'          => [],
+            'originatorPerson'       => [],
+            'originatorOrganization' => [],
+            'underDirectionOf'       => [OParl10Controller::getOparlObjectUrl('organization', $antrag->referat_id, 'referat')],
+            'keyword'                => [],
+            'web'                    => SITE_BASE_URL . $antrag->getLink(),
+            'created'                => OParl10Controller::mysqlToOparlDateTime($antrag->created),
+            'modified'               => OParl10Controller::mysqlToOparlDateTime($antrag->modified),
         ];
 
         foreach ($antrag->antraegePersonen as $ap) {
             if ($ap->typ == AntragPerson::$TYP_GESTELLT_VON) {
-                // TODO this should not be a Person but an Organization ("Fraktion")
-                //$data['originatorOrganization'][] = OParl10Controller::getOparlObjectUrl('organization', $ap->person->id)
+                $organization = Gremium::model()->findByName($ap->person->name);
+                if ($organization) {
+                    $data['originatorOrganization'][] = OParl10Controller::getOparlObjectUrl('organization', $organization->id)
+                }
             } else if ($ap->typ == AntragPerson::$TYP_INITIATORIN) {
                 $data['originatorPerson'][] = OParl10Controller::getOparlObjectUrl('person', $ap->person->id)
             }
