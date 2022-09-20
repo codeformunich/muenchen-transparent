@@ -174,26 +174,32 @@ class OParl10Object {
             [
                 'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '1996-2002',
-                'startDate' => '1996-12-03',
-                'endDate'   => '2002-12-03',
+                'startDate' => '1996-05-01',
+                'endDate'   => '2002-04-30',
             ],
             [
                 'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '2002-2008',
-                'startDate' => '2002-12-03',
-                'endDate'   => '2008-12-03',
+                'startDate' => '2002-05-01',
+                'endDate'   => '2008-04-30',
             ],
             [
                 'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '2008-2014',
-                'startDate' => '2008-12-03',
-                'endDate'   => '2014-12-03',
+                'startDate' => '2008-05-01',
+                'endDate'   => '2014-04-30',
             ],
             [
                 'type'      => self::TYPE_LEGISLATIVETERM,
                 'name'      => '2014-2020',
-                'startDate' => '2014-12-03',
-                'endDate'   => '2020-12-03',
+                'startDate' => '2014-05-01',
+                'endDate'   => '2020-04-30',
+            ],
+            [
+                'type'      => self::TYPE_LEGISLATIVETERM,
+                'name'      => '2020-2026',
+                'startDate' => '2020-05-01',
+                'endDate'   => '2026-04-30',
             ],
         ];
 
