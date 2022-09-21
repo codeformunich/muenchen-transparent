@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @property integer $id
  * @property integer $stadtraetIn_id
  * @property integer $gremium_id
  * @property string $datum_von

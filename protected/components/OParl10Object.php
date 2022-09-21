@@ -474,7 +474,7 @@ class OParl10Object {
         if ($stadtraetin->email != '')
             $data['email'] = [$stadtraetin->email];
 
-        foreach ($stadtraetin->mitgliedschaften; as $membership) {
+        foreach ($stadtraetin->mitgliedschaften as $membership) {
             $data['membership'][] = OParl10Controller::getOparlObjectUrl('membership', $membership->id, 'gremium');
         }
 
