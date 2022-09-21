@@ -411,14 +411,12 @@ class OParl10Object {
         ];
 
         foreach ($antrag->antraegePersonen as $ap) {
-            if ($ap->typ == AntragPerson::TYP_INITIATORIN && $ap->person->stadtraetIn) {
-                $data['originatorPerson'][] = OParl10Controller::getOparlObjectUrl('person', $ap->person->stadtraetIn->id);
-                $partei = $ap->person->ratePartei($antrag->gestellt_am);
-                if ($partei) {
-                    $parteiUrl = OParl10Controller::getOparlObjectUrl('organization', $partei->id);
-                    if (!in_array($parteiUrl, $data['originatorOrganization'])) {
-                        $data['originatorOrganization'][] = $parteiUrl;
-                    }
+            $data['originatorPerson'][] = OParl10Controller::getOparlObjectUrl('person', $ap->person->stadtraetIn->id);
+            $partei = $ap->person->ratePartei($antrag->gestellt_am);
+            if ($partei) {
+                $parteiUrl = OParl10Controller::getOparlObjectUrl('organization', $partei->id);
+                if (!in_array($parteiUrl, $data['originatorOrganization'])) {
+                    $data['originatorOrganization'][] = $parteiUrl;
                 }
             }
         }

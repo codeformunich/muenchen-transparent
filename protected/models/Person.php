@@ -115,7 +115,7 @@ class Person extends CActiveRecord implements IRISItem
         if ($datum != "") foreach ($memberships as $fraktionsZ) {
             $dat = str_replace("-", "", $datum);
             if ($dat >= str_replace("-", "", $fraktionsZ->datum_von) && (is_null($fraktionsZ->datum_bis) || $dat <= str_replace("-", "", $fraktionsZ->datum_bis))) {
-                return $fraktionsZ->gremium->getName(true);
+                return $fraktionsZ->gremium;
             }
         }
         if (count($memberships) > 0) {
