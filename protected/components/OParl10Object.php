@@ -451,6 +451,7 @@ class OParl10Object {
             'familyName' => $stadtraetin->errateNachname(),
             'givenName'  => $stadtraetin->errateVorname(),
             'web'        => SITE_BASE_URL . $stadtraetin->getLink(),
+            'membership' => [],
             'created'    => OParl10Controller::mysqlToOparlDateTime($stadtraetin->created),
             'modified'   => OParl10Controller::mysqlToOparlDateTime($stadtraetin->modified),
         ];
@@ -472,6 +473,10 @@ class OParl10Object {
 
         if ($stadtraetin->email != '')
             $data['email'] = [$stadtraetin->email];
+
+        foreach ($stadtraetin->mitgliedschaften; as $membership) {
+            $data['membership'][] = OParl10Controller::getOparlObjectUrl('membership', $membership->id, 'gremium');
+        }
 
         // optionale Attribute
         $optional_properties = [
