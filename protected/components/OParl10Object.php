@@ -411,6 +411,9 @@ class OParl10Object {
         ];
 
         foreach ($antrag->antraegePersonen as $ap) {
+            if (!$ap->person->stadtraetIn) {
+                continue;
+            }
             $data['originatorPerson'][] = OParl10Controller::getOparlObjectUrl('person', $ap->person->stadtraetIn->id);
             $partei = $ap->person->ratePartei($antrag->gestellt_am);
             if ($partei) {
