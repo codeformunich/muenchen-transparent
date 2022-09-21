@@ -14,9 +14,9 @@
 class AntragPerson extends CActiveRecord
 {
 
-    public static $TYP_GESTELLT_VON = "gestellt_von";
-    public static $TYP_INITIATORIN = "initiator";
-    public static $TYPEN_ALLE = [
+    public const TYP_GESTELLT_VON = "gestellt_von";
+    public const TYP_INITIATORIN = "initiator";
+    public const TYPEN_ALLE = [
         "gestellt_von" => "Gestellt von",
         "initiator"    => "InitiatorIn"
     ];

@@ -54,10 +54,10 @@ class ExportController extends RISBaseController
 						'name' => $person->person->name,
 					];
 				}
-				if ($person->typ == AntragPerson::$TYP_GESTELLT_VON) {
+				if ($person->typ == AntragPerson::TYP_GESTELLT_VON) {
 					$antragData['stadtraetInnen'][] = $arr;
 				}
-				if ($person->typ == AntragPerson::$TYP_INITIATORIN) {
+				if ($person->typ == AntragPerson::TYP_INITIATORIN) {
 					$antragData['initiatorInnen'][] = $arr;
 				}
 			}

@@ -47,7 +47,7 @@ if ($related && count($related) > 0) foreach ($related as $verw) {
                 $parteien = array();
                 foreach ($verw->antraegePersonen as $person) {
                     $name   = $person->person->name;
-                    $partei = $person->person->ratePartei($verw->gestellt_am);
+                    $partei = $person->person->rateParteiName($verw->gestellt_am);
                     if (!$partei) {
                         $parteien[$name] = array($name);
                     } else {

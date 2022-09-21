@@ -105,7 +105,7 @@ class Person extends CActiveRecord implements IRISItem
         return $pers;
     }
 
-    public function ratePartei(?string $datum = ""): ?string
+    public function ratePartei(?string $datum = ""): ?Gremium
     {
         if (!isset($this->stadtraetIn) || is_null($this->stadtraetIn)) return null;
         $memberships = array_merge(
@@ -119,10 +119,15 @@ class Person extends CActiveRecord implements IRISItem
             }
         }
         if (count($memberships) > 0) {
-            return $memberships[0]->gremium->getName(true);
+            return $memberships[0]->gremium;
         } else {
             return null;
         }
+    }
+
+    public function rateParteiName(?string $datum = ""): ?string
+    {
+        return $this->ratePartei($datum)?->getName(true);
     }
 
     public function getLink(array $add_params = []): string

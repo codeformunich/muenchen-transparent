@@ -9,8 +9,8 @@ $this->pageTitle         = $antrag->getName(true);
 $this->load_selectize_js = true;
 
 $personen = [
-    AntragPerson::$TYP_GESTELLT_VON => [],
-    AntragPerson::$TYP_INITIATORIN  => [],
+    AntragPerson::TYP_GESTELLT_VON => [],
+    AntragPerson::TYP_INITIATORIN  => [],
 ];
 foreach ($antrag->antraegePersonen as $ap) $personen[$ap->typ][] = $ap->person;
 
@@ -155,20 +155,20 @@ function verbundene_anzeigen($antraege, $ueberschrift, $css_id, $this2) {
                     </td>
                 </tr>
                 <?php
-                zeile_anzeigen($personen[AntragPerson::$TYP_INITIATORIN], "Initiiert von:", "initiatoren",  function ($person) use ($antrag) {
+                zeile_anzeigen($personen[AntragPerson::TYP_INITIATORIN], "Initiiert von:", "initiatoren",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
                         echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
-                        echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
+                        echo " (" . CHtml::encode($person->rateParteiName($antrag->gestellt_am)) . ")";
                     } else {
                         echo CHtml::encode($person->name);
                     }
                 });
-                zeile_anzeigen($personen[AntragPerson::$TYP_GESTELLT_VON], "Gestellt von:", "gestellt_von",  function ($person) use ($antrag) {
+                zeile_anzeigen($personen[AntragPerson::TYP_GESTELLT_VON], "Gestellt von:", "gestellt_von",  function ($person) use ($antrag) {
                     /** @var Person $person */
                     if ($person->stadtraetIn) {
                         echo CHtml::link($person->stadtraetIn->name, $person->stadtraetIn->getLink());
-                        echo " (" . CHtml::encode($person->ratePartei($antrag->gestellt_am)) . ")";
+                        echo " (" . CHtml::encode($person->rateParteiName($antrag->gestellt_am)) . ")";
                     } else {
                         echo CHtml::encode($person->name);
                     }

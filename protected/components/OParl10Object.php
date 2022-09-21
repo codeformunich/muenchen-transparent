@@ -401,12 +401,27 @@ class OParl10Object {
             'reference'        => $antrag->antrags_nr,
             'paperType'        => $antrag->getTypName(),
             'auxiliaryFile'    => [],
+            'originatorPerson'       => [],
+            'originatorOrganization' => [],
             'underDirectionOf' => [OParl10Controller::getOparlObjectUrl('organization', $antrag->referat_id, 'referat')],
             'keyword'          => [],
             'web'              => SITE_BASE_URL . $antrag->getLink(),
             'created'          => OParl10Controller::mysqlToOparlDateTime($antrag->created),
             'modified'         => OParl10Controller::mysqlToOparlDateTime($antrag->modified),
         ];
+
+        foreach ($antrag->antraegePersonen as $ap) {
+            if ($ap->typ == AntragPerson::TYP_INITIATORIN && $ap->person->stadtraetIn) {
+                $data['originatorPerson'][] = OParl10Controller::getOparlObjectUrl('person', $ap->person->stadtraetIn->id);
+                $partei = $ap->person->ratePartei($antrag->gestellt_am);
+                if ($partei) {
+                    $parteiUrl = OParl10Controller::getOparlObjectUrl('organization', $partei->id);
+                    if (!in_array($parteiUrl, $data['originatorOrganization'])) {
+                        $data['originatorOrganization'][] = $parteiUrl;
+                    }
+                }
+            }
+        }
 
         foreach ($antrag->dokumente as $dokument)
             $data['auxiliaryFile'][] = self::file($dokument->id);

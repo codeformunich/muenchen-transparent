@@ -336,7 +336,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $ap            = new AntragPerson();
             $ap->antrag_id = $this->id;
             $ap->person_id = $person->id;
-            $ap->typ       = AntragPerson::$TYP_GESTELLT_VON;
+            $ap->typ       = AntragPerson::TYP_GESTELLT_VON;
             if (!$ap->save()) {
                 RISTools::report_ris_parser_error("Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
                 throw new Exception("Fehler");
@@ -350,7 +350,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $ap            = new AntragPerson();
             $ap->antrag_id = $this->id;
             $ap->person_id = $person->id;
-            $ap->typ       = AntragPerson::$TYP_INITIATORIN;
+            $ap->typ       = AntragPerson::TYP_INITIATORIN;
             if (!$ap->save()) {
                 RISTools::report_ris_parser_error("Antrag:resetPersonen Error", print_r($ap->getErrors(), true));
                 throw new Exception("Fehler");
@@ -588,7 +588,7 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
         $parteien = [];
         foreach ($this->antraegePersonen as $person) {
             $name   = $person->person->getName(true);
-            $partei = $person->person->ratePartei($this->gestellt_am);
+            $partei = $person->person->rateParteiName($this->gestellt_am);
             $key    = ($partei ? $partei : $name);
             if (!isset($parteien[$key])) $parteien[$key] = [];
             $parteien[$key][] = $name;
