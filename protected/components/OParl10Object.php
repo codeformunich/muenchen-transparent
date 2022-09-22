@@ -417,7 +417,7 @@ class OParl10Object {
             $data['originatorPerson'][] = OParl10Controller::getOparlObjectUrl('person', $ap->person->stadtraetIn->id);
             $partei = $ap->person->ratePartei($antrag->gestellt_am);
             if ($partei) {
-                $parteiUrl = OParl10Controller::getOparlObjectUrl('organization', $partei->id);
+                $parteiUrl = OParl10Controller::getOparlObjectUrl('organization', $partei->id, 'fraktion');
                 if (!in_array($parteiUrl, $data['originatorOrganization'])) {
                     $data['originatorOrganization'][] = $parteiUrl;
                 }
