@@ -35,7 +35,8 @@ class StadtratsvorlageDataTest extends TestCase
     {
         $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument3.html');
         $data = StadtratsvorlageData::parseFromHtml($html, 0);
-        $this->assertStringContainsString("Gemäß den Vorschriften der Eigenbetriebsverordnung", $data->title);
+        $this->assertStringContainsString("Jahresabschluss und Lagebericht", $data->title);
+        $this->assertStringContainsString("Gemäß den Vorschriften der Eigenbetriebsverordnung", $data->kurzinfo);
         $this->assertCount(7, $data->dokumentLinks);
         $this->assertCount(1, $data->ergebnisse);
 

@@ -33,7 +33,7 @@ class StadtratsvorlageData
 
     public static function parseFromHtml(string $html, ?int $idFallback): ?self
     {
-        if (!preg_match('/<section class="card"[^>]*>.*<div[^>]*>\s*<h2[^>]*>Betreff<\/h2>\s*<\/div>.*<div class="card-body">\s*<div[^>]*>(?<title>[^<]*)<\/div>/siuU', $html, $match)) {
+        if (!preg_match('/<section class="card"[^>]*>.*<div[^>]*>\s*<h2[^>]*>Betreff<\/h2>\s*<\/div>.*<div class="card-body">\s*<div[^>]*>(<p[^>]*>)?(?<title>[^<]*)(<\/p>)?<\/div>/siuU', $html, $match)) {
             throw new ParsingException('Not found: title (' . $idFallback . ')');
         }
         $entry = new self();
@@ -51,7 +51,7 @@ class StadtratsvorlageData
         }
         $entry->id = intval($match['id']);
 
-        if (preg_match('/<section class="card">.*<div><h2>Kurzinformationen<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<kurzinfo>[^<]*)<\/div>/siuU', $html, $match)) {
+        if (preg_match('/<section class="card"[^>]*>.*<div>\s*<h2[^>]*>Kurzinformationen<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<kurzinfo>[^<]*)<\/div>/siuU', $html, $match)) {
             $entry->kurzinfo = html_entity_decode($match['kurzinfo'], ENT_COMPAT, 'UTF-8');
         } else {
             $entry->kurzinfo = null;
