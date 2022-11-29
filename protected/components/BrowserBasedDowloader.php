@@ -14,11 +14,12 @@ class BrowserBasedDowloader
     public const DOCUMENT_BA_TOP = '3';
     public const DOCUMENT_BA_INITIATIVE = '4';
     public const DOCUMENT_BV_EMPFEHLUNG = '5';
-    public const DOCUMENT_SITZUNG = '6';
-    public const DOCUMENT_BESCHLUSS = '7';
-    public const DOCUMENT_GREMIUM = '8';
-    public const DOCUMENT_FRAKTION_GRUPPE = '9';
-    public const DOCUMENT_PERSON = '10';
+    public const DOCUMENT_BV_ANFRAGEN = '6';
+    public const DOCUMENT_SITZUNG = '7';
+    public const DOCUMENT_BESCHLUSS = '8';
+    public const DOCUMENT_GREMIUM = '9';
+    public const DOCUMENT_FRAKTION_GRUPPE = '10';
+    public const DOCUMENT_PERSON = '11';
 
     public const PERSON_TYPE_STADTRAT = 'strmitglieder';
     public const PERSON_TYPE_REFERENTINNEN = 'referenten';
@@ -120,6 +121,8 @@ class BrowserBasedDowloader
 
             $this->page->evaluate('$("#id3").val("' . $type . '").trigger("change");');
             $this->waitForElementToAppear('.colors_suche form input[type=date][name=von]');
+
+            echo $from->format('Y-m-d') . " - " . $to->format('Y-m-d') . "\n";
 
             $this->page->evaluate('document.querySelector(".colors_suche form input[type=date][name=von]").value = "' . $from->format('Y-m-d') . '"');
             $this->page->evaluate('document.querySelector(".colors_suche form input[type=date][name=bis]").value = "' . $to->format('Y-m-d') . '"');

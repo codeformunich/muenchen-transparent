@@ -64,10 +64,14 @@ class TerminParser extends RISParser
                 $htmlDecision = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzung/top/' . $agendaItem->id . '/entscheidung');
                 $agendaItem->parseDecision($htmlDecision);
             }
+            /*
+             * @TODO Disclosure seems to be a link to a document now?
+             * e.g. https://risi.muenchen.de/risi/sitzung/detail/6718831/tagesordnung/oeffentlich
             if ($agendaItem->hasDisclosure && $agendaItem->id) {
                 $htmlDisclosure = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzung/top/' . $agendaItem->id . '/veroeffentlichung');
                 $agendaItem->parseDisclosure($htmlDisclosure);
             }
+            */
         }
 
         return $parsed;

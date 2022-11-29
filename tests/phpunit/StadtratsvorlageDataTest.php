@@ -12,7 +12,7 @@ class StadtratsvorlageDataTest extends TestCase
     public function testParse1()
     {
         $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument1.html');
-        $data = StadtratsvorlageData::parseFromHtml($html);
+        $data = StadtratsvorlageData::parseFromHtml($html, 0);
         $this->assertSame("Aufbau eines Referats für Klima- und Umweltschutz und eines Gesundheitsreferats\n- IT-Teil (öffentliche Vorlage)", $data->title);
         $this->assertCount(4, $data->dokumentLinks);
         $this->assertCount(2, $data->ergebnisse);
@@ -23,9 +23,20 @@ class StadtratsvorlageDataTest extends TestCase
     public function testParse2()
     {
         $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument2.html');
-        $data = StadtratsvorlageData::parseFromHtml($html);
+        $data = StadtratsvorlageData::parseFromHtml($html, 0);
         $this->assertSame("Münchner Mietproblematik \"morbus monacensis\"\n\nEmpfehlung Nr. 20-26 / E 00080 ........................", $data->title);
         $this->assertCount(3, $data->dokumentLinks);
+        $this->assertCount(1, $data->ergebnisse);
+
+        $this->assertMatchesObjectSnapshot($data);
+    }
+
+    public function testParse3()
+    {
+        $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_Dokument3.html');
+        $data = StadtratsvorlageData::parseFromHtml($html, 0);
+        $this->assertStringContainsString("Gemäß den Vorschriften der Eigenbetriebsverordnung", $data->title);
+        $this->assertCount(7, $data->dokumentLinks);
         $this->assertCount(1, $data->ergebnisse);
 
         $this->assertMatchesObjectSnapshot($data);
@@ -34,7 +45,7 @@ class StadtratsvorlageDataTest extends TestCase
     public function testParseBa()
     {
         $html = file_get_contents(__DIR__ . '/data/StadtratsvorlageParser_DokumentBa.html');
-        $data = StadtratsvorlageData::parseFromHtml($html);
+        $data = StadtratsvorlageData::parseFromHtml($html, 0);
         $this->assertStringContainsString('Sanierung der Martin-Behaim-Straße', $data->title);
         $this->assertCount(4, $data->dokumentLinks);
         $this->assertCount(1, $data->ergebnisse);
