@@ -9,7 +9,7 @@ class AntragDataTest extends TestCase
 {
     use MatchesSnapshots;
 
-    public function testParseStadtrat(): void
+    public function testParseStadtrat1(): void
     {
         $html = file_get_contents(__DIR__ . '/data/AntragParser_Stadtrat1.html');
         $data = AntragData::parseFromHtml($html);
@@ -19,6 +19,19 @@ class AntragDataTest extends TestCase
         $this->assertCount(1, $data->dokumentLinks);
         $this->assertCount(6, $data->ergebnisse);
         $this->assertSame(6805415, $data->ergebnisse[5]->sitzungId);
+
+        $this->assertMatchesObjectSnapshot($data);
+    }
+
+    public function testParseStadtrat2(): void
+    {
+        $html = file_get_contents(__DIR__ . '/data/AntragParser_Stadtrat2.html');
+        $data = AntragData::parseFromHtml($html);
+        $this->assertSame('Standards und Arbeitsprozesse im interkommunalen Vergleich darstellen', $data->title);
+        $this->assertSame('20-26/A03390', $data->antragsnummer);
+        $this->assertSame('In Bearbeitung', $data->status);
+        $this->assertCount(1, $data->dokumentLinks);
+        $this->assertCount(0, $data->ergebnisse);
 
         $this->assertMatchesObjectSnapshot($data);
     }

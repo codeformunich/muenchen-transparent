@@ -122,8 +122,6 @@ class BrowserBasedDowloader
             $this->page->evaluate('$("#id3").val("' . $type . '").trigger("change");');
             $this->waitForElementToAppear('.colors_suche form input[type=date][name=von]');
 
-            echo $from->format('Y-m-d') . " - " . $to->format('Y-m-d') . "\n";
-
             $this->page->evaluate('document.querySelector(".colors_suche form input[type=date][name=von]").value = "' . $from->format('Y-m-d') . '"');
             $this->page->evaluate('document.querySelector(".colors_suche form input[type=date][name=bis]").value = "' . $to->format('Y-m-d') . '"');
             $this->clickJs('.colors_suche form button[type=submit]');

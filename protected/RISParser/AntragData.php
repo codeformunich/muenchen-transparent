@@ -35,7 +35,7 @@ class AntragData
 
     public static function parseFromHtml(string $html, ?int $idFallback = null): ?self
     {
-        if (!preg_match('/<section class="card">.*<div><h2>Betreff<\/h2><\/div>.*<div class="card-body">\s*<div[^>]*>(?<title>[^<]*)<\/div>/siuU', $html, $match)) {
+        if (!preg_match('/<section class="card"[^>]*>.*<div[^>]*>\s*<h2[^>]*>Betreff<\/h2>\s*<\/div>.*<div class="card-body">\s*<div[^>]*>(<p[^>]*>)?(?<title>[^<]*)(<\/p>)?<\/div>/siuU', $html, $match)) {
             throw new ParsingException('Not found: title (ID ' . $idFallback . ')');
         }
         $entry = new self();
@@ -125,7 +125,11 @@ class AntragData
         }
 
         $entry->dokumentLinks = [];
-        $htmlPart = explode('<h2>Ergebnisse</h2>', $html);
+        if (str_contains($html, '<h2>Ergebnisse</h2>')) {
+            $htmlPart = explode('<h2>Ergebnisse</h2>', $html);
+        } else {
+            $htmlPart = explode('<h2 id="sectionheader-ergebnisse">Ergebnisse</h2>', $html);
+        }
         //preg_match_all('/<input[^>]*pdfselector[^>]*pdfid="(?<id>\d+)"[^>]*pdfname="(?<name>[^"]*)"/siu', $htmlPart[0], $matches);
         preg_match_all('/<a class="downloadlink" href="\.\.\/\.\.(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $htmlPart[0], $matches);
         for ($i = 0; $i < count($matches['id']); $i++) {
@@ -138,7 +142,11 @@ class AntragData
         }
 
 
-        $parts = explode('<h2>Ergebnisse</h2>', $html);
+        if (str_contains($html, '<h2>Ergebnisse</h2>')) {
+            $parts = explode('<h2>Ergebnisse</h2>', $html);
+        } else {
+            $parts = explode('<h2 id="sectionheader-ergebnisse">Ergebnisse</h2>', $html);
+        }
         $parts = explode('</section>', $parts[1]);
         preg_match_all('/<a [^>]*href="[^"]*detail\/(?<id>\d+)"[^>]*>(?<date>\d+\.\d+\.\d+)<\/a>/siuU', $parts[0], $matches);
         $entry->ergebnisse = [];
