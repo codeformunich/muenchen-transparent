@@ -29,7 +29,7 @@ class Export_Stadtrat_VorlageCommand extends CConsoleCommand
 
     public function run($args)
     {
-        if (count($args) == 0) die("./yii reindex_stadtrat_vorlage [Vorlagen-ID]\n");
+        if (count($args) == 0) die("./yii export_stadtrat_vorlage [Vorlagen-ID]\n");
 
         /** @var Antrag $a */
         $a = Antrag::model()->findByPk($args[0]);
