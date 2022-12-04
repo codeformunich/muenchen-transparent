@@ -23,17 +23,24 @@ class ExportCommand extends CConsoleCommand
         ];
     }
 
-    private function serializeVorlage(int $antragId): ?array
+    private function serializeVorlage(int $vorlageId): ?array
     {
-        $antrag = Antrag::model()->findByPk($antragId);
+        $vorlage = Antrag::model()->findByPk($vorlageId);
+
+        $antraege = [];
+        foreach ($vorlage->vorlage2antraege as $antrag) {
+            $antraege[] = $antrag->id,
+        }
+
         return [
-            'id' => $antrag->id,
-            'datum' => $antrag->gestellt_am,
-            'nummer' => $antrag->antrags_nr,
-            'referat' => $antrag->referat,
-            'referent' => $antrag->referent,
-            'betreff' => $antrag->betreff,
-            'status' => $antrag->status,
+            'id' => $vorlage->id,
+            'datum' => $vorlage->gestellt_am,
+            'nummer' => $vorlage->antrags_nr,
+            'referat' => $vorlage->referat,
+            'referent' => $vorlage->referent,
+            'betreff' => $vorlage->betreff,
+            'status' => $vorlage->status,
+            'antraege' => $antraege,
         ];
     }
 
@@ -42,10 +49,7 @@ class ExportCommand extends CConsoleCommand
         $termin = Termin::model()->findByPk($terminId);
 
         $tops = array_map(function (Tagesordnungspunkt $top): array {
-            $antrag_id = $vorlage_id = null;
-            if ($top->antrag && $top->antrag->typ === Antrag::TYP_STADTRAT_ANTRAG) {
-                $antrag_id = $top->antrag_id;
-            }
+            $vorlage_id = null;
             if ($top->antrag && $top->antrag->typ === Antrag::TYP_STADTRAT_VORLAGE) {
                 $vorlage_id = $top->antrag_id;
             }
@@ -54,7 +58,6 @@ class ExportCommand extends CConsoleCommand
                 'position' => $top->top_pos,
                 'nummer' => $top->top_nr,
                 'betreff' => $top->top_betreff,
-                'antrag_id' => $antrag_id,
                 'vorlage_id' => $vorlage_id,
                 'geheim' => ($top->status === Tagesordnungspunkt::STATUS_NONPUBLIC),
             ];
