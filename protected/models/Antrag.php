@@ -547,7 +547,6 @@ class Antrag extends CActiveRecord implements IRISItemHasDocuments
             $gefunden->vorgang_id = $vorgang_id;
             $gefunden->save();
         }
-        if (SITE_CALL_MODE == "shell") echo "Fertig";
     }
 
     /**
