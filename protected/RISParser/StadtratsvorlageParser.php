@@ -43,7 +43,7 @@ class StadtratsvorlageParser extends RISParser
         }
 
         if ($parsed->hatAntragsliste) {
-            $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzungsvorlage/detail/antraege/' . $id);
+            $html = $this->curlBasedDownloader->loadUrl(RIS_URL_PREFIX . 'sitzungsvorlage/detail/antraege/' . $id, false, true);
             $parsed->parseAntraege($html);
         }
 

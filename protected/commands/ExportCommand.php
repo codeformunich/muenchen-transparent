@@ -29,7 +29,7 @@ class ExportCommand extends CConsoleCommand
 
         $antraege = [];
         foreach ($vorlage->vorlage2antraege as $antrag) {
-            $antraege[] = $antrag->id,
+            $antraege[] = $antrag->id;
         }
 
         return [
