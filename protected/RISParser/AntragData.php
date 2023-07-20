@@ -131,7 +131,7 @@ class AntragData
             $htmlPart = explode('<h2 id="sectionheader-ergebnisse">Ergebnisse</h2>', $html);
         }
         //preg_match_all('/<input[^>]*pdfselector[^>]*pdfid="(?<id>\d+)"[^>]*pdfname="(?<name>[^"]*)"/siu', $htmlPart[0], $matches);
-        preg_match_all('/<a class="downloadlink" href="\.\.\/\.\.(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $htmlPart[0], $matches);
+        preg_match_all('/<a class="downloadlink text-nohyphens" href="\.\.\/\.\.(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $htmlPart[0], $matches);
         for ($i = 0; $i < count($matches['id']); $i++) {
             $link = new DokumentLink();
             $link->filename = $matches['filename'][$i];

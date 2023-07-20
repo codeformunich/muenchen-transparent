@@ -103,7 +103,7 @@ class CalendarData
         $entry->dokumentLinks = [];
         $htmlPart = explode('<h2>Dokumente</h2>', $html);
         if (count($htmlPart) > 1) {
-            preg_match_all('/<a class="downloadlink" href="\.\.\/\.\.(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $htmlPart[1], $matches);
+            preg_match_all('/<a class="downloadlink text-nohyphens" href="\.\.\/\.\.(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $htmlPart[1], $matches);
             for ($i = 0; $i < count($matches['id']); $i++) {
                 $link = new DokumentLink();
                 $link->filename = $matches['filename'][$i];

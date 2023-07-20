@@ -85,7 +85,7 @@ class CalendarAgendaItem
             $entry->hasDisclosure = true;
         }
 
-        if (preg_match('/<a class="downloadlink" href="[.\/]*(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $html, $match)) {
+        if (preg_match('/<a class="downloadlink text-nohyphens" href="[.\/]*(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $html, $match)) {
             $entry->decisionDocument = new DokumentLink();
             $entry->decisionDocument->filename = $match['filename'];
             $entry->decisionDocument->title = $match['title'];
