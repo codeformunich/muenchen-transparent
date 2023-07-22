@@ -98,9 +98,11 @@ class BrowserBasedDowloader
             }
 
             $html .= $this->getInnerHtml($listClass . ' .list-group-flush');
-            if ($this->seeElement($listClass . ' a[rel=next]')) {
+
+            $nextChildNodes = 'document.querySelector(".colors_suche button.btn-selected").parentElement.nextElementSibling.childNodes.length';
+            if ($this->page->evaluate($nextChildNodes)->getReturnValue() > 0) {
                 $this->page->evaluate('document.querySelector("' . $listClass . ' .list-group-flush").remove()')->waitForResponse();
-                $this->clickJs($listClass . ' a[rel=next]');
+                $this->page->evaluate('$("' . $listClass . ' button.btn-selected").first().parent().next().find("button").click()')->waitForResponse();
                 $this->waitForElementToAppear($listClass . ' .list-group-flush');
             } else {
                 $goon = false;
