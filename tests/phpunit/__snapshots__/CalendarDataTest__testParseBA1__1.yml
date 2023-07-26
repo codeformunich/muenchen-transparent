@@ -1,6 +1,6 @@
 dateStart: '2021-12-21T19:00:00+01:00'
 id: 6243091
-status: Niederschrift
+status: Abgeschlossen
 baNr: 14
 baId: 223
 sitzungsstand: null
@@ -19,5 +19,6 @@ hasAgendaPublic: true
 hasAgendaNonPublic: false
 dokumentLinks:
     - { title: 'Einladung (oeff)', id: 6951109, url: /dokument/v/6951109, filename: 'Einladung (oeff).pdf' }
+    - { title: 12-21_prot_ba14_oeff_end, id: 7030755, url: /dokument/v/7030755, filename: 12-21_prot_ba14_oeff_end.pdf }
 agendaPublic: {  }
 agendaNonPublic: {  }

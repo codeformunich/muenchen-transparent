@@ -73,10 +73,12 @@ class CalendarAgendaItem
             $entry->id = null;
         }
 
-        if (!preg_match('/<div class="d-flex justify-content-between">\s*<div><span class="text-keepwhitespace">(?<title>[^<]*)<\/span>/siu', $html, $match)) {
+        if (!preg_match('/<h3 class="font-size-normal font-weight-normal text-keepwhitespace">(?<title>[^<]*)<\/h3>/siu', $html, $match)) {
             throw new ParsingException('Not found: title');
         }
         $entry->title = html_entity_decode($match['title'], ENT_COMPAT, 'UTF-8');
+        $entry->title = trim(preg_replace('/^TOP - /', '', $entry->title));
+        $entry->title = preg_replace('/\n +/', "\n", $entry->title);
 
         if (preg_match('/top\/' . $entry->id . '\/entscheidung/siu', $html)) {
             $entry->hasDecision = true;
@@ -112,7 +114,7 @@ class CalendarAgendaItem
 
     public function parseDisclosure(string $html): void
     {
-        if (!preg_match('/<h2>Bekanntgabe.*<div class="card-body">\s<span>(?<str>[^<]*)<\/span>/siu', $html, $matches)) {
+        if (!preg_match('/<h2 id="sectionheader-bekanntgabe">Bekanntgabe.*<div class="card-body">\s*<span>(?<str>[^<]*)<\/span>/siu', $html, $matches)) {
             throw new ParsingException('Not found: disclosure');
         }
         $this->disclosure = $matches['str'];

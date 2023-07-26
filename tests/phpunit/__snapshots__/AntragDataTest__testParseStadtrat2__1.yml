@@ -1,6 +1,6 @@
 id: 7463855
 antragsnummer: 20-26/A03390
-status: 'In Bearbeitung'
+status: Erledigt
 baNr: null
 baId: null
 title: 'Standards und Arbeitsprozesse im interkommunalen Vergleich darstellen'
@@ -11,7 +11,7 @@ bearbeitungsfrist: '2022-11-29T00:00:00+01:00'
 erledigtAm: '2022-11-29T00:00:00+01:00'
 art: 'Öffentlicher Vorgang'
 typ: Änderungsantrag
-bearbeitungsart: null
+bearbeitungsart: Beschluss
 referatId: 12
 referatName: Stadtkämmerei
 initiativeNamen:
@@ -20,4 +20,6 @@ gestelltVon:
     - 'CSU mit FREIE WÄHLER'
 dokumentLinks:
     - { title: 'CSU - FREIE WAeHLER - Antrag', id: 7463860, url: /dokument/v/7463860, filename: 'CSU - FREIE WAeHLER - Antrag.pdf' }
-ergebnisse: {  }
+ergebnisse:
+    - { sitzungId: 6865934, sitzungAm: '2022-11-30T00:00:00+01:00' }
+    - { sitzungId: 6865903, sitzungAm: '2022-11-29T00:00:00+01:00' }

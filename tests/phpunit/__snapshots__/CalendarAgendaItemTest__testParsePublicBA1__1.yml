@@ -373,9 +373,9 @@
         1.500,00 €; Az. 0262.0-14-0309
     hasDisclosure: false
     disclosure: null
-    hasDecision: false
+    hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6975485, url: /dokument/v/6975485, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6911696]
 -
@@ -393,7 +393,7 @@
     disclosure: null
     hasDecision: false
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6975549, url: /dokument/v/6975549, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6927051]
 -
@@ -596,7 +596,7 @@
     hasDecision: false
     decision: null
     decisionDocument: null
-    antraegeIds: {  }
+    antraegeIds: [6747215]
     vorlagenIds: [6779177]
 -
     position: 40
@@ -612,7 +612,7 @@
     hasDecision: false
     decision: null
     decisionDocument: null
-    antraegeIds: [6947753]
+    antraegeIds: [6986868, 6947753, 7020085]
     vorlagenIds: [6785344]
 -
     position: 41
@@ -828,12 +828,12 @@
     title: |-
         (U) 2. Stammstrecke München – Planfeststellungsabschnitt 3 Ost – Bereich westliches Isarufer bis östlich Leuchtenbergring
 
-            a) Neues Planfeststellungsverfahren für den Ostabschnitt PFA 3 Ost
-            b) Planungen des PFA 3 Ost
-            c) Ergebnisse der Überprüfung der Planfeststellungsunterlagen
-               Stellungnahme der Landeshauptstadt München im Anhörungsverfahren
-            d) Weiteres Vorgehen beim Planfeststellungsverfahren
-            e) Anträge
+        a) Neues Planfeststellungsverfahren für den Ostabschnitt PFA 3 Ost
+        b) Planungen des PFA 3 Ost
+        c) Ergebnisse der Überprüfung der Planfeststellungsunterlagen
+        Stellungnahme der Landeshauptstadt München im Anhörungsverfahren
+        d) Weiteres Vorgehen beim Planfeststellungsverfahren
+        e) Anträge
 
         1. Attraktive Verbindung zwischen Haidhausen und Werksviertel
         Antrag Nr. 14-20 / A 05971 von der FDP – MUT Stadtratsfraktion vom 25.09.2019, (aufgegriffen im Beschluss des Mobilitätsausschusses und des Ausschusses für Stadtplanung und Bauordnung vom 23.09.2020)
@@ -927,7 +927,7 @@
     title: |-
         Verkehrszeiche, Poller o.ä. im öffentlichen Raum behindertengerecht gestalten
 
-        - Antrag des BA 17 mit der Bitte um Unterstützung durch die weiteren Bezirksausschüsse - 
+        - Antrag des BA 17 mit der Bitte um Unterstützung durch die weiteren Bezirksausschüsse -
     hasDisclosure: false
     disclosure: null
     hasDecision: false
@@ -1088,7 +1088,7 @@
     decision: null
     decisionDocument: null
     antraegeIds: {  }
-    vorlagenIds: {  }
+    vorlagenIds: [6796690]
 -
     position: 67
     id: null
@@ -1170,7 +1170,7 @@
     hasDecision: false
     decision: null
     decisionDocument: null
-    antraegeIds: [6947353]
+    antraegeIds: [6947353, 6988724, 6997168]
     vorlagenIds: [6835697]
 -
     position: 72
@@ -1189,7 +1189,7 @@
     hasDecision: false
     decision: null
     decisionDocument: null
-    antraegeIds: {  }
+    antraegeIds: [6999474, 6997178]
     vorlagenIds: [6835713]
 -
     position: 73
@@ -1208,7 +1208,7 @@
     hasDecision: false
     decision: null
     decisionDocument: null
-    antraegeIds: {  }
+    antraegeIds: [6999474]
     vorlagenIds: [6824554]
 -
     position: 74
@@ -1230,7 +1230,7 @@
     hasDecision: false
     decision: null
     decisionDocument: null
-    antraegeIds: {  }
+    antraegeIds: [6999474]
     vorlagenIds: [6836012]
 -
     position: 75
@@ -1357,7 +1357,7 @@
     public: true
     isHeading: false
     topNr: 5.1.1.
-    title: 'Aufgrund der aktuellen Corona-Lage, finden die Sitzungen der Unterausschüsse weitgehend online statt. Bitte wenden Sie sich an die BA-Geschäftsstelle, wenn Sie an einer Sitzung teilnehmen möchten oder Fragen zu einem Tagesordnungspunkt haben. '
+    title: 'Aufgrund der aktuellen Corona-Lage, finden die Sitzungen der Unterausschüsse weitgehend online statt. Bitte wenden Sie sich an die BA-Geschäftsstelle, wenn Sie an einer Sitzung teilnehmen möchten oder Fragen zu einem Tagesordnungspunkt haben.'
     hasDisclosure: false
     disclosure: null
     hasDecision: false

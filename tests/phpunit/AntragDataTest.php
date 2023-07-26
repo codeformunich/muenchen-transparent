@@ -29,9 +29,9 @@ class AntragDataTest extends TestCase
         $data = AntragData::parseFromHtml($html);
         $this->assertSame('Standards und Arbeitsprozesse im interkommunalen Vergleich darstellen', $data->title);
         $this->assertSame('20-26/A03390', $data->antragsnummer);
-        $this->assertSame('In Bearbeitung', $data->status);
+        $this->assertSame('Erledigt', $data->status);
         $this->assertCount(1, $data->dokumentLinks);
-        $this->assertCount(0, $data->ergebnisse);
+        $this->assertCount(2, $data->ergebnisse);
 
         $this->assertMatchesObjectSnapshot($data);
     }
@@ -43,8 +43,8 @@ class AntragDataTest extends TestCase
         $this->assertSame('Umwandlung Pkw-Parkplatz zur Fahrradabstellfläche vor Kinderarztpraxis in der Kolumbusstr. 11', $data->title);
         $this->assertSame(5, $data->baNr);
         $this->assertSame(214, $data->baId);
-        $this->assertCount(3, $data->dokumentLinks);
-        $this->assertCount(1, $data->ergebnisse);
+        $this->assertCount(4, $data->dokumentLinks);
+        $this->assertCount(2, $data->ergebnisse);
         $this->assertSame('2021-02-09', $data->registriertAm->format('Y-m-d'));
 
         $this->assertMatchesObjectSnapshot($data);

@@ -26,7 +26,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950363, url: /dokument/v/6950363, filename: Beschluss.pdf }
     antraegeIds: [6947685, 6947723]
     vorlagenIds: [6908536]
 -
@@ -51,7 +51,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950389, url: /dokument/v/6950389, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6827977]
 -
@@ -80,7 +80,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950412, url: /dokument/v/6950412, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6847631]
 -
@@ -93,24 +93,24 @@
         Freiham Süd - Erweiterung Logistikzentrum Augustiner;
 
         A) Änderung des Flächennutzungsplanes mit integrierter Landschaftsplanung für den Bereich IV/43
-            Dietmar-Keese-Bogen und Ludwig-Schmid-Straße (südlich),
-            Verlängerung Hans-Steinkohl-Straße (westlich),
-            Bundesautobahn 96 München - Lindau (nördlich)
+        Dietmar-Keese-Bogen und Ludwig-Schmid-Straße (südlich),
+        Verlängerung Hans-Steinkohl-Straße (westlich),
+        Bundesautobahn 96 München - Lindau (nördlich)
 
         B) Vorhabenbezogener Bebauungsplan mit Grünordnung Nr. XXXX
-            Dietmar-Keese-Bogen und Ludwig-Schmid-Straße (südlich),
-            Verlängerung Hans-Steinkohl-Straße (westlich),
-            Bundesautobahn 96 München - Lindau (nördlich)
-           - Teiländerung des Bebauungsplanes mit Grünordnung Nr. 1916 a -
+        Dietmar-Keese-Bogen und Ludwig-Schmid-Straße (südlich),
+        Verlängerung Hans-Steinkohl-Straße (westlich),
+        Bundesautobahn 96 München - Lindau (nördlich)
+        - Teiländerung des Bebauungsplanes mit Grünordnung Nr. 1916 a -
 
-            Einleitungs- und Aufstellungsbeschluss
+        Einleitungs- und Aufstellungsbeschluss
 
         Stadtbezirk 22 Aubing-Lochhausen-Langwied
     hasDisclosure: false
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950424, url: /dokument/v/6950424, filename: Beschluss.pdf }
     antraegeIds: [6947745]
     vorlagenIds: [6787743]
 -
@@ -137,7 +137,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950438, url: /dokument/v/6950438, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6791832]
 -
@@ -157,7 +157,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950453, url: /dokument/v/6950453, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6514256]
 -
@@ -175,7 +175,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950465, url: /dokument/v/6950465, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6828011]
 -
@@ -192,7 +192,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950489, url: /dokument/v/6950489, filename: Beschluss.pdf }
     antraegeIds: [6869261]
     vorlagenIds: [6760084]
 -
@@ -222,7 +222,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950499, url: /dokument/v/6950499, filename: Beschluss.pdf }
     antraegeIds: [5903341, 5650127, 5650109, 5650094, 5852196]
     vorlagenIds: [6779548]
 -
@@ -233,16 +233,16 @@
     topNr: '10.'
     title: |-
         Haushalt 2022 des Referates für Stadtplanung und Bauordnung
-            •  Produkte
-            •  Umsetzung der Konsolidierung
-            •  Erhöhung der Einzahlungen
-            •  Teilfinanz- und Teilergebnishaushalt
-            •  Investitionen
+        •  Produkte
+        •  Umsetzung der Konsolidierung
+        •  Erhöhung der Einzahlungen
+        •  Teilfinanz- und Teilergebnishaushalt
+        •  Investitionen
     hasDisclosure: false
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950508, url: /dokument/v/6950508, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6704823]
 -
@@ -256,7 +256,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950531, url: /dokument/v/6950531, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6704816]
 -
@@ -280,7 +280,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950543, url: /dokument/v/6950543, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6701420]
 -
@@ -298,7 +298,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950554, url: /dokument/v/6950554, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6776824]
 -
@@ -318,7 +318,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950570, url: /dokument/v/6950570, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6819477]
 -
@@ -343,7 +343,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950584, url: /dokument/v/6950584, filename: Beschluss.pdf }
     antraegeIds: [6673214, 6755049]
     vorlagenIds: [6819765]
 -
@@ -359,8 +359,8 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
-    antraegeIds: [6947753]
+    decisionDocument: { title: Beschluss, id: 6950602, url: /dokument/v/6950602, filename: Beschluss.pdf }
+    antraegeIds: [6986868, 6947753, 7020085]
     vorlagenIds: [6785344]
 -
     position: 17
@@ -378,7 +378,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950614, url: /dokument/v/6950614, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6836180]
 -
@@ -390,12 +390,12 @@
     title: |-
         2. Stammstrecke München – Planfeststellungsabschnitt 3 Ost – Bereich westliches Isarufer bis östlich Leuchtenbergring
 
-            a) Neues Planfeststellungsverfahren für den Ostabschnitt PFA 3 Ost
-            b) Planungen des PFA 3 Ost
-            c) Ergebnisse der Überprüfung der Planfeststellungsunterlagen
-               Stellungnahme der Landeshauptstadt München im Anhörungsverfahren
-            d) Weiteres Vorgehen beim Planfeststellungsverfahren
-            e) Anträge
+        a) Neues Planfeststellungsverfahren für den Ostabschnitt PFA 3 Ost
+        b) Planungen des PFA 3 Ost
+        c) Ergebnisse der Überprüfung der Planfeststellungsunterlagen
+        Stellungnahme der Landeshauptstadt München im Anhörungsverfahren
+        d) Weiteres Vorgehen beim Planfeststellungsverfahren
+        e) Anträge
 
         1. Attraktive Verbindung zwischen Haidhausen und Werksviertel
         Antrag Nr. 14-20 / A 05971 von der FDP – MUT Stadtratsfraktion vom 25.09.2019, (aufgegriffen im Beschluss des Mobilitätsausschusses und des Ausschusses für Stadtplanung und Bauordnung vom 23.09.2020)
@@ -414,8 +414,8 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
-    antraegeIds: [6947698, 6948940, 6868433]
+    decisionDocument: { title: Beschluss, id: 6950636, url: /dokument/v/6950636, filename: Beschluss.pdf }
+    antraegeIds: [6947698, 6948940, 5669509, 6535210, 6302628, 6302600, 6586311, 6868342, 6868448, 6868433]
     vorlagenIds: [6909577]
 -
     position: 19
@@ -433,8 +433,8 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
-    antraegeIds: {  }
+    decisionDocument: { title: Beschluss, id: 6950665, url: /dokument/v/6950665, filename: Beschluss.pdf }
+    antraegeIds: [6998819]
     vorlagenIds: [6781915]
 -
     position: 20
@@ -450,7 +450,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950673, url: /dokument/v/6950673, filename: Beschluss.pdf }
     antraegeIds: {  }
     vorlagenIds: [6866423]
 -
@@ -475,7 +475,7 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
+    decisionDocument: { title: Beschluss, id: 6950719, url: /dokument/v/6950719, filename: Beschluss.pdf }
     antraegeIds: [6947782]
     vorlagenIds: [6907745]
 -
@@ -494,8 +494,8 @@
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
-    antraegeIds: {  }
+    decisionDocument: { title: Beschluss, id: 6950856, url: /dokument/v/6950856, filename: Beschluss.pdf }
+    antraegeIds: [6747215]
     vorlagenIds: [6779177]
 -
     position: 23
@@ -509,20 +509,20 @@
         1. Erreichung und Verstetigung der Fertigstellungszahlen bis 2030
         2. Umsetzung des Klimaschutzpakets
         3. Finanzielles Engagement der Landeshauptstadt München
-            • Übertragung städtischer Grundstücke
-            • Zusätzliche städtische Finanzmittel
-            • Weiterer Verzicht auf Gewinnausschüttungen
+        • Übertragung städtischer Grundstücke
+        • Zusätzliche städtische Finanzmittel
+        • Weiterer Verzicht auf Gewinnausschüttungen
         4. Stadtratsanträge
-             a) Wohnungsbauzahlen der städtischen Wohnungsbaugesellschaften sichern
-                  Antrag Nr. 14 – 20 / A 06375 der SPD-Stadtratsfraktion vom 10.12.2019
-             b) Weiter intensiv bauen und sanieren: Städtische Wohnungsbaugesellschaften finanziell besser ausstatten
-                 Antrag Nr. 14 – 20 / A 06378 der Fraktion DIE GRÜNEN/RL vom 10.12.2019
+        a) Wohnungsbauzahlen der städtischen Wohnungsbaugesellschaften sichern
+        Antrag Nr. 14 – 20 / A 06375 der SPD-Stadtratsfraktion vom 10.12.2019
+        b) Weiter intensiv bauen und sanieren: Städtische Wohnungsbaugesellschaften finanziell besser ausstatten
+        Antrag Nr. 14 – 20 / A 06378 der Fraktion DIE GRÜNEN/RL vom 10.12.2019
         c) Wohnungsbaugesellschaften
-                Antrag Nr. 14 – 20 / A 06470 der CSU-Stadtratsfraktion vom 02.01.2020
+        Antrag Nr. 14 – 20 / A 06470 der CSU-Stadtratsfraktion vom 02.01.2020
     hasDisclosure: false
     disclosure: null
     hasDecision: true
     decision: null
-    decisionDocument: null
-    antraegeIds: [5803913, 5804595, 5829694]
+    decisionDocument: { title: Beschluss, id: 6950872, url: /dokument/v/6950872, filename: Beschluss.pdf }
+    antraegeIds: [6998839, 5803913, 5804595, 5829694]
     vorlagenIds: [6062450]

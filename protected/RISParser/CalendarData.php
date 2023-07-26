@@ -101,7 +101,7 @@ class CalendarData
         $entry->hasAgendaNonPublic = str_contains($html, $entry->id . '/tagesordnung/nichtoeffentlich');
 
         $entry->dokumentLinks = [];
-        $htmlPart = explode('<h2>Dokumente</h2>', $html);
+        $htmlPart = preg_split('/<h2[^>]*>Dokumente.*<\/h2>/siuU', $html);
         if (count($htmlPart) > 1) {
             preg_match_all('/<a class="downloadlink text-nohyphens" href="\.\.\/\.\.(?<url>\/dokument\/v\/(?<id>\d+))"[^>]*>(?<filename>(?<title>[^<]*)\.[^<.]*)</siuU', $htmlPart[1], $matches);
             for ($i = 0; $i < count($matches['id']); $i++) {
