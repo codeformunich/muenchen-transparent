@@ -50,6 +50,7 @@ class BrowserBasedDowloader
             'userAgent' => 'München Transparent',
         ]);
         $this->page = $this->browser->createPage();
+        $this->page->setUserAgent(RISTools::STD_USER_AGENT);
     }
 
     public function close(): void
@@ -120,7 +121,7 @@ class BrowserBasedDowloader
 
         try {
             $this->page->navigate(RIS_URL_PREFIX . 'erweitertesuche')->waitForNavigation();
-
+            sleep(1);
             $this->page->evaluate('$("#id3").val("' . $type . '").trigger("change");');
             $this->waitForElementToAppear('.colors_suche form input[type=date][name=von]');
 
