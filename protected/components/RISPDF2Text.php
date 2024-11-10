@@ -108,7 +108,7 @@ class RISPDF2Text
             $png_tmp_file = TMP_PATH . "ocr-tmp." . rand(0, 1000000000) . ".png";
             $exec         = PATH_CONVERT . " -background white -flatten ";
             $exec .= "-density 600 -resize 50% "; // => better font rendering quality
-            $exec .= "\"${filename}[$i]\" -colorspace Gray $depth $png_tmp_file";
+            $exec .= "\"" . $filename[$i] . "\" -colorspace Gray $depth $png_tmp_file";
             exec($exec, $result);
             if (file_exists($png_tmp_file)) {
                 exec(PATH_TESSERACT . " $png_tmp_file $png_tmp_file -l deu --oem 1", $result);

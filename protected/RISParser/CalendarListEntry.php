@@ -37,7 +37,7 @@ class CalendarListEntry
         $entry->id = intval(array_pop($linkParts));
         $entry->dateStart = RISParser::parseGermanLongDate($match['title']);
 
-        preg_match('/<a class="icon_action" href="\.\/gremium\/detail\/(?<id>\d+)\?[^>]*>(?<title>[^<]*)<\/a>/siu', $html, $match);
+        preg_match('/<a class="icon-action" href="\.\/gremium\/detail\/(?<id>\d+)\?[^>]*>(?<title>[^<]*)<\/a>/siu', $html, $match);
         $entry->organizationId = intval($match['id']);
         $entry->organizationName = $match['title'];
 
