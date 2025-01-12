@@ -667,7 +667,7 @@ class Dokument extends CActiveRecord implements IRISItem
     /**
      * @throws CDbException
      */
-    public function loeschen()
+    public function delete(): void
     {
         $this->deleted = 1;
         $this->save();
@@ -676,4 +676,15 @@ class Dokument extends CActiveRecord implements IRISItem
         foreach ($this->orte as $ort) $ort->delete();
     }
 
+    /**
+     * @throws CDbException
+     */
+    public function undelete(): void
+    {
+        $this->deleted = 0;
+        $this->save();
+
+        $this->geo_extract();
+        $this->solrIndex();
+    }
 }

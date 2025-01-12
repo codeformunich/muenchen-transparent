@@ -24,7 +24,7 @@ class DokumentParser
             // @TODO Wiederherstellen
             echo "Wiederherstellen: " . $dokument->id . "\n";
         } elseif ($info["http_code"] == 404 && $dokument->deleted == 0) {
-            $dokument->loeschen();
+            $dokument->delete();
             echo "Gelöscht: " . $dokument->id . "\n";
         }
     }
