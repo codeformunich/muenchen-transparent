@@ -318,6 +318,7 @@ class Dokument extends CActiveRecord implements IRISItem
     public function geo_extract(): void
     {
         $text              = $this->text_ocr_corrected . $this->text_pdf;
+
         $strassen_gefunden = RISGeo::suche_strassen($text);
 
         /** @var array|AntragOrt[] $bisherige */
@@ -673,7 +674,7 @@ class Dokument extends CActiveRecord implements IRISItem
         $this->save();
 
         $this->solrIndex();
-        foreach ($this->orte as $ort) $ort->delete();
+        //foreach ($this->orte as $ort) $ort->delete();
     }
 
     /**

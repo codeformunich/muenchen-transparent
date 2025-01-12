@@ -695,6 +695,7 @@ class IndexController extends RISBaseController
             header("HTTP/1.0 404 Not Found");
             Yii::app()->end();
         }
+        header("X-Robots-Tag: noindex, nofollow");
 
         echo $content;
         Yii::app()->end();
