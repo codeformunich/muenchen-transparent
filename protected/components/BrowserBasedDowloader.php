@@ -120,6 +120,7 @@ class BrowserBasedDowloader
         $this->open();
 
         try {
+            $this->page->setUserAgent(RISTools::STD_USER_AGENT);
             $this->page->navigate(RIS_URL_PREFIX . 'erweitertesuche')->waitForNavigation();
             sleep(1);
             $this->page->evaluate('$("#id3").val("' . $type . '").trigger("change");');
