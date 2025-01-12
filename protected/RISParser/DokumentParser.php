@@ -3,7 +3,7 @@
 class DokumentParser
 {
 
-    public function checkAndDeleteDocument($doc_id)
+    public function checkAndDeleteDocument($doc_id): void
     {
         /** @var Dokument $dokument */
         $dokument = Dokument::model()->disableDefaultScope()->findByPk($doc_id);
@@ -22,7 +22,7 @@ class DokumentParser
 
         if ($info["http_code"] == 200 && $dokument->deleted == 1) {
             // @TODO Wiederherstellen
-            echo "\n";
+            echo "Wiederherstellen: " . $dokument->id . "\n";
         } elseif ($info["http_code"] == 404 && $dokument->deleted == 0) {
             $dokument->loeschen();
             echo "Gelöscht: " . $dokument->id . "\n";
