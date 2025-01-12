@@ -21,7 +21,7 @@ class DokumentParser
         $info = curl_getinfo($ch);
 
         if ($info["http_code"] == 200 && $dokument->deleted == 1) {
-            // @TODO Wiederherstellen
+            $dokument->undelete();
             echo "Wiederherstellen: " . $dokument->id . "\n";
         } elseif ($info["http_code"] == 404 && $dokument->deleted == 0) {
             $dokument->delete();
