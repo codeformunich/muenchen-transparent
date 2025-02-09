@@ -102,6 +102,8 @@ class BrowserBasedDowloader
 
             $nextChildNodes = 'document.querySelector(".colors_suche button.btn-selected").parentElement.nextElementSibling.childNodes.length';
             if ($this->page->evaluate($nextChildNodes)->getReturnValue() > 0) {
+                sleep(2); // Prevent being blocked by server
+
                 $this->page->evaluate('document.querySelector("' . $listClass . ' .list-group-flush").remove()')->waitForResponse();
                 $this->page->evaluate('$("' . $listClass . ' button.btn-selected").first().parent().next().find("button").click()')->waitForResponse();
                 $this->waitForElementToAppear($listClass . ' .list-group-flush');
@@ -137,6 +139,9 @@ class BrowserBasedDowloader
             }
 
             $html = $this->readPaginatedContent('.colors_suche');
+        } catch (\Throwable $e) {
+            file_put_contents('/tmp/error.log', $this->page->getHtml() . PHP_EOL, FILE_APPEND);
+            throw $e;
         } finally {
             $this->close();
         }
