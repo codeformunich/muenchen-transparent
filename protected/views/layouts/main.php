@@ -135,7 +135,9 @@
                     <li class="ba-wahl-link <?php if ($this->top_menu == "bezirksausschuss") echo ' active'; ?>"><?= CHtml::link("Bezirksausschüsse", $this->createUrl("index/bezirksausschuss")) ?></li>
                     <li <?php if ($this->top_menu == "benachrichtigungen") echo 'class="active"'; ?>><?= CHtml::link("Benachrichtigungen", $this->createUrl("benachrichtigungen/index")) ?></li>
                     <li class="<?php if ($this->top_menu == "termine") echo ' active'; ?>"><?= CHtml::link("Termine", $this->createUrl("termine/index")) ?></li>
+                    <!--
                     <li class="<?php if ($this->top_menu == "personen") echo ' active'; ?>"><?= CHtml::link("Personen", $this->createUrl("personen/index")) ?></li>
+                    -->
                     <?php
                     $user = $this->aktuelleBenutzerIn();
                     if ($user && $user->hatIrgendeineBerechtigung()) {

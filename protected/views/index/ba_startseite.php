@@ -150,6 +150,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
     </div>
 
     <div class="col col-md-3 keine_dokumente">
+        <!--
         <?php
         $statistiken = $ba->getInteressanteStatistik();
         if (count($statistiken) > 0) {
@@ -199,6 +200,7 @@ $this->pageTitle = "Bezirksausschuss " . $ba->ba_nr . ", " . $ba->name;
             "title"   => "Unterausschüsse",
         ));
         ?>
+        -->
     </div>
 
 </div>
